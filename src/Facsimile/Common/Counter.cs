@@ -101,7 +101,7 @@ access to a restricted resource.
 	    }
 	}
 	public bool IsInUse () {
-	    return !claims.IsEmpty ();
+	    return !claims.IsEmpty;
 	}
 	public void useResource () {
 	    // ...
@@ -181,9 +181,9 @@ Validate the supplied maximum capacity.
 
 	    if (maximumCapacity < 0) {
 		// TODO: Internationalise this message!
-		throw new System.ArgumentOutOfRangeException ("Counter " +
-		"maximum capacity must be >= 0.  Value received was: " +
-		maximumCapacity.ToString (), "maximumCapacity");
+		throw new System.ArgumentOutOfRangeException
+		("maximumCapacity", maximumCapacity, "Counter maximum capacity "
+		+ "must be >= 0.");
 	    }
 
 /*
@@ -192,6 +192,23 @@ Trivial construction.
 
 	    limit = maximumCapacity;
 	    count = 0;
+	}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>Report the maximum capacity of the counter.</summary>
+
+<remarks>This property cannot be changed once the counter has been
+initialised.  The capacity is guaranteed to be ≥ 0.</remarks>
+<value>A <see cref="System.Int32" /> value storing the maximum capacity of the
+counter.</value>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	public int MaximumCapacity {
+	    get {
+		return limit;
+	    }
 	}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -324,7 +324,7 @@ errors - this forces the library to build cleanly.
 
 	<csc target="library" output="${assembly.dir}/Facsimile.Common.dll"
 	doc="${doc.dir}/Facsimile.Common.xml" warninglevel="4"
-	warnaserror="true">
+	warnaserror="true" optimize="true" debug="false">
 	    <sources>
 		<include name="${commonSrc.dir}/*.cs" />
 	    </sources>
@@ -374,7 +374,7 @@ TODO: Re-examine the use of explicit nunit library paths.
 
 	<csc target="library" output="${assembly.dir}/FacsimileTest.Common.dll"
 	doc="${doc.dir}/FacsimileTest.Common.xml" warninglevel="4"
-	warnaserror="true">
+	warnaserror="true" optimize="true" debug="false">
 	    <sources>
 		<include name="${commonTestSrc.dir}/*.cs" />
 	    </sources>
