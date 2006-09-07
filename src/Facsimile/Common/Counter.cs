@@ -196,7 +196,7 @@ Trivial construction.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Report the maximum capacity of the counter.</summary>
+<summary>Counter's maximum capacity.</summary>
 
 <remarks>This property cannot be changed once the counter has been
 initialised.  The capacity is guaranteed to be ≥ 0.</remarks>
@@ -213,7 +213,7 @@ counter.</value>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Determine if counter is empty.</summary>
+<summary>Is counter empty?</summary>
 
 <remarks>The counter is considered empty when the number of increment and
 decrement operations are in balance, and the current count is 0.</remarks>
@@ -231,7 +231,7 @@ or false otherwise.</value>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Determine if counter is full.</summary>
+<summary>Is counter full?</summary>
 
 <remarks>The counter is considered full when the difference between the number
 of increment and decrement operations has reached the allowed limit, and the
@@ -250,9 +250,9 @@ or false otherwise.</value>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Counter increment function.</summary>
+<summary>Increment counter.</summary>
 
-<remarks>Increment's the counter's currently tracked count.</remarks>
+<remarks>Increments the counter's currently tracked count.</remarks>
 
 <exception cref="System.OverflowException">Thrown if the counter is already at
 its maximum value when an increment operation is attempted.</exception>
@@ -280,9 +280,9 @@ Increment the count.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Counter decrement function.</summary>
+<summary>Decrement counter.</summary>
 
-<remarks>This function decrement's the counter's currently tracked count.
+<remarks>Decrements the counter's currently tracked count.
 
 <para>Avoid placing calls to <see cref="Decrement" /> within finalisation code.
 Finalisation is peformed by the garbage collector at unpredictable intervals
