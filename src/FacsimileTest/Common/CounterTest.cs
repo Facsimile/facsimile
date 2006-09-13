@@ -1,4 +1,4 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2006, Michael J Allen BSc.
 
@@ -57,7 +57,8 @@ http://www.nunit.org/</para></remarks>
 */
 //=============================================================================
 
-    [NUnit.Framework.TestFixture] public sealed class CounterTest {
+    [NUnit.Framework.TestFixture]
+    public sealed class CounterTest {
 
 /**
 <summary>"Unconstrained" counter.</summary>
@@ -398,7 +399,8 @@ have been constructed OK.</remarks>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	[NUnit.Framework.Test] public void TestCounterMaximumCapacity () {
+	[NUnit.Framework.Test]
+	public void TestCounterMaximumCapacity () {
 
 /*
 Validate that all counters have stored the correct maximum value.  The
@@ -419,7 +421,8 @@ correctly.</summary>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	[NUnit.Framework.Test] public void TestCounterIncrementDecrement () {
+	[NUnit.Framework.Test]
+	public void TestCounterIncrementDecrement () {
 
 /*
 If the unconstrained and maximum counters have the same capacity, then we do

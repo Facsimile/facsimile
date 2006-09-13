@@ -1,4 +1,4 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2006, Michael J Allen BSc.
 
@@ -73,7 +73,7 @@ class).</typeparam>
 
 <typeparam name="BaseState">The <see cref="State {FinalContext, BaseState}"
 />-derived base class defining the set of available states for the associated
-<typeparamref name="FinalContext"> type; all classes derived from this base
+<typeparamref name="FinalContext" /> type; all classes derived from this base
 class are suitable state classes for the associated state context
 class.</typeparam>
 
@@ -92,9 +92,9 @@ class.</typeparam>
 <summary>Generic abstract base class for state context objects.</summary>
 
 <remarks>A state context object is one that, at a given point in time, may be
-in just one of an available set of states.  Furthermore, the behaviour of each
-state context object depends upon its current state to the extent that it may
-delegate some of its implementation to that state.
+in just one from an available set of states.  Furthermore, the behaviour of
+each state context object depends upon its current state to the extent that it
+may delegate some of its implementation to that state.
 
 <para>Each state is represented by a class that is derived from <typeparamref
 name="BaseState" />.  The set of available states are, therefore, the classes
@@ -106,8 +106,8 @@ the State design pattern "Context" role.  Refer to Gamma, et al: "Design
 Patterns: Elements of Reusable Object-Oriented Software", Addison-Wesley, for
 further information.</para></remarks>
 
-<example>The following C# example demonstrates a "switch" (state context) that
-has two states: "on" and "off".
+<example>The following C# example demonstrates a "switch" (a state context
+object) that has two states: "on" and "off".
 
 <para>The switch is here represented by the <c>Switch</c> class, which is
 derived from the <see cref="StateContext {FinalContext, BaseState}" /> class.
@@ -115,8 +115,6 @@ derived from the <see cref="StateContext {FinalContext, BaseState}" /> class.
 BaseState}" /> class, is the base class for the <c>OnState</c> and
 <c>OffState</c> classes that represent the "on" and "off" states respectively;
 these state classes are used to report whether the switch is on or off.</para>
-
-TODO: Come back to this and tidy up at a later date.
 
 <code>
 namespace MyProgram {
@@ -210,7 +208,7 @@ class).</typeparam>
 
 <typeparam name="BaseState">The <see cref="State {FinalContext, BaseState}"
 />-derived base class defining the set of available states for the associated
-<typeparamref name="FinalContext"> type; all classes derived from this base
+<typeparamref name="FinalContext" /> type; all classes derived from this base
 class are suitable state classes for the associated state context
 class.</typeparam>
 
@@ -272,6 +270,9 @@ subsequently.</para></remarks>
 <param name="initialState">The <typeparamref name="BaseState" /> instance that
 represents this state context's initial state.</param>
 
+<exception cref="System.ArgumentNullException">Thrown if a null reference is
+supplied as the initial state of the object.</exception>
+
 <seealso cref="State {FinalContext, BaseState}" />
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -279,7 +280,18 @@ represents this state context's initial state.</param>
 	public StateContext (BaseState initialState) {
 
 /*
-Store the initial state.
+Verify that we have a valid initial state.
+*/
+
+	    if (initialState == null) {
+		// TODO: Internationalise this error message.
+		throw new System.ArgumentNullException ("initialState",
+		"Initial state cannot be null.");
+	    }
+
+/*
+Store the current initial state.  Note that we do not raise the state changed
+event.
 */
 
 	    current = initialState;
@@ -300,15 +312,20 @@ is changed successfully.
 
 <para>It is not possible to change the current state if an existing state
 change operating is currently in progress.  If this is attempted, a <see
-cref="System.InvalidOperatingException" /> exception will be
+cref="System.InvalidOperationException" /> exception will be
 raised.</para></remarks>
 
 <value>A <typeparamref name="BaseState " /> instance representing this state
 context's current state.</value>
 
 <exception cref="System.InvalidOperationException">Thrown if this state context
-object is already in the process of changing to a new state.  This is caused by
-state change event handler code attempting to change the state.</exception>
+object is already in the process of changing to a new state (caused by state
+change event handler code attempting to implement state changes) or by attempts
+to transition to a state that is not permitted by the current
+state.</exception>
+
+<exception cref="System.ArgumentNullException">Thrown if an attempt is made to
+change the state to a null object.</exception>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -332,76 +349,98 @@ classes - allowing external code to change the state is not always desirable.
 	    protected set {
 
 /*
+Verify that the value is valid; if it is not, then we must thrown the argument
+null exception.
+*/
+
+		if (value == null) {
+		    // TODO: Internationalise this error message.
+		    throw new System.ArgumentNullException ("value",
+		    "Current state cannot be set to a null value.");
+		}
+
+/*
+Set the current state.
+*/
+
+		SetCurrentState (value);
+	    }
+	}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>Change the current state.</summary>
+
+<remarks>Implements the change of the current state, invokes state change
+handlers and the state change event, checks for re-entrancy, etc.</remarks>
+
+<param name="newState">A <typeparamref name="BaseState" /> instance
+representing the new state.</param>
+
+<exception cref="System.InvalidOperationException">Thrown if this state context
+object is already in the process of changing to a new state (caused by state
+change event handler code attempting to implement state changes) or by attempts
+to transition to a state that is not permitted by the current
+state.</exception>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	private void SetCurrentState (BaseState newState) {
+
+/*
 If we're currently changing the state of this object, then we can hardly do so
 again until we're done.  Signal this by throwing an exception.
 */
 
-		if (changingState) {
-		    // TODO: Internationalise this message!
-		    throw new System.InvalidOperationException
-		    ("Cannot change state because current state change " +
-		    "operation incomplete.");
-		}
+	    if (changingState) {
+		// TODO: Internationalise this message!  Derive new exception?
+		throw new System.InvalidOperationException
+		("Cannot change state because current state change " +
+		"operation incomplete.");
+	    }
 
 /*
-If we're trying to change the state to the current state, then do nothing.
+Confirm that we can transition to the new state.  If not, then throw an invalid
+operation exception.
 */
 
-		if (current == value) {
-		    return;
-		}
+	    if (!current.CanTransitionTo (newState)) {
+		// TODO: Internationalise this message!  Derive new exception?
+		throw new System.InvalidOperationException
+		("Cannot transition from current state to new state");
+	    }
 
 /*
-OK.  We must be changing the state, so note the fact.
+Change the current state, after recording the prior state for use when raising
+the state changed event.
 */
 
-		changingState = true;
+	    BaseState priorState = current;
+	    current = newState;
 
 /*
-Record the prior state and store the new state.
+If we made it this far, we must be changing the state, so note the fact.
 */
 
-		BaseState priorState = current;
-		current = value;
+	    changingState = true;
 
 /*
 Raise the state change event (if we have any registered handlers).
 */
 
-		try {
-		    if (StateChanged != null) {
-			StateChanged (this, priorState);
-		    }
+	    try {
+		if (StateChanged != null) {
+		    StateChanged ((FinalContext) this, priorState);
 		}
+	    }
 
 /*
-If an exception occurred, then deal with it by restoring the prior state.
-
-TODO: Don't like this: handlers should never throw exceptions, but in C# we
-cannot enforce that (no throw() exception specification as in C++).  The
-alternative is to recover from the exception (in case something handles it) by
-restoring the previous state and having all the handler's undo their effects.
-Yak!
+Regardless of what just happened, we're no longer changing the state of this
+object.
 */
 
-		catch {
-		    BaseState temp = priorState;
-		    priorState = current;
-		    current = temp;
-		    if (StateChanged != null) {
-			StateChanged (this, priorState);
-		    }
-		    throw;
-		}
-
-/*
-No matter what just happened, we are no longer trying to change the current
-state.
-*/
-
-		finally {
-		    changingState = false;
-		}
+	    finally {
+		changingState = false;
 	    }
 	}
     }

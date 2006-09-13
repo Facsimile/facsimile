@@ -1,4 +1,4 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2006, Michael J Allen BSc.
 
@@ -55,7 +55,11 @@ its associated state objects.
 <para>This class supports derived state classes that implement the "State"
 design pattern's "State" role.  Refer to Gamma, et al: "Design Patterns:
 Elements of Reusable Object-Oriented Software", Addison-Wesley, for further
-information.</para></remarks>
+information.</para>
+
+<para>If an operation is invalid for a specific base class, then that operation
+should throw the <see cref="System.InvalidOperationException" /> exception, or
+an exception derived from this class.</para></remarks>
 
 <example>For an example of how to use this class, refer to the <see
 cref="StateContext {FinalContext, BaseContext}" /> class
@@ -67,7 +71,7 @@ class (or the polymorphic base class of the actual state context
 class).</typeparam>
 
 <typeparam name="BaseState">The State-derived base class defining the set of
-available states for the associated <typeparamref name="FinalContext"> type;
+available states for the associated <typeparamref name="FinalContext" /> type;
 all classes derived from this base class are suitable state classes for the
 associated state context class.</typeparam>
 
@@ -81,52 +85,67 @@ associated state context class.</typeparam>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>UP TO HERE.</summary>
+<summary>Determine if transition to specific state is possible.</summary>
 
-<remarks>Perform custom actions when the specified state context object changes
-to this state.
+<remarks>Determine whether it is possible to perform a transition from this
+state to a potential new state.  This will be used to prevent state transitions
+that do not make sense.
 
-<para>Derived classes should override this function if necessary; the default
-version of this function does nothing.
+<para>This function should not pass any unhandled exceptions to the
+caller.</para>
 
-<para>Overrides of this function should avoid throwing exceptions - any
-exceptions thrown will likely terminate the application.  If this state is
-inappropriate for the state context, override the <see
-cref="CanTransitionToState" /> function to bar transitions to this
-state.</para></remarks>
+<para>The decision is made by the state-specific <see
+cref="DecideCanTransitionTo" /> method.</para></remarks>
 
-<param name="stateContext">The <typeparamref name="FinalContext" /> object
-whose state has just been changed to this state.</param>
+<returns>A <see cref="System.Boolean" /> value indicating whether the
+transition is possible (true) or not (false).</returns>
+
+<param name="newState">The <typeparamref name="BaseState" />-derived object
+representing a potential new state.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	protected virtual void ImplementStateChange (FinalContext stateContext)
-	{
+	internal bool CanTransitionTo (BaseState newState) {
+
+/*
+Make the decision as to whether we support this transition or not.
+
+TODO: Trap any exceptions thrown and log/handler/terminate as appropriate.
+*/
+
+	    return DecideCanTransitionTo (newState);
 	}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Implement state change.</summary>
+<summary>Decide whether transition to specific state is possible.</summary>
 
-<remarks>Perform custom actions when the specified state context object changes
-to this state.
+<remarks>The decision must be made without reference to the <typeparamref
+name="FinalContext" /> instance concerned, forcing the decision to be based
+upon the current state and potential new state only.
 
-<para>Derived classes should override this function if necessary; the default
-version of this function does nothing.
+<para>This function should not pass any unhandled exceptions to the
+caller.</para>
 
-<para>Overrides of this function should avoid throwing exceptions - any
-exceptions thrown will likely terminate the application.  If this state is
-inappropriate for the state context, override the <see
-cref="CanTransitionToState" /> function to bar transitions to this
-state.</para></remarks>
+<para>Override this method to customise the set of permissible state
+transitions; the default method permits all transitions.</para></remarks>
 
-<param name="stateContext">The <typeparamref name="FinalContext" /> object
-whose state has just been changed to this state.</param>
+<returns>A <see cref="System.Boolean" /> value indicating whether the
+transition is possible (true) or not (false).</returns>
+
+<param name="newState">The <typeparamref name="BaseState" />-derived object
+representing a potential new state.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	protected virtual void ImplementStateChange (FinalContext stateContext)
-	{
+	protected virtual bool DecideCanTransitionTo (BaseState newState) {
+
+/*
+This default version permits all transitions.  Override to filter transitions
+that are not valid.
+*/
+
+	    return true;
 	}
     }
 }
