@@ -67,7 +67,10 @@ TestCommon
     Test the "Facsimile.Common" assembly with the "FacsimileTest"."Common"
     tests.
 
-clean
+TestAll
+    Builds everything and then tests everything.
+
+Clean
     Remove all files/directories produced by the build process.
 
 
@@ -75,11 +78,70 @@ Refer to the NAnt documentation for additional information.
 ===============================================================================
 -->
 
-<project name="Facsimile" default="test" basedir=".">
+<project name="Facsimile" default="TestAll" basedir=".">
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Global properties.
+Platform-specific properties.
+
+This section defines characteristics that are dependent on the platform upon
+which the sources are being built.
+
+Altough .NET/Mono applications are executed by a virtual machine, and therefore
+the same executable should run on any platform for which there is a virtual
+machine, in practice there are notable differences.  Primarily, Microsoft's
+compiler tools are only available on the Windows platform, whilst Novell's Mono
+tools are available on some of the others.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+<!--
+For the log, note which operating system the sources are being built upon.
+-->
+
+    <echo level="Info">Running on ${operating-system::to-string
+    (environment::get-operating-system ())}</echo>
+
+<!--
+Force NAnt to use the .NET 2.0 framework on Windows platforms, and the Mono 2.0
+framework on all other platforms.
+
+Note: We have to do this as two tests, because there is not an <else> condition
+available.
+-->
+
+    <if test="${platform::is-win32 ()}">
+	<if test="${not framework::exists ('net-2.0')}">
+	    <fail>
+		NAnt reports that it is unable to find the .NET 2.0 framework
+		on your machine.  If you do not have .NET 2.0 installed, you
+		can obtain it from: http://www.microsoft.com/.  If you have
+		installed the .NET 2.0 framework, then please raise a bug
+		report on the Facsimile SourceForge-hosted bug-tracker
+		available at: http://sourceforge.net/projects/facsimile.
+	    </fail>
+	</if>
+	<property name="nant.settings.currentframework" value="net-2.0" />
+    </if>
+    <if test="${not platform::is-win32 ()}">
+	<if test="${not framework::exists ('mono-2.0')}">
+	    <fail>
+		NAnt reports that it is unable to find the Mono 2.0 framework
+		on your machine.  If you do not have Mono 2.0 installed, you
+		can (most likely) obtain binary packages from your operating
+		system distribution's package repository or from the Mono site
+		at: http://www.mono-project.com/.  If you have installed the
+		Mono 2.0 framework, then please raise a bug report on the
+		Facsimile SourceForge-hosted bug-tracker available at:
+		http://sourceforge.net/projects/facsimile.
+	    </fail>
+	</if>
+	<property name="nant.settings.currentframework" value="mono-2.0" />
+    </if>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Machine-specific (global) properties.
 
 This file relies upon the following global properties, that are defined in the
 "NAnt.exe.config" file (located in "/usr/lib/NAnt" by default on Ubuntu Linux,
@@ -92,6 +154,22 @@ nunitAssy.dir
 -->
 
 <!--
+Check for the presence of required global symbols and provide assistance to the
+user if any are missing.
+-->
+
+    <if test="${not property::exists ('nunitAssy.dir')}">
+	<fail>
+	    Global property 'nunitAssy.dir' is not defined.  This property
+	    should be defined in your machine's "NAnt.exe.config" file, and
+	    should contain the path to the NUnit assemblies that are required
+	    by this build process for assembly testing.  If you do not have
+	    NUnit, you can obtain a copy for your platform from
+	    http://www.nunit.org/.
+	</fail>
+    </if>
+
+<!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Local set-up and properties.
 
@@ -99,13 +177,6 @@ This section defines a number of local properties for use solely within this
 file.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
-
-<!--
-Force NAnt to use the .NET/Mono 2.0 framework.
--->
-
-<!--    <property name="nant.settings.currentframework" value="mono-2.0" /> -->
-    <property name="nant.settings.currentframework" value="net-2.0" />
 
 <!--
 Facsimile.Common sources directory.  Sources, and resources, located within
@@ -455,7 +526,29 @@ Update the build log once more.
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"clean" target.
+"TestAll" target.
+
+Tests all assemblies belonging to the Facsimile project.
+
+This is the default target and is selected if you execute the "nant" command
+without specifying a target.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="TestAll" description="Tests all Facsimile assemblies"
+    depends="TestCommon">
+
+<!--
+Update the build log.
+-->
+
+	<echo level="Info">All tests completed.</echo>
+	<echo level="Info">Done.</echo>
+    </target>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Clean" target.
 
 Clean the source directory tree by removing all final, intermediate, log and
 debug files and directories created by the build process.
@@ -465,7 +558,7 @@ in which they where created.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
-    <target name="clean" description="Clean source directory tree">
+    <target name="Clean" description="Clean source directory tree">
 
 <!--
 Update the build log.
