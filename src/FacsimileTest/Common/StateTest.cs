@@ -359,6 +359,39 @@ Set up the flags as appropriate.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
+<summary>Invalid event change handler.</summary>
+
+<remarks>This function handles state change events, but attempts to change the
+state whilst handling it.  This should result in an exception being
+thrown.</remarks>
+
+<param name="sender">The state context object whose state is being
+changed.</param>
+<param name="priorState">The previous state of the sender.</param>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	private void InvalidStateChangeHandler (TestStateContext sender,
+	TestBaseState priorState) {
+
+/*
+Set up the flags as appropriate.
+*/
+
+	    handlerExecuted = true;
+	    handlerSender = sender;
+	    handlerPriorState = priorState;
+
+/*
+Now attempt to change the state to state one.  This should cause an exception
+to be thrown.
+*/
+
+	    sender.SetState (new TestStateOne ());
+	}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
 <summary>Test for null argument exception on constructor.</summary>
 
 <remarks>Tests that attempting to construct a state context object with a null
@@ -528,6 +561,76 @@ state three is not supposed to filter out any transitions.
 	    NUnit.Framework.Assert.AreEqual (handlerPriorState, three,
 	    "Event handler prior state does not match expected prior state " +
 	    "(three)");
+	}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>Test for invalid operation exception from bad event handler.</summary>
+
+<remarks>Tests that attempting to change the state context object's state when
+handling an event causes the <see cref="System.InvalidOperationException" /> to
+be thrown.</remarks>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	[NUnit.Framework.Test]
+	[NUnit.Framework.ExpectedException (typeof
+	(System.InvalidOperationException))]
+	public void TestBadEventHandler () {
+
+/*
+Initialise a state context object with state one.  Catch any exceptions during
+this construction - we do not want a false positive.
+*/
+
+	    TestStateContext testContext;
+	    TestStateOne one;
+	    TestStateTwo two;
+	    try {
+		one = new TestStateOne ();
+		two = new TestStateTwo ();
+		testContext = new TestStateContext (one);
+	    }
+	    catch {
+		NUnit.Framework.Assert.Fail ("Unexpected exception thrown " +
+		"during state context/state construction");
+		throw;
+	    }
+
+/*
+Now associate the bad event handler with this state context object.
+*/
+
+	    testContext.StateChanged += InvalidStateChangeHandler;
+
+/*
+Initialise the handler data and change the state to two (this should be a legal
+state transition).
+*/
+
+	    InitHandlerData ();
+	    try {
+		testContext.SetState (two);
+	    }
+
+/*
+Catch all arising exceptions and validate that we called the handler and that
+the object's state is still one (the state prior to the change).
+*/
+
+	    catch {
+		NUnit.Framework.Assert.IsTrue (handlerExecuted, "Event " +
+		"handler was not executed on transition to state two");
+		NUnit.Framework.Assert.AreEqual (handlerSender, testContext,
+		"Event handler sender does not match changed state context " +
+		"on transition to state two");
+		NUnit.Framework.Assert.AreEqual (handlerPriorState, one,
+		"Event handler prior state does not match expected prior " +
+		"state (one)");
+		NUnit.Framework.Assert.AreEqual (testContext.CurrentState, two,
+		"Test context should still have state of two");
+		throw;
+	    }
 	}
     }
 }
