@@ -1,9 +1,0 @@
-This directory contains templates for different types of file.  The different
-templates are described here:
-
-CommonTemplate.cs
-	Template source file for files that belong to the Facsimile.Common
-	assembly.
-TestCommonTemplate.cs
-	Template source file for files that belong to the FacsimileTest.Common
-	assembly.
