@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" ?>
+<!--
+Facsimile - A Discrete-Event Simulation Library
+Copyright © 2004-2007, Michael J Allen.
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program; if not, write to the:
+
+    Free Software Foundation, Inc.
+    51 Franklin St, Fifth Floor
+    Boston, MA  02110-1301
+    USA
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+    http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+    http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+THIS FILE IS NOT CURRENTLY IN USE.  BUILD USING ECLIPSE INSTEAD.
+
+Ant XML build file for Facsimile, its integral packages and test suite.
+
+Aside from the "cleaning" targets, the default behavior of this build file is
+as follows:
+1.  Create the output directories.
+2.  Compile all sources for each package, other than the test suite packages.
+3.  Create all documentation for each package, other than the test suite
+    packages.
+4.  Create the Java Archive (jar) file for the Facsimile library.
+5.  Compile all sources for each test suite package.
+6.  Create the Java Archive (jar) file for the Facsimile test suite.
+7.  Execute the Facsimile test suite.
+8.  Create distribution packages and files.
+
+Historical note: Originally, once each package had been compiled, it's test
+suite was executed.  Now, test suites are only executed once all of the
+packages have been compiled.  This makes Ant coding of the test suite execution
+easier and less error prone compared to the earlier version.  Execution time is
+approximately identical for these two different approaches.
+===============================================================================
+-->
+
+<project name="Facsimile" default="All">
+    <description>
+        Build file for the Facsimile discrete-event simulation library.
+    </description>
+
+<!--
+Source and destination directories for the org.facsim.Facsimile.Common package.
+-->
+
+    <property name="facsimile.common.src"
+    location="src/org/facsim/Facsimile/Common" />
+    <property name="facsimile.common.bin"
+    location="bin/org/facsim/Facsimile/Common" />
+
+<!--
+Source and destination directories for the org.facsim.Facsimile.CommonTest
+package.
+-->
+
+    <property name="facsimile.commonTest.src"
+    location="src/org/facsim/Facsimile/CommonTest" />
+    <property name="facsimile.commonTest.bin"
+    location="bin/org/facsim/Facsimile/CommonTest" />
+
+<!--
+Directory for distributable files, such as java archive files, etc.
+-->
+
+    <property name="facsimile.dist" location="dist" />
+
+<!--
+JUnit test report directory.
+-->
+
+    <property name="test.log" location="log" />
+
+<!--
+Define the class path for running JUnit tests.
+-->
+
+    <path id="test.path">
+        <pathelement location="${basedir}" />
+        <pathelement location="${facsimile.common.bin}" />
+        <pathelement location="${facsimile.commonTest.bin}" />
+        <pathelement
+        path="/opt/eclipse/plugins/org.junit4_4.1.0.1/junit-4.1.jar" />
+        <pathelement
+        path="${ant.home}/lib/ant-junit.jar" />
+    </path>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Common target.
+
+This target builds the org.facsim.Facsimile.Common package.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="JUnitLogDir" description="Create JUnit log directory">
+
+<!--
+Create the log directory for storing JUnit output.
+-->
+
+        <mkdir dir="${test.log}" />
+    </target>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Common target.
+
+This target builds the org.facsim.Facsimile.Common package.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="Common" description="Builds org.facsim.Facsimile.Common">
+
+<!--
+Create the output directory, if it does not exist already.
+-->
+
+        <mkdir dir="${facsimile.common.bin}" />
+
+<!--
+Compile all source files in the source directory.
+-->
+
+        <javac srcdir="${facsimile.common.src}" destdir="${facsimile.common.bin}" />
+    </target>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CommonTest target.
+
+This target builds the org.facsim.Facsimile.CommonTest package test suite and
+runs this test suite to verify the org.facsim.Facsimile.Common package.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="CommonTest" depends="JUnitLogDir, Common"
+    description="Tests org.facsim.Facsimile.Common package">
+
+ <!--
+ Create the output directory, if it does not exist already.
+ -->
+
+        <mkdir dir="${facsimile.commonTest.bin}" />
+
+<!--
+Compile all source files in the source directory.
+-->
+
+        <javac srcdir="${facsimile.commonTest.src}" destdir="${facsimile.commonTest.bin}" />
+
+<!--
+Run all tests in the source directory.
+-->
+
+        <junit fork="on" printsummary="on" haltonfailure="on" haltonerror="on">
+            <classpath refid="test.path" />
+            <formatter type="xml" />
+            <batchtest todir="${test.log}">
+                <fileset dir="${facsimile.commonTest.bin}">
+                    <include name="**/*.class" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+All target.
+
+This target builds integral packages and runs all test suites.  If this target
+completes successfully, then we have a release-quality build.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="All" depends="CommonTest"
+    description="Full build &amp; test">
+
+<!--
+If everything has finished successfully, then increment the build number.  This
+is stored within the build.number file.
+-->
+
+        <!-- <buildnumber /> -->
+    </target>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+All target.
+
+This target builds integral packages and runs all test suites.  If this target
+completes successfully, then we have a release-quality build.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="Clean" description="Remove build files.">
+    </target>
+</project>

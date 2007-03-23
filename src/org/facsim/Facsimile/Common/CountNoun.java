@@ -1,4 +1,4 @@
-/*
+﻿/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
@@ -36,8 +36,8 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-Java source file for the CounterIncrementException class, and associated
-elements, that are integral members of the org.facsim.Facsimile.Common package.
+Java source file for the CountNoun class, and associated elements, that are
+integral members of the org.facsim.Facsimile.Common package.
 ===============================================================================
 */
 
@@ -45,106 +45,105 @@ package org.facsim.Facsimile.Common;
 
 //=============================================================================
 /**
-<p>Exception thrown when a counter is incremented above its maximum
-capacity.</p>
+<p>Class representing a count noun.</p>
+
+<p>This class is intended to be used as a base class by other count noun
+objects.</p>
+
+@see Countable
 */
 //=============================================================================
 
-public final class CounterIncrementException
-extends OverflowException
+public abstract class CountNoun
+implements Countable
 {
 
 /**
-<p>Serialization version UID.</p>
-
-<p>This is used to denote the schema or version of the class's serialized data
-so that changes can be recognised during de-serialization.</p>
+<p>Singular form of the count noun.</p>
 */
 
-    private static final long serialVersionUID;
+    private final String singular;
 
 /**
-<p>Object array.</p>
-
-<p>This array is initialised by the constructor to contain the following
-values:</p>
-
-<ol>
-    <li>The limit of the associated counter.</li>
-</ol>
+<p>Plural form of the count noun.</p>
 */
 
-    private final Object [] counterData;
+    private final String plural;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Static constructor.<p>
+<p>Single form contructor.</p>
 
-<p>Initialise static class members.</p>
+<p>Count nouns that have identical singular and plural forms, such as
+<em>sheep</em>, may use this constructor.</p>
+
+@param name The singular and plural form of the name of this object.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    static
+    public CountNoun (String name)
     {
-
-/*
-Schema number for serialisation/de-serialisation purposes.
-*/
-
-        serialVersionUID = 0L;
+        this (name, name);
     }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Constructor.</p>
+<p>Singular and plural form contructor.</p>
 
-<p>Passes the counter's limit to be formatted as part of the exception's
-message.</p>
+<p>Count nouns that have dissimilar singular and plural forms, such as
+<em>goat</em> and <em>goats</em>, should use this constructor.</p>
 
-@param limit An int holding the limit of the associated counter.
+@param singularName The singular form of the name of this object.
+
+@param pluralName The plural form of the name of this object.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public CounterIncrementException (int limit)
+    public CountNoun (String singularName, String pluralName)
     {
 
 /*
-Construct our parent.
+Validate both arguments.
 */
 
-        super ();
-
-/*
-Argument integrity assertions.
-*/
-
-        assert limit >= 0;
-
-/*
-Store these arguments for later use.
-*/
-
-        this.counterData = new Object []
+        if (Util.isNullOrEmpty (singularName))
         {
-            new Integer (limit),
-        };
+            throw new EmptyStringArgumentException
+            ("singularName"); //$NON-NLS-1$
+        }
+        if (Util.isNullOrEmpty (pluralName))
+        {
+            throw new EmptyStringArgumentException
+            ("pluralName"); //$NON-NLS-1$
+        }
+
+/*
+Store the arguments.
+*/
+
+        this.singular = singularName;
+        this.plural = pluralName;
     }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-@see java.lang.Throwable#getMessage()
+@see Countable#getSingularName()
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    @Override
-    public String getMessage ()
+    public final String getSingularName ()
     {
+      return this.singular;
+    }
 
-/*
-Retrieve the compound message, format it and return it to the caller.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+@see Countable#getPluralName()
 */
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        return Resource.format ("counterIncrementOverflow", //$NON-NLS-1$
-        this.counterData);
+    public final String getPluralName ()
+    {
+        return this.plural;
     }
 }

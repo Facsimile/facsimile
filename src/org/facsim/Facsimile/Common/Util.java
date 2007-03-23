@@ -36,8 +36,8 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-Java source file for the CounterIncrementException class, and associated
-elements, that are integral members of the org.facsim.Facsimile.Common package.
+Java source file for the Util class, and associated elements, that are integral
+members of the org.facsim.Facsimile.Common package.
 ===============================================================================
 */
 
@@ -45,106 +45,49 @@ package org.facsim.Facsimile.Common;
 
 //=============================================================================
 /**
-<p>Exception thrown when a counter is incremented above its maximum
-capacity.</p>
-*/
+ <p>Facsimile utilty functions.</p>
+ */
 //=============================================================================
 
-public final class CounterIncrementException
-extends OverflowException
+public final class Util
 {
 
-/**
-<p>Serialization version UID.</p>
-
-<p>This is used to denote the schema or version of the class's serialized data
-so that changes can be recognised during de-serialization.</p>
-*/
-
-    private static final long serialVersionUID;
-
-/**
-<p>Object array.</p>
-
-<p>This array is initialised by the constructor to contain the following
-values:</p>
-
-<ol>
-    <li>The limit of the associated counter.</li>
-</ol>
-*/
-
-    private final Object [] counterData;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Static constructor.<p>
+<p>Check that a specifed {@link String} is either null or empty.</p>
 
-<p>Initialise static class members.</p>
+<p>An empy {@link String} is one that is made up or zero or more whitespace
+characters only; it contains zero non-whitespace characters.</p>
+
+@param string The {@link String} to be checked.
+
+@return True if the string is null or empty, false otherwise.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    static
-    {
+    public static boolean isNullOrEmpty (String string) {
 
 /*
-Schema number for serialisation/de-serialisation purposes.
+If the string is null, then we know the answer now...
 */
 
-        serialVersionUID = 0L;
-    }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<p>Constructor.</p>
-
-<p>Passes the counter's limit to be formatted as part of the exception's
-message.</p>
-
-@param limit An int holding the limit of the associated counter.
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    public CounterIncrementException (int limit)
-    {
+        if (string == null) {
+            return true;
+        }
 
 /*
-Construct our parent.
+Trim the string to remove whitespace, if the length of the resulting string is
+zero, then the string is empty.
 */
 
-        super ();
+        if (string.trim ().length () == 0) {
+            return true;
+        }
 
 /*
-Argument integrity assertions.
+If we made it this far, then this is not a null or empty string.
 */
 
-        assert limit >= 0;
-
-/*
-Store these arguments for later use.
-*/
-
-        this.counterData = new Object []
-        {
-            new Integer (limit),
-        };
-    }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-@see java.lang.Throwable#getMessage()
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    @Override
-    public String getMessage ()
-    {
-
-/*
-Retrieve the compound message, format it and return it to the caller.
-*/
-
-        return Resource.format ("counterIncrementOverflow", //$NON-NLS-1$
-        this.counterData);
+        return false;
     }
 }

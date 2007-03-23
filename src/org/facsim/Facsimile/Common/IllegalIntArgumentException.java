@@ -105,19 +105,17 @@ the exception's message.</p>
 
 @param argumentName A {@link String} holding the name of the invalid argument.
 
-@param argumentMinimum An {@link Integer} holding he minimum valid value for
-this argument.
+@param argumentMinimum An int holding he minimum valid value for this argument.
 
-@param argumentMaximum An {@link Integer} holding the maximum valid value for
-this argument.
+@param argumentMaximum An int holding the maximum valid value for this
+argument.
 
-@param argumentValue An {@link Integer} holding the actual, invalid value of
-the argument.
+@param argumentValue An int holding the actual, invalid value of the argument.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public IllegalIntArgumentException (String argumentName, Integer
-    argumentMinimum, Integer argumentMaximum, Integer argumentValue)
+    public IllegalIntArgumentException (String argumentName, int
+    argumentMinimum, int argumentMaximum, int argumentValue)
     {
 
 /*
@@ -130,10 +128,10 @@ Construct our parent.
 Argument integrity assertions.
 */
 
-        assert argumentName != null && argumentName != ""; //$NON-NLS-1$
-        assert argumentMinimum.intValue () <= argumentMaximum.intValue ();
-        assert argumentValue.intValue () < argumentMinimum.intValue () ||
-        argumentValue.intValue () > argumentMaximum.intValue ();
+        assert argumentName != null && argumentName.length () > 0;
+        assert argumentMinimum <= argumentMaximum;
+        assert argumentValue < argumentMinimum || argumentValue >
+        argumentMaximum;
 
 /*
 Store these arguments for later use.
@@ -142,9 +140,9 @@ Store these arguments for later use.
         this.argumentData = new Object []
         {
             argumentName,
-            argumentMinimum,
-            argumentMaximum,
-            argumentValue,
+            new Integer (argumentMinimum),
+            new Integer (argumentMaximum),
+            new Integer (argumentValue),
         };
     }
 

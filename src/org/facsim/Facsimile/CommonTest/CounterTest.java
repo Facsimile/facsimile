@@ -50,7 +50,7 @@ import org.junit.Test;
 
 //=============================================================================
 /**
- <p>Test fixture for the {@link Counter} class.</p>
+ <p>JUnit test fixture for the {@link Counter} class.</p>
  */
 //=============================================================================
 
@@ -127,7 +127,7 @@ when empty.</p>
 
 /*
 Initialise the flag indicating whether the test succeeded or not.  Assume that
-is has failed until we discover otherwise.
+it has failed until we discover otherwise.
 */
 
         assert counter.isEmpty ();

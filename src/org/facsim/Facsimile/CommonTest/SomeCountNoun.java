@@ -36,115 +36,58 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-Java source file for the CounterIncrementException class, and associated
-elements, that are integral members of the org.facsim.Facsimile.Common package.
+Java source file for the SomeCountNoun class, and associated elements, that are
+integral members of the org.facsim.Facsimile.CommonTest package.
 ===============================================================================
 */
 
-package org.facsim.Facsimile.Common;
+package org.facsim.Facsimile.CommonTest;
+
+import org.facsim.Facsimile.Common.CountNoun;
 
 //=============================================================================
 /**
-<p>Exception thrown when a counter is incremented above its maximum
-capacity.</p>
-*/
+ <p>This class is used by the {@link CountNounTest} text fixture.</p>
+
+<p>It represents a simple class that extends the {@link CountNoun} class.</p>
+ */
 //=============================================================================
 
-public final class CounterIncrementException
-extends OverflowException
+public final class SomeCountNoun
+extends CountNoun
 {
 
-/**
-<p>Serialization version UID.</p>
-
-<p>This is used to denote the schema or version of the class's serialized data
-so that changes can be recognised during de-serialization.</p>
-*/
-
-    private static final long serialVersionUID;
-
-/**
-<p>Object array.</p>
-
-<p>This array is initialised by the constructor to contain the following
-values:</p>
-
-<ol>
-    <li>The limit of the associated counter.</li>
-</ol>
-*/
-
-    private final Object [] counterData;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Static constructor.<p>
+<p>Single form contructor.</p>
 
-<p>Initialise static class members.</p>
+<p>This constructor is basically used to test the {@link CountNoun#CountNoun
+(String)} constructor.</p>
+
+@param name The singular and plural form of the name of this object.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    static
+    public SomeCountNoun (String name)
     {
-
-/*
-Schema number for serialisation/de-serialisation purposes.
-*/
-
-        serialVersionUID = 0L;
+        super (name);
     }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Constructor.</p>
+<p>Singular and plural form contructor.</p>
 
-<p>Passes the counter's limit to be formatted as part of the exception's
-message.</p>
+<p>This constructor is basically used to test the {@link CountNoun#CountNoun
+(String, String)} constructor.</p>
 
-@param limit An int holding the limit of the associated counter.
+@param singularName The singular form of the name of this object.
+
+@param pluralName The plural form of the name of this object.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public CounterIncrementException (int limit)
+    public SomeCountNoun (String singularName, String pluralName)
     {
-
-/*
-Construct our parent.
-*/
-
-        super ();
-
-/*
-Argument integrity assertions.
-*/
-
-        assert limit >= 0;
-
-/*
-Store these arguments for later use.
-*/
-
-        this.counterData = new Object []
-        {
-            new Integer (limit),
-        };
-    }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-@see java.lang.Throwable#getMessage()
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    @Override
-    public String getMessage ()
-    {
-
-/*
-Retrieve the compound message, format it and return it to the caller.
-*/
-
-        return Resource.format ("counterIncrementOverflow", //$NON-NLS-1$
-        this.counterData);
+        super (singularName, pluralName);
     }
 }

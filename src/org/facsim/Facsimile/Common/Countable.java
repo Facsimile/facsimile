@@ -1,4 +1,4 @@
-/*
+﻿/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
@@ -36,65 +36,68 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-Java source file for the ResourceTest class, and associated elements, that are
-integral members of the org.facsim.Facsimile.CommonTest package.
+Java source file for the Countable interface, and related elements, that are
+integral members of the org.facsim.Facsimile.Common package.
 ===============================================================================
 */
 
-package org.facsim.Facsimile.CommonTest;
-
-import org.facsim.Facsimile.Common.*;
-import static org.junit.Assert.*;
-import org.junit.*;
+package org.facsim.Facsimile.Common;
 
 //=============================================================================
 /**
-<p>JUnit test fixture for the {@link Resource} class.</p>
+<p>Interface for count nouns.</p>
+
+<p>A <em>count noun</em> is a noun that refers to discrete, countable objects,
+such as a <em>dog</em>, <em>meter</em>, <em>machine</em>, etc.  Count nouns
+have both singular and plural forms and can be associated with quantities, such
+as <em>one</em>, <em>two</em>, <em>several</em>, <em>each</em>, etc.  By
+contrast, a <em>mass noun</em>, such as <em>hydrogen</em> or
+<em>furniture</em>, cannot be counted.  Those curious in the subject should
+refer to <a href="http://en.wikipedia.org/wiki/Count_noun">Wikipedia</a> for
+further information.</p>
+
+<p>In the context of Facsimile, count nouns are used to provide end-user
+visible names for simulation objects and quantities.</p>
+
+<p>The plural and singular forms of the noun may be identical, but neither can
+be empty or null.</p>
+
+@see CountNoun
 */
 //=============================================================================
 
-public class ResourceTest
+public interface Countable
 {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Test method for {@link Resource#format(String)}.</p>
+<p>Singular form of name.</p>
+
+<p>Usually, the name should be supplied in its lowercase form, such as
+<em>machine</em>, <em>millimeter</em>, etc.  However, for certain nouns, it is
+more appropriate for the name to be capitalized, such as <em>Newton</em>, or
+<em>Brussels sprout</em>.</p>
+
+@return A {@link String} object containing the singular form of this object's
+name.  This value should never be null or empty.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    @Test
-    public final void testFormatString ()
-    {
-
-/*
-Retrieve the test message and ensure that it matches our expectations without
-error.
-*/
-
-        assertEquals (Resource.format ("testMessage"), //$NON-NLS-1$
-        "Test message."); //$NON-NLS-1$
-    }
+    public String getSingularName ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Test method for {@link Resource#format(String,Object[])}.</p>
+<p>Plural form of name.</p>
+
+<p>Usually, the name should be supplied in its lowercase form, such as
+<em>machines</em>, <em>millimeters</em>, etc.  However, for certain nouns, it
+is more appropriate for the name to be capitalized, such as <em>Newtons</em>,
+or <em>Brussels sprouts</em>.</p>
+
+@return A {@link String} object containing the plural form of this object's
+name.  This value should never be null or empty.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    @Test
-    public final void testFormatStringObjectArray ()
-    {
-
-/*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
-*/
-
-        Object [] arguments = new Object []
-        {
-            "argument" //$NON-NLS-1$
-        };
-        assertEquals (Resource.format ("testCompoundMessage", //$NON-NLS-1$
-        arguments), "Test compound message: argument."); //$NON-NLS-1$
-    }
+    public String getPluralName ();
 }

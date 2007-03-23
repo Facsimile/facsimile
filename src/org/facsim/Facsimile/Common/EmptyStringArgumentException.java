@@ -36,7 +36,7 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-Java source file for the CounterIncrementException class, and associated
+Java source file for the EmptyStringArgumentException class, and associated
 elements, that are integral members of the org.facsim.Facsimile.Common package.
 ===============================================================================
 */
@@ -45,13 +45,12 @@ package org.facsim.Facsimile.Common;
 
 //=============================================================================
 /**
-<p>Exception thrown when a counter is incremented above its maximum
-capacity.</p>
+<p>Exception thrown when a string argument is null or empty.</p>
 */
 //=============================================================================
 
-public final class CounterIncrementException
-extends OverflowException
+public final class EmptyStringArgumentException
+extends IllegalArgumentException
 {
 
 /**
@@ -70,11 +69,11 @@ so that changes can be recognised during de-serialization.</p>
 values:</p>
 
 <ol>
-    <li>The limit of the associated counter.</li>
+    <li>The name of the method argument whose value is null or empty.</li>
 </ol>
 */
 
-    private final Object [] counterData;
+    private final Object [] argumentData;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -98,14 +97,14 @@ Schema number for serialisation/de-serialisation purposes.
 /**
 <p>Constructor.</p>
 
-<p>Passes the counter's limit to be formatted as part of the exception's
-message.</p>
+<p>Passes the relevant string parameter information to be formatted as part of
+the exception's message.</p>
 
-@param limit An int holding the limit of the associated counter.
+@param argumentName A {@link String} holding the name of the invalid argument.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public CounterIncrementException (int limit)
+    public EmptyStringArgumentException (String argumentName)
     {
 
 /*
@@ -118,15 +117,15 @@ Construct our parent.
 Argument integrity assertions.
 */
 
-        assert limit >= 0;
+        assert !Util.isNullOrEmpty (argumentName);
 
 /*
 Store these arguments for later use.
 */
 
-        this.counterData = new Object []
+        this.argumentData = new Object []
         {
-            new Integer (limit),
+            argumentName,
         };
     }
 
@@ -144,7 +143,7 @@ Store these arguments for later use.
 Retrieve the compound message, format it and return it to the caller.
 */
 
-        return Resource.format ("counterIncrementOverflow", //$NON-NLS-1$
-        this.counterData);
+        return Resource.format ("emptyStringArgument", //$NON-NLS-1$
+        this.argumentData);
     }
 }

@@ -127,8 +127,8 @@ Validate the supplied maximum capacity.
         if (maximumCapacity < 0)
         {
             throw new IllegalIntArgumentException
-            ("maximumCapacity", new Integer (0), //$NON-NLS-1$
-            new Integer (Integer.MAX_VALUE), new Integer (maximumCapacity));
+            ("maximumCapacity", 0, Integer.MAX_VALUE, //$NON-NLS-1$
+            maximumCapacity);
         }
 
 /*
@@ -212,7 +212,7 @@ If we're already at the maximum count, then throw the overflow exception.
 
         if (isFull ())
         {
-            throw new CounterIncrementException (new Integer (this.limit));
+            throw new CounterIncrementException (this.limit);
         }
 
 /*

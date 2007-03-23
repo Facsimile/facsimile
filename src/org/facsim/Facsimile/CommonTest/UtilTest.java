@@ -36,65 +36,55 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-Java source file for the ResourceTest class, and associated elements, that are
+Java source file for the UtilTest class, and associated elements, that are
 integral members of the org.facsim.Facsimile.CommonTest package.
 ===============================================================================
 */
 
 package org.facsim.Facsimile.CommonTest;
 
-import org.facsim.Facsimile.Common.*;
+import org.facsim.Facsimile.Common.Util;
 import static org.junit.Assert.*;
-import org.junit.*;
+import org.junit.Test;
 
 //=============================================================================
 /**
-<p>JUnit test fixture for the {@link Resource} class.</p>
-*/
+ <p>JUnit test fixture for the {@link Util} class.</p>
+ */
 //=============================================================================
 
-public class ResourceTest
+public class UtilTest
 {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Test method for {@link Resource#format(String)}.</p>
+<p>Test the {@link Util#isNullOrEmpty (String)} utility function.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     @Test
-    public final void testFormatString ()
+    public void testIsNullOrEmpty ()
     {
 
 /*
-Retrieve the test message and ensure that it matches our expectations without
-error.
+Test that the function returns true for any null string, or strings made up of
+whitespace only.
 */
 
-        assertEquals (Resource.format ("testMessage"), //$NON-NLS-1$
-        "Test message."); //$NON-NLS-1$
-    }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<p>Test method for {@link Resource#format(String,Object[])}.</p>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    @Test
-    public final void testFormatStringObjectArray ()
-    {
+        assertTrue (Util.isNullOrEmpty (null));
+        assertTrue (Util.isNullOrEmpty ("")); //$NON-NLS-1$
+        assertTrue (Util.isNullOrEmpty (" ")); //$NON-NLS-1$
+        assertTrue (Util.isNullOrEmpty ("\r")); //$NON-NLS-1$
+        assertTrue (Util.isNullOrEmpty ("\n")); //$NON-NLS-1$
+        assertTrue (Util.isNullOrEmpty ("\t")); //$NON-NLS-1$
+        assertTrue (Util.isNullOrEmpty (" \t\n\r")); //$NON-NLS-1$
 
 /*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
+Check that the function returns true for any non-null string that contains some
+non-whitespace characters.
 */
 
-        Object [] arguments = new Object []
-        {
-            "argument" //$NON-NLS-1$
-        };
-        assertEquals (Resource.format ("testCompoundMessage", //$NON-NLS-1$
-        arguments), "Test compound message: argument."); //$NON-NLS-1$
+        assertFalse (Util.isNullOrEmpty ("Not empty")); //$NON-NLS-1$
+        assertFalse (Util.isNullOrEmpty ("  Not empty  ")); //$NON-NLS-1$
     }
 }
