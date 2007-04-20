@@ -1,0 +1,8 @@
+<NUnitAssemblyGroupProject name="test" fileversion="2.0">
+  <Configurations active="Default">
+    <Configuration name="Default" ctype="NUnitAssemblyGroupProjectConfiguration">
+      <Assemblies />
+    </Configuration>
+  </Configurations>
+  <DeployTargets />
+</NUnitAssemblyGroupProject>
