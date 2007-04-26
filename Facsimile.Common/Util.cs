@@ -36,21 +36,56 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the Facsimile.Common assembly information.
+C# source file for the Util class, and associated elements, that are integral
+members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
-[assembly: System.Reflection.AssemblyTitle ("Facsimile.Common")]
-[assembly: System.Reflection.AssemblyDescription ("Facsimile " +
-"simulation/emulation library common classes.")]
-[assembly: System.Reflection.AssemblyConfiguration ("")]
-[assembly: System.Reflection.AssemblyCompany ("Michael J Allen")]
-[assembly: System.Reflection.AssemblyProduct ("Facsimile")]
-[assembly: System.Reflection.AssemblyCopyright ("Copyright © 2004-2007, " +
-"Michael J Allen")]
-[assembly: System.Reflection.AssemblyTrademark ("")]
-[assembly: System.Reflection.AssemblyCulture ("")]
-[assembly: System.Reflection.AssemblyVersion ("0.0.*")]
-[assembly: System.Reflection.AssemblyDelaySign (false)]
-[assembly: System.Reflection.AssemblyKeyFile ("")]
+namespace Facsimile.Common {
 
+//=============================================================================
+/**
+ <summary>Facsimile utilty functions.</summary>
+ */
+//=============================================================================
+
+    public static class Util
+    {
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>Check if a string is null or empty.</summary>
+
+<remarks>This method differs from <see cref="System.String.IsNullOrEmpty
+(string)" /> because it defines an empty string as one that does not contain
+any non-whitespace characters; that is, strings that consist only of one or
+more whitespace characters are considered empty by this function.</remarks>
+
+<param name="value">The <see cref="System.String" /> reference to be
+checked.</param>
+
+<returns>A <see cref="System.Boolean" /> that is true if <paramref name="value"
+/> is null or empty (see definition above), or false otherwise.</returns>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public static bool IsNullOrEmpty (string value)
+        {
+
+/*
+If the string is null or empty, then return true.  Trim the string to determine
+if it is empty.
+*/
+
+            if (value == null || value.Trim ().Length == 0) {
+                return true;
+            }
+
+/*
+Nope!  This is not a null or empty string.
+*/
+
+            return false;
+        }
+    }
+}

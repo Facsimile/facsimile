@@ -16,8 +16,12 @@
   <DeployTargets />
   <Contents>
     <File name="./AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="./ResourceTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="./UtilTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../usr/lib/cli/nunit-2.2/nunit.framework.dll" />
+    <ProjectReference type="Assembly" localcopy="False" refto="../Facsimile.Common/bin/Debug/Facsimile.Common.dll" />
   </References>
 </Project>
