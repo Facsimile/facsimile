@@ -52,7 +52,7 @@ namespace Facsimile.CommonTest {
 //=============================================================================
 
     [TestFixture]
-    public class UtilTest:
+    public sealed class UtilTest:
         System.Object
     {
 

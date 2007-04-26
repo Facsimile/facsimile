@@ -45,13 +45,21 @@
 ; types of resource as well.
 ;==============================================================================
 ;
+; Argument out of range exception compound message.  Arguments are:
+; 0: The name of the argument that was found to be invalid.
+; 1: The minimum allowed value of this argument.
+; 2: The maximum allowed value of this argument.
+; 3: The actual, invalid value of this argument.
+;
+argumentOutOfRange = Argument {0} outside of range [{1}, {2}]: {3}
+;
 ; Counter decrement overflow message.
 ;
 counterDecrementOverflow = Attempt to decrement Counter below zero failed.
 ;
 ; Counter increment overflow message.  The argument is the counter's limit.
 ;
-counterIncrementOverflow = Attempt to increment Counter above its limit failed: {0,number,integer}.
+counterIncrementOverflow = Attempt to increment Counter (limit {0}) failed.
 ;
 ; Test messages.  These messages must not be translated and are required for
 ; successful execution of the test suite.  They should not be referenced except

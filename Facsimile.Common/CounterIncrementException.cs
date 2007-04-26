@@ -36,66 +36,96 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the ResourceTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the CounterIncrementException class, and associated
+elements, that are integral members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
-using NUnit.Framework;
-using Facsimile.Common;
-namespace Facsimile.CommonTest {
+namespace Facsimile.Common {
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="Resource" /> class.</summary>
+<summary>Exception thrown when a <see cref="Counter" /> is incremented above
+its maximum capacity.</summary>
 */
 //=============================================================================
 
-    [TestFixture]
-    public sealed class ResourceTest:
-        System.Object
+    public sealed class CounterIncrementException:
+        System.OverflowException
     {
 
+/**
+<summary>Object array.</summary>
+
+<remarks>This array is initialised by the constructor to contain the following
+values:
+
+<list type="number">
+    <item>
+        <description>The maximum capacity allowed by the counter that detected
+        the problem.</description>
+    </item>
+</list></remarks>
+*/
+
+        private readonly System.Object [] counterData;
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string)" />.</summary>
+<summary>Constructor.</summary>
+
+<remarks>Processes the counter's limit to be formatted as part of the
+exception's message.</remarks>
+
+<param name="counter">The <see cref="Counter" /> instance that
+overflowed.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatString ()
+        internal CounterIncrementException (Counter counter):
+            base ()
         {
 
 /*
-Retrieve the test message and ensure that it matches our expectations without
-error.
+Argument integrity assertions.
 */
 
-            Assert.AreEqual (Resource.Format ("testMessage"), "Test message.");
+            System.Diagnostics.Debug.Assert (counter != null);
+
+/*
+Store the counter's maximum capacity for later use.
+*/
+
+            counterData = new System.Object []
+            {
+                counter.MaximumCapacity,
+            };
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string, System.Object [])"
-/>.</summary>
+<summary>Explain why exception was thrown.</summary>
+
+<remarks>Reports detailed information that allows a user to identify why the
+exception was thrown.</remarks>
+
+<value>A <see cref="System.String" /> containing the exception's
+explanation.</value>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatStringObjectArray ()
+        public override string Message
         {
 
 /*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
+Retrieve the compound message, format it and return it to the caller.
 */
 
-            System.Object [] arguments = new System.Object []
+            get
             {
-                "argument"
-            };
-            Assert.AreEqual (Resource.Format ("testCompoundMessage",
-            arguments), "Test compound message: argument.");
+                return Resource.Format ("counterIncrementOverflow",
+                counterData);
+            }
         }
     }
 }

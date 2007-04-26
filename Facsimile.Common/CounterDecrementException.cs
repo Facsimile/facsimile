@@ -36,66 +36,60 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the ResourceTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the CounterDecrementException class, and associated
+elements, that are integral members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
-using NUnit.Framework;
-using Facsimile.Common;
-namespace Facsimile.CommonTest {
+namespace Facsimile.Common {
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="Resource" /> class.</summary>
+<summary>Exception thrown when a <see cref="Counter" /> is decremented below
+zero.</summary>
 */
 //=============================================================================
 
-    [TestFixture]
-    public sealed class ResourceTest:
-        System.Object
+    public sealed class CounterDecrementException:
+        System.OverflowException
     {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string)" />.</summary>
+<summary>Default constructor.</summary>
+
+<remarks>There's not much information available.</remarks>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatString ()
+        internal CounterDecrementException ():
+            base ()
         {
-
-/*
-Retrieve the test message and ensure that it matches our expectations without
-error.
-*/
-
-            Assert.AreEqual (Resource.Format ("testMessage"), "Test message.");
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string, System.Object [])"
-/>.</summary>
+<summary>Explain why exception was thrown.</summary>
+
+<remarks>Reports detailed information that allows a user to identify why the
+exception was thrown.</remarks>
+
+<value>A <see cref="System.String" /> containing the exception's
+explanation.</value>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatStringObjectArray ()
+        public override string Message
         {
 
 /*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
+Retrieve the message and return it to the caller.
 */
 
-            System.Object [] arguments = new System.Object []
+            get
             {
-                "argument"
-            };
-            Assert.AreEqual (Resource.Format ("testCompoundMessage",
-            arguments), "Test compound message: argument.");
+                return Resource.Format ("counterDecrementOverflow");
+            }
         }
     }
 }

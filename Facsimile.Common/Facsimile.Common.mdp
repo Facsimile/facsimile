@@ -20,6 +20,10 @@
     <File name="./Resource.cs" subtype="Code" buildaction="Compile" />
     <File name="./Util.cs" subtype="Code" buildaction="Compile" />
     <File name="./Resource.resources" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="./Counter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./ArgumentOutOfRangeException.cs" subtype="Code" buildaction="Compile" />
+    <File name="./CounterIncrementException.cs" subtype="Code" buildaction="Compile" />
+    <File name="./CounterDecrementException.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
