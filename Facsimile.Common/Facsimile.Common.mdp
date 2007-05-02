@@ -24,6 +24,13 @@
     <File name="./ArgumentOutOfRangeException.cs" subtype="Code" buildaction="Compile" />
     <File name="./CounterIncrementException.cs" subtype="Code" buildaction="Compile" />
     <File name="./CounterDecrementException.cs" subtype="Code" buildaction="Compile" />
+    <File name="./MeasurementUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./AngleUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./DistanceUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./TimeUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./MassUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./TemperatureUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Measurement.cs" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

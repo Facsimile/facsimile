@@ -100,6 +100,8 @@ you can obtain it from:
             </fail>
         </if>
         <property name="nant.settings.currentframework" value="net-2.0" />
+        <property name="facsimile.csc.nowarn" value="" readonly="true"
+        overwrite="false" />
     </if>
     <if test="${not platform::is-win32 ()}">
         <if test="${not framework::sdk-exists ('mono-2.0')}">
@@ -115,6 +117,8 @@ distribution's package repository or from the Mono site at:
             </fail>
         </if>
         <property name="nant.settings.currentframework" value="mono-2.0" />
+        <property name="facsimile.csc.nowarn" value="1580,1584" readonly="true"
+        overwrite="false" />
     </if>
 
 <!--
@@ -435,6 +439,9 @@ optimized output; this is the debug version.
         <csc output="${facsimile.common.debug.dll}" target="library"
         debug="Enable" optimize="false" warninglevel="4" warnaserror="true"
         doc="${facsimile.common.debug.xml}">
+            <nowarn>
+                <warning number="${facsimile.csc.nowarn}" />
+            </nowarn>
             <references>
             </references>
             <resources>
@@ -453,6 +460,9 @@ optimized output; this is the release version.
         <csc output="${facsimile.common.dll}" target="library" debug="None"
         optimize="true" warninglevel="4" warnaserror="true"
         doc="${facsimile.common.xml}">
+            <nowarn>
+                <warning number="${facsimile.csc.nowarn}" />
+            </nowarn>
             <references>
             </references>
             <resources>
@@ -504,6 +514,9 @@ optimized output; this is the debug version.
         <csc output="${facsimile.commonTest.debug.dll}" target="library"
         debug="Enable" optimize="false" warninglevel="4" warnaserror="true"
         doc="${facsimile.commonTest.debug.xml}">
+            <nowarn>
+                <warning number="${facsimile.csc.nowarn}" />
+            </nowarn>
             <references>
                 <include name="${facsimile.common.debug.dll}" />
                 <include name="${nunit.assy.dir}/nunit.framework.dll" />
@@ -523,6 +536,9 @@ optimized output; this is the release version.
         <csc output="${facsimile.commonTest.dll}" target="library" debug="None"
         optimize="true" warninglevel="4" warnaserror="true"
         doc="${facsimile.commonTest.xml}">
+            <nowarn>
+                <warning number="${facsimile.csc.nowarn}" />
+            </nowarn>
             <references>
                 <include name="${facsimile.common.dll}" />
                 <include name="${nunit.assy.dir}/nunit.framework.dll" />

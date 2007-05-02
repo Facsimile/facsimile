@@ -41,7 +41,8 @@ elements, that are integral members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
-namespace Facsimile.Common {
+namespace Facsimile.Common
+{
 
 //=============================================================================
 /**

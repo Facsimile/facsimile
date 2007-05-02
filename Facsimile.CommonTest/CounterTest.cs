@@ -366,7 +366,8 @@ Create the base counters.
 Repeat for each test counter.
 */
 
-            for (int i = 0; i < testCounters.Length; ++i) {
+            for (int i = 0; i < testCounters.Length; ++i)
+            {
 
 /*
 Check that the counter is empty initially.

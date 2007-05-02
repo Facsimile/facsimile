@@ -36,97 +36,52 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the CounterIncrementException class, and associated
-elements, that are integral members of the Facsimile.Common namespace.
+C# source file for the AngleUnitTest class, and associated elements, that are
+integral members of the Facsimile.CommonTest namespace.
 ===============================================================================
 */
 
-namespace Facsimile.Common
-{
+using NUnit.Framework;
+using Facsimile.Common;
+namespace Facsimile.CommonTest {
 
 //=============================================================================
 /**
-<summary>Exception thrown when a <see cref="Counter" /> is incremented above
-its maximum capacity.</summary>
+<summary>NUnit test fixture for the <see cref="AngleUnit" /> class.</summary>
 */
 //=============================================================================
 
-    public sealed class CounterIncrementException:
-        System.OverflowException
+    [TestFixture]
+    public sealed class AngleUnitTest
     {
 
-/**
-<summary>Object array.</summary>
-
-<remarks>This array is initialised by the constructor to contain the following
-values:
-
-<list type="number">
-    <item>
-        <description>The maximum capacity allowed by the counter that detected
-        the problem.</description>
-    </item>
-</list></remarks>
-*/
-
-        private readonly System.Object [] counterData;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Constructor.</summary>
-
-<remarks>Processes the counter's limit to be formatted as part of the
-exception's message.</remarks>
-
-<param name="counter">The <see cref="Counter" /> instance that
-overflowed.</param>
+<summary>Tests that the <see cref="MeasurementUnit.GetStandard (System.Type)"
+/> function identifies the correct standard units.</summary>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        internal CounterIncrementException (Counter counter):
-            base ()
+        [Test]
+        public void VerifyGetStandard ()
         {
-
-/*
-Argument integrity assertions.
-*/
-
-            System.Diagnostics.Debug.Assert (counter != null);
-
-/*
-Store the counter's maximum capacity for later use.
-*/
-
-            counterData = new System.Object []
-            {
-                counter.MaximumCapacity,
-            };
+            Assert.AreSame (AngleUnit.Radians, MeasurementUnit.GetStandard
+            (typeof (AngleUnit)));
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Explain why exception was thrown.</summary>
-
-<remarks>Reports detailed information that allows a user to identify why the
-exception was thrown.</remarks>
-
-<value>A <see cref="System.String" /> containing the exception's
-explanation.</value>
+<summary>Tests that the <see cref="AngleUnit.IsStandard" /> property correctly
+identifies standard and non-standard units.</summary>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        public override string Message
+        [Test]
+        public void VerifyIsStandard ()
         {
-
-/*
-Retrieve the compound message, format it and return it to the caller.
-*/
-
-            get
-            {
-                return Resource.Format ("counterIncrementOverflow",
-                counterData);
-            }
+            Assert.IsTrue (AngleUnit.Radians.IsStandard);
+            Assert.IsFalse (AngleUnit.Degrees.IsStandard);
+            Assert.IsFalse (AngleUnit.Gradients.IsStandard);
         }
     }
 }

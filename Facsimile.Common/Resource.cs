@@ -41,7 +41,8 @@ integral members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
-namespace Facsimile.Common {
+namespace Facsimile.Common
+{
 
 //=============================================================================
 /**
@@ -239,7 +240,8 @@ Firstly, retrieve the string resource.  This may throw an exception.
 If we didn't actually retrieve a meaningful string, then return now.
 */
 
-            if (Util.IsNullOrEmpty (message)) {
+            if (Util.IsNullOrEmpty (message))
+            {
                 return "";
             }
 

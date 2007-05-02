@@ -41,7 +41,8 @@ associated elements, that are integral members of the Facsimile.Common package.
 ===============================================================================
 */
 
-namespace Facsimile.Common {
+namespace Facsimile.Common
+{
 
 //=============================================================================
 /**

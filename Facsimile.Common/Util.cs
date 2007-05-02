@@ -41,7 +41,8 @@ members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
-namespace Facsimile.Common {
+namespace Facsimile.Common
+{
 
 //=============================================================================
 /**
@@ -77,7 +78,8 @@ If the string is null or empty, then return true.  Trim the string to determine
 if it is empty.
 */
 
-            if (value == null || value.Trim ().Length == 0) {
+            if (value == null || value.Trim ().Length == 0)
+            {
                 return true;
             }
 
