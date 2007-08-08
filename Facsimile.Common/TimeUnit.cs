@@ -1,10 +1,10 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
-This program is free software; you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -12,12 +12,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program; if not, write to the:
-
-    Free Software Foundation, Inc.
-    51 Franklin St, Fifth Floor
-    Boston, MA  02110-1301
-    USA
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
@@ -67,7 +62,7 @@ requirements.</para></remarks>
 //=============================================================================
 
     public sealed class TimeUnit:
-        MeasurementUnit
+        NonNegativeMeasurementUnit
     {
 
 /**
@@ -121,6 +116,7 @@ requirements.</para></remarks>
 Create the standard time unit - seconds.
 */
 
+            System.Diagnostics.Debug.Assert (seconds == null);
             seconds = new TimeUnit ();
 
 /*
@@ -128,14 +124,23 @@ Create each of the non-standard time measurement units.
 */
 
             double secondsPerMinute = 60.0;
+            System.Diagnostics.Debug.Assert (minutes == null);
             minutes = new TimeUnit (secondsPerMinute);
+
             double secondsPerHour = 60.0 * secondsPerMinute;
+            System.Diagnostics.Debug.Assert (hours == null);
             hours = new TimeUnit (secondsPerHour);
+
             double secondsPerDay = 24.0 * secondsPerHour;
+            System.Diagnostics.Debug.Assert (days == null);
             days = new TimeUnit (secondsPerDay);
+
             double secondsPerWeek = 7.0 * secondsPerDay;
+            System.Diagnostics.Debug.Assert (weeks == null);
             weeks = new TimeUnit (secondsPerWeek);
+
             double secondsPerMillisecond = 1.0 / 1000.0;
+            System.Diagnostics.Debug.Assert (milliseconds == null);
             milliseconds = new TimeUnit (secondsPerMillisecond);
         }
 
@@ -252,7 +257,7 @@ measurement.</remarks>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         private TimeUnit ():
-            base (0.0, double.PositiveInfinity, true)
+            base ()
         {
         }
 
@@ -263,7 +268,8 @@ measurement.</remarks>
 <remarks>This constructor is used to create non-standard time units.</remarks>
 
 <param name="unitScaleFactor">A <see cref="System.Double" /> defining the
-number of standard units corresponding to a single unit of these units.</param>
+number of standard units corresponding to a single unit of these units.  This
+value must be positive.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

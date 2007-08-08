@@ -31,8 +31,8 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the AngleUnitTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the AngleMeasureTest class, and associated elements, that
+are integral members of the Facsimile.CommonTest namespace.
 ===============================================================================
 */
 
@@ -43,50 +43,54 @@ namespace Facsimile.CommonTest
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="AngleUnit" /> class.</summary>
+<summary>NUnit test fixture for <see cref="Measure {UnitType}" /> <see
+cref="AngleUnit" /> measurements.</summary>
+
+<remarks>This test fixture is specifically used for testing issues relating to
+angle measurements.</remarks>
 */
 //=============================================================================
 
     [TestFixture]
-    public sealed class AngleUnitTest
+    public sealed class AngleMeasureTest:
+        MeasureTest <AngleUnit>
     {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Tests that the <see cref="MeasurementUnit.GetStandard (System.Type)"
-/> function identifies the correct standard units.</summary>
+<summary>Verify that identical angles, in different units, are indeed
+identical.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "AngleUnit"?  Because XML cref references do not search base classes.  See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]
-        public void VerifyGetStandard ()
+        public void ComparisonTest ()
         {
-            Assert.AreSame (AngleUnit.Radians, MeasurementUnit.GetStandard
-            (typeof (AngleUnit)));
-        }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Tests that the <see cref="MeasurementUnit.IsStandard" /> property
-correctly identifies standard and non-standard units.</summary>
+/*
+Define a set of angle measurements all equal to exactly 90 degrees in rotation,
+but using a different unit in each case.
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "AngleUnit"?  Because XML cref references do not search base classes.  See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void VerifyIsStandard ()
-        {
-            Assert.IsTrue (AngleUnit.Radians.IsStandard);
-            Assert.IsFalse (AngleUnit.Degrees.IsStandard);
-            Assert.IsFalse (AngleUnit.Gradients.IsStandard);
-            Assert.IsFalse (AngleUnit.Revolutions.IsStandard);
+            Measure <AngleUnit> inRadians = new Measure <AngleUnit>
+            (System.Math.PI / 2.0, AngleUnit.Radians);
+            Measure <AngleUnit> inDegrees = new Measure <AngleUnit> (90.0,
+            AngleUnit.Degrees);
+            Measure <AngleUnit> inGradients = new Measure <AngleUnit> (100.0,
+            AngleUnit.Gradients);
+            Measure <AngleUnit> inRevolutions = new Measure <AngleUnit> (0.25,
+            AngleUnit.Revolutions);
+
+/*
+Check that the measurement in radians (the standard units) is the same as the
+measurement in all other units using the "TolerantCompareTo" method; this form
+of comparison is more robust since it accommodates small rounding errors, which
+would cause exact comparisons to fail.
+*/
+
+            Assert.IsTrue (inRadians.TolerantCompareTo (inDegrees) == 0);
+            Assert.IsTrue (inRadians.TolerantCompareTo (inGradients) == 0);
+            Assert.IsTrue (inRadians.TolerantCompareTo (inRevolutions) == 0);
         }
     }
 }

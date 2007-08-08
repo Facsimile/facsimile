@@ -31,7 +31,7 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the AngleUnitTest class, and associated elements, that are
+C# source file for the TimeMeasureTest class, and associated elements, that are
 integral members of the Facsimile.CommonTest namespace.
 ===============================================================================
 */
@@ -43,50 +43,60 @@ namespace Facsimile.CommonTest
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="AngleUnit" /> class.</summary>
+<summary>NUnit test fixture for <see cref="Measure {UnitType}" /> <see
+cref="TimeUnit" /> measurements.</summary>
+
+<remarks>This test fixture is specifically used for testing issues relating to
+time measurements.</remarks>
 */
 //=============================================================================
 
     [TestFixture]
-    public sealed class AngleUnitTest
+    public sealed class TimeMeasureTest:
+        NonNegativeMeasureTest <TimeUnit>
     {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Tests that the <see cref="MeasurementUnit.GetStandard (System.Type)"
-/> function identifies the correct standard units.</summary>
+<summary>Verify that identical times, in different units, are indeed
+identical.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "AngleUnit"?  Because XML cref references do not search base classes.  See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]
-        public void VerifyGetStandard ()
+        public void ComparisonTest ()
         {
-            Assert.AreSame (AngleUnit.Radians, MeasurementUnit.GetStandard
-            (typeof (AngleUnit)));
-        }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Tests that the <see cref="MeasurementUnit.IsStandard" /> property
-correctly identifies standard and non-standard units.</summary>
+/*
+Define a set of time measurements all equal to exactly two weeks in duration,
+but using a different unit in each case.
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "AngleUnit"?  Because XML cref references do not search base classes.  See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void VerifyIsStandard ()
-        {
-            Assert.IsTrue (AngleUnit.Radians.IsStandard);
-            Assert.IsFalse (AngleUnit.Degrees.IsStandard);
-            Assert.IsFalse (AngleUnit.Gradients.IsStandard);
-            Assert.IsFalse (AngleUnit.Revolutions.IsStandard);
+            Measure <TimeUnit> inMilliseconds = new Measure <TimeUnit> (2.0 *
+            7.0 * 24.0 * 60.0 * 60.0 * 1000.0, TimeUnit.Milliseconds);
+            Measure <TimeUnit> inSeconds = new Measure <TimeUnit> (2.0 * 7.0 *
+            24.0 * 60.0 * 60.0, TimeUnit.Seconds);
+            Measure <TimeUnit> inMinutes = new Measure <TimeUnit> (2.0 * 7.0 *
+            24.0 * 60.0, TimeUnit.Minutes);
+            Measure <TimeUnit> inHours = new Measure <TimeUnit> (2.0 * 7.0 *
+            24.0, TimeUnit.Hours);
+            Measure <TimeUnit> inDays = new Measure <TimeUnit> (2.0 * 7.0,
+            TimeUnit.Days);
+            Measure <TimeUnit> inWeeks = new Measure <TimeUnit> (2.0,
+            TimeUnit.Weeks);
+
+/*
+Check that the measurement in seconds (the standard units) is the same as the
+measurement in all other units using the "TolerantCompareTo" method; this form
+of comparison is more robust since it accommodates small rounding errors, which
+would cause exact comparisons to fail.
+*/
+
+            Assert.IsTrue (inSeconds.TolerantCompareTo (inMilliseconds) == 0);
+            Assert.IsTrue (inSeconds.TolerantCompareTo (inMinutes) == 0);
+            Assert.IsTrue (inSeconds.TolerantCompareTo (inHours) == 0);
+            Assert.IsTrue (inSeconds.TolerantCompareTo (inDays) == 0);
+            Assert.IsTrue (inSeconds.TolerantCompareTo (inWeeks) == 0);
         }
     }
 }

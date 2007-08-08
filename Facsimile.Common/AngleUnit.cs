@@ -1,10 +1,10 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
-This program is free software; you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -12,12 +12,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program; if not, write to the:
-
-    Free Software Foundation, Inc.
-    51 Franklin St, Fifth Floor
-    Boston, MA  02110-1301
-    USA
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
@@ -77,6 +72,12 @@ measurement unit, such as "radians", "degrees" and "gradients".
 
         private static readonly AngleUnit gradients;
 
+/**
+<summary>Revolutions angle measurement unit.</summary>
+*/
+
+        private static readonly AngleUnit revolutions;
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
 <summary>Static constructor.</summary>
@@ -92,16 +93,24 @@ measurement unit, such as "radians", "degrees" and "gradients".
 Create the standard angle unit - radians.
 */
 
+            System.Diagnostics.Debug.Assert (radians == null);
             radians = new AngleUnit ();
 
 /*
 Now create each of the non-standard angle measurement units.
 */
 
-            double radiansPerDegree = 2.0 * System.Math.PI / 360.0;
+            double radiansPerRevolution = 2.0 * System.Math.PI;
+            double radiansPerDegree = radiansPerRevolution / 360.0;
+            System.Diagnostics.Debug.Assert (degrees == null);
             degrees = new AngleUnit (radiansPerDegree);
-            double radiansPerGradient = 2.0 * System.Math.PI / 400.0;
+
+            double radiansPerGradient = radiansPerRevolution / 400.0;
+            System.Diagnostics.Debug.Assert (gradients == null);
             gradients = new AngleUnit (radiansPerGradient);
+
+            System.Diagnostics.Debug.Assert (revolutions == null);
+            revolutions = new AngleUnit (radiansPerRevolution);
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,6 +166,27 @@ units.</value>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
+<summary>Retrieve the revolutions angle unit.</summary>
+
+<remarks>Revolutions are not generally used to measure angles, but they are
+frequently used in combination with time measurements to create units of
+angular velocity, angular accelerations, etc.</remarks>
+
+<value>A <see cref="AngleUnit" /> instance representing the chosen angle
+units.</value>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public static AngleUnit Revolutions
+        {
+            get
+            {
+                return revolutions;
+            }
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
 <summary>Standard angle unit constructor.</summary>
 
 <remarks>This constructor is used to create that standard angle units.  Any
@@ -165,7 +195,7 @@ valid double value is a valid standard angle measurement.</remarks>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         private AngleUnit ():
-            base (double.NegativeInfinity, double.PositiveInfinity, true)
+            base ()
         {
         }
 
@@ -175,42 +205,15 @@ valid double value is a valid standard angle measurement.</remarks>
 
 <remarks>This constructor is used to create non-standard angle units.</remarks>
 
-<param name="unitScaleFactor"> A <see cref="System.Double" /> value defining
-the number of standard units corresponding to a single unit of these
-units.</param>
+<param name="unitScaleFactor">A <see cref="System.Double" /> defining the
+number of standard units corresponding to a single unit of these units.  This
+value must be positive.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         private AngleUnit (double unitScaleFactor):
             base (unitScaleFactor, 0.0)
         {
-        }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Normalize an angle measurement.</summary>
-
-<remarks>Angles may be normalized to the range [0, 2pi).  This allows
-comparison of relative angle positions to be made in a consistent
-manner.</remarks>
-
-<param name="value">A <see cref="System.Double" /> angle value in radians to be
-normalized.</param>
-
-<returns>A <see cref="System.Double" /> representing the normalized <paramref
-name="value" />.</returns>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        internal override double Normalize (double value)
-        {
-
-/*
-Angles are normalized to the range [0, 2pi) radians (equivalent to [0, 360)
-degrees).
-*/
-
-            return value % (2.0 * System.Math.PI);
         }
     }
 }

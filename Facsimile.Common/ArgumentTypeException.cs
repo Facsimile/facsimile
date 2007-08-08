@@ -31,8 +31,8 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the ArgumentOutOfRangeException <T> generic class, and
-associated elements, that are integral members of the Facsimile.Common package.
+C# source file for the ArgumentTypeException class, and associated elements,
+that are integral members of the Facsimile.Common package.
 ===============================================================================
 */
 
@@ -41,23 +41,21 @@ namespace Facsimile.Common
 
 //=============================================================================
 /**
-<summary>Exception thrown when a value argument is outside its valid
-range.</summary>
+<summary>Exception thrown when the type of an argument is invalid.</summary>
 
-<remarks>This overridden version of <see
-cref="System.ArgumentOutOfRangeException" /> provides additional information,
-by default, on how the exception occurred.</remarks>
+<remarks>This overridden version of <see cref="System.ArgumentException" />
+provides additional information about the type of the argument in order to
+assist with debugging.
 
-<typeparam name="ValueType">A <see cref="System.ValueType" />-derived value
-type class, representing the type of the argument that was outside of its valid
-range.</typeparam>
+<para>Say that an argument is declared as <see cref="System.Object" />, but a
+more specific type is required.  If an incompatible type is then supplied, then
+this exception will be thrown.  This kind of problem can occur frequently when
+implementing non-generic interfaces.</para></remarks>
 */
 //=============================================================================
 
-    public sealed class ArgumentOutOfRangeException <ValueType>:
-        System.ArgumentOutOfRangeException
-    where ValueType:
-        struct, System.IComparable <ValueType>, System.IEquatable <ValueType>
+    public sealed class ArgumentTypeException:
+        System.ArgumentException
     {
 
 /**
@@ -68,24 +66,25 @@ values:
 
 <list type="number">
     <item>
-        <description>The name of the method argument whose value is out of
-        range.  The type of this member should be <see cref="System.String"
+        <description>The name of the method argument whose value is the wrong
+        type.  The type of this member should be <see cref="System.String"
         />.</description>
     </item>
     <item>
-        <description>The minimum value of the argument's permitted
-        range.  The type of this member should be <typeparamref
-        name="ValueType" />.</description>
+        <description>The declared type of the argument, which is enforced by
+        the compiler.  Both of the subsequent types should be derived from
+        this type.  The type of this member should be <see cref="System.String"
+        />.</description>
     </item>
     <item>
-        <description>The maximum value of the argument's permitted
-        range.  The type of this member should be <typeparamref
-        name="ValueType" />.</description>
+        <description>The required type of the argument, which must be a
+        sub-type of the declared type.  The type of this member should be <see
+        cref="System.String" />.</description>
     </item>
     <item>
-        <description>The value of the method argument that caused the
-        exception.  The type of this member should be <typeparamref
-        name="ValueType" />.</description>
+        <description>The actual type of the argument, which must be a sub-type
+        of the declared type.  The type of this member should be <see
+        cref="System.String" />.</description>
     </item>
 </list></remarks>
 */
@@ -102,19 +101,22 @@ of the exception's error message.</remarks>
 <param name="argumentName">A <see cref="System.String" /> reference identifying
 the name of the argument that was found to be invalid.</param>
 
-<param name="argumentMinimum">A <typeparamref name="ValueType" /> instance
-holding the minimum valid value for <paramref name="argumentName" />.</param>
+<param name="argumentType">A <see cref="System.Type" /> instance holding the
+the declared type of <paramref name="argumentName" />.</param>
 
-<param name="argumentMaximum">A <typeparamref name="ValueType" /> instance
-holding the maximum valid value for <paramref name="argumentName" />.</param>
+<param name="argumentRequiredType">A <see cref="System.Type" /> instance
+identifying the expected type of <paramref name="argumentName" />.  This must
+be a sub-type of <paramref name="argumentType" />.</param>
 
-<param name="argumentValue">A <typeparamref name="ValueType" /> instance
-holding the invalid value for <paramref name="argumentName" />.</param>
+<param name="argumentActualType">A <see cref="System.Type" /> instance
+identifying the actual supplied type of <paramref name="argumentName" />.  This
+must be a sub-type of <paramref name="argumentType" />.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        internal ArgumentOutOfRangeException (string argumentName, ValueType
-        argumentMinimum, ValueType argumentMaximum, ValueType argumentValue):
+        internal ArgumentTypeException (string argumentName, System.Type
+        argumentType, System.Type argumentRequiredType, System.Type
+        argumentActualType):
             base ()
         {
 
@@ -126,11 +128,13 @@ sense.
 
             System.Diagnostics.Debug.Assert (!Util.IsNullOrEmpty
             (argumentName));
-            System.Diagnostics.Debug.Assert (argumentMinimum.CompareTo
-            (argumentMaximum) <= 0);
-            System.Diagnostics.Debug.Assert (argumentValue.CompareTo
-            (argumentMinimum) < 0 || argumentValue.CompareTo
-            (argumentMaximum) > 0);
+            System.Diagnostics.Debug.Assert (argumentType != null);
+            System.Diagnostics.Debug.Assert (argumentRequiredType != null &&
+            argumentRequiredType.IsSubclassOf (argumentType));
+            System.Diagnostics.Debug.Assert (argumentActualType != null &&
+            argumentActualType.IsSubclassOf (argumentType));
+            System.Diagnostics.Debug.Assert (!argumentActualType.IsSubclassOf
+            (argumentRequiredType));
 
 /*
 Store these arguments for later use.
@@ -139,9 +143,9 @@ Store these arguments for later use.
            argumentData = new System.Object []
            {
                argumentName,
-               argumentMinimum,
-               argumentMaximum,
-               argumentValue,
+               argumentType.FullName,
+               argumentRequiredType.FullName,
+               argumentActualType.FullName,
            };
         }
 
@@ -166,7 +170,7 @@ Retrieve the compound message, format it and return it to the caller.
 
             get
             {
-                return Resource.Format ("argumentOutOfRange", argumentData);
+                return Resource.Format ("argumentType", argumentData);
             }
         }
     }

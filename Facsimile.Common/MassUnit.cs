@@ -1,10 +1,10 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
-This program is free software; you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -12,12 +12,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program; if not, write to the:
-
-    Free Software Foundation, Inc.
-    51 Franklin St, Fifth Floor
-    Boston, MA  02110-1301
-    USA
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
@@ -63,7 +58,7 @@ negative.</para></remarks>
 //=============================================================================
 
     public sealed class MassUnit:
-        MeasurementUnit
+        NonNegativeMeasurementUnit
     {
 
 /**
@@ -120,6 +115,7 @@ ounces.</remarks>
 Create the standard mass unit - kilograms.
 */
 
+            System.Diagnostics.Debug.Assert (kilograms == null);
             kilograms = new MassUnit ();
 
 /*
@@ -134,14 +130,23 @@ Use of the International System of Units (SI)", by B. N. Taylor, available at:
 */
 
             double kilogramsPerGram = 1.0 / 1000.0;
+            System.Diagnostics.Debug.Assert (grams == null);
             grams = new MassUnit (kilogramsPerGram);
+
             double kilogramsPerMilligram = kilogramsPerGram / 1000.0;
+            System.Diagnostics.Debug.Assert (milligrams == null);
             milligrams = new MassUnit (kilogramsPerMilligram);
+
             double kilogramsPerTonne = 1000.0;
+            System.Diagnostics.Debug.Assert (tonnes == null);
             tonnes = new MassUnit (kilogramsPerTonne);
+
             double kilogramsPerPound = 0.45359237;
+            System.Diagnostics.Debug.Assert (pounds == null);
             pounds = new MassUnit (kilogramsPerPound);
+
             double kilogramsPerOunce = kilogramsPerPound / 16.0;
+            System.Diagnostics.Debug.Assert (ounces == null);
             ounces = new MassUnit (kilogramsPerOunce);
         }
 
@@ -269,7 +274,7 @@ measurement.</remarks>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         private MassUnit ():
-            base (0.0, double.PositiveInfinity, true)
+            base ()
         {
         }
 
@@ -280,7 +285,8 @@ measurement.</remarks>
 <remarks>This constructor is used to create non-standard mass units.</remarks>
 
 <param name="unitScaleFactor">A <see cref="System.Double" /> defining the
-number of standard units corresponding to a single unit of these units.</param>
+number of standard units corresponding to a single unit of these units.  This
+value must be positive.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 Facsimile - A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
-This program is free software; you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -13,12 +13,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program; if not, write to the:
-
-    Free Software Foundation, Inc.
-    51 Franklin St, Fifth Floor
-    Boston, MA  02110-1301
-    USA
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
@@ -100,8 +95,8 @@ you can obtain it from:
             </fail>
         </if>
         <property name="nant.settings.currentframework" value="net-2.0" />
-        <property name="facsimile.csc.nowarn" value="" readonly="true"
-        overwrite="false" />
+        <!-- <property name="facsimile.csc.nowarn" value="" readonly="true"
+        overwrite="false" /> -->
     </if>
     <if test="${not platform::is-win32 ()}">
         <if test="${not framework::sdk-exists ('mono-2.0')}">
@@ -263,6 +258,23 @@ Debug and release versions of the Facsimile.CommonTest documentation.
     overwrite="false" />
     <property name="facsimile.commonTest.xml"
     value="${facsimile.doc}/Facsimile.CommonTest.xml" readonly="true"
+    overwrite="false" />
+
+<!--
+By default, this build script will execute all tests.  However, overwriting
+certain of these properties with a true value allows the corresponding
+category of tests to be excluded.
+
+The list of official test categories are:
+<none>	Test does not belong to any category.  This is the default for most
+	tests.
+Long	Tests belonging to this category take a long time to execute.  Disable
+	this category of test to speed-up testing and debugging of newer code.
+
+However, ALL TESTS MUST BE INCLUDED AND PASSED BEFORE COMMITTING SOURCES!
+-->
+
+    <property name="facsimile.nunit.excludeLong" value="false" readonly="true"
     overwrite="false" />
 
 <!--
@@ -440,7 +452,9 @@ optimized output; this is the debug version.
         debug="Enable" optimize="false" warninglevel="4" warnaserror="true"
         doc="${facsimile.common.debug.xml}">
             <nowarn>
-                <warning number="${facsimile.csc.nowarn}" />
+                <if test="${not property::exists ('facsimile.csc.nowarn')}">
+                    <warning number="${facsimile.csc.nowarn}" />
+                </if>
             </nowarn>
             <references>
             </references>
@@ -461,7 +475,9 @@ optimized output; this is the release version.
         optimize="true" warninglevel="4" warnaserror="true"
         doc="${facsimile.common.xml}">
             <nowarn>
-                <warning number="${facsimile.csc.nowarn}" />
+                <if test="${not property::exists ('facsimile.csc.nowarn')}">
+                    <warning number="${facsimile.csc.nowarn}" />
+                </if>
             </nowarn>
             <references>
             </references>
@@ -515,7 +531,9 @@ optimized output; this is the debug version.
         debug="Enable" optimize="false" warninglevel="4" warnaserror="true"
         doc="${facsimile.commonTest.debug.xml}">
             <nowarn>
-                <warning number="${facsimile.csc.nowarn}" />
+                <if test="${not property::exists ('facsimile.csc.nowarn')}">
+                    <warning number="${facsimile.csc.nowarn}" />
+                </if>
             </nowarn>
             <references>
                 <include name="${facsimile.common.debug.dll}" />
@@ -537,7 +555,9 @@ optimized output; this is the release version.
         optimize="true" warninglevel="4" warnaserror="true"
         doc="${facsimile.commonTest.xml}">
             <nowarn>
-                <warning number="${facsimile.csc.nowarn}" />
+                <if test="${not property::exists ('facsimile.csc.nowarn')}">
+                    <warning number="${facsimile.csc.nowarn}" />
+                </if>
             </nowarn>
             <references>
                 <include name="${facsimile.common.dll}" />
@@ -588,7 +608,11 @@ made.)
         <nunit2 verbose="true">
             <formatter type="Xml" outputdir="${facsimile.log}" usefile="true"
             />
--            <test assemblyname="${facsimile.commonTest.debug.dll}" />
+	    <test assemblyname="${facsimile.commonTest.debug.dll}">
+		<categories>
+		    <exclude if="${facsimile.nunit.excludeLong}" name="Long" />
+		</categories>
+	    </test>
         </nunit2> -->
 
 <!--

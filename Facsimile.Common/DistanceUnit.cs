@@ -1,10 +1,10 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
-This program is free software; you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -12,12 +12,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program; if not, write to the:
-
-    Free Software Foundation, Inc.
-    51 Franklin St, Fifth Floor
-    Boston, MA  02110-1301
-    USA
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
@@ -124,6 +119,7 @@ measurement unit, such as "meters", "centimeters", "millimeters", "kilometers",
 Create the standard distance unit - meters.
 */
 
+            System.Diagnostics.Debug.Assert (meters == null);
             meters = new DistanceUnit ();
 
 /*
@@ -139,18 +135,31 @@ at:
 */
 
             double metersPerCentimeter = 1.0 / 100.0;
+            System.Diagnostics.Debug.Assert (centimeters == null);
             centimeters = new DistanceUnit (metersPerCentimeter);
+
             double metersPerMillimeter = metersPerCentimeter / 10.0;
+            System.Diagnostics.Debug.Assert (millimeters == null);
             millimeters = new DistanceUnit (metersPerMillimeter);
+
             double metersPerKilometer = 1000.0;
+            System.Diagnostics.Debug.Assert (kilometers == null);
             kilometers = new DistanceUnit (metersPerKilometer);
+
             double metersPerYard = 0.9144;
+            System.Diagnostics.Debug.Assert (yards == null);
             yards = new DistanceUnit (metersPerYard);
+
             double metersPerFoot = metersPerYard / 3.0;
+            System.Diagnostics.Debug.Assert (feet == null);
             feet = new DistanceUnit (metersPerFoot);
+
             double metersPerInch = metersPerFoot / 12.0;
+            System.Diagnostics.Debug.Assert (inches == null);
             inches = new DistanceUnit (metersPerInch);
+
             double metersPerMile = 1760.0 * metersPerYard;
+            System.Diagnostics.Debug.Assert (miles == null);
             miles = new DistanceUnit (metersPerMile);
         }
 
@@ -300,7 +309,7 @@ valid double value is a valid standard distance measurement.</remarks>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         private DistanceUnit ():
-            base (double.NegativeInfinity, double.PositiveInfinity, true)
+            base ()
         {
         }
 
@@ -312,7 +321,8 @@ valid double value is a valid standard distance measurement.</remarks>
 units.</remarks>
 
 <param name="unitScaleFactor">A <see cref="System.Double" /> defining the
-number of standard units corresponding to a single unit of these units.</param>
+number of standard units corresponding to a single unit of these units.  This
+value must be positive.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

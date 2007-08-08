@@ -1,10 +1,10 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
-This program is free software; you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -12,12 +12,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program; if not, write to the:
-
-    Free Software Foundation, Inc.
-    51 Franklin St, Fifth Floor
-    Boston, MA  02110-1301
-    USA
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
@@ -56,14 +51,19 @@ Fahrenheit".
 degree centigrade is only approximately one degree Celsius.  The symbol °C is
 interpreted to mean degrees Celsius and not degrees centigrade.</para>
 
-<para>The SI standard temperature unit is the Kelvin.  Temperatures (in Kelvin)
-values cannot be negative, as this would imply temperatures lower than
-"absolute zero", or 0K.</para></remarks>
+<para>The SI standard names both Kelvin (as a base unit) and Degrees Celsius
+(as a unit derived from Kelvin) as standard temperature units.  Since we
+require a single standard temperature unit, and since Kelvin units are the base
+units from which Degrees Celsius are derived, we have chosen Kelvin as the
+standard temperature unit for the Facsimile project.  (This is an arbitrary
+determination from the user's viewpoint.)  Temperature values (in Kelvin units)
+cannot be negative, as this would imply temperatures lower than "absolute
+zero", or 0K.</para></remarks>
 */
 //=============================================================================
 
     public sealed class TemperatureUnit:
-        MeasurementUnit
+        NonNegativeMeasurementUnit
     {
 
 /**
@@ -99,6 +99,7 @@ values cannot be negative, as this would imply temperatures lower than
 Create the standard temperature unit - Kelvin.
 */
 
+            System.Diagnostics.Debug.Assert (kelvin == null);
             kelvin = new TemperatureUnit ();
 
 /*
@@ -112,8 +113,11 @@ the document titled "Guide for the Use of the International System of Units
 */
 
             double celsiusOriginOffset = 273.15;
+            System.Diagnostics.Debug.Assert (celsius == null);
             celsius = new TemperatureUnit (1.0, celsiusOriginOffset);
-            double celsiusToFahrenheitFactor = 9.0 / 5.0; 
+
+            double celsiusToFahrenheitFactor = 5.0 / 9.0; 
+            System.Diagnostics.Debug.Assert (fahrenheit == null);
             fahrenheit = new TemperatureUnit (celsiusToFahrenheitFactor,
             celsiusOriginOffset - (32.0 * celsiusToFahrenheitFactor));
         }
@@ -187,7 +191,7 @@ is a valid standard temperature measurement.</remarks>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         private TemperatureUnit ():
-            base (0.0, double.PositiveInfinity, true)
+            base ()
         {
         }
 
@@ -199,7 +203,8 @@ is a valid standard temperature measurement.</remarks>
 units.</remarks>
 
 <param name="unitScaleFactor">A <see cref="System.Double" /> defining the
-number of standard units corresponding to a single unit of these units.</param>
+number of standard units corresponding to a single unit of these units.  This
+value must be positive.</param>
 
 <param name="unitOriginOffset">The distance, measured in standard units along
 the Y-axis, between the standard units' origin and the origin for these units.

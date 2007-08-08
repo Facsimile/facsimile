@@ -31,8 +31,8 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the CounterIncrementException class, and associated
-elements, that are integral members of the Facsimile.Common namespace.
+C# source file for the MeasureOverflowException class, and associated elements,
+that are integral members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
@@ -41,12 +41,12 @@ namespace Facsimile.Common
 
 //=============================================================================
 /**
-<summary>Exception thrown when a <see cref="Counter" /> is incremented above
-its maximum capacity.</summary>
+<summary>Exception thrown when a <see cref="Measure {UnitType}" /> value
+becomes invalid as the result of an arithmetic operation.</summary>
 */
 //=============================================================================
 
-    public sealed class CounterIncrementException:
+    public sealed class MeasureOverflowException:
         System.OverflowException
     {
 
@@ -58,27 +58,40 @@ values:
 
 <list type="number">
     <item>
-        <description>The maximum capacity allowed by the counter that detected
-        the problem.</description>
+        <description>The full name of the exact measure type that
+        overflowed.</description>
+    </item>
+    <item>
+        <description>The minimum allowed value of this measure.</description>
+    </item>
+    <item>
+        <description>The maximum allowed value of this measure.</description>
+    </item>
+    <item>
+        <description>The actual overflowed (invalid) value.</description>
     </item>
 </list></remarks>
 */
 
-        private readonly System.Object [] counterData;
+        private readonly System.Object [] measureData;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
 <summary>Constructor.</summary>
 
-<remarks>Processes the counter's limit to be formatted as part of the
+<remarks>Processes the measure's information to be formatted as part of the
 exception's message.</remarks>
 
-<param name="counter">The <see cref="Counter" /> instance that
-overflowed.</param>
+<param name="standardUnits">The <see cref="MeasurementUnit" />-derived instance
+idenitifying the standard units for the associated measure.</param>
+
+<param name="invalidValue">The <see cref="System.Double" /> value representing
+the resulting invalid measure.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        internal CounterIncrementException (Counter counter):
+        internal MeasureOverflowException (MeasurementUnit standardUnits,
+        double invalidValue):
             base ()
         {
 
@@ -86,15 +99,21 @@ overflowed.</param>
 Argument integrity assertions.
 */
 
-            System.Diagnostics.Debug.Assert (counter != null);
+            System.Diagnostics.Debug.Assert (standardUnits != null);
+            System.Diagnostics.Debug.Assert (standardUnits.IsStandard);
+            System.Diagnostics.Debug.Assert (!standardUnits.IsValid
+            (invalidValue));
 
 /*
-Store the counter's maximum capacity for later use.
+Store the appropriate information for later use.
 */
 
-            counterData = new System.Object []
+            measureData = new System.Object []
             {
-                counter.MaximumCapacity,
+                standardUnits.GetType ().FullName,
+                standardUnits.MinimumValue,
+                standardUnits.MaximumValue,
+                invalidValue,
             };
         }
 
@@ -119,8 +138,7 @@ Retrieve the compound message, format it and return it to the caller.
 
             get
             {
-                return Resource.Format ("counterIncrementOverflow",
-                counterData);
+                return Resource.Format ("measureOverflow", measureData);
             }
         }
     }

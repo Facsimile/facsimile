@@ -1,10 +1,10 @@
-﻿/*
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
-This program is free software; you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -12,12 +12,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program; if not, write to the:
-
-    Free Software Foundation, Inc.
-    51 Franklin St, Fifth Floor
-    Boston, MA  02110-1301
-    USA
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
@@ -124,24 +119,6 @@ If these are the standard units, then this value will be zero.</para></remarks>
 
         private readonly double originOffset;
 
-/**
-<summary>Minimum allowed value in these units.</summary>
-
-<remarks>Measurements, in these units, that are less than this value are deemed
-invalid.</remarks>
-*/
-
-        private readonly double minValue;
-
-/**
-<summary>Maximum allowed value in these units.</summary>
-
-<remarks>Measurements, in these units, that are greater than this value are
-deemed invalid.</remarks>
-*/
-
-        private readonly double maxValue;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
 <summary>Static constructor.</summary>
@@ -158,6 +135,7 @@ Make sure that the map that is used to identify the standard measurement units
 for each measurement unit family is correctly initialised.
 */
 
+            System.Diagnostics.Debug.Assert (standardUnitMap == null);
             standardUnitMap = new System.Collections.Generic.Dictionary
             <System.Type, MeasurementUnit> ();
         }
@@ -182,6 +160,28 @@ units for the indicated unit <paramref name="family" />.</returns>
         {
 
 /*
+This method suffers from a potential problem: if it is called before any static
+member belonging to the "family" derived class, then it will fail to find its
+standard units because the static constructor for that class will not have been
+called.
+
+That is, if my code contains:
+
+    MeasurementUnit.GetStandard (typeof (TimeUnit))
+
+and this line executes before any static member of TimeUnit is referenced, then
+the function will return null because the static constructor (a.k.a. "type
+initializer") for TimeUnit will not yet have been called.  Consequently, there
+will be no units registered with this class, standard or otherwise.
+
+To get around this problem, and to guarantee that the standardUnitMap will be
+appropriately populated for this particular query, we must have the static
+constructor executed - but only if it has not yet been executed!
+*/
+
+            Util.InitializeType (family);
+
+/*
 Return what we have for this family from the map.  (We need to lock access to
 the map to assist with preventing another thread from modifying it whilst
 we're reading it.)
@@ -191,7 +191,9 @@ we're reading it.)
            lock (standardUnitMap)
            {
                System.Diagnostics.Debug.Assert (standardUnitMap.ContainsKey
-               (family));
+               (family), "Specified measurement unit family has yet to be " +
+                "initialised, or no standard units have been defined for " +
+                "this family.");
                return standardUnitMap [family];
            }
         }
@@ -205,26 +207,11 @@ measurement unit for this family; non-standard measurement units should be
 defined using the <see cref="MeasurementUnit (System.Double, System.Double)" />
 constructor instead.  Furthermore, non-standard measurement units should not be
 created until after the standard unit has been constructed.</remarks>
-
-<param name="minimumValue">A <see cref="System.Double" /> defining the
-minimum valid value for a measurement in the standard units.  If no limit is to
-be enforced, this value should be set to <see
-cref="System.Double.NegativeInfinity" />.</param>
-
-<param name="maximumValue">A <see cref="System.Double" /> defining the
-maximum valid value for a measurement in the standard units.  If no limit is to
-be enforced, this value should be set to <see
-cref="System.Double.PositiveInfinity" />.</param>
-
-<param name="isStandard">A <see cref="System.Boolean" /> that is used purely to
-distinguish the standard measurement unit constructor's signature from the
-non-standard constructor's signature.  For consistency, this value should be
-always be set to true.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        protected internal MeasurementUnit (double minimumValue, double
-        maximumValue, bool isStandard)
+        protected internal MeasurementUnit ():
+            base ()
         {
 
 /*
@@ -245,19 +232,10 @@ is zero.  Verify that these units are recognised as the standard units.
             System.Diagnostics.Debug.Assert (IsStandard);
 
 /*
-Store the minimum and maximum values.
+Verify that the minimum value is less than the maximum value.
 */
 
-            System.Diagnostics.Debug.Assert (minimumValue < maximumValue);
-            minValue = minimumValue;
-            maxValue = maximumValue;
-
-/*
-We ignore the third parameter, but - for consistency, and to avoid compiler
-warnings about an unused parameter - test that it is true.
-*/
-
-            System.Diagnostics.Debug.Assert (isStandard);
+            System.Diagnostics.Debug.Assert (MinimumValue < MaximumValue);
 
 /*
 Finally, add these units to the map.
@@ -272,13 +250,13 @@ Finally, add these units to the map.
 
 <remarks>This constructor should only be used to create non-standard
 measurement units for this family; standard measurement units should be defined
-using the <see
-cref="MeasurementUnit (System.Double, System.Double, System.Boolean)" />
-constructor instead.  Furthermore, non-standard measurement units should not be
-created until after the standard unit has been constructed.</remarks>
+using the <see cref="MeasurementUnit ()" /> constructor instead.  Furthermore,
+non-standard measurement units should not be created until after the standard
+unit has been constructed.</remarks>
 
 <param name="unitScaleFactor">A <see cref="System.Double" /> defining the
-number of standard units corresponding to a single unit of these units.</param>
+number of standard units corresponding to a single unit of these units.  This
+value must be positive.</param>
 
 <param name="unitOriginOffset">A <see cref="System.Double" /> defining the
 distance, measured in standard units along the Y-axis, between the standard
@@ -288,7 +266,8 @@ of the standard units is exactly equal to zero of these units.</param>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         protected internal MeasurementUnit (double unitScaleFactor, double
-        unitOriginOffset)
+        unitOriginOffset):
+            base ()
         {
 
 /*
@@ -302,7 +281,7 @@ Get the reference to our standard units.
 Store the settings.
 */
 
-            System.Diagnostics.Debug.Assert (unitScaleFactor != 0.0);
+            System.Diagnostics.Debug.Assert (unitScaleFactor > 0.0);
             scaleFactor = unitScaleFactor;
             originOffset = unitOriginOffset;
 
@@ -313,22 +292,10 @@ This constructor should not be used to create standard units - verify this.
             System.Diagnostics.Debug.Assert (!IsStandard);
 
 /*
-Now define the minimum and maximum values allowed in these units.  If the scale
-factor is negative (unusual, but possible?), then the minimum and maximum
-values swap around.
+Verify that the minimum value is less than the maximum value.
 */
 
-            if (unitScaleFactor > 0.0)
-            {
-                minValue = FromStandard (standardUnits.minValue);
-                maxValue = FromStandard (standardUnits.maxValue);
-            }
-            else
-            {
-                minValue = FromStandard (standardUnits.maxValue);
-                maxValue = FromStandard (standardUnits.minValue);
-            }
-            System.Diagnostics.Debug.Assert (minValue < maxValue);
+            System.Diagnostics.Debug.Assert (MinimumValue < MaximumValue);
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -364,11 +331,11 @@ supported by these units.</value>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        public double MinValue
+        public virtual double MinimumValue
         {
             get
             {
-                return minValue;
+                return double.NegativeInfinity;
             }
         }
 
@@ -384,11 +351,11 @@ supported by these units.</value>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        public double MaxValue
+        public double MaximumValue
         {
             get
             {
-                return maxValue;
+                return double.PositiveInfinity;
             }
         }
 
@@ -412,11 +379,19 @@ checked for validity.</param>
         {
 
 /*
+If the value is NaN, then it's not a valid value.
+*/
+
+            if (double.IsNaN (value)) {
+                return false;
+            }
+
+/*
 It's an invalid value if it's less than the minimum or greater than the maximum
 allowed values.
 */
 
-            if (value < minValue || value > maxValue)
+            if (value < MinimumValue || value > MaximumValue)
             {
                 return false;
             }
@@ -446,7 +421,7 @@ name="value" />.</returns>
 
         internal double ToStandard (double value)
         {
-            return value * scaleFactor - originOffset;
+            return value * scaleFactor + originOffset;
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -467,38 +442,7 @@ name="value" />.</returns>
 
         internal double FromStandard (double value)
         {
-            return (value + originOffset) / scaleFactor;
-        }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Normalize the specified standard measurement value.</summary>
-
-<remarks>Some measurement unit families have repeating ranges of values and
-support normalization.
-
-<para>This function may be overrided by derived classes for custom
-normalizations.  This default version merely returns the supplied value.</para>
-
-<para>This function is not intended for general use; it is primarily intended
-for use within the Facsimile library.</para></remarks>
-
-<param name="value">A <see cref="System.Double" /> value in standard units to
-be normalized.</param>
-
-<returns>A <see cref="System.Double" /> representing the normalized <paramref
-name="value" />.</returns>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        internal virtual double Normalize (double value)
-        {
-
-/*
-Return the value provided without any normalization.
-*/
-
-            return value;
+            return (value - originOffset) / scaleFactor;
         }
     }
 }
