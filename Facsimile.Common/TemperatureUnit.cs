@@ -1,4 +1,4 @@
-/*
+﻿/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
@@ -48,7 +48,7 @@ measurement unit, such as "Kelvin", "degrees Celsius" and "degrees
 Fahrenheit".
 
 <para>The degrees centigrade units are regarded as obsolete by NIST.  One
-degree centigrade is only approximately one degree Celsius.  The symbol °C is
+degree centigrade is only approximately one degree Celsius.  The symbol Â°C is
 interpreted to mean degrees Celsius and not degrees centigrade.</para>
 
 <para>The SI standard names both Kelvin (as a base unit) and Degrees Celsius

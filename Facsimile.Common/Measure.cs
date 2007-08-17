@@ -1,4 +1,4 @@
-/*
+﻿/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
@@ -694,9 +694,18 @@ are equal, or false otherwise.</returns>
         {
 
 /*
+If the other object is null, then return false.
+*/
+
+            if (other == null)
+            {
+                return false;
+            }
+
+/*
 Attempt to unbox the passed reference as a Measure <UnitType> value.  If an
-invalid cast exception is thrown, then the passed object is null or is not a
-boxed Measure <UnitType> value and the two objects are not equal.
+invalid cast exception is thrown, then the passed object is not a boxed Measure
+<UnitType> value and the two objects are not equal.
 */
 
             Measure <UnitType> otherMeasure;
@@ -751,8 +760,11 @@ Compare the two measurements.
 <summary>Compare two measurements from the same family.</summary>
 
 <remarks>The two measurements' values will provide the sole basis for the
-comparison.  If the <paramref name="other" /> object is null, then an exception
-will be thrown.
+comparison.
+
+<para>According to the Microsoft definition, all non-null values are, by
+definition, greater than null.  Consequently, the function should return a
+positive value if <paramref name="other" /> is null.</para>
 
 <para>This function is required to implement the <see cref="System.IComparable"
 /> interface.</para></remarks>
@@ -763,10 +775,11 @@ instance of a <see cref="Measure {UnitType}" /> value.</param>
 
 <returns>A <see cref="System.Int32" /> value that is negative if this is less
 than the other measurement, 0 if the two measurements are equal, or positive if
-this is greater than the other measurement.</returns>
+this is greater than the other measurement (including the case where the other
+argument is null).</returns>
 
 <exception cref="System.ArgumentException">Thrown if <paramref name="other" />
-is null or is not a <see cref="Measure {UnitType}" /> instance.</exception>
+is not a <see cref="Measure {UnitType}" /> instance.</exception>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -774,17 +787,21 @@ is null or is not a <see cref="Measure {UnitType}" /> instance.</exception>
         {
 
 /*
-If the other reference is null, then throw an argument null exception.
+If the other reference is null, then this measurement is (by definition)
+greater than it.
 */
 
             if (other == null) {
-                throw new System.ArgumentNullException ("other");
+                return 1;
             }
 
 /*
 Attempt to unbox the passed reference as a Measure <UnitType> value.  If an
-invalid cast exception is thrown, then the passed object is null or is not a
-boxed Measure <UnitType> value and so the exception should be thrown.
+invalid cast exception is thrown, then the passed object is not a boxed
+Measure <UnitType> value and so the exception should be thrown.
+
+NB: We cannot use the "as" operator, because there is no such thing as a null
+struct value.
 */
 
             Measure <UnitType> otherMeasure;

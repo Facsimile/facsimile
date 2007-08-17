@@ -31,13 +31,13 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the Facsimile.Common assembly information.
+C# source file for the Facsimile.Engine assembly information.
 ===============================================================================
 */
 
-[assembly: System.Reflection.AssemblyTitle ("Facsimile.Common")]
+[assembly: System.Reflection.AssemblyTitle ("Facsimile.Engine")]
 [assembly: System.Reflection.AssemblyDescription ("Facsimile " +
-"simulation/emulation library common classes.")]
+"simulation/emulation library simulation engine classes.")]
 [assembly: System.Reflection.AssemblyConfiguration ("")]
 [assembly: System.Reflection.AssemblyCompany ("Michael J Allen")]
 [assembly: System.Reflection.AssemblyProduct ("Facsimile")]

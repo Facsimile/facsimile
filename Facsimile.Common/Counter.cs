@@ -1,4 +1,4 @@
-/*
+﻿/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
@@ -138,7 +138,7 @@ Member initialisation.
 /**
 <summary>Retrieve Counter's maximum capacity.</summary>
 
-<remarks>The capacity is guaranteed to be ≥ 0.</remarks>
+<remarks>The capacity is guaranteed to be â‰¥ 0.</remarks>
 
 <value>A <see cref="System.Int32" /> value storing the maximum capacity of
 the counter.</value>

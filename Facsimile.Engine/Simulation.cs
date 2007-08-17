@@ -31,67 +31,83 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the ResourceTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the Simulation class, and associated elements, that are
+integral members of the Facsimile.Engine namespace.
 ===============================================================================
 */
 
-using NUnit.Framework;
-using Facsimile.Common;
-namespace Facsimile.CommonTest
+namespace Facsimile.Engine
 {
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="Resource" /> class.</summary>
+<summary>Base class representing a simulation.</summary>
+
+<remarks>In design pattern terms, this class is a "singleton" and fulfills the
+"state context" role of the "state" pattern.</remarks>
 */
 //=============================================================================
 
-    [TestFixture]
-    public sealed class ResourceTest:
-        System.Object
+    public class Simulation:
+        Facsimile.Common.StateContext <Simulation, SimulationState>
     {
+
+/**
+<summary>Reference to the one and only simulation instance.</summary>
+*/
+
+        private static Simulation simulation;
+
+/**
+<summary>The simulation starting state.</summary>
+*/
+
+        private static readonly SimulationStarting starting;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string)" />.</summary>
+<summary>Static constructor.</summary>
+
+<remarks>Initialize static data members.</remarks>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatString ()
+        static Simulation ()
         {
 
 /*
-Retrieve the test message and ensure that it matches our expectations without
-error.
+Ensure that the simulation reference is initially null.
 */
 
-            Assert.AreEqual (Resource.Format ("testMessage"), "Test message.");
+            simulation = null;
+
+/*
+Create the simulation starting state.
+*/
+
+            starting = new SimulationStarting ();
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string, System.Object [])"
-/>.</summary>
+<summary>Default constructor.</summary>
+
+<remarks>Constructs the basic simulation class.</remarks>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatStringObjectArray ()
+        public Simulation ():
+            base (starting)
         {
 
 /*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
+If the simulation reference is not still null, that is, if a second concurrent
+simulation instance has been created, then throw an exception.
 */
 
-            System.Object [] arguments = new System.Object []
-            {
-                "argument"
-            };
-            Assert.AreEqual (Resource.Format ("testCompoundMessage",
-            arguments), "Test compound message: argument.");
+            if (simulation != null) {
+                // throw some exception, TBD
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
@@ -125,9 +125,6 @@ string resource to be retrieved.  This cannot be null or empty.</param>
 culture-specific version of the requested string resouce.  If there is no "best
 match" for the user's culture, then a null reference is returned.</returns>
 
-<exception cref="System.ArgumentNullException">Thrown if <paramref
-name="resource" /> is null.</exception>
-
 <exception cref="System.InvalidOperationException">Thrown if <paramref
 name="resource" /> is not a string resource.</exception>
 
@@ -194,9 +191,6 @@ reference must match the number and types of arguments expected.</param>
 culture-specific version of the requested string resouce, formatted with the
 specified arguments.  If there is no "best match" for the user's culture, then
 a null reference is returned.</returns>
-
-<exception cref="System.ArgumentNullException">Thrown if <paramref
-name="resource" /> or <paramref name="arguments" /> are null.</exception>
 
 <exception cref="System.InvalidOperationException">Thrown if <paramref
 name="resource" /> is not a string resource.</exception>

@@ -31,67 +31,59 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the ResourceTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the Utf8FileVerifier class, and associated elements, that are
+integral members of the Facsimile.Tools.VerifyFile namespace.
 ===============================================================================
 */
 
-using NUnit.Framework;
-using Facsimile.Common;
-namespace Facsimile.CommonTest
+namespace Facsimile.Tools.VerifyFile
 {
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="Resource" /> class.</summary>
+<summary>File verification for UTF-8-encoded files.</summary>
 */
 //=============================================================================
 
-    [TestFixture]
-    public sealed class ResourceTest:
-        System.Object
+    public abstract class Utf8FileVerifier:
+        TextFileVerifier
     {
+
+/**
+<summary>The UTF-8 encoding instance.</summary>
+*/
+
+        private System.Text.Encoding encoding;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string)" />.</summary>
+<summary>Default constructor.</summary>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatString ()
+        public Utf8FileVerifier ()
         {
-
-/*
-Retrieve the test message and ensure that it matches our expectations without
-error.
-*/
-
-            Assert.AreEqual (Resource.Format ("testMessage"), "Test message.");
+            encoding = System.Text.Encoding.UTF8;
+            System.Diagnostics.Debug.Assert (encoding != null);
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Test method for <see cref="Resource.Format (string, System.Object [])"
-/>.</summary>
+<summary>Encoding property.</summary>
+
+<remarks>The required encoding for this type of file.</remarks>
+
+<value>A <see cref="System.Text.Encoding" /> instance identifying the encoding
+that is required for this type of file.</value>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Test]
-        public void TestFormatStringObjectArray ()
+        protected sealed override System.Text.Encoding Encoding
         {
-
-/*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
-*/
-
-            System.Object [] arguments = new System.Object []
+            get
             {
-                "argument"
-            };
-            Assert.AreEqual (Resource.Format ("testCompoundMessage",
-            arguments), "Test compound message: argument.");
+                return encoding;
+            }
         }
     }
 }

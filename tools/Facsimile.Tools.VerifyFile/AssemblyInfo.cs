@@ -31,13 +31,14 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the Facsimile.Common assembly information.
+C# source file for the Facsimile.Tools.VerifyFile file verification tool
+assembly.
 ===============================================================================
 */
 
-[assembly: System.Reflection.AssemblyTitle ("Facsimile.Common")]
+[assembly: System.Reflection.AssemblyTitle ("Facsimile.Tools.VerifyFile")]
 [assembly: System.Reflection.AssemblyDescription ("Facsimile " +
-"simulation/emulation library common classes.")]
+"simulation/emulation library file verification tool.")]
 [assembly: System.Reflection.AssemblyConfiguration ("")]
 [assembly: System.Reflection.AssemblyCompany ("Michael J Allen")]
 [assembly: System.Reflection.AssemblyProduct ("Facsimile")]
@@ -48,4 +49,3 @@ C# source file for the Facsimile.Common assembly information.
 [assembly: System.Reflection.AssemblyVersion ("0.0.*")]
 [assembly: System.Reflection.AssemblyDelaySign (false)]
 [assembly: System.Reflection.AssemblyKeyFile ("")]
-

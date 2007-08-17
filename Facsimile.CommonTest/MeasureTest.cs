@@ -1,4 +1,4 @@
-/*
+﻿/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2007, Michael J Allen.
 
@@ -98,6 +98,22 @@ tested.</summary>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
+<summary>Verify that supplying no units to the constructor fails.</summary>
+
+<remarks>Passing the null value for the units should produce an
+exception.</remarks>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        [Test]
+        [ExpectedException (typeof (System.ArgumentNullException))]
+        public void NullUnitConstructor ()
+        {
+            Measure <UnitType> measure = new Measure <UnitType> (0.0, null);
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
 <summary>Verify that NaN construction fails.</summary>
 
 <remarks>NaN (not-a-number) is an invalid value for any measurement.  Verify
@@ -147,6 +163,21 @@ that construction with such a value succeeds.</remarks>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
+<summary>Verify that comparing to a non-measurement fails.</summary>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        [Test]
+        [ExpectedException (typeof (ArgumentTypeException))]
+        public void CompareToBadMeasure ()
+        {
+            Measure <UnitType> one = new Measure <UnitType> (1.0, Standard);
+            object dummy = "Dummy";
+            one.CompareTo (dummy);
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
 <summary>Verify basic mathematical and comparison operations.</summary>
 
 <remarks>This method perfoms some basic operations upon measurement data, then
@@ -161,10 +192,26 @@ valid for all measurements.</para></remarks>
         public void BasicOperations () {
 
 /*
-Check that unary plus doesn't change the value.
+Verify that comparisons to null pass off OK.  (All values are greater than null
+and, therefore, are not equal to null.)
 */
 
             Measure <UnitType> one = new Measure <UnitType> (1.0, Standard);
+            object nullObject = null;
+            Assert.IsTrue (one.CompareTo (nullObject) > 0);
+            Assert.IsFalse (one.Equals (nullObject));
+
+/*
+Verify that a measurement is not equal to a non-measurement.
+*/
+
+            object dummy = "dummy";
+            Assert.IsFalse (one.Equals (dummy));
+
+/*
+Check that unary plus doesn't change the value.
+*/
+
             Measure <UnitType> plusOne = +one;
             Assert.IsTrue (plusOne.TolerantCompareTo (one) == 0);
             Assert.IsTrue (plusOne.CompareTo (one) == 0);

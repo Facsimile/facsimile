@@ -31,67 +31,22 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the ResourceTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the CSharpVerifier class, and associated elements, that
+are integral members of the Facsimile.Tools.VerifyFile namespace.
 ===============================================================================
 */
 
-using NUnit.Framework;
-using Facsimile.Common;
-namespace Facsimile.CommonTest
+namespace Facsimile.Tools.VerifyFile
 {
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="Resource" /> class.</summary>
+<summary>C# source file verification class.</summary>
 */
 //=============================================================================
 
-    [TestFixture]
-    public sealed class ResourceTest:
-        System.Object
+    public sealed class CSharpVerifier:
+        Utf8FileVerifier
     {
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Test method for <see cref="Resource.Format (string)" />.</summary>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        [Test]
-        public void TestFormatString ()
-        {
-
-/*
-Retrieve the test message and ensure that it matches our expectations without
-error.
-*/
-
-            Assert.AreEqual (Resource.Format ("testMessage"), "Test message.");
-        }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Test method for <see cref="Resource.Format (string, System.Object [])"
-/>.</summary>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        [Test]
-        public void TestFormatStringObjectArray ()
-        {
-
-/*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
-*/
-
-            System.Object [] arguments = new System.Object []
-            {
-                "argument"
-            };
-            Assert.AreEqual (Resource.Format ("testCompoundMessage",
-            arguments), "Test compound message: argument.");
-        }
     }
 }

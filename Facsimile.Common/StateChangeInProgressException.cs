@@ -31,7 +31,7 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the CounterIncrementException class, and associated
+C# source file for the StateChangeInProgressException class, and associated
 elements, that are integral members of the Facsimile.Common namespace.
 ===============================================================================
 */
@@ -41,13 +41,24 @@ namespace Facsimile.Common
 
 //=============================================================================
 /**
-<summary>Exception thrown when a <see cref="Counter" /> is incremented above
-its maximum capacity.</summary>
+<summary>State change already in progress exception.</summary>
+
+<remarks>This exception is thrown if an attempt is made to change the state of
+a <see cref="StateContext {FinalContext, BaseState}" />-derived instance whilst
+a previous state change operation is still underway.
+
+<para>This exception typically arises when the attempt to change state occurs
+within state change event handling logic.</para></remarks>
 */
 //=============================================================================
 
-    public sealed class CounterIncrementException:
-        System.OverflowException
+    public sealed class StateChangeInProgressException <FinalContext,
+    BaseState>:
+        OperationIncompleteException
+    where FinalContext:
+	StateContext <FinalContext, BaseState>
+    where BaseState:
+	AbstractState <FinalContext, BaseState>
     {
 
 /**
@@ -58,43 +69,50 @@ values:
 
 <list type="number">
     <item>
-        <description>The maximum capacity allowed by the counter that detected
-        the problem.</description>
+        <description>The context class's type full name.</description>
+    </item>
+    <item>
+        <description>The attempted new state's type full name.</description>
     </item>
 </list></remarks>
 */
 
-        private readonly System.Object [] counterData;
+        private readonly System.Object [] stateData;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
 <summary>Constructor.</summary>
 
-<remarks>Processes the counter's limit to be formatted as part of the
-exception's message.</remarks>
+<remarks>Record the context and the new states names for subsequent error
+reporting.</remarks>
 
-<param name="counter">The <see cref="Counter" /> instance that
-overflowed.</param>
+<param name="context">The <typeparamref name="FinalContext" /> instance whose
+state is currently being changed.</param>
+
+<param name="newState">The <typeparamref name="BaseState" /> instance that was
+forbidden from becoming the <paramref name="context" />'s new state.</param>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        internal CounterIncrementException (Counter counter):
-            base ()
+        internal StateChangeInProgressException (FinalContext context,
+        BaseState newState)
         {
 
 /*
 Argument integrity assertions.
 */
 
-            System.Diagnostics.Debug.Assert (counter != null);
+            System.Diagnostics.Debug.Assert (context != null);
+            System.Diagnostics.Debug.Assert (newState != null);
 
 /*
-Store the counter's maximum capacity for later use.
+Store the appropriate information for later use.
 */
 
-            counterData = new System.Object []
+            stateData = new System.Object []
             {
-                counter.MaximumCapacity,
+                context.GetType ().FullName,
+                newState.GetType ().FullName,
             };
         }
 
@@ -119,8 +137,7 @@ Retrieve the compound message, format it and return it to the caller.
 
             get
             {
-                return Resource.Format ("counterIncrementOverflow",
-                counterData);
+                return Resource.Format ("stateChangeInProgress", stateData);
             }
         }
     }

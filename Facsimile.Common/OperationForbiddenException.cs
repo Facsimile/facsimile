@@ -31,67 +31,26 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the ResourceTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the OperationForbiddenException class, and associated
+elements, that are integral members of the Facsimile.Common namespace.
 ===============================================================================
 */
 
-using NUnit.Framework;
-using Facsimile.Common;
-namespace Facsimile.CommonTest
+namespace Facsimile.Common
 {
 
 //=============================================================================
 /**
-<summary>NUnit test fixture for the <see cref="Resource" /> class.</summary>
+<summary>Exception thrown whenever an attempt is made to perform an operation
+upon an object that is currently forbidden.</summary>
+
+<remarks>This is an abstract class that is used as the basis for more specific
+operation incomplete exceptions.</remarks>
 */
 //=============================================================================
 
-    [TestFixture]
-    public sealed class ResourceTest:
-        System.Object
+    public abstract class OperationForbiddenException:
+        System.InvalidOperationException
     {
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Test method for <see cref="Resource.Format (string)" />.</summary>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        [Test]
-        public void TestFormatString ()
-        {
-
-/*
-Retrieve the test message and ensure that it matches our expectations without
-error.
-*/
-
-            Assert.AreEqual (Resource.Format ("testMessage"), "Test message.");
-        }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Test method for <see cref="Resource.Format (string, System.Object [])"
-/>.</summary>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        [Test]
-        public void TestFormatStringObjectArray ()
-        {
-
-/*
-Retrieve the test compound message and format it with a specified argument then
-test the result.
-*/
-
-            System.Object [] arguments = new System.Object []
-            {
-                "argument"
-            };
-            Assert.AreEqual (Resource.Format ("testCompoundMessage",
-            arguments), "Test compound message: argument.");
-        }
     }
 }
