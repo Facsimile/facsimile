@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -31,8 +31,8 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the Utf8FileVerifier class, and associated elements, that are
-integral members of the Facsimile.Tools.VerifyFile namespace.
+C# source file for the Utf8FileVerifier class, and associated elements, that
+are integral members of the Facsimile.Tools.VerifyFile namespace.
 ===============================================================================
 */
 
@@ -53,18 +53,36 @@ namespace Facsimile.Tools.VerifyFile
 <summary>The UTF-8 encoding instance.</summary>
 */
 
-        private System.Text.Encoding encoding;
+        private static System.Text.Encoding encoding;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Default constructor.</summary>
+<summary>Static constructor.</summary>
+
+<remarks>Initialize static class members.</remarks>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        public Utf8FileVerifier ()
+        static Utf8FileVerifier ()
         {
             encoding = System.Text.Encoding.UTF8;
             System.Diagnostics.Debug.Assert (encoding != null);
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>File constructor.</summary>
+
+<remarks>Prepare the file for verification.</remarks>
+
+<param name="fileName">The name of the file, including any path information
+(relative or absolute) required to locate it.</param>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public Utf8FileVerifier (string fileName):
+            base (fileName)
+        {
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,6 +100,7 @@ that is required for this type of file.</value>
         {
             get
             {
+                System.Diagnostics.Debug.Assert (encoding != null);
                 return encoding;
             }
         }

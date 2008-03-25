@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -41,7 +41,7 @@ C# source file for the Facsimile.CommonTest assembly information.
 [assembly: System.Reflection.AssemblyConfiguration ("")]
 [assembly: System.Reflection.AssemblyCompany ("Michael J Allen")]
 [assembly: System.Reflection.AssemblyProduct ("Facsimile")]
-[assembly: System.Reflection.AssemblyCopyright ("Copyright © 2004-2007, " +
+[assembly: System.Reflection.AssemblyCopyright ("Copyright © 2004-2008, " +
 "Michael J Allen")]
 [assembly: System.Reflection.AssemblyTrademark ("")]
 [assembly: System.Reflection.AssemblyCulture ("")]

@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" ?>
+<!--
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2008, Michael J Allen.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+    http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+    http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+XML source file for common documentation originating with the IEvent interface,
+a member of the Facsimile.Engine namespace.
+===============================================================================
+-->
+
+<!--
+===============================================================================
+Documentation, nominally belonging to members of the IEvent interface, that are
+common to IEvent-implementing sub-classes.
+
+Everything within the <member> declarations must conform to the C# standard
+XML documentation comments.
+===============================================================================
+-->
+
+<commonDoc>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the IEvent.Priority property.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <member name="IEvent.Priority">
+
+        <summary>Event's priority.</summary>
+
+        <remarks>Simulation events that are scheduled to occur at exactly the
+        same time are dispatched in order of their priority (higher priority
+        events are dispatched ahead of lower priority events).
+
+        <para>It is not possible to change this property once set.  However,
+        the priority of a proxy event can appear to change as the focus of the
+        proxy changes.</para>
+
+        <para>In Facsimile, the higher the priority's value, the higher the
+        priority.  This may seem obvious, but there is no consensus on priority
+        values across different simulation tools.  For instance, in AutoMod
+        (http://www.automod.com/), the lower the priority value, the higher the
+        priority.  In Witness (http://www.lanner.com/), 0 and negative priority
+        values equate to the lowest possible priority; for all other (positive)
+        values, the lower the number, the higher the priority.</para>
+
+        <para>The largest possible <see cref="System.Int32" /> <see
+        cref="System.Int32.MaxValue">value</see> represents the highest
+        possible event priority; take care using this value, as it will become
+        impossible to schedule another event to occur at the same time but
+        prior to such an event.  The lowest possible <see cref="System.Int32"
+        /> <see cref="System.Int32.MinValue">value</see> represents the lowest
+        possible event priority; this guarantees that such events will occur
+        after all other events scheduled to occur at the same time.</para>
+
+        <para>This property should not throw any exceptions.</para></remarks>
+
+        <value>A <see cref="System.Int32" /> value indicating the priority.
+        The higher this value, the higher the priority.  This value cannot be
+        changed once set.</value>
+    </member>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the IEvent.RelativeTimeRemaining property.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <member name="IEvent.RelativeTimeRemaining">
+
+        <summary>Event's time remaining, relative to it's parent clock, before
+        becoming due.</summary>
+
+        <remarks>This property indicates the time that the event must remain
+        active on its <see cref="EventQueue">parent's</see> queue, before the
+        event becomes due for dispatch.
+
+        <para>It is not possible to change this property directly.  The
+        dispatching of an event can be delayed by suspending the event, then
+        resuming it later on.</para>
+
+        <para>Note that an event's due time can change during the course of its
+        lifetime (resulting from suspension/resumption operations as well as
+        through proxy events changing their focus).  Therefore, you should not
+        rely upon an event actually being dispatched following the reported
+        time interval; the reported time remaining should be regarded as a
+        snapshot only.</para>
+
+        <para>Active events report the time before they come due for dispatch.
+        Events that are currently being dispatched, or that have already
+        been dispatched, will report zero time remaining.  Suspended events
+        will report how much time they must wait once they have been
+        resumed.  Descheduled events will report infinite time
+        remaining.</para>
+
+        <para>This property should not throw any exceptions.</para></remarks>
+
+        <value>A <see cref="Facsimile.Common.Measure {UnitType}" /> value,
+        whose UnitType is a <see cref="Facsimile.Common.TimeUnit" /> instance,
+        indicating the minimum time the event must remain on its event queue
+        before being dispatched.</value>
+
+        <seealso cref="RelativeDueTime" />
+    </member>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the IEvent.RelativeDueTime property.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <member name="IEvent.RelativeDueTime">
+
+        <summary>Event's due time, relative to its parent's clock.</summary>
+
+        <remarks>This property reports the time, relative to its <see
+        cref="EventQueue">parent's</see> clock, at which the event is due to
+        occur (or at which the event occurred).
+
+        <para>It is not possible to change this property directly.  The
+        dispatching of an event can be delayed by suspending the event, then
+        resuming it later on.</para>
+
+        <para>Note that an event's due time can change during the course of its
+        lifetime (resulting from suspension/resumption operations as well as
+        through proxy events changing their focus).  Therefore, you should not
+        rely upon an event actually being dispatched at the reported due time;
+        the reported due time should be regarded as a snapshot only.</para>
+
+        <para>Active events, and events that are currently being dispatched,
+        report the time at which they are due for dispatch.  Events that have
+        already occurred will report the time at which they were dispatched.
+        Suspended and descheduled events will report an infinite due
+        time.</para>
+
+        <para>This property should not throw any exceptions.</para></remarks>
+
+        <value>A <see cref="Facsimile.Common.Measure {UnitType}" /> value,
+        whose UnitType is a <see cref="Facsimile.Common.TimeUnit" /> instance,
+        indicating the time on the event's event queue at which the event is
+        due to be dispatched.</value>
+
+        <seealso cref="RelativeTimeRemaining" />
+    </member>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the IEvent.Owner property.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <member name="IEvent.Owner">
+
+        <summary>Event owner property.</summary>
+
+        <remarks>The "owner" of the event is the event queue with which the
+        event is associated.  Events must always have an associated event
+        queue, and so this value can never be null.
+
+        <para>It is not possible to modify this property once set.</para>
+
+        <para>Note that proxy events will report the parent of the proxy - not
+        the parent of the proxied event.</para>
+
+        <para>This property should not throw any exceptions.</para></remarks>
+
+        <value>The <see cref="EventQueue" /> sub-class instance associated with
+        this event instance.  This value cannot be null.</value>
+    </member>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the IEvent.IsActive property.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <member name="IEvent.IsActive">
+
+        <summary>Event active flag.</summary>
+
+        <remarks>Indicates whether the event is currently active.  An event is
+        considered active if, and only if, it has been scheduled in its parent
+        event queue (including the case in which the event is currently being
+        dispatched).  It is considered inactive otherwise.
+
+        <para>An active event is not necessarily a scheduled event.  See the
+        <see cref="IsScheduled" /> property.</para>
+
+        <para>Proxy events will report their own status, not the status of the
+        proxied event.</para>
+
+        <para>This property should not throw any exceptions.</para></remarks>
+
+        <value>A <see cref="System.Boolean" /> value that is true if the event
+        is currently active, or false otherwise.</value>
+
+        <seealso cref="IsScheduled" />
+    </member>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the IEvent.IsScheduled property.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <member name="IEvent.IsScheduled">
+
+        <summary>Event scheduled flag.</summary>
+
+        <remarks>Indicates whether the event is currently scheduled.  An event
+        is considered scheduled if, and only if, it is active (see <see
+        cref="IsActive" />) and its owner is scheduled.  (The latter condition
+        implies, through recursion, that all of the event's parents in the
+        event queue hierarchy are active.)
+
+        <para>Proxy events will report their own status, not the status of the
+        proxied event.</para>
+
+        <para>This property should not throw any exceptions.</para></remarks>
+
+        <value>A <see cref="System.Boolean" /> value that is true if the event
+        is currently scheduled, or false otherwise.</value>
+
+        <seealso cref="IsActive" />
+    </member>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the IEvent.ActualEvent property.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <member name="IEvent.ActualEvent">
+
+        <summary>Actual event property.</summary>
+
+        <remarks>Reports the actual <see cref="Event" /> sub-class referenced
+        by this <see cref="IEvent" /> event.
+
+        <para>Proxy events will report their actual events; non-proxy events
+        report themselves.  Note: Non-proxy events are sub-classes of the <see
+        cref="Event" /> class.</para>
+
+        <para>This property should not throw any exceptions.</para></remarks>
+
+        <value>A <see cref="Event" /> sub-class instance that is the actual
+        event represented by this <see cref="IEvent" /> sub-class instance.
+        This value cannot be null.</value>
+
+        <seealso cref="Event" />
+    </member>
+</commonDoc>

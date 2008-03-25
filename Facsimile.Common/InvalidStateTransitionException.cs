@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -53,9 +53,9 @@ such a transition is explicitly forbidden.</remarks>
     BaseState>:
         OperationForbiddenException
     where FinalContext:
-	StateContext <FinalContext, BaseState>
+        StateContext <FinalContext, BaseState>
     where BaseState:
-	AbstractState <FinalContext, BaseState>
+        AbstractState <FinalContext, BaseState>
     {
 
 /**

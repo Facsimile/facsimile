@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -48,6 +48,9 @@ use with measurement testing.</summary>
 
 <remarks>This class is valid for measurements that cannot accept negative
 standard unit values.</remarks>
+
+<typeparam name="UnitType">The <see cref="NonNegativeMeasurementUnit" />
+sub-class of measurements that is to be tested.</typeparam>
 */
 //=============================================================================
 

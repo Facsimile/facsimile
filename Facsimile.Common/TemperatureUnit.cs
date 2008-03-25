@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -48,7 +48,7 @@ measurement unit, such as "Kelvin", "degrees Celsius" and "degrees
 Fahrenheit".
 
 <para>The degrees centigrade units are regarded as obsolete by NIST.  One
-degree centigrade is only approximately one degree Celsius.  The symbol Â°C is
+degree centigrade is only approximately one degree Celsius.  The symbol °C is
 interpreted to mean degrees Celsius and not degrees centigrade.</para>
 
 <para>The SI standard names both Kelvin (as a base unit) and Degrees Celsius
@@ -116,7 +116,7 @@ the document titled "Guide for the Use of the International System of Units
             System.Diagnostics.Debug.Assert (celsius == null);
             celsius = new TemperatureUnit (1.0, celsiusOriginOffset);
 
-            double celsiusToFahrenheitFactor = 5.0 / 9.0; 
+            double celsiusToFahrenheitFactor = 5.0 / 9.0;
             System.Diagnostics.Debug.Assert (fahrenheit == null);
             fahrenheit = new TemperatureUnit (celsiusToFahrenheitFactor,
             celsiusOriginOffset - (32.0 * celsiusToFahrenheitFactor));

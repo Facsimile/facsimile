@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -56,9 +56,9 @@ within state change event handling logic.</para></remarks>
     BaseState>:
         OperationIncompleteException
     where FinalContext:
-	StateContext <FinalContext, BaseState>
+        StateContext <FinalContext, BaseState>
     where BaseState:
-	AbstractState <FinalContext, BaseState>
+        AbstractState <FinalContext, BaseState>
     {
 
 /**

@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -101,7 +101,7 @@ one of these units.
 <para>If these are the standard units, then this value will be 1.0.</para>
 
 <para>This value cannot be zero.</para></remarks>
-*/    
+*/
 
         private readonly double scaleFactor;
 
@@ -187,15 +187,15 @@ the map to assist with preventing another thread from modifying it whilst
 we're reading it.)
 */
 
-           System.Diagnostics.Debug.Assert (standardUnitMap != null);
-           lock (standardUnitMap)
-           {
-               System.Diagnostics.Debug.Assert (standardUnitMap.ContainsKey
-               (family), "Specified measurement unit family has yet to be " +
+            System.Diagnostics.Debug.Assert (standardUnitMap != null);
+            lock (standardUnitMap)
+            {
+                System.Diagnostics.Debug.Assert (standardUnitMap.ContainsKey
+                (family), "Specified measurement unit family has yet to be " +
                 "initialised, or no standard units have been defined for " +
                 "this family.");
-               return standardUnitMap [family];
-           }
+                return standardUnitMap [family];
+            }
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -218,9 +218,9 @@ created until after the standard unit has been constructed.</remarks>
 Verify that we do not already have any standard units.
 */
 
-           System.Diagnostics.Debug.Assert (standardUnitMap != null);
-           System.Diagnostics.Debug.Assert (!standardUnitMap.ContainsKey
-           (GetType ()));
+            System.Diagnostics.Debug.Assert (standardUnitMap != null);
+            System.Diagnostics.Debug.Assert (!standardUnitMap.ContainsKey
+            (GetType ()));
 
 /*
 These are the standard units, so the scale factor is one and the offset origin
@@ -325,7 +325,7 @@ false otherwise.</value>
 
 <remarks>This is the value, in these units, corresponding to the minimum
 possible value in the standard units.</remarks>
- 
+
 <value>A <see cref="System.Double" /> representing the minimum posible value
 supported by these units.</value>
 */
@@ -345,7 +345,7 @@ supported by these units.</value>
 
 <remarks>This is the value, in these units, corresponding to the maximum
 possible value in the standard units.</remarks>
- 
+
 <value>A <see cref="System.Double" /> representing the maximum posible value
 supported by these units.</value>
 */

@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -41,8 +41,8 @@ namespace Facsimile.Common
 
 //=============================================================================
 /**
- <summary>Facsimile utilty functions.</summary>
- */
+<summary>Facsimile utilty functions.</summary>
+*/
 //=============================================================================
 
     public static class Util

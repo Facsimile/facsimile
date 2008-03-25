@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -145,7 +145,7 @@ equivalent of the minimum value in standard units.
 
 <remarks>This is the value, in these units, corresponding to the minimum
 possible value in the standard units.</remarks>
- 
+
 <value>A <see cref="System.Double" /> representing the minimum posible value
 supported by these units.</value>
 */

@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -140,13 +140,13 @@ sense.
 Store these arguments for later use.
 */
 
-           argumentData = new System.Object []
-           {
-               argumentName,
-               argumentType.FullName,
-               argumentRequiredType.FullName,
-               argumentActualType.FullName,
-           };
+            argumentData = new System.Object []
+            {
+                argumentName,
+                argumentType.FullName,
+                argumentRequiredType.FullName,
+                argumentActualType.FullName,
+            };
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

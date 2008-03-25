@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -74,12 +74,12 @@ development is (US) English.</para></remarks>
     {
 
 /**
-<summary>Map associating file extensions to corresponing file
-verifier.</summary>
+<summary>Map associating file extensions to corresponing file verifier
+constructors.</summary>
 */
 
         private static System.Collections.Generic.Dictionary <string,
-        FileVerifier> verifierMap;
+        System.Reflection.ConstructorInfo> verifierMap;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -97,17 +97,47 @@ First off, construct the new file verification map.
 */
 
             verifierMap = new System.Collections.Generic.Dictionary <string,
-            FileVerifier> ();
+            System.Reflection.ConstructorInfo> ();
+
+/*
+Create a System.Type array identifying the argument types of the file
+verification constructor.
+*/
+
+            System.Type [] ctorArgs =
+            {
+                typeof (string),
+            };
 
 /*
 Now populate it by associating support file extensions with the corresponding
 file verification instance (which we'll need to create here too).
 */
 
-            verifierMap [".cs"] = new CSharpVerifier ();
-            verifierMap [".build"] = new NAntBuildVerifier ();
-            //verifierMap [".resx"] = new ResXBuildVerifier ();
-            verifierMap [".txt"] = new TextResourceVerifier ();
+            verifierMap [".cs"] = typeof (CSharpVerifier).GetConstructor
+            (ctorArgs);
+            System.Diagnostics.Debug.Assert (verifierMap [".cs"] != null);
+            verifierMap [".build"] = typeof (NAntBuildVerifier).GetConstructor
+            (ctorArgs);
+            System.Diagnostics.Debug.Assert (verifierMap [".build"] != null);
+            //verifierMap [".resx"] = typeof (ResXVerifier).GetConstructor
+            //(ctorArgs);
+            //System.Diagnostics.Debug.Assert (verifierMap [".resx"] != null);
+            verifierMap [".txt"] = typeof (TextResourceVerifier).GetConstructor
+            (ctorArgs);
+            System.Diagnostics.Debug.Assert (verifierMap [".txt"] != null);
+
+/*
+Also ensure that static construction of these file verifier classes takes
+place.  As we're invoking them through reflection, static construction does not
+normally occur.
+*/
+
+            Facsimile.Common.Util.InitializeType (typeof (CSharpVerifier));
+            Facsimile.Common.Util.InitializeType (typeof (NAntBuildVerifier));
+            //Facsimile.Common.Util.InitializeType (typeof (ResXVerifier));
+            Facsimile.Common.Util.InitializeType (typeof
+            (TextResourceVerifier));
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,7 +179,6 @@ this must remain set until the program finishes.
 
 /*
 Each argument is a file wildcard specification.  Pass it to the file verifier.
-We try to 
 */
 
             foreach (string file in args)
@@ -174,7 +203,8 @@ we return 1.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<summary>Match files to wildcard expression, and verify each matching file.</summary>
+<summary>Match files to wildcard expression, and verify each matching
+file.</summary>
 
 <remarks>It is considered an error if there are no files matching the wildcard
 specification.</remarks>
@@ -329,13 +359,20 @@ there is no such object, then report an error and return false.
             }
 
 /*
-Now retrieve the corresponding file verification object and return the status
-of the retrieval operation.
+Now retrieve the corresponding file verification constructor information, use
+it to create a new file verifier instance return the status of the verification
+operation.
 */
 
-            FileVerifier verifier = verifierMap [extension];
+            System.Reflection.ConstructorInfo ctorInfo = verifierMap
+            [extension];
+            System.Diagnostics.Debug.Assert (ctorInfo != null);
+            object [] args = {
+                file,
+            };
+            FileVerifier verifier = (FileVerifier) ctorInfo.Invoke (args);
             System.Diagnostics.Debug.Assert (verifier != null);
-            return verifier.VerifyFile (file);
+            return verifier.VerifyFile ();
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

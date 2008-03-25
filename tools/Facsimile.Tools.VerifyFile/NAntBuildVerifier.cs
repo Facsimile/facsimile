@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -48,5 +48,21 @@ namespace Facsimile.Tools.VerifyFile
     public sealed class NAntBuildVerifier:
         XmlFileVerifier
     {
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>File constructor.</summary>
+
+<remarks>Prepare the file for verification.</remarks>
+
+<param name="fileName">The name of the file, including any path information
+(relative or absolute) required to locate it.</param>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public NAntBuildVerifier (string fileName):
+            base (fileName)
+        {
+        }
     }
 }

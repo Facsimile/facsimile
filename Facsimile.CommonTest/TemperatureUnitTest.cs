@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -31,8 +31,8 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-C# source file for the TemperatureUnitTest class, and associated elements, that are
-integral members of the Facsimile.CommonTest namespace.
+C# source file for the TemperatureUnitTest class, and associated elements, that
+are integral members of the Facsimile.CommonTest namespace.
 ===============================================================================
 */
 
@@ -49,7 +49,8 @@ class.</summary>
 //=============================================================================
 
     [TestFixture]
-    public sealed class TemperatureUnitTest
+    public sealed class TemperatureUnitTest:
+        System.Object
     {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,11 +58,6 @@ class.</summary>
 <summary>Tests that the <see cref="MeasurementUnit.GetStandard (System.Type)"
 /> function identifies the correct standard units.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "TemperatureUnit"?  Because XML cref references do not search base classes.
-// See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]
@@ -76,11 +72,6 @@ class.</summary>
 <summary>Tests that the <see cref="MeasurementUnit.IsStandard" /> property
 correctly identifies standard and non-standard units.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "TemperatureUnit"?  Because XML cref references do not search base classes.
-// See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]

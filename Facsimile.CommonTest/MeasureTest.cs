@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -45,6 +45,11 @@ namespace Facsimile.CommonTest
 /**
 <summary>This is a generic base class, containing a number of NUnit tests for
 use with measurement testing.</summary>
+
+<remarks>This class is valid for all types of measurement.</remarks>
+
+<typeparam name="UnitType">The <see cref="MeasurementUnit" /> sub-class of
+measurements that is to be tested.</typeparam>
 */
 //=============================================================================
 
@@ -213,10 +218,18 @@ Check that unary plus doesn't change the value.
 */
 
             Measure <UnitType> plusOne = +one;
-            Assert.IsTrue (plusOne.TolerantCompareTo (one) == 0);
-            Assert.IsTrue (plusOne.CompareTo (one) == 0);
+            Assert.AreEqual (plusOne.TolerantCompareTo (one), 0);
+            Assert.AreEqual (plusOne.CompareTo (one), 0);
             Assert.IsTrue (plusOne.Equals (one));
             Assert.IsTrue (plusOne == one);
+
+/*
+Check that one compares equal to a boxed version of plusOne.
+*/
+
+            object plusOneObject = plusOne;
+            Assert.AreEqual (one.CompareTo (plusOneObject), 0);
+            Assert.IsTrue (one.Equals (plusOneObject));
 
 /*
 Check the comparison operators for two different values.
@@ -248,7 +261,7 @@ Add one and two together.
 
             Measure <UnitType> three = new Measure <UnitType> (3.0, Standard);
             Measure <UnitType> sum = one + two;
-            Assert.IsTrue (sum.CompareTo (three) == 0);
+            Assert.AreEqual (sum.CompareTo (three), 0);
             Assert.IsTrue (sum.Equals (three));
             Assert.IsTrue (sum == three);
 
@@ -258,7 +271,7 @@ non-negative measurements, and this should not be tested here.)
 */
 
             Measure <UnitType> diff = two - one;
-            Assert.IsTrue (diff.CompareTo (one) == 0);
+            Assert.AreEqual (diff.CompareTo (one), 0);
             Assert.IsTrue (diff.Equals (one));
             Assert.IsTrue (diff == one);
         }

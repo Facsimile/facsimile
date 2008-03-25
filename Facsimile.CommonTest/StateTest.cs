@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -193,6 +193,7 @@ Finally, verify that the initial state is our current state.
 */
 
             Assert.AreEqual (CurrentState, initialState);
+            Assert.IsTrue (IsInState (initialState.GetType ()));
 
 /*
 Verify that the current state is active.
@@ -242,7 +243,8 @@ Verify that the state supplied is the current state (we have yet to exit this
 state).
 */
 
-            Assert.AreEqual (state, CurrentState);
+            Assert.AreEqual (CurrentState, state);
+            Assert.IsTrue (IsInState (state.GetType ()));
 
 /*
 Verify that the state and the prior state are the same also.
@@ -291,7 +293,8 @@ Verify that the state supplied is the current state (we have yet to exit this
 state).
 */
 
-            Assert.AreEqual (state, CurrentState);
+            Assert.AreEqual (CurrentState, state);
+            Assert.IsTrue (IsInState (state.GetType ()));
 
 /*
 Verify that the state and the prior state are the same also.
@@ -339,7 +342,8 @@ Update the sequence count and verify that we're at step 3.
 Verify that the state supplied is the current state.
 */
 
-            Assert.AreEqual (state, CurrentState);
+            Assert.AreEqual (CurrentState, state);
+            Assert.IsTrue (IsInState (state.GetType ()));
 
 /*
 Verify that the state and the prior state are different.
@@ -387,7 +391,8 @@ Update the sequence count and verify that we're at step 4.
 Verify that the state supplied is the current state.
 */
 
-            Assert.AreEqual (state, CurrentState);
+            Assert.AreEqual (CurrentState, state);
+            Assert.IsTrue (IsInState (state.GetType ()));
 
 /*
 Verify that the state and the prior state are different.
@@ -440,7 +445,8 @@ Verify that the prior state was recorded correctly.
 Verify that the prior state and the current state are different.
 */
 
-            Assert.AreNotEqual (priorState, CurrentState);
+            Assert.AreNotEqual (CurrentState, priorState);
+            Assert.IsFalse (IsInState (priorState.GetType ()));
 
 /*
 Signal that the virtual function has been called.
@@ -498,7 +504,8 @@ Verify that the prior state was recorded correctly.
 Verify that the prior state and the current state are different.
 */
 
-            Assert.AreNotEqual (priorState, CurrentState);
+            Assert.AreNotEqual (CurrentState, priorState);
+            Assert.IsFalse (IsInState (priorState.GetType ()));
 
 /*
 Signal that the delegated function has been called.
@@ -567,6 +574,7 @@ Verify that we correctly changed the state.
 */
 
             Assert.AreEqual (CurrentState, newState);
+            Assert.IsTrue (IsInState (newState.GetType ()));
 
 /*
 Verify that the prior state is inactive and that the new state is active.
@@ -606,7 +614,7 @@ This should fail with an exception.
 //=============================================================================
 
     public abstract class SomeBaseState:
-        AbstractState <SomeStateContext, SomeBaseState>
+        ReportingAbstractState <SomeStateContext, SomeBaseState>
     {
 
 /**
@@ -689,6 +697,7 @@ Verify that this is the context's current state.
 */
 
             Assert.AreEqual (this, context.CurrentState);
+            Assert.IsTrue (context.IsInState (GetType ()));
 
 /*
 Notify the context that this event was handled correctly.  This also validates
@@ -728,6 +737,7 @@ Verify that this is the context's current state.
 */
 
             Assert.AreEqual (this, context.CurrentState);
+            Assert.IsTrue (context.IsInState (GetType ()));
 
 /*
 Notify the context that this event was handled correctly.  This also validates
@@ -771,6 +781,7 @@ changed just yet).
 */
 
             Assert.AreEqual (this, context.CurrentState);
+            Assert.IsTrue (context.IsInState (GetType ()));
 
 /*
 Notify the context that this event was handled correctly.  This also validates
@@ -811,6 +822,7 @@ changed just yet).
 */
 
             Assert.AreEqual (this, context.CurrentState);
+            Assert.IsTrue (context.IsInState (GetType ()));
 
 /*
 Notify the context that this event was handled correctly.  This also validates
@@ -863,8 +875,8 @@ is possible or false if it is not.</returns>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	public override bool CanTransitionTo (SomeBaseState newState)
-	{
+        public override bool CanTransitionTo (SomeBaseState newState)
+        {
 
 /*
 If the new state is a state C state, then return true.
@@ -879,8 +891,8 @@ If the new state is a state C state, then return true.
 We cannot transition to this new state.
 */
 
-	    return false;
-	}
+            return false;
+        }
     }
 
 //=============================================================================
@@ -911,8 +923,8 @@ is possible or false if it is not.</returns>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	public override bool CanTransitionTo (SomeBaseState newState)
-	{
+        public override bool CanTransitionTo (SomeBaseState newState)
+        {
 
 /*
 If the new state is a state C state, then return true.
@@ -927,8 +939,8 @@ If the new state is a state C state, then return true.
 We cannot transition to this new state.
 */
 
-	    return false;
-	}
+            return false;
+        }
     }
 
 //=============================================================================
@@ -989,14 +1001,15 @@ Check that we're still the current state.
 */
 
             Assert.AreEqual (context.CurrentState, this);
+            Assert.IsTrue (context.IsInState (GetType ()));
         }
     }
 
 //=============================================================================
 /**
 <summary>NUnit test fixture for the <see cref="StateContext {FinalContext,
-BaseState}" /> and <see cref="AbstractState {FinalContext, BaseState}" />
-classes.</summary>
+BaseState}" />, <see cref="AbstractState {FinalContext, BaseState}" /> and <see
+cref="ReportingAbstractState {FinalContext, BaseState}" /> classes.</summary>
 */
 //=============================================================================
 
@@ -1015,6 +1028,40 @@ classes.</summary>
         public void NullStateContextConstruction ()
         {
             SomeStateContext context = new SomeStateContext (null);
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>Check that null state comparison fails.</summary>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        [Test]
+        [ExpectedException (typeof (System.ArgumentNullException))]
+        public void IsInNullState ()
+        {
+
+/*
+Construct the context, failing if an exception arises during this phase.
+*/
+
+            SomeStateContext context;
+            try
+            {
+                context = new SomeStateContext (new SomeStateA ());
+            }
+            catch (System.Exception)
+            {
+                Assert.Fail ();
+                return;
+            }
+
+/*
+OK.  Now check whether we're in a null state.  This should cause the exception
+that we're looking for to be thrown.
+*/
+
+            context.IsInState (null);
         }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1042,6 +1089,7 @@ Initialise the context to state C.
 
             SomeStateContext context = new SomeStateContext (stateC);
             Assert.AreEqual (context.CurrentState, stateC);
+            Assert.IsTrue (context.IsInState (stateC.GetType ()));
 
 /*
 This ought to do it.  Change the state to state B - which is a barred
@@ -1080,6 +1128,7 @@ that the initial state was recorded correctly.
 
             SomeStateContext context = new SomeStateContext (stateA);
             Assert.AreEqual (context.CurrentState, stateA);
+            Assert.IsTrue (context.IsInState (stateA.GetType ()));
 
 /*
 Transition to the bad state.
@@ -1087,6 +1136,7 @@ Transition to the bad state.
 
             context.SetState (bad);
             Assert.AreEqual (context.CurrentState, bad);
+            Assert.IsTrue (context.IsInState (bad.GetType ()));
 
 /*
 Now transition to state B.
@@ -1094,6 +1144,7 @@ Now transition to state B.
 
             context.SetState (stateB);
             Assert.AreEqual (context.CurrentState, stateB);
+            Assert.IsTrue (context.IsInState (stateB.GetType ()));
 
 /*
 Now transition to state C.
@@ -1101,6 +1152,7 @@ Now transition to state C.
 
             context.SetState (stateC);
             Assert.AreEqual (context.CurrentState, stateC);
+            Assert.IsTrue (context.IsInState (stateC.GetType ()));
         }
     }
 }

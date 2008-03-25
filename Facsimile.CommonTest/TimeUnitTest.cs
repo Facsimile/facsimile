@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -48,7 +48,8 @@ namespace Facsimile.CommonTest
 //=============================================================================
 
     [TestFixture]
-    public sealed class TimeUnitTest
+    public sealed class TimeUnitTest:
+        System.Object
     {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,10 +57,6 @@ namespace Facsimile.CommonTest
 <summary>Tests that the <see cref="MeasurementUnit.GetStandard (System.Type)"
 /> function identifies the correct standard units.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "TimeUnit"?  Because XML cref references do not search base classes. See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]
@@ -74,10 +71,6 @@ namespace Facsimile.CommonTest
 <summary>Tests that the <see cref="MeasurementUnit.IsStandard" /> property
 correctly identifies standard and non-standard units.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "TimeUnit"?  Because XML cref references do not search base classes. See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]

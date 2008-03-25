@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--
 Facsimile - A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -136,7 +136,7 @@ Machine-specific (global) properties.
 
 Note: In the future, I'd like to see this script auto-configure itself.
 Nothing is going to put off potential developers than a complex configuration
-rÃ©gime.
+régime.
 
 This file relies upon the following global properties, that are defined in the
 "NAnt.exe.config" file (located in "/usr/lib/NAnt" by default on Ubuntu Linux,
@@ -176,25 +176,14 @@ file.
 -->
 
 <!--
-Output directory for completed executable assemblies - both debug and release
-versions.
+Output directory for completed executable and library assemblies - both debug
+and release versions.
 
 Note: This directory - and all of its contents - will be removed when the
 "Clean" target is specified.
 -->
 
     <property name="facsimile.bin" value="./bin" readonly="true"
-    overwrite="false" />
-
-<!--
-Output directory for completed library assemblies - both debug and release
-versions.
-
-Note: This directory - and all of its contents - will be removed when the
-"Clean" target is specified.
--->
-
-    <property name="facsimile.lib" value="./lib" readonly="true"
     overwrite="false" />
 
 <!--
@@ -248,10 +237,10 @@ Debug and release versions of Facsimile.Common library.
 -->
 
     <property name="facsimile.common.debug.dll"
-    value="${facsimile.lib}/Facsimile.Common.Debug.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.Common.Debug.dll" readonly="true"
     overwrite="false" />
     <property name="facsimile.common.dll"
-    value="${facsimile.lib}/Facsimile.Common.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.Common.dll" readonly="true"
     overwrite="false" />
 
 <!--
@@ -285,10 +274,10 @@ Debug and release versions of Facsimile.CommonTest library.
 -->
 
     <property name="facsimile.commonTest.debug.dll"
-    value="${facsimile.lib}/Facsimile.CommonTest.Debug.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.CommonTest.Debug.dll" readonly="true"
     overwrite="false" />
     <property name="facsimile.commonTest.dll"
-    value="${facsimile.lib}/Facsimile.CommonTest.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.CommonTest.dll" readonly="true"
     overwrite="false" />
 
 <!--
@@ -318,25 +307,14 @@ Source directory for the Facsimile.Engine assembly.
     readonly="true" overwrite="false" />
 
 <!--
-Some key files within the Facsimile.Engine source directory.
--->
-
-    <property name="facsimile.engine.resource.txt"
-    value="${facsimile.engine.src}/Resource.txt" readonly="true"
-    overwrite="false" />
-    <property name="facsimile.engine.resource.resources"
-    value="${facsimile.engine.src}/Resource.resources" readonly="true"
-    overwrite="false" />
-
-<!--
 Debug and release versions of Facsimile.Engine library.
 -->
 
     <property name="facsimile.engine.debug.dll"
-    value="${facsimile.lib}/Facsimile.Engine.Debug.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.Engine.Debug.dll" readonly="true"
     overwrite="false" />
     <property name="facsimile.engine.dll"
-    value="${facsimile.lib}/Facsimile.Engine.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.Engine.dll" readonly="true"
     overwrite="false" />
 
 <!--
@@ -370,10 +348,10 @@ Debug and release versions of Facsimile.EngineTest library.
 -->
 
     <property name="facsimile.engineTest.debug.dll"
-    value="${facsimile.lib}/Facsimile.EngineTest.Debug.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.EngineTest.Debug.dll" readonly="true"
     overwrite="false" />
     <property name="facsimile.engineTest.dll"
-    value="${facsimile.lib}/Facsimile.EngineTest.dll" readonly="true"
+    value="${facsimile.bin}/Facsimile.EngineTest.dll" readonly="true"
     overwrite="false" />
 
 <!--
@@ -404,7 +382,7 @@ Source directory for the Facsimile.Tools.VerifyFile assembly.
     overwrite="false" />
 
 <!--
-Debug and release versions of Facsimile.Engine library.
+Debug and release versions of Facsimile.Tools.VerifyFile executable.
 -->
 
     <property name="facsimile.tools.verifyFile.debug.exe"
@@ -415,7 +393,7 @@ Debug and release versions of Facsimile.Engine library.
     />
 
 <!--
-Debug and release versions of the Facsimile.Engine documentation.
+Debug and release versions of the Facsimile.Tools.VerifyFile documentation.
 -->
 
     <property name="facsimile.tools.verifyFile.debug.xml"
@@ -436,10 +414,10 @@ certain of these properties with a true value allows the corresponding
 category of tests to be excluded.
 
 The list of official test categories are:
-<none>	Test does not belong to any category.  This is the default for most
-	tests.
-Long	Tests belonging to this category take a long time to execute.  Disable
-	this category of test to speed-up testing and debugging of newer code.
+<none>  Test does not belong to any category.  This is the default for most
+        tests.
+Long    Tests belonging to this category take a long time to execute.  Disable
+        this category of test to speed-up testing and debugging of newer code.
 
 However, ALL TESTS MUST BE INCLUDED AND PASSED BEFORE COMMITTING SOURCES!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -477,8 +455,7 @@ Log what we're doing to the output.
 Delete all output directories, if they exist.
 -->
 
-	<delete dir="${facsimile.bin}" verbose="true" />
-        <delete dir="${facsimile.lib}" verbose="true" />
+        <delete dir="${facsimile.bin}" verbose="true" />
         <delete dir="${facsimile.doc}" verbose="true" />
         <delete dir="${facsimile.log}" verbose="true" />
 
@@ -520,44 +497,13 @@ Log what we're doing to the output.
 -->
 
         <echo level="Info"
-	message="Checking for executable output directory..." />
+        message="Checking for executable output directory..." />
 
 <!--
 Create the directory if neeeded.
 -->
 
         <mkdir dir="${facsimile.bin}" verbose="true" />
-
-<!--
-We're done.
--->
-
-        <echo level="Info" message="Done." />
-    </target>
-
-<!--
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CreateLibDir target.
-
-This target creates the output directory for all generated library assemblies;
-it is a pre-requisite for library assembly generation targets.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--->
-
-    <target name="CreateLibDir" description="Create library output directory">
-
-<!--
-Log what we're doing to the output.
--->
-
-        <echo level="Info" message="Checking for library output directory..."
-	/>
-
-<!--
-Create the directory if neeeded.
--->
-
-        <mkdir dir="${facsimile.lib}" verbose="true" />
 
 <!--
 We're done.
@@ -582,7 +528,7 @@ Log what we're doing to the output.
 -->
 
         <echo level="Info"
-	message="Checking for documentation output directory..." />
+        message="Checking for documentation output directory..." />
 
 <!--
 Create the directory if neeeded.
@@ -637,7 +583,7 @@ and documentation.
 -->
 
     <target name="Common" description="Create Facsimile.Common assemblies"
-    depends="CreateLibDir, CreateDocDir">
+    depends="CreateBinDir, CreateDocDir">
 
 <!--
 Log what we're doing to the output.
@@ -821,11 +767,11 @@ made.)
         <nunit2 verbose="true">
             <formatter type="Xml" outputdir="${facsimile.log}" usefile="true"
             />
-	    <test assemblyname="${facsimile.commonTest.debug.dll}">
-		<categories>
-		    <exclude if="${facsimile.nunit.excludeLong}" name="Long" />
-		</categories>
-	    </test>
+            <test assemblyname="${facsimile.commonTest.debug.dll}">
+                <categories>
+                    <exclude if="${facsimile.nunit.excludeLong}" name="Long" />
+                </categories>
+            </test>
         </nunit2> -->
 
 <!--
@@ -1020,11 +966,11 @@ made.)
         <nunit2 verbose="true">
             <formatter type="Xml" outputdir="${facsimile.log}" usefile="true"
             />
-	    <test assemblyname="${facsimile.engineTest.debug.dll}">
-		<categories>
-		    <exclude if="${facsimile.nunit.excludeLong}" name="Long" />
-		</categories>
-	    </test>
+            <test assemblyname="${facsimile.engineTest.debug.dll}">
+                <categories>
+                    <exclude if="${facsimile.nunit.excludeLong}" name="Long" />
+                </categories>
+            </test>
         </nunit2> -->
 
 <!--
@@ -1044,7 +990,7 @@ executable assemblies and documentation.
 -->
 
     <target name="VerifyFile" description="Create VerifyFile utility"
-    depends="CreateBinDir, TestCommon, TestEngine">
+    depends="TestCommon, TestEngine">
 
 <!--
 Log what we're doing to the output.
@@ -1066,6 +1012,7 @@ without optimized output; this is the debug version.
                 </if>
             </nowarn>
             <references>
+                <include name="${facsimile.common.debug.dll}" />
             </references>
             <resources>
             </resources>
@@ -1080,7 +1027,7 @@ optimized output; this is the release version.
 -->
 
         <csc output="${facsimile.tools.verifyFile.exe}" target="exe"
-	debug="None" optimize="true" warninglevel="4" warnaserror="true"
+        debug="None" optimize="true" warninglevel="4" warnaserror="true"
         doc="${facsimile.tools.verifyFile.xml}">
             <nowarn>
                 <if test="${not property::exists ('facsimile.csc.nowarn')}">
@@ -1088,6 +1035,7 @@ optimized output; this is the release version.
                 </if>
             </nowarn>
             <references>
+                <include name="${facsimile.common.dll}" />
             </references>
             <resources>
             </resources>
@@ -1134,15 +1082,15 @@ verification, then the build will fail.  All files will be verified before
 control returns to this script.
 -->
 
-	    <exec program="${facsimile.tools.verifyFile.exe}" workingdir=".">
-		<arg value="./*.build" />
-		<arg value="${facsimile.common.src}/*.cs" />
-		<arg value="${facsimile.common.src}/*.txt" />
-		<arg value="${facsimile.commonTest.src}/*.cs" />
-		<arg value="${facsimile.engine.src}/*.cs" />
-		<arg value="${facsimile.engineTest.src}/*.cs" />
-		<arg value="${facsimile.tools.verifyFile.src}/*.cs" />
-	    </exec>
+            <exec program="${facsimile.tools.verifyFile.exe}" workingdir=".">
+                <arg value="./*.build" />
+                <arg value="${facsimile.common.src}/*.cs" />
+                <arg value="${facsimile.common.src}/*.txt" />
+                <arg value="${facsimile.commonTest.src}/*.cs" />
+                <arg value="${facsimile.engine.src}/*.cs" />
+                <arg value="${facsimile.engineTest.src}/*.cs" />
+                <arg value="${facsimile.tools.verifyFile.src}/*.cs" />
+            </exec>
 
 <!--
 We're done.

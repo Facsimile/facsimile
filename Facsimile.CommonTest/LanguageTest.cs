@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -49,7 +49,8 @@ C# language, and/or CLR, have are implemented consistently.</summary>
 //=============================================================================
 
     [TestFixture]
-    public sealed class LanguageTest
+    public sealed class LanguageTest:
+        System.Object
     {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,6 +128,43 @@ still infinity.
             TestForPositiveInfinity (negativeInfinity * -2.0);
             TestForNegativeInfinity (negativeInfinity + 10.0);
             TestForNegativeInfinity (negativeInfinity - 10.0);
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<summary>Test <see cref="System.Type.IsSubclassOf (System.Type)" />
+method.</summary>
+
+<remarks>This is another paranoia test.  The <see
+cref="System.Type.IsSubclassOf (System.Type)" /> method should return false if
+the two types involved are the same - which appears unintuitive unless one
+reads the method name literally.  It is testing if a type is derived from
+another type, not whether it is the same type or a derived type.
+
+<para>Generally, unless you are checking that a type is a sub-class of another
+class, you should consider using <see cref="System.Type.IsAssignableFrom
+(System.Type)" /> or <see cref="System.Type.IsInstanceOfType (System.Object)"
+/> instead.</para></remarks>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        [Test]
+        public void VerifyIsSubclassOf ()
+        {
+
+/*
+Get a struct type and a reference type and verify that IsSubclassOf does what
+it is expected to do.
+*/
+
+            System.Type refType = typeof (string);
+            System.Type structType = typeof (double);
+            Assert.IsFalse (refType.IsSubclassOf (refType));
+            Assert.IsTrue (refType.IsAssignableFrom (refType));
+            Assert.IsTrue (refType.IsInstanceOfType ("Hello!"));
+            Assert.IsFalse (structType.IsSubclassOf (structType));
+            Assert.IsTrue (structType.IsAssignableFrom (structType));
+            Assert.IsTrue (structType.IsInstanceOfType (5.0));
         }
     }
 }

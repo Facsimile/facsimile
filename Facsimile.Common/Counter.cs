@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -138,7 +138,7 @@ Member initialisation.
 /**
 <summary>Retrieve Counter's maximum capacity.</summary>
 
-<remarks>The capacity is guaranteed to be â‰¥ 0.</remarks>
+<remarks>The capacity is guaranteed to be ≥ 0.</remarks>
 
 <value>A <see cref="System.Int32" /> value storing the maximum capacity of
 the counter.</value>

@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -41,73 +41,37 @@ namespace Facsimile.Engine
 
 //=============================================================================
 /**
-<summary>Base class representing a simulation.</summary>
+<summary>Polymorphic singleton class representing a simulation.</summary>
 
-<remarks>In design pattern terms, this class is a "singleton" and fulfills the
-"state context" role of the "state" pattern.</remarks>
+<remarks>This class provides a static, but polymorphic, interface to the
+simulation.
+
+<para>In design pattern terms, this class is a "singleton" and fulfills the
+"state context" role of the "state" pattern.</para>
+
+<para>To create a customised simulation class, derive your own sub-class, and
+decorate it with the the <see cref="AutoInstantiateAttribute" /> attribute.
+Refer to <see cref="Singleton {SingletonBase}" /> for further information.
+Class members should be accessed via the static functions declared by this
+class.</para></remarks>
+
+<seealso cref="Facsimile.Common.Singleton {SingletonBase}" />
+
+<seealso cref="Facsimile.Common.AutoInstantiateAttribute" />
 */
 //=============================================================================
 
     public class Simulation:
-        Facsimile.Common.StateContext <Simulation, SimulationState>
+        Facsimile.Common.SingletonStateContext <Simulation, SimulationContext,
+        SimulationState>
     {
 
-/**
-<summary>Reference to the one and only simulation instance.</summary>
-*/
-
-        private static Simulation simulation;
-
-/**
-<summary>The simulation starting state.</summary>
-*/
-
-        private static readonly SimulationStarting starting;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Static constructor.</summary>
-
-<remarks>Initialize static data members.</remarks>
-*/
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        static Simulation ()
+        public static Facsimile.Common.Measure <Facsimile.Common.TimeUnit>
+        Time
         {
-
-/*
-Ensure that the simulation reference is initially null.
-*/
-
-            simulation = null;
-
-/*
-Create the simulation starting state.
-*/
-
-            starting = new SimulationStarting ();
-        }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-<summary>Default constructor.</summary>
-
-<remarks>Constructs the basic simulation class.</remarks>
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        public Simulation ():
-            base (starting)
-        {
-
-/*
-If the simulation reference is not still null, that is, if a second concurrent
-simulation instance has been created, then throw an exception.
-*/
-
-            if (simulation != null) {
-                // throw some exception, TBD
-            }
         }
     }
 }

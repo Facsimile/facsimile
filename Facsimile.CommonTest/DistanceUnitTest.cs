@@ -1,6 +1,6 @@
 ﻿/*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2007, Michael J Allen.
+Copyright © 2004-2008, Michael J Allen.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -49,7 +49,8 @@ class.</summary>
 //=============================================================================
 
     [TestFixture]
-    public sealed class DistanceUnitTest
+    public sealed class DistanceUnitTest:
+        System.Object
     {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,11 +58,6 @@ class.</summary>
 <summary>Tests that the <see cref="MeasurementUnit.GetStandard (System.Type)"
 /> function identifies the correct standard units.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "DistanceUnit"?  Because XML cref references do not search base classes.
-// See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]
@@ -76,11 +72,6 @@ class.</summary>
 <summary>Tests that the <see cref="MeasurementUnit.IsStandard" /> property
 correctly identifies standard and non-standard units.</summary>
 */
-// TODO: Why does the cref attribute reference "MeasurementUnit" instead of
-// "DistanceUnit"?  Because XML cref references do not search base classes.
-// See:
-//
-// http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=92766
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Test]

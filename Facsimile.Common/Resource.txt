@@ -1,5 +1,5 @@
 ﻿; Facsimile -- A Discrete-Event Simulation Library
-; Copyright © 2004-2007, Michael J Allen.
+; Copyright © 2004-2008, Michael J Allen.
 ;
 ; This program is free software: you can redistribute it and/or modify it under
 ; the terms of the GNU General Public License as published by the Free Software
@@ -46,7 +46,7 @@
 ; 2: The maximum allowed value of this argument.
 ; 3: The actual, invalid value of this argument.
 ;
-argumentOutOfRange = Argument {0} outside of range [{1}, {2}]: {3}
+argumentOutOfRange = Argument {0} outside of range [{1}, {2}]: {3}.
 ;
 ; Argument type exception compound message.  Arguments are:
 ; 0: The name of the argument that was found to be invalid.
@@ -54,7 +54,17 @@ argumentOutOfRange = Argument {0} outside of range [{1}, {2}]: {3}
 ; 2: The full name of the argument's required type.
 ; 3: The full name of the argument's actual type.
 ;
-argumentType = Argument {0}, declared as {1}, must be castable to {2}, but supplied type was {3}
+argumentType = Argument {0}, declared as {1}, must be castable to {2}, but supplied type was {3}.
+;
+; Assumption failure exception.  An invalid assumption was made within the
+; Facsimile code.  There are no arguments.
+;
+assumptionFailure = An assumption made within the Facsimile library has been found to be invalid.  Please report this error to the facsimile team at: https://bugs.launchpad.net/facsimile/+filebug.
+;
+; Bad auto-instantiated type.  Arguments are:
+; 0: The full name of the inappropriately decorated type.
+;
+badAutoInstantiate = {0} is not suitable for decoration by the Facsimile.Common.AutoInstantiateAttribute attribute; this attribute cannot be used to decorate static, generic or abstract types, nor can it be used on classes that do not have an accessible default constructor.
 ;
 ; Counter decrement overflow message.
 ;
@@ -64,6 +74,16 @@ counterDecrementOverflow = Attempt to decrement Counter below zero failed.
 ;
 counterIncrementOverflow = Attempt to increment Counter (limit {0}) failed.
 ;
+; Event not resumable exception.  Arguments are:
+; 0: The full name of the associated event's current state type.
+;
+eventNotResumable=Attempt to resume event whilst in state {0} failed.
+;
+; Event not suspendable exception.  Arguments are:
+; 0: The full name of the associated event's current state type.
+;
+eventNotSuspendable=Attempt to suspend event whilst in state {0} failed.
+;
 ; Invalid state transition.  Arguments are:
 ; 0: The full name of the associated state context object's type.
 ; 1: The full name of the associated state context object's current state's
@@ -71,7 +91,7 @@ counterIncrementOverflow = Attempt to increment Counter (limit {0}) failed.
 ; 2: The full name of the associated state context object's forbidden new
 ;    state's type.
 ;
-invalidStateTransition = Attempt to modify state context object {0}'s state from {1} to {2}, which is forbidden
+invalidStateTransition = Attempt to modify state context object {0}'s state from {1} to {2}, which is forbidden.
 ;
 ; Measure overflow message.  Arguments are:
 ; 0: The full name of the associated measurement unit type.
@@ -79,7 +99,18 @@ invalidStateTransition = Attempt to modify state context object {0}'s state from
 ; 2: The maximum allowed standard unit value for this type of measure.
 ; 3: The actual, invalid value of this argument.
 ;
-measureOverflow = An operation has caused a Facsimile.Common.Measure <{0}> value to be outside its valid range [{1}, {2}]: {3}
+measureOverflow = An operation has caused a Facsimile.Common.Measure <{0}> value to be outside its valid range [{1}, {2}]: {3}.
+;
+; Simulation is out of events.
+;
+outOfEvents = The simulation has run out of events.  This exception should only be thrown and handled internally; an instance of this exception should never reach user-defined code.
+;
+; Singleton exception message.  Arguments are:
+; 0: The full name of the singleton base class.
+; 1: The full name of the class of the existing singleton instance.
+; 1: The full name of the class of a violating singleton instance.
+;
+singleton = Attempt to create a second {0}-derived Singleton instance.  The first instance's class is: {1}; the second, violating instance's class is: {2}.
 ;
 ; Invalid state transition.  Arguments are:
 ; 0: The full name of the associated state context object's type.
