@@ -1,0 +1,143 @@
+/*
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2008, Michael J Allen.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+    http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+    http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+International Components for Unicode (ICU) root resource bundle source file.
+This file defines all resources used by the Facsimile library.
+
+This file is populated using the US-English (en_US) locale, which will become
+the default for missing locales.  (That is, say a user prefers a Mexican
+Spanish locale, but none is available - and no generic Spanish locale is
+available either, then they will get US-English).
+
+Bear in mind that when changing resource definitions here, corresponding
+modifications may also need to be made to other English locales.
+===============================================================================
+*/
+
+root:table
+{
+
+//=============================================================================
+/*
+Exception resources, including the causes of each exception.
+
+Resources from this bundle should be accessed via the Facsimile::X::Exception
+exception base class.
+
+Resources are named after the associated exception class and are listed in
+alphabetical order.
+
+Note: Exception classes that report exceptions accessing resource data
+obviously cannot be listed here!
+*/
+//=============================================================================
+
+    exceptionResources:table
+    {
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Facsimile::X::CounterDecrementException.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        CounterDecrementException:string
+        {
+            "Attempt to decrement Facsimile::Counter instance below zero."
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Facsimile::X::CounterIncrementException.
+
+Arguments:
+0	Maximum count supported by the counter instance (integer).
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        CounterIncrementException:string
+        {
+            "Attempt to increment Facsimile::Counter instance above "
+            "specified limit (limit: {0,number,integer})."
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Facsimile::X::MissingBundleException.
+
+Arguments:
+0	Name of the bundle that was searched.
+1	Name of the bundle that could not be found.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        MissingBundleException:string
+        {
+            "Attempt to locate table bundle {1} within table bundle {0} "
+            "failed."
+        }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Facsimile::X::NullArgumentException.
+
+Arguments:
+0	Name of the pointer argument that was found to be NULL.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        NullArgumentException:string
+        {
+            "Expected non-NULL pointer value for argument \"{0}\", but got "
+            "NULL."
+        }
+    }
+
+//=============================================================================
+/*
+General library information messages.
+*/
+//=============================================================================
+
+    information:table
+    {
+        copyright:string
+        {
+            "Copyright © 2004-2008, Michael J Allen."
+        }
+        name:string
+        {
+            "Facsimile simulation/emulation library."
+        }
+    }
+}
