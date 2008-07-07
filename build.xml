@@ -201,10 +201,11 @@ Temporary directories to hold object files produced during the build process.
 -->
 
         <property name="facsim.tmp" location="tmp" />
-        <property name="facsim.tmp.debug" location="tmp/debug" />
-        <property name="facsim.tmp.release" location="tmp/release" />
-        <property name="facsim.tmp.rsc" location="tmp/rsc" />
-        <property name="facsim.tmp.test" location="tmp/test" />
+        <property name="facsim.tmp.debug" location="${facsim.tmp}/debug" />
+        <property name="facsim.tmp.release" location="${facsim.tmp}/release" />
+        <property name="facsim.tmp.rsc" location="${facsim.tmp}/rsc" />
+        <property name="facsim.tmp.test" location="${facsim.tmp}/test" />
+        <property name="facsim.tmp.tool" location="${facsim.tmp}/tools" />
 
 <!--
 Facsimile include file root directory.
@@ -232,7 +233,7 @@ prevent a source file from being compiled, rename it so that it does not end in
 ".cpp".
 -->
 
-        <property name="facsim.test.src" location="test" />
+        <property name="facsim.test.src" location="src/Test" />
 
 <!--
 We're done.
@@ -766,6 +767,7 @@ Create the directories if neeeded.
         <mkdir dir="${facsim.tmp.release}" />
         <mkdir dir="${facsim.tmp.rsc}" />
         <mkdir dir="${facsim.tmp.test}" />
+        <mkdir dir="${facsim.tmp.tool}" />
 
 <!--
 We're done.
@@ -1107,7 +1109,7 @@ files.
 We're done.
 -->
 
-        <echo level="info">Done building facsimile resources.</echo>
+        <echo level="info">Done building Facsimile resources.</echo>
     </target>
 
 <!--
@@ -1190,7 +1192,7 @@ information but has optimizations within the code.
 We're done.
 -->
 
-        <echo level="info">Done building facsimile libraries.</echo>
+        <echo level="info">Done building Facsimile libraries.</echo>
     </target>
 
 <!--
@@ -1295,15 +1297,16 @@ Now test the release version.
 We're done.
 -->
 
-        <echo level="info">Done testing facsimile libraries.</echo>
+        <echo level="info">Done testing Facsimile libraries.</echo>
     </target>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DocumentFacsimile target.
 
-This target generates the documentation for the entire Facsimile library, both
-user and internal, 
+This target generates the documentation for the entire Facsimile library.
+Currently, only user documentation is generated.  Internal (developer)
+documentation is currently not generated.
 
 Facsimile employs the Doxygen (http://www.doxygen.org/) C++ documentation
 generator.
@@ -1332,7 +1335,31 @@ Now run Doxygen to generate documentation from the sources.
 We're done.
 -->
 
-        <echo level="info">Done documenting facsimile libraries.</echo>
+        <echo level="info">Done documenting Facsimile libraries.</echo>
+    </target>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+BuildTools target.
+
+This target builds all tools associated Facsimile library.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="BuildTools"
+    description="Builds Facsimile Tools." depends="TestFacsimile">
+
+<!--
+Log what we're doing to the output.
+-->
+
+        <echo level="info">Building Facsimile tools...</echo>
+
+<!--
+We're done.
+-->
+
+        <echo level="info">Done building Facsimile tools.</echo>
     </target>
 
 <!--
@@ -1345,7 +1372,7 @@ completes successfully, then we have a release-quality build.
 -->
 
     <target name="All" description="Full build &amp; test"
-    depends="DocumentFacsimile">
+    depends="DocumentFacsimile, BuildTools">
 
 <!--
 If everything has finished successfully, then increment the build number.  This
