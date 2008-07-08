@@ -97,10 +97,7 @@ Default constructor.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         public:
-            inline ArrayNewNotSupportedException () throw ():
-                NotSupportedException ()
-            {
-            }
+            ArrayNewNotSupportedException () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -120,6 +117,18 @@ Override Exception::cause.
         public:
             const icu::UnicodeString cause () const throw ();
         };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+ArrayNewNotSupportedException::ArrayNewNotSupportedException () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        inline ArrayNewNotSupportedException::ArrayNewNotSupportedException ()
+        throw ():
+            NotSupportedException ()
+        {
+        }
     }
 }
 #endif /*FACSIMILE_X_ARRAYNEWNOTSUPPORTEDEXCEPTION_HPP_*/

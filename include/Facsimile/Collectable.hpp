@@ -270,10 +270,7 @@ derived classes only.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     protected:
-        inline Collectable () throw ()
-        {
-            initialize ();
-        }
+        Collectable () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -287,10 +284,7 @@ derived classes only.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     protected:
-        inline Collectable (const Collectable&) throw ()
-        {
-            initialize ();
-        }
+        Collectable (const Collectable&) throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -678,5 +672,27 @@ normal version of the <code><strong>delete []</strong></code> operator.
         void operator delete [] (void* memPtr, const std::nothrow_t& nothrow)
         throw ();
     };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Collectable::Collectable () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    inline Collectable::Collectable () throw ()
+    {
+        initialize ();
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Collectable::Collectable () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    inline Collectable::Collectable (const Collectable&) throw ()
+    {
+        initialize ();
+    }
 }
 #endif /*FACSIMILE_COLLECTABLE_HPP_*/

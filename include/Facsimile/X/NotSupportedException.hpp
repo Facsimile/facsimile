@@ -92,10 +92,7 @@ derived classes only.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         protected:
-            inline NotSupportedException () throw ():
-                LogicException ()
-            {
-            }
+            NotSupportedException () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -106,6 +103,17 @@ Virtual destructor.
         public:
             virtual ~NotSupportedException () throw ();
         };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+NotSupportedException::NotSupportedException () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        inline NotSupportedException::NotSupportedException () throw ():
+            LogicException ()
+        {
+        }
     }
 }
 #endif /*FACSIMILE_X_NOTSUPPORTEDEXCEPTION_HPP_*/

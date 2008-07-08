@@ -95,10 +95,7 @@ derived classes only.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         protected:
-            inline LogicException () throw ():
-                Exception ()
-            {
-            }
+            LogicException () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -109,6 +106,17 @@ Virtual destructor.
         public:
             virtual ~LogicException () throw ();
         };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+LogicException::LogicException () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        inline LogicException::LogicException () throw ():
+            Exception ()
+        {
+        }
     }
 }
 #endif /*FACSIMILE_X_LOGICEXCEPTION_HPP_*/

@@ -99,10 +99,7 @@ Default constructor.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         public:
-            inline ArrayDeleteNotSupportedException () throw ():
-                NotSupportedException ()
-            {
-            }
+            ArrayDeleteNotSupportedException () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -122,6 +119,20 @@ Override Exception::cause.
         public:
             const icu::UnicodeString cause () const throw ();
         };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+ArrayDeleteNotSupportedException::ArrayDeleteNotSupportedException ()
+implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        inline
+        ArrayDeleteNotSupportedException::ArrayDeleteNotSupportedException ()
+        throw ():
+            NotSupportedException ()
+        {
+        }
     }
 }
 #endif /*FACSIMILE_X_ARRAYDELETENOTSUPPORTEDEXCEPTION_HPP_*/

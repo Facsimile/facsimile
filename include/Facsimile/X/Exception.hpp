@@ -98,10 +98,7 @@ derived friend classes only.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         private:
-            inline Exception () throw ():
-                Facsimile::Collectable ()
-            {
-            }
+            Exception () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -133,6 +130,17 @@ the user's own language.
         public:
             virtual const icu::UnicodeString cause () const throw () = 0;
         };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Expception::Exception () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        inline Exception::Exception () throw ():
+            Facsimile::Collectable ()
+        {
+        }
     }
 }
 #endif /*FACSIMILE_X_EXCEPTION_HPP_*/
