@@ -125,6 +125,430 @@ Relevant header files.
 #include <cassert>
 #include <gc/gc.h>
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator new (std::size_t)</code> function.
+
+Allocates <em>uncollectable</em> memory on the <em>collector</em>'s heap.
+
+If insufficient memory exists to satisfy this request, the function will throw
+the <code>std::bad_alloc</code> exception.  However, before throwing an
+exception, the function will first call any existing <em>new handler</em>
+(defined by the <code>std::set_new_handler (std::new_handler)</code> function).
+This is standard C++ behavior.
+
+\remarks This function replaces the global <code>operator new
+(std::size_t)</code> function provided by your compiler.  This is necessary in
+order that all dynamically allocated memory can be scanned, by the collector
+for pointers to <em>collectable</em> memory.
+
+\note The memory allocated by this function will not be automatically collected
+and must be explicitly freed via the corresponding
+<code><strong>delete</strong></code> operator.  Failure to do so will result in
+a <em>memory leak</em>.  This functionality is required for compatibility with
+third-party libraries that do not expect or require the use of a collector.
+
+\par
+This memory will be scanned by the collector to determine if it contains
+pointers to any collectable memory.  If such pointers exist, then the
+corresponding collectable memory is still <em>accessible</em> and will not be
+collected.  The collector will automatically collect and recycle any
+collectable memory that it discovers to be <em>inaccessible</em>.
+
+\par
+The memory allocated may be larger than the number of units requested.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable instead of using the global
+<code><strong>new</strong></code> operator.
+
+\param size The number of <code><strong>char</strong></code> memory units
+required.  This value may be 0.
+
+\return A pointer to the newly allocated memory.
+
+\exception std::bad_alloc Insufficient contiguous memory available to satisfy
+this request.
+
+\see ::operator delete(void*)
+
+\see Facsimile::Collectable::operator new(std::size_t)
+
+\see ::operator new[](std::size_t)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void* operator new (std::size_t size) throw (std::bad_alloc);
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator delete (void*)</code> function.
+
+Frees <em>uncollectable</em> memory from the <em>collector</em>'s heap.
+
+\remarks This function replaces the global <code>operator delete (void*)</code>
+function provided by your compiler.  This is necessary to match up with the
+replacement global operator new(std::size_t) function.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable instead of using the global
+<code><strong>delete</strong></code> operator.
+
+\param memPtr Pointer to the memory to be freed.  If this value is 0, then
+nothing will happen (as required by the C++ standard).
+
+\see ::operator new(std::size_t)
+
+\see Facsimile::Collectable::operator delete(void*)
+
+\see ::operator delete[](void*)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void operator delete (void* memPtr) throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator new (std::size_t, const
+std::nothrow_t&)</code> function.
+
+Allocates <em>uncollectable</em> memory on the <em>collector</em>'s heap.
+
+If insufficient memory exists to satisfy this request, the function will return
+0, instead of throwing the <code>std::bad_alloc</code> exception.  However,
+before returning 0, the function will first call any existing <em>new
+handler</em> (defined by the <code>std::set_new_handler
+(std::new_handler)</code> function).  This is standard C++ behavior.
+
+\remarks This function replaces the global <code>operator new (std::size_t,
+const std::nothrow_t&)</code> function provided by your compiler.  This is
+necessary in order that all dynamically allocated memory can be scanned, by the
+collector, for pointers to <em>collectable</em> memory.
+
+\note The memory allocated by this function will not be automatically collected
+and must be explicitly freed via the corresponding
+<code><strong>delete</strong></code> operator.  Failure to do so will result in
+a <em>memory leak</em>.  This functionality is required for compatibility with
+third-party libraries that do not expect or require the use of a collector.
+
+\par
+This memory will be scanned by the collector to determine if it contains
+pointers to any collectable memory.  If such pointers exist, then the
+corresponding collectable memory is still <em>accessible</em> and will not be
+collected.  The collector will automatically collect and recycle any
+collectable memory that it discovers to be <em>inaccessible</em>.
+
+\par
+The memory allocated may be larger than the number of units requested.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable and use the <code>std::bad_alloc</code>
+version of <code><strong>new</strong></code> instead.
+
+\param size The number of <code><strong>char</strong></code> memory units
+required.  This value may be 0.
+
+\param nothrow A dummy argument to different this function from the
+<code>std::bad_alloc</code>-throwing version.
+
+\return A pointer to the newly allocated memory, or 0 if there is insufficient
+contiguous memory available to satisfy this request.
+
+\see ::operator delete(void*,const std::nothrow_t&)
+
+\see Facsimile::Collectable::operator new(std::size_t,const std::nothrow_t&)
+
+\see ::operator new[](std::size_t,const std::nothrow_t&)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void* operator new (std::size_t size, const std::nothrow_t& nothrow) throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator delete (void*, const
+std::nothrow_t&)</code> function.
+
+Frees <em>uncollectable</em> memory from the <em>collector</em>'s heap.
+
+\remarks This function replaces the global <code>operator delete (void*,
+std::nothrow_t&)</code> function provided by your compiler.  This is necessary
+to match up with the replacement global operator new(std::size_t,const
+std::nothrow_t&) function.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable, and use the <code>std::bad_alloc</code>
+version of <code><strong>new</strong></code> instead.
+
+\param memPtr Pointer to the memory to be freed.  If this value is 0, then
+nothing will happen (as required by the C++ standard).
+
+\param nothrow A dummy argument to different this function from the
+<code>std::bad_alloc</code>-throwing version.
+
+\see ::operator new(std::size_t,const std::nothrow_t&)
+
+\see Facsimile::Collectable::operator delete(void*,const std::nothrow_t&)
+
+\see ::operator delete[](void*,const std::nothrow_t&)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void operator delete (void* memPtr, const std::nothrow_t& nothrow) throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator new [] (std::size_t)</code> function.
+
+Allocates arrayed <em>uncollectable</em> memory on the <em>collector</em>'s
+heap.
+
+If insufficient memory exists to satisfy this request, the function will throw
+the <code>std::bad_alloc</code> exception.  However, before throwing an
+exception, the function will first call any existing <em>new handler</em>
+(defined by the <code>std::set_new_handler (std::new_handler)</code> function).
+This is standard C++ behavior.
+
+\remarks This function replaces the global <code>operator new []
+(std::size_t)</code> function provided by your compiler.  This is necessary in
+order that all dynamically allocated memory can be scanned, by the collector
+for pointers to <em>collectable</em> memory.
+
+\note The memory allocated by this function will not be automatically collected
+and must be explicitly freed via the corresponding <code><strong>delete
+[]</strong></code> operator.  Failure to do so will result in a <em>memory
+leak</em>.  This functionality is required for compatibility with third-party
+libraries that do not expect or require the use of a collector.
+
+\par
+This memory will be scanned by the collector to determine if it contains
+pointers to any collectable memory.  If such pointers exist, then the
+corresponding collectable memory is still <em>accessible</em> and will not be
+collected.  The collector will automatically collect and recycle any
+collectable memory that it discovers to be <em>inaccessible</em>.
+
+\par
+The memory allocated may be larger than the number of units requested.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable instead of using the global
+<code><strong>new []</strong></code> operator, and that you prefer the use of
+container classes (such as <code>std::vector</code>) to the use of raw arrays.
+
+\param size The number of <code><strong>char</strong></code> memory units
+required.  This value may be 0.
+
+\return A pointer to the newly allocated memory.
+
+\exception std::bad_alloc Insufficient contiguous memory available to satisfy
+this request.
+
+\see ::operator delete[](void*)
+
+\see Facsimile::Collectable::operator new[](std::size_t)
+
+\see ::operator new(std::size_t)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void* operator new [] (std::size_t size) throw (std::bad_alloc);
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator delete [] (void*)</code> function.
+
+Frees arrayed <em>uncollectable</em> memory from the <em>collector</em>'s heap.
+
+\remarks This function replaces the global <code>operator delete []
+(void*)</code> function provided by your compiler.  This is necessary to match
+up with the replacement global operator new[](std::size_t) function.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable instead of using the global
+<code><strong>delete []</strong></code> operator, and that you prefer the use
+of container classes (such as <code>std::vector</code>) to the use of raw
+arrays.
+
+\param memPtr Pointer to the memory to be freed.  If this value is 0, then
+nothing will happen (as required by the C++ standard).
+
+\see ::operator new[](std::size_t)
+
+\see Facsimile::Collectable::operator delete[](void*)
+
+\see ::operator delete(void*)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void operator delete [] (void* memPtr) throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator new [] (std::size_t, const
+std::nothrow_t&)</code> function.
+
+Allocates arrayed <em>uncollectable</em> memory on the <em>collector</em>'s
+heap.
+
+If insufficient memory exists to satisfy this request, the function will return
+0, instead of throwing the <code>std::bad_alloc</code> exception.  However,
+before returning 0, the function will first call any existing <em>new
+handler</em> (defined by the <code>std::set_new_handler
+(std::new_handler)</code> function).  This is standard C++ behavior.
+
+\remarks This function replaces the global <code>operator new [] (std::size_t,
+const std::nothrow_t&)</code> function provided by your compiler.  This is
+necessary in order that all dynamically allocated memory can be scanned, by the
+collector, for pointers to <em>collectable</em> memory.
+
+\note The memory allocated by this function will not be automatically collected
+and must be explicitly freed via the corresponding <code><strong>delete
+[]</strong></code> operator.  Failure to do so will result in a <em>memory
+leak</em>.  This functionality is required for compatibility with third-party
+libraries that do not expect or require the use of a collector.
+
+\par
+This memory will be scanned by the collector to determine if it contains
+pointers to any collectable memory.  If such pointers exist, then the
+corresponding collectable memory is still <em>accessible</em> and will not be
+collected.  The collector will automatically collect and recycle any
+collectable memory that it discovers to be <em>inaccessible</em>.
+
+\par
+The memory allocated may be larger than the number of units requested.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable and use the <code>std::bad_alloc</code>
+version of <code><strong>new []</strong></code> instead.  We also recommend
+that you prefer the use of container classes (such as <code>std::vector</code>)
+to the use of raw arrays.
+
+\param size The number of <code><strong>char</strong></code> memory units
+required.  This value may be 0.
+
+\param nothrow A dummy argument to different this function from the
+<code>std::bad_alloc</code>-throwing version.
+
+\return A pointer to the newly allocated memory, or 0 if there is insufficient
+contiguous memory available to satisfy this request.
+
+\see ::operator delete[](void*,const std::nothrow_t&)
+
+\see Facsimile::Collectable::operator new[](std::size_t,const std::nothrow_t&)
+
+\see ::operator new(std::size_t,const std::nothrow_t&)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void* operator new [] (std::size_t size, const std::nothrow_t& nothrow) throw
+();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Replacement C++ global <code>operator delete [] (void*, const
+std::nothrow_t&)</code> function.
+
+Frees arrayed <em>uncollectable</em> memory from the <em>collector</em>'s heap.
+
+\remarks This function replaces the global <code>operator delete [] (void*,
+std::nothrow_t&)</code> function provided by your compiler.  This is necessary
+to match up with the replacement global operator new[](std::size_t,const
+std::nothrow_t&) function.
+
+\deprecated
+This function is provided for compatibility with any third-party libraries that
+require it.  The %Facsimile project strongly recommends that you derive your
+classes from Facsimile::Collectable, or use the <code>std::bad_alloc</code>
+version of <code><strong>new []</strong></code> instead, or that you prefer the
+use of container classes (such as <code>std::vector</code>) to the use of raw
+arrays.
+
+\param memPtr Pointer to the memory to be freed.  If this value is 0, then
+nothing will happen (as required by the C++ standard).
+
+\param nothrow A dummy argument to different this function from the
+<code>std::bad_alloc</code>-throwing version.
+
+\see ::operator new[](std::size_t,const std::nothrow_t&)
+
+\see Facsimile::Collectable::operator delete[](void*,const std::nothrow_t&)
+
+\see ::operator delete(void*,const std::nothrow_t&)
+
+\see \ref collector
+
+\see Facsimile::Collectable
+
+\internal This function cannot be inlined.  It must be available to the linker,
+so that it will be used by third-party libraries.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void operator delete [] (void* memPtr, const std::nothrow_t& nothrow) throw ();
+
 /*
 Namespace declaration.
 */
@@ -284,7 +708,7 @@ derived classes only.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     protected:
-        Collectable (const Collectable&) throw ();
+        Collectable (const Collectable& other) throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**

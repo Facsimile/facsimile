@@ -1,0 +1,326 @@
+/*
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2008, Michael J Allen.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+    http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+    http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+C++ source file for the Resource class, and associated elements, that are
+integral members of the Facsimile namespace.
+===============================================================================
+*/
+
+/*
+Relevant header files.
+*/
+
+#include <unicode/utypes.h>
+#include <unicode/locid.h>
+#include <Facsimile/Resource.hpp>
+
+/*
+Assume the Facsimile namespace throughout.
+*/
+
+using namespace Facsimile;
+
+/*
+Definition of the resource package name.
+*/
+
+const icu::UnicodeString Resource::packageName = UNICODE_STRING_SIMPLE
+("FacsimileResources");
+
+/*
+Definition of the exception resource bundle name.
+*/
+
+const icu::UnicodeString Resource::exceptionBundleName = UNICODE_STRING_SIMPLE
+("exceptionResources");
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Resource::getString (const icu::ResourceBundle&, const char*) implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::UnicodeString& getString (const icu::ResourceBundle&
+bundle, const char* key) throw (Facsimile::X::NullArgumentException,
+Facsimile::X::ResourceTypeMismatchException,
+Facsimile::X::ResourceNotFoundException)
+{
+
+/*
+Verify that key is non-null.
+*/
+
+    FM_TEST_ARGUMENT_NON_NULL (key);
+
+/*
+Retrieve the requested string from the bundle.
+*/
+
+    icu::UErrorCode status = icu::U_ZERO_ERROR;
+    icu::UnicodeString result = bundle.getStringEx (key, status);
+
+/*
+Check for errors.
+*/
+
+    switch (status)
+    {
+
+/*
+Key not found?
+*/
+
+    case icu::U_MISSING_RESOURCE_ERROR:
+        throw Facsimile::X::ResourceNotFoundException (bundle, key);
+
+/*
+Resource identified by key not a string resource?
+*/
+
+    case icu::U_RESOURCE_TYPE_MISMATCH:
+        throw Facsimile::X::ResourceTypeMismatchException (bundle, key);
+    }
+
+/*
+Return the unformatted string.
+*/
+
+    assert (U_SUCCESS (status));
+    assert (!result.isBogus ());
+    assert (!result.trim ().isEmpty ());
+    return result;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Resource::getExceptionString (const char*) implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::UnicodeString& Resource::getExceptionString (const char* key) throw
+()
+{
+
+/*
+Retrieve the string from the exception bundle and return it.
+*/
+
+    assert (key);
+    icu::UnicodeString& result = getString (getExceptionBundle (), key);
+    assert (!result.isBogus ());
+    assert (!result.trim ().isEmpty ());
+    return result;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Resource::getExceptionString (const char*, const icu::Formattable&)
+implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::UnicodeString& Resource::getExceptionString (const char* key, const
+icu::Formattable& arguments) throw ()
+{
+
+/*
+Retrieve the string from the exception bundle and return it.
+*/
+
+    assert (key);
+    icu::UnicodeString& result = getString (getExceptionBundle (), key,
+    arguments);
+    assert (!result.isBogus ());
+    assert (!result.trim ().isEmpty ());
+    return result;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Resource::getRootBundle () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::ResourceBundle& Resource::getRootBundle () throw ()
+{
+
+/*
+Create a static data member to hold the pointer.  The initialization function
+is called once only when the static member is initialized.
+
+This might throw an exception if resources are unavailable when the attempt to
+initialize the bundle is made, which will terminate the current program.
+*/
+
+    static const icu::ResourceBundle* bundle = initializeBundle ();
+    assert (bundle);
+
+/*
+Return the bundle's reference.
+*/
+
+    return *bundle;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Resource::getBundle (const icu::UnicodeString&) implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::ResourceBundle* Resource::getBundle (const icu::UnicodeString&
+bundleName) throw ()
+{
+
+/*
+Retrieve the specified bundle for the default locale from the root bundle.  If
+our resources are unavailable, then this will terminate the current program.
+
+Note: No need to do any assertions on the bundle name - we either find it or we
+don't.  Internal code should perform assertions (not bogus, not empty, etc.)
+before calling.
+
+Caller is responsible for recycling the memory used to store the bundle.  If
+you do not delete this, memory leaks will result.  (There has to be a better
+way if we're using garbage collection for the main library!)
+*/
+
+    icu::UErrorCode status = U_ZERO_ERROR;
+    icu::ResourceBundle* bundle = getRootBundle ().get (bundleName, status);
+
+/*
+If we were unsuccessful in getting the resource bundle, then throw the
+MissingBundleException, which will cause the current program to terminate.
+*/
+
+    if (U_FAILURE (status))
+    {
+        throw Facsimile::X::MissingBundleException (getRootBundle (),
+        bundleName);
+    }
+
+/*
+Otherwise, return the requested bundle.
+*/
+
+    assert (bundle);
+    return bundle;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Resource::initializeBundle () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::ResourceBundle* Resource::initializeBundle () throw
+(Facsimile::X::MissingResourcesException)
+{
+
+/*
+Retrieve the resource bundle for the default locale.  If there are no resource
+bundles for the user's default locale available, then this should automatically
+"fallback" to the best matching resource bundle avaialble.
+*/
+
+    assert (!packageName.isBogus ());
+    assert (!packageName.trim ().isEmpty ());
+    icu::UErrorCode status = U_ZERO_ERROR;
+    icu::ResourceBundle* bundle = new icu::ResourceBundle (packageName,
+    status);
+
+/*
+If we were unsuccessful in getting the resource bundle, then throw the
+appropriate exception.  This will cause the current program to terminate.
+*/
+
+    if (U_FAILURE (status))
+    {
+        throw Facsimile::X::MissingResourcesException (packageName);
+    }
+
+/*
+Otherwise, return the root bundle.
+*/
+
+    assert (bundle);
+    return bundle;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Exception::getExceptionBundle () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::ResourceBundle& Exception::getExceptionBundle () throw ()
+{
+
+/*
+Create a static data member to hold the pointer.  The initialization function
+is called once only when the static member is initialized.
+
+This might throw an exception if resources are unavailable when the attempt to
+initialize the bundle is made, which will terminate the current program.
+*/
+
+    static const icu::ResourceBundle* bundle = initializeExceptionBundle ();
+    assert (bundle);
+
+/*
+Return the bundle's reference.
+*/
+
+    return *bundle;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Resource::initializeExceptionBundle () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const icu::ResourceBundle* Resource::initializeExceptionBundle () throw ()
+{
+
+/*
+Retrieve the exception bundle.  An exception will occur if the resources are
+unavailable, which will terminate the current program.
+*/
+
+    assert (!exceptionBundleName.isBogus ());
+    assert (!exceptionBundleName.trim ().isEmpty ());
+    const icu::ResourceBundle bundle = getBundle (exceptionBundleName);
+    assert (bundle);
+    return bundle;
+}

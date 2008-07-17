@@ -252,10 +252,7 @@ Get the heap size index.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static int getHeapSizeIndex () throw ()
-    {
-        return heapSizeIndex;
-    }
+    static int getHeapSizeIndex () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -270,10 +267,7 @@ never be called by a simulation model.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static void setHeapSize () throw ()
-    {
-        GC_set_max_heap_size (heapSize [heapSizeIndex]);
-    }
+    static void setHeapSize () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -284,11 +278,7 @@ Initialise the heap characteristics.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static void initialize () throw ()
-    {
-        assert (heapSizeIndex == 0);
-        setHeapSize ();
-    }
+    static void initialize () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -299,11 +289,7 @@ Updates the heap size to the next limit.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static void updateHeapSize () throw ()
-    {
-        ++heapSizeIndex;
-        setHeapSize ();
-    }
+    static void updateHeapSize () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -317,10 +303,7 @@ restores the heap to its maximum size when the instance goes out of scope.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    Heap () throw ()
-    {
-        setHeapSize ();
-    }
+    Heap () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -335,10 +318,7 @@ never be called by a simulation model.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline ~Heap () throw ()
-    {
-        GC_set_max_heap_size (0);
-    }
+    ~Heap () throw ();
 };
 
 //=============================================================================
@@ -417,10 +397,7 @@ Re-establish the original new handler as the current new handler.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline ~NewHandler () throw ()
-    {
-        std::set_new_handler (originalHandler);
-    }
+    ~NewHandler () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -431,10 +408,7 @@ Reset the new handler seen flags to false.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static void resetFlag () throw ()
-    {
-        newHandlerSeen = false;
-    }
+    static void resetFlag () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -445,10 +419,7 @@ Report new handler seen flag.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static bool wasNewHandlerSeen () throw ()
-    {
-        return newHandlerSeen;
-    }
+    static bool wasNewHandlerSeen () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -542,12 +513,7 @@ Store a miscellaneous value for later use.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline MyMemoryBase (int value) throw ():
-        someValue (value)
-    {
-        boost::recursive_mutex::scoped_lock lock (staticMutex);
-        ++instanceCount;
-    }
+    MyMemoryBase (int value) throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -556,12 +522,7 @@ Virtual destructor.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline virtual ~MyMemoryBase () throw ()
-    {
-        boost::recursive_mutex::scoped_lock lock (staticMutex);
-        assert (instanceCount > 0);
-        --instanceCount;
-    }
+    virtual ~MyMemoryBase () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -572,11 +533,7 @@ Report the instance count.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static Count getInstanceCount () throw ()
-    {
-        boost::recursive_mutex::scoped_lock lock (staticMutex);
-        return instanceCount;
-    }
+    static Count getInstanceCount () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -587,10 +544,7 @@ Report the value stored by this instance.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline int getValue () const throw ()
-    {
-        return someValue;
-    }
+    int getValue () const throw ();
 };
 
 //=============================================================================
@@ -652,10 +606,7 @@ this value will default to 7.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline MyCollectable (int value = 7) throw ():
-        Facsimile::Collectable (), MyMemoryBase (value)
-    {
-    }
+    MyCollectable (int value = 7) throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -680,11 +631,7 @@ manually or automatically).
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline static Count getFinalizationCount () throw ()
-    {
-        boost::recursive_mutex::scoped_lock lock (staticMutex);
-        return finalizationCount;
-    }
+    static Count getFinalizationCount () throw ();
 };
 
 //=============================================================================
@@ -716,10 +663,7 @@ this value will default to 31.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline MyUncollectable (int value = 31) throw ():
-        MyMemoryBase (value)
-    {
-    }
+    MyUncollectable (int value = 31) throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -728,9 +672,7 @@ Virtual destructor.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline virtual ~MyUncollectable () throw ()
-    {
-    }
+    virtual ~MyUncollectable () throw ();
 };
 
 //=============================================================================
@@ -781,12 +723,17 @@ Store a reference to the collectable object.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-     inline MyUncollectableWithCollectablePtr (int value, MyCollectable*
-     collectableObject) throw ():
-        MyMemoryBase (value), someCollectableObject (collectableObject)
-     {
-        assert (collectableObject);
-     }
+     MyUncollectableWithCollectablePtr (int value, MyCollectable*
+     collectableObject) throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Virtual destructor.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+public:
+    virtual ~MyUncollectableWithCollectablePtr () throw ();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
@@ -797,21 +744,7 @@ Report stored pointer.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 public:
-    inline MyCollectable* getPointer () const throw ()
-    {
-        return someCollectableObject;
-    }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-Virtual destructor.
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-public:
-    inline virtual ~MyUncollectableWithCollectablePtr () throw ()
-    {
-    }
+    MyCollectable* getPointer () const throw ();
 };
 
 //=============================================================================
@@ -1067,4 +1000,236 @@ the finalization count was reached.
 private:
     static Count garbageCollect (Count targetCount, Count retryLimit) throw ();
 };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Heap::getHeapSizeIndex () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline int Heap::getHeapSizeIndex () throw ()
+{
+    return heapSizeIndex;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Heap::setHeapSize () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline void Heap::setHeapSize () throw ()
+{
+    GC_set_max_heap_size (heapSize [heapSizeIndex]);
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Heap::initialize () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline void Heap::initialize () throw ()
+{
+    assert (heapSizeIndex == 0);
+    setHeapSize ();
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Heap::updateHeapSize () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline void Heap::updateHeapSize () throw ()
+{
+    ++heapSizeIndex;
+    setHeapSize ();
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Heap::Heap () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline Heap::Heap () throw ()
+{
+    setHeapSize ();
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Heap::~Heap () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline Heap::~Heap () throw ()
+{
+    GC_set_max_heap_size (0);
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+NewHandler::~NewHandler () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline NewHandler::~NewHandler () throw ()
+{
+    std::set_new_handler (originalHandler);
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+NewHandler::resetFlag () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline void NewHandler::resetFlag () throw ()
+{
+    newHandlerSeen = false;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+NewHandler::wasNewHandlerSeen () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline bool NewHandler::wasNewHandlerSeen () throw ()
+{
+    return newHandlerSeen;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyMemoryBase::MyMemoryBase (int) implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyMemoryBase::MyMemoryBase (int value) throw ():
+    someValue (value)
+{
+    boost::recursive_mutex::scoped_lock lock (staticMutex);
+    ++instanceCount;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyMemoryBase::~MyMemoryBase () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyMemoryBase::~MyMemoryBase () throw ()
+{
+    boost::recursive_mutex::scoped_lock lock (staticMutex);
+    assert (instanceCount > 0);
+    --instanceCount;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyMemoryBase::getInstanceCount () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline Count MyMemoryBase::getInstanceCount () throw ()
+{
+    boost::recursive_mutex::scoped_lock lock (staticMutex);
+    return instanceCount;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyMemoryBase::getValue () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline int MyMemoryBase::getValue () const throw ()
+{
+    return someValue;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyCollectable::MyCollectable (int) implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyCollectable::MyCollectable (int value) throw ():
+    Facsimile::Collectable (), MyMemoryBase (value)
+{
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyCollectable::getFinalizationCount () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline Count MyCollectable::getFinalizationCount () throw ()
+{
+    boost::recursive_mutex::scoped_lock lock (staticMutex);
+    return finalizationCount;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyUncollectable::MyUncollectable (int) implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyUncollectable::MyUncollectable (int value) throw ():
+    MyMemoryBase (value)
+{
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyUncollectable::~MyUncollectable () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyUncollectable::~MyUncollectable () throw ()
+{
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyUncollectableWithCollectablePtr::MyUncollectableWithCollectablePtr (int,
+MyCollectable*) implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyUncollectableWithCollectablePtr::MyUncollectableWithCollectablePtr
+(int value, MyCollectable* collectableObject) throw ():
+    MyMemoryBase (value), someCollectableObject (collectableObject)
+{
+    assert (collectableObject);
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyUncollectableWithCollectablePtr::~MyUncollectableWithCollectablePtr ()
+implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyUncollectableWithCollectablePtr::~MyUncollectableWithCollectablePtr ()
+throw ()
+{
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+MyUncollectableWithCollectablePtr::getPointer () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+inline MyCollectable* MyUncollectableWithCollectablePtr::getPointer () const
+throw ()
+{
+    return someCollectableObject;
+}
 #endif /*TEST_FACSIMILE_COLLECTABLE_HPP_*/
