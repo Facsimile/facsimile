@@ -45,12 +45,14 @@ test suite entry point.
 Relevant header files.
 */
 
+#include <iostream>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/TestResult.h>
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TextTestProgressListener.h>
 #include <cppunit/TextOutputter.h>
+#include "LogFile.hpp"
 #include "Facsimile_Collectable.hpp"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,7 +68,7 @@ test suite ran successfully and that no tests failed.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-int main (int /*argc*/, char** /*argv*/)
+int main (int argc, char** argv)
 {
 
 /*
@@ -76,6 +78,22 @@ too large...
 */
 
     Heap::initialize ();
+
+/*
+The only command line argument that we get is suffix for log file generation.
+If it's present, then store the suffix.
+*/
+
+    if (argc > 2)
+    {
+        std::cerr << "Too many command line arguments.  Tests aborting..." <<
+        std::endl;
+        return 1;
+    }
+    if (argc == 2)
+    {
+        LogFile::setSuffix (argv [1]);
+    }
 
 /*
 Create the event manager and test controller.

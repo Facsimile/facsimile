@@ -34,10 +34,10 @@ $Id$
 //=============================================================================
 /**
 \file
-%Facsimile ArrayDeleteNotSupportedException class C++ source file.
+Facsimile::X exception class test suite C++ source file.
 
-C++ source file for the ArrayDeleteNotSupportedException class, and associated
-elements, that are integral members of the Facsimile::X namespace.
+C++ source file for the Facsimile::X exception class test suite.  This tests
+all instantiable exception classes.
 */
 //=============================================================================
 
@@ -45,43 +45,72 @@ elements, that are integral members of the Facsimile::X namespace.
 Relevant header files.
 */
 
-#include <Facsimile/X/ArrayDeleteNotSupportedException.hpp>
+#include <typeinfo>
+#include "Facsimile_X.hpp"
 
 /*
-Assume the Facsimile::X namespace throughout.
+Register this test suite.
 */
 
-using namespace Facsimile::X;
+CPPUNIT_TEST_SUITE_REGISTRATION (Test_Facsimile_X);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*
-ArrayDeleteNotSupportedException::~ArrayDeleteNotSupportedException ()
-implementation.
+Test_Facsimile_X::testArrayDeleteNotSupported () implementation.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ArrayDeleteNotSupportedException::~ArrayDeleteNotSupportedException () throw ()
+void Test_Facsimile_X::testArrayDeleteNotSupported () throw
+(CppUnit::Exception)
 {
+
+/*
+Create as many variants of the exception as possible and log their
+explanations.
+*/
+
+    LOG_APPEND;
+    Facsimile::X::ArrayDeleteNotSupportedException e1;
+    log << "ArrayDeleteNotSupportedException (): " << e1.cause () << std::endl;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*
-ArrayDeleteNotSupportedException::cause () implementation.
+Test_Facsimile_X::testArrayNewNotSupported () implementation.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const icu::UnicodeString ArrayDeleteNotSupportedException::cause () const throw
-()
+void Test_Facsimile_X::testArrayNewNotSupported () throw (CppUnit::Exception)
 {
 
-// TODO: Just return an error message for now.  Once we have resources in the
-// model up-and-running, we'll change this.
+/*
+Create as many variants of the exception as possible and log their
+explanations.
+*/
 
-    icu::UnicodeString result = UNICODE_STRING_SIMPLE ("Array delete [] is "
-    "not supported for sub-classes of Facsimile::Collectable.  Since the "
-    "corresponding new [] operator used to claim this memory should have "
-    "thrown a fatal exception, this exception most likely indicates that the "
-    "wrong delete operator is being used to free memory.");
-    return result;
+    LOG_APPEND;
+    Facsimile::X::ArrayNewNotSupportedException e1;
+    log << "ArrayNewNotSupportedException (): " << e1.cause () << std::endl;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Test_Facsimile_X::testSingleton () implementation.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void Test_Facsimile_X::testSingleton () throw (CppUnit::Exception)
+{
+
+/*
+Create as many variants of the exception as possible and log their
+explanations.
+*/
+
+    LOG_APPEND;
+    Facsimile::X::SingletonException e1 (UNICODE_STRING_SIMPLE
+    ("SomeTestSingleton"));
+    log << "SingletonException (\"SomeTestSingleton\"): " << e1.cause () <<
+    std::endl;
 }
 

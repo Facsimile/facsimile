@@ -121,6 +121,13 @@ Refer to http://ant-contrib.sourceforge.net/cpptasks for further information.
 -->
 
         <taskdef resource="cpptasks.tasks" />
+
+<!--
+Ant-Contrib tasks.  These permit Ant to support <if>, etc. and other useful
+tasks (no idea why Ant doesn't provide them out of the box...).
+-->
+
+        <taskdef resource="net/sf/antcontrib/antlib.xml" />
     </target>
 
 <!--
@@ -234,6 +241,17 @@ prevent a source file from being compiled, rename it so that it does not end in
 -->
 
         <property name="facsim.test.src" location="src/Test" />
+
+<!--
+Test data directory for the Facsimile test-suite.
+
+All test suite log files, wth a ".log" file extension, within this directory,
+or its sub-directories, will be used to verify test-suite output.  These files
+are used to regression test fresh test-suite output logs against previously
+known good test suite output logs.
+-->
+
+        <property name="facsim.test.data" location="testdata" />
 
 <!--
 We're done.
@@ -1122,13 +1140,19 @@ versions.
 Facsimile employs a number of third-party libraries that are GPL-compatible.
 These libraries are as follows:
 
+gc  Boehm-Demers-Weiser conservative garbage collection library.  This library
+    provides automated garbage collection facilities to Facsimile.
+icuio
+    International Components for Unicode (ICU), input/output library.  This
+    library provides I/O facilities for ICU features (including operator << and
+    operator >>).
+icui18n
+    International Components for Unicode (ICU), internationalization library.
+    This library defines locale characteristics for many different locales.
 icuuc
     International Components for Unicode (ICU), common library.  This library
     defines the icu::Locale, icu::UnicodeString and icu::ResourceBundle
     classes.
-icui18n
-    International Components for Unicode (ICU), internationalization library.
-    This library defines locale characteristics for many different locales.
 boost_signals-mt
     The Boost C++ Signals library.  This library implements the slots and
     signals processing features of Facsimile.
@@ -1167,7 +1191,7 @@ information and has no optimizations within the code.
         multithreaded="true">
             <includepath location="${facsim.include}" />
             <libset dir="${facsim.lib}" libs="${facsim.rsc.mainName}" />
-            <libset libs="gc,icuuc,boost_signals-mt,boost_thread-mt" />
+            <libset libs="gc,icuuc,icuio,boost_signals-mt,boost_thread-mt" />
             <fileset refid="facsim.sources" />
         </cc>
 
@@ -1184,7 +1208,7 @@ information but has optimizations within the code.
             <compilerarg location="mid" value="-DNDEBUG" />
             <includepath location="${facsim.include}" />
             <libset dir="${facsim.lib}" libs="${facsim.rsc.mainName}" />
-            <libset libs="gc,icuuc,boost_signals-mt,boost_thread-mt" />
+            <libset libs="gc,icuuc,icuio,boost_signals-mt,boost_thread-mt" />
             <fileset refid="facsim.sources" />
         </cc>
 
@@ -1202,12 +1226,12 @@ TestFacsimile target.
 This target tests the entire Facsimile library, both Debug and Release
 versions, to ensure that it is functioning correctly.
 
-Facsimile employs the ???? C++ unit-testing framework.
+Facsimile employs the CppUnit C++ unit-testing framework.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
     <target name="TestFacsimile" description="Test Facsimile libraries."
-    depends="BuildFacsimile">
+    depends="_CreateLogDir, BuildFacsimile">
 
 <!--
 Log what we're doing to the output.
@@ -1241,7 +1265,8 @@ code is the same for both versions of the test suite.
             <includepath location="${facsim.include}" />
             <libset dir="${facsim.lib}"
             libs="${facsim.rsc.mainName},${facsim.dbg.mainName}" />
-            <libset libs="cppunit,gc,icuuc,boost_signals-mt,boost_thread-mt" />
+            <libset libs="cppunit,icuuc,icuio,boost_signals-mt,boost_thread-mt"
+            />
             <fileset refid="facsim.test.sources" />
         </cc>
 
@@ -1256,6 +1281,7 @@ Now test the debug version.
         executable="${facsim.bin}/${facsim.test.dbgExe}" logerror="true"
         failonerror="true">
             <env key="LD_LIBRARY_PATH" value="${facsim.binLib}" />
+            <arg value="Debug" />
         </exec>
 
 <!--
@@ -1276,7 +1302,8 @@ code is the same for both versions of the test suite.
             <includepath location="${facsim.include}" />
             <libset dir="${facsim.lib}"
             libs="${facsim.rsc.mainName},${facsim.rel.mainName}" />
-            <libset libs="cppunit,gc,icuuc,boost_signals-mt,boost_thread-mt" />
+            <libset libs="cppunit,icuuc,icuio,boost_signals-mt,boost_thread-mt"
+            />
             <fileset refid="facsim.test.sources" />
         </cc>
 
@@ -1291,6 +1318,7 @@ Now test the release version.
         executable="${facsim.bin}/${facsim.test.relExe}" logerror="true"
         failonerror="true">
             <env key="LD_LIBRARY_PATH" value="${facsim.binLib}" />
+            <arg value="Release" />
         </exec>
 
 <!--
@@ -1298,6 +1326,120 @@ We're done.
 -->
 
         <echo level="info">Done testing Facsimile libraries.</echo>
+    </target>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+VerifyLogs target.
+
+This target verifies Facsimile test suite log files.
+
+The test suites creates a set of log files (int the ${facsim.log} directory)
+during their execution.  We need to compare these logs with the stored copies
+in the ${facsim.log.data} directory.  If a log file has changed (that is, if
+the contents of a newly generated log differs from its stored version), then we
+need to ask the user to verify the new version.  If they verify the file, then
+we will replace the previous version with the new log; if they fail to verify
+the file, then we will fail the build.
+
+There will be both debug and release versions of the logs.  Furthermore, we may
+also have different logs for each locale, so that we can ensure that each
+supported locale has an appropriate set of messages.  (Note, however, that the
+test suite will use the current default locale when it executes, so that the
+full set of stored logs is not necessarily checked each time the test suite
+runs - only those logs with a matching locale.  The automated testers will be
+executed on each supported locale to ensure full test coverage.)
+
+The primary purpose of this step is to ensure that any text output (such as
+exception messages, etc.) is formatted correctly.
+
+Automated testing cannot verify files and will automatically fail if any log
+files differ.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+    <target name="VerifyLogs"
+    description="Verifying Facsimile test suite logs." depends="TestFacsimile">
+
+<!--
+Log what we're doing to the output.
+-->
+
+        <echo level="info">Verifying Facsimile test suite logs...</echo>
+
+<!--
+Firstly, we need to create a list of all log files that differ from our stored
+set.
+-->
+
+        <fileset id="facsim.log.files" dir="${facsim.log}" >
+            <include name="**/*.log" />
+            <different targetdir="${facsim.test.data}" ignoreFileTimes="true"
+            />
+        </fileset>
+
+<!--
+If the fileset contains any files, then set a flag indicating that some files
+have changed.  We also inform the user which files changed so that they can be
+reviewed.
+-->
+
+        <for param="logFile">
+            <fileset refid="facsim.log.files" />
+            <sequential>
+                <echo>Log file @{logFile} changed since last good build</echo>
+                <property name="facsim.log.filesModified" value="true" />
+            </sequential>
+        </for>
+
+<!--
+If any log files do differ from the stored versions, then ask the user to
+manually verify them.  If the user chooses not to verify them (default), then
+the build fails.
+
+Note:  If the user is not sure, or doesn't have time to verify the differences,
+then they should NOT approve the files.
+-->
+
+        <if>
+            <isset property="facsim.log.filesModified" />
+            <then>
+                <input message="Verify these log files?" validargs="y,n"
+                defaultValue="n" addproperty="facsim.log.verifyReply" />
+
+<!--
+If the user chose to verify these files, then copy them across to the store.
+-->
+
+                <if>
+                    <equals arg1="${facsim.log.verifyReply}" arg2="y" />
+
+<!--
+Now copy all files that are different and that have been approved by the
+developer executing these tests.
+-->
+
+                    <then>
+                        <copy todir="${facsim.test.data}" overwrite="true">
+                            <fileset refid="facsim.log.files" />
+                        </copy>
+                    </then>
+
+<!--
+Otherwise, the build must fail.
+-->
+                    <else>
+                        <fail>Log file changes not verified.</fail>
+                    </else>
+                </if>
+            </then>
+        </if>
+
+<!--
+We're done.
+-->
+
+        <echo level="info">Done verifying Facsimile test suite logs.</echo>
     </target>
 
 <!--
@@ -1314,7 +1456,7 @@ generator.
 -->
 
     <target name="DocumentFacsimile"
-    description="Document Facsimile libraries." depends="TestFacsimile">
+    description="Document Facsimile libraries." depends="VerifyLogs">
 
 <!--
 Log what we're doing to the output.

@@ -1,0 +1,349 @@
+/*
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2008, Michael J Allen.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+    http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+    http://www.facsim.org/Documentation/CodingStandards/
+
+$Id$
+*/
+//=============================================================================
+/**
+\file
+%Facsimile Resource class C++ header file.
+
+C++ header file for the Resource class, and associated elements, that are
+integral members of the Facsimile namespace.
+*/
+//=============================================================================
+
+/**
+Include guard.
+*/
+
+#ifndef FACSIMILE_RESOURCE_HPP_
+#define FACSIMILE_RESOURCE_HPP_
+
+/*
+Relevant header files.
+*/
+
+#include <cassert>
+#include <unicode/unistr.h>
+#include <unicode/resbund.h>
+#include <Facsimile/Singleton.hpp>
+
+/*
+Namespace declaration.
+*/
+
+namespace Facsimile
+{
+
+//=============================================================================
+/**
+Retrieves %Facsimile library resources.
+
+\remarks This is a helper class that assists with the processing of
+%Facsimile's resources.  It is unlikely to be of interest to user code.
+*/
+//=============================================================================
+
+    class Resource:
+        Facsimile::Singleton <Resource>
+    {
+
+/**
+%Facsimile resource package name.
+
+This string identifies the %Facsimile resource package name.
+
+\internal This name <strong>must</strong> match the name given to the resource
+bundle in the Ant build script.  Furthermore, for improved binary
+compatibility with the shared resource library, this name should not be
+modified within a major release series.
+*/
+
+    private:
+        const char* packageName;
+
+/**
+Exception resource bundle name.
+
+Identifies the bundle of exception resources, within the root bundle, that
+includes explanations for all exceptions.
+
+\internal This name <strong>must</strong> match the name of the exception
+resource bundle declared in the ICU resource source files.  Furthermore, for
+improved binary compatibility with the shared resource library, this name
+should not be modified within a major release series.
+*/
+
+    private:
+        const char* exceptionBundleName;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Retrieve unformatted string.
+
+Retrieve a string, taking no arguments (that is, an <em>unformatted</em>
+string), in the user's preferred locale (or a suitable fallback locale), and
+report it to the caller.  The string is identified by the specified key, which
+must identify a string resource within the indicated resource bundle.
+
+\param bundle The resource bundle in which the string resource is to be found.
+
+\param key The name of the string resource to be retrieved from the indicated
+resource bundle.  If there is no resource matching this key, or if the matching
+resource is not a string, then an exception will result.  This value cannot be
+null.
+
+\returns The requested, unformatted string in the user's preferred locale, or
+in a suitable fallback locale.
+
+\exception Facsimile::X::NullArgumentException Key is null.
+
+\exception Facsimile::X::ResourceTypeMismatchException Resource identified by
+key is not a string resource.
+
+\exception Facsimile::X::ResourceNotFoundException Resource identified by key
+could not be found within the indicated bundle.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    public:
+        static const icu::UnicodeString& getString (const icu::ResourceBundle&
+        bundle, const char* key) throw (Facsimile::X::NullArgumentException,
+        Facsimile::X::ResourceTypeMismatchException,
+        Facsimile::X::ResourceNotFoundException);
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Retrieve formatted string.
+
+Retrieve a string, taking one or more arguments (that is, a <em>formatted</em>
+string), in the user's preferred locale (or a suitable fallback locale), and
+report it to the caller.  The string is identified by the specified key, which
+must identify a string resource within the indicated resource bundle.
+
+\param bundle The resource bundle in which the string resource is to be found.
+
+\param key The name of the string resource to be retrieved from the indicated
+resource bundle.  If there is no resource matching this key, or if the matching
+resource is not a string, then an exception will result.  This value cannot be
+null.
+
+\param arguments The arguments to be used to populate the string before it is
+returned.  Arguments are stored in an icu::Formattable object of type kArray.
+The number and type of the arguments passed must match the number and type of
+arguments within the requested resource string, otherwise exceptions will
+result.
+
+\returns The requested, formatted string in the user's preferred locale, or in
+a suitable fallback locale.
+
+\exception Facsimile::X::NullArgumentException Key is null.
+
+\exception Facsimile::X::ResourceTypeMismatchException Resource identified by
+key is not a string resource.
+
+\exception Facsimile::X::ResourceNotFoundException Resource identified by key
+could not be found within the indicated bundle.
+
+\exception Facsimile::X::ResourceArgumentCountException The number of arguments
+supplied does not match the number of arguments required by the requested
+resource string.
+
+\exception Facsimile::X::ResourceArgumentTypeException The type of a supplied
+argument does not match the type required by the requested resource string.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    public:
+        static const icu::UnicodeString& getString (const icu::ResourceBundle&
+        bundle, const char* key, const icu::Formattable& arguments) throw
+        (Facsimile::X::NullArgumentException,
+        Facsimile::X::ResourceTypeMismatchException,
+        Facsimile::X::ResourceNotFoundException,
+        Facsimile::X::ResourceArgumentCountException,
+        Facsimile::X::ResourceArgumentTypeException);
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Retrieve unformatted exception string.
+
+Retrieve a string, taking no arguments (that is, an <em>unformatted</em>
+string), in the user's preferred locale (or a suitable fallback locale) and
+that provides an explanation for an exception, and report it to the caller.
+The string is identified by the specified key, which must identify a string
+resource within the %Facsimile exception resource bundle.
+
+\note This function is not intended for general use.  Any problems encountered
+(such as a non-existant key, identified resource not a string resource, etc.)
+will lead to immediate termination of the current program.  Since this function
+is intended for use by exception reporting code, which should never encounter
+such problems, this is not deemed a problem.
+
+\param key A const char pointer identifying a null-terminated string that
+identifies the required string resource within the %Facsimile exception
+resource bundle.  If there is no resource matching this key, or if the matching
+resource is not a string, then the current program will terminate.
+
+\returns A constant icu::UnicodeString reference to the unformatted exception
+string.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    public:
+        static const icu::UnicodeString& getExceptionString (const char* key)
+        throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Retrieve formatted exception string.
+
+Retrieve a string, taking one or more arguments (that is, a <em>formatted</em>
+string), in the user's preferred locale (or a suitable fallback locale) and
+that provides an explanation for an exception, and report it to the caller.
+The string is identified by the specified key, which must identify a string
+resource within the %Facsimile exception resource bundle.
+
+\note This function is not intended for general use.  Any problems encountered
+(such as a non-existant key, identified resource not a string resource, etc.)
+will lead to immediate termination of the current program.  Since this function
+is intended for use by exception reporting code, which should never encounter
+such problems, this is not deemed a problem.
+
+\param key A const char pointer identifying a null-terminated string that
+identifies the required string resource within the %Facsimile exception
+resource bundle.  If there is no resource matching this key, or if the matching
+resource is not a string, then the current program will terminate.
+
+\param arguments A const icu::Formattable reference to an array of Formattable
+values to be used as arguments when formatting the retrieved string resource.
+The number of arguments in this array must be equal to the number of arguments
+required by the string resource.  Furthermore, the type of each argument must
+match the expected type within the string resource.
+
+\returns A constant icu::UnicodeString reference to the formatted exception
+string.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    public:
+        static const icu::UnicodeString& getExceptionString (const char* key,
+        const icu::Formattable& arguments) throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Retrieve reference to root resource bundle.
+
+\returns A constant icu::ResourceBundle reference to the root resource bundle
+for all %Facsimile resources.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private:
+        static const icu::ResourceBundle& getRootBundle () throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Initialise root bundle.
+
+This function should only ever be invoked once during the program's execution.
+It initialises the one-and-only root resource bundle and returns a pointer to
+it.
+
+\remarks This function should only ever be invoked through the getRootBundle()
+static member function.
+
+\returns An icu::ResourceBundle pointer to the root resource bundle for the
+entire %Facsimile library.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private:
+        static const icu::ResourceBundle* initializeBundle () throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Retrieve pointer to indicated resource bundle.
+
+The named bundle must be present in the %Facsimile root bundle, rather than in
+a sub-bundle or any non-%Facsimile resource packages, for it to be found by
+this routine.
+
+\note Resources belonging to the requested bundle must be manually recycled.
+Failure to free pointed-to data will result in memory leaks.
+
+\param bundleName A constant icu::UnicodeString reference containing the name
+of the bundle that is sought.  The bundle must belong to the %Facsimile root
+bundle, rather than to a sub-bundle, if it is to be found.
+
+\returns A constant icu::ResourceBundle pointer to the named resource bundle.
+This value is guaranteed not be <code>NULL</code>.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private:
+        static const icu::ResourceBundle* getBundle (const icu::UnicodeString&
+        bundleName) throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Retrieve reference to exception resource bundle.
+
+\returns A constant icu::ResourceBundle reference to the resource bundle for
+%Facsimile exception resources.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private:
+        static const icu::ResourceBundle& getExceptionBundle () throw ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+Initialise exception bundle.
+
+This function should only ever be invoked once during the program's execution.
+It initialises the one-and-only exception resource bundle and returns a pointer
+to it.
+
+\remarks This function should only ever be invoked through the
+getExceptionBundle() static member function.
+
+\returns An icu::ResourceBundle pointer to the resource bundle for exception
+resources.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private:
+        static const icu::ResourceBundle* initializeExceptionBundle () throw
+        ();
+    };
+}
+#endif /*FACSIMILE_RESOURCE_HPP_*/

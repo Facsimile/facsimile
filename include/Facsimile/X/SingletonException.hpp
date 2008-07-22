@@ -133,8 +133,8 @@ SingletonException::SingletonException (const std::type_info&) implementation.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        SingletonException::SingletonException (const icu::UnicodeString&
-        singletonName) throw ():
+        inline SingletonException::SingletonException (const
+        icu::UnicodeString& singletonName) throw ():
             typeName (singletonName)
         {
         }
