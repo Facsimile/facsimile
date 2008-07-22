@@ -71,7 +71,8 @@ explanations.
 
     LOG_APPEND;
     Facsimile::X::ArrayDeleteNotSupportedException e1;
-    log << "ArrayDeleteNotSupportedException (): " << e1.cause () << std::endl;
+    log << UNICODE_STRING_SIMPLE ("ArrayDeleteNotSupportedException (): ") <<
+    e1.cause () << std::endl;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,7 +91,8 @@ explanations.
 
     LOG_APPEND;
     Facsimile::X::ArrayNewNotSupportedException e1;
-    log << "ArrayNewNotSupportedException (): " << e1.cause () << std::endl;
+    log << UNICODE_STRING_SIMPLE ("ArrayNewNotSupportedException (): ") <<
+    e1.cause () << std::endl;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,7 +112,7 @@ explanations.
     LOG_APPEND;
     Facsimile::X::SingletonException e1 (UNICODE_STRING_SIMPLE
     ("SomeTestSingleton"));
-    log << "SingletonException (\"SomeTestSingleton\"): " << e1.cause () <<
-    std::endl;
+    log << UNICODE_STRING_SIMPLE ("SingletonException "
+    "(\"SomeTestSingleton\"): ") << e1.cause () << std::endl;
 }
 

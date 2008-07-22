@@ -129,7 +129,7 @@ FILE_PATTERNS          = *.c \
                          *.MM \
                          *.PY
 RECURSIVE              = YES
-EXCLUDE                = ./include/Crap ./src/Crap
+EXCLUDE                = ./include/WIP ./src/WIP
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXCLUDE_SYMBOLS        = 
