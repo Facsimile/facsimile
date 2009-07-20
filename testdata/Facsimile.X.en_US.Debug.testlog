@@ -1,3 +1,0 @@
-﻿ArrayDeleteNotSupportedException (): Array delete [] is not supported for sub-classes of Facsimile::Collectable.  Since the corresponding new [] operator used to claim this memory should have thrown a fatal exception, this exception most likely indicates that the wrong delete operator is being used to free memory.
-ArrayNewNotSupportedException (): Array new [] is not supported for sub-classes of Facsimile::Collectable.  Consider using std::vector, or some other container class instead.
-SingletonException ("SomeTestSingleton"): Attempt to create an uncontrolled instance of Facsimile::Singleton sub-class: SomeTestSingleton
