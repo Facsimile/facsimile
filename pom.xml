@@ -82,6 +82,9 @@
   	<extensions>
   	</extensions>
   </build>
+  <scm>
+    <developerConnection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases</developerConnection>
+  </scm>
   <profiles>
   	<profile>
   		<id>Development</id>
