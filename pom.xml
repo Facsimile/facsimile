@@ -3,7 +3,7 @@
   <groupId>org.facsim</groupId>
   <artifactId>facsimile</artifactId>
   <name>Facsimile</name>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-8-12</version>
   <description>Facsimile discrete-event simulation/emulation library	</description>
   <licenses>
     <license>
@@ -83,7 +83,7 @@
   	</extensions>
   </build>
   <scm>
-    <developerConnection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases</developerConnection>
+    <developerConnection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases/facsimile-0.0.1-8-12</developerConnection>
   </scm>
   <profiles>
   	<profile>
