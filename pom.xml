@@ -26,7 +26,7 @@
     <developer>
       <id>mja</id>
       <name>Mike Allen</name>
-      <email>mike.allen@facsim.org</email>
+      <email>mja@users.sourceforge.net</email>
       <roles>
         <role>Project Lead</role>
         <role>Developer</role>
@@ -36,12 +36,10 @@
     </developer>
   </developers>
 
-  <!--
   <issueManagement>
-    <system>LaunchPad</system>
+    <system>launchpad.net</system>
     <url>https://bugs.launchpad.net/facsimile</url>
   </issueManagement>
-  -->
 
   <scm>
     <connection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk</connection>
@@ -100,6 +98,8 @@
         <version>2.0-beta-9</version>
         <configuration>
           <tagBase>https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases</tagBase>
+          <goals>deploy</goals>
+          <releaseProfiles>production</releaseProfiles>
         </configuration>
       </plugin>
     </plugins>
@@ -235,5 +235,12 @@
       <id>maven.facsim.org</id>
       <url>scp://facsim.org/kunden/homepages/14/d187450819/htdocs/maven</url>
     </site>
+
+    <!-- Automatically publish distributable files to SourceForge -->
+    <repository>
+      <id>shell.sourceforge.net</id>
+      <url>scp://shell.sourceforge.net/home/frs/project/f/fa/facsimile/</url>
+    </repository>
+    
   </distributionManagement>
 </project>
