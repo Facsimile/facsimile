@@ -149,6 +149,7 @@
               <failOnError>true</failOnError>
               <debug>false</debug>
               <optimize>true</optimize>
+              <encoding>UTF-8</encoding>
             </configuration>
           </plugin>
         </plugins>
