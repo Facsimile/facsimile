@@ -3,7 +3,7 @@
   <groupId>org.facsim</groupId>
   <artifactId>facsimile</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.0-SNAPSHOT</version>
+  <version>0.0.0</version>
   <name>Facsimile</name>
   <url>http://www.facsim.org/</url>
   <description>Facsimile discrete-event simulation/emulation library</description>
@@ -42,9 +42,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk</connection>
-    <developerConnection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk/</developerConnection>
-    <url>http://facsimile.svn.sourceforge.net/viewvc/facsimile/trunk</url>
+    <connection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases/facsimile-0.0.0</connection>
+    <developerConnection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases/facsimile-0.0.0</developerConnection>
+    <url>http://facsimile.svn.sourceforge.net/viewvc/facsimile/tags/releases/facsimile-0.0.0</url>
   </scm>
 
   <properties>
