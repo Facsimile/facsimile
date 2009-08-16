@@ -240,7 +240,7 @@
     <!-- Automatically publish distributable files to SourceForge -->
     <repository>
       <id>shell.sourceforge.net</id>
-      <url>scp://shell.sourceforge.net/home/frs/project/f/fa/facsimile/</url>
+      <url>scp://shell.sourceforge.net/home/frs/project/f/fa/facsimile</url>
     </repository>
     
   </distributionManagement>
