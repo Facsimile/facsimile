@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -45,10 +45,10 @@ import net.jcip.annotations.Immutable;
 
 //=============================================================================
 /**
-Resource information class.
+<p>Resource information class.</p>
 
-This class provides common facilities to the entire package, including locale
-information and internationalization information.
+<p>This class provides common facilities to the entire package, including
+locale information and internationalization information.</p>
 */
 //=============================================================================
 
@@ -57,19 +57,19 @@ public final class Resource
 {
 
 /**
-Message resource bundle for all classes and methods within this package.
+<p>Message resource bundle for all classes and methods within this package.</p>
 
-This resource bundle is used to internationalize all text output by the
-library.
+<p>This resource bundle is used to internationalize all text output by the
+library.</p>
 */
 
     private static final ResourceBundle bundle;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Static initialization.
+<p>Static initialization.</p>
 
-Initializes this class's static fields upon their first use. 
+<p>Initializes this class's static fields upon their first use.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -80,7 +80,7 @@ Initializes this class's static fields upon their first use.
 Initialize the name of the message bundle that we'll be processing.
 */
 
-        final String bundleName = "facsimile"; //$NON-NLS-1$
+        final String bundleName = "facsimile";
             
 /*
 Create the resource bundle.  The locale of the bundle defaults to the JVM's
@@ -102,12 +102,12 @@ application.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Retrieve and format a locale-specific string resource.
+<p>Retrieve and format a locale-specific string resource.</p>
 
-Retrieves the string resource corresponding to the supplied key from the
+<p>Retrieves the string resource corresponding to the supplied key from the
 associated resource bundle.  Optional arguments are used to format the
 resulting string, which will be in the best matching locale to the user's
-preferred locale.
+preferred locale.</p>
 
 @param key Key used to identify the string resource to be retrieved.
 

@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,55 +37,57 @@ Java source file belonging to the org.facsim.facsimile.measure package.
 */
 //=============================================================================
 
-
 package org.facsim.facsimile.measure;
 
 import java.lang.Override;
 import java.io.Serializable;
 import net.jcip.annotations.Immutable;
 import org.facsim.facsimile.measure.IllegalMeasurementValueException;
+import org.facsim.facsimile.util.PackagePrivate;
 
 //=============================================================================
 /**
-Abstract base class for all measurement classes.
+<p>Abstract base class for all measurement classes.</p>
 
-This is the base class used by all measurement types, storing the underlying
+<p>This is the base class used by all measurement types, storing the underlying
 values in the corresponding <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a>
-units.
+units.</p>
 
-Do not derive classes directly from this base class; derive classes from the
-{@link org.facsim.facsimile.measure.Measure Measure&lt;T&gt;} class instead.
+<p>Do not derive classes directly from this base class; derive classes from the
+{@link org.facsim.facsimile.measure.Measure Measure&lt;T&gt;} class
+instead.</p>
 
 @see org.facsim.facsimile.measure.Measure Measure&lt;T&gt;
 */
 //=============================================================================
 
 @Immutable
-public abstract class BaseMeasure
+@PackagePrivate
+abstract class BaseMeasure
 implements Serializable
 {
 
 /**
-Class serialization schema number.
+<p>Class serialization schema number.</p>
 */
     
     private static final long serialVersionUID = 1L;
 
 /**
-Value of this measurement in SI units.
+<p>Value of this measurement in SI units.</p>
 
-This value cannot be changed once the measurement has been created to ensure
-that values are immutable.
+<p>This value cannot be changed once the measurement has been created to ensure
+that values are immutable.</p>
 */
 
     private final double value;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Construct a base measurement from a value in the standard <a
+<p>Construct a base measurement from a value in the standard <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units
-for this measurement type.
+for this measurement type.</p>
 
 @param initialValue Initial measurement value in the underlying <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units.
@@ -96,7 +98,6 @@ etc.)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     protected BaseMeasure (double initialValue)
-    throws IllegalArgumentException
     {
 
 /*
@@ -126,9 +127,9 @@ Store the initial value.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Report the measurement value in the underlying <a
+<p>Report the measurement value in the underlying <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units
-for this measurement type.
+for this measurement type.</p>
 
 @return The value of this measurement type in <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units.

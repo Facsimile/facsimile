@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -48,7 +48,8 @@ import org.facsim.facsimile.util.Resource;
 
 //=============================================================================
 /**
-Test fixture for the {@link org.facsim.facsimile.util.Resource Resource} class.
+<p>Test fixture for the {@link org.facsim.facsimile.util.Resource Resource}
+class.</p>
 */
 //=============================================================================
 
@@ -57,12 +58,12 @@ public class ResourceTest
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test null resource formatting fails.
+<p>Test null resource formatting fails.</p>
 
-Tests that a {@link java.lang.NullPointerException NullPointerException} is
+<p>Tests that a {@link java.lang.NullPointerException NullPointerException} is
 thrown when a null key is passed to the {@link
 org.facsim.facsimile.util.Resource#format(java.lang.String,java.lang.Object[])}
-function.
+function.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -74,12 +75,12 @@ function.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test missing resource formatting fails.
+<p>Test missing resource formatting fails.</p>
 
-Tests that a {@link java.util.MissingResourceException} is thrown when a
+<p>Tests that a {@link java.util.MissingResourceException} is thrown when a
 non-existent key is passed to the {@link
 org.facsim.facsimile.util.Resource#format(java.lang.String,java.lang.Object[])}
-function.
+function.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -91,9 +92,9 @@ function.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test that attempt to format a non-string resource fails.
+<p>Test that attempt to format a non-string resource fails.</p>
 
-TODO: Complete this test.
+<p>TODO: Complete this test.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -106,7 +107,7 @@ TODO: Complete this test.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test basic operation.
+<p>Test basic operation.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -39,19 +39,20 @@ Java source file belonging to the org.facsim.facsimile.measure package.
 
 package org.facsim.facsimile.measure;
 
-import java.lang.IllegalArgumentException;
 import net.jcip.annotations.Immutable;
 import org.facsim.facsimile.measure.Measure;
+import org.facsim.facsimile.measure.IllegalMeasurementValueException;
+import org.facsim.facsimile.util.PackagePrivate;
 
 //=============================================================================
 /**
-Abstract template base class for all non-negative measurement classes.
+<p>Abstract template base class for all non-negative measurement classes.</p>
 
-This is the base class used by all measurement types that do not permit
+<p>This is the base class used by all measurement types that do not permit
 negative values (in their underlying <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units).
 Non-negative measurement types include mass, temperature (Kelvin scale), time,
-etc.
+etc.</p>
 
 @see org.facsim.facsimile.measure.Measure Measure&lt;T&gt;
 
@@ -60,21 +61,22 @@ etc.
 //=============================================================================
 
 @Immutable
-public abstract class NonNegativeMeasure <T extends NonNegativeMeasure <T>>
+@PackagePrivate
+abstract class NonNegativeMeasure <T extends NonNegativeMeasure <T>>
 extends Measure <T>
 {
 
 /**
-Class serialization schema number.
+<p>Class serialization schema number.</p>
 */
 
     private static final long serialVersionUID = 1L;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Construct a non-negative measurement from a value in the standard <a
+<p>Construct a non-negative measurement from a value in the standard <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units
-for this measurement type.
+for this measurement type.</p>
 
 @param initialValue Initial measurement value in the underlying <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units.
@@ -84,7 +86,6 @@ href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     protected NonNegativeMeasure (double initialValue)
-    throws IllegalArgumentException
     {
 
 /*
@@ -95,17 +96,14 @@ thrown.
         super (initialValue);
 
 /*
-Verify that the time we're being asked to store is valid.  If the value is
-not-a-number (Nan) or infinite (positive or negative), of if the value is
-negative, then time time valid is invalid and an exception should be thrown.
-
-TODO: Internationalize this string.
+Verify that the value we're being asked to store is not negative.  If it is,
+the IllegalMeasurementValueException should be thrown - a helper subclass of
+IllegalArgumentException.
 */
 
         if (initialValue < 0.0)
         {
-            throw new IllegalArgumentException
-            ("Value is negative: " + initialValue); //$NON-NLS-1$
+            throw new IllegalMeasurementValueException (initialValue);
         }
     }
 }

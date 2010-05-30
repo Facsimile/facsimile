@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,6 @@ Java source file belonging to the org.facsim.facsimile.measure package.
 */
 //=============================================================================
 
-
 package org.facsim.facsimile.measure;
 
 import net.jcip.annotations.Immutable;
@@ -45,14 +44,14 @@ import org.facsim.facsimile.util.Resource;
 
 //=============================================================================
 /**
-Exception thrown when an illegal measurement value is encountered.
+<p>Exception thrown when an illegal measurement value is encountered.<p>
 
-Note that a valid measurement value for one measurement unit may not be a valid
-measurement value for a different measurement family, or a different
+<p>Note that a valid measurement value for one measurement unit may not be a
+valid measurement value for a different measurement family, or a different
 measurement unit.  For example, a temperature of -10 degrees is acceptable for
 if the temperature units are degrees Celsius, but illegal if the temperature
 units are degrees Kelvin.  Similarly, a distance of -100 meters is acceptable,
-but a mass of -100 grammes is illegal.
+but a mass of -100 grammes is illegal.</p>
 */
 //=============================================================================
 
@@ -62,20 +61,20 @@ extends IllegalArgumentException
 {
 
 /**
-Class serialization schema number.
+<p>Class serialization schema number.</p>
 */
 
     private static final long serialVersionUID = 1L;
 
 /**
-The offending value.
+<p>The offending value.</p>
 */
 
     private final double badValue;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Constructor.
+<p>Constructor.</p>
 
 @param badValue Value found to be an unacceptable measurement value.
 */
@@ -101,14 +100,14 @@ Store the bad value.
 /*
 (non-Javadoc)
 
-@see java.lang.Throwable#getLocalizedMessage()
+@see java.lang.Throwable#getMessage()
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     @Override
-    public String getLocalizedMessage ()
+    public String getMessage ()
     {
-        return Resource.format ("illegalMeasurementValue", new Double
-        (this.badValue));
+        return Resource.format ("measure.illegalMeasurementValue",
+        Double.valueOf (this.badValue));
     }
 }

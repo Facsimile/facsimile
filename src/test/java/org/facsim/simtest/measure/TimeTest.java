@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,6 @@ Java source file belonging to the org.facsim.simtest.measure package.
 */
 //=============================================================================
 
-
 package org.facsim.simtest.measure;
 
 import java.lang.Math;
@@ -45,10 +44,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.facsim.facsimile.measure.Time;
 import org.facsim.simtest.javalang.CompareToContract;
+import org.facsim.simtest.javaio.SerializableContract;
 
 //=============================================================================
 /**
-Test fixture for the {@link org.facsim.facsimile.measure.Time Time} class.
+<p>Test fixture for the {@link org.facsim.facsimile.measure.Time Time}
+class.</p>
 */
 //=============================================================================
 
@@ -57,10 +58,10 @@ public class TimeTest
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test time class NaN construction.
+<p>Test time class NaN construction.</p>
 
-Tests that an illegal argument exception is thrown when passed not-a-number
-(NaN) as its initial value.
+<p>Tests that an illegal argument exception is thrown when passed not-a-number
+(NaN) as its initial value.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -72,10 +73,10 @@ Tests that an illegal argument exception is thrown when passed not-a-number
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test time class negative epsilon construction.
+<p>Test time class negative epsilon construction.</p>
 
-Tests that an illegal argument exception is thrown when passed the smallest
-possible negative value.
+<p>Tests that an illegal argument exception is thrown when passed the smallest
+possible negative value.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -87,10 +88,10 @@ possible negative value.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test time class negative maximum value construction.
+<p>Test time class negative maximum value construction.</p>
 
-Tests that an illegal argument exception is thrown when passed the largest
-possible negative value.
+<p>Tests that an illegal argument exception is thrown when passed the largest
+possible negative value.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -102,10 +103,10 @@ possible negative value.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Tests time class negative infinity construction.
+<p>Tests time class negative infinity construction.</p>
 
-Tests that an illegal argument exception is thrown when passed negative
-infinity.
+<p>Tests that an illegal argument exception is thrown when passed negative
+infinity.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -117,10 +118,10 @@ infinity.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Tests time class positive infinity construction.
+<p>Tests time class positive infinity construction.</p>
 
-Tests that an illegal argument exception is thrown when passed positive
-infinity.
+<p>Tests that an illegal argument exception is thrown when passed positive
+infinity.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -132,9 +133,10 @@ infinity.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Tests time class valid construction.
+<p>Tests time class valid construction.</p>
 
-Tests various Time constructors to ensure that they all complete successfully.
+<p>Tests various Time constructors to ensure that they all complete
+successfully.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -148,8 +150,8 @@ Tests various Time constructors to ensure that they all complete successfully.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Tests that {@link org.facsim.facsimile.measure.Time Time} fulfills the
-<em>compareTo contract</em> and the <em>equals contract</em>.
+<p>Tests that {@link org.facsim.facsimile.measure.Time Time} fulfills the
+<em>compareTo contract</em> and the <em>equals contract</em>.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -158,7 +160,8 @@ Tests that {@link org.facsim.facsimile.measure.Time Time} fulfills the
     {
 
 /*
-Check that the Time class correctly implements the equals contract.
+Check that the Time class correctly implements the compareTo contract.  This
+also tests the equals contract is implemented.
 */
 
         CompareToContract.testConformance (new Time (10.0), new Time (10.0),
@@ -167,8 +170,26 @@ Check that the Time class correctly implements the equals contract.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Verify that {@link org.facsim.facsimile.measure.Time#zero() Time#zero()}
-returns a zero time.
+<p>Tests that {@link org.facsim.facsimile.measure.Time Time} fulfills the
+<em>serializable contract</em>.</p>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @Test
+    public void timeFulfillsSerializableContract ()
+    {
+
+/*
+Tests that time values can be serialized and de-serialized successfully.
+*/
+
+        SerializableContract.testConformance (new Time (1.234));
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<p>Verify that {@link org.facsim.facsimile.measure.Time#zero() Time#zero()}
+returns a zero time.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -182,7 +203,7 @@ returns a zero time.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test that time values can be added correctly.
+<p>Test that time values can be added correctly.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -224,8 +245,8 @@ Note: Do the addition with doubles so that we get the exact same rounding error
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test that time values are printed out correctly via the overridden toString()
-method.
+<p>Test that time values are printed out correctly via the overridden
+toString() method.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -239,7 +260,7 @@ as would be returned by Double.  That's going to change when we output times in
 a more sophisticated manner, but this will do for now.
 */
 
-        assertEquals (new Time (Math.PI).toString (), new Double
+        assertEquals (new Time (Math.PI).toString (), Double.valueOf
         (Math.PI).toString ());
     }
 }

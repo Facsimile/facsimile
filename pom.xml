@@ -1,26 +1,92 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!--
+Facsimile - A Discrete-Event Simulation Library
+Copyright © 2004-2010, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+Facsimile.  If not, see http://www.gnu.org/licenses/.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+    http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+    http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+Primary Maven Project Object Model (POM) file for Facsimile.
+
+This file should be edited manually, rather than using the Eclipse POM editor.
+===============================================================================
+-->
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.facsim</groupId>
   <artifactId>facsimile</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.0-SNAPSHOT</version>
   <name>Facsimile</name>
   <url>http://www.facsim.org/</url>
   <description>Facsimile discrete-event simulation/emulation library</description>
+
+<!--
+==============================================================================
+Facsimile License.
+
+Facsimile is distributed under the GNU GPLv3.
+==============================================================================
+-->
 
   <licenses>
     <license>
       <name>GPLv3</name>
       <url>http://www.gnu.org/licenses/gpl.html</url>
-      <distribution>manual</distribution>
+      <distribution>repo</distribution>
       <comments>GNU General Public License version 3</comments>
     </license>
   </licenses>
+
+<!--
+==============================================================================
+Facsimile Organization.
+
+TODO: This ought to be formalized a little more.
+==============================================================================
+-->
 
   <organization>
     <name>Facsimile</name>
     <url>http://www.facsim.org/</url>
   </organization>
+
+<!--
+==============================================================================
+Facsimile Developers.
+
+If you have submitted code to the project, you should add your name, role and
+e-mail address to the list.
+==============================================================================
+-->
 
   <developers>
     <developer>
@@ -36,10 +102,28 @@
     </developer>
   </developers>
 
+<!--
+==============================================================================
+Issue Management System.
+
+Facsimile issues (bugs, enhancement requests, etc.) are handled through the
+LaunchPad system.
+==============================================================================
+-->
+
   <issueManagement>
     <system>launchpad.net</system>
     <url>https://bugs.launchpad.net/facsimile</url>
   </issueManagement>
+
+<!--
+==============================================================================
+Source Code Management.
+
+Facsimile makes use of the Subversion version control system hosted by
+SourceForge.
+==============================================================================
+-->
 
   <scm>
     <connection>scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk</connection>
@@ -47,9 +131,45 @@
     <url>http://facsimile.svn.sourceforge.net/viewvc/facsimile/trunk</url>
   </scm>
 
+<!--
+==============================================================================
+Build Properties.
+
+All configuration options should be defined here, so that Facsimile build
+configuration can be handled here solely.
+
+Before changing version numbers, verify that there is a corresponding version
+of the tool/library in the central Maven repository.
+==============================================================================
+-->
+
   <properties>
+
+<!--
+Source file text encoding.
+
+All Facsimile source files should use UTF-8 encoding.
+-->
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+<!--
+Version numbers of dependent libraries.
+-->
+
+    <java3d.version>1.3.1</java3d.version>
+    <jcip.version>1.0</jcip.version>
+    <junit.version>4.6</junit.version>
   </properties>
+
+<!--
+==============================================================================
+Build Configuration.
+
+All configuration options should be defined here, so that Facsimile build
+configuration can be handled here solely.
+==============================================================================
+-->
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
@@ -61,10 +181,35 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+
+<!--
+Build plugins follow...
+-->
+
     <plugins>
+
+<!--
+The Cobertura plug-in tracks the coverage of source files during testing, and
+fails builds that do not provide sufficient testing.
+
+The Cobertura plug-in also needs to be listed in the reporting section; this
+section primarily configures the required test coverages.
+-->
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
+        <configuration>
+          <check>
+            <haltOnFailure>true</haltOnFailure>
+            <branchRate>85</branchRate>
+            <lineRate>85</lineRate>
+            <totalBranchRate>85</totalBranchRate>
+            <totalLineRate>85</totalLineRate>
+            <packageLineRate>85</packageLineRate>
+            <packageBranchRate>85</packageBranchRate>
+          </check>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -73,25 +218,38 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <check>
-            <totalLineRate>70</totalLineRate>
-            <totalBranchRate>70</totalBranchRate>
-          </check>
-        </configuration>
       </plugin>
+
+<!--
+The resource plug-in handles the copying of resource files to the output
+directory.
+-->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.3</version>
-        <configuration>
-        </configuration>
       </plugin>
+
+<!--
+The site plug-in generates the Maven web-site summarizing build information.
+
+The sources for the site are stored within the src/site directory.
+-->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>2.0-beta-7</version>
       </plugin>
+
+<!--
+The release plug-in handles automated version numbering and release tagging.
+
+These options are typically invoked by the Hudson continuous integration
+server.
+-->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
@@ -102,10 +260,33 @@
           <releaseProfiles>production</releaseProfiles>
         </configuration>
       </plugin>
+
+<!--
+The assembly plug-in is used to generate distribution assemblies.
+
+The assembly sources are contained within the src/assemble directory.
+-->
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <filters>
+            <filter>src/filters/filter.properties</filter>
+          </filters>
+          <descriptors>
+            <descriptor>src/assemble/distribution.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+
     </plugins>
-    <extensions>
-    </extensions>
   </build>
+
+<!--
+==============================================================================
+Facsimile Profiles.
+==============================================================================
+-->
 
   <profiles>
     <profile>
@@ -135,6 +316,9 @@
     </profile>
     <profile>
       <id>production</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -157,38 +341,69 @@
     </profile>
   </profiles>
 
+<!--
+==============================================================================
+Facsimile Dependencies.
+
+Facsimile relies on the tools and libraries listed here, and cannot be built
+without them.  Maven takes care of downloading the necessary files from the
+central Maven repository.
+==============================================================================
+-->
+
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.6</version>
-      <scope>test</scope>
-    </dependency>
+
+<!--
+Java3D dependencies.
+-->
+
     <dependency>
       <groupId>java3d</groupId>
       <artifactId>j3d-core</artifactId>
-      <version>1.3.1</version>
+      <version>${java3d.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>java3d</groupId>
       <artifactId>j3d-core-utils</artifactId>
-      <version>1.3.1</version>
+      <version>${java3d.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>java3d</groupId>
       <artifactId>vecmath</artifactId>
-      <version>1.3.1</version>
+      <version>${java3d.version}</version>
       <scope>provided</scope>
     </dependency>
+
+<!--
+"Java Concurrency In Practice" annotation library version.
+-->
+
     <dependency>
       <groupId>net.jcip</groupId>
       <artifactId>jcip-annotations</artifactId>
-      <version>1.0</version>
+      <version>${jcip.version}</version>
       <scope>provided</scope>
     </dependency>
+
+<!--
+JUnit test framework dependency.
+-->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+<!--
+==============================================================================
+Reports.
+==============================================================================
+-->
 
   <reporting>
     <plugins>
@@ -208,40 +423,73 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
         <configuration>
-          <xmlOutput>true</xmlOutput>
+          <formats>
+            <format>html</format>
+          </formats>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
     </plugins>
   </reporting>
 
-  <!--
-  ============================================================================
-  This section of the file is responsible for publishing the generated Maven
-  web-site and for distributing Facsimile builds, sources and documentation.
+<!--
+==============================================================================
+Facsimile assembly.
 
-  CAUTION: DO NOT PLACE ACCESS CREDENTIALS (USER NAMES, PASSWORDS, ETC.) FOR
-  DISTRIBUTION SITES HERE.  THIS FILE IS WORLD-READABLE.  INSTEAD, ACCESS
-  CREDENTIALS *MUST* BE STORED AT:
-  
+This section has Maven prepare distribution packages for release, containing
+all required files.
+==============================================================================
+-->
+
+<!--
+==============================================================================
+Distribution Management.
+
+Facsimile files are distributed primarily via SourceForge.  The
+Maven-generated site is hosted on a custom site.
+
+CAUTION: DO NOT PLACE ACCESS CREDENTIALS (USER NAMES, PASSWORDS, ETC.) FOR
+DISTRIBUTION SITES HERE.  THIS FILE IS WORLD-READABLE.  INSTEAD, ACCESS
+CREDENTIALS *MUST* BE STORED AT:
+
     $HOME/.m2/settings.xml
-  
-  ON THE HUDSON CONTINUOUS INTEGRATION SERVER.
-  ============================================================================
-  -->
+
+ON THE HUDSON CONTINUOUS INTEGRATION SERVER.
+==============================================================================
+-->
 
   <distributionManagement>
 
-    <!-- Automatically publish the site to http://maven.facsim.org/ -->
+<!--
+Location for downloading distributions.
+-->
+
+    <downloadUrl>https://sourceforge.net/projects/facsimile/files</downloadUrl>
+
+<!--
+Automatically publish the site to http://maven.facsim.org/
+-->
+
     <site>
       <id>maven.facsim.org</id>
+      <name>Facsimile Maven Web-Site</name>
       <url>scp://facsim.org/kunden/homepages/14/d187450819/htdocs/maven</url>
     </site>
 
-    <!-- Automatically publish distributable files to SourceForge -->
+<!--
+Automatically publish distributable files to SourceForge's File Release System
+- FRS.
+-->
+
     <repository>
-      <id>shell.sourceforge.net</id>
-      <url>scp://shell.sourceforge.net/home/frs/project/f/fa/facsimile</url>
+      <id>frs.sourceforge.net</id>
+      <name>SourceForge File Release System</name>
+      <uniqueVersion>false</uniqueVersion>
+      <url>scp://frs.sourceforge.net/home/frs/project/f/fa/facsimile</url>
     </repository>
-    
+
   </distributionManagement>
 </project>

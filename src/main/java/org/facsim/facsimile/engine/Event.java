@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,14 +37,14 @@ Java source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-
 package org.facsim.facsimile.engine;
 
 import org.facsim.facsimile.measure.Time;
+import org.facsim.facsimile.util.PackagePrivate;
 
 //=============================================================================
 /**
-Abstract base class for all events.
+<p>Abstract base class for all events.</p>
 */
 //=============================================================================
 
@@ -53,28 +53,28 @@ implements java.lang.Comparable <Event>
 {
 
 /**
-Event due time.
+<p>Event due time.</p>
 
-The absolute simulation clock time at which the event is currently scheduled to
-occur.
+<p>The absolute simulation clock time at which the event is currently scheduled
+to occur.</p>
 */
 
     private Time due;
 
 /**
-Event priority.
+<p>Event priority.</p>
 
-The higher this value, the higher the priority of this event.
+<p>The higher this value, the higher the priority of this event.</p>
 */
 
     private int priority;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Event constructor.
+<p>Event constructor.</p>
 
-Creates a new event and schedules it for execution in the simulation's event
-queue.
+<p>Creates a new event and schedules it for execution in the simulation's event
+queue.<p>
 
 @param delta Relative time, measured from the current simulation time, to the
 event being due for execution.
@@ -233,26 +233,26 @@ first-come, first-served order?
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Dispatch the event.
+<p>Dispatch the event.</p>
 
-This procedure should be invoked only by the Simulation class as part of its
-event dispatch loop.  All other calls will result in an exception.  This is
-intended to prevent rogue events from being dispatched outside of the control
-of the simulation.
+<p>This procedure should be invoked only by the Simulation class as part of its
+event dispatch loop.  If this is not followed, then rogue events can be
+dispatched outside of the control of the simulation.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public void dispatch ()
+    @PackagePrivate
+    void dispatch ()
     {
         execute ();
     }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Execute this event.
+<p>Execute this event.</p>
 
-Override this procedure to implement the event's actions when the event is
-dispatched by the simulation.
+<p>Override this procedure to implement the event's actions when the event is
+dispatched by the simulation.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

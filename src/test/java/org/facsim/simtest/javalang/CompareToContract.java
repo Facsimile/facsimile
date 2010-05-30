@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,6 @@ Java source file belonging to the org.facsim.simtest.javalang package.
 */
 //=============================================================================
 
-
 package org.facsim.simtest.javalang;
 
 import java.lang.Comparable;
@@ -47,18 +46,20 @@ import static junit.framework.Assert.*;
 
 //=============================================================================
 /**
-Test class to verify a type's conformance to the <em>compareTo contract</em>.
+<p>Test class to verify a type's conformance to the <em>compareTo
+contract</em>.</p>
 
-This class contains a single function that verifies whether a class's
+<p>This class contains a single function that verifies whether a class's
 overridden {@link java.lang.Comparable#compareTo(Object) compareTo(Object)}
 method fulfills the terms of the <em>compareTo contract</em> - the definition
 of what it means for two instances to be ranked by a comparison of their
 contents.  The <em>compareTo contract</em> is defined by the documentation for
-the {@link java.lang.Comparable#compareTo(Object) compareTo(Object)} method.
+the {@link java.lang.Comparable#compareTo(Object) compareTo(Object)}
+method.</p>
 
-Since classes that override their equals(Object) method should also override
+<p>Since classes that override their equals(Object) method should also override
 their {@link java.lang.Object#hashCode() hashCode()} method, so that equal
-objects have the same hash codes, hash code tests are also conducted.
+objects have the same hash codes, hash code tests are also conducted.</p>
 
 @see java.lang.Object#equals(Object)
 
@@ -71,8 +72,8 @@ public class CompareToContract
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Tests the supplied arguments to verify that the terms of the <em>compareTo
-contract</em> are being adhered to by the corresponding object type. 
+<p>Tests the supplied arguments to verify that the terms of the <em>compareTo
+contract</em> are being adhered to by the corresponding object type.</p>
 
 @param <T> The non-primitive type whose overridden {@link
 java.lang.Comparable#compareTo(Object) compareTo(Object)} method is to be
@@ -216,8 +217,8 @@ before looking for bugs in the overridden compareTo method.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Verify that the argument throws a {@link java.lang.NullPointerException
-NullPointerException} when compared to null.
+<p>Verify that the argument throws a {@link java.lang.NullPointerException
+NullPointerException} when compared to null.</p>
 
 @param <T> The type being tested.
 

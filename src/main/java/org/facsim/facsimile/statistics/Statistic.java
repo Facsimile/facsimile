@@ -1,0 +1,101 @@
+/*
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2010, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+Facsimile.  If not, see http://www.gnu.org/licenses/.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+	http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+	http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+Java source file belonging to the org.facsim.facsimile.statistics package.
+*/
+//=============================================================================
+
+package org.facsim.facsimile.statistics;
+
+import net.jcip.annotations.NotThreadSafe;
+import org.facsim.facsimile.util.PackagePrivate;
+
+//=============================================================================
+/**
+<p>Abstract base class for all statistics collation &amp; reporting
+objects.</p>
+*/
+//=============================================================================
+
+@NotThreadSafe
+public abstract class Statistic
+{
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<p>Reset this statistics object</p>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @PackagePrivate
+    final void reset ()
+    {
+        resetStatistics ();
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<p>Report statistics collated since the last statistics reset.</p>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @PackagePrivate
+    final void report ()
+    {
+        reportStatistics ();
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<p>Perform a statistics reset operation.</p>
+
+<p>This class should be overridden by sub-classes to implement the statistics
+reset operation.</p>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    protected abstract void resetStatistics ();
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<p>Report statistics collated operation.</p>
+
+<p>This class should be overridden by sub-classes to implement the statistics
+reporting operation.</p>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    protected abstract void reportStatistics ();
+}

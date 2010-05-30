@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,6 @@ Java source file belonging to the org.facsim.simtest.javalang package.
 */
 //=============================================================================
 
-
 package org.facsim.simtest.javalang;
 
 import java.lang.Integer;
@@ -45,18 +44,19 @@ import static junit.framework.Assert.*;
 
 //=============================================================================
 /**
-Test class to verify a type's conformance to the <em>equals contract</em>.
+<p>Test class to verify a type's conformance to the <em>equals
+contract</em>.</p>
 
-This class contains a single function that verifies whether a class's
+<p>This class contains a single function that verifies whether a class's
 overridden {@link java.lang.Object#equals(Object) equals(Object)} method
 fulfills the terms of the <em>equals contract</em> - the definition of what it
 means for two instances to be considered <em>equal</em>.  The <em>equals
 contract</em> is defined by the documentation for the {@link
-java.lang.Object#equals(Object) equals(Object)} method.
+java.lang.Object#equals(Object) equals(Object)} method.</p>
 
-Since classes that override their equals(Object) method should also override
+<p>Since classes that override their equals(Object) method should also override
 their {@link java.lang.Object#hashCode() hashCode()} method, so that equal
-objects have the same hash codes, hash code tests are also conducted.
+objects have the same hash codes, hash code tests are also conducted.</p>
 
 @see java.lang.Object#equals(Object)
 
@@ -69,17 +69,17 @@ public class EqualsContract
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Tests the supplied arguments to verify that the terms of the <em>equals
-contract</em> are being adhered to by the corresponding object type. 
+<p>Tests the supplied arguments to verify that the terms of the <em>equals
+contract</em> are being adhered to by the corresponding object type.</p>
 
-If the class overrides the {@link java.lang.Comparable#compareTo(Object)
+<p>If the class overrides the {@link java.lang.Comparable#compareTo(Object)
 compareTo(Object)} method, then it should be tested for conformance to the
 <em>compareTo contract</em>, which includes testing it for conformance to the
 <em>equals contract</em>.  Refer to
 {@link org.facsim.simtest.javalang.CompareToContract#testConformance
 (Comparable, Comparable, Comparable, Comparable)
 CompareToContract#testConformance(Comparable, Comparable, Comparable,
-Comparable)} for further information.
+Comparable)} for further information.</p>
 
 @param <T> The non-primitive type whose overridden {@link
 java.lang.Object#equals(Object) equals(Object)} method is to be tested for
@@ -189,6 +189,19 @@ the overridden equals method.
         assertTrue (equalToPrimary.equals (primary));
 
 /*
+Verify that the hash codes of primary and equalToPrimary are the same.
+
+Classes that override equals should also override their hashCode methods.
+
+Note that testing that the hash codes of orimary and notEqualToPrimary are
+different will occasionally fail for legitimate reasons - hash codes are not
+necessarily unique for each unique value.  A better test is to consider the
+uniqueness of generated hash codes.
+*/
+
+        assertTrue (primary.hashCode () == equalToPrimary.hashCode ());
+
+/*
 Now verify that primary and equalToPrimary and not the same as
 notEqualToPrimary, and that notEqualToPrimary is not the same as primary or
 equalToPrimary.  This further tests the implied symmetry of unequal value
@@ -226,7 +239,7 @@ If badType's class fails to fulfill the equals contract correctly, then
 these tests may fail.
 */
 
-        Integer badType = new Integer (0);
+        Integer badType = Integer.valueOf (0);
         assertFalse (primary.getClass () == badType.getClass ());
         assertFalse (primary.equals (badType));
         assertFalse (badType.equals (primary));

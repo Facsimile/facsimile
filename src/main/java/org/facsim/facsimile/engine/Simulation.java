@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,18 +37,18 @@ Java source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-
 package org.facsim.facsimile.engine;
 
 import java.util.PriorityQueue;
 import java.util.NoSuchElementException;
 import org.facsim.facsimile.measure.Time;
+import org.facsim.facsimile.util.PackagePrivate;
 
 //=============================================================================
 /**
-Simulation class.
+<p>Simulation class.</p>
 
-Controls simulation model execution.
+<p>Controls simulation model execution.</p>
 */
 //=============================================================================
 
@@ -56,22 +56,22 @@ public final class Simulation
 {
 
 /**
-Event queue.
+<p>Event queue.</p>
 
-Queues up events for execution in order of their due time and priority.
+<p>Queues up events for execution in order of their due time and priority.</p>
 */
 
     private static PriorityQueue <Event> eventQueue;
 
 /**
-The event currently being dispatched.
+<p>The event currently being dispatched.</p>
 */
 
     private static Event currentEvent;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Static initializer.
+<p>Static initializer.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -93,7 +93,7 @@ Initially, we do not have a current event.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Report the current simulation time.
+<p>Report the current simulation time.</p>
 
 @return The current simulation time.
 */
@@ -121,17 +121,18 @@ Otherwise, report the event's due time.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Schedule an event for execution.
+<p>Schedule an event for execution.</p>
 
-This function should only be called by the event itself, to prevent scheduling
-of rogue events.  Futhermore, the event should not be scheduled prior to the
-call.
+<p>This function should only be called by the event itself, to prevent
+scheduling of rogue events.  Furthermore, the event should not be scheduled
+prior to the call.</p>
 
 @param event The event to be scheduled.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public static void schedule (Event event)
+    @PackagePrivate
+    static void schedule (Event event)
     {
 
 /*
@@ -143,10 +144,10 @@ Add the event to the event queue.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Run the simulation, dispatching each event in turn.
+<p>Run the simulation, dispatching each event in turn.</p>
 
-@throws org.facsim.facsimile.engine.OutOfEventsException Thrown if the simulation has no
-further scheduled events remaining.
+@throws OutOfEventsException If the simulation has no further scheduled events
+remaining.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

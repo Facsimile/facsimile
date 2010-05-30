@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,6 @@ Java source file belonging to the org.facsim.facsimile.engine.measure package.
 */
 //=============================================================================
 
-
 package org.facsim.facsimile.measure;
 
 import java.lang.Double;
@@ -48,12 +47,13 @@ import org.facsim.facsimile.measure.NonNegativeMeasure;
 
 //=============================================================================
 /**
-Type class representing a time.
+<p>Type class representing a time.</p>
 
-Both relative and absolute times can be represented by this class; times may
-never be negative.
+<p>Both relative and absolute times can be represented by this class; times may
+never be negative.</p>
 
-Time are stored internally in seconds, which is the SI standard unit of time.
+<p>Time are stored internally in seconds, which is the SI standard unit of
+time.</p>
 */
 //=============================================================================
 
@@ -63,20 +63,20 @@ extends NonNegativeMeasure <Time>
 {
 
 /**
-Class serialization schema number.
+<p>Class serialization schema number.</p>
 */
 
     private static final long serialVersionUID = 1L;
 
 /**
-Time representing zero.
+<p>Time representing zero.</p>
 */
 
     private final static Time zeroTime;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Static initialization.
+<p>Static initialization.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -87,7 +87,7 @@ Static initialization.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Retrieve the time whose value is zero.
+<p>Retrieve the time whose value is zero.</p>
 
 @return The time instance representing 0.0.
 */
@@ -101,9 +101,9 @@ Retrieve the time whose value is zero.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Add two time values together.
+<p>Add two time values together.</p>
 
-TODO: Guard against null arguments.
+<p>TODO: Guard against null arguments.</p>
 
 @param first Time value to be added.  This value cannot be null.
 
@@ -120,11 +120,11 @@ TODO: Guard against null arguments.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Construct a time from a value in seconds.
+<p>Construct a time from a value in seconds.</p>
 
-REFACTOR: This constructor may change future to avoid hard-coding the selected
+<p>REFACTOR: This constructor may change future to avoid hard-coding the selected
 time units into a simulation.  A second argument identifying the time units is
-likely to be added.
+likely to be added.</p>
 
 @param timeValue Time value to be stored.
 

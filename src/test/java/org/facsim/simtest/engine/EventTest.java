@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,6 @@ Java source file belonging to the org.facsim.simtest.engine package.
 */
 //=============================================================================
 
-
 package org.facsim.simtest.engine;
 
 import org.junit.Test;
@@ -49,7 +48,8 @@ import org.facsim.simtest.javalang.CompareToContract;
 
 //=============================================================================
 /**
-Test fixture for the {@link org.facsim.facsimile.engine.Event Event} class.
+<p>Test fixture for the {@link org.facsim.facsimile.engine.Event Event}
+class.</p>
 */
 //=============================================================================
 
@@ -58,8 +58,8 @@ public class EventTest
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Tests that {@link org.facsim.facsimile.engine.Event Event} fulfills the
-<em>compareTo contract</em> and the <em>equals contract</em>.
+<p>Tests that {@link org.facsim.facsimile.engine.Event Event} fulfills the
+<em>compareTo contract</em> and the <em>equals contract</em>.</p>
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

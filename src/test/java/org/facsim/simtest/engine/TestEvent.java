@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,6 @@ Java source file belonging to the org.facsim.simtest.engine package.
 */
 //=============================================================================
 
-
 package org.facsim.simtest.engine;
 
 import org.junit.Ignore;
@@ -46,8 +45,8 @@ import org.facsim.facsimile.measure.Time;
 
 //=============================================================================
 /**
-Test event class required for testing the
-{@link org.facsim.facsimile.engine.Event Event} abstract class.
+<p>Test event class required for testing the
+{@link org.facsim.facsimile.engine.Event Event} abstract class.<p>
 */
 //=============================================================================
 
@@ -58,7 +57,7 @@ extends Event
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Test event constructor.
+<p>Test event constructor.</p>
 
 @param delta The time remaining until this event is due to occur.
 @param priority The relative priority of this event.

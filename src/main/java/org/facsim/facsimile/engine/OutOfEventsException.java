@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,26 +37,80 @@ Java source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-
 package org.facsim.facsimile.engine;
+
+import net.jcip.annotations.Immutable;
+import org.facsim.facsimile.util.PackagePrivate;
+import org.facsim.facsimile.util.Resource;
+import org.facsim.facsimile.util.TestCode;
 
 //=============================================================================
 /**
-Signals that the simulation has run out of events.
+<p>Signals that the simulation has run out of events.</p>
 
-In terminating simulations, this exception signals that the simulation has run
-to completion.  In non-terminating simulations, this exception represents a
-problem, since there has been a failure to propagate further events.
+<p>In terminating simulations, this exception signals that the simulation has
+run to completion.  In non-terminating simulations, this exception represents a
+problem, since there has been a failure to propagate further events.</p>
 */
 //=============================================================================
 
-public class OutOfEventsException
+@Immutable
+public final class OutOfEventsException
 extends Exception
 {
 
 /**
-Serialization version UID.
+<p>Serialization version UID.</p>
 */
 
     private static final long serialVersionUID = 1L;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<p>Create an out-of-events exception and report its error message.</p>
+
+<p>This function is intended for use by testing code only and should not be
+called either within the library or from within third-party simulation
+models.</p>
+
+@return The error message reported by the exception's {@linkplain
+#getMessage()} method.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @TestCode
+    public static String getTestMessage ()
+    {
+        OutOfEventsException e1 = new OutOfEventsException ();
+        return e1.getMessage ();
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+<p>Constructor.</p>
+
+<p>This constructor has default access to prevent the exception from being
+thrown by third-party code.</p>
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @PackagePrivate
+    OutOfEventsException ()
+    {
+        super ();
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+(non-Javadoc)
+
+@see java.lang.Throwable#getMessage()
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @Override
+    public String getMessage ()
+    {
+        return Resource.format ("engine.outOfEvents");
+    }
 }

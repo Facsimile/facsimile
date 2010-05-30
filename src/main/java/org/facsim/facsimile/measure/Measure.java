@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2009, Michael J Allen.
+Copyright © 2004-2010, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,22 +37,22 @@ Java source file belonging to the org.facsim.facsimile.measure package.
 */
 //=============================================================================
 
-
 package org.facsim.facsimile.measure;
 
 import java.lang.Comparable;
 import java.lang.Override;
 import net.jcip.annotations.Immutable;
 import org.facsim.facsimile.measure.BaseMeasure;
+import org.facsim.facsimile.util.PackagePrivate;
 
 //=============================================================================
 /**
-Abstract template base class for all measurement classes.
+<p>Abstract template base class for all measurement classes.</p>
 
-This is the base class used by all measurement types, storing the underlying
+<p>This is the base class used by all measurement types, storing the underlying
 values in the corresponding <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a>
-units.
+units.</p>
 
 @see org.facsim.facsimile.measure.BaseMeasure BaseMeasure
 
@@ -61,22 +61,23 @@ units.
 //=============================================================================
 
 @Immutable
-public abstract class Measure <T extends Measure <T>>
+@PackagePrivate
+abstract class Measure <T extends Measure <T>>
 extends BaseMeasure
 implements Comparable <T>
 {
 
 /**
-Class serialization schema number.
+<p>Class serialization schema number.</p>
 */
 
     private static final long serialVersionUID = 1L;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-Construct a measurement from a value in the standard <a
+<p>Construct a measurement from a value in the standard <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units
-for this measurement type.
+for this measurement type.</p>
 
 @param initialValue Initial measurement value in the underlying <a
 href="http://en.wikipedia.org/wiki/International_System_of_Units">SI</a> units.
@@ -87,7 +88,6 @@ etc.)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     protected Measure (double initialValue)
-    throws IllegalArgumentException
     {
 
 /*
@@ -111,7 +111,7 @@ Initialize the super class.
 
 /*
 Delegate to the Double.compare procedure.  This ought to handle all elements of
-the "compareTo" contract, including the hndling of null arguments, etc.
+the "compareTo" contract, including the handling of null arguments, etc.
 */
 
         return Double.compare (this.getValue (), other.getValue ());
