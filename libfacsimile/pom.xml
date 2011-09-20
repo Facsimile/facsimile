@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+Facsimile - A Discrete-Event Simulation Library
+Copyright © 2004-2011, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with Facsimile.  If not, see http://www.gnu.org/licenses/.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+  http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+  http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+Maven Project Object Model (POM) file for the facsimile library module.
+
+This file should be edited manually, rather than using Eclipse's "Maven POM
+Editor" or the "XML Editor".
+===============================================================================
+-->
+
+<!--
+===============================================================================
+POM co-ordinate information.
+===============================================================================
+-->
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.facsim</groupId>
+    <artifactId>facsimile</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>libfacsimile</artifactId>
+  <packaging>jar</packaging>
+
+
+<!--
+===============================================================================
+POM information.
+===============================================================================
+-->
+
+  <name>Facsimile Simulation/Emulation Library</name>
+  <description>
+    The Facsimile Simulation/Emulation Scala library for the Java Virtual
+    Machine (JVM) platform.
+    
+    libfacsimile is the component of the Facsimile Simulation Suite with which
+    user-written simulation models are developed.  It provides a simulation
+    engine (providing event definition, scheduling and dispatching support),
+    random number streams and statistical distribution sampling facilities,
+    statistics collation and reporting facilities, simulation element support,
+    3D animations, simulation experiment configuration tools and many other
+    simulation-model-related utilities.
+  </description>
+
+<!--
+===============================================================================
+Dependencies.
+
+Identifies the libraries and tools required to build and test the facsimile
+library.  The versions of these tools is specified by the "dependency
+management" section of the top-level POM file.
+===============================================================================
+-->
+
+  <dependencies>
+
+<!--
+Scala standard library.
+
+Note: Use "compile" scope, rather than "provided" scope, to avoid Scala binary
+compatibility issues.  When Scala has a stable ABI between different releases,
+we can change this back to "provided".
+-->
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+Scala DBC library.
+
+Note: Use "compile" scope, rather than "provided" scope, to avoid Scala binary
+compatibility issues.  When Scala has a stable ABI between different releases,
+we can change this back to "provided".
+-->
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-dbc</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+Scala Swing library.
+
+Note: Use "compile" scope, rather than "provided" scope, to avoid Scala binary
+compatibility issues.  When Scala has a stable ABI between different releases,
+we can change this back to "provided".
+-->
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-swing</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+JUnit unit-testing framework.
+-->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+<!--
+ScalaTest unit-testing framework.
+-->
+
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_${scala.version}</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

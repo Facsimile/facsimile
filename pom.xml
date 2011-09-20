@@ -1,0 +1,804 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+Facsimile - A Discrete-Event Simulation Library
+Copyright © 2004-2011, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with Facsimile.  If not, see http://www.gnu.org/licenses/.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+  http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+  http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+$Id$
+
+Top-level Maven Project Object Model (POM) file for Facsimile.
+
+All general project-related information (developers, contributors, mailing
+lists, source code management, properties, etc.) should be placed within this
+primary POM file.  Only module-specific information should be added to module
+POMs.
+
+This file should be edited manually, rather than using Eclipse's "Maven POM
+Editor" or the "XML Editor".
+===============================================================================
+-->
+
+<!--
+===============================================================================
+POM co-ordinate information.
+===============================================================================
+-->
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.facsim</groupId>
+  <artifactId>facsimile</artifactId>
+  <version>0.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+<!--
+===============================================================================
+POM information.
+===============================================================================
+-->
+
+  <name>Facsimile Simulation Suite</name>
+  <description>
+    The Facsimile project's goal is to develop and maintain a high-quality, 3D,
+    physics-enabled, discrete-event simulation/emulation library that can be
+    used for industrial simulation and emulation projects in an engineering
+    and/or manufacturing environment.
+
+    Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS,
+    BSD and Unix.
+  </description>
+  <url>http://www.facsim.org/</url>
+  <inceptionYear>2004</inceptionYear>
+
+<!--
+===============================================================================
+Facsimile Organization.
+
+TODO: This ought to be formalized a little more.
+===============================================================================
+-->
+
+  <organization>
+    <name>Facsimile</name>
+    <url>http://www.facsim.org/</url>
+  </organization>
+
+<!--
+===============================================================================
+Facsimile License.
+
+Facsimile is distributed under the GNU Lesser General Public License, version
+3 (LGPLv3).
+===============================================================================
+-->
+
+  <licenses>
+    <license>
+      <name>LGPLv3</name>
+      <url>http://www.gnu.org/licenses/lgpl.html</url>
+      <distribution>repo</distribution>
+      <comments>GNU Lesser General Public License version 3</comments>
+    </license>
+  </licenses>
+
+<!--
+===============================================================================
+Facsimile Developers.
+
+If you are actively involved in the Facsimile project, you should add your
+name, role, e-mail address and (optionally) organization to this list,
+alphabetically, by surname.  When your active participation in the project
+ceases, your development information should be transferred to the
+"Contributors" section.
+===============================================================================
+-->
+
+  <developers>
+
+<!--
+Allen, Mike.
+-->
+
+    <developer>
+      <id>mja</id>
+      <name>Mike Allen</name>
+      <email>mike.allen@facsim.org</email>
+      <url>http://blog.hindsight-consulting.com/</url>
+      <organization>Hindsight Consulting, Inc.</organization>
+      <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
+      <roles>
+        <role>Project Lead</role>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>US/Eastern</timezone>
+    </developer>
+  </developers>
+
+<!--
+===============================================================================
+Facsimile Contributors.
+
+If you have made contributions to the Facsimile project in the past, but are no
+longer actively involved, you should add your name, role, e-mail address and
+(optionally) organization to this list.
+===============================================================================
+-->
+
+  <contributors>
+  </contributors>
+
+<!--
+===============================================================================
+Mailing lists associated with the Facsimile project.
+===============================================================================
+-->
+
+  <mailingLists>
+
+<!--
+Facsimile Announce mailing list.
+-->
+
+    <mailingList>
+      <name>Facsimile Announcements</name>
+      <subscribe>
+        https://lists.sourceforge.net/lists/listinfo/facsimile-announce
+      </subscribe>
+      <unsubscribe>
+        https://lists.sourceforge.net/lists/listinfo/facsimile-announce
+      </unsubscribe>
+      <post>facsimile-announce@sourceforge.net</post>
+    </mailingList>
+  </mailingLists>
+
+<!--
+===============================================================================
+Child modules.
+
+All modules listed here must reference this POM as their parent.
+===============================================================================
+-->
+
+  <modules>
+    <module>libfacsimile</module>
+  </modules>
+
+<!--
+===============================================================================
+Source Code Management.
+
+Facsimile makes use of the SourceForge-hosted Subversion version control
+system.
+===============================================================================
+-->
+
+  <scm>
+    <connection>
+      scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk
+    </connection>
+    <developerConnection>
+      scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk
+    </developerConnection>
+    <url>http://facsimile.svn.sourceforge.net/viewvc/facsimile/trunk</url>
+  </scm>
+
+<!--
+===============================================================================
+Issue Management System.
+
+Facsimile issues (bugs, enhancement requests, etc.) are handled through the
+LaunchPad system.
+===============================================================================
+-->
+
+  <issueManagement>
+    <system>launchpad.net</system>
+    <url>https://bugs.launchpad.net/facsimile</url>
+  </issueManagement>
+
+<!--
+===============================================================================
+Continuous Integration (CI) System.
+
+Facsimile utilizes the Jenkins CI system, which is (currently) hosted on a
+private server that is inaccessible from the Internet.
+===============================================================================
+-->
+
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>http://sol.hindsight.dyndns.biz:8080/</url>
+  </ciManagement>
+
+<!--
+===============================================================================
+Distribution management.
+===============================================================================
+-->
+
+  <distributionManagement>
+    <!-- TODO -->
+  </distributionManagement>
+
+<!--
+===============================================================================
+Properties.
+
+Many of these properties relate to versions of other tools and/or plug-ins.  It
+should be obvious, but in case it isn't, use these properties in place of
+hard-coded version numbers in the remainder of this file.
+
+The Facsimile project will endeavor to always utilize the most recent point
+release available, but not necessarily the most recent, bleeding-edge release.
+===============================================================================
+-->
+
+  <properties>
+
+<!--
+Ensure that we use UTF-8 encoding for all source and output files.
+
+If this is not specified, we get a warning that builds are platform-dependent.
+-->
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+<!--
+Versions of Scala libraries, frameworks and Maven plug-ins.
+
+These tools are typically highly sensitive (due to binary compatibility issues)
+to the version of the Scala compiler/library in use.  If the Scala version is
+changed, then, typically, the versions of all other Scala libraries and tools
+will need to be revised to remain compatible - including any Scala plug-ins.
+-->
+
+    <scala.version>2.9.1</scala.version>
+    <scalatest.version>1.6.1</scalatest.version>
+    <maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
+
+<!--
+Versions of miscellaneous Java library and framework dependencies.
+
+Scala is not sensitive to the versions of Java libraries and frameworks.  The
+versions of these dependencies can be changed without too much concern about
+the version of Scala employed.
+
+Note: JUnit is not listed here, nor should it be referenced as a dependency,
+since it is included as a dependency of the maven-scala-plugin.
+-->
+
+    <junit.version>4.9</junit.version>
+    <!-- <java3d.version>1.3.1</java3d.version> -->
+
+<!--
+Versions of miscellaneous (non-Scala-related) Maven plug-ins.
+
+Scala is not sensitive to the versions of these Maven plug-ins.  The versions
+of these plug-ins can be changed without too much concern about the version of
+Scala employed.
+
+The versions of these plug-ins should be raised periodically to the most recent
+available.
+
+Note: The maven-release-plugin has a managed version of 2.0, and so the latest
+version of this plug-in is currently not used.
+-->
+
+    <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
+    <maven-findbugs-plugin.version>2.3.2</maven-findbugs-plugin.version>
+    <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+    <maven-site-plugin.version>3.0</maven-site-plugin.version>
+    <!-- <maven-release-plugin.version>2.2.1</maven-release-plugin.version> -->
+    <maven-project-info-plugin.version>2.4</maven-project-info-plugin.version>
+    <maven-checkstyle-plugin.version>2.7</maven-checkstyle-plugin.version>
+  </properties>
+
+<!--
+===============================================================================
+Dependency Management.
+
+This section identifies the default version for all dependencies referenced in
+this POM and any sub-module POM.
+===============================================================================
+-->
+
+  <dependencyManagement>
+    <dependencies>
+
+<!--
+Scala standard library.
+-->
+
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+
+<!--
+Scala DBC library.
+-->
+
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-dbc</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+
+<!--
+Scala Swing library.
+-->
+
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-swing</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+
+<!--
+Java3D libraries.
+
+Commented out right now, pending a decision on which 3D library is to be
+utilized going forward.
+-->
+
+<!--
+      <dependency>
+        <groupId>java3d</groupId>
+        <artifactId>j3d-core</artifactId>
+        <version>${java3d.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>java3d</groupId>
+        <artifactId>j3d-core-utils</artifactId>
+        <version>${java3d.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>java3d</groupId>
+        <artifactId>vecmath</artifactId>
+        <version>${java3d.version}</version>
+      </dependency>
+-->
+
+<!--
+JUnit unit-testing framework.
+-->
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+<!--
+ScalaTest unit-testing framework.
+-->
+
+      <dependency>
+        <groupId>org.scalatest</groupId>
+        <artifactId>scalatest_${scala.version}</artifactId>
+        <version>${scalatest.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+<!--
+===============================================================================
+Repositories.
+===============================================================================
+-->
+
+  <repositories>
+
+<!--
+Add the Scala Tools repository, which contains the Scala library among others.
+-->
+
+    <repository>
+      <id>scala-tools.org</id>
+      <name>Scala Tools Maven Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </repository>
+  </repositories>
+
+<!--
+===============================================================================
+Maven plug-in repositories.
+===============================================================================
+-->
+
+  <pluginRepositories>
+
+<!--
+Add the Scala Tools plug-in repository, which contains the maven-scala-plugin
+among others.
+-->
+
+    <pluginRepository>
+      <id>scala-tools.org</id>
+      <name>Scala Tools Maven Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+<!--
+===============================================================================
+Build configuration.
+===============================================================================
+-->
+
+  <build>
+
+<!--
+Since this is a Scala project, the primary product-related sources should be in
+src/main/scala, and test-related code should be placed in src/test/scala.
+-->
+
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+
+<!--
+The ${target.path} property is defined by the build profile in use - see later
+"profiles" section.
+-->
+
+    <outputDirectory>${target.path}/classes</outputDirectory>
+    <testOutputDirectory>${target.path}/test-classes</testOutputDirectory>
+
+<!--
+Build-related plug-ins.
+-->
+
+    <plugins>
+
+<!--
+Scala plug-in.
+
+These are the common settings for all build profiles.  See the profile section
+for further information.
+-->
+
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>${maven-scala-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+              <goal>doc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <args>
+            <arg>-deprecated</arg>
+            <arg>-explaintypes</arg>
+            <arg>-target:jvm-1.5</arg>
+            <arg>-unchecked</arg>
+            <arg>-Xcheckinit</arg>
+            <arg>-Xfatal-warnings</arg>
+            <arg>-Xmigration</arg>
+            <arg>-Ynotnull</arg>
+            <arg>-Ywarn-dead-code</arg>
+          </args>
+          <jvmArgs>
+            <jvmArg>-Xms64m</jvmArg>
+            <jvmArg>-Xmx1024m</jvmArg>
+          </jvmArgs>
+        </configuration>
+      </plugin>
+
+<!--
+Plug-in to measure how much of the code base is tested by the test-suite, using
+the Cobertura tool.
+
+The goal is 100% line and branch coverage, but that is difficult to achieve in
+practice.  As coverage rates improve, the targets should be rates.
+-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${maven-cobertura-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>clean</goal>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <check>
+            <haltOnFailure>true</haltOnFailure>
+            <branchRate>85</branchRate>
+            <lineRate>85</lineRate>
+            <totalBranchRate>85</totalBranchRate>
+            <totalLineRate>85</totalLineRate>
+            <packageBranchRate>85</packageBranchRate>
+            <packageLineRate>85</packageLineRate>
+          </check>
+        </configuration>
+      </plugin>
+
+<!--
+Plug-in to transfer resource bundles to the output directory.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+      </plugin>
+
+<!--
+Plug-in to create a Maven site for the project.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven-site-plugin.version}</version>
+      </plugin>
+
+<!--
+Plug-in to handle automated version numbering and release tagging.
+
+These options are typically invoked by the Jenkins continuous integration
+server.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <!-- <version>${maven-release-plugin.version}</version> -->
+        <configuration>
+          <tagBase>
+          https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases
+          </tagBase>
+          <goals>deploy</goals>
+          <releaseProfiles>production</releaseProfiles>
+        </configuration>
+      </plugin>
+
+<!--
+The assembly plug-in is used to generate distribution assemblies.
+
+The assembly sources are contained within the src/assembly directory.  Source
+filter properties are in the src/assembly/filters directory.
+-->
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <filter>src/assembly/filters/filter.properties</filter>
+          <descriptors>
+            <descriptor>src/assembly/distribution.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+
+<!--
+Check that the Facsimile sources conform to the published coding standards.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
+        <configuration>
+          <configLocation>src/checks/FacsimileChecks.xml</configLocation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+<!--
+===============================================================================
+Facsimile profiles.
+
+Two versions of the library can be built by this POM file:
+
+development
+    This version disables all optimization, enables all debug, assertions,
+    assumptions, etc.  It is active by default and is intended for use during
+    development and testing.
+
+production
+    This version enables maximum optimization, disables all debug, assertions
+    assumptions, etc. and ensures that the resulting library executes with
+    maximum performance.  It is inactive by default and is intended for use
+    when making a release only.
+
+Both versions are unit-tested by the test suite.
+===============================================================================
+-->
+
+  <profiles>
+
+<!--
+Development build profile.
+
+Disable all code optimization and enable as much debug support as possible.
+Although this will result in a slow version of the library (relative to the
+production build), it is intended to support the identification and fixing of
+bugs during development of the library.  It should be active by default.
+-->
+
+    <profile>
+      <id>development</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <target.path>target/development</target.path>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.scala-tools</groupId>
+            <artifactId>maven-scala-plugin</artifactId>
+            <version>${maven-scala-plugin.version}</version>
+            <inherited>true</inherited>
+            <configuration>
+              <args>
+                <arg>-g:source</arg>
+              </args>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+<!--
+Production build profile.
+
+Enable maximum code optimization and disable as much debug support as possible.
+This profile is used to generate production (i.e. release quality) versions of
+the library.  It should be inactive by default.
+-->
+
+    <profile>
+      <id>production</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <target.path>target/production</target.path>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.scala-tools</groupId>
+            <artifactId>maven-scala-plugin</artifactId>
+            <version>${maven-scala-plugin.version}</version>
+            <inherited>true</inherited>
+            <configuration>
+              <args>
+                <arg>-g:none</arg>
+                <arg>-optimise</arg>
+                <arg>-Xdisable-assertions</arg>
+              </args>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+<!--
+===============================================================================
+Reporting configuration.
+===============================================================================
+-->
+
+  <reporting>
+    <plugins>
+
+<!--
+Ensure that ScalaTest Spec classes are executed as part of the test-suite.
+
+NOTE: All test class names MUST end in "Spec" or they will not execute.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/*Spec.class</include>
+          </includes>
+        </configuration>
+      </plugin>
+
+<!--
+Generate project information reports.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven-project-info-plugin.version}</version>
+      </plugin>
+
+<!--
+Generate Cobertura test coverage reports.
+-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${maven-cobertura-plugin.version}</version>
+      </plugin>
+
+<!--
+Generate FindBugs static code analysis reports.
+-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${maven-findbugs-plugin.version}</version>
+      </plugin>
+
+<!--
+Scaladoc documentation generation.
+-->
+
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>${maven-scala-plugin.version}</version>
+      </plugin>
+
+<!--
+Generate a source code formatting analysis to ensure that code conforms to the
+coding standard.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
