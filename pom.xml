@@ -318,13 +318,14 @@ Note: The maven-release-plugin has a managed version of 2.0, and so the latest
 version of this plug-in is currently not used.
 -->
 
+    <maven-checkstyle-plugin.version>2.7</maven-checkstyle-plugin.version>
     <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
     <maven-findbugs-plugin.version>2.3.2</maven-findbugs-plugin.version>
+    <maven-project-info-plugin.version>2.4</maven-project-info-plugin.version>
+    <!-- <maven-release-plugin.version>2.2.1</maven-release-plugin.version> -->
     <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
     <maven-site-plugin.version>3.0</maven-site-plugin.version>
-    <!-- <maven-release-plugin.version>2.2.1</maven-release-plugin.version> -->
-    <maven-project-info-plugin.version>2.4</maven-project-info-plugin.version>
-    <maven-checkstyle-plugin.version>2.7</maven-checkstyle-plugin.version>
+    <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
   </properties>
 
 <!--
@@ -742,6 +743,7 @@ NOTE: All test class names MUST end in "Spec" or they will not execute.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
         <configuration>
           <includes>
             <include>**/*Spec.class</include>
