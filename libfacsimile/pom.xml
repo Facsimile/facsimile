@@ -68,11 +68,11 @@ POM information.
 ===============================================================================
 -->
 
-  <name>Facsimile Simulation/Emulation Library</name>
+  <name>Facsimile Simulation Library</name>
   <description>
-    The Facsimile Simulation/Emulation Scala library for the Java Virtual
-    Machine (JVM) platform.
-    
+    The Facsimile Simulation Scala library for the Java Virtual Machine (JVM)
+    platform.
+
     libfacsimile is the component of the Facsimile Simulation Suite with which
     user-written simulation models are developed.  It provides a simulation
     engine (providing event definition, scheduling and dispatching support),

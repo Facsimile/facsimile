@@ -47,35 +47,37 @@ import org.facsim.facsimile.util.Resource
 Abstract base class for all measurement types.
 
 Each subclass represents a single _measurement type_ - a physical quantity such
-as _time_, _distance_, _velocity_, etc.
+as ''time'', ''distance'', ''velocity'', etc.
 
 Each type supports one or more units of measure.  For example, time quantities
-may be measured in _seconds_, _minutes_, _hours_, etc.  These units are
+may be measured in ''seconds'', ''minutes'', ''hours'', etc.  These units are
 represented by instances of the implementing measurement type's class.  For
 each measurement type, there is a standard unit of measure defined by the
-_[http://en.wikipedia.org/wiki/International_System_of_Units International
-System of Units]_ - commonly abbreviated as _SI_.
+''[[http://en.wikipedia.org/wiki/International_System_of_Units International
+System of Units]]'' - commonly abbreviated as ''SI''.
 
-These standard units are used by _Facsimile_ internally to store measurement
+These standard units are used by ''Facsimile'' internally to store measurement
 quantities.  (Measurement quantities are stored as immutable instances of
 [measure.Measure Measure] subclasses, with each subclass corresponding to each
-measurement type.)  For example, the _SI_ standard unit of measure for _time_
-is the _second_; consequently, _Facsimile_ stores and calculates all time
-quantities in _seconds_ also.  Adoption of the _SI_ standard units simplifies
-the implementation of physics calculations within _Facsimile_ and provides a
-clearly-defined basis for developing simulation models of the real-world.
-(Many other simulation modeling tools suffer from unit of measure confusion,
-both internally and externally, creating a wide variety of problems.)
+measurement type.)  For example, the ''SI'' standard unit of measure for
+''time'' is the ''second''; consequently, ''Facsimile'' stores and calculates
+all time quantities in ''seconds'' also.  Adoption of the ''SI'' standard units
+simplifies the implementation of physics calculations within ''Facsimile'' and
+provides a clearly-defined basis for developing simulation models of the
+real-world.  (Many other simulation modeling tools suffer from unit of measure
+confusion, both internally and externally, creating a wide variety of
+problems.)
 
-However, it is unreasonable to expect that _Facsimile_ users would be
+However, it is unreasonable to expect that ''Facsimile'' users would be
 comfortable entering and reviewing data solely in these units.  For instance,
-the _SI_ standard unit of measure for _angles_ is the _radian_ - and there are
-few people who don't find the _degree_ a far more intuitive alternative.
-Similarly, users in the United States might prefer to use feet & inches,
-pounds, Fahrenheit, etc. instead of their metric equivalents.  Consequently,
-_Facsimile_ allows users to work with whichever units they - or their customers
-or employers - prefer.  _Facsimile_ converts values to the standard _SI_ units
-on input and converts them to the required units on output.
+the ''SI'' standard unit of measure for ''angles'' is the ''radian'' - and
+there are few people who don't find the ''degree'' a far more intuitive
+alternative.  Similarly, users in the United States might prefer to use feet &
+inches, pounds, Fahrenheit, etc. instead of their metric equivalents.
+Consequently, ''Facsimile'' allows users to work with whichever units they - or
+their customers or employers - prefer.  ''Facsimile'' converts values to the
+standard ''SI'' units on input and converts them to the required units on
+output.
 
 @param nameSingular Singular form of the unit name.  This name should be in the
 closest match to the user's preferred locale.
@@ -86,10 +88,10 @@ closest match to the user's preferred locale.
 @param symbol Symbol for this unit.  This name should be in the closest match
 to the user's preferred locale.
 
-@see [measure.Measure Measure]
+@see [[measure.Measure Measure]]
 
-@see [http://en.wikipedia.org/wiki/International_System_of_Units International
-System of Units (Wikipedia)]
+@see [[http://en.wikipedia.org/wiki/International_System_of_Units International
+System of Units (Wikipedia)]]
 */
 //=============================================================================
 
@@ -127,18 +129,18 @@ Symbol associated with this unit.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Report the name of the associated measurement type.</p>
+Report the name of the associated measurement type.
 
-<p>The name should be reported in the singular form (e.g. "time", rather than
+The name should be reported in the singular form (e.g. "time", rather than
 "times"), and should match the user's preferred locale as closely as possible.
 If the type name is typically capitalized then the returned name should also be
 capitalized, otherwise it should be returned in lower case (or the
-locale-equivalent).</p>
+locale-equivalent).
 
-<p>All units of measure for the same measurement type report the same type name
-value.</p>
+All units of measure for the same measurement type report the same type name
+value.
 
-<p>The measurement type name should be unique across all measurement types.</p>
+The measurement type name should be unique across all measurement types.
 
 @return Name of this unit of measure's type.
 */
@@ -148,18 +150,18 @@ value.</p>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Report the name of this unit of measure in singular form.</p>
+Report the name of this unit of measure in singular form.
 
-<p>The name should be reported in the singular form, and should match the
-user's preferred locale as closely as possible.</p>
+The name should be reported in the singular form, and should match the user's
+preferred locale as closely as possible.
 
-<p>If the name of the unit is typically capitalized (such as <em>Celsius</em>,
-<em>Fahrenheit</em>, <em>Kelvin</em>, etc.) then the returned name should also
-be capitalized, otherwise it should be returned in lower case (or the
-locale-equivalent).</p>
+If the name of the unit is typically capitalized (such as ''Celsius'',
+''Fahrenheit'', ''Kelvin'', etc.) then the returned name should also be
+capitalized, otherwise it should be returned in lower case (or the
+locale-equivalent).
 
-<p>The singular form of the name should be unique across all units of measure,
-but can be the same as the plural form of the same unit of measure.</p>
+The singular form of the name should be unique across all units of measure, but
+can be the same as the plural form of the same unit of measure.
 
 @return Singular form of this unit of measure's name.
 */
@@ -169,18 +171,18 @@ but can be the same as the plural form of the same unit of measure.</p>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Report the name of this unit of measure in plural form.</p>
+Report the name of this unit of measure in plural form.
 
-<p>The name should be reported in the plural form, and should match the user's
-preferred locale as closely as possible.</p>
+The name should be reported in the plural form, and should match the user's
+preferred locale as closely as possible.
 
-<p>If the name of the unit is typically capitalized (such as <em>Celsius</em>,
-<em>Fahrenheit</em>, <em>Kelvin</em>, etc.) then the returned name should also
-be capitalized, otherwise it should be returned in lower case (or the
-locale-equivalent).</p>
+If the name of the unit is typically capitalized (such as ''Celsius'',
+''Fahrenheit'', ''Kelvin'', etc.) then the returned name should also be
+capitalized, otherwise it should be returned in lower case (or the
+locale-equivalent).
 
-<p>The plural form of the name should be unique across all units of measure,
-but can be the same as the singular form of the same unit of measure.</p>
+The plural form of the name should be unique across all units of measure, but
+can be the same as the singular form of the same unit of measure.
 
 @return Plural form of this unit of measure's name.
 */
@@ -190,11 +192,11 @@ but can be the same as the singular form of the same unit of measure.</p>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Report the symbol associated with this unit of measure.</p>
+Report the symbol associated with this unit of measure.
 
-<p>The symbol should be unique across all units of measure.</p>
+The symbol should be unique across all units of measure.
 
- @return Symbol associated with this unit of measure.
+@return Symbol associated with this unit of measure.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -224,19 +226,19 @@ but can be the same as the singular form of the same unit of measure.</p>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
-<p>Report the resource key identifying the name of the associated measurement
-type.</p>
+Report the resource key identifying the name of the associated measurement
+type.
 
-<p>The name itself should be reported in the singular form (e.g. "time", rather
+The name itself should be reported in the singular form (e.g. "time", rather
 than "times"), and should match the user's preferred locale as closely as
 possible.  If the type name is typically capitalized then the returned name
 should also be capitalized, otherwise it should be returned in lower case (or
-the locale-equivalent).</p>
+the locale-equivalent).
 
-<p>All units of measure for the same measurement type report the same type name
-value.</p>
+All units of measure for the same measurement type report the same type name
+value.
 
-<p>The measurement type name should be unique across all measurement types.</p>
+The measurement type name should be unique across all measurement types.
 
 @return Name of this unit of measure's type.
 */

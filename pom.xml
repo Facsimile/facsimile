@@ -72,9 +72,8 @@ POM information.
   <name>Facsimile Simulation Suite</name>
   <description>
     The Facsimile project's goal is to develop and maintain a high-quality, 3D,
-    physics-enabled, discrete-event simulation/emulation library that can be
-    used for industrial simulation and emulation projects in an engineering
-    and/or manufacturing environment.
+    discrete-event simulation library that can be used for industrial
+    simulation projects in an engineering and/or manufacturing environment.
 
     Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS,
     BSD and Unix.
@@ -183,6 +182,16 @@ Facsimile Announce mailing list.
       <post>facsimile-announce@sourceforge.net</post>
     </mailingList>
   </mailingLists>
+
+<!--
+===============================================================================
+Pre-requisites.
+===============================================================================
+-->
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
 
 <!--
 ===============================================================================

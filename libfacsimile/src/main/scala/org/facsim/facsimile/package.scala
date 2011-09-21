@@ -47,13 +47,14 @@ package org.facsim
 
 //=============================================================================
 /**
-@define facsimile ''[http://www.facsim.org/ Facsimile]''
-$facsimile simulation library.
-
 Welcome to $facsimile!
+
+@define facsimile ''[[http://www.facsim.org/ Facsimile]]''
+
+@since 0.0-0
 */
 //=============================================================================
 
-package facsimile
+package object facsimile
 {
 }

@@ -42,12 +42,12 @@ package org.facsim.facsimile
 
 //=============================================================================
 /**
-_Facsimile_ simulation event scheduling, ordering and dispatching elements.
+$facsimile simulation event scheduling, ordering and dispatching elements.
 
 @since 0.0-0
 */
 //=============================================================================
 
-package engine
+package object engine
 {
 }

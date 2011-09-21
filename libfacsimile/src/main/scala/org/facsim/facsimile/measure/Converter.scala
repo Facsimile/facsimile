@@ -46,19 +46,19 @@ Trait for unit of measurement value conversion.
 
 Converter implementations support the conversion of measurement quantity values
 between different measurement units of the same type.  For example, converting
-a _time_ expressed in _hours_ to a time expressed in _seconds_.
+a ''time'' expressed in ''hours'' to a time expressed in ''seconds''.
 
 More specifically, each converter instance is associated with a specific
 measurement unit.  They support the conversion of values between this
 associated measurement unit and the standard
-_[http://en.wikipedia.org/wiki/International_System_of_Units SI]_ units for the
-associated type of measurement.
+''[[http://en.wikipedia.org/wiki/International_System_of_Units SI]]'' units for
+the associated type of measurement.
 
 Refer to [[measure.UnitOfMeasure UnitOfMeasure]] for further information.
 
 @see [[org.facsim.facsimile.measure.UnitOfMeasure UnitOfMeasure]]
-@see [href="http://en.wikipedia.org/wiki/International_System_of_Units
-International System of Units (Wikipedia)]
+@see [[href="http://en.wikipedia.org/wiki/International_System_of_Units
+International System of Units (Wikipedia)]]
 
 @since 0.0-0
 */
@@ -71,18 +71,18 @@ trait Converter
 /**
 Returns imported measurement quantity value.
 
-Convert a measurement quantity's *value*, expressed in the units associated
-with this converter instance, to a value in the standard _SI_ units for this
+Convert a measurement quantity's '''value''', expressed in the units associated
+with this converter instance, to a value in the standard ''SI'' units for this
 type of measurement.
 
 @param value Value of the measurement quantity, expressed in the associated
 units, to be converted.
 
 @return Converted value of the measurement quantity, expressed in the standard
-_SI_ units for this type of measurement.
+''SI'' units for this type of measurement.
 
-@see [http://en.wikipedia.org/wiki/International_System_of_Units
-International System of Units (Wikipedia)]
+@see [[http://en.wikipedia.org/wiki/International_System_of_Units
+International System of Units (Wikipedia)]]
 
 @since 0.0-0
 */
@@ -93,21 +93,21 @@ International System of Units (Wikipedia)]
 //-----------------------------------------------------------------------------
 /**
 Export a measurement quantity, converting a value from the standard
-_[http://en.wikipedia.org/wiki/International_System_of_Units SI]_ units to the
-associated units.
+''[[http://en.wikipedia.org/wiki/International_System_of_Units SI]]'' units to
+the associated units.
 
-Convert a measurement quantity's *value*, expressed in the standard _SI_ units
-for this type of measurement, to a value in the units associated with this
-converted instance.
+Convert a measurement quantity's '''value''', expressed in the standard ''SI''
+units for this type of measurement, to a value in the units associated with
+this converted instance.
 
-@param value Value of the measurement quantity, expressed in standard _SI_
+@param value Value of the measurement quantity, expressed in standard ''SI''
 units, to be converted.
 
 @return Converted value of the measurement quantity, expressed in the
 associated units.
 
-@see [http://en.wikipedia.org/wiki/International_System_of_Units
-International System of Units (Wikipedia)]
+@see [[http://en.wikipedia.org/wiki/International_System_of_Units
+International System of Units (Wikipedia)]]
 
 @since 0.0-0
 */

@@ -1,8 +1,8 @@
 <classpath>
-  <classpathentry kind="src" path="src/test/scala" output="target/development/test-classes" including="**/*.java"/>
-  <classpathentry kind="src" path="src/test/resources" output="target/development/test-classes" excluding="**/*.java"/>
-  <classpathentry kind="src" path="src/main/scala" including="**/*.java"/>
-  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/test/scala" output="target/development/test-classes" including="**/*.scala"/>
+  <classpathentry kind="src" path="src/test/resources" output="target/development/test-classes" excluding="**/*.scala"/>
+  <classpathentry kind="src" path="src/main/scala" including="**/*.scala"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.scala"/>
   <classpathentry kind="output" path="target/development/classes"/>
   <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.9/junit-4.9.jar"/>

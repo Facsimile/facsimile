@@ -52,7 +52,7 @@ by-passing the synchronized access provided by the [[nextId]] method.  By,
 instead, choosing to make it a separate, package-private object, we restrict
 the visibility of the object generally, while also ensuring that the [[id]]
 member is solely access through the [[nextId]] method.  Furthermore, it's
-possible that we may not even need this object in future _Facsimile_ releases,
+possible that we may not even need this object in future ''Facsimile'' releases,
 so hiding it as much as possible makes even more sense.
 
 @since 0.0-0

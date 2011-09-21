@@ -48,6 +48,6 @@ $facsimile simulation utilities.
 */
 //=============================================================================
 
-package util
+package object util
 {
 }

@@ -44,7 +44,7 @@ import org.facsim.facsimile.measure.Time
 
 //=============================================================================
 /**
-Abstract base class for all _Facsimile_ simulation events.
+Abstract base class for all ''Facsimile'' simulation events.
 
 Events are scheduled for dispatch during construction.
 

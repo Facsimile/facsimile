@@ -49,13 +49,13 @@ same measurement type) using a linear factor.
 
 To import a value, that is, to convert a measurement quantity's value from the
 units associated with this converter to a value in the standard
-_[http://en.wikipedia.org/wiki/International_System_of_Unitsv SI]_ units for
-the associated measurement type, the value is multiplied by the given
-*factor*.
+''[[http://en.wikipedia.org/wiki/International_System_of_Unitsv SI]]'' units
+for the associated measurement type, the value is multiplied by the given
+'''factor'''.
 
 To export a value, that is, to convert a measurement quantity's value from the
-standard _SI_ units for the associated measurement type to a value in the units
-associated with this converter, the value is divided by the given *factor*.
+standard ''SI'' units for the associated measurement type to a value in the units
+associated with this converter, the value is divided by the given '''factor'''.
 
 @param factor Linear conversion factor.  This value cannot be zero.
 
