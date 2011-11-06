@@ -40,10 +40,13 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 
 package org.facsim.facsimile.engine
 import scala.collection.mutable.PriorityQueue
+import org.facsim.facsimile.measure.Time
+import org.facsim.facsimile.measure.TimeUnit
+import org.facsim.facsimile.util.Resource
 
 //=============================================================================
 /**
-Simulation object.
+Simulation.
 
 @since 0.0-0
 */
@@ -54,9 +57,10 @@ object Simulation {
 /**
 Event queue.
 
-Events are queued up and dispatched in order (see [[Event.compare(Event)]] for
-further information).  Events are removed, and dispatched one-at-a-time - with
-the event being dispatched right now termed the ''current event''.
+Events are queued up and dispatched in order (see
+[[org.facsim.facsimile.Event.compare(Event)]] for further information).  Events
+are removed, and dispatched one-at-a-time - with the event being dispatched
+right now termed the _current event_.
 */
 
   private val eventQueue = PriorityQueue [Event] ()
@@ -65,7 +69,8 @@ the event being dispatched right now termed the ''current event''.
 Current event.
 */
 
-  private var currentEvent: Event = null //new NullEvent ()
+  private var currentEvent: Event = schedule (new NullAction, Time.time (0.0,
+  TimeUnit.seconds), 0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -77,7 +82,30 @@ Report current simulation time.
 */
 //-----------------------------------------------------------------------------
 
-  final def currentTime = currentEvent.timeDue
+  final def currentTime = currentEvent.due
+
+//-----------------------------------------------------------------------------
+/**
+Schedule the simple actions for execution.
+
+@param action to be scheduled for execution.
+
+@param dueIn Time to elapse before action is executed.  If this value is 0.0,
+then the action will be executed at the current simulation time, but not until
+after the current event, and any other current event with a higher priority
+scheduled at the current simulation time, has completed.
+
+@param priority Priority of the action; the higher the value, the higher the
+priority.  Actions scheduled to execute at the same time will be dispatched in
+order of their priority; actions scheduled at the same time with the same
+priority are dispatched in the order that they are scheduled.
+
+@since 0.0-0
+*/
+//-----------------------------------------------------------------------------
+
+  final def schedule (action: Action, dueIn: Time, priority: Int = 0) =
+  scheduleEvent (new Event (action, dueIn, priority))
 
 //-----------------------------------------------------------------------------
 /**
@@ -89,5 +117,46 @@ Schedule event.
 */
 //-----------------------------------------------------------------------------
 
-  private [engine] def schedule (event: Event): Unit = (eventQueue += event)
+  private [engine] def scheduleEvent (event: Event) = {
+    (eventQueue += event)
+    event
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Null action class.
+
+Represents actions that should never be executed in practice.  The initial
+current event is such an action, it provides the initial simulation time, but
+is never actually executed.
+
+@since 0.0-0
+*/
+//-----------------------------------------------------------------------------
+
+  private final class NullAction
+  extends Action
+  {
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Provide a description for the null actions.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    override final def description =
+    Resource.format ("engine.Simulation.NullEvent.description")
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+Provide null actions.
+
+Null actions should never actually be executed; if this exception is thrown, an
+error is issued.
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    override final def execute = sys.error (Resource.format
+    ("engine.Simulation.NullEvent.executeError"))
+  }
 }

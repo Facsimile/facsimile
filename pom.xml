@@ -85,12 +85,14 @@ POM information.
 ===============================================================================
 Facsimile Organization.
 
-TODO: This ought to be formalized a little more.
+This project is the personal property of Michael J Allen.  At some point in the
+future, this may be changed to a consortium of developers - but we haven't
+gotten there yet.
 ===============================================================================
 -->
 
   <organization>
-    <name>Facsimile</name>
+    <name>Michael J Allen</name>
     <url>http://www.facsim.org/</url>
   </organization>
 

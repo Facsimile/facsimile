@@ -40,12 +40,33 @@ Scala source file belonging to the org.facsim.facsimile.measure package.
 
 package org.facsim.facsimile.measure
 
+//=============================================================================
+/**
+Class representing a unit of time measurement.
+*/
+//=============================================================================
+
 final class TimeUnit private [measure] (converter: LinearFactorConverter,
 keyStub: String)
 extends UnitOfMeasure (converter, keyStub + ".singular", keyStub + ".plural",
 keyStub + ".symbol") {
+
+//-----------------------------------------------------------------------------
+/*
+Compare this object to another for equality.
+
+@see UnitOfMeasure.typeNameKey (that: Any)
+*/
+//-----------------------------------------------------------------------------
+
   protected [measure] def typeNameKey (): String = "measure.timeUnit.name"
 }
+
+//=============================================================================
+/**
+Set of pre-defined time measurement units.
+*/
+//=============================================================================
 
 object TimeUnit {
 

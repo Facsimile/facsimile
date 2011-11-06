@@ -57,7 +57,7 @@ the associated type of measurement.
 Refer to [[measure.UnitOfMeasure UnitOfMeasure]] for further information.
 
 @see [[org.facsim.facsimile.measure.UnitOfMeasure UnitOfMeasure]]
-@see [[href="http://en.wikipedia.org/wiki/International_System_of_Units
+@see [[http://en.wikipedia.org/wiki/International_System_of_Units
 International System of Units (Wikipedia)]]
 
 @since 0.0-0

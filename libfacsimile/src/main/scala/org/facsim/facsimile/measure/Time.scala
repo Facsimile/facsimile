@@ -42,6 +42,61 @@ package org.facsim.facsimile.measure
 
 //=============================================================================
 /**
+Time object.
+
+@since 0.0-0
+*/
+//=============================================================================
+
+object Time {
+
+//-----------------------------------------------------------------------------
+/**
+Create new time value in specified time units.
+
+This function provides the potential to cache instances by mapping time values
+to Time instances.  At present, no such caching takes place and each time
+value passed results in a new time instance.  This behavior may change in a
+future release.
+
+@param value Time value, expressed in specified units.
+
+@param unit Time units in which value is expressed.
+
+@return Time instance representing the specified time value.
+
+@since 0.0-0
+*/
+//-----------------------------------------------------------------------------
+
+  def time (value: Double, unit: TimeUnit): Time = time (unit.importValue
+  (value))
+
+//-----------------------------------------------------------------------------
+/**
+Create new time value in seconds.
+
+This function provides the potential to cache instances by mapping time values
+to Time instances.  At present, no such caching takes place and each time
+value passed results in a new time instance.  This behavior may change in a
+future release.
+
+This function is private to present user bypassing of specifying time units
+when creating time values.
+
+@param value Time value, measured in seconds.
+
+@return Time instance representing the specified time value.
+
+@since 0.0-0
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] def time (value: Double) = new Time (value)
+}
+
+//=============================================================================
+/**
 Measurement type for time values.
 
 Both relative and absolute times can be represented by this class.  Time values
@@ -55,17 +110,13 @@ time.
 @constructor Create a new time value corresponding to the indicated number of
 seconds.  This constructor is private to the $measure package, ensuring that
 
+@param value Time value in seconds.
 */
 //=============================================================================
 
-final class Time private [measure] (value: Double)
+final class Time private (value: Double)
 extends NonNegativeMeasure [Time] (value)
 {
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-
-  def this (value: Double, units: TimeUnit) = this (units.importValue (value))
 
 //-----------------------------------------------------------------------------
 /*
@@ -74,5 +125,5 @@ Create a new Time value with indicated value.
 //-----------------------------------------------------------------------------
 
   protected [measure] override final def newMeasurement (value: Double): Time =
-  new Time (value)
+  Time.time (value)
 }
