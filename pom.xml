@@ -300,6 +300,9 @@ will need to be revised to remain compatible - including any Scala plug-ins.
     <scala.version>2.9.1</scala.version>
     <scalatest.version>1.6.1</scalatest.version>
     <maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
+    <maven-scalatest-plugin.version>
+      1.0-SNAPSHOT
+    </maven-scalatest-plugin.version>
 
 <!--
 Versions of miscellaneous Java library and framework dependencies.
@@ -307,12 +310,8 @@ Versions of miscellaneous Java library and framework dependencies.
 Scala is not sensitive to the versions of Java libraries and frameworks.  The
 versions of these dependencies can be changed without too much concern about
 the version of Scala employed.
-
-Note: JUnit is not listed here, nor should it be referenced as a dependency,
-since it is included as a dependency of the maven-scala-plugin.
 -->
 
-    <junit.version>4.9</junit.version>
     <!-- <java3d.version>1.3.1</java3d.version> -->
 
 <!--
@@ -405,17 +404,6 @@ utilized going forward.
         <version>${java3d.version}</version>
       </dependency>
 -->
-
-<!--
-JUnit unit-testing framework.
--->
-
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
-      </dependency>
 
 <!--
 ScalaTest unit-testing framework.
@@ -536,6 +524,49 @@ for further information.
             <jvmArg>-Xmx1024m</jvmArg>
           </jvmArgs>
         </configuration>
+      </plugin>
+
+<!--
+Disable testing in the Maven Surefire plugin, since we're using the Maven
+ScalaTest plugin to do the testing.
+
+NOTE: When the Maven ScalaTest plugin is better integrated into Maven, Surefire
+will invoke ScalaTest test suites and this configuration will need to be
+removed.
+-->
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+
+<!--
+Configure the Maven ScalaTest plugin.
+
+NOTE: When the Maven ScalaTest plugin is better integrated into Maven, this
+configuration will require modification.
+-->
+
+      <plugin>
+        <groupId>org.scalatest</groupId>
+        <artifactId>maven-scalatest-plugin</artifactId>
+        <version>${maven-scalatest-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <reportsDirectory>
+                ${project.build.directory}/surefire-reports
+              </reportsDirectory>
+              <xmlreports>.</xmlreports>
+              <filereports>FacsimileTestSuite.txt</filereports>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
 <!--
@@ -744,23 +775,6 @@ Reporting configuration.
 
   <reporting>
     <plugins>
-
-<!--
-Ensure that ScalaTest Spec classes are executed as part of the test-suite.
-
-NOTE: All test class names MUST end in "Spec" or they will not execute.
--->
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven-surefire-plugin.version}</version>
-        <configuration>
-          <includes>
-            <include>**/*Spec.class</include>
-          </includes>
-        </configuration>
-      </plugin>
 
 <!--
 Generate project information reports.

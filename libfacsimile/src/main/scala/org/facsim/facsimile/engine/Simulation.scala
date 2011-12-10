@@ -124,6 +124,48 @@ Schedule event.
 
 //-----------------------------------------------------------------------------
 /**
+Run simulation.
+
+This function never returns, but might terminate if an exception occurs.
+
+@throws OutOfEventsException if the simulation runs out of events.
+
+@since 0.0-0
+*/
+//-----------------------------------------------------------------------------
+
+  private [engine] def run (): Nothing = {
+
+/*
+If there are no more events left, then throw the out-of-events exception.  This
+should generally be treated as a sign that event propagation has failed.
+*/
+
+    if (eventQueue.isEmpty) throw new OutOfEventsException ()
+
+/*
+Update the current event (and, hence, the current simulation time) to the event
+at the head of the event queue, removing that event in the process.
+*/
+
+    currentEvent = eventQueue.dequeue ()
+    assert (currentEvent ne null)
+
+/*
+Now dispatch this event - have it execute its actions.
+*/
+
+    currentEvent.dispatch ()
+
+/*
+Use tail recursion to perform the next event.
+*/
+
+    run ();
+  }
+
+//-----------------------------------------------------------------------------
+/**
 Null action class.
 
 Represents actions that should never be executed in practice.  The initial
@@ -135,8 +177,7 @@ is never actually executed.
 //-----------------------------------------------------------------------------
 
   private final class NullAction
-  extends Action
-  {
+  extends Action {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*

@@ -61,7 +61,6 @@ POM co-ordinate information.
   <artifactId>libfacsimile</artifactId>
   <packaging>jar</packaging>
 
-
 <!--
 ===============================================================================
 POM information.
@@ -134,16 +133,6 @@ we can change this back to "provided".
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-swing</artifactId>
       <scope>compile</scope>
-    </dependency>
-
-<!--
-JUnit unit-testing framework.
--->
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
     </dependency>
 
 <!--

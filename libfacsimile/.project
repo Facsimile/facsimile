@@ -3,6 +3,7 @@
 	<name>libfacsimile</name>
 	<comment>The Facsimile Simulation/Emulation Scala library for the JVM. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
 	<projects>
+		<project>Facsimile</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -34,20 +34,46 @@ rejected.  For further information, please visit the coding standards at:
 ===============================================================================
 $Id$
 
-Scala source file defining the org.facsim.facsimile.util package.
+Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-package org.facsim.facsimile
+package org.facsim.facsimile.engine
+import org.facsim.facsimile.util.Resource
 
 //=============================================================================
 /**
-_[http://www.facsim.org/ Facsimile]_ simulation utilities.
+Thrown when the simulation runs of out events.
+
+In general, this should be regarded as abnormal termination of a simulation
+run and treated accordingly.
+
+A _non-terminating_ simulation should never run out of events.
+
+A _terminating_ simulation is anticipated to ultimately run out of events;
+however, since _(a)_ a terminating simulation might run out of events
+prematurely, due to a bug, and _(b)_ terminating simulations may have
+background events (such as scheduled operator breaks, etc.) that continue to
+occur event after the simulation has effectively terminated. it is preferable
+that terminating simulations detect that termination criteria have been met
+resulting in a controlled termination of the simulation run.
+
+@contructor Create new out-of-events exception.  Constructor is private to
+org.facsim.facsimile.engine package.
 
 @since 0.0-0
 */
 //=============================================================================
 
-package object util
-{
+final class OutOfEventsException private [engine] ()
+extends RuntimeException {
+
+//-----------------------------------------------------------------------------
+/*
+Report the cause of this exception.
+*/
+//-----------------------------------------------------------------------------
+
+  final override def getLocalizedMessage: String =
+  Resource.format ("engine.Simulation.OutOfEventsException.message")
 }

@@ -89,11 +89,9 @@ application.
 Retrieve and format a locale-specific string resource.
 
 Retrieves the string resource corresponding to the supplied key from the
-associated resource bundle.  Optional arguments are used to format the
-resulting string, which will be in the best matching locale to the user's
-preferred locale.
-
-@since 0.0-0
+$facsimile resource bundle.  Optional arguments are used to format the
+resulting string, which will be in the locale that best matches the user's
+preference.
 
 @param key Key used to identify the string resource to be retrieved.
 
@@ -112,10 +110,11 @@ key is not a string.
 
 @throws java.lang.IllegalArgumentException if the arguments supplied do not
 mesh with the formatting encoded within the retrieved string resource.
+
+@since 0.0-0
 */
 //-----------------------------------------------------------------------------
 
-  def format (key: String, arguments: Any*): String = {
-    MessageFormat.format (bundle.getString (key), arguments)
-  }
+  private [facsimile] def format (key: String, arguments: Any*): String =
+  MessageFormat.format (bundle.getString (key), arguments)
 }
