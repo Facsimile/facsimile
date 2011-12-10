@@ -435,6 +435,17 @@ Add the Scala Tools repository, which contains the Scala library among others.
       <name>Scala Tools Maven Repository</name>
       <url>http://scala-tools.org/repo-releases</url>
     </repository>
+
+<!--
+Add the Scala Tools Snapshot repository, which contains some required, but as
+yet formally unreleased, Scala Tools.
+-->
+
+    <repository>
+      <id>scala-tools.snapshots</id>
+      <name>Scala Tools Maven Snapshot Repository</name>
+      <url>http://scala-tools.org/repo-snapshots</url>
+    </repository>
   </repositories>
 
 <!--
@@ -454,6 +465,17 @@ among others.
       <id>scala-tools.org</id>
       <name>Scala Tools Maven Repository</name>
       <url>http://scala-tools.org/repo-releases</url>
+    </pluginRepository>
+
+<!--
+Add the Scala Tools Snapshot plug-in repository, which contains some required,
+but as yet formally unreleased, Scala Tool plug-ins.
+-->
+
+    <pluginRepository>
+      <id>scala-tools.snapshots</id>
+      <name>Scala Tools Maven Snapshot Repository</name>
+      <url>http://scala-tools.org/repo-snapshots</url>
     </pluginRepository>
   </pluginRepositories>
 
@@ -535,13 +557,13 @@ will invoke ScalaTest test suites and this configuration will need to be
 removed.
 -->
 
-      <plugin>
+<!--      <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skipTests>true</skipTests>
         </configuration>
       </plugin>
-
+-->
 <!--
 Configure the Maven ScalaTest plugin.
 
@@ -549,7 +571,7 @@ NOTE: When the Maven ScalaTest plugin is better integrated into Maven, this
 configuration will require modification.
 -->
 
-      <plugin>
+<!--      <plugin>
         <groupId>org.scalatest</groupId>
         <artifactId>maven-scalatest-plugin</artifactId>
         <version>${maven-scalatest-plugin.version}</version>
@@ -568,7 +590,7 @@ configuration will require modification.
           </execution>
         </executions>
       </plugin>
-
+-->
 <!--
 Plug-in to measure how much of the code base is tested by the test-suite, using
 the Cobertura tool.
@@ -577,7 +599,7 @@ The goal is 100% line and branch coverage, but that is difficult to achieve in
 practice.  As coverage rates improve, the targets should be rates.
 -->
 
-      <plugin>
+<!--      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
         <version>${maven-cobertura-plugin.version}</version>
@@ -601,7 +623,7 @@ practice.  As coverage rates improve, the targets should be rates.
           </check>
         </configuration>
       </plugin>
-
+-->
 <!--
 Plug-in to transfer resource bundles to the output directory.
 -->

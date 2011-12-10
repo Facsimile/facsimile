@@ -115,6 +115,12 @@ mesh with the formatting encoded within the retrieved string resource.
 */
 //-----------------------------------------------------------------------------
 
+/*
+To convert a Scala vararg to a Java vararg, while boxing numbers requires this
+rather ugly code...
+*/
+
   private [facsimile] def format (key: String, arguments: Any*): String =
-  MessageFormat.format (bundle.getString (key), arguments)
+  MessageFormat.format (bundle.getString (key), arguments.map
+  (_.asInstanceOf [AnyRef]): _*)
 }
