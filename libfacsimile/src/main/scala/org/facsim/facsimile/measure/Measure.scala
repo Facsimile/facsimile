@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -45,9 +45,9 @@ package org.facsim.facsimile.measure
 Abstract base class for all measurement type classes.
 
 This base class is used by all measurement types, storing the underlying values
-in the corresponding SI units.
+in the corresponding $SI units.
 
-@param value Value of the measurement type in the corresponding SI units.
+@param value Value of the measurement type in the corresponding $SI units.
 
 @tparam T Actual measurement type.  This must be a sub-type of Measure.
 
@@ -163,9 +163,9 @@ measurement type's valid range.
 Create a new measurement of the same type as this type with the indicated
 value.
 
-If Scala (and Java) ever gets true generics (or, at least, reifiable types), we
-wouldn't need this function - we would just say "new T (value)" instead - but
-we don't, so we need this sorry mess.
+If Scala (and Java) ever gets true ''generics'' (or, at least, ''reifiable''
+types), we wouldn't need this function - we would just say "new T (value)"
+instead - but we don't, so we need this sorry mess.
 
 @param value Value of the new measurement.
 

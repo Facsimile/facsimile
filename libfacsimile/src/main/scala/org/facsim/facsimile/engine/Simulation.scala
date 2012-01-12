@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -60,7 +60,8 @@ Event queue.
 Events are queued up and dispatched in order (see
 [[org.facsim.facsimile.Event.compare(Event)]] for further information).  Events
 are removed, and dispatched one-at-a-time - with the event being dispatched
-right now termed the _current event_.
+right now termed the ''current event''.  The current event does not belong to
+the eventQueue.
 */
 
   private val eventQueue = PriorityQueue [Event] ()

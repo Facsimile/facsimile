@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -108,7 +108,7 @@ time.
 @since 0.0-0
 
 @constructor Create a new time value corresponding to the indicated number of
-seconds.  This constructor is private to the $measure package, ensuring that
+seconds.  This constructor is private to the $MEASURE package, ensuring that
 
 @param value Time value in seconds.
 */

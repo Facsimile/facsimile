@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -44,9 +44,11 @@ import java.util.ResourceBundle
 
 //=============================================================================
 /**
-$facsimile resource provider.
+$FACSIMILE resource provider.
 
-Provides access to $facsimile resources, that are used throughout the library.
+Provides access to $FACSIMILE resources, that are used throughout the library.
+
+@since 0.0-0
 */
 //=============================================================================
 
@@ -54,17 +56,17 @@ object Resource
 {
 
 /**
-$facsimile library resource bundle name.
+$FACSIMILE library resource bundle name.
 
 Identifies the src/main/resources/{resourceBundleName}.properties file that
-contains resources for the entire $facsimile library.  This value should not be
+contains resources for the entire $FACSIMILE library.  This value should not be
 changed without good reason.
 */
 
   private val resourceBundleName = "facsimile"
 
 /**
-$facsimile library message resource bundle.
+$FACSIMILE library message resource bundle.
 
 Resource bundle containing internationalized text messages suitable for
 output.
@@ -89,7 +91,7 @@ application.
 Retrieve and format a locale-specific string resource.
 
 Retrieves the string resource corresponding to the supplied key from the
-$facsimile resource bundle.  Optional arguments are used to format the
+$FACSIMILE resource bundle.  Optional arguments are used to format the
 resulting string, which will be in the locale that best matches the user's
 preference.
 

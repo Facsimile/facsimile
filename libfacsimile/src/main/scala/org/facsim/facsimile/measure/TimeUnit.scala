@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -43,6 +43,8 @@ package org.facsim.facsimile.measure
 //=============================================================================
 /**
 Class representing a unit of time measurement.
+
+@since 0.0-0
 */
 //=============================================================================
 
@@ -65,6 +67,8 @@ Compare this object to another for equality.
 //=============================================================================
 /**
 Set of pre-defined time measurement units.
+
+@since 0.0-0
 */
 //=============================================================================
 
@@ -102,6 +106,8 @@ Multiplication factor to convert weeks into seconds.
 
 /**
 Units for time measured in milliseconds.
+
+@since 0.0-0
 */
 
   val milliseconds = new TimeUnit (new LinearFactorConverter
@@ -110,7 +116,9 @@ Units for time measured in milliseconds.
 /**
 Units for time measured in seconds.
 
-Seconds are the $si standard unit of time measurement.
+Seconds are the $SI standard unit of time measurement.
+
+@since 0.0-0
 */
 
   val seconds = new TimeUnit (new LinearFactorConverter (1.0),
@@ -118,6 +126,8 @@ Seconds are the $si standard unit of time measurement.
 
 /**
 Units for time measured in minutes.
+
+@since 0.0-0
 */
 
   val minutes = new TimeUnit (new LinearFactorConverter (secondsPerMinute),
@@ -125,6 +135,8 @@ Units for time measured in minutes.
 
 /**
 Units for time measured in hours.
+
+@since 0.0-0
 */
 
   val hours = new TimeUnit (new LinearFactorConverter (secondsPerHour),
@@ -132,6 +144,8 @@ Units for time measured in hours.
 
 /**
 Units for time measured in days.
+
+@since 0.0-0
 */
 
   val days = new TimeUnit (new LinearFactorConverter (secondsPerDay),
@@ -139,6 +153,8 @@ Units for time measured in days.
 
 /**
 Units for time measured in weeks.
+
+@since 0.0-0
 */
 
   val weeks = new TimeUnit (new LinearFactorConverter (secondsPerWeek),

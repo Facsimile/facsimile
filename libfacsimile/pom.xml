@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 <!--
 Facsimile - A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -181,7 +181,7 @@ removed.
 Configure the Maven ScalaTest plugin.
 
 NOTE: When the Maven ScalaTest plugin is better integrated into Maven, this
-configuration will require modification.
+configuration may require modification.
 -->
 
       <plugin>
@@ -194,11 +194,12 @@ configuration will require modification.
               <goal>test</goal>
             </goals>
             <configuration>
-              <reportsDirectory>
-                ${project.build.directory}/surefire-reports
-              </reportsDirectory>
-              <xmlreports>.</xmlreports>
-              <filereports>FacsimileTestSuite.txt</filereports>
+
+<!--
+Turn off "color" output (cursor escape sequences).
+-->
+
+              <stdout>W</stdout>
             </configuration>
           </execution>
         </executions>

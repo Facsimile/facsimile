@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 <!--
 Facsimile - A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -136,7 +136,7 @@ Allen, Mike.
       <id>mja</id>
       <name>Mike Allen</name>
       <email>mike.allen@facsim.org</email>
-      <url>http://blog.hindsight-consulting.com/</url>
+      <url>https://hindsight-consulting.com/blog</url>
       <organization>Hindsight Consulting, Inc.</organization>
       <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
       <roles>
@@ -217,13 +217,11 @@ system.
 -->
 
   <scm>
-    <connection>
-      scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk
-    </connection>
+    <connection>scm:svn:${facsimile.svn-repository}/trunk</connection>
     <developerConnection>
-      scm:svn:https://facsimile.svn.sourceforge.net/svnroot/facsimile/trunk
+      scm:svn:${facsimile.svn-repository}/trunk
     </developerConnection>
-    <url>http://facsimile.svn.sourceforge.net/viewvc/facsimile/trunk</url>
+    <url>${facsimile.svn-web}/trunk</url>
   </scm>
 
 <!--
@@ -261,7 +259,7 @@ Distribution management.
 -->
 
   <distributionManagement>
-    <!-- TODO -->
+    <downloadUrl>http://maven.facsim.org/</downloadUrl>
   </distributionManagement>
 
 <!--
@@ -287,6 +285,17 @@ If this is not specified, we get a warning that builds are platform-dependent.
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+<!--
+The Facsimile Subversion repository URL.
+-->
+
+    <facsimile.svn-repository>
+      https://facsimile.svn.sourceforge.net/svnroot/facsimile
+    </facsimile.svn-repository>
+    <facsimile.svn-web>
+      http://facsimile.svn.sourceforge.net/viewvc/facsimile
+    </facsimile.svn-web>
 
 <!--
 Versions of Scala libraries, frameworks and Maven plug-ins.
@@ -331,8 +340,9 @@ version of this plug-in is currently not used.
     <maven-checkstyle-plugin.version>2.7</maven-checkstyle-plugin.version>
     <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
     <maven-findbugs-plugin.version>2.3.2</maven-findbugs-plugin.version>
+    <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
     <maven-project-info-plugin.version>2.4</maven-project-info-plugin.version>
-    <!-- <maven-release-plugin.version>2.2.1</maven-release-plugin.version> -->
+    <!-- maven-release-plugin.version>2.2.1</maven-release-plugin.version -->
     <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
     <maven-site-plugin.version>3.0</maven-site-plugin.version>
     <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
@@ -496,8 +506,8 @@ src/main/scala, and test-related code should be placed in src/test/scala.
     <testSourceDirectory>src/test/scala</testSourceDirectory>
 
 <!--
-The ${target.path} property is defined by the build profile in use - see later
-"profiles" section.
+Output and test output directories depend upon the active profile - see the
+profiles section for further information.
 -->
 
     <outputDirectory>${target.path}/classes</outputDirectory>
@@ -531,7 +541,7 @@ for further information.
         </executions>
         <configuration>
           <args>
-            <arg>-deprecated</arg>
+            <arg>-deprecation</arg>
             <arg>-explaintypes</arg>
             <arg>-target:jvm-1.5</arg>
             <arg>-unchecked</arg>
@@ -580,9 +590,7 @@ server.
         <artifactId>maven-release-plugin</artifactId>
         <!-- <version>${maven-release-plugin.version}</version> -->
         <configuration>
-          <tagBase>
-          https://facsimile.svn.sourceforge.net/svnroot/facsimile/tags/releases
-          </tagBase>
+          <tagBase>${facsimile.svn-repository}/tags/releases</tagBase>
           <goals>deploy</goals>
           <releaseProfiles>production</releaseProfiles>
         </configuration>
@@ -657,9 +665,6 @@ bugs during development of the library.  It should be active by default.
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <properties>
-        <target.path>target/development</target.path>
-      </properties>
       <build>
         <plugins>
           <plugin>
@@ -675,6 +680,9 @@ bugs during development of the library.  It should be active by default.
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <target.path>target/development</target.path>
+      </properties>
     </profile>
 
 <!--
@@ -682,17 +690,16 @@ Production build profile.
 
 Enable maximum code optimization and disable as much debug support as possible.
 This profile is used to generate production (i.e. release quality) versions of
-the library.  It should be inactive by default.
+the library.  It should be inactive except when performing a release.
+
+Releases are configured to sign key distribution files to assure users of their
+authenticity.  Files are signed by GNU PGP (GNU Pretty Good Privacy, otherwise
+known as "gpg"); the gpg executable must be accessible in the path.  The
+passphrase for the key is specified via the command line.
 -->
 
     <profile>
       <id>production</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <properties>
-        <target.path>target/production</target.path>
-      </properties>
       <build>
         <plugins>
           <plugin>
@@ -708,8 +715,28 @@ the library.  It should be inactive by default.
               </args>
             </configuration>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <configuration>
+              <keyname>facsimile@facsim.org</keyname>
+            </configuration>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
+      <properties>
+        <target.path>target/production</target.path>
+      </properties>
     </profile>
   </profiles>
 

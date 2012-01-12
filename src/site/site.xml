@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 Facsimile - A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -56,6 +56,7 @@ http://maven.apache.org/xsd/decoration-1.1.0.xsd">
   <body>
     <menu name="Facsimile">
       <item name="Overview" href="index.html" />
+      <item name="ScalaDocs" href="libfacsimile/scaladocs/index.html" />
     </menu>
 
     <menu ref="reports" />

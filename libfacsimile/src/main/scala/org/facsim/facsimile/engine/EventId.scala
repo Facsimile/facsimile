@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -52,7 +52,7 @@ by-passing the synchronized access provided by the [[nextId]] method.  By,
 instead, choosing to make it a separate, package-private object, we restrict
 the visibility of the object generally, while also ensuring that the [[id]]
 member is solely access through the [[nextId]] method.  Furthermore, it's
-possible that we may not even need this object in future ''Facsimile'' releases,
+possible that we may not even need this object in future $FACSIMILE releases,
 so hiding it as much as possible makes even more sense.
 
 @since 0.0-0

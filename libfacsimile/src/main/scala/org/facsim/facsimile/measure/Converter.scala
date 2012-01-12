@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -50,15 +50,13 @@ a ''time'' expressed in ''hours'' to a time expressed in ''seconds''.
 
 More specifically, each converter instance is associated with a specific
 measurement unit.  They support the conversion of values between this
-associated measurement unit and the standard
-''[[http://en.wikipedia.org/wiki/International_System_of_Units SI]]'' units for
-the associated type of measurement.
+associated measurement unit and the standard $SI units for the associated type
+of measurement.
 
 Refer to [[measure.UnitOfMeasure UnitOfMeasure]] for further information.
 
 @see [[org.facsim.facsimile.measure.UnitOfMeasure UnitOfMeasure]]
-@see [[http://en.wikipedia.org/wiki/International_System_of_Units
-International System of Units (Wikipedia)]]
+@see $SI_FULL
 
 @since 0.0-0
 */
@@ -72,17 +70,16 @@ trait Converter
 Returns imported measurement quantity value.
 
 Convert a measurement quantity's '''value''', expressed in the units associated
-with this converter instance, to a value in the standard ''SI'' units for this
+with this converter instance, to a value in the standard $SI units for this
 type of measurement.
 
 @param value Value of the measurement quantity, expressed in the associated
 units, to be converted.
 
 @return Converted value of the measurement quantity, expressed in the standard
-''SI'' units for this type of measurement.
+$SI units for this type of measurement.
 
-@see [[http://en.wikipedia.org/wiki/International_System_of_Units
-International System of Units (Wikipedia)]]
+@see $SI_FULL
 
 @since 0.0-0
 */
@@ -92,22 +89,20 @@ International System of Units (Wikipedia)]]
 
 //-----------------------------------------------------------------------------
 /**
-Export a measurement quantity, converting a value from the standard
-''[[http://en.wikipedia.org/wiki/International_System_of_Units SI]]'' units to
-the associated units.
+Export a measurement quantity, converting a value from the standard $SI units
+to the associated units.
 
-Convert a measurement quantity's '''value''', expressed in the standard ''SI''
+Convert a measurement quantity's '''value''', expressed in the standard $SI
 units for this type of measurement, to a value in the units associated with
 this converted instance.
 
-@param value Value of the measurement quantity, expressed in standard ''SI''
+@param value Value of the measurement quantity, expressed in standard $SI
 units, to be converted.
 
 @return Converted value of the measurement quantity, expressed in the
 associated units.
 
-@see [[http://en.wikipedia.org/wiki/International_System_of_Units
-International System of Units (Wikipedia)]]
+@see $SI_FULL
 
 @since 0.0-0
 */

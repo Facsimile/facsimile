@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -48,7 +48,7 @@ Measurement value type sub-classes cannot have negative values, which is a
 useful characteristic of many measurement types (including [[Time]],
 [[Temperature]], [[Mass]] etc.).
 
-@param value Value of the measurement type in the corresponding SI units.
+@param value Value of the measurement type in the corresponding $SI units.
 
 @tparam T Actual measurement type.  This must be a sub-type of
 NonNegativeMeasure.

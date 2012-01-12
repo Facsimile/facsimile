@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -48,13 +48,12 @@ Converts between measurement values between different units (belonging to the
 same measurement type) using a linear factor.
 
 To import a value, that is, to convert a measurement quantity's value from the
-units associated with this converter to a value in the standard
-''[[http://en.wikipedia.org/wiki/International_System_of_Unitsv SI]]'' units
-for the associated measurement type, the value is multiplied by the given
+units associated with this converter to a value in the standard $SI units for
+the associated measurement type, the value is multiplied by the given
 '''factor'''.
 
 To export a value, that is, to convert a measurement quantity's value from the
-standard ''SI'' units for the associated measurement type to a value in the units
+standard $SI units for the associated measurement type to a value in the units
 associated with this converter, the value is divided by the given '''factor'''.
 
 @param factor Linear conversion factor.  This value cannot be zero.

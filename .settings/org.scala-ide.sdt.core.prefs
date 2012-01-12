@@ -1,4 +1,4 @@
-#Mon Sep 19 23:45:03 EDT 2011
+#Mon Jan 09 22:47:55 EST 2012
 Xcheck-null=false
 Xcheckinit=true
 Xdisable-assertions=false
@@ -25,6 +25,7 @@ Yself-in-annots=false
 Ystruct-dispatch=poly-cache
 Ywarn-dead-code=true
 buildmanager=refined
+compileorder=Mixed
 deprecation=true
 eclipse.preferences.version=1
 explaintypes=true
@@ -40,9 +41,10 @@ formatter.indentPackageBlocks=true
 formatter.indentSpaces=2
 formatter.indentWithTabs=false
 formatter.multilineScaladocCommentsStartOnFirstLine=false
+formatter.placeScaladocAsterisksBeneathSecondAsterisk=false
 formatter.preserveDanglingCloseParenthesis=true
 formatter.preserveSpaceBeforeArguments=true
-formatter.rewriteArrowSymbols=true
+formatter.rewriteArrowSymbols=false
 formatter.spaceBeforeColon=false
 formatter.spaceInsideBrackets=false
 formatter.spaceInsideParentheses=false

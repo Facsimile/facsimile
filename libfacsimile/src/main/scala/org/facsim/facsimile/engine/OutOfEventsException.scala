@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -48,11 +48,11 @@ Thrown when the simulation runs of out events.
 In general, this should be regarded as abnormal termination of a simulation
 run and treated accordingly.
 
-A _non-terminating_ simulation should never run out of events.
+A ''non-terminating'' simulation should never run out of events.
 
-A _terminating_ simulation is anticipated to ultimately run out of events;
-however, since _(a)_ a terminating simulation might run out of events
-prematurely, due to a bug, and _(b)_ terminating simulations may have
+A ''terminating'' simulation is anticipated to ultimately run out of events;
+however, since ''(a)'' a terminating simulation might run out of events
+prematurely, due to a bug, and ''(b)'' terminating simulations may have
 background events (such as scheduled operator breaks, etc.) that continue to
 occur event after the simulation has effectively terminated. it is preferable
 that terminating simulations detect that termination criteria have been met

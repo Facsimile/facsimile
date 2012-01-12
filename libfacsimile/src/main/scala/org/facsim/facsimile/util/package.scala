@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -42,7 +42,9 @@ package org.facsim.facsimile
 
 //=============================================================================
 /**
-_[http://www.facsim.org/ Facsimile]_ simulation utilities.
+$FACSIMILE simulation utilities.
+
+@define FACSIMILE ''[[http://www.facsim.org/ Facsimile]]''
 
 @since 0.0-0
 */

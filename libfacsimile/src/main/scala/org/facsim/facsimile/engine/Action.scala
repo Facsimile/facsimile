@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -44,7 +44,7 @@ package org.facsim.facsimile.engine
 /**
 Abstract superclass for all simulation actions.
 
-In the context of the $facsimile library, an _action_ represents a discrete
+In the context of the $FACSIMILE library, an ''action'' represents a discrete
 simulation state change, executed during an [[org.facsim.facsimile.engine.Event
 Event]].
 

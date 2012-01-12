@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2011, Michael J Allen.
+Copyright © 2004-2012, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -42,10 +42,10 @@ package org.facsim.facsimile.measure
 
 //=============================================================================
 /**
-Abstract base class for all ''Facsimile'' measurement classes.
+Abstract base class for all $FACSIMILE measurement classes.
 
 This base class is used by all measurement types, storing the underlying values
-in the [[SI units corresponding to the specific measurement type.
+in the $SI units corresponding to the specific measurement type.
 
 This class implements measurements at a lower level than the [[Measure]] class,
 primarily to assist with equality comparisons.
@@ -56,7 +56,7 @@ No subclass should add data members.
 
 @construct New base measurement value.
 
-@param value Value of the measurement type in the corresponding SI units.  An
+@param value Value of the measurement type in the corresponding $SI units.  An
 IllegalArgumentException is thrown if the 
 */
 //=============================================================================
@@ -77,7 +77,7 @@ requiring non-negative values), but they do not need to reproduce these tests.
 
 //-----------------------------------------------------------------------------
 /**
-Return measurement value in corresponding SI units.
+Return measurement value in corresponding $SI units.
 
 @since 0.0-0
 */
