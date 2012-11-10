@@ -32,12 +32,13 @@
 #
 #   http://www.facsim.org/Documentation/CodingStandards/
 #==============================================================================
-# git attributes file.
+# git .gitattributes file.
 #
-# This file determines how git will treat line endings in files belonging to
-# Facsimile.  It will override any defined 'core.autocrlf' git configuration. #==============================================================================
-#
-# Set default behaviour, in case users don't have core.autocrlf set.
+# Determine how git will treat line endings in files belonging to Facsimile.
+# It will override any defined 'core.autocrlf' git configuration. #==============================================================================
+
+# Set default behaviour text behavior.  This is equivalent to the git config
+# 'core.autocrlf' flag.
 
 * text=auto
 
