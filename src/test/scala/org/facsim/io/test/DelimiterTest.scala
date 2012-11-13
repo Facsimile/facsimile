@@ -32,8 +32,6 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file from the org.facsim.io.test package.
 */
 //=============================================================================
@@ -71,15 +69,14 @@ Primary constructor tests.
       it ("should accept an empty set of delimiters") {
         new Delimiter (Set (), true)
       }
-      it ("must throw IllegalArgumentException if passed a set containing NUL")
-      {
+      it ("must throw IllegalArgumentException if passed a set containing " +
+      "null character") {
         intercept [IllegalArgumentException] {
           new Delimiter (Set (TextReader.NUL), true)
         }
       }
       it ("must throw IllegalArgumentException if passed a set containing " +
-      "carriage return")
-      {
+      "carriage return character") {
         intercept [IllegalArgumentException] {
           new Delimiter (Set (TextReader.CR), true)
         }

@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,19 +30,17 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
-Scala source file belonging to the org.facsim.facsimile.measure package.
+Scala source file belonging to the org.facsim.measure package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.measure
+package org.facsim.measure
 
 //=============================================================================
 /**
-Trait for unit of measurement value conversion.
+Unit of measurement value converter trait.
 
 Converter implementations support the conversion of measurement quantity values
 between different measurement units of the same type.  For example, converting
@@ -50,63 +48,20 @@ a ''time'' expressed in ''hours'' to a time expressed in ''seconds''.
 
 More specifically, each converter instance is associated with a specific
 measurement unit.  They support the conversion of values between this
-associated measurement unit and the standard $SI units for the associated type
-of measurement.
+associated measurement unit and the standard ''SI'' units for the associated
+type of measurement.
 
-Refer to [[measure.UnitOfMeasure UnitOfMeasure]] for further information.
+Refer to [[org.facsim.measure.UnitOfMeasure UnitOfMeasure]] for further
+information.
 
-@see [[org.facsim.facsimile.measure.UnitOfMeasure UnitOfMeasure]]
-@see $SI_FULL
+@see [[org.facsim.measure.UnitOfMeasure UnitOfMeasure]]
 
-@since 0.0-0
+@see http://en.wikipedia.org/wiki/SI SI
+
+@since 0.0
 */
 //=============================================================================
 
-trait Converter
-{
+trait Converter extends Conversion {
 
-//-----------------------------------------------------------------------------
-/**
-Returns imported measurement quantity value.
-
-Convert a measurement quantity's '''value''', expressed in the units associated
-with this converter instance, to a value in the standard $SI units for this
-type of measurement.
-
-@param value Value of the measurement quantity, expressed in the associated
-units, to be converted.
-
-@return Converted value of the measurement quantity, expressed in the standard
-$SI units for this type of measurement.
-
-@see $SI_FULL
-
-@since 0.0-0
-*/
-//-----------------------------------------------------------------------------
-
-  private [measure] def importValue (value: Double): Double
-
-//-----------------------------------------------------------------------------
-/**
-Export a measurement quantity, converting a value from the standard $SI units
-to the associated units.
-
-Convert a measurement quantity's '''value''', expressed in the standard $SI
-units for this type of measurement, to a value in the units associated with
-this converted instance.
-
-@param value Value of the measurement quantity, expressed in standard $SI
-units, to be converted.
-
-@return Converted value of the measurement quantity, expressed in the
-associated units.
-
-@see $SI_FULL
-
-@since 0.0-0
-*/
-//-----------------------------------------------------------------------------
-
-  private [measure] def exportValue (value: Double): Double
 }

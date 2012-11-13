@@ -32,10 +32,8 @@ rejected.  For further information, please visit the coding standards at:
 
   http://www.facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file belonging to the org.facsim.facsimile.measure package.
- */
+*/
 //=============================================================================
 
 package org.facsim.facsimile.measure

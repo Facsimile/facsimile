@@ -14,11 +14,11 @@
 ~~ details.
 ~~
 ~~ You should have received a copy of the GNU General Public License along with
-~~ Facsimile.  If not, see http://www.gnu.org/licenses/.
+~~ Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 ~~ The developers welcome all comments, suggestions and offers of assistance.
 ~~ For further information, please visit the project home page at:
 ~~
-~~  http://www.facsim.org/
+~~  http://facsim.org/
 ~~
 ~~ Thank you for your interest in the Facsimile project!
 ~~
@@ -29,10 +29,8 @@
 ~~ patches will be rejected.  For further information, please visit the coding
 ~~ standards at:
 ~~
-~~  http://www.facsim.org/Documentation/CodingStandards/
+~~  http://facsim.org/Documentation/CodingStandards/
 ~~=============================================================================
-~~ $Id$
-~~
 ~~ Doxia Almost Plain Text (APT) source file for Facsimile's Maven-generated
 ~~ web-site at:
 ~~
@@ -48,7 +46,7 @@ Facsimile Simulation Suite
   projects in an engineering and/or manufacturing environment.
 
   <Facsimile> simulations run on <Microsoft Windows> as well as on <Linux>,
-  <BSD> and <Unix>.
+  <MacOS>, <BSD> and <Unix>.
 
   <Facsimile> is open-source/free software and is distributed under version 3
   of the {{{http://www.gnu.org/licenses/lgpl.html}GNU Lesser General Public

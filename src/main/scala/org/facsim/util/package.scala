@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,26 +30,24 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
-Scala source file defining the org.facsim.facsimile.util package.
+Scala source file defining the org.facsim.util package.
 */
 //=============================================================================
 
-package org.facsim.facsimile
+package org.facsim
 
 //=============================================================================
 /**
-$FACSIMILE simulation utilities.
+''[[http://facsim.org/ Facsimile]]'' Simulation Library miscellaneous
+utilities.
 
-@define FACSIMILE ''[[http://www.facsim.org/ Facsimile]]''
+Package providing miscellaneous utility elements.
 
-@since 0.0-0
+@since 0.0
 */
 //=============================================================================
 
-package object util
-{
+package object util {
 }

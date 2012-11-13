@@ -32,8 +32,6 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file from the org.facsim.anim.cell package.
 */
 //=============================================================================
@@ -46,12 +44,7 @@ import java.io.FileNotFoundException
 import java.io.InputStreamReader
 import java.io.Reader
 import java.net.URL
-import scala.io.Codec
-import scala.io.Source
-import com.sun.j3d.loaders.IncorrectFormatException
 import com.sun.j3d.loaders.Loader
-import com.sun.j3d.loaders.ParsingErrorException
-import com.sun.j3d.loaders.Scene
 
 //=============================================================================
 /**
@@ -134,6 +127,8 @@ extends Loader {
 Report load flags.
 
 @return Load flags associated with this cell scene loader.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -287,7 +282,7 @@ during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  final override def load (reader: Reader) = readScene (reader,
+  final override def load (reader: Reader) = new CellScene (reader,
   baseURL.getOrElse (new URL ("file:///" + System.getProperty ("user.dir"))))
 
 //-----------------------------------------------------------------------------
@@ -324,8 +319,9 @@ during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  final override def load (file: String) = readScene (CellLoader.getFileReader
-  (file), baseURL.getOrElse (CellLoader.getFileBaseURL (file)))
+  final override def load (file: String) = new
+  CellScene (CellLoader.getFileReader (file), baseURL.getOrElse
+  (CellLoader.getFileBaseURL (file)))
 
 //-----------------------------------------------------------------------------
 /**
@@ -362,27 +358,8 @@ during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  final override def load (url: URL) = readScene (CellLoader.getURLReader
+  final override def load (url: URL) = new CellScene (CellLoader.getURLReader
   (url), baseURL.getOrElse (CellLoader.getURLBaseURL (url)))
-
-//-----------------------------------------------------------------------------
-/**
-Handle reading of the cell file data.
-
-@param source Source data to be read.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private final def readScene (reader: Reader, baseDir: URL): Scene = {
-
-/*
-Create the cell scene from the source.
-*/
-
-    null //CellScene (cellSource)
-  }
 }
 
 //=============================================================================
@@ -462,6 +439,8 @@ The base path of the file is determined and returned as a URL having a ''file''
 protocol.
 
 @param file Name of file for which a base URL is required.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 

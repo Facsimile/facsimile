@@ -15,12 +15,12 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-Facsimile.  If not, see http://www.gnu.org/licenses/.
+Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.
 For further information, please visit the project home page at:
 
-    http://www.facsim.org/
+    http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,10 +30,8 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-    http://www.facsim.org/Documentation/CodingStandards/
+    http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 XML Maven Site source file defining Facsimile's Maven-generated project
 web-site.
 
@@ -50,7 +48,7 @@ http://maven.apache.org/xsd/decoration-1.1.0.xsd">
 
   <bannerLeft>
     <name>Facsimile</name>
-    <href>http://www.facsim.org</href>
+    <href>http://facsim.org</href>
   </bannerLeft>
 
   <body>

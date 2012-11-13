@@ -32,8 +32,6 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file from the org.facsim.io.test package.
 */
 //=============================================================================
@@ -43,10 +41,13 @@ package org.facsim.io.test
 import java.io.EOFException
 import java.io.StringReader
 import scala.math.abs
+import org.facsim.io.FieldConversionException
+import org.facsim.io.FieldVerificationException
 import org.facsim.io.Delimiter
 import org.facsim.io.EOFDelimiter
 import org.facsim.io.LineDelimiter
 import org.facsim.io.TextReader
+import org.facsim.io.WhitespaceDelimiter
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -191,7 +192,7 @@ Verify that reading characters works.
 /*
 Handle end-of-file conditions.
 
-The first read() call should return an EOF signal, the second should throw the
+The first read() call must return an EOF signal, the second must throw the
 EOFException.
 */
 
@@ -207,33 +208,22 @@ EOFException.
 /*
 Handle end-of-line conditions.
 
-All line termination sequences should be reported as line-feeds, regardless of
-the actual line termination sequence.  After three reads, we should see an
+All line termination sequences must be reported as line-feeds, regardless of
+the actual line termination sequence.  After three reads, we must see an
 end-of-file (to ensure that we're not re-reading data etc.
 */
 
-      it ("must handle PC line termination sequences correctly") {
+      it ("must handle line termination sequences correctly") {
         new EOLDataReader {
-          assert (pcEOLReader.read () === TextReader.LF)
-          assert (pcEOLReader.read () === TextReader.LF)
-          assert (pcEOLReader.read () === TextReader.LF)
-          assert (pcEOLReader.read () === TextReader.EOF)
-        }
-      }
-      it ("must handle Unix line termination sequences correctly") {
-        new EOLDataReader {
-          assert (unixEOLReader.read () === TextReader.LF)
-          assert (unixEOLReader.read () === TextReader.LF)
-          assert (unixEOLReader.read () === TextReader.LF)
-          assert (unixEOLReader.read () === TextReader.EOF)
-        }
-      }
-      it ("must handle old Mac OS line termination sequences correctly") {
-        new EOLDataReader {
-          assert (oldMacOsEOLReader.read () === TextReader.LF)
-          assert (oldMacOsEOLReader.read () === TextReader.LF)
-          assert (oldMacOsEOLReader.read () === TextReader.LF)
-          assert (oldMacOsEOLReader.read () === TextReader.EOF)
+          def readLines (reader: TextReader): Unit = {
+            assert (pcEOLReader.read () === TextReader.LF)
+            assert (pcEOLReader.read () === TextReader.LF)
+            assert (pcEOLReader.read () === TextReader.LF)
+            assert (pcEOLReader.read () === TextReader.EOF)
+          }
+          readLines (pcEOLReader)
+          readLines (unixEOLReader)
+          readLines (oldMacOsEOLReader)
         }
       }
 
@@ -267,8 +257,8 @@ Verify that peeking characters works.
 /*
 Handle end-of-file conditions.
 
-The first and second peek calls should return an EOF signal.  After that we
-read the EOF signal.  If we peek a third time, we should see the exception.
+The first and second peek calls must return an EOF signal.  After that we read
+the EOF signal.  If we peek a third time, we must see the exception.
 */
 
       it ("must handle EOF condition correctly") {
@@ -285,52 +275,29 @@ read the EOF signal.  If we peek a third time, we should see the exception.
 /*
 Handle end-of-line conditions.
 
-All line termination sequences should be reported as line-feeds, regardless of
-the actual line termination sequence.  After three reads, we should see an
+All line termination sequences must be reported as line-feeds, regardless of
+the actual line termination sequence.  After three reads, we must see an
 end-of-file (to ensure that we're not re-reading data etc.  We also peek each
 character twice before reading it to ensure correct synchronization too.
 */
 
-      it ("must handle PC line termination sequences correctly") {
+      it ("must handle line termination sequences correctly") {
         new EOLDataReader {
-          assert (pcEOLReader.peek () === TextReader.LF)
-          assert (pcEOLReader.peek () === TextReader.LF)
-          assert (pcEOLReader.read () === TextReader.LF)
-          assert (pcEOLReader.peek () === TextReader.LF)
-          assert (pcEOLReader.peek () === TextReader.LF)
-          assert (pcEOLReader.read () === TextReader.LF)
-          assert (pcEOLReader.peek () === TextReader.LF)
-          assert (pcEOLReader.peek () === TextReader.LF)
-          assert (pcEOLReader.read () === TextReader.LF)
-          assert (pcEOLReader.peek() === TextReader.EOF)
-        }
-      }
-      it ("must handle Unix line termination sequences correctly") {
-        new EOLDataReader {
-          assert (unixEOLReader.peek () === TextReader.LF)
-          assert (unixEOLReader.peek () === TextReader.LF)
-          assert (unixEOLReader.read () === TextReader.LF)
-          assert (unixEOLReader.peek () === TextReader.LF)
-          assert (unixEOLReader.peek () === TextReader.LF)
-          assert (unixEOLReader.read () === TextReader.LF)
-          assert (unixEOLReader.peek () === TextReader.LF)
-          assert (unixEOLReader.peek () === TextReader.LF)
-          assert (unixEOLReader.read () === TextReader.LF)
-          assert (unixEOLReader.peek() === TextReader.EOF)
-        }
-      }
-      it ("must handle old Mac OS line termination sequences correctly") {
-        new EOLDataReader {
-          assert (oldMacOsEOLReader.peek () === TextReader.LF)
-          assert (oldMacOsEOLReader.peek () === TextReader.LF)
-          assert (oldMacOsEOLReader.read () === TextReader.LF)
-          assert (oldMacOsEOLReader.peek () === TextReader.LF)
-          assert (oldMacOsEOLReader.peek () === TextReader.LF)
-          assert (oldMacOsEOLReader.read () === TextReader.LF)
-          assert (oldMacOsEOLReader.peek () === TextReader.LF)
-          assert (oldMacOsEOLReader.peek () === TextReader.LF)
-          assert (oldMacOsEOLReader.read () === TextReader.LF)
-          assert (oldMacOsEOLReader.peek() === TextReader.EOF)
+          def readLines (reader: TextReader): Unit = {
+            assert (reader.peek () === TextReader.LF)
+            assert (reader.peek () === TextReader.LF)
+            assert (reader.read () === TextReader.LF)
+            assert (reader.peek () === TextReader.LF)
+            assert (reader.peek () === TextReader.LF)
+            assert (reader.read () === TextReader.LF)
+            assert (reader.peek () === TextReader.LF)
+            assert (reader.peek () === TextReader.LF)
+            assert (reader.read () === TextReader.LF)
+            assert (reader.peek() === TextReader.EOF)
+          }
+          readLines (pcEOLReader)
+          readLines (unixEOLReader)
+          readLines (oldMacOsEOLReader)
         }
       }
 
@@ -363,6 +330,66 @@ format.  We peek each character twice before reading it.
     }
 
 /*
+Verify that row is reported correctly.
+*/
+
+    describe (".getRow") {
+      it ("must report row correctly") {
+        new DefaultDelimitedReaders {
+          def doRead (reader: TextReader) {
+            for (i <- 1 to data.length + 1) {
+              assert (reader.getRow === 1)
+              reader.read ()
+            }
+            for (i <- 1 to data.length + 1) {
+              assert (reader.getRow === 2)
+              reader.read ()
+            }
+            assert (reader.getRow == 3)
+            reader.read ()
+            for (i <- 1 to dataEnd.length + 1) {
+              assert (reader.getRow === 4)
+              reader.read ()
+            }
+          }
+          doRead (pcReader)
+          doRead (unixReader)
+          doRead (oldMacOsReader)
+        }
+      }
+    }
+
+/*
+Verify that column is reported correctly.
+*/
+
+    describe (".getColumn") {
+      it ("must report collumn correctly") {
+        new DefaultDelimitedReaders {
+          def doRead (reader: TextReader) {
+            for (i <- 1 to data.length + 1) {
+              assert (reader.getColumn === i)
+              reader.read ()
+            }
+            for (i <- 1 to data.length + 1) {
+              assert (reader.getColumn === i)
+              reader.read ()
+            }
+            assert (reader.getColumn == 1)
+            reader.read ()
+            for (i <- 1 to dataEnd.length + 1) {
+              assert (reader.getColumn === i)
+              reader.read ()
+            }
+          }
+          doRead (pcReader)
+          doRead (unixReader)
+          doRead (oldMacOsReader)
+        }
+      }
+    }
+
+/*
 Verify that we can tell when we've read the end-of-file marker.
 */
 
@@ -371,9 +398,9 @@ Verify that we can tell when we've read the end-of-file marker.
 /*
 Handle end-of-file conditions.
 
-The first read() call should return an EOF signal, a second throws the
-EOFException.  atEOF should return false prior to the EOF signal being read
-and true afterwards.
+The first read() call must return an EOF signal, a second throws the
+EOFException.  atEOF must return false prior to the EOF signal being read and
+true afterwards.
 */
 
       it ("must handle EOF condition correctly") {
@@ -390,545 +417,1030 @@ and true afterwards.
     }
 
 /*
-Verify that the readAsString function operates correctly with the default
-delimiter.
+Verify that the readString function operates correctly with the default
+delimiter and default or specific verification functions.
 
-The readAsString function is important because it underpins all other readAs...
-functions, and serves up data to those functions.
+Much of the code for retrieving string fields is shared with the other read
+functions, so we can achieve most of our testing goals here.
 */
 
-    describe (".readAsString ()") {
+    describe (".readString (Verifier [String])") {
 
 /*
-If we pass the function an EOF delimiter, then the whole file should be
-returned as a field, regardless of format.
+The function must fail correctly when reading an invalid field.  That is, the
+reader must be reset back to the beginning of the field read.
 */
 
-      it ("must retrieve the entire PC file if passed an EOFDelimiter") {
-        new EOFDelimitedReaders {
-          assert (pcReader.readAsString () === rawFileData)
-          assert (pcReader.atEOF === true)
-        }
-      }
-      it ("must retrieve the entire Unix file if passed an EOFDelimiter") {
-        new EOFDelimitedReaders {
-          assert (unixReader.readAsString () === rawFileData)
-          assert (unixReader.atEOF === true)
-        }
-      }
-      it ("must retrieve the entire old Mac OS file if passed an EOFDelimiter")
-      {
-        new EOFDelimitedReaders {
-          assert (oldMacOsReader.readAsString () === rawFileData)
-          assert (oldMacOsReader.atEOF === true)
+      it ("must fail correctly") {
+        new DefaultDelimitedReaders {
+          def doFail (reader: TextReader) {
+            def failField (row: Int, column: Int, field: String) {
+              val e = intercept [FieldVerificationException] {
+                reader.readString {s =>
+                  assert (s === field)
+                  false
+                }
+              }
+              assert (e.getMessage () === "Field verification of value '" +
+              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.head.toInt)
+              assert (reader.readString () === field)
+            }
+            failField (1, 1, "a")
+            failField (1, 3, "1")
+            failField (1, 5, "1.1e1")
+            failField (1, 11, "-1")
+            failField (1, 14, "-1.1e-1")
+            failField (1, 23, "2")
+            failField (1, 25, "3")
+            failField (1, 29, "4")
+            failField (1, 33, "56fred")
+            failField (2, 1, "a")
+          }
+          doFail (pcReader)
+          doFail (unixReader)
+          doFail (oldMacOsReader)
         }
       }
 
 /*
-If we pass a line delimiter, we should get individual lines of data.
+The function must work correctly when reading a valid field.  That is, the
+reader should advance to the next field and the field value should be returned.
 */
 
-      it ("must retrieve the entire PC file if passed a LineDelimiter") {
-        new LineDelimitedReaders {
-          assert (pcReader.readAsString () === data)
-          assert (pcReader.atEOF === false)
-          assert (pcReader.readAsString () === data)
-          assert (pcReader.atEOF === false)
-          assert (pcReader.readAsString () === emptyLine)
-          assert (pcReader.atEOF === false)
-          assert (pcReader.readAsString () === dataEnd)
-          assert (pcReader.atEOF === true)
+      it ("must accept valid fields") {
+        new DefaultDelimitedReaders {
+          def doValid (reader: TextReader) {
+            def acceptField (row: Int, column: Int, field: String) {
+              reader.readString {s =>
+                assert (s === field)
+                true
+              }
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+            }
+            acceptField (1, 3, "a")
+            acceptField (1, 5, "1")
+            acceptField (1, 11, "1.1e1")
+            acceptField (1, 14, "-1")
+            acceptField (1, 23, "-1.1e-1")
+            acceptField (1, 25, "2")
+            acceptField (1, 29, "3")
+            acceptField (1, 33, "4")
+            acceptField (2, 1, "56fred")
+            acceptField (2, 3, "a")
+          }
+          doValid (pcReader)
+          doValid (unixReader)
+          doValid (oldMacOsReader)
         }
       }
-      it ("must retrieve the entire Unix file if passed an LineDelimiter") {
-        new LineDelimitedReaders {
-          assert (unixReader.readAsString () === data)
-          assert (unixReader.atEOF === false)
-          assert (unixReader.readAsString () === data)
-          assert (unixReader.atEOF === false)
-          assert (unixReader.readAsString () === emptyLine)
-          assert (unixReader.atEOF === false)
-          assert (unixReader.readAsString () === dataEnd)
-          assert (unixReader.atEOF === true)
+
+/*
+If we pass the function an EOF delimiter, then the whole file must be returned
+as a field, regardless of format.
+*/
+
+      it ("must retrieve the entire file if passed an EOFDelimiter") {
+        new EOFDelimitedReaders {
+          def readFile (reader: TextReader): Unit = {
+            assert (reader.readString () === rawFileData)
+            assert (reader.atEOF === true)
+          }
+          readFile (pcReader)
+          readFile (unixReader)
+          readFile (oldMacOsReader)
         }
       }
-      it ("must retrieve the entire old Mac OS file if passed an " +
-      "LineDelimiter") {
+
+/*
+If we pass a line delimiter, we must get individual lines of data.
+*/
+
+      it ("must retrieve individual lines if passed a LineDelimiter") {
         new LineDelimitedReaders {
-          assert (oldMacOsReader.readAsString () === data)
-          assert (oldMacOsReader.atEOF === false)
-          assert (oldMacOsReader.readAsString () === data)
-          assert (oldMacOsReader.atEOF === false)
-          assert (oldMacOsReader.readAsString () === emptyLine)
-          assert (oldMacOsReader.atEOF === false)
-          assert (oldMacOsReader.readAsString () === dataEnd)
-          assert (oldMacOsReader.atEOF === true)
+          def readLines (reader: TextReader): Unit = {
+            assert (reader.readString () === data)
+            assert (reader.atEOF === false)
+            assert (reader.readString () === data)
+            assert (reader.atEOF === false)
+            assert (reader.readString () === emptyLine)
+            assert (reader.atEOF === false)
+            assert (reader.readString () === dataEnd)
+            assert (reader.atEOF === true)
+          }
+          readLines (pcReader)
+          readLines (unixReader)
+          readLines (oldMacOsReader)
         }
       }
     }
 
 /*
-Verify that the readAsString function operates correctly with a specific
+Verify that the readString function operates correctly with a specific
 delimiter.
 */
 
-    describe (".readAsString (Delimiter)") {
+    describe (".readString (Delimiter)(Verifier [String])") {
 
 /*
-If we pass the function an EOF delimiter, then the whole file should be
-returned as a field, regardless of format.
+If we pass the function an EOF delimiter, then the whole file must be returned
+as a field, regardless of format.
 */
 
       it ("must be able to override the default delimiter") {
         new LineDelimitedReaders {
-          assert (pcReader.readAsString (EOFDelimiter) === rawFileData)
-          assert (pcReader.atEOF === true)
+          def readFile (reader: TextReader): Unit = {
+            assert (reader.readString (EOFDelimiter)() === rawFileData)
+            assert (reader.atEOF === true)
+          }
+          readFile (pcReader)
+          readFile (unixReader)
+          readFile (oldMacOsReader)
         }
       }
     }
 
 /*
-Verify that the readAsByte function operates correctly.
-
-Firstly, read using the test delimiter that does not merge adjacent delimiters.
+Verify that the readByte function operates correctly.
 */
 
-    describe (".readAsByte ()") {
-      it ("must be able to read valid data and handle bad data") {
-        new TestDelimitedReaders {
-          def readAsBytes (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "a"
+    describe (".readByte (Verifier [Byte])") {
+
+/*
+The function must fail correctly when reading an invalid field.  That is, the
+reader must be reset back to the beginning of the field read.
+
+Here, we test both conversion and verification.
+*/
+
+      it ("must fail correctly") {
+        new DefaultDelimitedReaders {
+          def doFail (reader: TextReader) {
+            def failFieldConversion (row: Int, column: Int, field: String) {
+              val e = intercept [FieldConversionException] {
+                reader.readByte ()
+              }
+              assert (e.getMessage () === "Field conversion of value '" + field
+              + "' to type 'java.lang.Byte' failed. Row: " + row + ", Column: "
+              + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.head.toInt)
+              assert (reader.readString () === field)
             }
-            assert (reader.readAsByte () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "1.1e1"
+            def failFieldVerification (row: Int, column: Int, field: Byte) {
+              val e = intercept [FieldVerificationException] {
+                reader.readByte {i =>
+                  assert (i === field)
+                  false
+                }
+              }
+              assert (e.getMessage () === "Field verification of value '" +
+              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.toString.head.toInt)
+              assert (reader.readString () === field)
             }
-            assert (reader.readAsByte () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "-1.1e-1"
-            }
-            intercept [NumberFormatException] {
-              reader.readAsByte () // " 2"
-            }
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "3 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsByte () // " 4 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsByte () // ""
-            }
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "56fred"
-            }
+            failFieldConversion (1, 1, "a")
+            failFieldVerification (1, 3, 1.toByte)
+            failFieldConversion (1, 5, "1.1e1")
+            failFieldVerification (1, 11, -1.toByte)
+            failFieldConversion (1, 14, "-1.1e-1")
+            failFieldVerification (1, 23, 2.toByte)
+            failFieldVerification (1, 25, 3.toByte)
+            failFieldVerification (1, 29, 4.toByte)
+            failFieldConversion (1, 33, "56fred")
+            failFieldConversion (2, 1, "a")
           }
-          readAsBytes (pcReader)
-          readAsBytes (unixReader)
-          readAsBytes (oldMacOsReader)
+          doFail (pcReader)
+          doFail (unixReader)
+          doFail (oldMacOsReader)
         }
       }
 
 /*
-Now process the same data with the default (whitespace) delimiter that DOES
-merge adjacent delimiters.  This will remove many of the exceptions (due to
-spaces being merged with tabs) and will remove empty fields.
+Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data 2") {
-        new DefaultDelimitedReaders {
-          def readAsBytes (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "a"
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readBytes (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readByte () // "a"
             }
-            assert (reader.readAsByte () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "1.1e1"
+            assert (reader.readString () === "a")
+            assert (reader.readByte () === 1)
+            intercept [FieldConversionException] {
+              reader.readByte () // "1.1e1"
             }
-            assert (reader.readAsByte () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "-1.1e-1"
+            assert (reader.readString () === "1.1e1")
+            assert (reader.readByte () === -1)
+            intercept [FieldConversionException] {
+              reader.readByte () // "-1.1e-1"
             }
-            assert (reader.readAsByte () === 2)
-            assert (reader.readAsByte () === 3)
-            assert (reader.readAsByte () === 4)
-            intercept [NumberFormatException] {
-              reader.readAsByte () // "56fred"
+            assert (reader.readString () === "-1.1e-1")
+            intercept [FieldConversionException] {
+              reader.readByte () // " 2"
             }
+            assert (reader.readString () === " 2")
+            intercept [FieldConversionException] {
+              reader.readByte () // "3 "
+            }
+            assert (reader.readString () === "3 ")
+            intercept [FieldConversionException] {
+              reader.readByte () // " 4 "
+            }
+            assert (reader.readString () === " 4 ")
+            intercept [FieldConversionException] {
+              reader.readByte () // ""
+            }
+            assert (reader.readString () === "")
+            intercept [FieldConversionException] {
+              reader.readByte () // "56fred"
+            }
+            assert (reader.readString () === "56fred")
           }
-          readAsBytes (pcReader)
-          readAsBytes (unixReader)
-          readAsBytes (oldMacOsReader)
+          readBytes (pcReader)
+          readBytes (unixReader)
+          readBytes (oldMacOsReader)
         }
       }
     }
 
 /*
-Verify that the readAsShort function operates correctly.
-
-Firstly, read using the test delimiter that does not merge adjacent delimiters.
+Now process the same data as above by overriding the default delimiter with the
+whitespace delimiter that DOES merge adjacent delimiters.  This will remove
+many of the exceptions (due to spaces being merged with tabs) and will remove
+empty fields.
 */
 
-    describe (".readAsShort ()") {
+    describe ("readByte (Delimiter)(Verifier [Byte])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
-          def readAsShorts (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "a"
+          def readBytes (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readByte (WhitespaceDelimiter)() // "a"
             }
-            assert (reader.readAsShort () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "1.1e1"
+            assert (reader.readString (WhitespaceDelimiter)() === "a")
+            assert (reader.readByte (WhitespaceDelimiter)() === 1)
+            intercept [FieldConversionException] {
+              reader.readByte (WhitespaceDelimiter)() // "1.1e1"
             }
-            assert (reader.readAsShort () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "-1.1e-1"
+            assert (reader.readString (WhitespaceDelimiter)() === "1.1e1")
+            assert (reader.readByte (WhitespaceDelimiter)() === -1)
+            intercept [FieldConversionException] {
+              reader.readByte (WhitespaceDelimiter)() // "-1.1e-1"
             }
-            intercept [NumberFormatException] {
-              reader.readAsShort () // " 2"
+            assert (reader.readString (WhitespaceDelimiter)() === "-1.1e-1")
+            assert (reader.readByte (WhitespaceDelimiter)() === 2)
+            assert (reader.readByte (WhitespaceDelimiter)() === 3)
+            assert (reader.readByte (WhitespaceDelimiter)() === 4)
+            intercept [FieldConversionException] {
+              reader.readByte (WhitespaceDelimiter)() // "56fred"
             }
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "3 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsShort () // " 4 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsShort () // ""
-            }
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "56fred"
-            }
+            assert (reader.readString (WhitespaceDelimiter)() === "56fred")
           }
-          readAsShorts (pcReader)
-          readAsShorts (unixReader)
-          readAsShorts (oldMacOsReader)
-        }
-      }
-
-/*
-Now process the same data with the default (whitespace) delimiter that DOES
-merge adjacent delimiters.  This will remove many of the exceptions (due to
-spaces being merged with tabs) and will remove empty fields.
-*/
-
-      it ("must be able to read valid data and handle bad data 2") {
-        new DefaultDelimitedReaders {
-          def readAsShorts (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "a"
-            }
-            assert (reader.readAsShort () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "1.1e1"
-            }
-            assert (reader.readAsShort () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "-1.1e-1"
-            }
-            assert (reader.readAsShort () === 2)
-            assert (reader.readAsShort () === 3)
-            assert (reader.readAsShort () === 4)
-            intercept [NumberFormatException] {
-              reader.readAsShort () // "56fred"
-            }
-          }
-          readAsShorts (pcReader)
-          readAsShorts (unixReader)
-          readAsShorts (oldMacOsReader)
+          readBytes (pcReader)
+          readBytes (unixReader)
+          readBytes (oldMacOsReader)
         }
       }
     }
 
 /*
-Verify that the readAsInt function operates correctly.
-
-Firstly, read using the test delimiter that does not merge adjacent delimiters.
+Verify that the readShort function operates correctly.
 */
 
-    describe (".readAsInt ()") {
-      it ("must be able to read valid data and handle bad data") {
-        new TestDelimitedReaders {
-          def readAsInts (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "a"
+    describe (".readShort (Verifier [Short])") {
+
+/*
+The function must fail correctly when reading an invalid field.  That is, the
+reader must be reset back to the beginning of the field read.
+
+Here, we test both conversion and verification.
+*/
+
+      it ("must fail correctly") {
+        new DefaultDelimitedReaders {
+          def doFail (reader: TextReader) {
+            def failFieldConversion (row: Int, column: Int, field: String) {
+              val e = intercept [FieldConversionException] {
+                reader.readShort ()
+              }
+              assert (e.getMessage () === "Field conversion of value '" + field
+              + "' to type 'java.lang.Short' failed. Row: " + row +
+              ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.head.toInt)
+              assert (reader.readString () === field)
             }
-            assert (reader.readAsInt () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "1.1e1"
+            def failFieldVerification (row: Int, column: Int, field: Short) {
+              val e = intercept [FieldVerificationException] {
+                reader.readShort {i =>
+                  assert (i === field)
+                  false
+                }
+              }
+              assert (e.getMessage () === "Field verification of value '" +
+              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.toString.head.toInt)
+              assert (reader.readString () === field)
             }
-            assert (reader.readAsInt () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "-1.1e-1"
-            }
-            intercept [NumberFormatException] {
-              reader.readAsInt () // " 2"
-            }
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "3 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsInt () // " 4 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsInt () // ""
-            }
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "56fred"
-            }
+            failFieldConversion (1, 1, "a")
+            failFieldVerification (1, 3, 1.toShort)
+            failFieldConversion (1, 5, "1.1e1")
+            failFieldVerification (1, 11, -1.toShort)
+            failFieldConversion (1, 14, "-1.1e-1")
+            failFieldVerification (1, 23, 2.toShort)
+            failFieldVerification (1, 25, 3.toShort)
+            failFieldVerification (1, 29, 4.toShort)
+            failFieldConversion (1, 33, "56fred")
+            failFieldConversion (2, 1, "a")
           }
-          readAsInts (pcReader)
-          readAsInts (unixReader)
-          readAsInts (oldMacOsReader)
+          doFail (pcReader)
+          doFail (unixReader)
+          doFail (oldMacOsReader)
         }
       }
 
 /*
-Now process the same data with the default (whitespace) delimiter that DOES
-merge adjacent delimiters.  This will remove many of the exceptions (due to
-spaces being merged with tabs) and will remove empty fields.
+Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data 2") {
-        new DefaultDelimitedReaders {
-          def readAsInts (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "a"
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readShorts (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readShort () // "a"
             }
-            assert (reader.readAsInt () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "1.1e1"
+            assert (reader.readString () === "a")
+            assert (reader.readShort () === 1)
+            intercept [FieldConversionException] {
+              reader.readShort () // "1.1e1"
             }
-            assert (reader.readAsInt () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "-1.1e-1"
+            assert (reader.readString () === "1.1e1")
+            assert (reader.readShort () === -1)
+            intercept [FieldConversionException] {
+              reader.readShort () // "-1.1e-1"
             }
-            assert (reader.readAsInt () === 2)
-            assert (reader.readAsInt () === 3)
-            assert (reader.readAsInt () === 4)
-            intercept [NumberFormatException] {
-              reader.readAsInt () // "56fred"
+            assert (reader.readString () === "-1.1e-1")
+            intercept [FieldConversionException] {
+              reader.readShort () // " 2"
             }
+            assert (reader.readString () === " 2")
+            intercept [FieldConversionException] {
+              reader.readShort () // "3 "
+            }
+            assert (reader.readString () === "3 ")
+            intercept [FieldConversionException] {
+              reader.readShort () // " 4 "
+            }
+            assert (reader.readString () === " 4 ")
+            intercept [FieldConversionException] {
+              reader.readShort () // ""
+            }
+            assert (reader.readString () === "")
+            intercept [FieldConversionException] {
+              reader.readShort () // "56fred"
+            }
+            assert (reader.readString () === "56fred")
           }
-          readAsInts (pcReader)
-          readAsInts (unixReader)
-          readAsInts (oldMacOsReader)
+          readShorts (pcReader)
+          readShorts (unixReader)
+          readShorts (oldMacOsReader)
         }
       }
     }
 
 /*
-Verify that the readAsLong function operates correctly.
-
-Firstly, read using the test delimiter that does not merge adjacent delimiters.
+Now process the same data as above by overriding the default delimiter with the
+whitespace delimiter that DOES merge adjacent delimiters.  This will remove
+many of the exceptions (due to spaces being merged with tabs) and will remove
+empty fields.
 */
 
-    describe (".readAsLong ()") {
+    describe ("readShort (Delimiter)(Verifier [Short])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
-          def readAsLongs (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "a"
+          def readShorts (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readShort (WhitespaceDelimiter)() // "a"
             }
-            assert (reader.readAsLong () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "1.1e1"
+            assert (reader.readString (WhitespaceDelimiter)() === "a")
+            assert (reader.readShort (WhitespaceDelimiter)() === 1)
+            intercept [FieldConversionException] {
+              reader.readShort (WhitespaceDelimiter)() // "1.1e1"
             }
-            assert (reader.readAsLong () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "-1.1e-1"
+            assert (reader.readString (WhitespaceDelimiter)() === "1.1e1")
+            assert (reader.readShort (WhitespaceDelimiter)() === -1)
+            intercept [FieldConversionException] {
+              reader.readShort (WhitespaceDelimiter)() // "-1.1e-1"
             }
-            intercept [NumberFormatException] {
-              reader.readAsLong () // " 2"
+            assert (reader.readString (WhitespaceDelimiter)() === "-1.1e-1")
+            assert (reader.readShort (WhitespaceDelimiter)() === 2)
+            assert (reader.readShort (WhitespaceDelimiter)() === 3)
+            assert (reader.readShort (WhitespaceDelimiter)() === 4)
+            intercept [FieldConversionException] {
+              reader.readShort (WhitespaceDelimiter)() // "56fred"
             }
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "3 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsLong () // " 4 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsLong () // ""
-            }
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "56fred"
-            }
+            assert (reader.readString (WhitespaceDelimiter)() === "56fred")
           }
-          readAsLongs (pcReader)
-          readAsLongs (unixReader)
-          readAsLongs (oldMacOsReader)
-        }
-      }
-
-/*
-Now process the same data with the default (whitespace) delimiter that DOES
-merge adjacent delimiters.  This will remove many of the exceptions (due to
-spaces being merged with tabs) and will remove empty fields.
-*/
-
-      it ("must be able to read valid data and handle bad data 2") {
-        new DefaultDelimitedReaders {
-          def readAsLongs (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "a"
-            }
-            assert (reader.readAsLong () === 1)
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "1.1e1"
-            }
-            assert (reader.readAsLong () === -1)
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "-1.1e-1"
-            }
-            assert (reader.readAsLong () === 2)
-            assert (reader.readAsLong () === 3)
-            assert (reader.readAsLong () === 4)
-            intercept [NumberFormatException] {
-              reader.readAsLong () // "56fred"
-            }
-          }
-          readAsLongs (pcReader)
-          readAsLongs (unixReader)
-          readAsLongs (oldMacOsReader)
+          readShorts (pcReader)
+          readShorts (unixReader)
+          readShorts (oldMacOsReader)
         }
       }
     }
 
 /*
-Verify that the readAsFloat function operates correctly.
-
-Firstly, read using the test delimiter that does not merge adjacent delimiters.
+Verify that the readInt function operates correctly.
 */
 
-    describe (".readAsFloat ()") {
-      it ("must be able to read valid data and handle bad data") {
-        new TestDelimitedReaders {
-          def readAsFloats (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // "a"
+    describe (".readInt (Verifier [Int])") {
+
+/*
+The function must fail correctly when reading an invalid field.  That is, the
+reader must be reset back to the beginning of the field read.
+
+Here, we test both conversion and verification.
+*/
+
+      it ("must fail correctly") {
+        new DefaultDelimitedReaders {
+          def doFail (reader: TextReader) {
+            def failFieldConversion (row: Int, column: Int, field: String) {
+              val e = intercept [FieldConversionException] {
+                reader.readInt ()
+              }
+              assert (e.getMessage () === "Field conversion of value '" + field
+              + "' to type 'java.lang.Int' failed. Row: " + row + ", Column: "
+              + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.head.toInt)
+              assert (reader.readString () === field)
             }
-            assert (abs (reader.readAsFloat () - 1.0) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - 1.1e1) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - -1.0) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - -1.1e-1) < 1.0e-8)
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // " 2"
+            def failFieldVerification (row: Int, column: Int, field: Int) {
+              val e = intercept [FieldVerificationException] {
+                reader.readInt {i =>
+                  assert (i === field)
+                  false
+                }
+              }
+              assert (e.getMessage () === "Field verification of value '" +
+              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.toString.head.toInt)
+              assert (reader.readString () === field)
             }
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // "3 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // " 4 "
-            }
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // ""
-            }
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // "56fred"
-            }
+            failFieldConversion (1, 1, "a")
+            failFieldVerification (1, 3, 1.toInt)
+            failFieldConversion (1, 5, "1.1e1")
+            failFieldVerification (1, 11, -1.toInt)
+            failFieldConversion (1, 14, "-1.1e-1")
+            failFieldVerification (1, 23, 2.toInt)
+            failFieldVerification (1, 25, 3.toInt)
+            failFieldVerification (1, 29, 4.toInt)
+            failFieldConversion (1, 33, "56fred")
+            failFieldConversion (2, 1, "a")
           }
-          readAsFloats (pcReader)
-          readAsFloats (unixReader)
-          readAsFloats (oldMacOsReader)
+          doFail (pcReader)
+          doFail (unixReader)
+          doFail (oldMacOsReader)
         }
       }
 
 /*
-Now process the same data with the default (whitespace) delimiter that DOES
-merge adjacent delimiters.  This will remove many of the exceptions (due to
-spaces being merged with tabs) and will remove empty fields.
+Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data 2") {
-        new DefaultDelimitedReaders {
-          def readAsFloats (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // "a"
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readInts (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readInt () // "a"
             }
-            assert (abs (reader.readAsFloat () - 1.0) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - 1.1e1) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - -1.0) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - -1.1e-1) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - 2.0) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - 3.0) < 1.0e-8)
-            assert (abs (reader.readAsFloat () - 4.0) < 1.0e-8)
-            intercept [NumberFormatException] {
-              reader.readAsFloat () // "56fred"
+            assert (reader.readString () === "a")
+            assert (reader.readInt () === 1)
+            intercept [FieldConversionException] {
+              reader.readInt () // "1.1e1"
             }
+            assert (reader.readString () === "1.1e1")
+            assert (reader.readInt () === -1)
+            intercept [FieldConversionException] {
+              reader.readInt () // "-1.1e-1"
+            }
+            assert (reader.readString () === "-1.1e-1")
+            intercept [FieldConversionException] {
+              reader.readInt () // " 2"
+            }
+            assert (reader.readString () === " 2")
+            intercept [FieldConversionException] {
+              reader.readInt () // "3 "
+            }
+            assert (reader.readString () === "3 ")
+            intercept [FieldConversionException] {
+              reader.readInt () // " 4 "
+            }
+            assert (reader.readString () === " 4 ")
+            intercept [FieldConversionException] {
+              reader.readInt () // ""
+            }
+            assert (reader.readString () === "")
+            intercept [FieldConversionException] {
+              reader.readInt () // "56fred"
+            }
+            assert (reader.readString () === "56fred")
           }
-          readAsFloats (pcReader)
-          readAsFloats (unixReader)
-          readAsFloats (oldMacOsReader)
+          readInts (pcReader)
+          readInts (unixReader)
+          readInts (oldMacOsReader)
         }
       }
     }
 
 /*
-Verify that the readAsDouble function operates correctly.
-
-Firstly, read using the test delimiter that does not merge adjacent delimiters.
+Now process the same data as above by overriding the default delimiter with the
+whitespace delimiter that DOES merge adjacent delimiters.  This will remove
+many of the exceptions (due to spaces being merged with tabs) and will remove
+empty fields.
 */
 
-    describe (".readAsDouble ()") {
+    describe ("readInt (Delimiter)(Verifier [Int])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
-          def readAsDoubles (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // "a"
+          def readInts (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readInt (WhitespaceDelimiter)() // "a"
             }
-            assert (abs (reader.readAsDouble () - 1.0) < 1.0e-10)
-            assert (abs (reader.readAsDouble () - 1.1e1) < 1.0e-10)
-            assert (abs (reader.readAsDouble () - -1.0) < 1.0e-10)
-            assert (abs (reader.readAsDouble () - -1.1e-1) < 1.0e-10)
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // " 2"
+            assert (reader.readString (WhitespaceDelimiter)() === "a")
+            assert (reader.readInt (WhitespaceDelimiter)() === 1)
+            intercept [FieldConversionException] {
+              reader.readInt (WhitespaceDelimiter)() // "1.1e1"
             }
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // "3 "
+            assert (reader.readString (WhitespaceDelimiter)() === "1.1e1")
+            assert (reader.readInt (WhitespaceDelimiter)() === -1)
+            intercept [FieldConversionException] {
+              reader.readInt (WhitespaceDelimiter)() // "-1.1e-1"
             }
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // " 4 "
+            assert (reader.readString (WhitespaceDelimiter)() === "-1.1e-1")
+            assert (reader.readInt (WhitespaceDelimiter)() === 2)
+            assert (reader.readInt (WhitespaceDelimiter)() === 3)
+            assert (reader.readInt (WhitespaceDelimiter)() === 4)
+            intercept [FieldConversionException] {
+              reader.readInt (WhitespaceDelimiter)() // "56fred"
             }
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // ""
-            }
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // "56fred"
-            }
+            assert (reader.readString (WhitespaceDelimiter)() === "56fred")
           }
-          readAsDoubles (pcReader)
-          readAsDoubles (unixReader)
-          readAsDoubles (oldMacOsReader)
+          readInts (pcReader)
+          readInts (unixReader)
+          readInts (oldMacOsReader)
+        }
+      }
+    }
+
+/*
+Verify that the readLong function operates correctly.
+*/
+
+    describe (".readLong (Verifier [Long])") {
+
+/*
+The function must fail correctly when reading an invalid field.  That is, the
+reader must be reset back to the beginning of the field read.
+
+Here, we test both conversion and verification.
+*/
+
+      it ("must fail correctly") {
+        new DefaultDelimitedReaders {
+          def doFail (reader: TextReader) {
+            def failFieldConversion (row: Int, column: Int, field: String) {
+              val e = intercept [FieldConversionException] {
+                reader.readLong ()
+              }
+              assert (e.getMessage () === "Field conversion of value '" + field
+              + "' to type 'java.lang.Long' failed. Row: " + row + ", Column: "
+              + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.head.toInt)
+              assert (reader.readString () === field)
+            }
+            def failFieldVerification (row: Int, column: Int, field: Long) {
+              val e = intercept [FieldVerificationException] {
+                reader.readLong {i =>
+                  assert (i === field)
+                  false
+                }
+              }
+              assert (e.getMessage () === "Field verification of value '" +
+              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.toString.head.toInt)
+              assert (reader.readString () === field)
+            }
+            failFieldConversion (1, 1, "a")
+            failFieldVerification (1, 3, 1.toLong)
+            failFieldConversion (1, 5, "1.1e1")
+            failFieldVerification (1, 11, -1.toLong)
+            failFieldConversion (1, 14, "-1.1e-1")
+            failFieldVerification (1, 23, 2.toLong)
+            failFieldVerification (1, 25, 3.toLong)
+            failFieldVerification (1, 29, 4.toLong)
+            failFieldConversion (1, 33, "56fred")
+            failFieldConversion (2, 1, "a")
+          }
+          doFail (pcReader)
+          doFail (unixReader)
+          doFail (oldMacOsReader)
         }
       }
 
 /*
-Now process the same data with the default (whitespace) delimiter that DOES
-merge adjacent delimiters.  This will remove many of the exceptions (due to
-spaces being merged with tabs) and will remove empty fields.
+Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data 2") {
-        new DefaultDelimitedReaders {
-          def readAsDoubles (reader: TextReader) {
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // "a"
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readLongs (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readLong () // "a"
             }
-            assert (abs (reader.readAsDouble () - 1.0) < 1.0e-8)
-            assert (abs (reader.readAsDouble () - 1.1e1) < 1.0e-8)
-            assert (abs (reader.readAsDouble () - -1.0) < 1.0e-8)
-            assert (abs (reader.readAsDouble () - -1.1e-1) < 1.0e-8)
-            assert (abs (reader.readAsDouble () - 2.0) < 1.0e-8)
-            assert (abs (reader.readAsDouble () - 3.0) < 1.0e-8)
-            assert (abs (reader.readAsDouble () - 4.0) < 1.0e-8)
-            intercept [NumberFormatException] {
-              reader.readAsDouble () // "56fred"
+            assert (reader.readString () === "a")
+            assert (reader.readLong () === 1)
+            intercept [FieldConversionException] {
+              reader.readLong () // "1.1e1"
             }
+            assert (reader.readString () === "1.1e1")
+            assert (reader.readLong () === -1)
+            intercept [FieldConversionException] {
+              reader.readLong () // "-1.1e-1"
+            }
+            assert (reader.readString () === "-1.1e-1")
+            intercept [FieldConversionException] {
+              reader.readLong () // " 2"
+            }
+            assert (reader.readString () === " 2")
+            intercept [FieldConversionException] {
+              reader.readLong () // "3 "
+            }
+            assert (reader.readString () === "3 ")
+            intercept [FieldConversionException] {
+              reader.readLong () // " 4 "
+            }
+            assert (reader.readString () === " 4 ")
+            intercept [FieldConversionException] {
+              reader.readLong () // ""
+            }
+            assert (reader.readString () === "")
+            intercept [FieldConversionException] {
+              reader.readLong () // "56fred"
+            }
+            assert (reader.readString () === "56fred")
           }
-          readAsDoubles (pcReader)
-          readAsDoubles (unixReader)
-          readAsDoubles (oldMacOsReader)
+          readLongs (pcReader)
+          readLongs (unixReader)
+          readLongs (oldMacOsReader)
+        }
+      }
+    }
+
+/*
+Now process the same data as above by overriding the default delimiter with the
+whitespace delimiter that DOES merge adjacent delimiters.  This will remove
+many of the exceptions (due to spaces being merged with tabs) and will remove
+empty fields.
+*/
+
+    describe ("readLong (Delimiter)(Verifier [Long])") {
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readLongs (reader: TextReader) {
+            intercept [FieldConversionException] {
+              reader.readLong (WhitespaceDelimiter)() // "a"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "a")
+            assert (reader.readLong (WhitespaceDelimiter)() === 1)
+            intercept [FieldConversionException] {
+              reader.readLong (WhitespaceDelimiter)() // "1.1e1"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "1.1e1")
+            assert (reader.readLong (WhitespaceDelimiter)() === -1)
+            intercept [FieldConversionException] {
+              reader.readLong (WhitespaceDelimiter)() // "-1.1e-1"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "-1.1e-1")
+            assert (reader.readLong (WhitespaceDelimiter)() === 2)
+            assert (reader.readLong (WhitespaceDelimiter)() === 3)
+            assert (reader.readLong (WhitespaceDelimiter)() === 4)
+            intercept [FieldConversionException] {
+              reader.readLong (WhitespaceDelimiter)() // "56fred"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "56fred")
+          }
+          readLongs (pcReader)
+          readLongs (unixReader)
+          readLongs (oldMacOsReader)
+        }
+      }
+    }
+
+/*
+Verify that the readFloat function operates correctly.
+*/
+
+    describe (".readFloat (Verifier [Float])") {
+
+/*
+The function must fail correctly when reading an invalid field.  That is, the
+reader must be reset back to the beginning of the field read.
+
+Here, we test both conversion and verification.
+*/
+
+      it ("must fail correctly") {
+        new DefaultDelimitedReaders {
+          def doFail (reader: TextReader) {
+            def failFieldConversion (row: Int, column: Int, field: String) {
+              val e = intercept [FieldConversionException] {
+                reader.readFloat ()
+              }
+              assert (e.getMessage () === "Field conversion of value '" + field
+              + "' to type 'java.lang.Float' failed. Row: " + row +
+              ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.head.toInt)
+              assert (reader.readString () === field)
+            }
+            def failFieldVerification (row: Int, column: Int, field: Float) {
+              val e = intercept [FieldVerificationException] {
+                reader.readFloat {i =>
+                  assert (i === field)
+                  false
+                }
+              }
+              assert (e.getMessage () === "Field verification of value '" +
+              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.toString.head.toInt)
+              assert (reader.readString () === field)
+            }
+            failFieldConversion (1, 1, "a")
+            failFieldVerification (1, 3, 1.toFloat)
+            failFieldVerification (1, 5, 1.1e1.toFloat)
+            failFieldVerification (1, 11, -1.toFloat)
+            failFieldVerification (1, 14, -1.1e-1.toFloat)
+            failFieldVerification (1, 23, 2.toFloat)
+            failFieldVerification (1, 25, 3.toFloat)
+            failFieldVerification (1, 29, 4.toFloat)
+            failFieldConversion (1, 33, "56fred")
+            failFieldConversion (2, 1, "a")
+          }
+          doFail (pcReader)
+          doFail (unixReader)
+          doFail (oldMacOsReader)
+        }
+      }
+
+/*
+Firstly, read using the test delimiter that does not merge adjacent delimiters.
+*/
+
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readFloats (reader: TextReader) {
+            val tolerance = 1.0e-8
+            intercept [FieldConversionException] {
+              reader.readFloat () // "a"
+            }
+            assert (reader.readString () === "a")
+            assert (abs (reader.readFloat () - 1.0) < tolerance)
+            assert (abs (reader.readFloat () - 1.1e1) < tolerance)
+            assert (abs (reader.readFloat () - -1.0) < tolerance)
+            assert (abs (reader.readFloat () - -1.1e-1) < tolerance)
+            intercept [FieldConversionException] {
+              reader.readFloat () // " 2"
+            }
+            assert (reader.readString () === " 2")
+            intercept [FieldConversionException] {
+              reader.readFloat () // "3 "
+            }
+            assert (reader.readString () === "3 ")
+            intercept [FieldConversionException] {
+              reader.readFloat () // " 4 "
+            }
+            assert (reader.readString () === " 4 ")
+            intercept [FieldConversionException] {
+              reader.readFloat () // ""
+            }
+            assert (reader.readString () === "")
+            intercept [FieldConversionException] {
+              reader.readFloat () // "56fred"
+            }
+            assert (reader.readString () === "56fred")
+          }
+          readFloats (pcReader)
+          readFloats (unixReader)
+          readFloats (oldMacOsReader)
+        }
+      }
+    }
+
+/*
+Now process the same data as above by overriding the default delimiter with the
+whitespace delimiter that DOES merge adjacent delimiters.  This will remove
+many of the exceptions (due to spaces being merged with tabs) and will remove
+empty fields.
+*/
+
+    describe ("readFloat (Delimiter)(Verifier [Float])") {
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readFloats (reader: TextReader) {
+            val tolerance = 1.0e-8
+            intercept [FieldConversionException] {
+              reader.readFloat (WhitespaceDelimiter)() // "a"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "a")
+            assert (abs (reader.readFloat (WhitespaceDelimiter)() - 1.0) <
+            tolerance)
+            assert (abs (reader.readFloat (WhitespaceDelimiter)() - 1.1e1) <
+            tolerance)
+            assert (abs (reader.readFloat (WhitespaceDelimiter)() - -1.0) <
+            tolerance)
+            assert (abs (reader.readFloat (WhitespaceDelimiter)() - -1.1e-1) <
+            tolerance)
+            assert (abs (reader.readFloat (WhitespaceDelimiter)() - 2.0) <
+            tolerance)
+            assert (abs (reader.readFloat (WhitespaceDelimiter)() - 3.0) <
+            tolerance)
+            assert (abs (reader.readFloat (WhitespaceDelimiter)() - 4.0) <
+            tolerance)
+            intercept [FieldConversionException] {
+              reader.readFloat (WhitespaceDelimiter)() // "56fred"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "56fred")
+          }
+          readFloats (pcReader)
+          readFloats (unixReader)
+          readFloats (oldMacOsReader)
+        }
+      }
+    }
+
+/*
+Verify that the readDouble function operates correctly.
+*/
+
+    describe (".readDouble (Verifier [Double])") {
+
+/*
+The function must fail correctly when reading an invalid field.  That is, the
+reader must be reset back to the beginning of the field read.
+
+Here, we test both conversion and verification.
+*/
+
+      it ("must fail correctly") {
+        new DefaultDelimitedReaders {
+          def doFail (reader: TextReader) {
+            def failFieldConversion (row: Int, column: Int, field: String) {
+              val e = intercept [FieldConversionException] {
+                reader.readDouble ()
+              }
+              assert (e.getMessage () === "Field conversion of value '" + field
+              + "' to type 'java.lang.Double' failed. Row: " + row +
+              ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.head.toInt)
+              assert (reader.readString () === field)
+            }
+            def failFieldVerification (row: Int, column: Int, field: Double) {
+              val e = intercept [FieldVerificationException] {
+                reader.readDouble {i =>
+                  assert (i === field)
+                  false
+                }
+              }
+              assert (e.getMessage () === "Field verification of value '" +
+              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (reader.getRow === row)
+              assert (reader.getColumn === column)
+              assert (reader.peek () === field.toString.head.toInt)
+              assert (reader.readString () === field)
+            }
+            failFieldConversion (1, 1, "a")
+            failFieldVerification (1, 3, 1.toDouble)
+            failFieldVerification (1, 5, 1.1e1.toDouble)
+            failFieldVerification (1, 11, -1.toDouble)
+            failFieldVerification (1, 14, -1.1e-1.toDouble)
+            failFieldVerification (1, 23, 2.toDouble)
+            failFieldVerification (1, 25, 3.toDouble)
+            failFieldVerification (1, 29, 4.toDouble)
+            failFieldConversion (1, 33, "56fred")
+            failFieldConversion (2, 1, "a")
+          }
+          doFail (pcReader)
+          doFail (unixReader)
+          doFail (oldMacOsReader)
+        }
+      }
+
+/*
+Firstly, read using the test delimiter that does not merge adjacent delimiters.
+*/
+
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readDoubles (reader: TextReader) {
+            val tolerance = 1.0e-14
+            intercept [FieldConversionException] {
+              reader.readDouble () // "a"
+            }
+            assert (reader.readString () === "a")
+            assert (abs (reader.readDouble () - 1.0) < tolerance)
+            assert (abs (reader.readDouble () - 1.1e1) < tolerance)
+            assert (abs (reader.readDouble () - -1.0) < tolerance)
+            assert (abs (reader.readDouble () - -1.1e-1) < tolerance)
+            intercept [FieldConversionException] {
+              reader.readDouble () // " 2"
+            }
+            assert (reader.readString () === " 2")
+            intercept [FieldConversionException] {
+              reader.readDouble () // "3 "
+            }
+            assert (reader.readString () === "3 ")
+            intercept [FieldConversionException] {
+              reader.readDouble () // " 4 "
+            }
+            assert (reader.readString () === " 4 ")
+            intercept [FieldConversionException] {
+              reader.readDouble () // ""
+            }
+            assert (reader.readString () === "")
+            intercept [FieldConversionException] {
+              reader.readDouble () // "56fred"
+            }
+            assert (reader.readString () === "56fred")
+          }
+          readDoubles (pcReader)
+          readDoubles (unixReader)
+          readDoubles (oldMacOsReader)
+        }
+      }
+    }
+
+/*
+Now process the same data as above by overriding the default delimiter with the
+whitespace delimiter that DOES merge adjacent delimiters.  This will remove
+many of the exceptions (due to spaces being merged with tabs) and will remove
+empty fields.
+*/
+
+    describe ("readDouble (Delimiter)(Verifier [Double])") {
+      it ("must be able to read valid data and handle bad data") {
+        new TestDelimitedReaders {
+          def readDoubles (reader: TextReader) {
+            val tolerance = 1.0e-14
+            intercept [FieldConversionException] {
+              reader.readDouble (WhitespaceDelimiter)() // "a"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "a")
+            assert (abs (reader.readDouble (WhitespaceDelimiter)() - 1.0) <
+            tolerance)
+            assert (abs (reader.readDouble (WhitespaceDelimiter)() - 1.1e1) <
+            tolerance)
+            assert (abs (reader.readDouble (WhitespaceDelimiter)() - -1.0) <
+            tolerance)
+            assert (abs (reader.readDouble (WhitespaceDelimiter)() - -1.1e-1) <
+            tolerance)
+            assert (abs (reader.readDouble (WhitespaceDelimiter)() - 2.0) <
+            tolerance)
+            assert (abs (reader.readDouble (WhitespaceDelimiter)() - 3.0) <
+            tolerance)
+            assert (abs (reader.readDouble (WhitespaceDelimiter)() - 4.0) <
+            tolerance)
+            intercept [FieldConversionException] {
+              reader.readDouble (WhitespaceDelimiter)() // "56fred"
+            }
+            assert (reader.readString (WhitespaceDelimiter)() === "56fred")
+          }
+          readDoubles (pcReader)
+          readDoubles (unixReader)
+          readDoubles (oldMacOsReader)
         }
       }
     }

@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,17 +30,13 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
-Scala source file belonging to the org.facsim.facsimile.measure package.
+Scala source file belonging to the org.facsim.measure package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.measure
-
-import org.facsim.facsimile.util.Resource
+package org.facsim.measure
 
 //=============================================================================
 /**
@@ -91,154 +87,28 @@ to the user's preferred locale.
 */
 //=============================================================================
 
-private [measure] abstract class UnitOfMeasure (private val converter:
-Converter, unitNameSingularKey: String, unitNamePluralKey: String,
-unitSymbolKey: String)
-extends NotNull with Converter
-{
+abstract class UnitOfMeasure private [measure] (private final val converter:
+Converter) extends NotNull with Conversion {
 
+//-----------------------------------------------------------------------------
 /*
-Sanity checks.
+(non-ScalaDoc)
+
+@see org.facsim.measure.Conversion#importValue(Double)
 */
+//-----------------------------------------------------------------------------
 
-  require (!unitNameSingularKey.isEmpty ())
-  require (!unitNamePluralKey.isEmpty ())
-  require (!unitSymbolKey.isEmpty ())
-
-/**
-Singular form of this unit's name.
-*/
-
-  private val unitNameSingular = Resource.format (unitNameSingularKey)
-
-/**
-Plural form of this unit's name.
-*/
-
-  private val unitNamePlural = Resource.format (unitNamePluralKey)
-
-/**
-Symbol associated with this unit.
-*/
-
-  private val unitSymbol = Resource.format (unitSymbolKey)
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-Report the name of the associated measurement type.
-
-The name should be reported in the singular form (e.g. "time", rather than
-"times"), and should match the user's preferred locale as closely as possible.
-If the type name is typically capitalized then the returned name should also be
-capitalized, otherwise it should be returned in lower case (or the
-locale-equivalent).
-
-All units of measure for the same measurement type report the same type name
-value.
-
-The measurement type name should be unique across all measurement types.
-
-@return Name of this unit of measure's type.
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  final def typeName () = Resource.format (typeNameKey ())
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-Report the name of this unit of measure in singular form.
-
-The name should be reported in the singular form, and should match the user's
-preferred locale as closely as possible.
-
-If the name of the unit is typically capitalized (such as ''Celsius'',
-''Fahrenheit'', ''Kelvin'', etc.) then the returned name should also be
-capitalized, otherwise it should be returned in lower case (or the
-locale-equivalent).
-
-The singular form of the name should be unique across all units of measure, but
-can be the same as the plural form of the same unit of measure.
-
-@return Singular form of this unit of measure's name.
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  final def getUnitNameSingular () = unitNameSingular
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-Report the name of this unit of measure in plural form.
-
-The name should be reported in the plural form, and should match the user's
-preferred locale as closely as possible.
-
-If the name of the unit is typically capitalized (such as ''Celsius'',
-''Fahrenheit'', ''Kelvin'', etc.) then the returned name should also be
-capitalized, otherwise it should be returned in lower case (or the
-locale-equivalent).
-
-The plural form of the name should be unique across all units of measure, but
-can be the same as the singular form of the same unit of measure.
-
-@return Plural form of this unit of measure's name.
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  final def getUnitNamePlural () = unitNamePlural
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-Report the symbol associated with this unit of measure.
-
-The symbol should be unique across all units of measure.
-
-@return Symbol associated with this unit of measure.
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  final def symbol () = unitSymbol
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/*
-(non-Javadoc)
-
-@see org.facsim.facsimile.measure.Converter#importValue(Double)
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  private [measure] final override def importValue (value: Double): Double =
+  private [measure] override final def importValue (value: Double): Double =
   converter.importValue (value)
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//-----------------------------------------------------------------------------
 /*
-(non-Javadoc)
+(non-ScalaDoc)
 
-@see org.facsim.facsimile.measure.Converter#exportValue(Double)
+@see org.facsim.measure.Conversion#importValue(Double)
 */
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//-----------------------------------------------------------------------------
 
-  private [measure] final override def exportValue (value: Double): Double =
+  private [measure] override final def exportValue (value: Double): Double =
   converter.exportValue (value)
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
-Report the resource key identifying the name of the associated measurement
-type.
-
-The name itself should be reported in the singular form (e.g. "time", rather
-than "times"), and should match the user's preferred locale as closely as
-possible.  If the type name is typically capitalized then the returned name
-should also be capitalized, otherwise it should be returned in lower case (or
-the locale-equivalent).
-
-All units of measure for the same measurement type report the same type name
-value.
-
-The measurement type name should be unique across all measurement types.
-
-@return Name of this unit of measure's type.
-*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  protected [measure] def typeNameKey (): String
 }

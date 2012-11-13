@@ -37,8 +37,6 @@ rejected.  For further information, please visit the coding standards at:
 
   http://www.facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Top-level Maven Project Object Model (POM) file for Facsimile.
 
 All general project-related information (developers, contributors, mailing

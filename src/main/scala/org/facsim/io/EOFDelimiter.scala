@@ -32,8 +32,6 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file from the org.facsim.io package.
 */
 //=============================================================================
@@ -42,8 +40,11 @@ package org.facsim.io
 
 //=============================================================================
 /**
-Delimiter for parsing an entire file as a single field, for use with
-[[org.facsim.io.TextReader]]-based readers.
+Delimiter for parsing the remainder of a text data stream as a single field,
+for use with [[org.facsim.io.TextReader]]-based readers.
+
+@note If data has already been read from the stream, then a subsequence field
+read operation with this delimiter will return the remainder of the stream.
 
 @since 0.0
 */

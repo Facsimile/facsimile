@@ -35,7 +35,8 @@
 # git .gitattributes file.
 #
 # Determine how git will treat line endings in files belonging to Facsimile.
-# It will override any defined 'core.autocrlf' git configuration. #==============================================================================
+# It will override any defined 'core.autocrlf' git configuration.
+#==============================================================================
 
 # Set default behaviour text behavior.  This is equivalent to the git config
 # 'core.autocrlf' flag.
@@ -73,6 +74,7 @@ COPYING.LESSER text
 *.iges text
 *.java text
 *.js text
+*.md text
 *.pl text
 *.pm text
 *.pom text

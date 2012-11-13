@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,16 +30,14 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
 package org.facsim.facsimile.engine
-import org.facsim.facsimile.util.Resource
+import org.facsim.LibResource
 
 //=============================================================================
 /**
@@ -61,7 +59,7 @@ resulting in a controlled termination of the simulation run.
 @contructor Create new out-of-events exception.  Constructor is private to
 org.facsim.facsimile.engine package.
 
-@since 0.0-0
+@since 0.0
 */
 //=============================================================================
 
@@ -74,6 +72,6 @@ Report the cause of this exception.
 */
 //-----------------------------------------------------------------------------
 
-  final override def getLocalizedMessage: String =
-  Resource.format ("engine.Simulation.OutOfEventsException.message")
+  final override def getMessage =
+  LibResource.format ("engine.OutOfEventsException.message")
 }

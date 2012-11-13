@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,10 +30,8 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
@@ -42,13 +40,13 @@ package org.facsim.facsimile.engine
 import scala.collection.mutable.PriorityQueue
 import org.facsim.facsimile.measure.Time
 import org.facsim.facsimile.measure.TimeUnit
-import org.facsim.facsimile.util.Resource
+import org.facsim.util.Resource
 
 //=============================================================================
 /**
 Simulation.
 
-@since 0.0-0
+@since 0.0
 */
 //=============================================================================
 
@@ -73,13 +71,19 @@ Current event.
   private var currentEvent: Event = schedule (new NullAction, Time.time (0.0,
   TimeUnit.seconds), 0)
 
+/**
+Absolute time at which the simulation's statistics were last reset.
+*/
+
+  private var resetTime: Time = Time.time (0.0, TimeUnit.seconds)
+
 //-----------------------------------------------------------------------------
 /**
 Report current simulation time.
 
 @return Current absolute simulation time.
 
-@since 0.0-0
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -101,7 +105,7 @@ priority.  Actions scheduled to execute at the same time will be dispatched in
 order of their priority; actions scheduled at the same time with the same
 priority are dispatched in the order that they are scheduled.
 
-@since 0.0-0
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -114,7 +118,7 @@ Schedule event.
 
 @param event Event to be scheduled for dispatch.
 
-@since 0.0-0
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -131,7 +135,7 @@ This function never returns, but might terminate if an exception occurs.
 
 @throws OutOfEventsException if the simulation runs out of events.
 
-@since 0.0-0
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -167,13 +171,26 @@ Use tail recursion to perform the next event.
 
 //-----------------------------------------------------------------------------
 /**
+Report the time at which the simulation was last reset.
+
+@return Absolute simulation time at which the simulation's statistics were last
+reset.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  def lastReset = resetTime
+
+//-----------------------------------------------------------------------------
+/**
 Null action class.
 
 Represents actions that should never be executed in practice.  The initial
 current event is such an action, it provides the initial simulation time, but
 is never actually executed.
 
-@since 0.0-0
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 

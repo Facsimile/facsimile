@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,55 +30,73 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
-Scala source file defining the org.facsim.facsimile.measure package.
+Scala source file defining the org.facsim.measure package.
 */
 //=============================================================================
 
-package org.facsim.facsimile
+package org.facsim
 
 //=============================================================================
 /**
-$FACSIMILE simulation measurement elements.
+''[[http://facsim.org/ Facsimile]]'' physical quantity measurement
+elements.
 
-The ''org.facsim.facsimile.measure'' package contains elements for measuring a
-variety of physical quantities, such as ''time'', ''mass'', ''length'',
-''angle'', ''temperature'', ''linear velocity'', etc. in the user's preferred
-units.
+The `org.facsim.facsimile.measure` package contains elements for expressing
+measurements of a variety of ''physical quantities'', such as ''time'',
+''mass'', ''length'', ''angle'', ''thermodynamic temperature'', etc., in
+whatever units the user believes to be the most appropriate.
 
-@since 0.0-0
+= Physical Quantity Unit Families =
 
-@todo Expand on $FACSIMILE's use of units.  $FACSIMILE allows users to use one
+For each physical quantity, there are typically a set of units in which
+measurements of that physical quantity can be expressed.  For instance, time
+can be measured in ''seconds'', ''minutes'', ''hours'', etc.  In
+''[[http://facsim.org/ Facsimile]]'', such a set of units is termed a
+''unit family''.
+
+Each unit family is encapsulated as a sub-class of the
+`[[org.facsim.measure.Unit Unit]]` abstract base class.  For example, time
+units are encapsulated by the `[[org.facsim.measure.TimeUnit TimeUnit]]` `Unit`
+sub-class, mass units by the `[[org.facsim.measure.MassUnit MassUnit]]` `Unit`
+sub-class, length units by the `[[org.facsim.measure.LengthUnit LengthUnit]]`
+`Unit` sub-class, etc.
+
+= Physical Quantity Units =
+
+''[[http://facsim.org/ Facsimile]]'' allows users to work with whichever
+units make the most sense for a particular application, while interoperating
+seamlessly with code written using different units; conversion of values
+between different units takes place automatically, eliminating a whole class of
+potential conversion errors.
+
+Individual physical quantity units are represented by instances of the
+corresponding unit family class.  For example, ''seconds'', ''minutes'' and
+''hours'' are represented by instances of the `[[org.facsim.measure.TimeUnit
+TimeUnit]]` class.
+
+= Physical Quantity Measurements =
+
+@todo Expand on Facsimile's use of units.  Facsimile allows users to use one
 or more measurement units, as they see fit, rather than being forced to adopt a
 single unit of measure (say seconds for time, inches for length, etc.).  Since
 all measurements are stored internally in SI units, no matter which units are
 employed by the user, there are never conversion issues when merging models
 that use different units.
 
-@todo Expand on $FACSIMILE's use of types for each measurement quantity.
-Instead of using a Double, like other simulation systems, $FACSIMILE uses
+@todo Expand on Facsimile's use of types for each measurement quantity.
+Instead of using a Double, like other simulation systems, Facsimile uses
 different types for each measurement quantity.  Consequently, it's not possible
 to confuse a distance with a time, or a linear velocity with an angular
 velocity, or a mass with a temperature.  By employing an appropriate set of
-operators, mechanics formulae can be accommodated by $FACSIMILE in a very
+operators, mechanics formulae can be accommodated by Facsimile in a very
 natural way.  By ensuring data ranges are valid (no negative times or masses),
-$FACSIMILE ensures data integrity throughout all runs.
+Facsimile ensures data integrity throughout all runs.
 
-@define FACSIMILE ''[[http://www.facsim.org/ Facsimile]]''
-
-@define MEASURE ''[[org.facsim.facsimile.measure]]''
-
-@define SI ''[[http://en.wikipedia.org/wiki/International_System_of_Units
-SI]]''
-
-@define SI_FULL ''[[http://en.wikipedia.org/wiki/International_System_of_Units
-International System of Units (Wikipedia)]]''
+@since 0.0
 */
 //=============================================================================
 
-package object measure
-{
+package object measure {
 }

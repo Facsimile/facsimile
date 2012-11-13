@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,10 +30,8 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
@@ -48,7 +46,7 @@ In the context of the $FACSIMILE library, an ''action'' represents a discrete
 simulation state change, executed during an [[org.facsim.facsimile.engine.Event
 Event]].
 
-@since 0.0-0
+@since 0.0
 */
 //=============================================================================
 
@@ -67,7 +65,7 @@ event logging purposes.
 
 @return String describing what the action does, or is about to do.
 
-@since 0.0-0
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -81,7 +79,7 @@ Subclasses must override this function to implement the required actions.
 Actions are allowed to change the state of the simulation and its mutable
 objects, as well as scheduling other actions to be performed.
 
-@since 0.0-0
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 

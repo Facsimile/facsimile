@@ -32,8 +32,6 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file from the org.facsim.anim.cell.test package.
 */
 //=============================================================================

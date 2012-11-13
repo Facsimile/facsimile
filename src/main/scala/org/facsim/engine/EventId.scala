@@ -15,12 +15,12 @@ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance.  For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -30,10 +30,8 @@ Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
 rejected.  For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-$Id$
-
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
@@ -55,7 +53,7 @@ member is solely access through the [[nextId]] method.  Furthermore, it's
 possible that we may not even need this object in future $FACSIMILE releases,
 so hiding it as much as possible makes even more sense.
 
-@since 0.0-0
+@since 0.0
 */
 //=============================================================================
 
@@ -74,7 +72,7 @@ This event is initialized to be 0, so that events are effectively numbered 1,
 /**
 Retrieve the identifier of the next event created.
 
-@since 0.0-0
+@since 0.0
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
