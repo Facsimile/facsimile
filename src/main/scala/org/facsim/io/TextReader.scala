@@ -57,7 +57,7 @@ Furthermore, this reader harmonizes line termination sequences, so that all
 lines appear to terminate with a ''line feed'' character
 ('\n')&mdash;regardless of the actual line termination sequence.  (Typically,
 ''Windows'', ''DOS'' and ''OS/2'' text streams terminate lines with a
-''carriage return'' character followed by a ''line feed'' character ("\r\n");
+''carriage return'' character followed by a ''line feed'' character ('\r\n');
 ''Unix'' and ''Unix''-like systems, such as ''Linux'', ''Mac OS'' (versions X
 and higher) and the ''BSD'' variants, terminate with a single ''line feed''
 character ('\n'); older Mac OS systems (9 and earlier) terminate with a single
@@ -119,6 +119,8 @@ Class representing current state of reader.
 
 This class maintains row & column numbers, marks streams for subsequent reset
 operations (in the event that an exception occurs during a field read), etc.
+
+@constructor Create new text reader state with specified characteristics.
 
 @param lastChar Last character read from the stream.  This records the last
 character actually read from the stream, and is used in processing line
@@ -182,27 +184,30 @@ operation is performed as part of the state caching operation.
 
 //.............................................................................
 /**
-@see [[org.facsim.io.TextReader#atEOF]]
+@see [[org.facsim.io.TextReader!.atEOF]]
 */
 //.............................................................................
 
+    @inline
     final def atEOF = lastChar == TextReader.EOF
 
 //.............................................................................
 /**
-@see [[org.facsim.io.TextReader#getRow]]
+@see [[org.facsim.io.TextReader!.getRow]]
 */
 //.............................................................................
 
-    final def getRow = row
+    @inline
+    final def getRow = row ensuring (_ > 0)
 
 //.............................................................................
 /**
-@see [[org.facsim.io.TextReader#getColumn]]
+@see [[org.facsim.io.TextReader!.getColumn]]
 */
 //.............................................................................
 
-    final def getColumn = column
+    @inline
+    final def getColumn = column ensuring (_ > 0)
 
 //.............................................................................
 /**
@@ -210,10 +215,10 @@ Cache the current state of this stream and return the new state.
 
 @note The default text reader buffer size is used to record all data read from
 the current file position.  If more data has been read from the stream than can
-be buffered and an attempt to [[org.facsim.io.TextReader.State#reset]] back to
-the cached data is made, then an [[java.io.IOException]] will result.
+be buffered and an attempt to [[org.facsim.io.TextReader!.State!.reset()]] back
+to the cached data is made, then an [[java.io.IOException!]] will result.
 
-@todo Change the implementation to avoid using [[java.io.BufferedReader]]'s
+@todo Change the implementation to avoid using [[java.io.BufferedReader!]]'s
 mark and reset operations, which enforce use of a fixed size buffer.
 
 @return Cached state.
@@ -233,15 +238,15 @@ mark and reset operations, which enforce use of a fixed size buffer.
 Restore the specified prior state of this stream.
 
 @note If more data was read from the stream than could be accommodated by the
-buffer specified in the [[org.facsim.io.TextReader.State#cache]] method, then a
-[[java.io.IOException]] will result from this call.
+buffer specified in the [[org.facsim.io.TextReader!.State!.cache()]] method,
+then a [[java.io.IOException!]] will result from this call.
 
-@todo Change the implementation to avoid using [[java.io.BufferedReader]]'s
+@todo Change the implementation to avoid using [[java.io.BufferedReader!]]'s
 mark and reset operations, which enforce use of a fixed size buffer.
 
 @param other Cached state to be copied.  This cached state must match the state
 returned by the immediate prior call to `cache`.  If no prior call has been
-made to `cache`, then a [[java.io.IOException]] will result.
+made to `cache`, then a [[java.io.IOException!]] will result.
 
 @throws java.io.IOException if the reader was not previously cached, or if more
 data than could be stored in the reader's buffer was read since the cache
@@ -291,32 +296,34 @@ Otherwise, update the column number being read from.
 
 //.............................................................................
 /**
-@see [[org.facsim.io.TextReader#peek]]
+@see [[org.facsim.io.TextReader!.peek()]]
 */
 //.............................................................................
 
-    final def peek (): Int = peekedChar match {
+    final def peek (): Int =  {
+      peekedChar match {
 
 /*
 If we have already peeked at the next character, but we have yet to read it,
 then return it.
 */
 
-      case Some (char) => char
+        case Some (char) => char
 
 /*
 Otherwise, we haven't yet peeked at the next character, so read and store it.
 */
 
-       case None => {
-        peekedChar = Option (readChar ())
-        peekedChar.get
+        case None => {
+          peekedChar = Option (readChar ())
+          peekedChar.get
+        }
       }
-    }
+    } ensuring (_ >= -1)
 
 //.............................................................................
 /**
-@see [[org.facsim.io.TextReader#read]]
+@see [[org.facsim.io.TextReader!.read()]]
 */
 //.............................................................................
 
@@ -354,7 +361,7 @@ Update the row and column number for the character we're returning.
       val char = peekedOrRead ()
       updateRowColumn (char)
       char
-    }
+    } ensuring (_ >= -1)
 
 //.............................................................................
 /**
@@ -451,7 +458,7 @@ read beyond the end-of-file (see top of this function).
           lastChar
         }
       }
-    }
+    } ensuring (_ >= -1)
   }
 
 //-----------------------------------------------------------------------------
@@ -469,11 +476,11 @@ for some unrecoverable errors.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @param convertField Function to convert the field's value from a string to the
 required type '''T'''.  If the field cannot be converted, a
-[[org.facsim.io.FieldConversionException]] is thrown.
+[[org.facsim.io.FieldConversionException!]] is thrown.
 
 @tparam T Data type that the field is to be converted to and returned as.
 
@@ -579,7 +586,7 @@ string.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next string field read from the stream.  If there is no data in the
 field, an empty string will be returned.
@@ -609,7 +616,7 @@ default delimiter specified during construction.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next string field read from the stream.  If there is no data in the
 field, an empty string will be returned.
@@ -635,10 +642,10 @@ Read the next default-delimited field from the stream and return it as a byte.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next byte field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -667,10 +674,10 @@ default delimiter specified during construction.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next byte field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -697,10 +704,10 @@ integer.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next short integer field read from the stream.  If there is no data in
-the field, a [[facsim.io.DataConversionException]] will result.
+the field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -730,10 +737,10 @@ default delimiter specified during construction.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next short integer field read from the stream.  If there is no data in
-the field, a [[facsim.io.DataConversionException]] will result.
+the field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -760,10 +767,10 @@ integer.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next integer field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -792,10 +799,10 @@ default delimiter specified during construction.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next integer field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -822,10 +829,10 @@ integer.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next long integer field read from the stream.  If there is no data in
-the field, a [[facsim.io.DataConversionException]] will result.
+the field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -854,10 +861,10 @@ default delimiter specified during construction.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next long integer field read from the stream.  If there is no data in
-the field, a [[facsim.io.DataConversionException]] will result.
+the field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -883,10 +890,10 @@ Read the next default-delimited field from the stream and return it as a float.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next float field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -916,10 +923,10 @@ default delimiter specified during construction.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next float field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -959,10 +966,10 @@ double.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next double field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -992,10 +999,10 @@ default delimiter specified during construction.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
-[[org.facsim.io.DataVerificationException]] will be raised.
+[[org.facsim.io.DataVerificationException!]] will be raised.
 
 @return Next double field read from the stream.  If there is no data in the
-field, a [[facsim.io.DataConversionException]] will result.
+field, a [[facsim.io.DataConversionException!]] will result.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
@@ -1136,7 +1143,7 @@ files.
 object TextReader  {
 
 /**
-Magic number, employed by the [[java.io.Reader]] class hierarchy, that
+Magic number, employed by the [[java.io.Reader!]] class hierarchy, that
 signifies end-of-file when reading a single character.
 */
 

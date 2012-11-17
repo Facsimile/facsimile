@@ -32,66 +32,62 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.util package.
+Scala source file from the org.facsim.test package.
 */
 //=============================================================================
 
-package org.facsim.util
+package org.facsim.test
+
+import org.facsim.Behavior
+import org.facsim.BehaviorRedefinitionException
+import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Manifest field enumeration.
-
-Enumerated fields correspond to manifest fields.
-
-@since 0.0
+Test suite for the [[org.facsim.BehaviorRedefinitionException!]] class.
 */
 //=============================================================================
 
-private [facsim] object ManifestField extends Enumeration {
+class BehaviorRedefinitionExceptionTest extends FunSpec {
 
 /**
-Build timestamp.
-
-The corresponding field identifies the date and time that the package was
-built.  This is a custom field that will not be present in many manifests.
+Test trait.
 */
 
-  val buildTimestamp = Value ("Build-Timestamp")
+  trait TestData {
+    val b = new Behavior {}
+    val e = new BehaviorRedefinitionException (b, b)
+  }
 
-/**
-Implementation title.
+/*
+Test fixture description.
 */
 
-  val implementationTitle = Value ("Implementation-Title")
+  describe (classOf [BehaviorRedefinitionException].getCanonicalName) {
 
-/**
-Implementation vendor.
+/*
+Construction tests.
 */
 
-  val implementationVendor = Value ("Implementation-Vendor")
+    describe (".this ()") {
+      it ("must construct OK") {
+        new TestData {
+          assert (e ne null)
+        }
+      }
+    }
 
-/**
-Implementation version.
+/*
+Test getMessage.
 */
 
-  val implementationVersion = Value ("Implementation-Version")
-
-/**
-Specification title.
-*/
-
-  val specificationTitle = Value ("Specification-Title")
-
-/**
-Specification vendor.
-*/
-
-  val specificationVendor = Value ("Specification-Vendor")
-
-/**
-Specification version.
-*/
-
-  val specificationVersion = Value ("Specification-Version")
+    describe (".getMessage ()") {
+      it ("must return correct message") {
+        new TestData {
+          assert (e.getMessage () === "Attempt to override existing behavior "
+          + "('" + b + "') with new behavior ('" + b + "') failed.")
+        }
+      }
+    }
+  }
 }

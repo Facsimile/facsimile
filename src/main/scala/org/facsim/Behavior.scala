@@ -38,6 +38,7 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
+import org.facsim.util.Version
 import org.joda.time.DateTime
 
 //=============================================================================
@@ -47,13 +48,29 @@ Application behavior trait.
 Implementing classes provide functionality to applications developed with the
 ''Facsimile'' library.
 
-Behavior instances are activated when applied to the [[org.facsim.App]] object.
+Behavior instances are activated when applied to the [[org.facsim.App$]]
+object.
 
 @since 0.0
 */
 //=============================================================================
 
-trait Behavior extends AppBehaviorInterface {
+trait Behavior extends AppBehaviorInterface with NotNull {
+
+
+//-----------------------------------------------------------------------------
+/**
+Raise [[java.util.NoSuchElementException!]] for missing field.
+
+@param field Name of field for which information is missing.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private final def raiseException (field: String): Nothing = throw new
+  NoSuchElementException (LibResource.format ("Behavior.NoSuchElement",
+  field))
 
 //-----------------------------------------------------------------------------
 /**
@@ -61,7 +78,7 @@ trait Behavior extends AppBehaviorInterface {
 */
 //-----------------------------------------------------------------------------
 
-  override def title: String = throw new NoSuchElementException ("title")
+  override def title: String = raiseException ("title")
 
 //-----------------------------------------------------------------------------
 /**
@@ -69,8 +86,7 @@ trait Behavior extends AppBehaviorInterface {
 */
 //-----------------------------------------------------------------------------
 
-  override def organization: String = throw new
-  NoSuchElementException ("organization")
+  override def organization: String = raiseException ("organization")
 
 //-----------------------------------------------------------------------------
 /**
@@ -78,8 +94,7 @@ trait Behavior extends AppBehaviorInterface {
 */
 //-----------------------------------------------------------------------------
 
-  override def inceptionDate: DateTime = throw new
-  NoSuchElementException ("inceptionDate")
+  override def inceptionDate: DateTime = raiseException ("inceptionDate")
 
 //-----------------------------------------------------------------------------
 /**
@@ -87,8 +102,38 @@ trait Behavior extends AppBehaviorInterface {
 */
 //-----------------------------------------------------------------------------
 
-  override def releaseDate: DateTime = throw new
-  NoSuchElementException ("releaseDate")
+  override def releaseDate: DateTime = raiseException ("releaseDate")
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+
+@note The copyright message is built from the
+[[org.facsim.Behavior!.organization]], [[org.facsim.Behavior!.inceptionDate]]
+and [[org.facsim.Behavior!.releaseDate]] functions.  If any of those fields are
+missing, then a [[java.util.NoSuchElementException]] will result.
+*/
+//-----------------------------------------------------------------------------
+
+  final override def copyright: String = {
+
+/*
+If the organization name ends in a period, then remove it.
+*/
+
+    val org = organization
+    val orgAdj = if (org.last == '.') org.init else org
+
+/*
+Format and retrieve this application's copyright string.
+*/
+
+    if (inceptionDate.getYear () < releaseDate.getYear ())
+    LibResource.format ("Behavior.CopyrightRange", orgAdj,
+    inceptionDate.toDate (), releaseDate.toDate ())
+    else LibResource.format ("Behavior.CopyrightBasic", orgAdj,
+    inceptionDate.toDate ())
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -96,17 +141,5 @@ trait Behavior extends AppBehaviorInterface {
 */
 //-----------------------------------------------------------------------------
 
-  final override def copyright: String = if (inceptionDate.getYear () <
-  releaseDate.getYear ()) LibResource.format (".Behavior.CopyrightRange",
-  organization, inceptionDate.toDate (), releaseDate.toDate ())
-  else LibResource.format (".Behavior.CopyrightBasic", organization,
-  inceptionDate.toDate ())
-
-//-----------------------------------------------------------------------------
-/**
-@inheritdoc
-*/
-//-----------------------------------------------------------------------------
-
-  override def version: Version = throw new NoSuchElementException ("version")
+  override def version: Version = raiseException ("version")
 }

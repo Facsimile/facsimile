@@ -45,8 +45,8 @@ Application object.
 Provide information and functionality for applications built with the
 ''Facsimile'' library.
 
-In order to function, client applications '''must''' apply a
-[[org.facsim.Behavior]] sub-class instance via the apply function.
+In order to function, client applications '''must''' apply an application
+[[org.facsim.Behavior!]] via the [[org.facsim.App$.apply(Behavior)*]] function.
 
 The application may utilize a graphical user interface, or be driven from the
 command line, or both, depending upon the registered behavior.
@@ -55,7 +55,7 @@ command line, or both, depending upon the registered behavior.
 */
 //=============================================================================
 
-object App extends AppImplementation {
+object App extends AppImplementation
 
 /*
 Do not add functionality here!
@@ -63,5 +63,3 @@ Do not add functionality here!
 To assist with testing, all functionality must be inherited from the
 AppImplementation class instead.
 */
-
-}

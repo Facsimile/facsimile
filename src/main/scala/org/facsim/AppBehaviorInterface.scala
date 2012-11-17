@@ -43,14 +43,13 @@ import org.joda.time.DateTime
 
 //=============================================================================
 /**
-Ensures a common interface for [[org.facsim.App]] and [[org.facsim.Behavior]].
+Ensures a common interface for [[org.facsim.App$]] and
+[[org.facsim.Behavior!]].
 
 All function documentation should be defined here, as it will be inherited by
 implementing classes and traits, ensuring consistency throughout.  Functions
 should be written as though present in both `App` and `Behavior`, with any need
 to customize inherited documentation minimized.
-
-This class should '''not''' implement any functionality.
 
 @since 0.0
 */
@@ -60,9 +59,9 @@ private [facsim] trait AppBehaviorInterface {
 
 //-----------------------------------------------------------------------------
 /**
-Report the application's official title.
+Report the executing application's official title.
 
-@return Application's title.
+@return Executing application's title.
 
 @throws java.util.NoSuchElementException if this information is not available.
 
@@ -74,9 +73,10 @@ Report the application's official title.
 
 //-----------------------------------------------------------------------------
 /**
-Report name of the organization responsible for developing this software.
+Report name of the organization responsible for developing the executing
+application.
 
-@return Application's owner name.
+@return Executing application's owner name.
 
 @throws java.util.NoSuchElementException if this information is not available.
 
@@ -88,9 +88,9 @@ Report name of the organization responsible for developing this software.
 
 //-----------------------------------------------------------------------------
 /**
-Report date upon which development of this application commenced.
+Report date upon which development of the executing application commenced.
 
-@return Application's commencement date.
+@return Executing application's commencement date.
 
 @throws java.util.NoSuchElementException if this information is not available.
 
@@ -102,9 +102,9 @@ Report date upon which development of this application commenced.
 
 //-----------------------------------------------------------------------------
 /**
-Report release date for this version of the application.
+Report release date of this version of the executing application.
 
-@return Application's version release date.
+@return Release data of executing application's current version.
 
 @throws java.util.NoSuchElementException if this information is not available.
 
@@ -116,9 +116,9 @@ Report release date for this version of the application.
 
 //-----------------------------------------------------------------------------
 /**
-Report this application's copyright message.
+Report the executing application's copyright message.
 
-@return Application's copyright message.
+@return Executing application's copyright message.
 
 @throws java.util.NoSuchElementException if this information is not available.
 
@@ -130,9 +130,9 @@ Report this application's copyright message.
 
 //-----------------------------------------------------------------------------
 /**
-Report application's current version.
+Report executing application's version.
 
-@return Application's current version.
+@return Executing application's version.
 
 @throws java.util.NoSuchElementException if this information is not available.
 

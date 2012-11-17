@@ -52,7 +52,7 @@ import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim.io.Delimiter]] class.
+Test suite for the [[org.facsim.io.Delimiter!]] class.
 */
 //=============================================================================
 
@@ -147,7 +147,7 @@ fields, affect field parsing.
 Test fixture description.
 */
 
-  describe (classOf [TextReader].getCanonicalName ()) {
+  describe (classOf [TextReader].getCanonicalName) {
 
 /*
 Primary constructor tests.
@@ -467,7 +467,7 @@ reader must be reset back to the beginning of the field read.
 
 /*
 The function must work correctly when reading a valid field.  That is, the
-reader should advance to the next field and the field value should be returned.
+reader must advance to the next field and the field value must be returned.
 */
 
       it ("must accept valid fields") {

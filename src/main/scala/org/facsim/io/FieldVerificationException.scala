@@ -42,7 +42,8 @@ import org.facsim.LibResource
 
 //=============================================================================
 /**
-Exception indicating that a field read from a data stream has an invalid value.
+Exception indicating that a field read from a [[org.facsim.io.TextReader!]] has
+an invalid value.
 
 Field verification exceptions must be recoverable.  Furthermore, all functions
 throwing such exceptions must implement ''failure atomicity''.
@@ -54,6 +55,8 @@ throwing such exceptions must implement ''failure atomicity''.
 @param column Column in data stream at which the associated field started.
 
 @param field Value of the associated field as a string.
+
+@since 0.0
 */
 //=============================================================================
 
@@ -62,7 +65,7 @@ field: String) extends FieldException (row, column, field) {
 
 //-----------------------------------------------------------------------------
 /*
-@see [[java.lang.exception#getMessage]]
+@see [[java.lang.Throwable!.getMessage()]]
 */
 //-----------------------------------------------------------------------------
 

@@ -38,17 +38,18 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
-import org.facsim.util.throwIfNull
-
 //=============================================================================
 /**
-App object's implementation.
+[[org.facsim.App$]] object's implementation.
 
-All of the functionality offered by [[org.facsim.App]] must be defined here.
-The primary reason is to support more thorough testing: if implemented within
-the App class, it would be possible to test the application of a single
-behavior only; this trait allows us to create test sub-classes that can be used
-to test the application of a wide variety of behaviors.
+All of the functionality offered by `App` must be defined here.  The primary
+reason is to support more thorough testing: if implemented within the `App`
+object, it would be possible to test the application of a single behavior only;
+this trait allows us to create test sub-classes that can be used to test the
+application of a wide variety of behaviors.
+
+This trait delegates its functionality to the applied [[org.facsim.Behavior!]]
+instance.
 
 @since 0.0
 */
@@ -57,22 +58,24 @@ to test the application of a wide variety of behaviors.
 private [facsim] trait AppImplementation extends AppBehaviorInterface {
 
 /**
-Application's behavior.
+Applied behavior.
 
-This value is None until a behavior is applied via the apply function.  Only a
-single behavior can be applied successfully.
+This value is None until a behavior is applied via the
+[[org.facsim.AppImplementation!.apply(Behavior)*]] function.  Only a single
+behavior can be applied successfully.
 */
 
   private final var appBehavior: Option [Behavior] = None
 
 //-----------------------------------------------------------------------------
 /**
-Retrieve behavior associated with the application, or throw a
-NullPointerException if no behavior has been defined.
+Retrieve applied behavior, or throw an
+[[org.facsim.BehaviorUndefinedException!]] if no behavior has yet been defined.
 
-@return Defined behavior.
+@return Applied behavior.
 
-@throws NullPointerException if a behavior has yet to be defined.
+@throws org.facsim.UndefinedBehaviorException if a behavior has yet to be
+applied.
 
 @since 0.0
 */
@@ -80,28 +83,30 @@ NullPointerException if no behavior has been defined.
 
   private final def getOrThrow = appBehavior match {
     case Some (behavior) => behavior
-    case None => throw new NullPointerException ()
+    case None => throw new BehaviorUndefinedException ()
   }
 
 //-----------------------------------------------------------------------------
 /**
-Apply the [[org.facsim.Behavior]] for this application.
+Apply the [[org.facsim.Behavior!]] for this application.
 
-Only one ''behavior'' can be applied.  If an attempt is made to apply a second
-behavior, then an exception will be thrown.
+A ''behavior'' can only be applied once; if a second attempt is made to apply a
+behavior, then a [[org.facsim.BehaviorRedefinitionException!]] will be thrown.
 
 @param behavior Behavior to be applied.
 
-@throws java.lang.NullPointerException if behavior is null.
+@return This application with it's behavior defined.
 
 @throws org.facsim.BehaviorRedefinitionException if a behavior has already been
-applied.
+applied; the application's state will be unchanged and the existing behavior
+will be retained.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def apply (newBehavior: Behavior): Unit = appBehavior match {
+  final def apply (newBehavior: Behavior): AppImplementation =
+  appBehavior match {
 
 /*
 If we already have an applied behavior, then we must throw an exception.
@@ -111,12 +116,12 @@ If we already have an applied behavior, then we must throw an exception.
     newBehavior)
 
 /*
-Otherwise, verify that the new behavior is not null before applying it.
+Otherwise, store the new behavior.
 */
 
     case None => {
-      throwIfNull (newBehavior)
       appBehavior = Option (newBehavior)
+      this
     }
   }
 
@@ -124,59 +129,71 @@ Otherwise, verify that the new behavior is not null before applying it.
 /**
 @inheritdoc
 
-@throws NullPointerException if no Behavior has been defined.
+@throws org.facsim.UndefinedBehaviorException if a behavior has yet to be
+applied.
 */
 //-----------------------------------------------------------------------------
 
+  @inline
   final override def title = getOrThrow.title
 
 //-----------------------------------------------------------------------------
 /**
 @inheritdoc
 
-@throws NullPointerException if no Behavior has been defined.
+@throws org.facsim.UndefinedBehaviorException if a behavior has yet to be
+applied.
 */
 //-----------------------------------------------------------------------------
 
+  @inline
   final override def organization = getOrThrow.organization
 
 //-----------------------------------------------------------------------------
 /**
 @inheritdoc
 
-@throws NullPointerException if no Behavior has been defined.
+@throws org.facsim.UndefinedBehaviorException if a behavior has yet to be
+applied.
 */
 //-----------------------------------------------------------------------------
 
+  @inline
   final override def inceptionDate = getOrThrow.inceptionDate
 
 //-----------------------------------------------------------------------------
 /**
 @inheritdoc
 
-@throws NullPointerException if no Behavior has been defined.
+@throws org.facsim.UndefinedBehaviorException if a behavior has yet to be
+applied.
 */
 //-----------------------------------------------------------------------------
 
+  @inline
   final override def releaseDate = getOrThrow.releaseDate
 
 //-----------------------------------------------------------------------------
 /**
 @inheritdoc
 
-@throws NullPointerException if no Behavior has been defined.
+@throws org.facsim.UndefinedBehaviorException if a behavior has yet to be
+applied.
 */
 //-----------------------------------------------------------------------------
 
+  @inline
   final override def copyright = getOrThrow.copyright
 
 //-----------------------------------------------------------------------------
 /**
 @inheritdoc
 
-@throws NullPointerException if no Behavior has been defined.
+@throws org.facsim.UndefinedBehaviorException if a behavior has yet to be
+applied.
 */
 //-----------------------------------------------------------------------------
 
+  @inline
   final override def version = getOrThrow.version
 }

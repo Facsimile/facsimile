@@ -50,6 +50,8 @@ exceptions must implement ''failure atomicity''.
 @param row Row in data stream at which exception was detected.
 
 @param column Column in data stream at which the exception was detected.
+
+@since 0.0
 */
 //=============================================================================
 

@@ -56,7 +56,7 @@ package object facsim {
 /**
 Require that argument value is non-`null`.
 
-Throw a [[java.lang.NullPointerException]] if supplied argument value is
+Throw a [[java.lang.NullPointerException!]] if supplied argument value is
 `null`.
 
 Normally, a `NullPointerException` will be thrown by the ''Java'' virtual
@@ -78,7 +78,7 @@ detailed, locale-specific explanation to the user.
 @todo It would be nice, once Scala 2.10 is available, if this could be
 converted into a macro.  The macro would take a single parameter, which is the
 argument expression.  The "name" of the argument could, presumably, be
-extracted from the expression, and it's value compared to null reified.
+extracted from the expression, and it's value compared to `null` reified.
 
 @param argName Name of argument whose value is being verified.
 
@@ -99,10 +99,10 @@ extracted from the expression, and it's value compared to null reified.
 /**
 Require that argument value is valid.
 
-Throw a [[java.lang.IllegalArgumentException]] if function parameter value is
+Throw a [[java.lang.IllegalArgumentException!]] if function parameter value is
 invalid.
 
-@note This function supersedes the [[scala.Predef#require()]] methods.
+@note This function supersedes the [[scala.Predef$]] `require` methods.
 
 @note Tests for non-`null` argument values should be verified by the
 `requireNonNull` function.

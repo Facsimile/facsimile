@@ -44,7 +44,7 @@ import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim.io.Delimiter]] class.
+Test suite for the [[org.facsim.io.Delimiter!]] class.
 */
 //=============================================================================
 
@@ -54,7 +54,7 @@ class DelimiterTest extends FunSpec {
 Test fixture description.
 */
 
-  describe (classOf [Delimiter].getCanonicalName ()) {
+  describe (classOf [Delimiter].getCanonicalName) {
 
 /*
 Primary constructor tests.
@@ -66,7 +66,7 @@ Primary constructor tests.
           new Delimiter (null, true)
         }
       }
-      it ("should accept an empty set of delimiters") {
+      it ("must accept an empty set of delimiters") {
         new Delimiter (Set (), true)
       }
       it ("must throw IllegalArgumentException if passed a set containing " +

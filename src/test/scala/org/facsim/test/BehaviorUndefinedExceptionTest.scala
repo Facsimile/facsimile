@@ -32,22 +32,61 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.io package.
+Scala source file from the org.facsim.test package.
 */
 //=============================================================================
 
-package org.facsim.io
+package org.facsim.test
+
+import org.facsim.BehaviorUndefinedException
+import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Delimiter for parsing text data streams in which each field is a line of text,
-for use with [[org.facsim.io.TextReader!]]-based readers.
-
-@note If data has already been read from the current line, then a subsequence
-field read operation with this delimiter will return the remainder of the line.
-
-@since 0.0
+Test suite for the [[org.facsim.BehaviorUndefinedException!]] class.
 */
 //=============================================================================
 
-object LineDelimiter extends Delimiter (Set (TextReader.LF), false)
+class BehaviorUndefinedExceptionTest extends FunSpec {
+
+/**
+Test trait.
+*/
+
+  trait TestData {
+    val e = new BehaviorUndefinedException ()
+  }
+
+/*
+Test fixture description.
+*/
+
+  describe (classOf [BehaviorUndefinedException].getCanonicalName) {
+
+/*
+Construction tests.
+*/
+
+    describe (".this ()") {
+      it ("must construct OK") {
+        new TestData {
+          assert (e ne null)
+        }
+      }
+    }
+
+/*
+Test getMessage.
+*/
+
+    describe (".getMessage ()") {
+      it ("must return correct message") {
+        new TestData {
+          assert (e.getMessage () === "Attempt to access org.facsim.App " +
+          "behavior failed because no org.facsim.Behavior instance been been "
+          + "applied.")
+        }
+      }
+    }
+  }
+}

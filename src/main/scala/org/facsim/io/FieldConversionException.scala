@@ -42,8 +42,8 @@ import org.facsim.LibResource
 
 //=============================================================================
 /**
-Exception indicating that a field read from a data stream could not be
-converted from a string to its required data type.
+Exception indicating that a field read from a [[org.facsim.io.TextReader!]]
+could not be converted from a string to its required data type.
 
 Field conversion exceptions must be recoverable.  Furthermore, all functions
 throwing such exceptions must implement ''failure atomicity''.
@@ -57,6 +57,8 @@ throwing such exceptions must implement ''failure atomicity''.
 @param field Value of the associated field as a string.
 
 @param valueType Type to which field was attempting to be converted to.
+
+@since 0.0
 */
 //=============================================================================
 
@@ -66,7 +68,7 @@ column, field) {
 
 //-----------------------------------------------------------------------------
 /*
-@see [[java.lang.exception#getMessage]]
+@see [[java.lang.Throwable!.getMessage()]]
 */
 //-----------------------------------------------------------------------------
 

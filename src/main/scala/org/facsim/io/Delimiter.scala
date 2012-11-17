@@ -43,7 +43,7 @@ import org.facsim.requireValid
 
 //=============================================================================
 /**
-Field delimiters to be used with [[org.facsim.io.TextReader]]-based readers.
+Field delimiters to be used with [[org.facsim.io.TextReader!]]-based readers.
 
 Delimiters are sets of one or more characters that delimit fields in a text
 data stream.
@@ -68,7 +68,7 @@ characters as delimiters.  Such delimiters must set '''mergeConsecutive''' to
 ''line feed'' ('\n') character is not automatically added to the set and must
 be explicitly included if required.  Note also that the ''line feed'' character
 matches all line termination sequences$mdash;refer to
-[[org.facsim.io.TextReader]] for further information.  The ''null'' ('\0') and
+[[org.facsim.io.TextReader!]] for further information.  The ''null'' ('\0') and
 ''carriage return'' ('\r') characters cannot be used as delimiters and will
 result in an exception being thrown if included in the delimiter set.  If the
 set of delimiters is empty, then an associated reader will return the entire
@@ -83,6 +83,8 @@ fields.
 
 @throws java.lang.InvalidArgumentException if '''delimiters''' contains invalid
 delimiter characters.
+
+@see [[org.facsim.io.TextReader!]] for further information.
 
 @since 0.0
 */

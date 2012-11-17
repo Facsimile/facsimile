@@ -104,7 +104,7 @@ contributed to the project just yet, so this will suffice for now.
 
   <organization>
     <name>Michael J Allen</name>
-    <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
+    <url>http://facsim.org/</url>
   </organization>
 
 <!--
@@ -356,8 +356,8 @@ changed, then, typically, the versions of all other Scala libraries and tools
 will need to be revised to remain compatible - including any Scala plug-ins.
 -->
 
-    <scala.version>2.9.2</scala.version>
-    <scalatest.version>1.8</scalatest.version>
+    <scala.version>2.10.0-RC2</scala.version>
+    <scalatest.version>2.0.M5</scalatest.version>
     <scalatest.scala.version>${scala.version}</scalatest.scala.version>
     <maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
     <scalatest-maven-plugin.version>1.0-M2</scalatest-maven-plugin.version>
@@ -395,9 +395,7 @@ Hence this property is commented out throughout this file.
 -->
 
     <!-- maven-changes-plugin.version>2.7.1</maven-changes-plugin.version -->
-    <!-- maven-cobertura-plugin.version>
-      2.5.1
-    </maven-cobertura-plugin.version -->
+    <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
     <maven-dependency-plugin.version>2.4</maven-dependency-plugin.version>
     <maven-findbugs-plugin.version>2.5.2</maven-findbugs-plugin.version>
     <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
@@ -930,7 +928,7 @@ This profile should be active by default.
                 <arg>${project.build.sourceEncoding}</arg>
                 <arg>-explaintypes</arg>
                 <arg>-g:vars</arg>
-                <arg>-target:jvm-1.5</arg>
+                <arg>-target:jvm-1.6</arg>
                 <arg>-unchecked</arg>
                 <arg>-Xcheckinit</arg>
                 <!-- arg>-Xcheck-null</arg -->
@@ -979,7 +977,7 @@ This profile should be inactive except when performing a release.
                 <arg>-explaintypes</arg>
                 <arg>-g:none</arg>
                 <arg>-optimise</arg>
-                <arg>-target:jvm-1.5</arg>
+                <arg>-target:jvm-1.6</arg>
                 <arg>-unchecked</arg>
                 <arg>-Xcheckinit</arg>
                 <!-- arg>-Xcheck-null</arg -->

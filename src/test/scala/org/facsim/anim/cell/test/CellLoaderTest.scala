@@ -64,7 +64,7 @@ Trait for default cell loader object.
 Test fixture description.
 */
 
-  describe (classOf [CellLoader].getCanonicalName ()) {
+  describe (classOf [CellLoader].getCanonicalName) {
 
 /*
 Default constructor tests.

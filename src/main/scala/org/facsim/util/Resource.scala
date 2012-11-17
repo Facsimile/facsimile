@@ -42,7 +42,9 @@ import java.net.URL
 import java.text.MessageFormat
 import java.util.MissingResourceException
 import java.util.ResourceBundle
+import javax.swing.ImageIcon
 import scala.swing.Swing
+import org.facsim.requireNonNull
 
 //=============================================================================
 /**
@@ -50,27 +52,25 @@ Provides access to a locale-specific resource bundle belonging to a library or
 application.
 
 Further information on how locale-specific resources are identified is at
-[[http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html
-java.util.ResourceBundle]]
+[[java.util.ResourceBundle!]].
 
-The user's current preferred locale is identified through a call to:
-[[http://docs.oracle.com/javase/6/docs/api/java/util/Locale.html#getDefault()
-java.util.Local.getDefault()]]
+The user's current preferred locale is identified through a call to
+[[java.util.Locale$.getDefault()]].
+
+@todo Add code to retrieve package files, including images, manifests, etc.
 
 @constructor Retrieve the resource bundle with the specified name.
 
 @param bundleName Identifies the base name of the resource bundle to be loaded.
 
-@throws java.lang.NullPointerException if bundleName is null.
+@throws java.lang.NullPointerException if '''bundleName''' is `null`.
 
 @throws java.util.MissingResourceException if a resource bundle with base name
-bundleName cannot be found.
+'''bundleName''' cannot be found.
 
-@see [[http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html
-java.util.ResourceBundle]]
+@see [[java.util.ResourceBundle!]] for information on Java resource bundles.
 
-@see [[http://docs.oracle.com/javase/6/docs/api/java/util/Locale.html
-java.util.Locale]]
+@see [[java.util.Locale!]] for information on Java locale processing.
 
 @since 0.0
 */
@@ -78,8 +78,14 @@ java.util.Locale]]
 
 class Resource (bundleName: String) {
 
+/*
+Verify that we have a bundle name.
+*/
+
+  requireNonNull ("bundleName", bundleName)
+
 /**
-Create resource bundle reference.
+Resource bundle.
 
 The locale of the bundle defaults to the JVM's default locale; if a
 locale-specific resource bundle matching the default locale is available, then
@@ -106,17 +112,17 @@ resulting string resource.  May be omitted if no arguments are required.
 
 @return Locale-specific, formatted version of the requested string resource.
 
-@throws java.lang.NullPointerException if supplied key is null.
+@throws java.lang.NullPointerException if '''key''' is `null`.
 
 @throws java.util.MissingResourceException if there is no string resource
-indexed by the supplied key.
+indexed by '''key'''.
 
-@throws java.lang.ClassCastException if the resource indexed by the supplied
-key is not a string.
+@throws java.lang.ClassCastException if the resource indexed by '''key''' is
+not a string.
 
 @throws java.lang.IllegalArgumentException if the retrieved string is invalid
-or if the arguments supplied are of the wrong type for the corresponding format
-elements in the retrieved string.
+or if the '''arguments''' supplied are of the wrong type for the corresponding
+format elements in the retrieved string.
 
 @since 0.0
 */
@@ -131,63 +137,5 @@ rather ugly code...
 
     MessageFormat.format (bundle.getString (key), arguments.map (_.asInstanceOf
     [AnyRef]): _*)
-  }
-
-//-----------------------------------------------------------------------------
-/**
-Retrieve an image file resource and return as an icon.
-
-Typically, resource images are located in the images folder of the
-application's, or library's, jar file.  For example, to retrieve an image
-resource named "Icon.png" from such a directory, this function would be called
-with a filename of "/images/Icon.png".
-
-@note Resource files are typically not found unless they begin with a "/".
-However, this is not enforced - expect to see a
-[[java.util.MissingResourceException]] thrown if filename does not begin with a
-slash.
-
-@note In Java Swing, an ''icon'' is ''a small fixed size picture, typically
-used to decorate components''.  This definition includes any images that may be
-included in a Swing frame or dialog box, not just the square images associated
-with a window or application/file.
-
-@todo How should corrupt files be handled?  That is, what if the requested file
-was found, but doesn't contain an image, or contains corrupt data?
-
-@param filename File containing the image to be retrieved.
-
-@return Retrieved image, if successful.
-
-@throws java.lang.NullPointerException if filename is null.
-
-@throws java.util.MissingResourceException if there is no resource with the
-indicated file name.  In many cases, this exception will be thrown if filename
-does not begin with a slash.
-
-@note Images resources are not stored in resource bundles.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def getIcon (filename: String) = {
-
-/*
-Retrieve the URL of the requested image file.  If the file could not be found,
-a null pointer will be returned instead - in which case, we throw the
-MissingResourceException.  However, if filename is null, a NullPointerException
-is thrown instead.
-*/
-
-    val url = getClass ().getResource (filename)
-    if (url eq null) throw new MissingResourceException (
-    "Image file not found", "javax.swing.ImageIcon", filename)
-
-/*
-The file appears to exist, so load it up.
-*/
-
-    Swing.Icon (url)
   }
 }

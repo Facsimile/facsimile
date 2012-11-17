@@ -40,14 +40,19 @@ package org.facsim
 
 //=============================================================================
 /**
-Thrown if an attempt to re-define an [[org.facsim.App]]'s existing
-[[org.facsim.Behavior]].
+Thrown if an attempt to apply a second [[org.facsim.Behavior!]] to
+[[org.facsim.App$]] is made.
 
-@constructor Construct from existing and redefined behaviors.
+@note The application will retain its existing behavior.
 
-@param existing Current defined behavior for the application.
+@constructor Create behavior redefinition exception from existing and redefined
+behavior instances.
+
+@param existing Application's current applied behavior.
 
 @param replacement Attempted replacement behavior.
+
+@since 0.0
 */
 //=============================================================================
 
@@ -56,7 +61,7 @@ replacement: Behavior) extends RuntimeException () {
 
 //-----------------------------------------------------------------------------
 /*
-Report the cause of this exception.
+@see [[java.lang.Throwable!.getMessage()]]
 */
 //-----------------------------------------------------------------------------
 

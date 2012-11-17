@@ -49,5 +49,10 @@ Exception indicating that a string could not be parsed.
 //=============================================================================
 
 class StringParseException (string: String) extends RuntimeException {
-fuck
+
+//-----------------------------------------------------------------------------
+/*
+@see [[java.lang.Throwable!.getMessage()]]
+*/
+//-----------------------------------------------------------------------------
 }

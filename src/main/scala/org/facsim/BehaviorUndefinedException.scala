@@ -32,22 +32,31 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.io package.
+Scala source file from the org.facsim package.
 */
 //=============================================================================
 
-package org.facsim.io
+package org.facsim
 
 //=============================================================================
 /**
-Delimiter for parsing text data streams in which each field is a line of text,
-for use with [[org.facsim.io.TextReader!]]-based readers.
+Thrown if an attempt to access an [[org.facsim.App$]]'s behavior before any
+[[org.facsim.Behavior!]] has been applied.
 
-@note If data has already been read from the current line, then a subsequence
-field read operation with this delimiter will return the remainder of the line.
+@constructor Create new undefined behavior exception.
 
 @since 0.0
 */
 //=============================================================================
 
-object LineDelimiter extends Delimiter (Set (TextReader.LF), false)
+final class BehaviorUndefinedException private [facsim] () extends
+RuntimeException {
+
+//-----------------------------------------------------------------------------
+/*
+@see [[java.lang.Throwable!.getMessage()]]
+*/
+//-----------------------------------------------------------------------------
+
+  final override def getMessage = LibResource.format ("BehaviorUndefined")
+}

@@ -41,7 +41,7 @@ package org.facsim.io
 //=============================================================================
 /**
 Delimiter for parsing whitespace-delimited data fields, for use with
-[[org.facsim.io.TextReader]]-based readers.
+[[org.facsim.io.TextReader!]]-based readers.
 
 @since 0.0
 */

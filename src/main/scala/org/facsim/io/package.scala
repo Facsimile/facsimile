@@ -40,9 +40,10 @@ package org.facsim
 
 //=============================================================================
 /**
-''[[http://facsim.org/ Facsimile]]'' Simulation Library I/O support.
+''[[http://facsim.org/ Facsimile]]'' Simulation Library input & output
+(''I/O'') support.
 
-Package supporting input/output facilities.
+Package supporting ''input / output'' facilities.
 
 @since 0.0
 */

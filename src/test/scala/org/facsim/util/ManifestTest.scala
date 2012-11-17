@@ -32,22 +32,37 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.io package.
+Scala source file from the org.facsim.util.test package.
 */
 //=============================================================================
 
-package org.facsim.io
+package org.facsim.util
+
+import org.facsim.util.Manifest
+import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Delimiter for parsing text data streams in which each field is a line of text,
-for use with [[org.facsim.io.TextReader!]]-based readers.
-
-@note If data has already been read from the current line, then a subsequence
-field read operation with this delimiter will return the remainder of the line.
-
-@since 0.0
+Test harness for the [[org.facsim.util.Manifest!]] trait.
 */
 //=============================================================================
 
-object LineDelimiter extends Delimiter (Set (TextReader.LF), false)
+class ManifestTest extends FunSpec {
+
+/*
+Name the class we're testing.
+*/
+
+  describe (classOf [Manifest].getCanonicalName) {
+
+/*
+Testing is currently not possible.  This is because we can only report
+manifests as part of a jar file, and ScalaTest tests run on classes that are
+not yet part of a jar file.
+
+Possible solutions: Create a sub-project that contains a Manifest sub-class
+instance that can be used for testing purposes.
+*/
+
+  }
+}

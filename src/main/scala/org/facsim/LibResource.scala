@@ -43,7 +43,9 @@ import org.facsim.util.Resource
 //=============================================================================
 /**
 Helper object reporting ''Facsimile'' library resources.
+
+@since 0.0
 */
 //=============================================================================
 
-object LibResource extends Resource ("facsimile")
+private [facsim] object LibResource extends Resource ("facsimile")

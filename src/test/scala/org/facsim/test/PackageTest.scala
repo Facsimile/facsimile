@@ -44,7 +44,7 @@ import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim]] package object.
+Test suite for the [[org.facsim$]] package object.
 */
 //=============================================================================
 
@@ -82,7 +82,7 @@ requireValid tests.
           requireValid ("testArgument", "someBadValue", false)
         }
         assert (e.getMessage () === "Argument 'testArgument' has illegal " +
-        "value: someBadValue")
+        "value: 'someBadValue'.")
       }
       it ("must do nothing if passed a valid argument") {
         requireValid ("testArgument", "someOKValue", true)

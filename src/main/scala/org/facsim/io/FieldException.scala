@@ -52,6 +52,8 @@ exceptions must implement ''failure atomicity''.
 @param column Column in data stream at which the associated field started.
 
 @param field Value of the associated field.
+
+@since 0.0
 */
 //=============================================================================
 
