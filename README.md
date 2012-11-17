@@ -11,7 +11,8 @@ Windows_, _Linux_, _Mac OS X_, _BSD_ and _Unix_.
 Facsimile is open-source/free software and is distributed under version 3 of
 the _[GNU General Public License]
 (http://www.gnu.org/licenses/lgpl-3.0-standalone.html GNU General Public)_
-(_GPLv3_).
+(GPLv3).
 
-Instructions for working with _Facsimile_, and for working with _Facsimile_,
+Instructions for working with _Facsimile_, and for working on _Facsimile_
+development,
 are to follow shortly...
