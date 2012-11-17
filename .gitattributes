@@ -80,6 +80,7 @@ COPYING.LESSER text
 *.pom text
 *.prefs text
 *.properties text
+*.sc text
 *.scala text
 *.sh text
 *.sql text
