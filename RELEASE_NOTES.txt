@@ -11,12 +11,13 @@ production environment  This release is provided to solicit feedback and to
 encourage interested parties the kick Facsimile's tires and get involved in the
 project.
 
-Please report any and all bugs found using the LaunchPad-hosted bug-tracking
+Please report any and all bugs found using the GitHub-hosted issue-tracking
 system at:
 
-    https://bugs.launchpad.net/facsimile
+    http://github.com/Facsimile/facsimile/issues
 
 Your feedback is both welcomed and encouraged.  If you have any questions or
-comments about Facsimile, feel free to report them to us at:
+comments about Facsimile, feel free to report them via the Facsimile Google
+Group:
 
-    https://answers.launchpad.net/facsimile
+    https://groups.google.com/forum/?fromgroups#!forum/facsimile-users
