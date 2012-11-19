@@ -36,33 +36,56 @@ Scala source file from the org.facsim.util.test package.
 */
 //=============================================================================
 
-package org.facsim.util
+package org.facsim.util.test
 
-import org.facsim.util.Manifest
+import org.facsim.util.Version
 import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test harness for the [[org.facsim.util.Manifest!]] trait.
+Test harness for the [[org.facsim.util.Version!]] class and
+[[org.facsim.util.Version$]] object.
 */
 //=============================================================================
 
-class ManifestTest extends FunSpec {
+class VersionTest extends FunSpec {
 
 /*
 Name the class we're testing.
 */
 
-  describe (classOf [Manifest].getCanonicalName) {
+  describe (classOf [Version].getCanonicalName) {
 
 /*
-Testing is currently not possible.  This is because we can only report
-manifests as part of a jar file, and ScalaTest tests run on classes that are
-not yet part of a jar file.
-
-Possible solutions: Create a sub-project that contains a Manifest sub-class
-instance that can be used for testing purposes.
+Application tests.
 */
 
+    describe ("Version.apply (String)") {
+      it ("must throw a NullPointerException if passed a null string") {
+        val e = intercept [NullPointerException] {
+          Version (null)
+        }
+        assert (e.getMessage () === "Argument 'version' cannot be null.")
+      }
+      it ("must return a version if passed a valid version string") {
+        val v = Version ("1.0")
+        assert (v ne null)
+      }
+    }
+
+/*
+Conversion to strings.
+*/
+
+    describe (".toString") {
+      it ("must return the same version string as originally applied") {
+        assert (Version ("1.2").toString === "1.2")
+        assert (Version ("1.2-3").toString === "1.2-3")
+        assert (Version ("1.2.3-4").toString === "1.2.3-4")
+        assert (Version ("1.2-RC-3").toString === "1.2-RC-3")
+        assert (Version ("1.2-BETA-3-SNAPSHOT").toString ===
+        "1.2-BETA-3-SNAPSHOT")
+      }
+    }
   }
 }

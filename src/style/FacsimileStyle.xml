@@ -103,7 +103,7 @@ licensing information, etc.), without exception.  Source files that fail this
 check have improper legal requirements.
 -->
 
-  <check class="org.scalastyle.file.HeaderMatchesChecker" enabled="false"
+  <check class="org.scalastyle.file.HeaderMatchesChecker" enabled="true"
   level="error">
     <parameters>
       <parameter name="header"><![CDATA[/*

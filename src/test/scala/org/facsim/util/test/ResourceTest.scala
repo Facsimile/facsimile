@@ -41,9 +41,9 @@ package org.facsim.util.test
 import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.MissingResourceException
-import java.util.TimeZone
 import org.facsim.util.Resource
 import org.scalatest.FunSpec
+import scala.Array.apply
 
 //=============================================================================
 /**

@@ -361,7 +361,7 @@ will need to be revised to remain compatible - including any Scala plug-ins.
     <scalatest.scala.version>${scala.version}</scalatest.scala.version>
     <maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
     <scalatest-maven-plugin.version>1.0-M2</scalatest-maven-plugin.version>
-    <scalastyle-maven-plugin.version>0.1.0</scalastyle-maven-plugin.version>
+    <scalastyle-maven-plugin.version>0.2.0</scalastyle-maven-plugin.version>
 
 <!--
 Versions of miscellaneous Java library and framework dependencies.

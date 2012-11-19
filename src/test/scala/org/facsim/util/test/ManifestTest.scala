@@ -32,27 +32,37 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.util package.
+Scala source file from the org.facsim.util.test package.
 */
 //=============================================================================
 
-package org.facsim.util
+package org.facsim.util.test
+
+import org.facsim.util.Manifest
+import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Exception indicating that a string could not be parsed.
-
-@constructor Create new parse exception 
-
-@since 0.0
+Test harness for the [[org.facsim.util.Manifest!]] trait.
 */
 //=============================================================================
 
-class StringParseException (string: String) extends RuntimeException {
+class ManifestTest extends FunSpec {
 
-//-----------------------------------------------------------------------------
 /*
-@see [[java.lang.Throwable!.getMessage()]]
+Name the class we're testing.
 */
-//-----------------------------------------------------------------------------
+
+  describe (classOf [Manifest].getCanonicalName) {
+
+/*
+Testing is currently not possible.  This is because we can only report
+manifests as part of a jar file, and ScalaTest tests run on classes that are
+not yet part of a jar file.
+
+Possible solutions: Create a sub-project that contains a Manifest sub-class
+instance that can be used for testing purposes.
+*/
+
+  }
 }
