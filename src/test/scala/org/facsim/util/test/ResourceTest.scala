@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -101,11 +101,11 @@ Test primary constructor operation.
 Test string resource formatting.
 */
 
-    describe ("format (String, Any*)") {
+    describe ("apply (String, Any*)") {
       it ("must throw NullPointerException when key is null") {
         new testResources {
           val e = intercept [NullPointerException] {
-            new Resource (testBundleName).format (null)
+            new Resource (testBundleName).apply (null)
           }
           assert (e.getMessage () === "Argument 'key' cannot be null.")
         }
@@ -113,7 +113,7 @@ Test string resource formatting.
       it ("must throw MissingResourceException when key undefined") {
         new testResources {
           intercept [MissingResourceException] {
-            new Resource (testBundleName).format ("UNDEFINED_KEY")
+            new Resource (testBundleName).apply ("UNDEFINED_KEY")
           }
         }
       }
@@ -122,7 +122,7 @@ Test string resource formatting.
         new testResources {
           // Cannot define non-string resources currently - test ignored
           intercept [ClassCastException] {
-            new Resource (testBundleName).format ("testNonStringResource")
+            new Resource (testBundleName).apply ("testNonStringResource")
           }
         }
       }
@@ -131,7 +131,7 @@ Test string resource formatting.
         new testResources {
           // Java doesn't throw an exception in this case - test ignored.
           intercept [IllegalArgumentException] {
-            new Resource (testBundleName).format (singleResource,
+            new Resource (testBundleName).apply (singleResource,
             "Invalid extra argument")
           }
         }
@@ -141,7 +141,7 @@ Test string resource formatting.
         new testResources {
           // Java doesn't throw an exception in this case - test ignored.
           intercept [IllegalArgumentException] {
-            new Resource (testBundleName).format (compoundResource (0))
+            new Resource (testBundleName).apply (compoundResource (0))
           }
         }
       }
@@ -150,7 +150,7 @@ Test string resource formatting.
         new testResources {
           // Java doesn't throw an exception in this case - test ignored.
           intercept [IllegalArgumentException] {
-            new Resource (testBundleName).format (compoundResource (0),
+            new Resource (testBundleName).apply (compoundResource (0),
             "Valid argument", "Invalid extra argument")
           }
         }
@@ -160,7 +160,7 @@ Test string resource formatting.
         new testResources {
           // Java doesn't throw an exception in this case - test ignored.
           intercept [IllegalArgumentException] {
-            new Resource (testBundleName).format (compoundResource (1),
+            new Resource (testBundleName).apply (compoundResource (1),
             "Valid argument")
           }
         }
@@ -169,7 +169,7 @@ Test string resource formatting.
       "resource") {
         new testResources {
           intercept [IllegalArgumentException] {
-            new Resource (testBundleName).format (dateResource, "Bob")
+            new Resource (testBundleName).apply (dateResource, "Bob")
           }
         }
       }
@@ -177,35 +177,35 @@ Test string resource formatting.
       "resource") {
         new testResources {
           intercept [IllegalArgumentException] {
-            new Resource (testBundleName).format (realResource, "Fred")
+            new Resource (testBundleName).apply (realResource, "Fred")
           }
         }
       }
       it ("must retrieve a non-compound resource with no arguments OK") {
         new testResources {
-          assert (new Resource (testBundleName).format (singleResource) ===
+          assert (new Resource (testBundleName).apply (singleResource) ===
           "Test non-compound resource")
         }
       }
       it ("must retrieve compound resources with appropriate arguments OK") {
         new testResources {
           val resource = new Resource (testBundleName)
-          assert (resource.format (compoundResource (0), "zero") ===
+          assert (resource (compoundResource (0), "zero") ===
           "Test compound resource 0: 0=zero")
-          assert (resource.format (compoundResource (1), "zero", "one") ===
+          assert (resource (compoundResource (1), "zero", "one") ===
           "Test compound resource 1: 0=zero, 1=one")
-          assert (resource.format (compoundResource (2), "zero", "one", "two")
-          === "Test compound resource 2: 0=zero, 1=one, 2=two")
+          assert (resource (compoundResource (2), "zero", "one", "two") ===
+          "Test compound resource 2: 0=zero, 1=one, 2=two")
         }
       }
       it ("must parse choice resources OK") {
         new testResources {
           val choiceResource = "testChoiceResource"
-          assert (new Resource (testBundleName).format (choiceResource, 0) ===
+          assert (new Resource (testBundleName).apply (choiceResource, 0) ===
           "On your marks...")
-          assert (new Resource (testBundleName).format (choiceResource, 1) ===
+          assert (new Resource (testBundleName).apply (choiceResource, 1) ===
           "Get set...")
-          assert (new Resource (testBundleName).format (choiceResource, 2) ===
+          assert (new Resource (testBundleName).apply (choiceResource, 2) ===
           "Go!")
         }
       }
@@ -215,19 +215,19 @@ Test string resource formatting.
           try {
             // Check that we get the correct en_US response.
             Locale.setDefault (Locale.US)
-            assert (new Resource (testBundleName).format (helloResource) ===
+            assert (new Resource (testBundleName).apply (helloResource) ===
             "Howdy!")
             // Should get a different result for Brits...
             Locale.setDefault (Locale.UK)
-            assert (new Resource (testBundleName).format (helloResource) ===
+            assert (new Resource (testBundleName).apply (helloResource) ===
             "Wotcha!")
             // Germans should have a good day...
             Locale.setDefault (Locale.GERMANY)
-            assert (new Resource (testBundleName).format (helloResource) ===
+            assert (new Resource (testBundleName).apply (helloResource) ===
             "Guten Tag!")
             // ...and so should the French...
             Locale.setDefault (Locale.FRANCE)
-            assert (new Resource (testBundleName).format (helloResource) ===
+            assert (new Resource (testBundleName).apply (helloResource) ===
             "Bonjour!")
           }
           // Restore original default.
@@ -243,11 +243,11 @@ Test string resource formatting.
           try {
             // Check that we get the correct en_US response.
             Locale.setDefault (Locale.US)
-            assert (new Resource (testBundleName).format (realResource, number)
+            assert (new Resource (testBundleName).apply (realResource, number)
             === "1,234.56")
             // Germans do things differently...
             Locale.setDefault (Locale.GERMANY)
-            assert (new Resource (testBundleName).format (realResource, number)
+            assert (new Resource (testBundleName).apply (realResource, number)
             === "1.234,56")
           }
           // Restore original default.
@@ -264,15 +264,15 @@ Test string resource formatting.
           try {
             // Check that we get the correct en_US response.
             Locale.setDefault (Locale.US)
-            assert (new Resource (testBundleName).format (dateResource, date)
+            assert (new Resource (testBundleName).apply (dateResource, date)
             === "10/14/10")
             // Month & day are in different order in the UK
             Locale.setDefault (Locale.UK)
-            assert (new Resource (testBundleName).format (dateResource, date)
+            assert (new Resource (testBundleName).apply (dateResource, date)
             === "14/10/10")
             // Germans use same order as UK, but different separator...
             Locale.setDefault (Locale.GERMANY)
-            assert (new Resource (testBundleName).format (dateResource, date)
+            assert (new Resource (testBundleName).apply (dateResource, date)
             === "14.10.10")
           }
           // Restore original default.

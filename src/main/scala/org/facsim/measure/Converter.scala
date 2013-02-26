@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -40,28 +40,66 @@ package org.facsim.measure
 
 //=============================================================================
 /**
-Unit of measurement value converter trait.
+Physical quantity unit converter trait.
 
-Converter implementations support the conversion of measurement quantity values
-between different measurement units of the same type.  For example, converting
-a ''time'' expressed in ''hours'' to a time expressed in ''seconds''.
+Converter subclasses support the conversion of physical quantity measurement
+values between different units belonging to the same family.
 
-More specifically, each converter instance is associated with a specific
-measurement unit.  They support the conversion of values between this
-associated measurement unit and the standard ''SI'' units for the associated
-type of measurement.
+More specifically, each converter instance has the capability to convert a
+physical quantity measurement value from a specific unit of measure to the
+standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the associated
+unit family.
 
-Refer to [[org.facsim.measure.UnitOfMeasure UnitOfMeasure]] for further
-information.
+For example, a converter instance would be used to convert ''time''s expressed
+in ''hours'' to or from times expressed in ''seconds''&mdash;the standard
+''SI'' unit of time measurement.
 
-@see [[org.facsim.measure.UnitOfMeasure UnitOfMeasure]]
+The process of converting a value to ''SI'' units is termed ''importing''; the
+process of converting an ''SI'' value to the associated unit is termed
+''exporting''.
 
-@see http://en.wikipedia.org/wiki/SI SI
+@see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
+[[http://en.wikipedia.org/ Wikipedia]].
 
 @since 0.0
 */
 //=============================================================================
 
-trait Converter extends Conversion {
+private [measure] trait Converter {
 
+//-----------------------------------------------------------------------------
+/**
+Convert value to ''SI'' units.
+
+Convert a physical quantity's '''value''', expressed in the associated units to
+the corresponding value in the ''SI'' units for this unit family.
+
+@param value Value, expressed in associated units, to be converted to ''SI''
+units.
+
+@return '''value''' as expressed in ''SI'' units.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] def importValue (value: Double): Double
+
+//-----------------------------------------------------------------------------
+/**
+Convert value from ''SI'' units.
+
+Convert a physical quantity's '''value''', expressed in the standard ''SI''
+units for this unit family, to the corresponding value in the associated units.
+
+@param value Value, expressed in ''SI'' units, to be converted to associated
+units.
+
+@return '''value''' as expressed in associated units.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] def exportValue (value: Double): Double
 }

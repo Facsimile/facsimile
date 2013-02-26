@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -60,7 +60,7 @@ Testing is currently not possible.  This is because we can only report
 manifests as part of a jar file, and ScalaTest tests run on classes that are
 not yet part of a jar file.
 
-Possible solutions: Create a sub-project that contains a Manifest sub-class
+Possible solutions: Create a sub-project that contains a Manifest subclass
 instance that can be used for testing purposes.
 */
 

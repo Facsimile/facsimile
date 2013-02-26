@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -49,14 +49,14 @@ import org.joda.time.DateTime
 /**
 Provide ''manifest'' information for the user's library or application.
 
-To use this trait, simply create a concrete sub-class instance; this instance
+To use this trait, simply create a concrete subclass instance; this instance
 can then be used to access the manifest information of the package (whether a
 library or an application) to which it belongs.
 
 The manifest is provided by a file named `MANIFEST.MF` located in the
 `/META-INF` folder of the ''Java'' archive file (or ''jar file'') that contains
-the concrete `Manifest` sub-class definition.  If this sub-class does not
-belong to a jar file, then no manifest information will be available.
+the concrete `Manifest` subclass definition.  If this subclass does not belong
+to a jar file, then no manifest information will be available.
 
 @since 0.0
 */
@@ -77,7 +77,7 @@ This is expressed as a path within a jar file.  It is obtained by retrieving
 the name of the package to which this instance belongs, replacing any periods
 ('.') with slashes ('/'), then prefixing the result with another slash.
 
-For example, if our concrete sub-class has the fully-qualified name
+For example, if our concrete subclass has the fully-qualified name
 `com.mycompany.myproject.MyManifestClass`, then the resulting package path will
 be `/com/mycompany/myproject`.
 
@@ -169,8 +169,8 @@ required.
 
     catch {
       case e: IllegalArgumentException => throw new
-      NoSuchElementException (LibResource.format
-      ("util.Manifest.NoSuchElement", name))
+      NoSuchElementException (LibResource ("util.Manifest.NoSuchElement",
+      name))
     }
   }
 

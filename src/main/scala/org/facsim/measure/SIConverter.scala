@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -38,22 +38,35 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-abstract class Measure [U <: UnitOfMeasure] private [measure] (private final
-val value: Double) extends NotNull with Equals with Ordered [Measure [U]] {
-
+//=============================================================================
 /**
-Measurement type.
+Converter to be used for ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+
+Converter to be used for ''SI'' units, which preserves the original values
+without modification.  For example, this converter should be used for
+converting ''seconds'' to ''seconds'', ''kilograms'' to ''kilograms'', etc.
+
+@since 0.0
 */
+//=============================================================================
 
-  type M <: Measure [U]
+private [measure] object SIConverter extends Converter {
 
-/*
-Filter out invalid values: no measurement value may be null (guaranteed by
-Scala - it is impossible to assign a value type null), not-a-number or
-infinite.  Sub-classes can impose additional construction constraints (such as
-requiring non-negative values), but they do not need to reproduce these tests.
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
 */
+//-----------------------------------------------------------------------------
 
-  require (!value.isNaN && !value.isInfinite)
+  private [measure] final override def importValue (value: Double): Double =
+  value
 
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] final override def exportValue (value: Double): Double =
+  value
 }

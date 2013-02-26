@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -32,20 +32,19 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.facsimile.stats package.
+Scala source file belonging to the org.facsim.stats package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.stats
+package org.facsim.stats
 
 //=============================================================================
 /**
-Abstract base class for all simulation statistics classes.
+Trait for all simulation statistics classes.
 
 @since 0.0
 */
 //=============================================================================
 
-abstract class Statistic {
-
+trait Statistic {
 }

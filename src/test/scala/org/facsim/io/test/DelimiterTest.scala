@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -38,6 +38,7 @@ Scala source file from the org.facsim.io.test package.
 
 package org.facsim.io.test
 
+import org.facsim.CommonTestFunctions._
 import org.facsim.io.Delimiter
 import org.facsim.io.TextReader
 import org.scalatest.FunSpec
@@ -62,24 +63,29 @@ Primary constructor tests.
 
     describe (".this (Set [Int], Boolean)") {
       it ("must throw NullPointerException if passed null set") {
-        intercept [NullPointerException] {
+        val e = intercept [NullPointerException] {
           new Delimiter (null, true)
         }
+        assertNullPointerMessage (e, "delimiters")
       }
       it ("must accept an empty set of delimiters") {
         new Delimiter (Set (), true)
       }
       it ("must throw IllegalArgumentException if passed a set containing " +
       "null character") {
-        intercept [IllegalArgumentException] {
-          new Delimiter (Set (TextReader.NUL), true)
+        val nulSet = Set (TextReader.NUL)
+        val e = intercept [IllegalArgumentException] {
+          new Delimiter (nulSet, true)
         }
+        assertIllegalArgumentMessage (e, "delimiters", nulSet)
       }
       it ("must throw IllegalArgumentException if passed a set containing " +
       "carriage return character") {
-        intercept [IllegalArgumentException] {
-          new Delimiter (Set (TextReader.CR), true)
+        val crSet = Set (TextReader.CR)
+        val e = intercept [IllegalArgumentException] {
+          new Delimiter (crSet, true)
         }
+        assertIllegalArgumentMessage (e, "delimiters", crSet)
       }
     }
   }

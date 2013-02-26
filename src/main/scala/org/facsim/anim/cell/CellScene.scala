@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -122,7 +122,7 @@ populate that set's contents (and any sub-set's contents) from the sources.
 
 Each cell type is constructed via recursion, which implies that all cell
 primitive classes must have an identical construction argument lists.
-Specifically, the arguments every concrete cell sub-class must have are:
+Specifically, the arguments every concrete cell subclass must have are:
  1. A reference to the scene to which it belongs (i.e. this class instance.)
  2. A reference to the cell's parent set.  If this value is None, then the cell
     is the ''root cell'' of the scene.

@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -128,7 +128,7 @@ format elements in the retrieved string.
 */
 //-----------------------------------------------------------------------------
 
-  final def format (key: String, arguments: Any*) = {
+  final def apply (key: String, arguments: Any*) = {
 
 /*
 To convert a Scala vararg to a Java vararg, while boxing numbers requires this

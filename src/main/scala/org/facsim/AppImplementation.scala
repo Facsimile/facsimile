@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -45,7 +45,7 @@ package org.facsim
 All of the functionality offered by `App` must be defined here.  The primary
 reason is to support more thorough testing: if implemented within the `App`
 object, it would be possible to test the application of a single behavior only;
-this trait allows us to create test sub-classes that can be used to test the
+this trait allows us to create test subclasses that can be used to test the
 application of a wide variety of behaviors.
 
 This trait delegates its functionality to the applied [[org.facsim.Behavior!]]

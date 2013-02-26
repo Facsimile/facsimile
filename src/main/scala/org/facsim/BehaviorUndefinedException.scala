@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -58,5 +58,5 @@ RuntimeException {
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage = LibResource.format ("BehaviorUndefined")
+  final override def getMessage = LibResource ("BehaviorUndefined")
 }

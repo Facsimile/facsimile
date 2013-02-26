@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -69,6 +69,6 @@ field: String) extends FieldException (row, column, field) {
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage () =
-  LibResource.format ("io.FieldVerification", row, column, field)
+  final override def getMessage () = LibResource ("io.FieldVerification", row,
+  column, field)
 }

@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -41,6 +41,7 @@ package org.facsim.io.test
 import java.io.EOFException
 import java.io.StringReader
 import scala.math.abs
+import org.facsim.CommonTestFunctions._
 import org.facsim.io.FieldConversionException
 import org.facsim.io.FieldVerificationException
 import org.facsim.io.Delimiter
@@ -157,9 +158,10 @@ Firstly, test construction with default delimiter.
 
     describe (".this (Reader)") {
       it ("must throw NullPointerException if passed null reader") {
-        intercept [NullPointerException] {
+        val e = intercept [NullPointerException] {
           new TextReader (null)
         }
+        assertNullPointerMessage (e, "textReader")
       }
       it ("must construct valid readers") {
         new DefaultDelimitedReaders {
@@ -173,9 +175,10 @@ Now with an explicit delimiter.
 
     describe (".this (Reader, Delimiter)") {
       it ("must throw NullPointerException if passed null reader") {
-        intercept [NullPointerException] {
+        val e = intercept [NullPointerException] {
           new TextReader (null)
         }
+        assertNullPointerMessage (e, "textReader")
       }
       it ("must construct a valid reader") {
         new EOFDelimitedReaders {
@@ -199,9 +202,10 @@ EOFException.
       it ("must handle EOF condition correctly") {
         new EmptyDataReader {
           assert (emptyReader.read () === TextReader.EOF)
-          intercept [EOFException] {
+          val e = intercept [EOFException] {
             emptyReader.read ()
           }
+          assertEOFException UP TO HERE
         }
       }
 

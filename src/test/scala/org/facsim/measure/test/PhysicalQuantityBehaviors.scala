@@ -1,0 +1,99 @@
+/*
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2013, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+
+The developers welcome all comments, suggestions and offers of assistance.  For
+further information, please visit the project home page at:
+
+  http://facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+  http://facsim.org/Documentation/CodingStandards/
+===============================================================================
+Scala source file from the org.facsim.measure.test package.
+*/
+//=============================================================================
+
+package org.facsim.measure.test
+
+import org.facsim.CommonTestFunctions.assertIllegalArgumentMessage
+import org.facsim.EqualsBehaviors
+import org.facsim.measure.PhysicalQuantity
+import org.scalatest.FunSpec
+
+//=============================================================================
+/**
+Test behaviors for the [[org.facsim.measure.PhysicalQuantity!]] abstract class.
+*/
+//=============================================================================
+
+trait PhysicalQuantityBehaviors {this: FunSpec =>
+
+/*
+Ensure that the apply(Double) method functions as expected.
+*/
+
+  def physicalQuantityApplyDoubleBehavior (pq: PhysicalQuantity) {
+
+/*
+We must get an exception if NaN is passed as the value of the physical
+quantity.
+*/
+
+    it ("must throw IllegalArgumentException if passed NaN") {
+      val value = Double.NaN
+      val e = intercept [IllegalArgumentException] {
+        pq (value)
+      }
+      assertIllegalArgumentMessage (e, "value", value)
+    }
+
+/*
+We must get an exception if NegativeInfinity is passed as the value of the
+physical quantity.
+*/
+
+    it ("must throw IllegalArgumentException if passed NegativeInfinity") {
+      val value = Double.NegativeInfinity
+      val e = intercept [IllegalArgumentException] {
+        pq (value)
+      }
+      assertIllegalArgumentMessage (e, "value", value)
+    }
+
+/*
+We must get an exception if PositiveInfinity is passed as the value of the
+physical quantity.
+*/
+
+    it ("must throw IllegalArgumentException if passed PositiveInfinity") {
+      val value = Double.PositiveInfinity
+      val e = intercept [IllegalArgumentException] {
+        pq (value)
+      }
+      assertIllegalArgumentMessage (e, "value", value)
+    }
+  }
+}

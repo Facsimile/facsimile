@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -32,47 +32,57 @@ rejected.  For further information, please visit the coding standards at:
 
   http://www.facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.facsimile.measure package.
+Scala source file belonging to the org.facsim.measure package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.measure
+package org.facsim.measure
+
+import org.facsim.requireFiniteValue
+import org.facsim.requireValid
 
 //=============================================================================
 /**
-Linear factor unit of measure value converter.
+Linear scale converter.
 
-Converts between measurement values between different units (belonging to the
-same measurement type) using a linear factor.
+Converts physical quantity measurement units of an associated, but unspecified,
+unit to and from the corresponding standard ''[[http://en.wikipedia.org/wiki/SI
+SI]]'' units for the unit family.  Values are ''imported'' (converted to ''SI''
+unit values) by multiplying by the specified linear scaling factor and are
+''exported'' (converted from ''SI'' unit values) by dividing by the same
+factor.
 
-To import a value, that is, to convert a measurement quantity's value from the
-units associated with this converter to a value in the standard $SI units for
-the associated measurement type, the value is multiplied by the given
-'''factor'''.
+@constructor Create new linear scale converter from the specified linear
+scaling '''factor'''.
 
-To export a value, that is, to convert a measurement quantity's value from the
-standard $SI units for the associated measurement type to a value in the units
-associated with this converter, the value is divided by the given '''factor'''.
+@param factor Linear scaling factor to be employed.  This value must be finite
+and cannot be zero or one.  A value of zero causes divide-by-zero exceptions
+when exporting values and implies that the magnitude of all measurement values
+is 0.  A value of one implies that the units are already ''SI'' units, since
+no scaling is performed, in which case the [[org.facsim.measure.SIConverter$]]
+object should be preferred.
 
-@param factor Linear conversion factor.  This value cannot be zero.
+@throws IllegalArgumentException if '''factor''' is NaN, infinite, zero or one.
 
-@since 0.0-0
+@since 0.0
 */
 //=============================================================================
 
-private [measure] final class LinearFactorConverter (factor: Double)
-extends Converter
-{
+private [measure] final class LinearScaleConverter (factor: Double) extends
+Converter {
 
 /*
-Verify the factor's value is not zero.
+Sanity checks.  Factor values must be finite, cannot ever be 0.0 (nonsensical),
+nor can they allowed to be 1.0 (in the latter case, the SIConverter should be
+employed).
 */
 
-  require (factor != 0.0d)
+  requireFiniteValue ("factor", factor)
+  requireValid ("factor", factor, factor != 0.0 && factor != 1.0)
 
 //-----------------------------------------------------------------------------
-/*
-@see [measure.Converter.importValue(Double)]
+/**
+@inheritdocs
 */
 //-----------------------------------------------------------------------------
 
@@ -80,8 +90,8 @@ Verify the factor's value is not zero.
   value * factor
 
 //-----------------------------------------------------------------------------
-/*
-@see [measure.Converter.exportValue(Double)]
+/**
+@inheritdocs
 */
 //-----------------------------------------------------------------------------
 

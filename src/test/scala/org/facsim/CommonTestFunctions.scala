@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -32,56 +32,48 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.measure package.
+Scala source file from the org.facsim package.
 */
 //=============================================================================
 
-package org.facsim.measure
+package org.facsim
 
-trait Conversion {
+import org.scalatest.FunSpec
+
+//=============================================================================
+/**
+Miscellaneous functions for supporting ''Facsimile'' testing.
+*/
+//=============================================================================
+
+trait CommonTestFunctions {this: FunSpec =>
 
 //-----------------------------------------------------------------------------
 /**
-Returns imported measurement quantity value.
+Assert that a NullPointerException's message matches the expected value.
 
-Convert a measurement quantity's '''value''', expressed in the units associated
-with this converter instance, to a value in the standard $SI units for this
-type of measurement.
+@param e Exception thrown.
 
-@param value Value of the measurement quantity, expressed in the associated
-units, to be converted.
-
-@return Converted value of the measurement quantity, expressed in the standard
-$SI units for this type of measurement.
-
-@see $SI_FULL
-
-@since 0.0
+@param argName Name of the argument that was found to be `null`.
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] def importValue (value: Double): Double
+  def assertNullPointerMessage (e: NullPointerException, argName: String):
+  Unit = assert (e.getMessage () === LibResource ("requireNonNull", argName))
 
 //-----------------------------------------------------------------------------
 /**
-Export a measurement quantity, converting a value from the standard $SI units
-to the associated units.
+Assert that an IllegalArgumentException's message matches the expected value.
 
-Convert a measurement quantity's '''value''', expressed in the standard $SI
-units for this type of measurement, to a value in the units associated with
-this converted instance.
+@param e Exception thrown.
 
-@param value Value of the measurement quantity, expressed in standard $SI
-units, to be converted.
+@param argName Name of the argument that was found to be invalid.
 
-@return Converted value of the measurement quantity, expressed in the
-associated units.
-
-@see $SI_FULL
-
-@since 0.0
+@param argValue Invalid argument value.
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] def exportValue (value: Double): Double
+  def assertIllegalArgumentMessage (e: IllegalArgumentException, argName:
+  String, argValue: Any): Unit = assert (e.getMessage () === LibResource
+  ("requireValid", argName, argValue.toString))
 }

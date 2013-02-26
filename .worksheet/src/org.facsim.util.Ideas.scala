@@ -17,7 +17,7 @@ This is expressed as a path within a jar file.  It is obtained by retrieving
 the name of the package to which this instance belongs, replacing any periods
 ('.') with slashes ('/'), then prefixing the result with another slash.
 
-For example, if our concrete sub-class has the fully-qualified name
+For example, if our concrete subclass has the fully-qualified name
 `com.mycompany.myproject.MyManifestClass`, then the resulting package path will
 be `/com/mycompany/myproject`.
 

@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -43,40 +43,38 @@ package org.facsim
 ''[[http://facsim.org/ Facsimile]]'' physical quantity measurement
 elements.
 
-The `org.facsim.facsimile.measure` package contains elements for expressing
-measurements of a variety of ''physical quantities'', such as ''time'',
-''mass'', ''length'', ''angle'', ''thermodynamic temperature'', etc., in
-whatever units the user believes to be the most appropriate.
+The `org.facsim..measure` package contains elements for expressing measurements
+of a variety of ''physical quantities'', such as ''time'', ''mass'',
+''length'', ''angle'', ''thermodynamic temperature'', etc., in whatever units
+the user believes to be the most appropriate.
 
-= Physical Quantity Unit Families =
+=Physical Quantity Unit Families=
 
 For each physical quantity, there are typically a set of units in which
-measurements of that physical quantity can be expressed.  For instance, time
-can be measured in ''seconds'', ''minutes'', ''hours'', etc.  In
-''[[http://facsim.org/ Facsimile]]'', such a set of units is termed a
-''unit family''.
+measurements of that physical quantity can be expressed.  For instance,
+''time'' can be measured in ''seconds'', ''minutes'', or ''hours'', etc.  In
+''Facsimile'', such a set of units is termed a ''unit family''.
 
-Each unit family is encapsulated as a sub-class of the
-`[[org.facsim.measure.Unit Unit]]` abstract base class.  For example, time
-units are encapsulated by the `[[org.facsim.measure.TimeUnit TimeUnit]]` `Unit`
-sub-class, mass units by the `[[org.facsim.measure.MassUnit MassUnit]]` `Unit`
-sub-class, length units by the `[[org.facsim.measure.LengthUnit LengthUnit]]`
-`Unit` sub-class, etc.
+Each unit family is encapsulated as a subclass of the
+[[org.facsim.measure.Unit!]] abstract base class.  For example, time units are
+encapsulated by the [[org.facsim.measure.TimeUnit!]] `Unit` subclass, mass
+units by the [[org.facsim.measure.MassUnit!]] `Unit` subclass, length units by
+the [[org.facsim.measure.LengthUnit!]]` `Unit` subclass, etc.
 
-= Physical Quantity Units =
+=Physical Quantity Units=
 
-''[[http://facsim.org/ Facsimile]]'' allows users to work with whichever
-units make the most sense for a particular application, while interoperating
-seamlessly with code written using different units; conversion of values
-between different units takes place automatically, eliminating a whole class of
-potential conversion errors.
+''Facsimile'' allows users to work with whichever units make the most sense for
+a particular application, while interoperating seamlessly with code written
+using different units; conversion of values between different units in the same
+family takes place automatically, eliminating a whole class of conversion
+errors.
 
 Individual physical quantity units are represented by instances of the
 corresponding unit family class.  For example, ''seconds'', ''minutes'' and
-''hours'' are represented by instances of the `[[org.facsim.measure.TimeUnit
-TimeUnit]]` class.
+''hours'' are represented by instances of the [[org.facsim.measure.TimeUnit!]]
+class.
 
-= Physical Quantity Measurements =
+=Physical Quantity Measurements=
 
 @todo Expand on Facsimile's use of units.  Facsimile allows users to use one
 or more measurement units, as they see fit, rather than being forced to adopt a
@@ -86,13 +84,16 @@ employed by the user, there are never conversion issues when merging models
 that use different units.
 
 @todo Expand on Facsimile's use of types for each measurement quantity.
-Instead of using a Double, like other simulation systems, Facsimile uses
-different types for each measurement quantity.  Consequently, it's not possible
-to confuse a distance with a time, or a linear velocity with an angular
-velocity, or a mass with a temperature.  By employing an appropriate set of
-operators, mechanics formulae can be accommodated by Facsimile in a very
+Instead of using a [[scala.Double!]], like other simulation systems, Facsimile
+uses different types for each measurement quantity.  Consequently, it's not
+possible to confuse a distance with a time, or a linear velocity with an
+angular velocity, or a mass with a temperature.  By employing an appropriate
+set of operators, mechanics formulae can be accommodated by Facsimile in a very
 natural way.  By ensuring data ranges are valid (no negative times or masses),
 Facsimile ensures data integrity throughout all runs.
+
+@see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
+[[http://en.wikipedia.org/ Wikipedia]]
 
 @since 0.0
 */

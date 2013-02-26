@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -92,8 +92,8 @@ extracted from the expression, and it's value compared to `null` reified.
 
   @inline
   def requireNonNull (argName: String, argValue: AnyRef): Unit = if (argValue
-  eq null) throw new NullPointerException (LibResource.format
-  ("requireNonNull", argName))
+  eq null) throw new NullPointerException (LibResource ("requireNonNull",
+  argName))
 
 //-----------------------------------------------------------------------------
 /**
@@ -131,6 +131,50 @@ validity of '''argValue'''.  If `true`, function merely returns; if `false` an
 
   @inline
   def requireValid (argName: String, argValue: Any, isValid: Boolean): Unit =
-  if (!isValid) throw new IllegalArgumentException (LibResource.format
+  if (!isValid) throw new IllegalArgumentException (LibResource
   ("requireValid", argName, argValue.toString))
+
+//-----------------------------------------------------------------------------
+/**
+Require a finite double value.
+
+Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will
+result in an [[java.lang.IllegalArgumentException!]] being thrown.
+
+@param argName Name of argument whose value is being validated.
+
+@param argValue Value to be validated.
+
+@throws java.lang.IllegalArgumentException if the specified double does not
+have a finite value.
+*/
+//-----------------------------------------------------------------------------
+
+  def requireFiniteValue (argName:String, argValue: Double): Unit = {
+
+/*
+Helper function to throw the exception.
+*/
+
+    def throwException () = throw new
+    IllegalArgumentException (LibResource ("requireFiniteValue", argName,
+    argValue))
+
+/*
+Determine whether the value is valid.  Start by throwing the exception if any
+of the non-finite values are expressed.
+*/
+
+    argValue match {
+      case Double.NaN => throwException ()
+      case Double.NegativeInfinity => throwException ()
+      case Double.PositiveInfinity => throwException ()
+
+/*
+Any other values are valid, so just return.
+*/
+
+      case _ =>
+    }
+  }
 }

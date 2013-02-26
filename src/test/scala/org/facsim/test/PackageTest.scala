@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -38,6 +38,7 @@ Scala source file from the org.facsim.test package.
 
 package org.facsim.test
 
+import org.facsim.requireFiniteValue
 import org.facsim.requireNonNull
 import org.facsim.requireValid
 import org.scalatest.FunSpec
@@ -60,7 +61,7 @@ Test fixture description.
 requireNonNull tests.
 */
 
-    describe (".requireNonNull (argName, argValue)") {
+    describe (".requireNonNull (String, AnyRef)") {
       it ("must throw NullPointerException if passed null argValue") {
         val e = intercept [NullPointerException] {
           requireNonNull ("testArgument", null)
@@ -76,7 +77,7 @@ requireNonNull tests.
 requireValid tests.
 */
 
-    describe (".requireValid (argName, argValue, condition)") {
+    describe (".requireValid (String, Any, Boolean)") {
       it ("must throw IllegalArgumentException if condition is false") {
         val e = intercept [IllegalArgumentException] {
           requireValid ("testArgument", "someBadValue", false)
@@ -86,6 +87,31 @@ requireValid tests.
       }
       it ("must do nothing if passed a valid argument") {
         requireValid ("testArgument", "someOKValue", true)
+      }
+    }
+
+/*
+requireFiniteValue tests.
+*/
+
+    describe (".requireFiniteValue (String, Double)") {
+      def doFailure (value: Double) {
+        val e = intercept [IllegalArgumentException] {
+          requireFiniteValue ("test", value)
+        }
+        assert (e.getMessage () === "Argument 'test' must be finite, but has "
+        + "value '" + value + "'.")
+      }
+      it ("must throw IllegalArgumentException if value is NaN") {
+        doFailure (Double.NaN)
+      }
+      it ("must throw IllegalArgumentException if value is infinite") {
+        doFailure (Double.NegativeInfinity)
+        doFailure (Double.PositiveInfinity)
+      }
+      it ("must accept values at the boundaries") {
+        requireFiniteValue ("test", Double.MinValue)
+        requireFiniteValue ("test", Double.MaxValue)
       }
     }
   }

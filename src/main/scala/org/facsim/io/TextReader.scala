@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -61,7 +61,7 @@ lines appear to terminate with a ''line feed'' character
 ''Unix'' and ''Unix''-like systems, such as ''Linux'', ''Mac OS'' (versions X
 and higher) and the ''BSD'' variants, terminate with a single ''line feed''
 character ('\n'); older Mac OS systems (9 and earlier) terminate with a single
-''carriage return'' character ('\r').  This reader, and its sub-classes, allow
+''carriage return'' character ('\r').  This reader, and its subclasses, allow
 all text streams to be treated as though they come from a ''Unix''-like system.
 
 @todo Implement support for comments (ignore remainder of line, whole of line).
@@ -380,13 +380,14 @@ end-of-file condition has been signaled by a previous read operation.
 */
 //.............................................................................
 
-    private def readChar (): Int = {
+    private final def readChar (): Int = {
 
 /*
 If the last character read indicated end-of-file, then throw the EOFException.
 */
 
-      if (atEOF) throw new EOFException
+      if (atEOF) throw new EOFException (LibResource ("io.TextReader.EOF", row,
+      column))
 
 /*
 Read the next character from the stream.
@@ -954,8 +955,8 @@ NumberFormatException.
 */
 
     if (field != field.trim) throw new
-    NumberFormatException (LibResource.format
-    ("io.TextReader.numberFormatException", field))
+    NumberFormatException (LibResource ("io.TextReader.numberFormatException",
+    field))
     else field.toFloat
   }
 
@@ -1030,8 +1031,8 @@ NumberFormatException.
 */
 
     if (field != field.trim) throw new
-    NumberFormatException (LibResource.format
-    ("io.TextReader.numberFormatException", field))
+    NumberFormatException (LibResource ("io.TextReader.numberFormatException",
+    field))
     else field.toDouble
   }
 

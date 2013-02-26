@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -69,8 +69,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 //-----------------------------------------------------------------------------
 
   private final def raiseException (field: String): Nothing = throw new
-  NoSuchElementException (LibResource.format ("Behavior.NoSuchElement",
-  field))
+  NoSuchElementException (LibResource ("Behavior.NoSuchElement", field))
 
 //-----------------------------------------------------------------------------
 /**
@@ -129,10 +128,10 @@ Format and retrieve this application's copyright string.
 */
 
     if (inceptionDate.getYear () < releaseDate.getYear ())
-    LibResource.format ("Behavior.CopyrightRange", orgAdj,
-    inceptionDate.toDate (), releaseDate.toDate ())
-    else LibResource.format ("Behavior.CopyrightBasic", orgAdj,
-    inceptionDate.toDate ())
+    LibResource ("Behavior.CopyrightRange", orgAdj, inceptionDate.toDate (),
+    releaseDate.toDate ())
+    else LibResource ("Behavior.CopyrightBasic", orgAdj, inceptionDate.toDate
+    ())
   }
 
 //-----------------------------------------------------------------------------

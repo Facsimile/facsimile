@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2012, Michael J Allen.
+Copyright © 2004-2013, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -32,13 +32,15 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.facsimile.stats package.
+Scala source file belonging to the org.facsim.stats package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.stats
-import org.facsim.facsimile.engine.Simulation
-import org.facsim.facsimile.measure.Time
+package org.facsim.stats
+
+import org.facsim.requireValid
+import org.facsim.engine.Simulation
+import org.facsim.measure.Time
 
 //=============================================================================
 /**
@@ -51,19 +53,31 @@ levels.
 The mean value is time-weighted, meaning that it weights the mean by the time
 spent at each WIP level.
 
+@constructor Create new WIP-tracking statistic.
+
+@param initial Initial work-in-progress.  This value must be zero or positive;
+an exception is thrown if this value is negative.
+
+@throws java.lang.IllegalArgumentException if '''initial''' is negative.
+
 @since 0.0
 */
 //=============================================================================
 
 class WIPStatistic (initial: Int = 0) extends Statistic {
 
+/*
+Argument sanity checks.
+*/
+
+  requireValid ("initial", initial, initial >= 0)
+
 /**
 Current work-in-progress statistic.
 
-This value is not allowed to become negative.
+This value cannot become negative.
 */
 
-  require (initial >= 0)
   private var cur = initial
 
 /**
@@ -86,13 +100,18 @@ The time-weighted mean work-in-progress is calculated as:
 sum (size(i) * time(i))/(total time)
 */
 
-  private var sum: Double = 0.0
+  private var sum: Time = 0.0
 
+/**
+Absolute simulation time at which we started collecting WIP data.
+*/
+
+  private val startTime = Simulation.currentTime
 /**
 Absolute simulation time at which this statistic was last updated.
 */
 
-  private var updated: Time = Simulation.currentTime
+  private var updated = startTime
 
 //-----------------------------------------------------------------------------
 /**
@@ -100,26 +119,47 @@ Update the count by the indicated amount.
 
 @param delta Change to be applied to the current value.
 
-@throws SomeException if delta causes the current value to become negative.
+@throws java.lang.IllegalArgumentException if the current work-in-progress
+count becomes negative after applying '''delta'''.
 */
 //-----------------------------------------------------------------------------
 
   final def update (delta: Int): Unit = {
-    require (delta > 0 || -delta >= cur)
-    assert (Simulation.currentTime >= updated)
-    sum += cur * (Simulation.currentTime - updated).value
-    updated = Simulation.currentTime
+
+/*
+Sanity checks.
+*/
+
+    requireValid ("delta", delta, cur + delta >= 0)
+
+/*
+Update the statistics record for the time spent at the current size.
+*/
+
+    val now = Simulation.currentTime
+    sum += (now - updated) * cur
+
+/*
+Now update the current value and the time at which we did so.
+*/
+
     cur += delta
+    updated = now
+
+/*
+Check whether we have a new minimum or maximum value.
+*/
+
     if (cur < min) min = cur
     else if (cur > max) max = cur
-    assert (cur >= min)
-    assert (cur <= max)
   }
 
   final def current = cur
   final def maximum = max
   final def mean: Double = {
-    (sum + cur * (Simulation.currentTime - updated)) / Simulation.lastReset
+    val now = Simulation.currentTime
+    if (now > startTime) (sum + cur * (now - updated)) / (now - startTime)
+    else 0.0
   }
   final def minimum = min
 }
