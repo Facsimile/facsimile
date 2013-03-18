@@ -36,44 +36,64 @@ Scala source file from the org.facsim package.
 */
 //=============================================================================
 
-package org.facsim
-
-import org.scalatest.FunSpec
+package org.facsim.test
 
 //=============================================================================
 /**
-Miscellaneous functions for supporting ''Facsimile'' testing.
+Fixture trait for testing if an associated object implements the ''equals
+contract''.
 */
 //=============================================================================
 
-trait CommonTestFunctions {this: FunSpec =>
+trait EqualsFixture [V <: Equals] {
+
+/*
+Sanity checks on the reported fixtures.
+*/
+
+  assert (!valueSample.tail.isEmpty) // Checks we have at least two elements.
+  assert (valueSample.size == valueSample.toSet.size) // Checks for uniqueness.
+  assert (nonValueSample.forall (value => value.getClass !=
+  valueSample.head.getClass)) // Sort-of checks different value type.
 
 //-----------------------------------------------------------------------------
 /**
-Assert that a NullPointerException's message matches the expected value.
+Return a sample list of unique values.
 
-@param e Exception thrown.
+@note All of the values in this list should be of type '''V''' (or, to be more
+explicit, their canEqual methods should return true for each value in this
+list).  Duplicate values are not permitted.  Further, there must be at least 2
+values in the list.
 
-@param argName Name of the argument that was found to be `null`.
+@return List of unique values to be tested.
 */
 //-----------------------------------------------------------------------------
 
-  def assertNullPointerMessage (e: NullPointerException, argName: String):
-  Unit = assert (e.getMessage () === LibResource ("requireNonNull", argName))
+  def valueSample: List [V]
 
 //-----------------------------------------------------------------------------
 /**
-Assert that an IllegalArgumentException's message matches the expected value.
+Return a list of lists, such that every value in the inner list should compare
+equal.
 
-@param e Exception thrown.
-
-@param argName Name of the argument that was found to be invalid.
-
-@param argValue Invalid argument value.
+@return List of list of equal values.
 */
 //-----------------------------------------------------------------------------
 
-  def assertIllegalArgumentMessage (e: IllegalArgumentException, argName:
-  String, argValue: Any): Unit = assert (e.getMessage () === LibResource
-  ("requireValid", argName, argValue.toString))
+  def equalListSample: List [List [V]]
+
+//-----------------------------------------------------------------------------
+/**
+Return a sample list of values of a type different to '''V'''.
+
+@note None of the values in this list should be of type '''V'''.  However, to
+improve the thoroughness of the testing, the contents of these objects should
+match the contents of some of the objects in
+[[org.facsim.EqualsFixture!.valueSample]].
+
+@return List of values of a different type to '''V'''.
+*/
+//-----------------------------------------------------------------------------
+
+  def nonValueSample: List [Any]
 }

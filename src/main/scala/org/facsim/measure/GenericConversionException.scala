@@ -53,9 +53,8 @@ specific measurement value.
 */
 //=============================================================================
 
-final class GenericConversionException private [measure] (private
-val measure: Generic.Measure, private val targetFamily:
-Family) extends RuntimeException {
+final class GenericConversionException private [measure] (private val measure:
+Generic.Measure, private val targetFamily: Family) extends RuntimeException {
 
 /*
 Verify that the measurement is incompatible with the target family.
@@ -63,12 +62,13 @@ Verify that the measurement is incompatible with the target family.
 
   assert (measure.getFamily != targetFamily)
 
-  //-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 /*
 @see [[java.lang.Throwable!.getMessage()]]
 */
 //-----------------------------------------------------------------------------
 
   final override def getMessage =
-  LibResource ("measure.GenericMeasurementConversion", measure, family)
+  LibResource ("measure.GenericConversion", measure.getFamily.toString,
+  measure.toString, targetFamily.toString)
 }

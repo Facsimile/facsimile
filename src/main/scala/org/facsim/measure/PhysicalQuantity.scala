@@ -437,19 +437,6 @@ can implicitly convert either to the other, but I could be wrong., but we cab
 
     @inline
     final override def hashCode = value.hashCode ^ getFamily.hashCode
-
-//.............................................................................
-/**
-@inheritdoc
-
-@since 0.0
-*/
-//.............................................................................
-
-    final override def toString = {
-      val units = getPreferredUnits
-      units.format (getValue (units))
-    }
   }
 
 //-----------------------------------------------------------------------------

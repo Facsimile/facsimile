@@ -38,9 +38,8 @@ Scala source file from the org.facsim.measure.test package.
 
 package org.facsim.measure.test
 
-import org.facsim.CommonTestFunctions.assertIllegalArgumentMessage
-import org.facsim.EqualsBehaviors
 import org.facsim.measure.PhysicalQuantity
+import org.facsim.test.CommonTestMethods
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -49,51 +48,7 @@ Test behaviors for the [[org.facsim.measure.PhysicalQuantity!]] abstract class.
 */
 //=============================================================================
 
-trait PhysicalQuantityBehaviors {this: FunSpec =>
+trait PhysicalQuantityBehaviors extends CommonTestMethods {
+  this: FunSpec =>
 
-/*
-Ensure that the apply(Double) method functions as expected.
-*/
-
-  def physicalQuantityApplyDoubleBehavior (pq: PhysicalQuantity) {
-
-/*
-We must get an exception if NaN is passed as the value of the physical
-quantity.
-*/
-
-    it ("must throw IllegalArgumentException if passed NaN") {
-      val value = Double.NaN
-      val e = intercept [IllegalArgumentException] {
-        pq (value)
-      }
-      assertIllegalArgumentMessage (e, "value", value)
-    }
-
-/*
-We must get an exception if NegativeInfinity is passed as the value of the
-physical quantity.
-*/
-
-    it ("must throw IllegalArgumentException if passed NegativeInfinity") {
-      val value = Double.NegativeInfinity
-      val e = intercept [IllegalArgumentException] {
-        pq (value)
-      }
-      assertIllegalArgumentMessage (e, "value", value)
-    }
-
-/*
-We must get an exception if PositiveInfinity is passed as the value of the
-physical quantity.
-*/
-
-    it ("must throw IllegalArgumentException if passed PositiveInfinity") {
-      val value = Double.PositiveInfinity
-      val e = intercept [IllegalArgumentException] {
-        pq (value)
-      }
-      assertIllegalArgumentMessage (e, "value", value)
-    }
-  }
 }

@@ -40,6 +40,7 @@ package org.facsim
 
 import scala.annotation.tailrec
 import org.scalatest.FunSpec
+import org.facsim.test.EqualsFixture
 
 //=============================================================================
 /**
@@ -66,7 +67,8 @@ the ''equals contract'':
 */
 //=============================================================================
 
-trait EqualsBehaviors [V <: Equals] {this: FunSpec =>
+trait EqualsBehaviors [V <: Equals] {
+  this: FunSpec =>
 
 //-----------------------------------------------------------------------------
 /**

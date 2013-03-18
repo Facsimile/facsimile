@@ -143,6 +143,16 @@ Create a new
 
     @inline
     final override def createNew (value: Double) = apply (value, family)
+
+//.............................................................................
+/**
+@inheritdoc
+*/
+//.............................................................................
+
+    final override def toString = {
+      "TODO: Need to find a way to report generic units."
+    }
   }
 
 //-----------------------------------------------------------------------------

@@ -32,68 +32,59 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim package.
+Scala source file from the org.facsim.measure.test package.
 */
 //=============================================================================
 
-package org.facsim
+package org.facsim.measure.test
 
 //=============================================================================
 /**
-Fixture trait for testing if an associated object implements the ''equals
-contract''.
+Test fixture for testing physical quantities.
 */
 //=============================================================================
 
-trait EqualsFixture [V <: Equals] {
-
-/*
-Sanity checks on the reported fixtures.
-*/
-
-  assert (!valueSample.tail.isEmpty) // Checks we have at least two elements.
-  assert (valueSample.size == valueSample.toSet.size) // Checks for uniqueness.
-  assert (nonValueSample.forall (value => value.getClass !=
-  valueSample.head.getClass)) // Sort-of checks different value type.
+trait PhysicalQuantityFixture {
 
 //-----------------------------------------------------------------------------
 /**
-Return a sample list of unique values.
+List of good values, in associated SI units, that ought to be capable of valid
+measurement constructor.
 
-@note All of the values in this list should be of type '''V''' (or, to be more
-explicit, their canEqual methods should return true for each value in this
-list).  Duplicate values are not permitted.  Further, there must be at least 2
-values in the list.
-
-@return List of unique values to be tested.
+@return List of values all of which should be capable of valid construction
+when expressed in SI units.
 */
 //-----------------------------------------------------------------------------
 
-  def valueSample: List [V]
+  final def validValues = getValidValues
 
 //-----------------------------------------------------------------------------
 /**
-Return a list of lists, such that every value in the inner list should compare
-equal.
+Override to customize the list of good values for a class.
 
-@return List of list of equal values.
+@note Values returned should be at the boundaries of acceptable ranges. Values
+within the range are generally not useful.
+
+@return List of customized values all of which should be capable of valid
+construction when expressed in SI units.
 */
 //-----------------------------------------------------------------------------
 
-  def equalListSample: List [List [V]]
+  def getValidValues: List [Double]
 
 //-----------------------------------------------------------------------------
 /**
-Return a sample list of values of a type different to '''V'''.
+List of bad values, in associated SI units, that ought to be incapable of valid
+measurement constructor, and which should result in an exception being thrown.
 
-@note None of the values in this list should be of type '''V'''.  However, to
-improve the thoroughness of the testing, the contents of these objects should
-match the contents of some of the objects in
-[[org.facsim.EqualsFixture!.valueSample]].
+@note Specific rangeless values (such as ''NaN'', Values returned should be at the boundaries of acceptable ranges or
+should be specific rangeless values (such as NaN, etc.).
 
-@return List of values of a different type to '''V'''.
+@return list of values none of which should be capable of valid construction
+when expressed in SI units.
 */
 //-----------------------------------------------------------------------------
 
-  def nonValueSample: List [Any]
+  final def invalidValues = Double.NaN :: Double.NegativeInfinity ::
+  Double.PositiveInfinity :: getInvalidValues
 }

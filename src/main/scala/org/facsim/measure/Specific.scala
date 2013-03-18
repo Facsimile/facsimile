@@ -39,9 +39,15 @@ Scala source file belonging to the org.facsim.measure package.
 package org.facsim.measure
 
 //=============================================================================
+/**
+Abstract base class for all physical quantity types associated with specific
+physical quantity families.
+
+@since 0.0
+*/
 //=============================================================================
 
-abstract class Specific extends PhysicalQuantity  {
+private [measure] abstract class Specific extends PhysicalQuantity  {
 
 /**
 @inheritdocs
@@ -65,8 +71,9 @@ Physical quantity family represented by this specific type.
 /**
 Generic measurement to specific measurement conversion function.
 
-If the generic measurement is associated with a family other than that of the
-target type, then a run-time exception will result.
+If an attempt is made to convert a generic measurement associated with a
+different family to that of the target type, then a run-time exception will
+result.
 
 @param measure Generic measure to be converted.
 
@@ -164,9 +171,22 @@ quantity.
 */
 //.............................................................................
 
+    final override def toString = {
+      val units = getPreferredUnits
+      units.format (getValue (units))
+    }
+
+//.............................................................................
+/**
+@inheritdoc
+
+@since 0.0
+*/
+//.............................................................................
+
     @inline
     final override def compare (that: Measure): Int =
-    value.compare (that.value)
+    value.compare (that.getValue)
   }
 
 //-----------------------------------------------------------------------------

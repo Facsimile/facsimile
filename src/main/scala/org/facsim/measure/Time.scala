@@ -55,6 +55,18 @@ time.
 object Time extends NonNegative {
 
 /**
+@inheritdoc
+*/
+
+  final override type Measure = TimeMeasure
+
+/**
+@inheritdoc
+*/
+
+  final override type Units = TimeUnits
+
+/**
 Units for time measured in ''milliseconds''.
 
 In ''Facsimile'', a millisecond is defined as being exactly 1/1000 of a
@@ -62,8 +74,7 @@ In ''Facsimile'', a millisecond is defined as being exactly 1/1000 of a
 a second.
 */
 
-  final val milliseconds = new TimeUnits (new LinearScaleConverter (1.0 /
-  1000.0), "ms")
+  final val milliseconds = new Units (new LinearScaleConverter (1.0e-3), "ms")
 
 /**
 Units for time measured in ''seconds''.
@@ -76,7 +87,7 @@ In ''Facsimile'', a second is defined in accordance with ''SI'' standards.
 @see [[http://en.wikipedia.org/wiki/Second Second]] for further information.
 */
 
-  final val seconds = new TimeUnits (SIConverter, "s")
+  final val seconds = new Units (SIConverter, "s")
 
 /**
 Units for time measured in ''minutes''.
@@ -85,7 +96,7 @@ In ''Facsimile'', a minute is defined as being exactly 60 ''seconds'' (refer to
 [[org.facsim.measure.Time.seconds]] for the definition of a second.
 */
 
-  final val minutes = new TimeUnits (new LinearScaleConverter (60.0), "min")
+  final val minutes = new Units (new LinearScaleConverter (60.0), "min")
 
 /**
 Units for time measured in ''hours''.
@@ -94,8 +105,7 @@ In ''Facsimile'', an hour is defined as being exactly 60 ''minutes'' (refer to
 [[org.facsim.measure.Time.minutes]] for the definition of a minute.
 */
 
-  final val hours = new TimeUnits (new LinearScaleConverter (60.0 * 60.0),
-  "h")
+  final val hours = new Units (new LinearScaleConverter (60.0 * 60.0), "h")
 
 /**
 Units for time measured in ''days''.
@@ -104,8 +114,8 @@ In ''Facsimile'', a day is defined as being exactly 24 ''hours'' (refer to
 [[org.facsim.measure.Time.hours]] for the definition of an hour.
 */
 
-  final val days = new TimeUnits (new LinearScaleConverter (60.0 * 60.0 *
-  24.0), "d")
+  final val days = new Units (new LinearScaleConverter (60.0 * 60.0 * 24.0),
+  "d")
 
 /**
 Units for time measured in ''weeks''.
@@ -120,8 +130,8 @@ Consequently, there is no simple ''standard'' definition for higher units of
 time.
 */
 
-  final val weeks = new TimeUnits (new LinearScaleConverter (60.0 * 60.0 * 24.0
-  * 7.0), "wk")
+  final val weeks = new Units (new LinearScaleConverter (60.0 * 60.0 * 24.0 *
+  7.0), "wk")
 
 /**
 Physical quantity family for time measurements.
@@ -133,19 +143,13 @@ Physical quantity family for time measurements.
 @inheritdoc
 */
 
-  final override type Measure = TimeMeasure
-
-/**
-@inheritdoc
-*/
-
-  final override type Units = TimeUnits
-
-/**
-@inheritdoc
-*/
-
   final override val getSIUnits = seconds
+
+/*
+Register this family.
+*/
+
+  Family.register(family, Angle)
 
 //-----------------------------------------------------------------------------
 /**
@@ -173,16 +177,7 @@ negative.
 //-----------------------------------------------------------------------------
 
   final class TimeMeasure private [measure] (value: Double) extends
-  NonNegativeMeasure (value) {
-
-//.............................................................................
-/**
-@inheritdoc
-*/
-//.............................................................................
-
-    final override def getFamily = family
-  }
+  NonNegativeMeasure (value)
 
 //-----------------------------------------------------------------------------
 /**
@@ -201,5 +196,5 @@ units.
 //-----------------------------------------------------------------------------
 
   final class TimeUnits private [measure] (converter: Converter, symbol:
-  String) extends AbstractUnits (converter, symbol)
+  String) extends NonNegativeUnits (converter, symbol)
 }

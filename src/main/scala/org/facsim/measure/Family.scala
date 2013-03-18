@@ -38,6 +38,8 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import scala.collection.immutable.HashMap
+
 //=============================================================================
 /**
 Class representing a physical quantity family defined in terms of exponents of
@@ -119,7 +121,7 @@ otherwise.
 */
 //-----------------------------------------------------------------------------
 
-  final def isUnitless = Family.this == PhysicalQuantityFamily.unitless
+  final def isUnitless = Family.this == Family.unitless
 
 //-----------------------------------------------------------------------------
 /*
@@ -202,14 +204,32 @@ contract.
 Convert to a string.
 
 @see Any.toString()
-
-For now, just output the vector of exponents as a string.  In future, we might
-try to output a description instead (such as "velocity", "area", "force",
-etc.).
 */
 //-----------------------------------------------------------------------------
 
-  final override def toString = exponents.toString
+  final override def toString: String = Family.typeMap.get (this) match {
+
+/*
+If this family has an associated specific physical quantity type, then retrieve
+and output its name.
+*/
+
+    case Some (x) => x.getClass.getSimpleName
+
+/*
+In all other cases, apply the names of the base units with the appropriate
+exponents.
+*/
+
+    case _ => {
+      val types = for {
+        i <- 0 until exponents.length
+        if exponents (i) != 0
+      } yield Family.baseFamilies (i).getClass.getSimpleName + (if (exponents
+      (i) != 1) "(^" + exponents (i) + ")")
+      types.mkString (",")
+    }
+  }
 }
 
 //=============================================================================
@@ -268,8 +288,15 @@ Index of Luminosity exponent in the exponents vector.
 Vector of base physical quantity families.
 */
 
-  private [measure] val baseFamilies = Vector [PhysicalQuantity] (Time, Length,
-  Angle, Mass, Temperature, Current, Luminosity)
+  private [measure] val baseFamilies = Vector [PhysicalQuantity] (
+    Time,
+    Length,
+    Angle,
+    Mass,
+    Temperature,
+    Current,
+    Luminosity
+  )
 
 /**
 Total number of base physical quantity families in the exponents vector.
@@ -284,6 +311,34 @@ Measurements in this family are, in effect, just plain Double values.
 */
 
   private [measure] val unitless = apply ()
+
+/**
+Map associating families to associated types.  Families that do not have
+entries in this map do not have associated types an exist as generic values
+only.
+*/
+
+  private var typeMap = HashMap.empty [Family, Specific]
+
+//-----------------------------------------------------------------------------
+/**
+Register a specific physical quantity type with a family value.
+
+Registration should be performed once for each concrete
+[[org.facsim.measure.Specific!]] class instance.
+
+@param family Family value to be registered as associated with the
+'''specific''' class.
+
+@param specific Class of the associated specific physical quantity type.
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] final def register (family: Family, specific: Specific):
+  Unit = synchronized {
+    assert (!typeMap.contains (family))
+    typeMap += (family -> specific)
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -312,7 +367,7 @@ Apply method to obtain family corresponding to specified exponent values.
   @inline
   private [measure] final def apply (timeExponent:Int = 0, lengthExponent:Int =
   0, planeAngleExponent: Int = 0, massExponent: Int = 0, temperatureExponent:
-  Int = 0, currentExponent: Int = 0, luminosityExponent: Int = 0) =
+  Int = 0, currentExponent: Int = 0, luminosityExponent: Int = 0): Family =
   apply (Vector (timeExponent, lengthExponent, planeAngleExponent,
   massExponent, temperatureExponent, currentExponent, luminosityExponent))
 

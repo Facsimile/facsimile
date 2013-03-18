@@ -356,9 +356,11 @@ changed, then, typically, the versions of all other Scala libraries and tools
 will need to be revised to remain compatible - including any Scala plug-ins.
 -->
 
-    <scala.version>2.10.1-RC1</scala.version>
-    <scalatest.version>2.0.M5</scalatest.version>
-    <scalatest.scala.version>${scala.version}</scalatest.scala.version>
+    <!--scala.version>2.10.1-RC2</scala.version-->
+    <scala.version>2.10.1</scala.version>
+    <scalatest.version>2.0.M5b</scalatest.version>
+    <!--scalatest.scala.version>${scala.version}</scalatest.scala.version-->
+    <scalatest.scala.version>2.10</scalatest.scala.version>
     <scala-maven-plugin.version>3.1.3</scala-maven-plugin.version>
     <scalatest-maven-plugin.version>1.0-M2</scalatest-maven-plugin.version>
     <scalastyle-maven-plugin.version>0.2.0</scalastyle-maven-plugin.version>
@@ -434,6 +436,10 @@ Scala standard library.
 
 <!--
 Scala Swing library.
+
+ScalaFX, which is based upon JavaFX, looks likely to become a long-term
+replacement for Swing, so this is likely to be removed at some point in the
+near future.
 -->
 
     <dependency>
@@ -469,11 +475,11 @@ Calendar classes.
 <!--
 Java3D libraries.
 
-Commented out right now, pending a decision on which 3D library is to be
-utilized going forward.
+These are currently commented out and are likely to be removed completely at
+some point - if Java3D is not dead, it is certainly very fast asleep.
 -->
 
-    <dependency>
+    <!-- dependency>
       <groupId>java3d</groupId>
       <artifactId>j3d-core</artifactId>
       <version>${java3d.version}</version>
@@ -490,7 +496,7 @@ utilized going forward.
       <artifactId>vecmath</artifactId>
       <version>${java3d.version}</version>
       <scope>compile</scope>
-    </dependency>
+    </dependency -->
 
 <!--
 ScalaTest unit-testing framework.
@@ -576,7 +582,7 @@ for further information.
 -->
 
       <plugin>
-        <groupId>org.scala-tools</groupId>
+        <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
         <version>${scala-maven-plugin.version}</version>
         <executions>
@@ -917,7 +923,7 @@ This profile should be active by default.
       <build>
         <plugins>
           <plugin>
-            <groupId>org.scala-tools</groupId>
+            <groupId>net.alchim31.maven</groupId>
             <artifactId>scala-maven-plugin</artifactId>
             <version>${scala-maven-plugin.version}</version>
             <inherited>true</inherited>
@@ -965,7 +971,7 @@ This profile should be inactive except when performing a release.
       <build>
         <plugins>
           <plugin>
-            <groupId>org.scala-tools</groupId>
+            <groupId>net.alchim31.maven</groupId>
             <artifactId>scala-maven-plugin</artifactId>
             <version>${scala-maven-plugin.version}</version>
             <inherited>true</inherited>
@@ -1085,7 +1091,7 @@ Scaladoc documentation generation.
 -->
 
       <plugin>
-        <groupId>org.scala-tools</groupId>
+        <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
         <version>${scala-maven-plugin.version}</version>
       </plugin>

@@ -48,7 +48,6 @@ Test suite for the [[org.facsim.measure.Family!]] class and
 */
 //=============================================================================
 
-
 class FamilyTest extends FunSpec {
 
 /**
