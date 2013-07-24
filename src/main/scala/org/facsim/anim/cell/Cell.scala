@@ -38,17 +38,6 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import java.awt.Color
-import javax.media.j3d.Appearance
-import javax.media.j3d.LineAttributes
-import javax.media.j3d.Material
-import javax.media.j3d.TransparencyAttributes
-import javax.vecmath.Color3f
-import com.sun.j3d.loaders.IncorrectFormatException
-import com.sun.j3d.loaders.ParsingErrorException
-import org.facsim.LibResource
-import org.facsim.io.TextReader
-
 //=============================================================================
 /**
 Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
@@ -88,14 +77,15 @@ inherited from the cell's parent.
 AutoMod Cell Flags]]
 */
 
-  private final val flags = new CellFlags (scene.readInt (LibResource
-  ("anim.cell.Cell.flagDesc")))
+  private final val flags = CellFlags.read (scene)
 
 /*
 Process bounding box data, if present.
+
+If bounding box date is present, we must read it, but will ignore it.
 */
 
-  Cell.processBoundingBox (flags, scene)
+  if (flags.boundingBoxPresent) BoundingBox.read (scene)
 
 /**
 Cell attributes.
@@ -108,13 +98,15 @@ Determine the cell's attribute values.
 /**
 Cell joint data.
 
-Determine the cell's joint information.
+Determine the cell's joint information, if any.
 
 @note Ideally, only Sets should be defined with joint data, but it probably
 doesn't matter too much if non-Sets do too.
 */
 
-  private final val joint = Cell.processJointData (flags, scene)
+  private final val joint =
+  if (flags.jointDataPresent) Some (JointType.readJoint (scene))
+  else None
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
@@ -157,128 +149,4 @@ doesn't matter too much if non-Sets do too.
 
   final override def edgeColor = attrs.edgeColor.orElse (parent.flatMap
   (_.edgeColor))
-}
-
-//=============================================================================
-/**
-Cell companion object.
-
-@since 0.0
-*/
-//=============================================================================
-
-private object Cell {
-
-//-----------------------------------------------------------------------------
-/**
-Read it bounding box data and verify it makes sense.
-
-If bounding box date is present, we must read it, but will ignore it.  However,
-note that we must verify the data read (in terms of the consistency of the
-specified minimum & maximum values, rather than whether the bounding box is
-appropriately sized).  This is to ensure that we stay in sync with cell data
-and so can report meaningful errors to the user.
-
-@note This function must only be called if the current cell has bounding box
-data present, and must be called in the correct sequence for reading from the
-cell file, otherwise exceptions will occur.
- 
-@param flags ''Cell'' flags, specifying which information is included in the
-cell's definition.
-
-@param scene Scene to which this ''cell'' definition belongs.
- 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
-
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/BoundingBox.html
-Cell Bounding Box]]
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private final def processBoundingBox (flags: CellFlags, scene:
-  CellScene): Unit = {
-
-/*
-Read the data only if bounding box data is present.
-*/
-
-    if (flags.boundingBoxPresent) {
-
-/*
-Read in the minimum and maximum X co-ordinate values. The maximum co-ordinate
-must be greater than the minimum co-ordinate.
-*/
-
-      val minX = scene.readDouble (LibResource
-      ("anim.cell.Cell.processBoundingBox.minDesc", "X"))
-      scene.readDouble (_ >= minX, LibResource
-      ("anim.cell.Cell.processBoundingBox.maxDesc", "X", minX))
-
-/*
-Read in the minimum and maximum Y co-ordinate values. The maximum co-ordinate
-must be greater than the minimum co-ordinate.
-*/
-
-      val minY = scene.readDouble (LibResource
-      ("anim.cell.Cell.processBoundingBox.minDesc", "Y"))
-      scene.readDouble (_ >= minY, LibResource
-      ("anim.cell.Cell.processBoundingBox.maxDesc", "Y", minY))
-
-/*
-Read in the minimum and maximum Z co-ordinate values. The maximum co-ordinate
-must be greater than the minimum co-ordinate.
-*/
-
-      val minZ = scene.readDouble (LibResource
-      ("anim.cell.Cell.processBoundingBox.minDesc", "Z"))
-      scene.readDouble (_ >= minZ, LibResource
-      ("anim.cell.Cell.processBoundingBox.maxDesc", "Z", minZ))
-    }
-  }
-
-//-----------------------------------------------------------------------------
-/**
-Process a ''cell'''s joint data, if present.
-
-@param flags ''Cell'' flags, specifying which information is included in the
-cell's definition.
-
-@param scene Scene to which this ''cell'' definition belongs.
- 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
-
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html Cell
-Joint Data]]
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private final def processJointData (flags: CellFlags, scene: CellScene) = {
-
-/*
-If joint data is present, then read the joint type, otherwise, we have no joint
-data.
-*/
-
-    if (flags.jointDataPresent) Some (JointType.readJoint (scene))
-
-/*
-Otherwise, this cell has no joint information.
-*/
-
-    else None
-  }
 }

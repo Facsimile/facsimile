@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
 Value class representing a ''cell'' element's flags.
@@ -45,7 +47,7 @@ Value class representing a ''cell'' element's flags.
 @constructor Create a new ''cell'' flags instance from an integer bit-field
 value.
 
-@param flags Integer bit-field encoding flag values.
+@param scene Scene from which the current cell's flags should be read.
 
 @since 0.0
 */
@@ -162,4 +164,51 @@ specification is provided.
 //-----------------------------------------------------------------------------
 
   final def boundingBoxPresent = ((flags & 0x40) != 0)
+}
+
+//=============================================================================
+/**
+CellFlags companion object.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] object CellFlags {
+
+//-----------------------------------------------------------------------------
+/**
+Read ''cell'' flags from data stream.
+
+@param scene Scene from which the flags are to be read.
+
+@return Flags read, if valid.
+
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Flags.html
+Cell Flags]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  final def read (scene: CellScene) = {
+
+/*
+Read the flags from the data stream.
+*/
+
+    val flags = scene.readInt (LibResource ("anim.cell.CellFlags.read"))
+
+/*
+Convert to a line width and return.
+*/
+
+    new CellFlags (flags)
+  }
 }

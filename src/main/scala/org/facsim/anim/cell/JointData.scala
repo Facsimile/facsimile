@@ -38,55 +38,51 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
-/**
-Abstract joint class.
-
-''[[http://www.automod.com/ AutoMod®]] cell'' file format includes support for
-two different types of kinematic joint:
-  - Rotational, in which a ''cell'' and its contents can be rotated about an
-    axis.
-  - Translational, in which a ''cell'' and its contents can be translated along
-    an axis.
-
-In addition, ''AutoMod's cell'' files support the concept of a ''terminal
-control frame'' (''TCF'')&mdash;a ''cell'' marking a location at which another
-object can be attached.
-
-Typically, joints and TCFs are implemented in separate sets, but$mdash;for some
-reason$mdash;their data sets are tied together.  As a consequence, it is
-possible for:
-  - Joints to be defined without an accompanying TCF.
-  - Joints to be defined with an accompanying TCF.
-  - TCFs to be defined without an accompanying joint.
-
-The latter case requires a ''null'' joint to be defined&mdash;it possesses TCF
-data only.
-
-This class is the base class for all types of Joint.
-
-@constructor Create a new joint instrance.
-
-@param scene Scene to which the associated ''cell'' element belongs.
-
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
-
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
-Cell Joint Data]]
-
-@since 0.0
-*/
-//=============================================================================
-
-private [cell] abstract class Joint (scene: CellScene) extends NotNull {
-
 /**
 Joint data.
 */
+//=============================================================================
 
-  private val jointData = new JointData (scene)
+private [cell] final class JointData (scene: CellScene) extends NotNull {
+
+/**
+Joint speed.
+*/
+
+  final val speed = scene.readDouble (_ >= 0.0, LibResource
+  ("anim.cell.JointData.speed"))
+
+/**
+Joint minimum value.
+*/
+
+  final val min = scene.readDouble (LibResource ("anim.cell.JointData.min"))
+
+/**
+Joint maximum value.
+
+This value must be ≥ the minimum value.
+*/
+
+  final val max = scene.readDouble (_ >= min, LibResource
+  ("anim.cell.JointData.max", min))
+
+/**
+Joint current value.
+
+This value must be in the range [minimum, maxium]
+*/
+
+  final val cur = scene.readDouble (value => value >= min && value <= max,
+  LibResource ("anim.cell.JointData.cur", min, max))
+
+/**
+TCF data present?
+*/
+
+  final val tcfPresent = scene.readBool (LibResource
+  ("anim.cell.JointData.tcfPresent"))
 }

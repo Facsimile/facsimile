@@ -194,6 +194,36 @@ encountered during parsing of the file.
 
 //-----------------------------------------------------------------------------
 /**
+Helper function to read a boolean value from the stream.
+
+@param description Function that is called to provide a description to supply
+to the user in the event that an exception occurs.
+
+@return Value read, if no exceptions arise.
+
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def readBool (description: => String) = {
+    val value = try {
+      reader.readInt (value => value == 0 || value == 1)
+    }
+    catch {
+      case e: Throwable => CellScene.translateReaderException (e, LibResource
+      ("anim.cell.CellScene.readValue", description))
+    }
+    value == 1
+  }
+
+//-----------------------------------------------------------------------------
+/**
 Helper function to read an unrestricted integer value from the stream.
 
 @param description Function that is called to provide a description to supply
@@ -587,6 +617,14 @@ handling of 3D file importing.
 just happened.
 
 @return This function does not return and always throws an exception.
+
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
