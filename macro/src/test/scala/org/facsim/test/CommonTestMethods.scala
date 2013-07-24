@@ -38,6 +38,7 @@ Scala source file from the org.facsim.test package.
 
 package org.facsim.test
 
+import org.facsim.LibResource
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -73,14 +74,12 @@ Assert that an IllegalArgumentException's message resulting from a
 @param argName Name of the argument that was found to be invalid.
 
 @param argValue Invalid argument value.
-
-@param condition String identifying the condition that failed.
 */
 //-----------------------------------------------------------------------------
 
   final def assertRequireValidMsg (e: IllegalArgumentException, argName:
-  String, argValue: Any, condition: String): Unit = assert (e.getMessage () ===
-  LibResource ("requireValid", argName, argValue.toString, condition))
+  String, argValue: Any): Unit = assert (e.getMessage () === LibResource
+  ("requireValid", argName, argValue.toString))
 
 //-----------------------------------------------------------------------------
 /**

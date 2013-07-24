@@ -54,14 +54,15 @@ Test data.
 */
 
   trait TestData {
-    val validCodes = 0 to 3
+    val validCodes = LineStyle.minValue to LineStyle.maxValue
     val validMap = Map [Int, LineStyle.Value] (
       0 -> LineStyle.Solid,
       1 -> LineStyle.Dashed,
       2 -> LineStyle.Dotted,
       3 -> LineStyle.Halftone
     )
-    val invalidCodes = List (Int.MinValue, -1, 4, Int.MaxValue)
+    val invalidCodes = List (Int.MinValue, LineStyle.minValue - 1,
+    LineStyle.maxValue + 1, Int.MaxValue)
   }
 
 /*
@@ -96,7 +97,7 @@ Test the apply function works as expected.
     }
 
 /*
-Test that the default color is reported correctly.
+Test that the default line style is reported correctly.
 */
 
     describe (".default") {

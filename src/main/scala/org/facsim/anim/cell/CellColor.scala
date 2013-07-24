@@ -58,103 +58,115 @@ private [cell] object CellColor extends Enumeration {
 Black, having the ''cell'' color code 0.
 */
 
-  val Black = Value
+  final val Black = Value
 
 /**
 Red, having the ''cell'' color code 1.
 */
 
-  val Red = Value
+  final val Red = Value
 
 /**
 Green, having the ''cell'' color code 2.
 */
 
-  val Green = Value
+  final val Green = Value
 
 /**
 Yellow, having the ''cell'' color code 3.
 */
 
-  val Yellow = Value
+  final val Yellow = Value
 
 /**
 Blue, having the ''cell'' color code 4.
 */
 
-  val Blue = Value
+  final val Blue = Value
 
 /**
 Magenta, having the ''cell'' color code 5.
 */
 
-  val Magenta = Value
+  final val Magenta = Value
 
 /**
 Cyan, having the ''cell'' color code 6.
 */
 
-  val Cyan = Value
+  final val Cyan = Value
 
 /**
 White, having the ''cell'' color code 7.
 */
 
-  val White = Value
+  final val White = Value
 
 /**
 Light gray, having the ''cell'' color code 8.
 */
 
-  val LightGray = Value
+  final val LightGray = Value
 
 /**
 Dark gray, having the ''cell'' color code 9.
 */
 
-  val DarkGray = Value
+  final val DarkGray = Value
 
 /**
 Brown, having the ''cell'' color code 10.
 */
 
-  val Brown = Value
+  final val Brown = Value
 
 /**
 Purple, having the ''cell'' color code 11.
 */
 
-  val Purple = Value
+  final val Purple = Value
 
 /**
 Orange, having the ''cell'' color code 12.
 */
 
-  val Orange = Value
+  final val Orange = Value
 
 /**
 Light blue, having the ''cell'' color code 13.
 */
 
-  val LightBlue = Value
+  final val LightBlue = Value
 
 /**
 Light green, having the ''cell'' color code 14.
 */
 
-  val LightGreen = Value
+  final val LightGreen = Value
 
 /**
 Light yellow, having the ''cell'' color code 15.
 */
 
-  val LightYellow = Value
+  final val LightYellow = Value
 
 /**
 Default color, which is used if no other color is available.
 */
 
-  val default = Red
+  final val default = Red
+
+/**
+Minimum color code value in pixels.
+*/
+
+  final val minValue = 0
+
+/**
+Maximum color code value in pixels.
+*/
+
+  final val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -168,5 +180,6 @@ Verify a color code.
 */
 //-----------------------------------------------------------------------------
 
-  def verify (colorCode: Int) = (colorCode >= 0 && colorCode < maxId)
+  final def verify (colorCode: Int) = (colorCode >= minValue && colorCode <=
+  maxValue)
 }

@@ -38,7 +38,9 @@ Scala source file from the org.facsim.test package.
 
 package org.facsim.test
 
-import org.facsim.util.test.CommonTestMethods
+import org.facsim.requireFinite
+import org.facsim.requireNonNull
+import org.facsim.requireValid
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -83,7 +85,7 @@ requireValid tests.
         val e = intercept [IllegalArgumentException] {
           requireValid (arg, false)
         }
-        assertRequireValidMsg (e, "arg", arg, "false")
+        assertRequireValidMsg (e, "arg", arg)
       }
       it ("must do nothing if passed a valid argument") {
         val arg = "Some good value"

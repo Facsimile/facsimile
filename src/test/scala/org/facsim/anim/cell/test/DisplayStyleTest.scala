@@ -54,7 +54,7 @@ Test data.
 */
 
   trait TestData {
-    val validCodes = 0 to 16
+    val validCodes = DisplayStyle.minValue to DisplayStyle.maxValue
     val validMap = Map [Int, DisplayStyle.Value] (
       0 -> DisplayStyle.Wireframe,
       1 -> DisplayStyle.Solid,
@@ -74,7 +74,8 @@ Test data.
       15 -> DisplayStyle.Transparent14,
       16 -> DisplayStyle.Transparent15
     )
-    val invalidCodes = List (Int.MinValue, -1, 17, Int.MaxValue)
+    val invalidCodes = List (Int.MinValue, DisplayStyle.minValue - 1,
+    DisplayStyle.maxValue + 1, Int.MaxValue)
   }
 
 /*
@@ -109,7 +110,7 @@ Test the apply function works as expected.
     }
 
 /*
-Test that the default color is reported correctly.
+Test that the default display style is reported correctly.
 */
 
     describe (".default") {

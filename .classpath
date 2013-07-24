@@ -1,17 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-  <classpathentry kind="src" path="src\main\scala" output="target\scala-2.10\classes"/>
-  <classpathentry kind="src" path="src\main\java" output="target\scala-2.10\classes"/>
-  <classpathentry kind="src" path="src\test\scala" output="target\scala-2.10\test-classes"/>
-  <classpathentry kind="src" path="src\test\java" output="target\scala-2.10\test-classes"/>
-  <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
-  <classpathentry kind="lib" path="C:\Users\mallen\.ivy2\cache\joda-time\joda-time\jars\joda-time-2.2.jar"/>
-  <classpathentry kind="lib" path="C:\Users\mallen\.ivy2\cache\org.joda\joda-convert\jars\joda-convert-1.3.1.jar"/>
-  <classpathentry kind="lib" path="C:\Users\mallen\.ivy2\cache\java3d\j3d-core\jars\j3d-core-1.3.1.jar"/>
-  <classpathentry kind="lib" path="C:\Users\mallen\.ivy2\cache\java3d\vecmath\jars\vecmath-1.3.1.jar"/>
-  <classpathentry kind="lib" path="C:\Users\mallen\.ivy2\cache\java3d\j3d-core-utils\jars\j3d-core-utils-1.3.1.jar"/>
-  <classpathentry kind="lib" path="C:\Users\mallen\.sbt\boot\scala-2.10.2\lib\scala-reflect.jar"/>
-  <classpathentry kind="lib" path="C:\Users\mallen\.ivy2\cache\org.scalatest\scalatest_2.10\jars\scalatest_2.10-2.0.M5b.jar"/>
-  <classpathentry kind="src" path="/Facsimile Simulation Library Macros" exported="true" combineaccessrules="false"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-  <classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" output="target/scala-2.10/classes" path="src/main/scala"/>
+	<classpathentry kind="src" output="target/scala-2.10/classes" path="src/main/java"/>
+	<classpathentry kind="src" output="target/scala-2.10/test-classes" path="src/test/scala"/>
+	<classpathentry kind="src" output="target/scala-2.10/test-classes" path="src/test/java"/>
+	<classpathentry kind="src" path="macro/src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="src" path="macro/src/main/resources"/>
+	<classpathentry kind="src" path="macro/src/main/scala"/>
+	<classpathentry kind="src" path="macro/src/test/java"/>
+	<classpathentry kind="src" path="macro/src/test/resources"/>
+	<classpathentry kind="src" path="macro/src/test/scala"/>
+	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/mallen/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mallen/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mallen/.ivy2/cache/java3d/j3d-core/jars/j3d-core-1.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mallen/.ivy2/cache/java3d/vecmath/jars/vecmath-1.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mallen/.ivy2/cache/java3d/j3d-core-utils/jars/j3d-core-utils-1.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mallen/.sbt/boot/scala-2.10.2/lib/scala-reflect.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mallen/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-2.0.M5b.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Facsimile Simulation Library Macros"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

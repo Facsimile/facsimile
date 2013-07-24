@@ -40,7 +40,7 @@ package org.facsim.measure.test
 
 //import org.facsim.test.EqualsBehaviors
 import org.facsim.measure.Specific
-import org.facsim.util.test.CommonTestMethods
+import org.facsim.test.CommonTestMethods
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -112,7 +112,7 @@ exception.
           val e = intercept [IllegalArgumentException] {
             fixture.physQty.apply (value)
           }
-          assertRequireValidMsg (e, "value", value, condition)
+          assertRequireValidMsg (e, "value", value)
         }
       }
 

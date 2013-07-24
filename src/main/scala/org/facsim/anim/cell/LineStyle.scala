@@ -58,31 +58,43 @@ private [cell] object LineStyle extends Enumeration {
 Solid, having the ''cell'' line style 0.
 */
 
-  val Solid = Value
+  final val Solid = Value
 
 /**
 Dashed, having the ''cell'' line style 1.
 */
 
-  val Dashed = Value
+  final val Dashed = Value
 
 /**
 Dotted, having the ''cell'' line style 2.
 */
 
-  val Dotted = Value
+  final val Dotted = Value
 
 /**
 Halftone, having the ''cell'' line style 3.
 */
 
-  val Halftone = Value
+  final val Halftone = Value
 
 /**
 Default line style, which is used if an explicit style is not available.
 */
 
-  val default = Solid
+  final val default = Solid
+
+/**
+Minimum line width value in pixels.
+*/
+
+  final val minValue = 0
+
+/**
+Maximum line width value in pixels.
+*/
+
+  final val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -96,6 +108,6 @@ Verify a line style code.
 */
 //-----------------------------------------------------------------------------
 
-  def verify (lineStyleCode: Int) =
-  (lineStyleCode >= 0 && lineStyleCode < maxId)
+  final def verify (lineStyleCode: Int) =
+  (lineStyleCode >= minValue && lineStyleCode <= maxValue)
 }

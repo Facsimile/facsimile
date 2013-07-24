@@ -59,109 +59,121 @@ private [cell] object DisplayStyle extends Enumeration {
 Wireframe, having the ''cell'' display style 0.
 */
 
-  val Wireframe = Value
+  final val Wireframe = Value
 
 /**
 Solid, having the ''cell'' display style 1.
 */
 
-  val Solid = Value
+  final val Solid = Value
 
 /**
 Transparent 1, having the ''cell'' display style 2.  Almost solid.
 */
 
-  val Transparent1 = Value
+  final val Transparent1 = Value
 
 /**
 Transparent 2, having the ''cell'' display style 3.
 */
 
-  val Transparent2 = Value
+  final val Transparent2 = Value
 
 /**
 Transparent 3, having the ''cell'' display style 4.
 */
 
-  val Transparent3 = Value
+  final val Transparent3 = Value
 
 /**
 Transparent 4, having the ''cell'' display style 5.
 */
 
-  val Transparent4 = Value
+  final val Transparent4 = Value
 
 /**
 Transparent 5, having the ''cell'' display style 6.
 */
 
-  val Transparent5 = Value
+  final val Transparent5 = Value
 
 /**
 Transparent 6, having the ''cell'' display style 7.
 */
 
-  val Transparent6 = Value
+  final val Transparent6 = Value
 
 /**
 Transparent 7, having the ''cell'' display style 8.
 */
 
-  val Transparent7 = Value
+  final val Transparent7 = Value
 
 /**
 Transparent 8, having the ''cell'' display style 9.
 */
 
-  val Transparent8 = Value
+  final val Transparent8 = Value
 
 /**
 Transparent 9, having the ''cell'' display style 10.
 */
 
-  val Transparent9 = Value
+  final val Transparent9 = Value
 
 /**
 Transparent 10, having the ''cell'' display style 11.
 */
 
-  val Transparent10 = Value
+  final val Transparent10 = Value
 
 /**
 Transparent 11, having the ''cell'' display style 12.
 */
 
-  val Transparent11 = Value
+  final val Transparent11 = Value
 
 /**
 Transparent 12, having the ''cell'' display style 13.
 */
 
-  val Transparent12 = Value
+  final val Transparent12 = Value
 
 /**
 Transparent 13, having the ''cell'' display style 14.
 */
 
-  val Transparent13 = Value
+  final val Transparent13 = Value
 
 /**
 Transparent 14, having the ''cell'' display style 15.
 */
 
-  val Transparent14 = Value
+  final val Transparent14 = Value
 
 /**
 Transparent 15, having the ''cell'' display style 16.  Almost invisible.
 */
 
-  val Transparent15 = Value
+  final val Transparent15 = Value
 
 /**
 Default display style, which is used if an explicit style is not available.
 */
 
-  val default = Solid
+  final val default = Solid
+
+/**
+Minimum display style code value in pixels.
+*/
+
+  final val minValue = 0
+
+/**
+Maximum display style code value in pixels.
+*/
+
+  final val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -175,6 +187,6 @@ Verify a display style code.
 */
 //-----------------------------------------------------------------------------
 
-  def verify (displayStyleCode: Int) =
-  (displayStyleCode >= 0 && displayStyleCode < maxId)
+  final def verify (displayStyleCode: Int) =
+  (displayStyleCode >= minValue && displayStyleCode <= maxValue)
 }

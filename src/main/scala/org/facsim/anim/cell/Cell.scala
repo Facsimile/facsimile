@@ -88,7 +88,7 @@ inherited from the cell's parent.
 AutoMod Cell Flags]]
 */
 
-  private val flags = new CellFlags (scene.readInt (LibResource
+  private final val flags = new CellFlags (scene.readInt (LibResource
   ("anim.cell.Cell.flagDesc")))
 
 /*
@@ -103,7 +103,49 @@ Cell attributes.
 Determine the cell's attribute values.
 */
 
-  private val attrs = new Attributes (scene, flags)
+  private final val attrs = new Attributes (scene, flags)
+
+/*
+@see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
+*/
+
+  final override val lineStyle = attrs.lineStyle
+
+/*
+@see [[org.facsim.anim.cell.CellAttributes!.lineWidth]]
+*/
+
+  final override val lineWidth = attrs.lineWidth
+
+/*
+@see [[org.facsim.anim.cell.CellAttributes!.displayStyle]]
+*/
+
+  final override val displayStyle = attrs.displayStyle
+
+/*
+@see [[org.facsim.anim.cell.CellAttributes!.name]]
+*/
+
+  final override val name = attrs.name
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
+*/
+//-----------------------------------------------------------------------------
+
+  final override def faceColor = attrs.faceColor.orElse (parent.flatMap
+  (_.faceColor))
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
+*/
+//-----------------------------------------------------------------------------
+
+  final override def edgeColor = attrs.edgeColor.orElse (parent.flatMap
+  (_.edgeColor))
 }
 
 //=============================================================================

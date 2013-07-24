@@ -39,7 +39,7 @@ Scala source file from the org.facsim.measure.test package.
 package org.facsim.measure.test
 
 import org.facsim.measure.PhysicalQuantity
-import org.facsim.util.test.CommonTestMethods
+import org.facsim.test.CommonTestMethods
 import org.facsim.test.EqualsBehaviors
 import org.scalatest.FunSpec
 

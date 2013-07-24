@@ -221,7 +221,6 @@ Convert the arguments to strings.
 
     import c.universe._
     val argString = exprAsString (c)(arg)
-    val isValidString = exprAsString (c)(isValid)
 
 /*
 Generate the AST to be substituted for the macro reference.
@@ -232,7 +231,7 @@ some useful information.
 
     reify {
       if (!isValid.splice) throw new IllegalArgumentException (LibResource
-      ("requireValid", argString.splice, arg.splice, isValidString.splice))
+      ("requireValid", argString.splice, arg.splice))
     }
   }
 

@@ -64,7 +64,7 @@ extends CellAttributes with NotNull {
 Flag indicating whether attribute data is present in the cell file.
 */
 
-  private val attributesPresent = flags.attributesPresent
+  private final val attributesPresent = flags.attributesPresent
 
 /**
 Flag indicating whether colors are inherited from the parent cell.
@@ -73,29 +73,23 @@ Inherited colors are stored as `None`.  Non-inherited colors have `Some` cell
 color value.
 */
 
-  private val inheritColors = flags.colorsInherited
+  private final val inheritColors = flags.colorsInherited
 
-//-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
 */
-//-----------------------------------------------------------------------------
 
   final override val faceColor = readColor (0)
 
-//-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
 */
-//-----------------------------------------------------------------------------
 
   final override val edgeColor = readColor (1)
 
-//-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
 */
-//-----------------------------------------------------------------------------
 
   final override val lineStyle = {
 
@@ -105,7 +99,8 @@ If attributes are present, read the line style from the data stream.
 
     if (attributesPresent) {
       val lineStyleCode = scene.readInt (LineStyle.verify (_), LibResource
-      ("anim.cell.Attributes.lineStyleDesc", 0, LineStyle.maxId - 1))
+      ("anim.cell.Attributes.lineStyleDesc", LineStyle.minValue,
+      LineStyle.maxValue))
       LineStyle (lineStyleCode)
     }
 
@@ -116,11 +111,9 @@ Otherwise, use the default line style.
     else LineStyle.default
   }
 
-//-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.lineWidth]]
 */
-//-----------------------------------------------------------------------------
 
   final override val lineWidth = {
 
@@ -130,22 +123,21 @@ be a value in the range 1-7.
 */
 
     if (attributesPresent) {
-      scene.readInt (value => (value >= 1 && value <= 7), LibResource
-      ("anim.cell.Attributes.lineWidthDesc", 1, 7))
+      new LineWidth (scene.readInt (LineWidth.verify (_), LibResource
+      ("anim.cell.Attributes.lineWidthDesc", LineWidth.minValue,
+      LineWidth.maxValue)))
     }
 
 /*
 Otherwise, use the default line style of 1.
 */
 
-    else 1
+    else LineWidth.default
   }
 
-//-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.displayStyle]]
 */
-//-----------------------------------------------------------------------------
 
   final override val displayStyle = {
 
@@ -155,8 +147,8 @@ If attributes are present, read the display style from the data stream.
 
     if (attributesPresent) {
       val displayStyleCode = scene.readInt (DisplayStyle.verify (_),
-      LibResource ("anim.cell.Attributes.displayStyleDesc", 0,
-      DisplayStyle.maxId - 1))
+      LibResource ("anim.cell.Attributes.displayStyleDesc",
+      DisplayStyle.minValue, DisplayStyle.maxValue))
       DisplayStyle (displayStyleCode)
     }
 
@@ -167,11 +159,9 @@ Otherwise, use the default display style.
     else DisplayStyle.default
   }
 
-//-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.name]]
 */
-//-----------------------------------------------------------------------------
 
   final override val name = {
 
@@ -213,7 +203,7 @@ which is passed as an argument to an exception description message.
 */
 //-----------------------------------------------------------------------------
 
-  private def readColor (colorType: Int) = {
+  private final def readColor (colorType: Int) = {
 
 /*
 If attributes are present, then we must read them from the file - even if we're
@@ -222,7 +212,8 @@ inheriting the color from the parent ''cell''.
 
     if (attributesPresent) {
       val faceColorCode = scene.readInt (CellColor.verify (_), LibResource
-      ("anim.cell.Attributes.colorDesc", colorType, 0, CellColor.maxId - 1))
+      ("anim.cell.Attributes.colorDesc", colorType, CellColor.minValue,
+      CellColor.maxValue))
 
 /*
 If we're inheriting color, then - no matter what color code we just read - the
@@ -244,3 +235,4 @@ default color otherwise.
       else Some (CellColor.default)
     }
   }
+}

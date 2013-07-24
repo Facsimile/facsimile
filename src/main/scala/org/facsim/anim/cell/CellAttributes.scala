@@ -102,7 +102,7 @@ Line Styles]]
 /**
 Line width, in pixels.
 
-@return Line width of the cell in pixels.  This is a value between 1 and 7.
+@return Line width of the cell in pixels.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
 Line Width]]
@@ -111,7 +111,7 @@ Line Width]]
 */
 //-----------------------------------------------------------------------------
 
-  def lineWidth: Int
+  def lineWidth: LineWidth
 
 //-----------------------------------------------------------------------------
 /**

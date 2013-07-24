@@ -38,82 +38,73 @@ Scala source file from the org.facsim.anim.cell.test package.
 
 package org.facsim.anim.cell.test
 
-import org.facsim.anim.cell.CellColor
+import org.facsim.anim.cell.LineWidth
+import org.facsim.test.CommonTestMethods
 import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim.anim.cell.CellColor$]] object.
+Test suite for the [[org.facsim.anim.cell.LineWidth!]] object.
 */
 //=============================================================================
 
-class CellColorTest extends FunSpec {
+class LineWidthTest extends FunSpec with CommonTestMethods {
 
 /*
 Test data.
 */
 
   trait TestData {
-    val validCodes = CellColor.minValue to CellColor.maxValue
-    val validMap = Map [Int, CellColor.Value] (
-      0 -> CellColor.Black,
-      1 -> CellColor.Red,
-      2 -> CellColor.Green,
-      3 -> CellColor.Yellow,
-      4 -> CellColor.Blue,
-      5 -> CellColor.Magenta,
-      6 -> CellColor.Cyan,
-      7 -> CellColor.White,
-      8 -> CellColor.LightGray,
-      9 -> CellColor.DarkGray,
-      10 -> CellColor.Brown,
-      11 -> CellColor.LightBlue,
-      12 -> CellColor.Purple,
-      13 -> CellColor.Orange,
-      14 -> CellColor.LightGreen,
-      15 -> CellColor.LightYellow
-    )
-    val invalidCodes = List (Int.MinValue, CellColor.minValue - 1,
-    CellColor.maxValue + 1, Int.MaxValue)
+    val validValues = LineWidth.minValue to LineWidth.maxValue
+    val invalidValues = List (Int.MinValue, LineWidth.minValue - 1,
+    LineWidth.maxValue + 1, Int.MaxValue)
   }
 
 /*
-Test fixture description.
+Test fixture description for class.
 */
 
-  describe (CellColor.getClass.getCanonicalName) {
+  describe (classOf [LineWidth].getCanonicalName) {
 
 /*
-Test the apply function works as expected.
+Test the constructor.
 */
 
-    describe (".apply (Int)") {
+    describe (".this (Int)") {
       new TestData {
-        it ("must throw a java.util.NoSuchElementException if passed an " +
-        "invalid color code") {
-          invalidCodes.foreach {
-            code =>
-            intercept [NoSuchElementException] {
-              CellColor (code)
+        it ("must throw a java.lang.IllegalArgumentException if passed an " +
+        "invalid line width value") {
+          invalidValues.foreach {
+            value =>
+            val e = intercept [IllegalArgumentException] {
+              new LineWidth (value)
             }
+            assertRequireValidMsg (e, "lineWidth", value)
           }
         }
-        it ("must return the correct color if passed a valid color code") {
-          validCodes.foreach {
-            code =>
-            assert (CellColor (code) === validMap (code))
+        it ("must accept valid line width values") {
+          validValues.foreach {
+            value =>
+            new LineWidth (value)
           }
         }
       }
     }
+  }
 
 /*
-Test that the default color is reported correctly.
+Test fixture description for object.
+*/
+
+  describe (LineWidth.getClass.getCanonicalName) {
+
+/*
+Test that the default line width is reported correctly.
 */
 
     describe (".default") {
-      it ("must be Red") {
-        assert (CellColor.default === CellColor.Red)
+      it ("must be 1") {
+        assert (LineWidth.default.lineWidth === 1)
       }
     }
 
@@ -123,16 +114,16 @@ Test the verify function works as expected.
 
     describe (".verify (Int)") {
       new TestData {
-        it ("must return false if passed an invalid color code") {
-          invalidCodes.foreach {
-            code =>
-            assert (CellColor.verify (code) === false)
+        it ("must return false if passed an invalid line width value") {
+          invalidValues.foreach {
+            value =>
+            assert (LineWidth.verify (value) === false)
           }
         }
-        it ("must return true if passed a valid color code") {
-          validCodes.foreach {
-            code =>
-            assert (CellColor.verify (code) === true)
+        it ("must return true if passed a valid line width value") {
+          validValues.foreach {
+            value =>
+            assert (LineWidth.verify (value) === true)
           }
         }
       }
