@@ -106,6 +106,8 @@ quantity.
 @throws java.lang.IllegalArgumentException If '''value''' in the specified
 '''units''' is not finite or is outside of the defined domain for the
 associated physical quantity.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -131,6 +133,8 @@ lie within the defined domain for the associated physical quantity.
 @throws java.lang.IllegalArgumentException If '''value''' in ''SI'' units is
 not finite or is outside of the defined domain for the associate physical
 quantity.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -172,7 +176,7 @@ quantity.
 //.............................................................................
 
     final override def toString = {
-      val units = getPreferredUnits
+      val units = preferredUnits
       units.format (getValue (units))
     }
 
@@ -197,6 +201,8 @@ quantity.
 units to the standard ''SI'' units for this unit family.
 
 @param symbol Symbol associated with these units.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 

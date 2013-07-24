@@ -143,7 +143,7 @@ Physical quantity family for time measurements.
 @inheritdoc
 */
 
-  final override val getSIUnits = seconds
+  final override val siUnits = seconds
 
 /*
 Register this family.

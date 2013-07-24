@@ -93,7 +93,7 @@ negative.
 If the value is negative, then report an error.
 */
 
-    requireValid ("value", value, value >= 0.0)
+    requireValid (value, value >= 0.0)
   }
 
 //-----------------------------------------------------------------------------

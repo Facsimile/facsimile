@@ -165,7 +165,7 @@ or var declarations.
 
 <!--
 Verify that class names begin with an uppercase alphabetic character, with the
-remainder made up of mixed-case alpha-numeric characters.
+remainder made up of mixed-case alphanumeric characters.
 -->
 
   <check class="org.scalastyle.scalariform.ClassNamesChecker" enabled="true"
@@ -177,7 +177,7 @@ remainder made up of mixed-case alpha-numeric characters.
 
 <!--
 Verify that object names begin with an uppercase alphabetic character, with the
-remainder made up of mixed-case alpha-numeric characters.
+remainder made up of mixed-case alphanumeric characters.
 -->
 
   <check class="org.scalastyle.scalariform.ObjectNamesChecker" enabled="true"
@@ -189,7 +189,7 @@ remainder made up of mixed-case alpha-numeric characters.
 
 <!--
 Verify that package object names begin with a lowercase alphabetic character,
-with the remainder made up of lowercase alpha-numeric characters and the
+with the remainder made up of lowercase alphanumeric characters and the
 underscore.
 -->
 
@@ -202,7 +202,7 @@ underscore.
 
 <!--
 Verify that method/function names begin with a lowercase alphabetic character,
-with the remainder made up of mixed-case alpha-numeric characters.
+with the remainder made up of mixed-case alphanumeric characters.
 -->
 
   <check class="org.scalastyle.scalariform.MethodNamesChecker" enabled="true"

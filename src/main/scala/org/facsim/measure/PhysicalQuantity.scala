@@ -38,7 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.requireFiniteValue
+import org.facsim.requireFinite
 
 //=============================================================================
 /**
@@ -73,7 +73,7 @@ Type for units of this physical quantity.
 SI units for this physical quantity.
 */
 
-  val getSIUnits: Units
+  val siUnits: Units
 
 //-----------------------------------------------------------------------------
 /**
@@ -92,7 +92,7 @@ specifying preferred units is currently not implemented.
 */
 //-----------------------------------------------------------------------------
 
-  def getPreferredUnits: Units = getSIUnits
+  def preferredUnits: Units = siUnits
 
 //-----------------------------------------------------------------------------
 /**
@@ -132,7 +132,7 @@ Sanity tests.  Ensure that value is a finite number, and is not infinite or
 not-a-number (NaN).
 */
 
-    requireFiniteValue ("value", value)
+    requireFinite (value)
 
 //.............................................................................
 /**

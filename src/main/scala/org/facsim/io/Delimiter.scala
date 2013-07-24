@@ -98,9 +98,9 @@ Preconditions: forbid the use of null and carriage return characters as
 delimiters.
 */
 
-  requireNonNull ("delimiters", delimiters)
-  requireValid ("delimiters", delimiters, !delimiters.contains
-  (TextReader.NUL) && !delimiters.contains (TextReader.CR))
+  requireNonNull (delimiters)
+  requireValid (delimiters, !delimiters.contains (TextReader.NUL) &&
+  !delimiters.contains (TextReader.CR))
 
 //-----------------------------------------------------------------------------
 /**

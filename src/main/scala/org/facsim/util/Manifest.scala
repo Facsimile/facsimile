@@ -42,7 +42,6 @@ import java.io.File
 import java.net.URI
 import java.util.jar.JarFile
 import org.facsim.LibResource
-import org.facsim.requireNonNull
 import org.joda.time.DateTime
 
 //=============================================================================

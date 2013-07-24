@@ -38,7 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.requireFiniteValue
+import org.facsim.requireFinite
 import org.facsim.requireValid
 
 //=============================================================================
@@ -77,8 +77,8 @@ nor can they allowed to be 1.0 (in the latter case, the SIConverter should be
 employed).
 */
 
-  requireFiniteValue ("factor", factor)
-  requireValid ("factor", factor, factor != 0.0 && factor != 1.0)
+  requireFinite (factor)
+  requireValid (factor, factor != 0.0 && factor != 1.0)
 
 //-----------------------------------------------------------------------------
 /**

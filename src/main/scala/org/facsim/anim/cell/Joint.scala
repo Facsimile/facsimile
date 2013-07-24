@@ -54,7 +54,7 @@ Kinematic joint.
 */
 //=============================================================================
 
-private [cell] final class Joint (data: TextReader) {
+private [cell] abstract class Joint (data: TextReader) {
 
 /**
 Determine the type of the joint.
@@ -117,7 +117,7 @@ outside of the permitted range.
 Read in the joint type from the file.
 */
 
-    val jointType = data.readAsInt ()
+    val jointType = data.readInt ()
 
 /*
 If the joint type code is invalid, throw an exception.
@@ -157,7 +157,7 @@ specified.
 Read the velocity from the data stream.
 */
 
-    val velocity = data.readAsDouble ()
+    val velocity = data.readDouble ()
     jointType match {
 
 /*
@@ -209,7 +209,7 @@ specified.
 Read the minimum from the data stream.
 */
 
-    val minimum = data.readAsDouble ()
+    val minimum = data.readDouble ()
     jointType match {
 
 /*
@@ -258,7 +258,7 @@ specified.
 Read the maximum from the data stream.
 */
 
-    val maximum = data.readAsDouble ()
+    val maximum = data.readDouble ()
     jointType match {
 
 /*
@@ -311,7 +311,7 @@ is specified.
 Read the current value from the data stream.
 */
 
-    val current = data.readAsDouble ()
+    val current = data.readDouble ()
     jointType match {
 
 /*

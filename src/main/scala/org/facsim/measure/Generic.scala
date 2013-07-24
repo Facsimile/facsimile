@@ -88,7 +88,7 @@ definition.
 @inheritdoc
 */
 
-  final override val getSIUnits = basic
+  final override val siUnits = basic
 
 //-----------------------------------------------------------------------------
 /**

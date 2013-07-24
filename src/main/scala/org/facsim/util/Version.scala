@@ -98,7 +98,7 @@ number processing is implemented, this will change.
 //-----------------------------------------------------------------------------
 
   def apply (version: String) = {
-    requireNonNull ("version", version)
+    requireNonNull (version)
     new Version (version)
   }
 }

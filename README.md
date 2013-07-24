@@ -14,5 +14,4 @@ the _[GNU General Public License]
 (GPLv3).
 
 Instructions for working with _Facsimile_, and for working on _Facsimile_
-development,
-are to follow shortly...
+development, are to follow shortly...

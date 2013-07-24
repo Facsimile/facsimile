@@ -137,7 +137,7 @@ Physical quantity family for plane angle measurements.
 @inheritdoc
 */
 
-  final override val getSIUnits = radians
+  final override val siUnits = radians
 
 /*
 Register this family.
@@ -153,15 +153,15 @@ Compute arc sine from sine value
 
 @return Angle in the range [-τ/4, τ/4] radians ([-90, 90] degrees).
 
-@throws java.lang.IllegalArgumentException if '''sine''' is NaN or is outside
-of the range [-1, 1].
+@throws [[java.lang.IllegalArgumentException!]] if '''sine''' is NaN or is
+outside of the range [-1, 1].
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
   final def asin (sine: Double) = {
-    requireValid ("sine", sine, sine >= -1.0 && sine <= 1.0)
+    requireValid (sine, sine >= -1.0 && sine <= 1.0)
     apply (Math.asin (sine))
   } ensuring (!_.getValue.isNaN)
 
@@ -173,15 +173,15 @@ Compute arc cosine from cosine value.
 
 @return Angle in the range [0, τ/2] radians ([0, 180] degrees).
 
-@throws java.lang.IllegalArgumentException if '''cosine''' is NaN or is outside
-of the range [-1, 1].
+@throws [[java.lang.IllegalArgumentException!]] if '''cosine''' is NaN or is
+outside of the range [-1, 1].
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
   final def acos (cosine: Double) = {
-    requireValid ("cosine", cosine, cosine >= -1.0 && cosine <= 1.0)
+    requireValid (cosine, cosine >= -1.0 && cosine <= 1.0)
     apply (Math.acos (cosine))
   } ensuring (!_.getValue.isNaN)
 
@@ -197,14 +197,14 @@ applicable.
 
 @return Angle in the range [-τ/4, τ/4] radians ([-90, 90] degrees).
 
-@throws java.lang.IllegalArgumentException if '''tangent''' is NaN.
+@throws [[java.lang.IllegalArgumentException!]] if '''tangent''' is NaN.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
   final def atan (tangent: Double) = {
-    requireValid ("tangent", tangent, tangent != Double.NaN)
+    requireValid (tangent, tangent != Double.NaN)
     apply (Math.atan (tangent))
   } ensuring (!_.getValue.isNaN)
 
@@ -238,7 +238,7 @@ Returns the angle ''θ'' from the conversion of rectangular coordinates
 
 @param value Angle value in radians.  This value must be finite.
 
-@throws java.lang.IllegalArgumentException if '''value''' is not finite.
+@throws [[java.lang.IllegalArgumentException!]] if '''value''' is not finite.
 
 @since 0.0
 */

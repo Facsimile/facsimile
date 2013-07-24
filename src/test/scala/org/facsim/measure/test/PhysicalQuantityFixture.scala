@@ -38,53 +38,58 @@ Scala source file from the org.facsim.measure.test package.
 
 package org.facsim.measure.test
 
+import org.facsim.measure.PhysicalQuantity
+import org.facsim.test.EqualsFixture
+
 //=============================================================================
 /**
-Test fixture for testing physical quantities.
+Test fixture for testing [[org.facsim.measure.PhysicalQuantity]] sub-classes.
+
+@tparam Q The `PhysicalQuantity` sub-class being tested.
 */
 //=============================================================================
 
-trait PhysicalQuantityFixture {
+trait PhysicalQuantityFixture [Q <: PhysicalQuantity] {
+
+/**
+Physical quantity associated with this fixture.
+*/
+
+  val physQty: Q
 
 //-----------------------------------------------------------------------------
 /**
-List of good values, in associated SI units, that ought to be capable of valid
-measurement constructor.
+Retrieve this physical quantities expected SI units.
 
-@return List of values all of which should be capable of valid construction
-when expressed in SI units.
+@return The expected SI units for this physical quantity.
 */
 //-----------------------------------------------------------------------------
 
-  final def validValues = getValidValues
+  def expectedSIUnits: physQty.Units
 
 //-----------------------------------------------------------------------------
 /**
-Override to customize the list of good values for a class.
+List of non-finite measurement values, in associated SI units, that ought to be
+incapable of valid measurement construction, and which should result in an
+exception being thrown.
 
-@note Values returned should be at the boundaries of acceptable ranges. Values
-within the range are generally not useful.
-
-@return List of customized values all of which should be capable of valid
+@return List of non-finite values none of which should be capable of valid
 construction when expressed in SI units.
 */
 //-----------------------------------------------------------------------------
 
-  def getValidValues: List [Double]
+  final def nonFiniteValues: List [Double] = Double.NaN ::
+  Double.NegativeInfinity :: Double.PositiveInfinity :: Nil
 
 //-----------------------------------------------------------------------------
 /**
-List of bad values, in associated SI units, that ought to be incapable of valid
-measurement constructor, and which should result in an exception being thrown.
+Retrieve a fixture for testing the equality of different measurements.
 
-@note Specific rangeless values (such as ''NaN'', Values returned should be at the boundaries of acceptable ranges or
-should be specific rangeless values (such as NaN, etc.).
-
-@return list of values none of which should be capable of valid construction
-when expressed in SI units.
+@return Equals test fixture for this physical quantity.  The test fixture will
+be used to verify that this physical quantity's measurement class correctly
+implements the ''equality contract''.
 */
 //-----------------------------------------------------------------------------
 
-  final def invalidValues = Double.NaN :: Double.NegativeInfinity ::
-  Double.PositiveInfinity :: getInvalidValues
+  def equalsFixture: EqualsFixture [physQty.Measure]
 }

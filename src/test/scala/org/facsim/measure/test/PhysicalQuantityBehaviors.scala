@@ -39,16 +39,55 @@ Scala source file from the org.facsim.measure.test package.
 package org.facsim.measure.test
 
 import org.facsim.measure.PhysicalQuantity
-import org.facsim.test.CommonTestMethods
+import org.facsim.util.test.CommonTestMethods
+import org.facsim.test.EqualsBehaviors
 import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test behaviors for the [[org.facsim.measure.PhysicalQuantity!]] abstract class.
+Test behaviors for [[org.facsim.measure.PhysicalQuantity!]] sub-classes.
+
+@tparam V PhysicalQuantity sub-class to be tested.
 */
 //=============================================================================
 
-trait PhysicalQuantityBehaviors extends CommonTestMethods {
+trait PhysicalQuantityBehaviors [Q <: PhysicalQuantity] extends
+CommonTestMethods {
   this: FunSpec =>
 
+//-----------------------------------------------------------------------------
+/**
+Verify a [[org.facsim.measure.PhysicalQuantity!]]-implementing object.
+
+@param fixture Test fixture providing information to be used by the tests.
+*/
+//-----------------------------------------------------------------------------
+
+  final def physicalQuantityTypeBehavior (fixture: PhysicalQuantityFixture
+  [Q]): Unit = {
+
+/*
+Test the physical quantity's SI units are reported correctly.
+*/
+
+    describe (".siUnits") {
+      it ("must report correct SI units for this type") {
+        assert (fixture.physQty.siUnits === fixture.expectedSIUnits)
+      }
+    }
+
+/*
+Test that the units for this physical quantity preferred by the user are being
+reported correctly.
+
+TODO: Right now, this is simply the same as the SI units, but that will change
+in time.
+*/
+
+    describe (".preferredUnits") {
+      it ("must report user's preferred units for this type") {
+        assert (fixture.physQty.preferredUnits === fixture.expectedSIUnits)
+      }
+    }
+  }
 }

@@ -42,7 +42,7 @@ package org.facsim.anim
 /**
 ''[[http://facsim.org/ Facsimile]]'' Simulation Library ''cell'' scene support.
 
-Package supporting the import of ''[[http://www.automod.com/ AutoMod]] cell''
+Package supporting the import of ''[[http://www.automod.com/ AutoMod®]] cell''
 scenes into ''Facsimile''.
 
 @since 0.0

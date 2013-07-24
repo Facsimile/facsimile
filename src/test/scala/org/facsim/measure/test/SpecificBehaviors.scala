@@ -40,7 +40,7 @@ package org.facsim.measure.test
 
 //import org.facsim.test.EqualsBehaviors
 import org.facsim.measure.Specific
-import org.facsim.test.CommonTestMethods
+import org.facsim.util.test.CommonTestMethods
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -49,76 +49,83 @@ Test behaviors for the [[org.facsim.measure.Specific!]] abstract class.
 */
 //=============================================================================
 
-trait SpecificBehaviors extends PhysicalQuantityBehaviors {
+trait SpecificBehaviors [Q <: Specific] extends PhysicalQuantityBehaviors [Q] {
   this: FunSpec =>
 
 //-----------------------------------------------------------------------------
 /**
-Ensure that the [[org.facsim.measure.Specific!.apply(Double,
-org.facsim.measure.Specific!.Units)*]] method functions as expected.
+Verify a [[org.facsim.measure.Specific!]]-implementing object.
 
-@param pq Specific physical quantity instance to be tested.
+@param fixture Test fixture providing information to be used by the tests.
 */
 //-----------------------------------------------------------------------------
 
-  def applyDoubleUnitsBehavior (pq: Specific) {
-    describe (".apply (Double, Units)") {
+  final def specificBehavior (fixture: SpecificFixture [Q]): Unit = {
 
 /*
-We must get an exception if NaN is passed as the value of the physical
-quantity.
+Firstly, verify the physical quantity type behavior.
 */
 
-      it ("must throw IllegalArgumentException if passed NaN") {
-        val value = Double.NaN
-        val e = intercept [IllegalArgumentException] {
-          pq (value, pq.getSIUnits)
+    it must behave like physicalQuantityTypeBehavior (fixture)
+
+/*
+Verify that the family reported for this physical quantity matches
+requirements.
+*/
+
+    describe (".family") {
+      it ("must report the correct family") {
+        assert (fixture.physQty.family === fixture.expectedFamily)
+      }
+    }
+
+/*
+Now verify the apply(Double) method.
+*/
+
+    describe (".apply (Double)") {
+
+/*
+Verify that non-finite values are rejected.
+*/
+
+      it ("must throw an IllegalArgumentException if passed a non-finite " +
+      "value") {
+        fixture.nonFiniteValues.foreach {
+          value =>
+          val e = intercept [IllegalArgumentException] {
+            fixture.physQty.apply (value)
+          }
+          assertRequireFiniteMsg (e, "value", value)
         }
-        assertIllegalArgumentMessage (e, "value", value)
       }
 
 /*
-We must get an exception if -∞ is passed as the value of the physical quantity.
+Verify that applying bad values will be rejected with the appropriate
+exception.
 */
 
-      it ("must throw IllegalArgumentException if passed -∞") {
-        val value = Double.NegativeInfinity
-        val e = intercept [IllegalArgumentException] {
-          pq (value, pq.getSIUnits)
+      it ("must throw an IllegalArgumentException if passed a bad value") {
+        fixture.invalidValues.foreach {
+          pair =>
+          val (value, condition) = pair
+          val e = intercept [IllegalArgumentException] {
+            fixture.physQty.apply (value)
+          }
+          assertRequireValidMsg (e, "value", value, condition)
         }
-        assertIllegalArgumentMessage (e, "value", value)
       }
 
 /*
-We must get an exception if ∞ is passed as the value of the physical quantity.
+Verify that applying good values will be accepted without any exceptions being
+thrown.
 */
 
-      it ("must throw IllegalArgumentException if passed ∞") {
-        val value = Double.PositiveInfinity
-        val e = intercept [IllegalArgumentException] {
-          pq (value, pq.getSIUnits)
+      it ("must not throw an exception when passed a valid value") {
+        fixture.validValues.foreach {
+          value =>
+          assert (fixture.physQty.apply (value) ne null)
         }
-        assertIllegalArgumentMessage (e, "value", value)
-      }
-
-/*
-It must accept the value 0, return a measurement of the right type and the SI
-unit value of that measurement must be zero also.
-*/
-
-      it ("must accept 0 in the SI units") {
-        val measure = pq (0.0, pq.getSIUnits)
-        assert (measure.getValue === 0.0)
-      }
-
-/*
-It must accept the value 0, return a measurement of the right type and the SI
-unit value of that measurement must be zero also.
-*/
-
-      it ("must accept 0 in the SI units") {
-        val measure = pq (0.0, pq.getSIUnits)
-        assert (measure.getValue === 0.0)
       }
     }
   }

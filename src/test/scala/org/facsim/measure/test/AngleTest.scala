@@ -51,7 +51,24 @@ If you're curious why τ is used in place of 2π, refer to the [[
 */
 //=============================================================================
 
-class AngleTest extends FunSpec with SpecificBehaviors {
+class AngleTest extends FunSpec with SpecificBehaviors [Angle.type] {
+
+/*
+Test fixture for angles.
+*/
+
+  trait AngleFixture extends SpecificFixture [Angle.type] {
+
+/*
+Specify the physical type.
+*/
+
+    final override val physQty = Angle
+
+/*
+
+ */
+  }
 
 /*
 Angle test data.
@@ -206,10 +223,18 @@ Test that the constant τ has the correct value.
     }
 
 /*
-Test that the apply method, which creates new measurements with the specified
-value in the specified units, functions correctly.
+Test basic specific measure behavior (creation, equality, addition, etc.).
+This should come after the constant testing above, but before the higher-level
+stuff below.
 */
 
-    it must behave like applyDoubleUnitsBehavior (Angle)
+    it must behave like specificBehavior (/* test fixtures instances go here */)
+
+/*
+Test the arc sine function.
+*/
+
+    describe (".arcsine (Double)") {
+    }
   }
 }

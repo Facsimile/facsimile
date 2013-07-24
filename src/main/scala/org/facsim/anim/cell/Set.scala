@@ -38,6 +38,11 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] class Set () extends Cell {
+//=============================================================================
+/**
+Abstract class for primitives that can themselves store primitives.
+*/
+//=============================================================================
 
-}
+private [cell] abstract class Set (scene: CellScene, parent: Option [Set])
+extends Cell (scene, parent)

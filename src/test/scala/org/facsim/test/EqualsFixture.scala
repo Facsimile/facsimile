@@ -32,7 +32,7 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim package.
+Scala source file from the org.facsim.test package.
 */
 //=============================================================================
 
@@ -42,6 +42,8 @@ package org.facsim.test
 /**
 Fixture trait for testing if an associated object implements the ''equals
 contract''.
+
+@tparam Type, implementing the [[scala.Equals!]] trait, to be tested.
 */
 //=============================================================================
 
@@ -87,8 +89,8 @@ equal.
 Return a sample list of values of a type different to '''V'''.
 
 @note None of the values in this list should be of type '''V'''.  However, to
-improve the thoroughness of the testing, the contents of these objects should
-match the contents of some of the objects in
+improve the thoroughness of the testing, if possible the contents of these
+objects should match the contents of some of the objects in
 [[org.facsim.EqualsFixture!.valueSample]].
 
 @return List of values of a different type to '''V'''.

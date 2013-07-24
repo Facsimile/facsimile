@@ -32,19 +32,18 @@ rejected.  For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim package.
+Scala source file from the org.facsim.test package.
 */
 //=============================================================================
 
-package org.facsim
+package org.facsim.test
 
 import scala.annotation.tailrec
 import org.scalatest.FunSpec
-import org.facsim.test.EqualsFixture
 
 //=============================================================================
 /**
-Test behaviors for [[scala.Equals]] trait-implementing classes.
+Test behaviors for [[scala.Equals!]] trait-implementing classes.
 
 This trait can be used as part of the test suite for a class that must honor
 the ''equals contract'':
@@ -60,7 +59,7 @@ the ''equals contract'':
  -  `x != y` if `x` and `y` are not comparable objects, regardless of contents,
     for various non-`null` `x` & `y`.
  -  `x != null` for various non-`null` `x`.  Should not see
-    [[java.lang.NullPointerException]] thrown.
+    [[java.lang.NullPointerException!]] thrown.
  -  If `x == y`, then verify also that `x.hashMap = y.hashMap`, for various
     non-`null` `x` & `y`.
  -  etc.
@@ -72,11 +71,11 @@ trait EqualsBehaviors [V <: Equals] {
 
 //-----------------------------------------------------------------------------
 /**
-Verify an Equals-implementing object.
+Verify a [[scala.Equals!]]-implementing object.
 */
 //-----------------------------------------------------------------------------
 
-  def equalsBehavior (equalsFixture: EqualsFixture [V]) {
+  final def equalsBehavior (equalsFixture: EqualsFixture [V]): Unit = {
 
 /*
 Function to compare a value to every value in a list, verifying the result.
@@ -86,7 +85,8 @@ Function to compare a value to every value in a list, verifying the result.
       @tailrec
       def doCompare (value: V, list: List [V]): Unit = {
         if (!list.isEmpty) {
-          list.foreach {other =>
+          list.foreach {
+            other =>
             assert (value.equals (other) === expectedResult)
             assert (other.equals (value) === expectedResult)
           }
@@ -105,7 +105,10 @@ value in a list.
       @tailrec
       def doCompareHash (value: V, list: List [V]): Unit = {
         if (!list.isEmpty) {
-          list.foreach (other => assert (value.hashCode === other.hashCode))
+          list.foreach {
+            other =>
+            assert (value.hashCode === other.hashCode)
+          }
           doCompareHash (list.head, list.tail)
         }
       }
@@ -124,8 +127,10 @@ a NullPointerException being thrown.
 */
 
       it ("must return false if passed null") {
-        equalsFixture.valueSample.foreach (value => assert (!value.canEqual
-        (null)))
+        equalsFixture.valueSample.foreach {
+          value =>
+          assert (!value.canEqual (null))
+        }
       }
 
 /*
@@ -133,9 +138,12 @@ Verify that it reports false if passed an object of a different type.
 */
 
       it ("must return false if passed an object of a different type") {
-        equalsFixture.valueSample.foreach {value =>
-          equalsFixture.nonValueSample.foreach (that => assert (!value.canEqual
-          (that)))
+        equalsFixture.valueSample.foreach {
+          value =>
+          equalsFixture.nonValueSample.foreach {
+            that =>
+            assert (!value.canEqual (that))
+          }
         }
       }
 
@@ -143,10 +151,14 @@ Verify that it reports false if passed an object of a different type.
 Verify that it reports true if passed an object of the same type.
 */
 
-      it ("must return true if passed an object of the same type") {
-        equalsFixture.valueSample.foreach {value =>
-          equalsFixture.valueSample.foreach (that => assert (value.canEqual
-          (that)))
+      it ("must return true if passed an object of the same type - including" +
+      "itself") {
+        equalsFixture.valueSample.foreach {
+          value =>
+          equalsFixture.valueSample.foreach {
+            that =>
+            assert (value.canEqual (that))
+          }
         }
       }
     }
@@ -163,18 +175,23 @@ NullPointerException being thrown.
 */
 
       it ("must return false if compared to null") {
-        equalsFixture.valueSample.foreach (value => assert (!value.equals
-        (null)))
+        equalsFixture.valueSample.foreach {
+          value =>
+          assert (!value.equals (null))
+        }
       }
 
 /*
-Verify that equals returns false if a different type of object.
+Verify that equals returns false if passed a different type of object.
 */
 
       it ("must return false if compared to object of different type") {
-        equalsFixture.valueSample.foreach { value =>
-          equalsFixture.nonValueSample.foreach (that => assert (!value.equals
-          (that)))
+        equalsFixture.valueSample.foreach {
+          value =>
+          equalsFixture.nonValueSample.foreach {
+            that =>
+            assert (!value.equals (that))
+          }
         }
       }
 
@@ -183,8 +200,10 @@ Verify that each object compares as equal to itself.
 */
 
       it ("must return true if compared to self (reflexive term") {
-        equalsFixture.valueSample.foreach (value => assert (value.equals
-        (value)))
+        equalsFixture.valueSample.foreach {
+          value =>
+          assert (value.equals (value))
+        }
       }
 
 /*
@@ -202,9 +221,11 @@ Verify that each object compares true to every other equal object and vice
 versa.
 */
 
-      it ("must return true when compared to equal value (and true when equal "
-      + "value compared to this value)") {
-        equalsFixture.equalListSample.foreach (compare (_, true))
+      it ("must return true when compared to an equal value (and true when an "
+      + "equal value compared to this value)") {
+        equalsFixture.equalListSample.foreach {
+          compare (_, true)
+        }
       }
     }
 
@@ -212,14 +233,14 @@ versa.
 Test the hash code function, whose operation must be consistent with equals.
 */
 
-    describe ("hashCode ()") {
+    describe ("hashCode") {
 
 /*
 The hash codes of dissimilar values are not necessarily different (we can have
 the same hash code for two different values purely by chance, although that
 should happen rarely).  However, for the purposes of our test, we ought to get
-a different hash code for every unique value we test.  If this test shoudl
-fails, down to pure bad luck, rather than bad hash code implementation, then
+a different hash code for every unique value we test.  If this test should
+fail, down to pure bad luck, rather than bad hash code implementation, then
 choose a different set of test values.
 
 If the set of unique hash codes is the same size as the list of test values,
@@ -237,7 +258,9 @@ Every object that compares equal MUST have the same hash code.
 */
 
       it ("must return same value as any object it is equal to") {
-        equalsFixture.equalListSample.foreach (compareHash (_))
+        equalsFixture.equalListSample.foreach {
+          compareHash (_)
+        }
       }
     }
   }

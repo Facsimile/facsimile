@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+Facsimile - A Discrete-Event Simulation Library
+Copyright © 2004-2013, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with Facsimile.  If not, see http://www.gnu.org/licenses/.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+  http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+  http://www.facsim.org/Documentation/CodingStandards/
+===============================================================================
+Top-level Maven Project Object Model (POM) file for Facsimile.
+
+All general project-related information (developers, contributors, mailing
+lists, source code management, properties, etc.) should be placed within this
+primary POM file.  Only module-specific information should be added to module
+POMs.
+
+This file should be edited manually, rather than using Eclipse's "Maven POM
+Editor" or the "XML Editor".
+===============================================================================
+-->
+
+<!--
+===============================================================================
+POM co-ordinate information.
+
+Note that Facsimile is hosted on Sonatype's OSS (open source software) Nexus
+repository; consequently, Facsimile must identify itself as a child of the
+Sonatype's "oss-parent" Maven project.  For further information, please refer
+to the following guide:
+
+  https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+
+  Usage+Guide
+===============================================================================
+-->
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+  <groupId>org.facsim</groupId>
+  <artifactId>facsimile</artifactId>
+  <version>0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+<!--
+===============================================================================
+POM information.
+===============================================================================
+-->
+
+  <name>Facsimile Simulation Library</name>
+  <description>
+    The Facsimile project's goal is to develop and maintain a high-quality, 3D,
+    discrete-event simulation library that can be used for industrial
+    simulation projects in an engineering and/or manufacturing environment.
+
+    Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS,
+    BSD and Unix on the Java virtual machine.
+  </description>
+  <url>http://facsim.org/</url>
+  <inceptionYear>2004</inceptionYear>
+
+<!--
+===============================================================================
+Facsimile Organization.
+
+This project is the personal property of Michael J Allen.  At some point in the
+future, this may be changed to a consortium of developers - but no-one else has
+contributed to the project just yet, so this will suffice for now.
+===============================================================================
+-->
+
+  <organization>
+    <name>Michael J Allen</name>
+    <url>http://facsim.org/</url>
+  </organization>
+
+<!--
+===============================================================================
+Facsimile License.
+
+Facsimile is distributed under the GNU Lesser General Public License, version
+3 (LGPLv3).
+===============================================================================
+-->
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License version 3 (LGPLv3)</name>
+      <url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+<!--
+===============================================================================
+Facsimile Developers.
+
+If you are actively involved in the Facsimile project, you should add your
+name, role, e-mail address and (optionally) organization to this list,
+alphabetically, by surname.  When your active participation in the project
+ceases, your development information should be transferred to the
+"Contributors" section.
+===============================================================================
+-->
+
+  <developers>
+
+<!--
+Allen, Mike.
+-->
+
+    <developer>
+      <id>mja</id>
+      <name>Michael J Allen</name>
+      <email>mike.allen@facsim.org</email>
+      <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
+      <organization>Hindsight Consulting, Inc.</organization>
+      <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
+      <roles>
+        <role>Project Lead</role>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>US/Eastern</timezone>
+    </developer>
+  </developers>
+
+<!--
+===============================================================================
+Facsimile Contributors.
+
+If you have made contributions to the Facsimile project, but are not actively
+involved, you should add your name, role, e-mail address and (optionally)
+organization to this list, alphabetically, by surname.
+===============================================================================
+-->
+
+  <contributors>
+  </contributors>
+
+<!--
+===============================================================================
+Mailing lists associated with the Facsimile project.
+===============================================================================
+-->
+
+  <mailingLists>
+
+<!--
+Facsimile mailing lists are currently being re-evaluated.  This list will be
+populated shortly.
+-->
+
+  </mailingLists>
+
+<!--
+===============================================================================
+Pre-requisites.
+===============================================================================
+-->
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+
+<!--
+===============================================================================
+Source Code Management.
+
+As of 10 November 2012, Facsimile sources are hosted on GitHub.  Prior to this
+date, Facsimile sources were hosted in a Subversion repository on Sourceforge;
+the sourceforge repository is no longer in use.
+===============================================================================
+-->
+
+  <scm>
+
+<!--
+Do NOT use Maven properties in these fields, as they will get trashed by the
+maven-release-plugin during a release (or, at least, they used to with
+Subversion).
+-->
+
+    <connection>scm:git:https://github.com/Facsimile/facsimile.git</connection>
+    <developerConnection>
+      scm:git:https://github.com/Facsimile/facsimile.git
+    </developerConnection>
+    <url>https://github.com/Facsimile/facsimile</url>
+  </scm>
+
+<!--
+===============================================================================
+Issue Management System.
+
+As of 10 November 2012, Facsimile issue management (bug reports, enhancements,
+etc.) are hosted by GitHub.  Prior to this date, Facsimile issues were hosted
+by LaunchPad; LaunchPad issue management is no longer in use.
+===============================================================================
+-->
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/Facsimile/facsimile/issues</url>
+  </issueManagement>
+
+<!--
+===============================================================================
+Continuous Integration (CI) System.
+
+Facsimile utilizes the Jenkins CI system, which is (currently) hosted on a
+private server that is inaccessible from the Internet.
+===============================================================================
+-->
+
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>http://sol.hindsight.dyndns.biz:8080/</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>false</sendOnSuccess>
+        <sendOnWarning>true</sendOnWarning>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+
+<!--
+===============================================================================
+Distribution management.
+
+Facsimile releases and snapshots are hosted by the Sonatype OSS Maven
+repository - both of which are configured by Facsimile's parent POM.
+
+The Facsimile Maven site is hosted on a web-server provided by Hindsight
+Consulting, Inc.
+===============================================================================
+-->
+
+  <distributionManagement>
+
+<!--
+The Maven-generated Facsimile site is hosted by Hindsight Consulting, Inc.
+
+Credentials for the connection are confidential and are encrypted in
+authorized user's ~/.m2/settings.xml files.
+-->
+
+    <site>
+      <id>hindsight-webhost-ssh</id>
+      <name>Maven-Generated Facsimile Site</name>
+      <url>${hindsight-webhost-root.url}</url>
+    </site>
+  </distributionManagement>
+
+<!--
+===============================================================================
+Properties.
+
+Many of these properties relate to versions of other tools and/or plug-ins.  It
+should be obvious, but in case it isn't, use these properties in place of
+hard-coded version numbers in the remainder of this file.
+
+The Facsimile project will endeavor to always utilize the most recent, stable
+point release available, but not necessarily the most recent, bleeding-edge
+release.
+===============================================================================
+-->
+
+  <properties>
+
+<!--
+Format for the build timestamp.
+
+This has been formatted to work with the org.joda.time.DateTime.parse (String)
+function, which will be used to process build timestamp information read from
+the manifest.
+-->
+
+    <maven.build.timestamp.format>
+      yyyy-MM-dd'T'HH:mm:ss.SSSZ
+    </maven.build.timestamp.format>
+
+<!--
+Facsimile build timestamp.
+
+This value is written into the manifest as the release date.  Obviously, this
+is an official release date only during official, signed release builds.
+
+Note: A bug seems to prevent ${maven.build.timestamp} from being used directly
+in this file (in some versions of Maven, at least), but, as a workaround, it's
+value can be assigned to another property which is used in its place.
+-->
+
+    <facsimile.timestamp>${maven.build.timestamp}</facsimile.timestamp>
+
+<!--
+Ensure that we use UTF-8 encoding for all source and output files.
+
+If this is not specified, we get a warning that builds are platform-dependent.
+-->
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+<!--
+Identifier of the source-code management (SCM) server that hosts this project.
+
+The server ID must match a definition in user's Maven settings.xml file,
+whenever changes are committed by Maven to the SCM server (for example, when
+making a release).
+-->
+
+    <project.scm.id>facsimile-git</project.scm.id>
+
+<!--
+Versions of Scala libraries, frameworks and Maven plug-ins.
+
+These tools are typically highly sensitive (due to binary compatibility issues)
+to the version of the Scala compiler/library in use.  If the Scala version is
+changed, then, typically, the versions of all other Scala libraries and tools
+will need to be revised to remain compatible - including any Scala plug-ins.
+-->
+
+    <scala.version>2.10.2</scala.version>
+    <scalatest.version>2.0.M5b</scalatest.version>
+    <!--scalatest.scala.version>${scala.version}</scalatest.scala.version-->
+    <scalatest.scala.version>2.10</scalatest.scala.version>
+    <scala-maven-plugin.version>3.1.3</scala-maven-plugin.version>
+    <scalatest-maven-plugin.version>1.0-M2</scalatest-maven-plugin.version>
+    <scalastyle-maven-plugin.version>0.3.1</scalastyle-maven-plugin.version>
+
+<!--
+Versions of miscellaneous Java library and framework dependencies.
+
+Scala is not sensitive to the versions of Java libraries and frameworks.  The
+versions of these dependencies can be changed without too much concern about
+the version of Scala employed.
+
+The current Java3D release is 1.5.2, but that release is not in the Maven
+repository.  The most recent release available in the repository is 1.3.1.
+Java3D is currently regarded as a stop-gap until a 3D scene graph is added to
+JavaFX.
+-->
+
+    <joda-time.version>2.1</joda-time.version>
+    <joda-convert.version>1.2</joda-convert.version>
+    <java3d.version>1.3.1</java3d.version>
+
+<!--
+Versions of miscellaneous (non-Scala-related) Maven plug-ins.
+
+Scala is not sensitive to the versions of these Maven plug-ins.  The versions
+of these plug-ins can be changed without too much concern about the version of
+Scala employed.
+
+The versions of these plug-ins should be raised periodically to the most recent
+available.
+
+The maven-release-plugin has a managed version of 2.1 from our parent project.
+Hence this property is commented out throughout this file.
+-->
+
+    <!-- maven-changes-plugin.version>2.7.1</maven-changes-plugin.version -->
+    <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
+    <maven-dependency-plugin.version>2.4</maven-dependency-plugin.version>
+    <maven-findbugs-plugin.version>2.5.2</maven-findbugs-plugin.version>
+    <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
+    <maven-help-plugin.version>2.1.1</maven-help-plugin.version>
+    <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+    <maven-project-info-plugin.version>
+      2.5.1
+    </maven-project-info-plugin.version>
+    <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
+    <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+    <maven-site-plugin.version>3.1</maven-site-plugin.version>
+    <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
+    <wagon-ssh.version>2.2</wagon-ssh.version>
+  </properties>
+
+<!--
+===============================================================================
+Dependencies.
+
+This section identifies all dependencies referenced by this library.
+===============================================================================
+-->
+
+  <dependencies>
+
+<!--
+Scala standard library.
+-->
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+Scala reflection library.
+
+This is required to execute scala macro definitions.
+-->
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-reflect</artifactId>
+      <version>${scala.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+Scala Swing library.
+
+ScalaFX, which is based upon JavaFX, looks likely to become a long-term
+replacement for Swing, so this is likely to be removed at some point in the
+near future.
+-->
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-swing</artifactId>
+      <version>${scala.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+Joda-Time library, for replacement of Java Date & Calendar classes.
+-->
+
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>${joda-time.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+Joda-Convert library, for conversion between Joda-Time and Java Date &
+Calendar classes.
+-->
+
+    <dependency>
+      <groupId>org.joda</groupId>
+      <artifactId>joda-convert</artifactId>
+      <version>${joda-convert.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+Java3D libraries.
+
+These are currently commented out and are likely to be removed completely at
+some point - if Java3D is not dead, it is certainly very fast asleep.
+-->
+
+    <!-- dependency>
+      <groupId>java3d</groupId>
+      <artifactId>j3d-core</artifactId>
+      <version>${java3d.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>java3d</groupId>
+      <artifactId>j3d-core-utils</artifactId>
+      <version>${java3d.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>java3d</groupId>
+      <artifactId>vecmath</artifactId>
+      <version>${java3d.version}</version>
+      <scope>compile</scope>
+    </dependency -->
+
+<!--
+ScalaTest unit-testing framework.
+-->
+
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_${scalatest.scala.version}</artifactId>
+      <version>${scalatest.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+<!--
+===============================================================================
+Repositories.
+
+The Sonatype OSS Nexus host strongly discourages the use of third-party
+repositories.  Avoid entering information here at all costs.
+===============================================================================
+-->
+
+  <!-- repositories>
+  </repositories -->
+
+<!--
+===============================================================================
+Maven plug-in repositories.
+
+The Sonatype OSS Nexus host strongly discourages the use of third-party
+plugin repositories.  Avoid entering information here at all costs.
+===============================================================================
+-->
+
+  <!-- pluginRepositories>
+  </pluginRepositories -->
+
+<!--
+===============================================================================
+Build configuration.
+===============================================================================
+-->
+
+  <build>
+
+<!--
+Since this is a Scala project, the primary product-related sources should be in
+src/main/scala, and test-related code should be placed in src/test/scala.
+-->
+
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+
+<!--
+Output and test output directories depend upon the active profile - see the
+profiles section for further information.
+-->
+
+    <outputDirectory>${target.path}/classes</outputDirectory>
+    <testOutputDirectory>${target.path}/test-classes</testOutputDirectory>
+
+<!--
+Build-related plug-ins.
+-->
+
+    <plugins>
+
+<!--
+Provide information on the current build.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>${maven-help-plugin.version}</version>
+      </plugin>
+
+<!--
+Scala plug-in.
+
+These are the common settings for all build profiles.  See the profile section
+for further information.
+-->
+
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>${scala-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+              <goal>doc</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--
+Findbugs static code checking.
+
+Findbugs was designed for Java source, but operates on Java bytecode, so it
+also works for Scala programs too.  Unfortunately, use with Scala is still
+fairly primitive, resulting in a lot of false positives.
+-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${maven-findbugs-plugin.version}</version>
+      </plugin>
+
+<!--
+Disable testing in the Maven Surefire plugin, since we're using the Maven
+ScalaTest plugin to do the testing.
+
+NOTE: When the Maven ScalaTest plugin is better integrated into Maven, Surefire
+will invoke ScalaTest test suites and this configuration will need to be
+removed.
+-->
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+
+<!--
+Configure the Maven ScalaTest plugin.
+
+NOTE: When the Maven ScalaTest plugin is better integrated into Maven, this
+configuration may require modification.
+-->
+
+      <plugin>
+        <groupId>org.scalatest</groupId>
+        <artifactId>scalatest-maven-plugin</artifactId>
+        <version>${scalatest-maven-plugin.version}</version>
+        <configuration>
+          <stdout>W</stdout>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--
+Check that the sources conform to the published coding standards.
+-->
+
+      <plugin>
+        <groupId>org.scalastyle</groupId>
+        <artifactId>scalastyle-maven-plugin</artifactId>
+        <version>${scalastyle-maven-plugin.version}</version>
+        <configuration>
+          <verbose>false</verbose>
+          <failOnViolation>true</failOnViolation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <failOnWarning>true</failOnWarning>
+          <sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
+          <testSourceDirectory>${basedir}/src/test/scala</testSourceDirectory>
+          <configLocation>
+            ${basedir}/src/style/FacsimileStyle.xml
+          </configLocation>
+          <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+          <outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--
+Plug-in to configure the library's jar file.
+
+This plug-in defines standard manifest information (such as name, organization,
+version, etc.).
+
+Setting the addDefaultImplementationEntries field to true sets the jar manifest
+entries below; this information can be retrieved via the java.lang.Package
+object for this jar.
+
+  Implementation-Title: ${project.name}
+  Implementation-Version: ${project.version}
+  Implementation-Vendor-Id: ${project.groupId}
+  Implementation-Vendor: ${project.organization.name}
+
+Setting the addDefaultSpecificationEntries field to true sets the jar manifest
+entries below; this information can be retrieved via the java.lang.Package
+object for this jar.
+
+  Specification-Title: ${project.name}
+  Specification-Version: ${project.version}
+  Specification-Vendor: ${project.organization.name}
+
+Note: This is used in preference to the maven-assemnly-plugin, since it
+operates on the primary jar file, rather than a secondary one.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <addDefaultImplementationEntries>
+                true
+              </addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>
+                true
+              </addDefaultSpecificationEntries>
+              <classpathPrefix>lib/</classpathPrefix>
+              <packageName>org.facsim</packageName>
+            </manifest>
+
+<!--
+Keys for custom manifest entries defined here must also be added to the
+org.facsim.util.ManifestField enumerator, and also included in the information
+returned by org.facsim.util.Manifest.
+-->
+
+            <manifestEntries>
+              <Build-Timestamp>${facsimile.timestamp}</Build-Timestamp>
+            </manifestEntries>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--
+Plug-in to copy project dependencies to the output directory for packaging and
+distribution.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven-dependency-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <excludeArtifactIds>
+                scalatest_${scalatest.scala.version},joda-time,joda-convert
+              </excludeArtifactIds>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--
+Plug-in to measure how much of the code base is tested by the test-suite, using
+the Cobertura tool.
+
+The goal is 100% line and branch coverage, but that is difficult to achieve in
+practice.  As coverage rates improve, the targets should be rates.
+-->
+
+      <!-- plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${maven-cobertura-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>clean</goal>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <check>
+            <haltOnFailure>true</haltOnFailure>
+            <branchRate>85</branchRate>
+            <lineRate>85</lineRate>
+            <totalBranchRate>85</totalBranchRate>
+            <totalLineRate>85</totalLineRate>
+            <packageBranchRate>85</packageBranchRate>
+            <packageLineRate>85</packageLineRate>
+          </check>
+        </configuration>
+      </plugin -->
+
+<!--
+Plug-in to transfer resource bundles to the output directory, and test
+resources to the test output directory.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+      </plugin>
+
+<!--
+Plug-in to create a Maven site for the project.
+
+We use the SSH Wagon to distribute the site, via SCP, to the web server.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven-site-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh</artifactId>
+            <version>${wagon-ssh.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+<!--
+Plug-in to handle automated version numbering and release tagging.
+
+These options are typically invoked by the Jenkins continuous integration
+server.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <!-- version>${maven-release-plugin.version}</version -->
+        <configuration>
+
+<!--
+Release goals.
+-->
+
+          <goals>deploy</goals>
+
+<!--
+Change the source-code management comment prefix.
+-->
+
+          <scmCommentPrefix>Release robot: </scmCommentPrefix>
+
+<!--
+Add source and documentation JARS to the distribution.
+
+This also has the side-effect of not enabling the release-profile profile
+-->
+
+          <useReleaseProfile>true</useReleaseProfile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+<!--
+===============================================================================
+Facsimile profiles.
+
+Two versions of the library can be built by this POM file:
+
+development
+    This version disables all optimization, enables all debug, assertions,
+    assumptions, etc.  It is active by default and is intended for use during
+    development and testing.  Development builds are available for use as
+    SNAPSHOTS, although they are not recommended for production use.  This
+    profile must be activated from the command line.
+
+production
+    This version enables maximum optimization, disables all debug, assertions,
+    assumptions, etc. and ensures that the resulting library executes with
+    maximum performance.  It is inactive by default and is intended for use
+    when making a release only.  This profile must be activated from the
+    command line.
+
+Both versions are unit-tested by the test suite.
+
+There is also a profile to sign official product releases:
+
+facsimile-signer
+    This profile is employed to sign generated JAR files during a release; it
+    is activated automatically.
+===============================================================================
+-->
+
+  <profiles>
+
+<!--
+Development build profile.
+
+Disable all code optimization and enable as much debug support as possible.
+Although this will result in a slower version of the library (relative to
+the production build), it is intended to support the identification and fixing
+of bugs during development of the library.
+
+This profile should be active by default.
+-->
+
+    <profile>
+      <id>development</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <version>${scala-maven-plugin.version}</version>
+            <inherited>true</inherited>
+            <configuration>
+              <args>
+                <arg>-deprecation</arg>
+                <arg>-encoding</arg>
+                <arg>${project.build.sourceEncoding}</arg>
+                <arg>-explaintypes</arg>
+                <arg>-g:vars</arg>
+                <arg>-target:jvm-1.6</arg>
+                <arg>-unchecked</arg>
+                <arg>-Xcheckinit</arg>
+                <!-- arg>-Xcheck-null</arg -->
+                <arg>-Xfatal-warnings</arg>
+                <arg>-Xlint</arg>
+                <arg>-Ynotnull</arg>
+                <arg>-Ywarn-all</arg>
+              </args>
+              <jvmArgs>
+                <jvmArg>-Xms64m</jvmArg>
+                <jvmArg>-Xmx1024m</jvmArg>
+              </jvmArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <target.path>target/development</target.path>
+      </properties>
+    </profile>
+
+<!--
+Production build profile.
+
+Enable maximum code optimization and disable as much debug support as possible.
+This profile is used to generate production (i.e. release quality) versions of
+the library.
+
+This profile should be inactive except when performing a release.
+-->
+
+    <profile>
+      <id>production</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <version>${scala-maven-plugin.version}</version>
+            <inherited>true</inherited>
+            <configuration>
+              <args>
+                <arg>-deprecation</arg>
+                <arg>-encoding</arg>
+                <arg>${project.build.sourceEncoding}</arg>
+                <arg>-explaintypes</arg>
+                <arg>-g:none</arg>
+                <arg>-optimise</arg>
+                <arg>-target:jvm-1.6</arg>
+                <arg>-unchecked</arg>
+                <arg>-Xcheckinit</arg>
+                <!-- arg>-Xcheck-null</arg -->
+                <arg>-Xdisable-assertions</arg>
+                <arg>-Xfatal-warnings</arg>
+                <arg>-Xlint</arg>
+                <arg>-Ynotnull</arg>
+                <arg>-Ywarn-all</arg>
+              </args>
+              <jvmArgs>
+                <jvmArg>-Xms64m</jvmArg>
+                <jvmArg>-Xmx1024m</jvmArg>
+              </jvmArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <target.path>target/production</target.path>
+      </properties>
+    </profile>
+
+<!--
+Facsimile distribution signing profile.
+
+Releases are configured to sign key distribution files to assure users of their
+authenticity.  Files are signed by GNU PGP (GNU Privacy Guard, otherwise known
+as "gpg"); the gpg executable must be accessible in the path.  The passphrase
+for the key is either prompted for, or stored in an encrypted form in the
+user's Maven settings.xml file.
+
+This profile is activated automatically during the performing of a release.
+-->
+
+    <profile>
+      <id>facsimile-signer</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  
+<!--
+===============================================================================
+Reporting configuration.
+===============================================================================
+-->
+
+  <reporting>
+    <plugins>
+
+<!--
+Generate project information reports.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven-project-info-plugin.version}</version>
+      </plugin>
+
+<!--
+Generate Cobertura test coverage reports.
+-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${maven-cobertura-plugin.version}</version>
+      </plugin>
+
+<!--
+Generate FindBugs static code analysis reports.
+-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${maven-findbugs-plugin.version}</version>
+      </plugin>
+
+<!--
+Scaladoc documentation generation.
+-->
+
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>${scala-maven-plugin.version}</version>
+      </plugin>
+
+<!--
+Generate a source code formatting analysis to ensure that code conforms to the
+coding standard.
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

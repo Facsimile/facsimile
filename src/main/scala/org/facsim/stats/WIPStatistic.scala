@@ -70,7 +70,7 @@ class WIPStatistic (initial: Int = 0) extends Statistic {
 Argument sanity checks.
 */
 
-  requireValid ("initial", initial, initial >= 0)
+  requireValid (initial, initial >= 0)
 
 /**
 Current work-in-progress statistic.
@@ -130,7 +130,7 @@ count becomes negative after applying '''delta'''.
 Sanity checks.
 */
 
-    requireValid ("delta", delta, cur + delta >= 0)
+    requireValid (delta, cur + delta >= 0)
 
 /*
 Update the statistics record for the time spent at the current size.

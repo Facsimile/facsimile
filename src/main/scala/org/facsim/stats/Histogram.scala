@@ -76,8 +76,8 @@ bins: Int, private final val binWidth: Double) extends SummaryStatistics {
 Argument sanity checks.
 */
 
-  requireValid ("bins", bins, bins > 0)
-  requireValid ("binWidth", binWidth, binWidth > 0.0)
+  requireValid (bins, bins > 0)
+  requireValid (binWidth, binWidth > 0.0)
 
 /**
 Frequency of values observed in each bin.

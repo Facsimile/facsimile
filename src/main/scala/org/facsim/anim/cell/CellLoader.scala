@@ -38,13 +38,20 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import com.sun.j3d.loaders.Loader
+import com.sun.j3d.loaders.Scene
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
 import java.io.Reader
 import java.net.URL
-import com.sun.j3d.loaders.Loader
+import org.facsim.DeprecatedException
+import org.facsim.requireNonNull
+import org.facsim.SafeNone
+import org.facsim.SafeOption
+import org.facsim.SafeSome
+import org.facsim.io.TextReader
 
 //=============================================================================
 /**
@@ -54,73 +61,90 @@ This helper class implements the ''Java3D'' standard mechanism for loading 3D
 scenes stored in a non-native data format&mdash;from ''[[http://www.automod.com
 AutoMod®]] cell'' format, in this particular case.
 
-The ''AutoMod®'' cell format defines a number of graphics primitives (''sets'',
-''boxes'', ''cylinders'', ''cones'', ''frustums'', etc.), as well as a compiled
-picture format.  Furthermore, cell files can also reference and/or embed
-''VRML 1.0'', ''VRML 97'' and ''OpenInventor'' graphics files.  This loader is
-designed to accommodate all such scenes to assist with migration from
-''AutoMod®'' to ''Facsimile''.
+The ''AutoMod®'' cell format defines a number of ''3D'' graphics primitives,
+including ''sets'', ''boxes'', ''cylinders'', ''cones'', ''frustums'',
+''tetrahedra'' and ''polyhedra'', as well as a ''compiled picture'' format.
+Furthermore, cell files can also reference and/or embed ''VRML 1.0'',
+''VRML 97'' and ''OpenInventor'' graphics files.  This loader is designed to
+accommodate all such scenes to assist with migration from ''AutoMod®'' to
+''Facsimile''.
 
 Cell files have Windows-1252 encoding, and do not support the full Unicode
 character set.
 
-''AutoMod'' is a registered trademark of ''[[https://www.appliedmaterials.com
+®''AutoMod'' is a registered trademark of ''[[https://www.appliedmaterials.com
 Applied Materials, Inc.]]''.
 
-@note This class implements the [[com.sun.j3d.loaders.Loader]] interface, but
-in a functional programming style that results in ''cell'' loader objects that
-are ''immutable''.  Consequently, all of the interface's ''setter'' functions
-are deprecated, and will resulting in a
-[[java.lang.UnsupportedOperationException]] being thrown if called.  Instead,
-all loader configuration must be specified during construction.
+@note This class implements the [[com.sun.j3d.loaders.Loader!]] interface in a
+functional programming style that results in ''cell'' loader objects that are
+''immutable''.  Consequently, all of the interface's ''setter'' functions are
+deprecated, and will result in a [[org.facsim.DeprecatedException!]] being
+thrown if called.  Instead, to ensure immutability, all loader configuration
+must be specified during construction.
 
-@note The behavior of this loader also differs from the ''Java3D''
-[[com.sun.j3d.loaders.Loader]] norm in terms of how referenced files (files
-referenced from a processed cell file) are handled, which is more flexible in
-many respects than standard Loader behavior: when constructing a cell loader
-instance, a base URL may be defined.  This base URL (which may identify a file
-on a web-site or the user's local file system) is employed as follows:
- -  For load(Reader), if a base URL is undefined, referenced files will be
-    searched for relative to the user's current directory&mdash;this is
-    standard behavior.  However, if a base URL is defined, then referenced
-    files will be searched for relative to the base URL&mdash;this behavior is
-    non-standard, but offers increased flexibility.
- -  For load(String), if a base URL is undefined, referenced files will be
-    searched for relative to the location of the specified file&mdash;this is
-    standard behavior.  However, if a base URL is defined, then referenced
-    files will be searched for relative to the base URL&mdash;this differs
-    from the standard Loader implementation, which only allows a base
-    path&mdash;not a base URL&mdash;to be identified, but that offers increased
-    flexibility.
- -  For load(URL), if a base URL is undefined, referenced files will be
-    searched for relative to the location of the specified file.  If a base URL
-    is defined, referenced files will be searched for relative to the base URL.
-    In both cases, this is standard behavior.
+@note The behavior of this loader differs from the ''Java3D''
+[[com.sun.j3d.loaders.Loader!]] norm in terms of how referenced files (files
+referenced from within a processed cell file) are located, with an approach
+that is at once simpler and more flexible than the traditional ''Java3D''
+approach adopted.  Specifically, for each referenced file, the loader will
+attempt to locate the file as follows:
+  - If the referenced file specifies an absolute location, then the loader will
+    attempt to find it at that specified location.
+  - Otherwise, if the referenced file specifies a relative location, or
+    specifies no location at all&mdash;it just has a file name&mdash;then the
+    loader will apply these rules:
+    - If a base URL was specified during construction of this loader, then the
+      loader will attempt to find the referenced file relative to this base URL
+      location.
+    - Otherwise, if this loader has not defined a base URL, then the loader's
+      search location will depend upon the method used to load the ''cell''
+      file:
+      - If loaded via the
+        [[org.facsim.anim.cell.CellLoader!.load(java.io.Reader)*]] method, then
+        referenced files will be searched for relative to the application
+        user's current directory.
+      - Otherwise, if loaded via the
+        [[org.facsim.anim.cell.CellLoader!.load(java.net.URL)*]] or
+        [[org.facsim.anim.cell.CellLoader!.load(String)*]] methods, then
+        referenced files will be searched for relative to the location of the
+        ''cell'' file being processed.
+        
+In all cases, once a search location has been established, the search will fail
+if the file could not be found at, or relative to, that search location.
+
+Most of the time, these rules will do what you expect of them.  In short, you
+should only specify a base URL for this loader if, and only if, you have reason
+to expect files to be located relative to a specific URL that differs from the
+default location of the chosen method&mdash;in all other cases, simply do not
+specify a base URL.
+
+(And yes, this is all simpler than the traditional ''Java 3D'' loader
+approach.)
+
+@note When attempting to determine the base search location for referenced
+files, you should favor the use of
+[[org.facsim.anim.cell.CellLoader!.getBaseUrl]] over
+[[org.facsim.anim.cell.CellLoader!.getBasePath]]&mdash;the latter is
+''deprecated'' because it can only report base paths for ''file''
+protocol-based base URL's, while the former can report any base URL.
 
 @constructor Create a new loader instance with the specified configuration.
 
 @param loadFlags An integer encoding loader flags, which is used to filter
 loaded scene content.  The default value of 0 instructs the loader to include
 scene geometry information only.  For further details on supported loader
-flags, refer to [[com.sun.j3d.loaders.Loader]].
+flags, refer to [[com.sun.j3d.loaders.Loader!]].
 
-@param baseURL If this value is not `None`, then when loading ''cell'' scenes
-via the load(Reader), load(URL) or load(String) methods, any files referenced
-by the cell file being processed must be located relative to this base URL.
-Otherwise, if this parameter is `None`, then files referenced by load(Reader)
-must be present in the user's current directory and files referenced by
-load(URL) and load(String) must be present at the same location as the
-specified file.  Refer to [[org.facsim.anim.cell.CellLoader]] for further
-information.  Note that we cannot verify (at present) whether the base URL
-identifies a directory and not a file; if the latter, errors will occur during
-processing of embedded files.
+@param baseUrl Default search location for files referenced during processing
+of this ''cell'' file.  Refer to [[org.facsim.anim.cell.CellLoader!]] for
+further information.
 
 @since 0.0
 */
 //=============================================================================
 
-final class CellLoader (loadFlags: Int = 0, baseURL: Option [URL] = None)
-extends Loader {
+final class CellLoader (loadFlags: Int = 0, baseUrl: SafeOption [URL] =
+SafeNone) extends Loader with NotNull {
 
 //-----------------------------------------------------------------------------
 /**
@@ -132,320 +156,506 @@ Report load flags.
 */
 //-----------------------------------------------------------------------------
 
-  final override def getFlags () = loadFlags
+  @inline
+  final override def getFlags = loadFlags
+
+//-----------------------------------------------------------------------------
+/**
+Determine whether all nodes should be loaded.
+
+By default, only scene geometry nodes are loaded.
+
+@return `true` if all nodes should be loaded, `false` if some nodes should not
+be be loaded.
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] final def loadAllNodes = (loadFlags & Loader.LOAD_ALL) != 0
+
+//-----------------------------------------------------------------------------
+/**
+Determine whether background nodes should be loaded.
+
+By default, only scene geometry nodes are loaded.
+
+@note ''Cell'' file format does not support background nodes directly, but such
+nodes may be present in supported embedded file formats (''VRML 1.0'', ''VRML
+97'' & ''OpenInventor'').
+
+@return `true` if background nodes should be loaded, `false` if they should not
+be loaded.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] final def loadBackgroundNodes =
+  (loadFlags & Loader.LOAD_BACKGROUND_NODES) != 0
+
+//-----------------------------------------------------------------------------
+/**
+Determine whether behavior nodes should be loaded.
+
+By default, only scene geometry nodes are loaded.
+
+@note ''Cell'' file format does not support behavior nodes directly, but such
+nodes may be present in supported embedded file formats (''VRML 1.0'', ''VRML
+97'' & ''OpenInventor'').  However, it is recommended that behavior nodes not
+be loaded.
+
+@return `true` if behavior nodes should be loaded, `false` if they should not
+be loaded.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] final def loadBehaviorNodes =
+  (loadFlags & Loader.LOAD_BEHAVIOR_NODES) != 0
+
+//-----------------------------------------------------------------------------
+/**
+Determine whether fog nodes should be loaded.
+
+By default, only scene geometry nodes are loaded.
+
+@note ''Cell'' file format does not support fog nodes directly, but such nodes
+may be present in supported embedded file formats (''VRML 1.0'', ''VRML 97'' &
+''OpenInventor'').
+
+@return `true` if fog nodes should be loaded, `false` if they should not be
+loaded.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] final def loadFogNodes =
+  (loadFlags & Loader.LOAD_FOG_NODES) != 0
+
+//-----------------------------------------------------------------------------
+/**
+Determine whether light nodes should be loaded.
+
+By default, only scene geometry nodes are loaded.
+
+@note ''Cell'' file format does not support light nodes directly, but such
+nodes may be present in supported embedded file formats (''VRML 1.0'', ''VRML
+97'' & ''OpenInventor'').
+
+@return `true` if light nodes should be loaded, `false` if they should not be
+loaded.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] final def loadLightNodes =
+  (loadFlags & Loader.LOAD_LIGHT_NODES) != 0
+
+//-----------------------------------------------------------------------------
+/**
+Determine whether sound nodes should be loaded.
+
+By default, only scene geometry nodes are loaded.
+
+@note ''Cell'' file format does not support sound nodes directly, but such
+nodes may be present in supported embedded file formats (''VRML 1.0'', ''VRML
+97'' & ''OpenInventor'').
+
+@return `true` if sound nodes should be loaded, `false` if they should not be
+loaded.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] final def loadSoundNodes =
+  (loadFlags & Loader.LOAD_SOUND_NODES) != 0
+
+//-----------------------------------------------------------------------------
+/**
+Determine whether view groups (cameras) should be loaded.
+
+By default, only scene geometry nodes are loaded.
+
+@note ''Cell'' file format does not support view groups directly, but such
+nodes may be present in supported embedded file formats (''VRML 1.0'', ''VRML
+97'' & ''OpenInventor'').
+
+@return `true` if view groups should be loaded, `false` if they should not be
+loaded.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] final def loadViewGroups =
+  (loadFlags & Loader.LOAD_VIEW_GROUPS) != 0
 
 //-----------------------------------------------------------------------------
 /**
 Set load flags.
 
-This method is required to implement the [[com.sun.j3d.loaders.Loader]]
-interface, but would require that [[org.facsim.anim.cell.CellLoader]] become a
-mutable object.  Instead, users should specify load flags during construction.
-If a loader object has inappropriate load flags, then create a new loader
-object that meets your requirements. 
+@note This method is required by the [[com.sun.j3d.loaders.Loader!]] interface,
+but is deliberately not implemented, since it would force
+[[org.facsim.anim.cell.CellLoader!]] to have mutable state, which is
+undesirable.
+
+Instead, load flags must be defined during construction.  If this loader object
+has inappropriate load flags, then construct a new loader object with the
+appropriate load flags.
 
 @param flags Ignored new load flags.
 
-@throws UnsupportedOperationException if called.
+@throws [[org.facsim.DeprecatedException!]] if called.
+
+@see [[org.facsim.anim.cell.CellLoader!]]
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  @deprecated ("Load flags should be defined in the constructor", "0.0")
+  @deprecated ("Load flags must be defined during construction.", "0.0")
   final override def setFlags (flags: Int): Unit = throw new
-  UnsupportedOperationException ("TODO I18N: CellLoader.setFlags () is " +
-  "deprecated.")
+  DeprecatedException ("function " + classOf [CellLoader].toString +
+  ".setFlags(" + flags.toString + ")")
 
 //-----------------------------------------------------------------------------
 /**
-Report base path to be used by load (String).
+Report loader's base path.
 
-If a base URL has been defined, then a base path will be returned only if the
-base URL employs a ''file'' protocol.  In all other cases, `null` will be
-returned.  This most closely approximates the expected behavior of this method
-for [[com.java.j3d.loaders.Loader]] implementations.
+@note This method is required by the [[com.sun.j3d.loaders.Loader!]] interface,
+but, while implemented, it is deprecated in favor of
+[[org.facsim.anim.cell.CellLoader!.getBaseUrl]].  While the latter can report
+all base URLs, including ''file'' URLs, this function can only report ''file''
+URLs, which might be misleading if a non-''file'' path base URL has been
+defined.
 
-@note Due to the implementation of this cell loader class, a `null` return
-value does not necessarily imply that load(String) will search for referenced
-files at the same location as the specified file.  However, if getBaseUrl()
-returns `null`, then load(String) will indeed search for referenced files at
-the same location as the specified file, ortherwise it will search at the
-return URL.  See [[org.facsim.anim.cell.CellLoader]] for further information.
+In particular, it should be noted that a return value of `null` does not imply
+that no base URL has been defined.
 
-@return base path, or `null` if a web-based base URL has been defined, or if no
-base URL has been defined.
+@return Loader's defined base path (if defined base URL employs a ''file''
+protocol), or `null` otherwise.  `null` will also be returned if the loader has
+a non-''file'' protocol-based URL.
+
+@see [[org.facsim.anim.cell.CellLoader!]]
+
+@see [[org.facsim.anim.cell.CellLoader!.getBaseUrl]]
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def getBasePath () = baseURL match {
-    case Some (url) => {
-      if (url.getProtocol () == "file") url.getPath ()
+  @deprecated ("Use .getBaseUrl to determine file search locations.", "0.0")
+  final override def getBasePath = baseUrl match {
+    case SafeSome (url) => {
+      if (url.getProtocol == "file") url.getPath ()
       else null
     }
-    case None => null
+    case SafeNone => null
   }
 
 //-----------------------------------------------------------------------------
 /**
-Set base path for load (String) method.
+Set base path for [[org.facsim.anim.cell.CellLoader!.load(String)*]] method.
 
-This method is required to implement the com.sun.j3d.loaders.Loader interface,
-but would require that org.facsim.CellLoader become a mutable object.  Instead,
-users should specify base URLs (using a ''file'' protocol) during construction.
-If a loader object has an inappropriate base path, then create a new loader
-object that meets your requirements. 
+@note This method is required by the [[com.sun.j3d.loaders.Loader!]] interface,
+but is deliberately not implemented, since it would force
+[[org.facsim.anim.cell.CellLoader!]] to have mutable state, which is
+undesirable.
+
+Instead, a base URL (with a ''file'' protocol, if a base path is required) must
+be defined during construction.  If this loader object has an inappropriate
+base URL, then construct a new loader object with the appropriate base URL.
 
 @param path Ignored new base path.
 
-@throws UnsupportedOperationException if called.
+@throws [[org.facsim.DeprecatedException!]] if called.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  @deprecated ("Base path should be defined in the constructor", "0.0")
+  @deprecated ("Base URL must be defined during construction.", "0.0")
   final override def setBasePath (path: String): Unit = throw new
-  UnsupportedOperationException ("TODO I18N: CellLoader.setBasePath () is " +
-  "deprecated.")
+  DeprecatedException ("function " + classOf [CellLoader].toString +
+  ".setBasePath(\"" + path + "\")")
 
 //-----------------------------------------------------------------------------
 /**
-Report base URL to be used by load (URL).
+Report base URL to be used by
+[[org.facsim.anim.cell.CellLoader!.load(java.io.Reader)*]],
+[[org.facsim.anim.cell.CellLoader!.load(String)*]] and
+[[org.facsim.anim.cell.CellLoader!.load(java.net.URL)*]].
 
 If a base URL has not been defined, it will be reported as `null`, otherwise
-the base URL defined will be returned.
+the base URL defined during construction will be returned.
 
-A `null` base URL will cause load (URL) to look for referenced files at the
-same location as the specified ''cell'' file.
+Refer to [[org.facsim.anim.cell.CellLoader!]] for further information on how
+the base URL is employed.
 
 @return base URL, or `null` if no base URL is currently defined.
 
+@see [[org.facsim.anim.cell.CellLoader!]]
+
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def getBaseUrl () = baseURL.orNull
+  @inline
+  final override def getBaseUrl = baseUrl.getOrElse (null)
 
 //-----------------------------------------------------------------------------
 /**
-Set base URL for load (URL) method.
+Set base URL for [[org.facsim.anim.cell.CellLoader!.load(java.net.URL)*]]
+method.
 
-This method is required to implement the com.sun.j3d.loaders.Loader interface,
-but would require that org.facsim.CellLoader become a mutable object.  Instead,
-users should specify base URLs during construction.  If a loader object has an
-inappropriate base URL, then create a new loader object that meets your
-requirements. 
+@note This method is required by the [[com.sun.j3d.loaders.Loader!]] interface,
+but is deliberately not implemented, since it would force
+[[org.facsim.anim.cell.CellLoader!]] to have mutable state, which is
+undesirable.
 
-@param url Ignored new base URL.
+Instead, a base URL must be defined during construction.  If this loader object
+has an inappropriate base URL, then construct a new loader object with the
+appropriate base URL.
 
-@throws UnsupportedOperationException if called.
+@param path Ignored new base URL.
+
+@throws [[org.facsim.DeprecatedException!]] if called.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  @deprecated ("Base URL should be defined in the constructor", "0.0")
+  @deprecated ("Base URL must be defined during construction.", "0.0")
   final override def setBaseUrl (url: URL): Unit = throw new
-  UnsupportedOperationException ("TODO I18N: CellLoader.setBaseUrl () is " +
-  "deprecated.")
-
+  DeprecatedException ("function " + classOf [CellLoader].toString +
+  ".setBaseUrl(URL(\"" + url.toString + "\"))")
 
 //-----------------------------------------------------------------------------
 /**
 Loads an ''[[http://www.automod.com/ AutoMod®]] cell'' scene from the specified
 reader and returns it as a ''Java3D'' Scene.
 
-The cell's nodes will be filtered, if necessary, according to this loader's
-load flags.
+The cell's nodes will be filtered according to this loader's load flags.
 
 @note If a base URL was defined during construction, then any files referenced
 by the cell data will be searched for relative to that URL; otherwise, files
-should be present in the user's current working directory.  See
-[[org.facsim.anim.cell.CellLoader]] for further information.
+should be present in the user's current working directory.  Refer to
+[[org.facsim.anim.cell.CellLoader!]] for further information.
 
-@param reader Reader from which cell data is to be read.
+@param reader Reader from which cell data is to be read.  For proper
+processing, the reader should utilize ''Windows-1252'' file encoding; other
+encodings will work seamlessly, but the resulting processed
+data&mdash;particularly text data&mdash;may not match the expected ''cell''
+file content.
 
 @return Scene containing the cell's contents.
 
-@throws java.lang.NullPointerException if reader is null.
+@throws [[java.lang.NullPointerException!]] if reader is `null`.
 
-@throws com.sun.j3d.loaders.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
 
-@throws com.sun.j3d.loaders.ParsingErrorException if errors are encountered
-during parsing of the file.
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[org.facsim.anim.cell.CellLoader!]]
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def load (reader: Reader) = new CellScene (reader,
-  baseURL.getOrElse (new URL ("file:///" + System.getProperty ("user.dir"))))
+  final override def load (reader: Reader) = {
+
+/*
+Verify that the reader is not null.
+*/
+
+    requireNonNull (reader)
+
+/*
+Helper function to retrieve the absolute path of the file, so that we can
+identify the base URL if one is not defined.
+*/
+
+    def getSearchLocation =
+    new File (System.getProperty ("user.dir")).toURI.toURL
+
+/*
+Create the text reader for this file.
+*/
+
+    val cellReader = new TextReader (reader)
+
+/*
+Determine where we'll search for files referenced in the cell data.
+*/
+
+    val searchLocation = baseUrl.getOrElse (getSearchLocation)
+
+/*
+Read cell data and return the scene read.
+*/
+
+    new CellScene (this, cellReader, searchLocation)
+  }
 
 //-----------------------------------------------------------------------------
 /**
 Loads the named ''[[http://www.automod.com/ AutoMod®]] cell'' file and returns
 it as a ''Java3D'' Scene.
 
-The cell's nodes will be filtered, if necessary, according to this loader's
-load flags.
+The cell's nodes will be filtered according to this loader's load flags.
 
 @note If a base URL was defined during construction, then any files referenced
 by the cell data will be searched for relative to that URL; otherwise, files
-should be present at the same location as the named file.  See
-[[org.facsim.anim.cell.CellLoader]] for further information.
+should be present at the same location as the named file.  Refer to
+[[org.facsim.anim.cell.CellLoader!]] for further information.
 
 @param file File from which cell data is to be read.
 
 @return Scene containing the cell's contents.
 
-@throws java.lang.NullPointerException if file is null.
+@throws [[java.lang.NullPointerException!]] if file is null.
 
-@throws java.lang.SecurityException if specified file is protected from
+@throws [[java.lang.SecurityException!]] if specified file is protected from
 reading.
 
-@throws java.io.FileNotFoundException if the specified file could not be found.
+@throws [[java.io.FileNotFoundException!]] if the specified file could not be
+found, or if it could not be opened.
 
-@throws com.sun.j3d.loaders.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
 
-@throws com.sun.j3d.loaders.ParsingErrorException if errors are encountered
-during parsing of the file.
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[org.facsim.anim.cell.CellLoader!]]
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def load (file: String) = new
-  CellScene (CellLoader.getFileReader (file), baseURL.getOrElse
-  (CellLoader.getFileBaseURL (file)))
+  final override def load (file: String) = {
+
+/*
+Verify that the file is not null.
+*/
+
+    requireNonNull (file)
+
+/*
+Helper function to retrieve the absolute path of the file, so that we can
+identify the base URL if one is not defined.
+*/
+
+    def getSearchLocation =
+    new File (file).getAbsoluteFile.getParentFile.toURI.toURL
+
+/*
+Create the text reader for this file.
+
+Note: We may get a FileNotFoundException if the file does not exist, or a
+SecurityException if the file cannot be read.
+*/
+
+    val cellReader = new TextReader (new InputStreamReader (new FileInputStream
+    (file), "windows-1252"))
+
+/*
+Determine where we'll search for files referenced in the cell data.
+*/
+
+    val searchLocation = baseUrl.getOrElse (getSearchLocation)
+
+/*
+Read cell data and return the scene read.
+*/
+
+    new CellScene (this, cellReader, searchLocation)
+  }
 
 //-----------------------------------------------------------------------------
 /**
 Loads the ''[[http://www.automod.com/ AutoMod®]] cell'' file from the specified
 URL and returns it as a ''Java3D'' Scene.
 
-The cell's nodes will be filtered, if necessary, according to this loader's
-load flags.
+The cell's nodes will be filtered according to this loader's load flags.
 
-@note If this cell loader was constructed with a default base URL, then any
-data files referenced by this file should be located in the same place as the
-named file; otherwise users should specify their required base URL during cell
-loader construction.
+@note If a base URL was defined during construction, then any files referenced
+by the cell data will be searched for relative to that URL; otherwise, files
+should be present at the same location as the named file.  Refer to
+[[org.facsim.anim.cell.CellLoader!]] for further information.
 
 @param url URL of file from which cell data is to be read.
 
 @return Scene containing the cell's contents.
 
-@throws java.lang.NullPointerException if reader is null.
+@throws [[java.lang.NullPointerException!]] if reader is null.
 
-@throws java.lang.SecurityException if specified file is protected from
+@throws [[java.lang.SecurityException!]] if specified file is protected from
 reading.
 
-@throws java.io.FileNotFoundException if the specified file could not be found,
-or if it could not be opened.
+@throws [[java.io.FileNotFoundException!]] if the specified file could not be
+found, or if it could not be opened.
 
-@throws com.sun.j3d.loaders.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
 
-@throws com.sun.j3d.loaders.ParsingErrorException if errors are encountered
-during parsing of the file.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final override def load (url: URL) = new CellScene (CellLoader.getURLReader
-  (url), baseURL.getOrElse (CellLoader.getURLBaseURL (url)))
-}
-
-//=============================================================================
-/**
-CellLoader companion object.
-
-@since 0.0
-*/
-//=============================================================================
-
-private [cell] object CellLoader {
-
-//-----------------------------------------------------------------------------
-/**
-Create reader for specified ''cell'' file.
-
-@param file Name of file to be read, which must be relative to the user's
-current directory.
-
-@return a reader, with an appropriate encoding, for the specified file.
-
-@throws java.lang.NullPointerException if file is null.
-
-@throws java.lang.SecurityException if specified file is protected from
-reading.
-
-@throws java.io.FileNotFoundException if the specified file could not be found.
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private def getFileReader (file: String): Reader = new InputStreamReader (new
-  FileInputStream (file), "windows-1252")
+  final override def load (url: URL) = {
 
-//-----------------------------------------------------------------------------
-/**
-Return a base URL for the specified file.
-
-The base path of the file is determined and returned as a URL having a ''file''
-protocol.
-
-@param file Name of file for which a base URL is required.
+/*
+Verify that the file is not null.
 */
-//-----------------------------------------------------------------------------
 
-  private def getFileBaseURL (file: String) = new File (new File
-  (file).getCanonicalFile ().getParent ()).toURI ().toURL ()
+    requireNonNull (url)
 
-//-----------------------------------------------------------------------------
-/**
-Create reader for specified ''cell'' URL.
-
-@param url Url of cell data to be read.
-
-@return a reader, with an appropriate encoding, for the specified file.
-
-@throws java.lang.NullPointerException if file is null.
-
-@throws java.lang.SecurityException if specified file is protected from
-reading.
-
-@throws java.io.FileNotFoundException if the specified file could not be found.
-
-@since 0.0
+/*
+Helper function to retrieve the absolute path of the file, so that we can
+identify the base URL if one is not defined.
 */
-//-----------------------------------------------------------------------------
 
-  private def getURLReader (url: URL): Reader = new
-  InputStreamReader (url.openStream (), "windows-1252")
+    def getSearchLocation = {
+      val urlString = url.toString ()
+      new URL (urlString.take (urlString.lastIndexOf ('/')))
+    }
 
-//-----------------------------------------------------------------------------
-/**
-Return a base URL for the specified file.
+/*
+Create the text reader for this file.
 
-The base path of the file is determined and returned as a URL having a ''file''
-protocol.
-
-@param file Name of file for which a base URL is required.
-
-@since 0.0
+Note: We may get a FileNotFoundException if the file does not exist, or a
+SecurityException if the file cannot be read.
 */
-//-----------------------------------------------------------------------------
 
-  private def getURLBaseURL (url: URL) = {
-    val urlString = url.toString ()
-    new URL (urlString.take (urlString.lastIndexOf ('/')))
+    val cellReader = new TextReader (new InputStreamReader (url.openStream (),
+    "windows-1252"))
+
+/*
+Determine where we'll search for files referenced in the cell data.
+*/
+
+    val searchLocation = baseUrl.getOrElse (getSearchLocation)
+
+/*
+Read cell data and return the scene read.
+*/
+
+    new CellScene (this, cellReader, searchLocation)
   }
 }
