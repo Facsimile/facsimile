@@ -38,7 +38,5 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.io.TextReader
-
-private [cell] final class RotationalJoint (data: TextReader) extends
-Joint (data)
+private [cell] final class RotationalJoint (scene: CellScene) extends
+Joint (scene)

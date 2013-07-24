@@ -38,10 +38,6 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import scala.Math.abs
-import com.sun.j3d.loaders.ParsingErrorException
-import org.facsim.io.TextReader
-
 //=============================================================================
 /**
 Kinematic joint.
@@ -54,7 +50,7 @@ Kinematic joint.
 */
 //=============================================================================
 
-private [cell] abstract class Joint (data: TextReader) {
+private [cell] abstract class Joint (scene: CellScene) {
 
 /**
 Determine the type of the joint.

@@ -105,6 +105,17 @@ Determine the cell's attribute values.
 
   private final val attrs = new Attributes (scene, flags)
 
+/**
+Cell joint data.
+
+Determine the cell's joint information.
+
+@note Ideally, only Sets should be defined with joint data, but it probably
+doesn't matter too much if non-Sets do too.
+*/
+
+  private final val joint = Cell.processJointData (flags, scene)
+
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
 */
@@ -172,6 +183,11 @@ and so can report meaningful errors to the user.
 data present, and must be called in the correct sequence for reading from the
 cell file, otherwise exceptions will occur.
  
+@param flags ''Cell'' flags, specifying which information is included in the
+cell's definition.
+
+@param scene Scene to which this ''cell'' definition belongs.
+ 
 @throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
@@ -186,7 +202,8 @@ Cell Bounding Box]]
 */
 //-----------------------------------------------------------------------------
 
-  private def processBoundingBox (flags: CellFlags, scene: CellScene): Unit = {
+  private final def processBoundingBox (flags: CellFlags, scene:
+  CellScene): Unit = {
 
 /*
 Read the data only if bounding box data is present.
@@ -200,9 +217,9 @@ must be greater than the minimum co-ordinate.
 */
 
       val minX = scene.readDouble (LibResource
-      ("anim.cell.Cell.readBoundingBox.minDesc", "X"))
+      ("anim.cell.Cell.processBoundingBox.minDesc", "X"))
       scene.readDouble (_ >= minX, LibResource
-      ("anim.cell.Cell.readBoundingBox.maxDesc", "X", minX))
+      ("anim.cell.Cell.processBoundingBox.maxDesc", "X", minX))
 
 /*
 Read in the minimum and maximum Y co-ordinate values. The maximum co-ordinate
@@ -210,9 +227,9 @@ must be greater than the minimum co-ordinate.
 */
 
       val minY = scene.readDouble (LibResource
-      ("anim.cell.Cell.readBoundingBox.minDesc", "Y"))
+      ("anim.cell.Cell.processBoundingBox.minDesc", "Y"))
       scene.readDouble (_ >= minY, LibResource
-      ("anim.cell.Cell.readBoundingBox.maxDesc", "Y", minY))
+      ("anim.cell.Cell.processBoundingBox.maxDesc", "Y", minY))
 
 /*
 Read in the minimum and maximum Z co-ordinate values. The maximum co-ordinate
@@ -220,9 +237,48 @@ must be greater than the minimum co-ordinate.
 */
 
       val minZ = scene.readDouble (LibResource
-      ("anim.cell.Cell.readBoundingBox.minDesc", "Z"))
+      ("anim.cell.Cell.processBoundingBox.minDesc", "Z"))
       scene.readDouble (_ >= minZ, LibResource
-      ("anim.cell.Cell.readBoundingBox.maxDesc", "Z", minZ))
+      ("anim.cell.Cell.processBoundingBox.maxDesc", "Z", minZ))
     }
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Process a ''cell'''s joint data, if present.
+
+@param flags ''Cell'' flags, specifying which information is included in the
+cell's definition.
+
+@param scene Scene to which this ''cell'' definition belongs.
+ 
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html Cell
+Joint Data]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private final def processJointData (flags: CellFlags, scene: CellScene) = {
+
+/*
+If joint data is present, then read the joint type, otherwise, we have no joint
+data.
+*/
+
+    if (flags.jointDataPresent) Some (JointType.readJoint (scene))
+
+/*
+Otherwise, this cell has no joint information.
+*/
+
+    else None
   }
 }

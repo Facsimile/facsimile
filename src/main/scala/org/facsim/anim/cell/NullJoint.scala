@@ -38,6 +38,6 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.io.TextReader
+private [cell] final class NullJoint (scene: CellScene) extends Joint (scene) {
 
-private [cell] final class NullJoint (data: TextReader) extends Joint (data)
+}

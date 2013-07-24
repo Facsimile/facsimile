@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
 Line style enumeration.
@@ -85,13 +87,13 @@ Default line style, which is used if an explicit style is not available.
   final val default = Solid
 
 /**
-Minimum line width value in pixels.
+Minimum line width value.
 */
 
   final val minValue = 0
 
 /**
-Maximum line width value in pixels.
+Maximum line width value.
 */
 
   final val maxValue = maxId - 1
@@ -110,4 +112,41 @@ Verify a line style code.
 
   final def verify (lineStyleCode: Int) =
   (lineStyleCode >= minValue && lineStyleCode <= maxValue)
+
+//-----------------------------------------------------------------------------
+/**
+Read line style from ''cell'' data stream.
+
+@param scene Scene from which the line style is to be read.
+
+@return Line style read, if valid.
+
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
+Line Styles]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  final def read (scene: CellScene) = {
+
+/*
+Read the line style code from the data stream.
+*/
+
+    val code = scene.readInt (verify (_), LibResource
+    ("anim.cell.LineStyle.read", minValue, maxValue))
+
+/*
+Convert to a line style and return.
+*/
+
+    LineStyle (code)
+  }
 }

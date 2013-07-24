@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
 Cell color name enumeration.
@@ -157,13 +159,13 @@ Default color, which is used if no other color is available.
   final val default = Red
 
 /**
-Minimum color code value in pixels.
+Minimum color code value.
 */
 
   final val minValue = 0
 
 /**
-Maximum color code value in pixels.
+Maximum color code value.
 */
 
   final val maxValue = maxId - 1
@@ -182,4 +184,44 @@ Verify a color code.
 
   final def verify (colorCode: Int) = (colorCode >= minValue && colorCode <=
   maxValue)
+
+//-----------------------------------------------------------------------------
+/**
+Read color from ''cell'' data stream.
+
+@param scene Scene from which the color is to be read.
+
+@param colorType Code indicating the type of color being read: 0 = face, 1 =
+edge
+
+@return Color read, if valid.
+
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
+Face & Edge Colors]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  final def read (scene: CellScene, colorType: Int) = {
+
+/*
+Read the color code from the data stream.
+*/
+
+    val code = scene.readInt (verify (_), LibResource
+    ("anim.cell.CellColor.read", colorType, minValue, maxValue))
+
+/*
+Convert to a cell color and return.
+*/
+
+    CellColor (code)
+  }
 }

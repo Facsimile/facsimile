@@ -39,84 +39,78 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import org.facsim.requireValid
 
 //=============================================================================
 /**
-Class encapsulating ''cell'' line width pixel values.
+Joint type enumeration.
 
-@note This would be a value class, except that it is not possible to access
-anything referenced via `this`&mdash;even an implied one.  So, consequently,
-value classes cannot be employed to self-verify their values.  Or so it
-currently appears (Scala 2.10).
+Encodes ''[[http://www.automod.com/ AutoMod®]]'' joint type codes and maps them
+to the corresponding joint types.
 
-@constructor Create a new valid line width value.
-
-@param lineWidth Line width value in pixels.
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/JointType.html
+Joint Type]]
 
 @since 0.0
 */
 //=============================================================================
 
-private [cell] final class LineWidth (final val lineWidth: Int) {
+private [cell] object JointType extends Enumeration {
 
-/*
-Verify that the value is within the valid range.
+/**
+TCFOnly, having the joint type 0.
+
+@note A ''terminal control frame'' (''TCF'') is not a joint proper joint, but a
+location to which ''AutoMod'' will attach loads and/or vehicles.
 */
 
-  requireValid (lineWidth, LineWidth.verify (lineWidth))
-}
+  final val TCFOnly = Value
 
-//=============================================================================
 /**
-Line width companion object.
+Rotational, having the joint type 1.
+*/
+
+  final val Rotational = Value
+
+/**
+Translational, having the joint type 2.
+*/
+
+  final val Translational = Value
+
+/**
+Minimum joint type code value.
+*/
+
+  final val minValue = 0
+
+/**
+Maximum joint type code vlaue.
+*/
+
+  final val maxValue = maxId - 1
+
+//-----------------------------------------------------------------------------
+/**
+Verify a joint type code.
+
+@param jointTypeCode Code for the joint type to be verified.
+
+@return `true` if the code maps to a valid joint type, `false` otherwise.
 
 @since 0.0
 */
-//=============================================================================
+//-----------------------------------------------------------------------------
 
-private [cell] object LineWidth {
-
-/**
-Minimum line width value in pixels.
-*/
-
-  final val minValue = 1
-
-/**
-Maximum line width value in pixels.
-*/
-
-  final val maxValue = 7
-
-/**
-Default line width value.
-*/
-
-  final val default = new LineWidth (1)
+  final def verify (jointTypeCode: Int) = (jointTypeCode >= minValue &&
+  jointTypeCode <= maxValue)
 
 //-----------------------------------------------------------------------------
 /**
-Verify that an integer line width value is valid.
+Read joint type from ''cell'' data stream.
 
-@param lineWidth Line width value, in pixels, to be verified.
+@param scene Scene from which the joint type is to be read.
 
-@return `true` if `lineWidth` is a valid value, `false` otherwise.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def verify (lineWidth: Int) = (lineWidth >= minValue && lineWidth <=
-  maxValue)
-
-//-----------------------------------------------------------------------------
-/**
-Read line width from ''cell'' data stream.
-
-@param scene Scene from which the line width is to be read.
-
-@return Line width read, if valid.
+@return Joint type read, if valid.
 
 @throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -124,8 +118,9 @@ is not an ''AutoMod® cell'' file.
 @throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
-Line Width]]
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/JointType.html
+Joint Type]]
 
 @since 0.0
 */
@@ -134,16 +129,51 @@ Line Width]]
   final def read (scene: CellScene) = {
 
 /*
-Read the line width value from the data stream.
+Read the joint type code from the data stream.
 */
 
     val code = scene.readInt (verify (_), LibResource
-    ("anim.cell.LineWidth.read", minValue, maxValue))
+    ("anim.cell.JointType.read", minValue, maxValue))
 
 /*
-Convert to a line width and return.
+Convert to a joint type and return.
 */
 
-    new LineWidth (code)
+    JointType (code)
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Read joint ''cell'' data stream.
+
+@param scene Scene from which the joint type is to be read.
+
+@return Joint read, if valid.
+ 
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/Joint.html Cell
+Joint Data]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  final def readJoint (scene: CellScene) = {
+
+/*
+Determine the type of joint to be read and create it.
+*/
+
+    read (scene) match {
+      case TCFOnly => new NullJoint (scene)
+      case Rotational => new RotationalJoint (scene)
+      case Translational => new TranslationalJoint (scene)
+    }
   }
 }

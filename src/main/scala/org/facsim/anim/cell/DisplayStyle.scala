@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
 Display style enumeration.
@@ -164,13 +166,13 @@ Default display style, which is used if an explicit style is not available.
   final val default = Solid
 
 /**
-Minimum display style code value in pixels.
+Minimum display style code value.
 */
 
   final val minValue = 0
 
 /**
-Maximum display style code value in pixels.
+Maximum display style code value.
 */
 
   final val maxValue = maxId - 1
@@ -189,4 +191,42 @@ Verify a display style code.
 
   final def verify (displayStyleCode: Int) =
   (displayStyleCode >= minValue && displayStyleCode <= maxValue)
+
+//-----------------------------------------------------------------------------
+/**
+Read display style from ''cell'' data stream.
+
+@param scene Scene from which the display style is to be read.
+
+@return Display style read, if valid.
+
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
+Display Styles]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  final def read (scene: CellScene) = {
+
+/*
+Read the display style code from the data stream.
+*/
+
+    val code = scene.readInt (verify (_), LibResource
+    ("anim.cell.DisplayStyle.read", minValue, maxValue))
+
+/*
+Convert to a display style and return.
+*/
+
+    DisplayStyle (code)
+  }
 }
