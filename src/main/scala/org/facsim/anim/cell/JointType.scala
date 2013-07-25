@@ -148,6 +148,8 @@ Read joint ''cell'' data stream.
 
 @param scene Scene from which the joint type is to be read.
 
+@param flags The current ''cell'''s flags.
+
 @return Joint read, if valid.
  
 @throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
@@ -164,16 +166,16 @@ Joint Data]]
 */
 //-----------------------------------------------------------------------------
 
-  final def readJoint (scene: CellScene) = {
+  final def readJoint (scene: CellScene, flags: CellFlags) = {
 
 /*
 Determine the type of joint to be read and create it.
 */
 
     read (scene) match {
-      case TCFOnly => new NullJoint (scene)
-      case Rotational => new RotationalJoint (scene)
-      case Translational => new TranslationalJoint (scene)
+      case TCFOnly => new NullJoint (scene, flags)
+      case Rotational => new RotationalJoint (scene, flags)
+      case Translational => new TranslationalJoint (scene, flags)
     }
   }
 }

@@ -105,7 +105,7 @@ doesn't matter too much if non-Sets do too.
 */
 
   private final val joint =
-  if (flags.jointDataPresent) Some (JointType.readJoint (scene))
+  if (flags.jointDataPresent) Some (JointType.readJoint (scene, flags))
   else None
 
 /*

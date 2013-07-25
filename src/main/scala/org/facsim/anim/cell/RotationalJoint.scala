@@ -38,5 +38,5 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] final class RotationalJoint (scene: CellScene) extends
-Joint (scene)
+private [cell] final class RotationalJoint (scene: CellScene, flags: CellFlags)
+extends Joint (scene, flags)

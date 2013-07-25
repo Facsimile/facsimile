@@ -69,6 +69,8 @@ This class is the base class for all types of Joint.
 
 @param scene Scene to which the associated ''cell'' element belongs.
 
+@param flags The current ''cell'''s flags.
+
 @throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
@@ -82,7 +84,8 @@ Cell Joint Data]]
 */
 //=============================================================================
 
-private [cell] abstract class Joint (scene: CellScene) extends NotNull {
+private [cell] abstract class Joint (scene: CellScene, flags: CellFlags)
+extends NotNull {
 
 /**
 Joint data.
