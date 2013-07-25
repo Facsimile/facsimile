@@ -92,9 +92,9 @@ must be greater than the minimum co-ordinate.
 */
 
     val minX = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
-    "X"))
+    0))
     scene.readDouble (_ >= minX, LibResource ("anim.cell.BoundingBox.read.max",
-    "X", minX))
+    0, minX))
 
 /*
 Read in the minimum and maximum Y co-ordinate values. The maximum co-ordinate
@@ -102,9 +102,9 @@ must be greater than the minimum co-ordinate.
 */
 
     val minY = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
-    "Y"))
+    1))
     scene.readDouble (_ >= minY, LibResource ("anim.cell.BoundingBox.read.max",
-    "Y", minY))
+    1, minY))
 
 /*
 Read in the minimum and maximum Z co-ordinate values. The maximum co-ordinate
@@ -112,8 +112,8 @@ must be greater than the minimum co-ordinate.
 */
 
     val minZ = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
-    "Z"))
+    2))
     scene.readDouble (_ >= minZ, LibResource ("anim.cell.BoundingBox.read.max",
-    "Z", minZ))
+    2, minZ))
   }
 }
