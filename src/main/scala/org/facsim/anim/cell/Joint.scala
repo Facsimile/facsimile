@@ -92,4 +92,13 @@ Joint data.
 */
 
   private val jointData = new JointData (scene)
+
+/**
+If geometry data is present, then read the joint's geometry.
+*/
+
+  private val jointGeomtry =
+  if (flags.geometryDataPresent) Some (new Transformation (scene,
+  flags.geometryDataInMatrixForm))
+  else None
 }

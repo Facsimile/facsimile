@@ -38,41 +38,81 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
-''[[http://www.automod.com/ AutoMod®]] cell'' transformation.
+Translation along a cell's local X, Y & Z axes.
 
-In ''AutoMod'', a ''transformation'' is called ''geometry data''.  It
-encompasses a translation along each local axis, a rotation about each local
-axis (applied in a specified sequence) and a scaling along each local axis.
+@constructor Create a new translation instance.
 
-@constructor Create a new transformation (also known as a ''cell geometry''
-instance from the ''cell'' data stream.
+@param x Translation along local X axis.
 
-@param scene ''Cell'' scene from which the transformation is to be read.
+@param y Translation along local X axis.
 
-@param inMatrixForm Flag indicating the format of the transformation data:
-`true` indicates that the transformation is specified as a 4x4 affine matrix;
-`false` indicates that the transformation is specified in regular format.
-
-@todo Implement support for the reading the transformation's matrix form.
+@param z Translation along local X axis.
 
 @since 0.0
 */
 //=============================================================================
 
-private [cell] final class Transformation (scene: CellScene, inMatrixForm:
-Boolean) extends NotNull {
+private [cell] final case class Translation (x: Double, y: Double, z: Double)
+extends NotNull
+
+//=============================================================================
+/**
+Translation companion object.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] object Translation {
+
+//-----------------------------------------------------------------------------
+/**
+Read translation from ''cell'' data stream.
+
+@param scene Scene from which the joint type is to be read.
+
+@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see
+[http://facsim.org/Documentation/Resources/AutoModCellFile/Translation.html
+Translation]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  final def read (scene: CellScene) = {
 
 /*
-Matrix form not implemented yet.
+Read the X axis translation from the data stream.
 */
 
-  if (inMatrixForm) ???
+    val x = scene.readDouble (LibResource ("anim.cell.Translation.read", 0))
 
-/**
-Read the translation data from the stream.
+/*
+Read the Y axis translation from the data stream.
 */
 
-  val translate = Translation.read (scene)
+    val y = scene.readDouble (LibResource ("anim.cell.Translation.read", 1))
+
+/*
+Read the Z axis translation from the data stream.
+*/
+
+    val z = scene.readDouble (LibResource ("anim.cell.Translation.read", 2))
+
+/*
+Convert to a translation and return.
+*/
+
+    Translation (x, y, z)
+  }
 }
