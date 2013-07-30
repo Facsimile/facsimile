@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
 Abstract joint class.
@@ -65,16 +67,16 @@ data only.
 
 This class is the base class for all types of Joint.
 
-@constructor Create a new joint instrance.
+@constructor Create a new joint instance.
 
 @param scene Scene to which the associated ''cell'' element belongs.
 
 @param flags The current ''cell'''s flags.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
@@ -99,6 +101,21 @@ If geometry data is present, then read the joint's geometry.
 
   private val jointGeomtry =
   if (flags.geometryDataPresent) Some (new Transformation (scene,
+  flags.geometryDataInMatrixForm))
+  else None
+
+/*
+Consume to extra "0" field from the file.
+*/
+
+  scene.readInt (_ == 0, LibResource ("anim.cell.Joint.terminator"))
+
+/**
+If TCF data is present, then read the TCF's geometry.
+*/
+
+  private val tcfGeometry =
+  if (jointData.tcfPresent) Some (new Transformation (scene,
   flags.geometryDataInMatrixForm))
   else None
 }

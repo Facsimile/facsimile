@@ -63,31 +63,31 @@ TCFOnly, having the joint type 0.
 location to which ''AutoMod'' will attach loads and/or vehicles.
 */
 
-  final val TCFOnly = Value
+  private [cell] val TCFOnly = Value
 
 /**
 Rotational, having the joint type 1.
 */
 
-  final val Rotational = Value
+  private [cell] val Rotational = Value
 
 /**
 Translational, having the joint type 2.
 */
 
-  final val Translational = Value
+  private [cell] val Translational = Value
 
 /**
 Minimum joint type code value.
 */
 
-  final val minValue = 0
+  private [cell] val minValue = 0
 
 /**
 Maximum joint type code vlaue.
 */
 
-  final val maxValue = maxId - 1
+  private [cell] val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -101,8 +101,8 @@ Verify a joint type code.
 */
 //-----------------------------------------------------------------------------
 
-  final def verify (jointTypeCode: Int) = (jointTypeCode >= minValue &&
-  jointTypeCode <= maxValue)
+  private [cell] def verify (jointTypeCode: Int) = (jointTypeCode >= minValue
+  && jointTypeCode <= maxValue)
 
 //-----------------------------------------------------------------------------
 /**
@@ -112,10 +112,10 @@ Read joint type from ''cell'' data stream.
 
 @return Joint type read, if valid.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see
@@ -126,7 +126,7 @@ Joint Type]]
 */
 //-----------------------------------------------------------------------------
 
-  final def read (scene: CellScene) = {
+  private [cell] def read (scene: CellScene) = {
 
 /*
 Read the joint type code from the data stream.
@@ -152,10 +152,10 @@ Read joint ''cell'' data stream.
 
 @return Joint read, if valid.
  
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see
@@ -166,7 +166,7 @@ Joint Data]]
 */
 //-----------------------------------------------------------------------------
 
-  final def readJoint (scene: CellScene, flags: CellFlags) = {
+  private [cell] def readJoint (scene: CellScene, flags: CellFlags) = {
 
 /*
 Determine the type of joint to be read and create it.

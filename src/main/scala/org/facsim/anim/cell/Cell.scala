@@ -38,6 +38,9 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import scalafx.scene.Node
+import scalafx.scene.paint.Color
+
 //=============================================================================
 /**
 Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
@@ -53,10 +56,10 @@ File Format]] for further information.
 @param parent Parent set of this cell primitive.  If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -108,45 +111,109 @@ doesn't matter too much if non-Sets do too.
   if (flags.jointDataPresent) Some (JointType.readJoint (scene, flags))
   else None
 
+/**
+Cell transformation data.
+*/
+
+  private final val transformation =
+  if (flags.geometryDataPresent) Some (new Transformation (scene,
+  flags.geometryDataInMatrixForm))
+  else None
+
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
 */
 
-  final override val lineStyle = attrs.lineStyle
+  private [cell] final override val lineStyle = attrs.lineStyle
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.lineWidth]]
 */
 
-  final override val lineWidth = attrs.lineWidth
+  private [cell] final override val lineWidth = attrs.lineWidth
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.displayStyle]]
 */
 
-  final override val displayStyle = attrs.displayStyle
+  private [cell] final override val displayStyle = attrs.displayStyle
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.name]]
 */
 
-  final override val name = attrs.name
+  private [cell] final override val name = attrs.name
+
+//-----------------------------------------------------------------------------
+/**
+Face color of the parent.
+
+@return If we have a parent, then return it's face color.  Otherwise, we return
+the scene's default face color as an option.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private final def parentFaceColor: Option [Color] = parent match {
+    case Some (parentCell) => parentCell.faceColor
+    case None => scene.defaultFaceColor
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Edge color of the parent.
+
+@return If we have a parent, then return it's edge color.  Otherwise, we return
+the scene's default edge color as an option.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private final def parentEdgeColor: Option [Color] = parent match {
+    case Some (parentCell) => parentCell.edgeColor
+    case None => scene.defaultEdgeColor
+  }
 
 //-----------------------------------------------------------------------------
 /*
+Face color is determined thus:
+- If face color is defined, return it.
+- Otherwise, if parent is defined, return its face color.
+- Otherwise, use this scene's default face color.
+
 @see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
 */
 //-----------------------------------------------------------------------------
 
-  final override def faceColor = attrs.faceColor.orElse (parent.flatMap
-  (_.faceColor))
+  private [cell] final override def faceColor =
+  attrs.faceColor.orElse (parentFaceColor)
 
 //-----------------------------------------------------------------------------
 /*
+Edge color is determined thus:
+- If edge color is defined, return it.
+- Otherwise, if parent is defined, return its edge color.
+- Otherwise, use this scene's default edge color.
+
 @see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
 */
 //-----------------------------------------------------------------------------
 
-  final override def edgeColor = attrs.edgeColor.orElse (parent.flatMap
-  (_.edgeColor))
+  private [cell] final override def edgeColor =
+  attrs.edgeColor.orElse (parentEdgeColor)
+
+//-----------------------------------------------------------------------------
+/**
+Function to convert this ''cell'' and its contents (if any) to a ''ScalaFX''
+[[scalafx.scene.Node!]] instance.
+
+@return Cell as a [[scalafx.scene.Node!]].
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def toNode: Node
 }

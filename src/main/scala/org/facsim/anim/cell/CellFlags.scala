@@ -70,7 +70,7 @@ not.
  */
 //-----------------------------------------------------------------------------
 
-  final def attributesPresent = ((flags & 0x1) != 0)
+  private [cell] def attributesPresent = ((flags & 0x1) != 0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -86,7 +86,7 @@ not.
  */
 //-----------------------------------------------------------------------------
 
-  final def jointDataPresent = ((flags & 0x2) != 0)
+  private [cell] def jointDataPresent = ((flags & 0x2) != 0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -105,7 +105,7 @@ if not.
  */
 //-----------------------------------------------------------------------------
 
-  final def geometryDataPresent = ((flags & 0x4) != 0)
+  private [cell] def geometryDataPresent = ((flags & 0x4) != 0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -128,7 +128,7 @@ rotation and scaling data, rather than shape geometry.
  */
 //-----------------------------------------------------------------------------
 
-  final def geometryDataInMatrixForm = ((flags & 0x8) != 0)
+  private [cell] def geometryDataInMatrixForm = ((flags & 0x8) != 0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -145,7 +145,7 @@ not.
  */
 //-----------------------------------------------------------------------------
 
-  final def colorsInherited = ((flags & 0x10) != 0)
+  private [cell] def colorsInherited = ((flags & 0x10) != 0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -163,7 +163,7 @@ specification is provided.
  */
 //-----------------------------------------------------------------------------
 
-  final def boundingBoxPresent = ((flags & 0x40) != 0)
+  private [cell] def boundingBoxPresent = ((flags & 0x40) != 0)
 }
 
 //=============================================================================
@@ -184,10 +184,10 @@ Read ''cell'' flags from data stream.
 
 @return Flags read, if valid.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Flags.html
@@ -197,7 +197,7 @@ Cell Flags]]
 */
 //-----------------------------------------------------------------------------
 
-  final def read (scene: CellScene) = {
+  private [cell] def read (scene: CellScene) = {
 
 /*
 Read the flags from the data stream.

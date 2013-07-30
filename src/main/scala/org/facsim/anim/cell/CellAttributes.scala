@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import scalafx.scene.paint.Color
+
 //=============================================================================
 /**
 Trait defining the attribute access functions of a cell.
@@ -61,7 +63,7 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  def faceColor: Option [CellColor.Value]
+  def faceColor: Option [Color]
 
 //-----------------------------------------------------------------------------
 /**
@@ -81,7 +83,7 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  def edgeColor: Option [CellColor.Value]
+  def edgeColor: Option [Color]
 
 //-----------------------------------------------------------------------------
 /**

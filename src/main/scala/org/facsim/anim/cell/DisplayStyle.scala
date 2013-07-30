@@ -61,121 +61,121 @@ private [cell] object DisplayStyle extends Enumeration {
 Wireframe, having the ''cell'' display style 0.
 */
 
-  final val Wireframe = Value
+  private [cell] val Wireframe = Value
 
 /**
 Solid, having the ''cell'' display style 1.
 */
 
-  final val Solid = Value
+  private [cell] val Solid = Value
 
 /**
 Transparent 1, having the ''cell'' display style 2.  Almost solid.
 */
 
-  final val Transparent1 = Value
+  private [cell] val Transparent1 = Value
 
 /**
 Transparent 2, having the ''cell'' display style 3.
 */
 
-  final val Transparent2 = Value
+  private [cell] val Transparent2 = Value
 
 /**
 Transparent 3, having the ''cell'' display style 4.
 */
 
-  final val Transparent3 = Value
+  private [cell] val Transparent3 = Value
 
 /**
 Transparent 4, having the ''cell'' display style 5.
 */
 
-  final val Transparent4 = Value
+  private [cell] val Transparent4 = Value
 
 /**
 Transparent 5, having the ''cell'' display style 6.
 */
 
-  final val Transparent5 = Value
+  private [cell] val Transparent5 = Value
 
 /**
 Transparent 6, having the ''cell'' display style 7.
 */
 
-  final val Transparent6 = Value
+  private [cell] val Transparent6 = Value
 
 /**
 Transparent 7, having the ''cell'' display style 8.
 */
 
-  final val Transparent7 = Value
+  private [cell] val Transparent7 = Value
 
 /**
 Transparent 8, having the ''cell'' display style 9.
 */
 
-  final val Transparent8 = Value
+  private [cell] val Transparent8 = Value
 
 /**
 Transparent 9, having the ''cell'' display style 10.
 */
 
-  final val Transparent9 = Value
+  private [cell] val Transparent9 = Value
 
 /**
 Transparent 10, having the ''cell'' display style 11.
 */
 
-  final val Transparent10 = Value
+  private [cell] val Transparent10 = Value
 
 /**
 Transparent 11, having the ''cell'' display style 12.
 */
 
-  final val Transparent11 = Value
+  private [cell] val Transparent11 = Value
 
 /**
 Transparent 12, having the ''cell'' display style 13.
 */
 
-  final val Transparent12 = Value
+  private [cell] val Transparent12 = Value
 
 /**
 Transparent 13, having the ''cell'' display style 14.
 */
 
-  final val Transparent13 = Value
+  private [cell] val Transparent13 = Value
 
 /**
 Transparent 14, having the ''cell'' display style 15.
 */
 
-  final val Transparent14 = Value
+  private [cell] val Transparent14 = Value
 
 /**
 Transparent 15, having the ''cell'' display style 16.  Almost invisible.
 */
 
-  final val Transparent15 = Value
+  private [cell] val Transparent15 = Value
 
 /**
 Default display style, which is used if an explicit style is not available.
 */
 
-  final val default = Solid
+  private [cell] val default = Solid
 
 /**
 Minimum display style code value.
 */
 
-  final val minValue = 0
+  private [cell] val minValue = 0
 
 /**
 Maximum display style code value.
 */
 
-  final val maxValue = maxId - 1
+  private [cell] val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -189,7 +189,7 @@ Verify a display style code.
 */
 //-----------------------------------------------------------------------------
 
-  final def verify (displayStyleCode: Int) =
+  private [cell] def verify (displayStyleCode: Int) =
   (displayStyleCode >= minValue && displayStyleCode <= maxValue)
 
 //-----------------------------------------------------------------------------
@@ -200,10 +200,10 @@ Read display style from ''cell'' data stream.
 
 @return Display style read, if valid.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see
@@ -214,7 +214,7 @@ Display Styles]]
 */
 //-----------------------------------------------------------------------------
 
-  final def read (scene: CellScene) = {
+  private [cell] def read (scene: CellScene) = {
 
 /*
 Read the display style code from the data stream.

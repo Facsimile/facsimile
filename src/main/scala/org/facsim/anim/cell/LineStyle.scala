@@ -60,43 +60,43 @@ private [cell] object LineStyle extends Enumeration {
 Solid, having the ''cell'' line style 0.
 */
 
-  final val Solid = Value
+  private [cell] val Solid = Value
 
 /**
 Dashed, having the ''cell'' line style 1.
 */
 
-  final val Dashed = Value
+  private [cell] val Dashed = Value
 
 /**
 Dotted, having the ''cell'' line style 2.
 */
 
-  final val Dotted = Value
+  private [cell] val Dotted = Value
 
 /**
 Halftone, having the ''cell'' line style 3.
 */
 
-  final val Halftone = Value
+  private [cell] val Halftone = Value
 
 /**
 Default line style, which is used if an explicit style is not available.
 */
 
-  final val default = Solid
+  private [cell] val default = Solid
 
 /**
 Minimum line width value.
 */
 
-  final val minValue = 0
+  private [cell] val minValue = 0
 
 /**
 Maximum line width value.
 */
 
-  final val maxValue = maxId - 1
+  private [cell] val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -110,7 +110,7 @@ Verify a line style code.
 */
 //-----------------------------------------------------------------------------
 
-  final def verify (lineStyleCode: Int) =
+  private [cell] def verify (lineStyleCode: Int) =
   (lineStyleCode >= minValue && lineStyleCode <= maxValue)
 
 //-----------------------------------------------------------------------------
@@ -121,10 +121,10 @@ Read line style from ''cell'' data stream.
 
 @return Line style read, if valid.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
@@ -134,7 +134,7 @@ Line Styles]]
 */
 //-----------------------------------------------------------------------------
 
-  final def read (scene: CellScene) = {
+  private [cell] def read (scene: CellScene) = {
 
 /*
 Read the line style code from the data stream.

@@ -38,36 +38,22 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import com.sun.j3d.loaders.IncorrectFormatException
-import com.sun.j3d.loaders.ParsingErrorException
-import com.sun.j3d.loaders.Scene
 import java.io.IOException
 import java.net.URL
-import java.util.Hashtable
-import javax.media.j3d.Background
-import javax.media.j3d.Behavior
-import javax.media.j3d.BranchGroup
-import javax.media.j3d.Fog
-import javax.media.j3d.Light
-import javax.media.j3d.Sound
-import javax.media.j3d.TransformGroup
 import org.facsim.LibResource
-import org.facsim.SafeOption
 import org.facsim.io.FieldConversionException
 import org.facsim.io.FieldVerificationException
 import org.facsim.io.TextReader
+import scala.collection.mutable.Map
+import scalafx.scene.paint.Color
 
 //=============================================================================
 /**
 ''Java3D'' scene retrieved from an ''[[http://www.automod.com/ AutoMod®]]
 cell'' file.
 
-@constructor Create a new scene from the specified reader and baseUrl.
-
-@param loader Cell loader instance creating this scene.  The loader determines
-the flags that determine which nodes in the ''cell'' file&mdash;and in the
-files referenced by the ''cell'' file&mdash;are processed during construction
-of the scene.
+@constructor Create a new scene with the indicated reader and default
+information.
 
 @param reader Text reader that assists with processing the ''cell'' file's
 contents.
@@ -75,45 +61,104 @@ contents.
 @param baseUrl Location at which, or relative to which, files referenced within
 ''cell'' files that have non-absolute paths, will be searched.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@param faceColor Face color to be assigned to all ''cell'' elements in this
+scene that inherit their face color from the root node.  This value cannot be
+`null`.
+
+@param edgeColor Edge color to be assigned to all ''cell'' elements in this
+scene that inherit their edge color from the root node.  This value cannot be
+`null`.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
 */
 //=============================================================================
 
-final class CellScene private [cell] (loader: CellLoader, reader: TextReader,
-baseUrl: URL) extends Scene with NotNull {
+private [cell] final class CellScene (reader: TextReader, baseUrl: URL,
+faceColor: Color, edgeColor: Color) extends NotNull {
 
 /*
-We should never get a null baseUrl, since we're in control of the information
-passed to this class, but let's just make sure.
-
-NOTE: CellLoader and TextReader are both derived from NotNull, so it ought to
-be impossible for them to be null.
+Sanity checks.
 */
 
-  assert (baseUrl != null)
+  assert (reader.isInstanceOf [NotNull])
+  assert (baseUrl ne null)
+  assert (faceColor ne null)
+  assert (edgeColor ne null)
+
+/**
+Flag indicating whether we have finished constructing the scene.
+
+@todo This is a little fugly, but it works, so hey...  :-(
+*/
+
+  private var sceneRead = false
+
+/**
+''Cell'' definitions, indexed by name and initially empty.
+*/
+
+  private val definitions: Map [String, Definition] = Map ()
 
 /**
 Process the cell data.
 
-Each time a new cell is read, this scene is notified so that it can be indexed
-and cataloged correctly.
-
 Note: There is a single ''root'' cell element that is either a leaf primitive
-or a collection that contains all remaining cells making up the scene.
+or a set primitive that contains all remaining cells making up the scene.
 Consequently, the root cell contains the entire scene itself.
 */
 
-  private final val rootCell = readNextCell (None)
+  private val rootCell = readNextCell ()
+
+/*
+By the time execution reaches this point, we'll have constructed the scene.
+*/
+
+  sceneRead = true
 
 //-----------------------------------------------------------------------------
 /**
-Read next cell element from the stream.
+Report the default face color for this scene.
+
+@return Specified face color as an optional value.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def defaultFaceColor = Some (faceColor)
+
+//-----------------------------------------------------------------------------
+/**
+Report the default edge color for this scene.
+
+@return Specified edge color as an optional value.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def defaultEdgeColor = Some (edgeColor)
+
+//-----------------------------------------------------------------------------
+/**
+Return the scene read as a ''ScalaFX'' 3D scene graph.
+
+@return Cell's contents as a ''ScalaFX'' 3D scene graph.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def toNode = {
+    assert (sceneRead)
+    rootCell.toNode
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Read next cell element from the stream and return it.
 
 @param parent Set primitive that is to contain the cell read.  If `None`, then
 the cell is the root cell of the scene.
@@ -124,26 +169,28 @@ the caller.
 
 @return Cell instance read from the file.  Note that the root cell contains all
 cells belonging to this scene as its contents.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def readNextCell (parent: Option [Set], definitionExpected:
-  Boolean = false) = {
+  private [cell] def readNextCell (parent: Option [Set] = None,
+  isDefinition: Boolean = false) = {
 
 /*
 Determine the code of the next cell element in the file.
 */
 
-    val cellCode = readInt (CellScene.verifyCellCode (definitionExpected),
+    val cellCode = readInt (CellScene.verifyCellCode (isDefinition),
     LibResource ("anim.cell.CellScene.readNextCell.cellCodeDesc", if
-    (definitionExpected) 1 else 0, CellScene.permittedCellCodes
-    (definitionExpected)))
+    (isDefinition) 1 else 0, CellScene.permittedCellCodes
+    (isDefinition)))
 
 /*
 Retrieve the cell class associated with the indicated cell code.
 */
 
-    val cellClass = CellScene.getCellClass (definitionExpected, cellCode)
+    val cellClass = CellScene.getCellClass (isDefinition, cellCode)
 
 /*
 Determine the constructor for this cell, and invoke it with the appropriate
@@ -155,7 +202,27 @@ associated class has been supplied with such a constructor.
 */
 
     val classCtor = cellClass.getConstructor (getClass, classOf [Set])
-    classCtor.newInstance (this, parent)
+
+/*
+Create the new cell instance and return it.
+*/
+
+    val cell = classCtor.newInstance (this, parent)
+
+/*
+If this is a definition, then add it to the list of definitions.
+
+Note that if the cell has no name, then this will result in an exception.
+*/
+
+    if (isDefinition) definitions += (cell.name.get -> cell.asInstanceOf
+    [Definition])
+
+/*
+Return the cell read.
+*/
+
+    cell
   }
 
 //-----------------------------------------------------------------------------
@@ -170,10 +237,10 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -201,10 +268,10 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -231,10 +298,10 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -264,10 +331,10 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -295,10 +362,10 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -328,10 +395,10 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -349,32 +416,6 @@ encountered during parsing of the file.
     }
     value
   }
-
-  final override def getSceneGroup(): BranchGroup = ???
-
-  final override def getViewGroups(): Array [TransformGroup] = ???
-
-  final override def getHorizontalFOVs(): Array [Float] = ???
-
-  final override def getLightNodes(): Array [Light] = ???
-
-  final override def getNamedObjects(): Hashtable [String, Object] = ???
-
-  final override def getBackgroundNodes(): Array [Background] = ???
-
-  final override def getFogNodes(): Array [Fog] = ???
-
-  final override def getBehaviorNodes(): Array [Behavior] = ???
-
-  final override def getSoundNodes(): Array [Sound] = ???
-
-  final override def getDescription(): String = ???
-
-// Get TCFs
-  final def getTerminals(): Array [BranchGroup] = ???
-
-// Get Joints
-  final def getJoints(): Array [BranchGroup] = ???
 }
 
 //=============================================================================
@@ -588,9 +629,9 @@ operations into more appropriate cell error exceptions.  In addition, it adds
 some extra information to the exception to assist with debugging cell read
 failures.
 
-@note The distinction between a [[com.sun.j3d.loaders.ParsingErrorException!]]
+@note The distinction between a [[org.facsim.anim.cell.ParsingErrorException!]]
 (indicating that a file of the wrong type was passed to a loader) and a
-[[com.sun.j3d.loaders.IncorrectFormatException!]] (indicating that a problem
+[[org.facsim.anim.cell.IncorrectFormatException!]] (indicating that a problem
 parsing the file was encountered) can be a fine one.  This function attempts to
 address this distinction in a standard manner.
 
@@ -618,10 +659,10 @@ just happened.
 
 @return This function does not return and always throws an exception.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -637,7 +678,7 @@ example) to incorrect format exceptions.
 */
 
     case e: FieldConversionException =>
-    throw new IncorrectFormatException (msg).initCause (e)
+    throw new IncorrectFormatException (msg, e)
 
 /*
 Map field verification exceptions (data is correct type, but doesn't have an
@@ -646,14 +687,14 @@ parsing error exceptions.
 */
 
     case e: FieldVerificationException =>
-    throw new ParsingErrorException (msg).initCause (e)
+    throw new ParsingErrorException (msg, e)
 
 /*
 Map I/O exceptions (of which there are many different types) to parsing error
 exceptions.
 */
 
-    case e: IOException => throw new ParsingErrorException (msg).initCause (e)
+    case e: IOException => throw new ParsingErrorException (msg, e)
 
 /*
 For all other exceptions, re-throw the original exception.

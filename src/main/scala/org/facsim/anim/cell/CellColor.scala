@@ -39,13 +39,14 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import scalafx.scene.paint.Color
 
 //=============================================================================
 /**
 Cell color name enumeration.
 
 Encodes ''[[http://www.automod.com/ AutoMod®]]'' color codes and maps them to
-the corresponding colors.
+the corresponding ''ScalaFX'' colors.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
@@ -57,118 +58,160 @@ Face & Edge Colors]]
 private [cell] object CellColor extends Enumeration {
 
 /**
+Vector associating each ''cell'' color with the corresponding ''ScalaFX''
+color.
+*/
+
+  private val cellToColor = Vector (
+    Color.BLACK,
+    Color.RED,
+    Color.GREEN,
+    Color.YELLOW,
+    Color.BLUE,
+    Color.MAGENTA,
+    Color.CYAN,
+    Color.WHITE,
+    Color.LIGHTGRAY,
+    Color.DARKGRAY,
+    Color.BROWN,
+    Color.PURPLE,
+    Color.ORANGE,
+    Color.LIGHTBLUE,
+    Color.LIGHTGREEN,
+    Color.LIGHTYELLOW
+  )
+
+/**
 Black, having the ''cell'' color code 0.
 */
 
-  final val Black = Value
+  private [cell] val Black = Value
 
 /**
 Red, having the ''cell'' color code 1.
 */
 
-  final val Red = Value
+  private [cell] val Red = Value
 
 /**
 Green, having the ''cell'' color code 2.
 */
 
-  final val Green = Value
+  private [cell] val Green = Value
 
 /**
 Yellow, having the ''cell'' color code 3.
 */
 
-  final val Yellow = Value
+  private [cell] val Yellow = Value
 
 /**
 Blue, having the ''cell'' color code 4.
 */
 
-  final val Blue = Value
+  private [cell] val Blue = Value
 
 /**
 Magenta, having the ''cell'' color code 5.
 */
 
-  final val Magenta = Value
+  private [cell] val Magenta = Value
 
 /**
 Cyan, having the ''cell'' color code 6.
 */
 
-  final val Cyan = Value
+  private [cell] val Cyan = Value
 
 /**
 White, having the ''cell'' color code 7.
 */
 
-  final val White = Value
+  private [cell] val White = Value
 
 /**
 Light gray, having the ''cell'' color code 8.
 */
 
-  final val LightGray = Value
+  private [cell] val LightGray = Value
 
 /**
 Dark gray, having the ''cell'' color code 9.
 */
 
-  final val DarkGray = Value
+  private [cell] val DarkGray = Value
 
 /**
 Brown, having the ''cell'' color code 10.
 */
 
-  final val Brown = Value
+  private [cell] val Brown = Value
 
 /**
 Purple, having the ''cell'' color code 11.
 */
 
-  final val Purple = Value
+  private [cell] val Purple = Value
 
 /**
 Orange, having the ''cell'' color code 12.
 */
 
-  final val Orange = Value
+  private [cell] val Orange = Value
 
 /**
 Light blue, having the ''cell'' color code 13.
 */
 
-  final val LightBlue = Value
+  private [cell] val LightBlue = Value
 
 /**
 Light green, having the ''cell'' color code 14.
 */
 
-  final val LightGreen = Value
+  private [cell] val LightGreen = Value
 
 /**
 Light yellow, having the ''cell'' color code 15.
 */
 
-  final val LightYellow = Value
-
-/**
-Default color, which is used if no other color is available.
-*/
-
-  final val default = Red
+  private [cell] val LightYellow = Value
 
 /**
 Minimum color code value.
 */
 
-  final val minValue = 0
+  private [cell] val minValue = 0
 
 /**
 Maximum color code value.
 */
 
-  final val maxValue = maxId - 1
+  private [cell] val maxValue = maxId - 1
+
+/**
+Default color, which is used if an explicit color is not specified.
+*/
+
+  private [cell] val default = toColor (Red)
+
+//-----------------------------------------------------------------------------
+/**
+Conversion of ''cell'' color to ''ScalaFX'' color.
+
+@note This could be made an implicit function, but that might encourage the use
+of ''cell'' colors in regular code, when ideally we want to bury them.
+
+@param ''Cell'' color value to be converted.
+
+@return Corresponding ''ScalaFX'' color.
+
+@since 0.0 
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] def toColor (color: CellColor.Value) = cellToColor (color.id)
 
 //-----------------------------------------------------------------------------
 /**
@@ -182,8 +225,8 @@ Verify a color code.
 */
 //-----------------------------------------------------------------------------
 
-  final def verify (colorCode: Int) = (colorCode >= minValue && colorCode <=
-  maxValue)
+  private [cell] def verify (colorCode: Int) = (colorCode >= minValue &&
+  colorCode <= maxValue)
 
 //-----------------------------------------------------------------------------
 /**
@@ -196,10 +239,10 @@ edge
 
 @return Color read, if valid.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
@@ -209,7 +252,7 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  final def read (scene: CellScene, colorType: Int) = {
+  private [cell] def read (scene: CellScene, colorType: Int) = {
 
 /*
 Read the color code from the data stream.
@@ -219,9 +262,9 @@ Read the color code from the data stream.
     ("anim.cell.CellColor.read", colorType, minValue, maxValue))
 
 /*
-Convert to a cell color and return.
+Convert to a ScalaFX color and return.
 */
 
-    CellColor (code)
+    cellToColor (code)
   }
 }

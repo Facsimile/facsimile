@@ -38,69 +38,50 @@ Scala source file from the org.facsim.anim.cell.test package.
 
 package org.facsim.anim.cell.test
 
-import org.facsim.anim.cell.CellColor
+import org.facsim.anim.cell.RotationOrder
 import org.scalatest.FunSpec
-import scalafx.scene.paint.Color
+import scalafx.geometry.Point3D
+import scalafx.scene.transform.Rotate
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim.anim.cell.CellColor$]] object.
+Test suite for the [[org.facsim.anim.cell.RotationOrder$]] object.
 */
 //=============================================================================
 
-class CellColorTest extends FunSpec {
+class RotationOrderTest extends FunSpec {
 
 /*
 Test data.
 */
 
   trait TestData {
-    val validCodes = CellColor.minValue to CellColor.maxValue
-    val validCellColors = Vector [CellColor.Value] (
-      CellColor.Black,
-      CellColor.Red,
-      CellColor.Green,
-      CellColor.Yellow,
-      CellColor.Blue,
-      CellColor.Magenta,
-      CellColor.Cyan,
-      CellColor.White,
-      CellColor.LightGray,
-      CellColor.DarkGray,
-      CellColor.Brown,
-      CellColor.LightBlue,
-      CellColor.Purple,
-      CellColor.Orange,
-      CellColor.LightGreen,
-      CellColor.LightYellow
+    val validCodes = RotationOrder.minValue to RotationOrder.maxValue
+    val validRotationOrders = Vector [RotationOrder.Value] (
+      RotationOrder.XYZ,
+      RotationOrder.XZY,
+      RotationOrder.YXZ,
+      RotationOrder.YZX,
+      RotationOrder.ZXY,
+      RotationOrder.ZYX
     )
-    val validFXColors = Vector [Color] (
-      Color.BLACK,
-      Color.RED,
-      Color.GREEN,
-      Color.YELLOW,
-      Color.BLUE,
-      Color.MAGENTA,
-      Color.CYAN,
-      Color.WHITE,
-      Color.LIGHTGRAY,
-      Color.DARKGRAY,
-      Color.BROWN,
-      Color.LIGHTBLUE,
-      Color.PURPLE,
-      Color.ORANGE,
-      Color.LIGHTGREEN,
-      Color.LIGHTYELLOW
+    val validFXSequences = Vector [List [Point3D]] (
+      List (Rotate.XAxis, Rotate.YAxis, Rotate.ZAxis),
+      List (Rotate.XAxis, Rotate.ZAxis, Rotate.YAxis),
+      List (Rotate.YAxis, Rotate.XAxis, Rotate.ZAxis),
+      List (Rotate.YAxis, Rotate.ZAxis, Rotate.XAxis),
+      List (Rotate.ZAxis, Rotate.XAxis, Rotate.YAxis),
+      List (Rotate.ZAxis, Rotate.YAxis, Rotate.XAxis)
     )
-    val invalidCodes = List (Int.MinValue, CellColor.minValue - 1,
-    CellColor.maxValue + 1, Int.MaxValue)
+    val invalidCodes = List (Int.MinValue, RotationOrder.minValue - 1,
+    RotationOrder.maxValue + 1, Int.MaxValue)
   }
 
 /*
 Test fixture description.
 */
 
-  describe (CellColor.getClass.getCanonicalName) {
+  describe (RotationOrder.getClass.getCanonicalName) {
 
 /*
 Test the apply function works as expected.
@@ -109,30 +90,21 @@ Test the apply function works as expected.
     describe (".apply (Int)") {
       new TestData {
         it ("must throw a java.util.NoSuchElementException if passed an " +
-        "invalid color code") {
+        "invalid rotation order code") {
           invalidCodes.foreach {
             code =>
             intercept [NoSuchElementException] {
-              CellColor (code)
+              RotationOrder (code)
             }
           }
         }
-        it ("must return the correct color if passed a valid color code") {
+        it ("must return the correct rotation order if passed a valid " +
+        "rotation order code") {
           validCodes.foreach {
             code =>
-            assert (CellColor (code) === validCellColors (code))
+            assert (RotationOrder (code) === validRotationOrders (code))
           }
         }
-      }
-    }
-
-/*
-Test that the default color is reported correctly.
-*/
-
-    describe (".default") {
-      it ("must be Red") {
-        assert (CellColor.default === Color.RED)
       }
     }
 
@@ -142,31 +114,32 @@ Test the verify function works as expected.
 
     describe (".verify (Int)") {
       new TestData {
-        it ("must return false if passed an invalid color code") {
+        it ("must return false if passed an invalid rotation order code") {
           invalidCodes.foreach {
             code =>
-            assert (CellColor.verify (code) === false)
+            assert (RotationOrder.verify (code) === false)
           }
         }
-        it ("must return true if passed a valid color code") {
+        it ("must return true if passed a valid rotation order code") {
           validCodes.foreach {
             code =>
-            assert (CellColor.verify (code) === true)
+            assert (RotationOrder.verify (code) === true)
           }
         }
       }
     }
 
 /*
-Test that the toColor function works as expected.
+Test that the toAxisSequence function works as expected.
 */
 
-    describe (".toColor (CellColor.Value)") {
+    describe (".toAxisSequence (RotationOrder.Value)") {
       new TestData {
-        it ("must return correct associated ScalaFX code") {
-          CellColor.values.foreach {
-            color =>
-            assert (CellColor.toColor (color) === validFXColors (color.id))
+        it ("must return correct associated ScalaFX axis sequence") {
+          RotationOrder.values.foreach {
+            rotationOrder =>
+            assert (RotationOrder.toAxisSequence (rotationOrder) ===
+            validFXSequences (rotationOrder.id))
           }
         }
       }

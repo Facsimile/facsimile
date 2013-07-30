@@ -233,8 +233,13 @@ Common library dependencies.
 Required scala standard libraries.
 */
 
-    "org.scala-lang" % "scala-swing" % (scalaVersionLong),
     "org.scala-lang" % "scala-reflect" % (scalaVersionLong),
+
+/*
+ScalaFX libraries, for user-interface design and 3D animation.
+*/
+
+    "org.scalafx" % ("scalafx_" + scalaVersionShort) % "8.0.0-M1-SNAPSHOT",
 
 /*
 Joda Time library for processing dates & times accurately.
@@ -248,17 +253,6 @@ times.
 */
 
     "org.joda" % "joda-convert" % "1.3.1",
-
-/*
-Java 3D libraries.
-
-This is a temporary arrangement for now. When JavaFX 8 becomes available, we'll
-switch to using that for 3D graphics; Java3D is a dead system, and no releases
-above 1.3.1 are available in any repository.
-*/
-    "java3d" % "j3d-core" % "1.3.1",
-    "java3d" % "j3d-core-utils" % "1.3.1",
-    "java3d" % "vecmath" % "1.3.1",
 
 /*
 ScalaTest unit-testing framework for Scala.
@@ -276,6 +270,7 @@ Scala compiler options.
     "-encoding",
     "UTF-8",
     "-explaintypes",
+    "-feature",
     "-g:vars",
     "-target:jvm-1.6",
     "-unchecked",

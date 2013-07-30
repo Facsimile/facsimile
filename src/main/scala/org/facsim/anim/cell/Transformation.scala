@@ -55,7 +55,7 @@ instance from the ''cell'' data stream.
 `true` indicates that the transformation is specified as a 4x4 affine matrix;
 `false` indicates that the transformation is specified in regular format.
 
-@todo Implement support for the reading the transformation's matrix form.
+@todo Implement support for reading the transformation in matrix form.
 
 @since 0.0
 */
@@ -74,5 +74,17 @@ Matrix form not implemented yet.
 Read the translation data from the stream.
 */
 
-  val translate = Translation.read (scene)
+  private val translate = Translation.read (scene)
+
+/**
+Read the rotation data from the stream.
+*/
+
+  private val rotate = Rotation.read (scene)
+
+/**
+Read the scaling data from the stream.
+*/
+
+  private val scaling = Scaling.read (scene)
 }

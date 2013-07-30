@@ -44,6 +44,7 @@ scalacOptions ++= Seq (
   "-encoding",
   "UTF-8",
   "-explaintypes",
+  "-feature",
   "-g:vars",
   "-target:jvm-1.6",
   "-unchecked",

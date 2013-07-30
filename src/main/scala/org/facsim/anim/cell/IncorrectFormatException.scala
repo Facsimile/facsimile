@@ -38,8 +38,20 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import javax.media.j3d.BranchGroup
+//=============================================================================
+/**
+Thrown if a file supplied to an ''AutoMod® cell'' file loader is not a valid
+''cell'' file.
 
-class CellGraph (cellFileName: String) extends BranchGroup {
+@constructor Create a new parsing error exception.
 
-}
+@param msg Message explaining the cause of the exception.
+
+@param e The underlying cause of the exception.
+
+@since 0.0
+*/
+//=============================================================================
+
+final class IncorrectFormatException private [cell] (msg: String, e: Throwable)
+extends RuntimeException (msg, e)

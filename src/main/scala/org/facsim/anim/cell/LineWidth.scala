@@ -58,7 +58,7 @@ currently appears (Scala 2.10).
 */
 //=============================================================================
 
-private [cell] final class LineWidth (final val lineWidth: Int) {
+private [cell] final class LineWidth (private [cell] val lineWidth: Int) {
 
 /*
 Verify that the value is within the valid range.
@@ -81,19 +81,19 @@ private [cell] object LineWidth {
 Minimum line width value in pixels.
 */
 
-  final val minValue = 1
+  private [cell] val minValue = 1
 
 /**
 Maximum line width value in pixels.
 */
 
-  final val maxValue = 7
+  private [cell] val maxValue = 7
 
 /**
 Default line width value.
 */
 
-  final val default = new LineWidth (1)
+  private [cell] val default = new LineWidth (1)
 
 //-----------------------------------------------------------------------------
 /**
@@ -107,8 +107,8 @@ Verify that an integer line width value is valid.
 */
 //-----------------------------------------------------------------------------
 
-  final def verify (lineWidth: Int) = (lineWidth >= minValue && lineWidth <=
-  maxValue)
+  private [cell] def verify (lineWidth: Int) = (lineWidth >= minValue &&
+  lineWidth <= maxValue)
 
 //-----------------------------------------------------------------------------
 /**
@@ -118,10 +118,10 @@ Read line width from ''cell'' data stream.
 
 @return Line width read, if valid.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
@@ -131,7 +131,7 @@ Line Width]]
 */
 //-----------------------------------------------------------------------------
 
-  final def read (scene: CellScene) = {
+  private [cell] def read (scene: CellScene) = {
 
 /*
 Read the line width value from the data stream.

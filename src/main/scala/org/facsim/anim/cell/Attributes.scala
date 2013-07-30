@@ -53,10 +53,10 @@ belongs.
 @param flags ''Cell'' flags associated with the ''cell'' owning these
 attributes.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -85,13 +85,13 @@ color value.
 @see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
 */
 
-  final override val faceColor = readColor (0)
+  private [cell] final override val faceColor = readColor (0)
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
 */
 
-  final override val edgeColor = readColor (1)
+  private [cell] final override val edgeColor = readColor (1)
 
 /*
 If attributes are present, read the line type, otherwise use the default.
@@ -99,7 +99,7 @@ If attributes are present, read the line type, otherwise use the default.
 @see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
 */
 
-  final override val lineStyle =
+  private [cell] final override val lineStyle =
   if (attributesPresent) LineStyle.read (scene)
   else LineStyle.default
 
@@ -109,7 +109,7 @@ If attributes are present, read the line width, otherwise use the default.
 @see [[org.facsim.anim.cell.CellAttributes!.lineWidth]]
 */
 
-  final override val lineWidth =
+  private [cell] final override val lineWidth =
   if (attributesPresent) LineWidth.read (scene)
   else LineWidth.default
 
@@ -119,7 +119,7 @@ If attributes are present, read the line width, otherwise use the default.
 @see [[org.facsim.anim.cell.CellAttributes!.displayStyle]]
 */
 
-  final override val displayStyle =
+  private [cell] final override val displayStyle =
   if (attributesPresent) DisplayStyle.read (scene)
   else DisplayStyle.default
 
@@ -129,7 +129,7 @@ If attributes are present, read the name; otherwise, this cell has no name.
 @see [[org.facsim.anim.cell.CellAttributes!.name]]
 */
 
-  final override val name =
+  private [cell] final override val name =
   if (attributesPresent) {
     Some (scene.readString (value => value != "", LibResource
     ("anim.cell.Attributes.nameDesc")))
@@ -154,10 +154,10 @@ which is passed as an argument to an exception description message.
 
 @return Color if not inherited, `None` otherwise.
 
-@throws [[com.sun.j3d.loaders.IncorrectFormatException!]] if the file supplied
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
-@throws [[com.sun.j3d.loaders.ParsingErrorException!]] if errors are
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
 @since 0.0
@@ -172,7 +172,7 @@ inheriting the color from the parent ''cell''.
 */
 
     if (attributesPresent) {
-      val cellColor = CellColor.read (scene, colorType)
+      val color = CellColor.read (scene, colorType)
 
 /*
 If we're inheriting color, then - no matter what color code we just read - the
@@ -180,7 +180,7 @@ color is None.  Otherwise, we use the color associated with the color code.
 */
 
       if (inheritColors) None
-      else Some (cellColor)
+      else Some (color)
     }
 
 /*

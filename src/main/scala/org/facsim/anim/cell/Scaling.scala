@@ -39,25 +39,25 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import scalafx.scene.transform.Translate
+import scalafx.scene.transform.Scale
 
 //=============================================================================
 /**
-Translation object.
+Scaling object.
 
 @since 0.0
 */
 //=============================================================================
 
-private [cell] object Translation {
+private [cell] object Scaling {
 
 //-----------------------------------------------------------------------------
 /**
-Read translation data from ''cell'' data stream.
+Read scale data from ''cell'' data stream.
 
-@param scene Scene from which the translation data is to be read.
+@param scene Scene from which the scale data is to be read.
 
-@return A translation transformation to be applied to the associated node.
+@return A scaling transformation to be applied to the associated node.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -66,8 +66,8 @@ is not an ''AutoMod® cell'' file.
 encountered during parsing of the file.
 
 @see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/Translation.html
-Translation]]
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/Scaling.html
+Scaling]]
 
 @since 0.0
 */
@@ -76,27 +76,36 @@ Translation]]
   private [cell] def read (scene: CellScene) = {
 
 /*
-Read the X axis translation from the data stream.
+Function to verify scaling values, which must all be > 0.
 */
 
-    val x = scene.readDouble (LibResource ("anim.cell.Translation.read", 0))
+    def verify (scale: Double) = scale > 0
+
+/*
+Read the X axis scaling from the data stream.
+*/
+
+    val x = scene.readDouble (verify (_), LibResource
+    ("anim.cell.Scaling.read", 0))
 
 /*
 Read the Y axis translation from the data stream.
 */
 
-    val y = scene.readDouble (LibResource ("anim.cell.Translation.read", 1))
+    val y = scene.readDouble (verify (_), LibResource
+    ("anim.cell.Scaling.read", 1))
 
 /*
 Read the Z axis translation from the data stream.
 */
 
-    val z = scene.readDouble (LibResource ("anim.cell.Translation.read", 2))
+    val z = scene.readDouble (verify (_), LibResource
+    ("anim.cell.Scaling.read", 2))
 
 /*
 Convert to a Translate instance and return.
 */
 
-    new Translate (x, y, z)
+    new Scale (x, y, z)
   }
 }

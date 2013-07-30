@@ -38,6 +38,83 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] final class Rotation extends NotNull {
+import org.facsim.LibResource
+import scalafx.geometry.Point3D
+import scalafx.scene.transform.Rotate
 
+//=============================================================================
+/**
+Rotation object.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] object Rotation extends NotNull {
+
+//-----------------------------------------------------------------------------
+/**
+Read rotation data from ''cell'' data stream.
+
+@param scene Scene from which the rotation data is to be read.
+
+@return A sequence of rotation transformations to be applied to the associated
+node.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
+Rotation Order & Rotations]]
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def read (scene: CellScene) = {
+
+/*
+Helper function to read an axis rotation and change it into a rotation
+transformation, building a list of such transformations.
+*/
+
+    def applyRotation (count: Int, axes: List [Point3D]): List [Rotate] = {
+      if (axes.isEmpty) Nil
+      else {
+
+/*
+Read the angle from the cell file.
+
+NOTE: Angle is measured in degrees - in both the cell file and in ScalaFX, so
+we do not need to worry about conversions.
+*/
+
+        val angle = scene.readDouble (LibResource ("anim.cell.Rotation.read",
+        count))
+ 
+/*
+If the angle is zero, then we can ignore it.
+*/
+
+        if (angle == 0.0) applyRotation (count + 1, axes.tail)
+
+/*
+Otherwise, create a new rotation transformation and prepend it to the list.
+*/
+
+        else new Rotate (angle, axes.head) :: applyRotation (count + 1,
+        axes.tail)
+      }
+    }
+
+/*
+Create and return the rotation sequence, after reading the rotation order
+sequence from the cell file.
+*/
+
+    applyRotation (1, RotationOrder.read (scene))
+  }
 }

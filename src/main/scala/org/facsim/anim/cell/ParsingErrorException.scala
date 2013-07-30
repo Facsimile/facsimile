@@ -38,65 +38,19 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
-import scalafx.scene.transform.Translate
-
 //=============================================================================
 /**
-Translation object.
+Thrown if errors are encountered during parsing of a ''cell'' file.
+
+@constructor Create a new parsing error exception.
+
+@param msg Message explaining the cause of the exception.
+
+@param e The underlying cause of the exception.
 
 @since 0.0
 */
 //=============================================================================
 
-private [cell] object Translation {
-
-//-----------------------------------------------------------------------------
-/**
-Read translation data from ''cell'' data stream.
-
-@param scene Scene from which the translation data is to be read.
-
-@return A translation transformation to be applied to the associated node.
-
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
-
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/Translation.html
-Translation]]
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
-
-/*
-Read the X axis translation from the data stream.
-*/
-
-    val x = scene.readDouble (LibResource ("anim.cell.Translation.read", 0))
-
-/*
-Read the Y axis translation from the data stream.
-*/
-
-    val y = scene.readDouble (LibResource ("anim.cell.Translation.read", 1))
-
-/*
-Read the Z axis translation from the data stream.
-*/
-
-    val z = scene.readDouble (LibResource ("anim.cell.Translation.read", 2))
-
-/*
-Convert to a Translate instance and return.
-*/
-
-    new Translate (x, y, z)
-  }
-}
+final class ParsingErrorException private [cell] (msg: String, e: Throwable)
+extends RuntimeException (msg, e)
