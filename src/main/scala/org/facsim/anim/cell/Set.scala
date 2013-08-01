@@ -38,11 +38,86 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+import scala.annotation.tailrec
+
 //=============================================================================
 /**
 Abstract class for primitives that can themselves store primitives.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod Cell
+File Format]] for further information.
+
+@constructor Construct a new basic cell primitive.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
 */
 //=============================================================================
 
 private [cell] abstract class Set (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent)
+extends Cell (scene, parent) {
+
+/**
+Determine the number of children and read them in.
+*/
+
+  private val children = readChildren ()
+
+//-----------------------------------------------------------------------------
+/**
+Read in the children of the set and return them.
+
+@return List of children belonging to the set.  This may be empty if no
+children are defined.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private def readChildren () = {
+
+/**
+Helper function to read the next child from the list.
+
+NOTE: The list will contain children defined in reserve order.
+*/
+
+    @tailrec
+    def readChild (count: Int, children: List [Cell]): List [Cell] = {
+      if (count == 0) children
+      else readChild (count - 1, scene.readNextCell (Some (this), false) ::
+      children)
+    }
+
+/*
+Read in the number of children from the data stream.  This must be a value that
+is >= 0.
+*/
+
+    val numChildren = scene.readInt (_ >= 0, LibResource
+    ("anim.cell.Set.readChildren"))
+
+/*
+Build the list of children and return it.
+*/
+
+    readChild (numChildren, Nil).reverse
+  }
+}

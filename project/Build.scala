@@ -272,7 +272,7 @@ Scala compiler options.
     "-explaintypes",
     "-feature",
     "-g:vars",
-    "-target:jvm-1.6",
+    "-target:jvm-1.7",
     "-unchecked",
     "-Xcheckinit",
     //"-Xcheck-null",
