@@ -61,6 +61,9 @@ is not an ''AutoMod® cell'' file.
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
+Sets]]
+
 @since 0.0
 */
 //=============================================================================
@@ -86,6 +89,9 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
+Sets]]
 
 @since 0.0
 */
