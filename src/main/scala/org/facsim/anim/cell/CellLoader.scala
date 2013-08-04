@@ -45,7 +45,7 @@ import org.facsim.SafeNone
 import org.facsim.SafeOption
 import org.facsim.io.TextReader
 import scalafx.scene.Node
-import scalafx.scene.paint.Color
+import scalafx.scene.paint.Material
 
 //=============================================================================
 /**
@@ -56,7 +56,7 @@ This helper object is responsible for loading 3D scenes stored in
 ''[[http://scalafx.org/ ScalaFX]]'' 3D scenes.
 
 The ''AutoMod®'' cell format defines a number of ''3D'' graphics primitives,
-including ''sets'', ''tetrahedra'' (which include ''boxes''), ''cylinders'',
+including ''sets'', ''trapezoids'' (which include ''boxes''), ''cylinders'',
 ''cones'', ''frustums'', ''polyhedra'', etc. as well as a ''compiled picture''
 format.  Furthermore, cell files can also reference and/or embed ''VRML 1.0'',
 ''VRML 97'' and ''OpenInventor'' graphics files (but note that ''Facsimile''
@@ -131,13 +131,13 @@ at the same location as the named file.  Refer to
 referenced files should be located.  If `SafeNone`, then referenced files
 should be located relative to the processed ''cell'' file's location.
 
-@param faceColor Face color to be assigned to all ''cell'' elements in the
-scene that inherit their face color from the root node.  This value cannot be
-`null`.
+@param faceColor Face color (as a material) to be assigned to all ''cell''
+elements in the scene that inherit their face color from the root node.  This
+value cannot be `null`.
 
-@param edgeColor Edge color to be assigned to all ''cell'' elements in the
-scene that inherit their edge color from the root node.  This value cannot be
-`null`.
+@param edgeColor Edge color (as a material) to be assigned to all ''cell''
+elements in the scene that inherit their edge color from the root node.  This
+value cannot be `null`.
 
 @return ''ScalaFX'' [[scalafx.scene.Node!]] containing the ''cell'''s contents.
 
@@ -161,8 +161,8 @@ encountered during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  def load (url: URL, baseUrl: SafeOption [URL] = SafeNone, faceColor: Color =
-  Color.RED, edgeColor: Color = Color.RED): Node = {
+  def load (url: URL, baseUrl: SafeOption [URL] = SafeNone, faceColor: Material
+  = CellColor.default, edgeColor: Material = CellColor.default): Node = {
 
 /*
 Verify that certain arguments are not null.

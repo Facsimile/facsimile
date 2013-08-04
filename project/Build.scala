@@ -43,11 +43,10 @@ same version of Scala that is used to build Facsimile (specified here).
 */
 //=============================================================================
 
-//import java.io.File
-//import java.net.URL
 import sbt._
 import Keys._
-import com.typesafe.sbt.pgp.PgpKeys._
+import com.typesafe.sbt.pgp.PgpKeys
+import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 
 //=============================================================================
 /**
@@ -384,12 +383,21 @@ corresponding distribution jar file.
     packageDoc).value,
 
 /*
+SBT-Eclipse plugin configuration.
+*/
+
+    EclipseKeys.skipParents in ThisBuild := false,
+    EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
+    EclipseKeys.createSrc := EclipseCreateSrc.Source +
+    EclipseCreateSrc.Resource,
+
+/*
 SBT-GPG plugin configuration.
 
 Specify the key to be used to sign the distribted jar file.
 */
 
-    pgpSigningKey := Some (0x3D700BBB797D614CL) // Public key
+    PgpKeys.pgpSigningKey := Some (0x3D700BBB797D614CL) // Public key
   ).dependsOn (macros)
 
 /**
@@ -428,6 +436,14 @@ Basic package information.
     normalizedName := projectArtifactId + "-macro",
     organization := projectGroupId,
     version := projectVersion,
-    name := projectName + " Macros"
+    name := projectName + " Macros",
+
+/*
+SBT-Eclipse plugin configuration.
+*/
+
+    EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
+    EclipseKeys.createSrc := EclipseCreateSrc.Source +
+    EclipseCreateSrc.Resource
   )
 }

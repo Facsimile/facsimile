@@ -38,113 +38,111 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import scalafx.scene.paint.Material
+import scalafx.scene.Node
+import scalafx.scene.shape.Mesh
+import scalafx.scene.shape.MeshView
 
 //=============================================================================
 /**
-Trait defining the attribute access functions of a cell.
+Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
+primitives implmented as 3D meshes.
+
+@constructor Construct a new 3D-mesh-based primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
 
 @since 0.0
 */
 //=============================================================================
 
-private [cell] trait CellAttributes {
+private [cell] abstract class Mesh3D (scene: CellScene, parent: Option [Set])
+extends Cell(scene, parent) {
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Cell!.toNode]]
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final override def toNode =
+
+/*
+If the cell is to be displayed as a wireframe, then draw it as a series of
+lines; otherwise, draw as a solid.
+*/
+
+  if (isWireframe) drawAsWireframe
+  else drawAsSolid
 
 //-----------------------------------------------------------------------------
 /**
-Face color.
+Create a mesh to represent this cell and return it.
 
-@return Face color of the cell, as a ''ScalaFX''
-[[scalafx.scene.paint.Material!]] or `None` if a face color is not defined.
-
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
-Face & Edge Colors]]
+@return Mesh representing the cell.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  def faceColor: Option [Material]
+  protected [cell] def cellMesh: Mesh
 
 //-----------------------------------------------------------------------------
 /**
-Edge color.
+Draw this ''cell'' in wireframe mode.
 
-@note In ''VR Graphics'' mode (available since ''[[http://www.automod.com/
-AutoMod®]]'' version 10.0), edge color in ''cell'' files is ignored, with face
-color being used instead.  ''Facsimile'' honors edge color as far as possible,
-using it to render cell's if the cell employs ''wireframe'' rendering.
-
-@return Edge color of the cell, as a ''ScalaFX''
-[[scalafx.scene.paint.Material!]] or `None` if an edge color is not defined.
-
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
-Face & Edge Colors]]
+@return Base node storing the wireframe form of this trapezoid.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  def edgeColor: Option [Material]
+  private final def drawAsWireframe: Node = ???
 
 //-----------------------------------------------------------------------------
 /**
-Line style.
+Draw this ''cell'' in solid mode, as a collection of 3D meshes.
 
-@return Line style of the cell.
-
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
-Line Styles]]
+@return Base node storing the solid form of this cell.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  def lineStyle: LineStyle.Value
+  private final def drawAsSolid: Node =
+  new MeshView {
 
-//-----------------------------------------------------------------------------
-/**
-Line width, in pixels.
-
-@return Line width of the cell in pixels.
-
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
-Line Width]]
-
-@since 0.0
+/*
+If this cell has a name, then use it as an ID.
 */
-//-----------------------------------------------------------------------------
 
-  def lineWidth: LineWidth
+    id = name.orNull
 
-//-----------------------------------------------------------------------------
-/**
-Display style.
-
-@return Display style of the cell.
-
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
-Display Styles]]
-
-@since 0.0
- */
-//-----------------------------------------------------------------------------
-
-  def displayStyle: DisplayStyle.Value
-
-//-----------------------------------------------------------------------------
-/**
-Name.
-
-@return name of this cell, or `None` if no name is defined.
-
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Name.html Cell
-Names]]
-
-@since 0.0
+/*
+Apply the required transformations to the node.
 */
-//-----------------------------------------------------------------------------
 
-  def name: Option [String]
+    transforms = cellTransforms
+
+/*
+Ensure that the cell is drawn with the correct materials and opacity.
+*/
+
+    material = cellMaterial
+    opacity = cellOpacity
+
+/*
+Have the concrete cell create the mesh to represent the image.
+*/
+
+    mesh = cellMesh
+  }
 }

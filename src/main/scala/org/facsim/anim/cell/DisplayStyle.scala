@@ -58,6 +58,30 @@ Display Styles]]
 private [cell] object DisplayStyle extends Enumeration {
 
 /**
+Vector mapping the display style ID to an opacity value.
+*/
+
+  private val opacity = Vector (
+      1.0,
+      1.0,
+      15.0 / 16.0,      
+      14.0 / 16.0,      
+      13.0 / 16.0,      
+      12.0 / 16.0,      
+      11.0 / 16.0,      
+      10.0 / 16.0,      
+      9.0 / 16.0,      
+      8.0 / 16.0,      
+      7.0 / 16.0,      
+      6.0 / 16.0,      
+      5.0 / 16.0,      
+      4.0 / 16.0,      
+      3.0 / 16.0,      
+      2.0 / 16.0,      
+      1.0 / 16.0
+    )
+
+/**
 Wireframe, having the ''cell'' display style 0.
 */
 
@@ -229,4 +253,20 @@ Convert to a display style and return.
 
     DisplayStyle (code)
   }
+
+//-----------------------------------------------------------------------------
+/**
+Report the display style as an opacity value.
+
+@param displayStyle Display style for which an opacity is required.
+
+@return A double precision value between 0 (invisible) and 1 (fully opaque)
+indicating the opacity of the associated element.  Wireframe is mapped as fully
+opaque.
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] def asOpacity (displayStyle: Value) =
+  opacity (displayStyle.id)
 }

@@ -41,6 +41,7 @@ package org.facsim.anim.cell.test
 import org.facsim.anim.cell.CellColor
 import org.scalatest.FunSpec
 import scalafx.scene.paint.Color
+import scalafx.scene.paint.PhongMaterial
 
 //=============================================================================
 /**
@@ -132,7 +133,9 @@ Test that the default color is reported correctly.
 
     describe (".default") {
       it ("must be Red") {
-        assert (CellColor.default === Color.RED)
+        val material = CellColor.default.asInstanceOf [PhongMaterial]
+        assert (material.diffuseColor == Color.RED)
+        assert (material.specularColor == Color.WHITE)
       }
     }
 
@@ -163,10 +166,28 @@ Test that the toColor function works as expected.
 
     describe (".toColor (CellColor.Value)") {
       new TestData {
-        it ("must return correct associated ScalaFX code") {
+        it ("must return correct associated ScalaFX color") {
           CellColor.values.foreach {
             color =>
             assert (CellColor.toColor (color) === validFXColors (color.id))
+          }
+        }
+      }
+    }
+
+/*
+Test that the toMaterial function works as expected.
+*/
+
+    describe (".toMaterial (CellColor.Value)") {
+      new TestData {
+        it ("must return correct associated ScalaFX material") {
+          CellColor.values.foreach {
+            color =>
+            val material = CellColor.toMaterial (color).asInstanceOf
+            [PhongMaterial] 
+            assert (material.diffuseColor == validFXColors (color.id))
+            assert (material.specularColor == Color.WHITE)
           }
         }
       }

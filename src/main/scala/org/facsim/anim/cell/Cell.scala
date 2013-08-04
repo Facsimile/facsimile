@@ -40,6 +40,9 @@ package org.facsim.anim.cell
 
 import scalafx.scene.Node
 import scalafx.scene.paint.Color
+import scalafx.scene.paint.Material
+import scalafx.scene.paint.PhongMaterial
+import scalafx.scene.transform.Transform
 
 //=============================================================================
 /**
@@ -49,7 +52,7 @@ primitives.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod Cell
 File Format]] for further information.
 
-@constructor Construct a new basic cell primitive.
+@constructor Construct a new basic cell primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -155,7 +158,7 @@ the scene's default face color as an option.
 */
 //-----------------------------------------------------------------------------
 
-  private final def parentFaceColor: Option [Color] = parent match {
+  private final def parentFaceColor: Option [Material] = parent match {
     case Some (parentCell) => parentCell.faceColor
     case None => scene.defaultFaceColor
   }
@@ -171,7 +174,7 @@ the scene's default edge color as an option.
 */
 //-----------------------------------------------------------------------------
 
-  private final def parentEdgeColor: Option [Color] = parent match {
+  private final def parentEdgeColor: Option [Material] = parent match {
     case Some (parentCell) => parentCell.edgeColor
     case None => scene.defaultEdgeColor
   }
@@ -203,6 +206,71 @@ Edge color is determined thus:
 
   private [cell] final override def edgeColor =
   attrs.edgeColor.orElse (parentEdgeColor)
+
+//-----------------------------------------------------------------------------
+/**
+Report whether this cell is wireframe or not.
+
+@return `true` if the cell is drawn in wireframe mode, `false if solid (with
+varying degrees of transparency.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  protected [cell] final def isWireframe =
+  attrs.displayStyle == DisplayStyle.Wireframe
+
+//-----------------------------------------------------------------------------
+/**
+Color of this cell, as a material.
+
+If cell is drawn in wireframe, then the cell will be drawn with the edge color,
+otherwise, with face color.
+
+@return Material with which the cell is to be drawn.  A valid material/color
+must be defined at some point in the chain of face/edge colors.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final def cellMaterial =
+  if (isWireframe) edgeColor.get
+  else faceColor.get
+
+//-----------------------------------------------------------------------------
+/**
+Opacity of this cell.
+
+@return Opacity of the cell as a value in the range 0 (invisible) through 1
+(fully opaque).
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  protected [cell] final def cellOpacity =
+  DisplayStyle.asOpacity (attrs.displayStyle)
+
+//-----------------------------------------------------------------------------
+/**
+Transforms for this cell relative to its parent.
+
+@return A sequence of transforms to be applied to the cell relative to its
+parent.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  protected [cell] final def cellTransforms = transformation match {
+    case Some (t) => t.toList
+    case None => Nil
+  }
 
 //-----------------------------------------------------------------------------
 /**

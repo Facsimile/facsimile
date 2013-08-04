@@ -40,6 +40,8 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.paint.Color
+import scalafx.scene.paint.Material
+import scalafx.scene.paint.PhongMaterial
 
 //=============================================================================
 /**
@@ -80,6 +82,24 @@ color.
     Color.LIGHTGREEN,
     Color.LIGHTYELLOW
   )
+
+/**
+Vector of materials that employ cell colors as ''diffuse'' colors.
+
+In each case the ''specular'' color is set to white.
+
+@note Use of this vector allows us to keep the number of materials used within
+cell files small.
+*/
+
+  private val cellToMaterial: Vector [Material] = cellToColor.map {
+    color =>
+    new PhongMaterial {
+      diffuseColor = color
+      specularColor = Color.WHITE
+      specularPower = 1.0
+    }
+  }
 
 /**
 Black, having the ''cell'' color code 0.
@@ -191,9 +211,11 @@ Maximum color code value.
 
 /**
 Default color, which is used if an explicit color is not specified.
+
+@note This is a material instance, not a color.
 */
 
-  private [cell] val default = toColor (Red)
+  private [cell] val default = toMaterial (Red)
 
 //-----------------------------------------------------------------------------
 /**
@@ -215,6 +237,25 @@ of ''cell'' colors in regular code, when ideally we want to bury them.
 
 //-----------------------------------------------------------------------------
 /**
+Conversion of ''cell'' color to ''ScalaFX'' material.
+
+@note This could be made an implicit function, but that might encourage the use
+of ''cell'' colors in regular code, when ideally we want to bury them.
+
+@param ''Cell'' color value to be converted.
+
+@return Corresponding ''ScalaFX'' material.
+
+@since 0.0 
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private [cell] def toMaterial (color: CellColor.Value) =
+  cellToMaterial (color.id)
+
+//-----------------------------------------------------------------------------
+/**
 Verify a color code.
 
 @param colorCode Code for the color to be verified.
@@ -230,14 +271,14 @@ Verify a color code.
 
 //-----------------------------------------------------------------------------
 /**
-Read color from ''cell'' data stream.
+Read color from ''cell'' data stream as a material.
 
-@param scene Scene from which the color is to be read.
+@param scene Scene from which the material/color is to be read.
 
 @param colorType Code indicating the type of color being read: 0 = face, 1 =
 edge
 
-@return Color read, if valid.
+@return Material read, if valid.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -262,9 +303,9 @@ Read the color code from the data stream.
     ("anim.cell.CellColor.read", colorType, minValue, maxValue))
 
 /*
-Convert to a ScalaFX color and return.
+Convert to a ScalaFX material and return.
 */
 
-    cellToColor (code)
+    cellToMaterial (code)
   }
 }

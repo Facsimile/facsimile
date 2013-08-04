@@ -40,8 +40,13 @@
 # the settings in this file.
 #==============================================================================
 
+/.cache
+/.classpath
+/.externalToolBuilders
 /.worksheet
+/bin
 /macro/target
 /project/project
 /project/target
 /target
+*.sc

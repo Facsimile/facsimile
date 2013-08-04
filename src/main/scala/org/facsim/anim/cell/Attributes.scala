@@ -138,7 +138,7 @@ If attributes are present, read the name; otherwise, this cell has no name.
 
 //-----------------------------------------------------------------------------
 /**
-Function to determine the required color.
+Function to determine the required color, as a ''ScalaFX material''.
 
 The rules are not straightforward:
   - If attributes are present, then the color must be read from the ''cell''

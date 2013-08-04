@@ -45,7 +45,7 @@ import org.facsim.io.FieldConversionException
 import org.facsim.io.FieldVerificationException
 import org.facsim.io.TextReader
 import scala.collection.mutable.Map
-import scalafx.scene.paint.Color
+import scalafx.scene.paint.Material
 
 //=============================================================================
 /**
@@ -80,7 +80,7 @@ encountered during parsing of the file.
 //=============================================================================
 
 private [cell] final class CellScene (reader: TextReader, baseUrl: URL,
-faceColor: Color, edgeColor: Color) extends NotNull {
+faceColor: Material, edgeColor: Material) extends NotNull {
 
 /*
 Sanity checks.

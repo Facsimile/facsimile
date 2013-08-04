@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import scalafx.scene.transform.Transform
+
 //=============================================================================
 /**
 ''[[http://www.automod.com/ AutoMod®]] cell'' transformation.
@@ -87,4 +89,17 @@ Read the scaling data from the stream.
 */
 
   private val scaling = Scaling.read (scene)
+
+//-----------------------------------------------------------------------------
+/**
+Report this transformation for use by the associated cell.
+
+@return A sequence of transformations to be applied to the cell.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def toList: List [Transform] = translate :: (rotate ::: List
+  (scaling))
 }

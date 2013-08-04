@@ -40,6 +40,7 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scala.annotation.tailrec
+import scalafx.scene.Group
 
 //=============================================================================
 /**
@@ -48,7 +49,7 @@ Abstract class for primitives that can themselves store primitives.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod Cell
 File Format]] for further information.
 
-@constructor Construct a new basic cell primitive.
+@constructor Construct a new basic set primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -75,7 +76,7 @@ extends Cell (scene, parent) {
 Determine the number of children and read them in.
 */
 
-  private val children = readChildren ()
+  private val childCells = readChildren ()
 
 //-----------------------------------------------------------------------------
 /**
@@ -125,5 +126,37 @@ Build the list of children and return it.
 */
 
     readChild (numChildren, Nil).reverse
+  }
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Cell!.toNode]]
+
+Note that sets are not rendered in a particular line style, neither do they use
+material (except for inheritance by children), employ a display style or
+anything else.  They're actually pretty basic.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final override def toNode =
+  new Group {
+
+/*
+If this cell has a name, then use it as an ID.
+*/
+
+    id = name.orNull
+
+/*
+Apply the required transformations to the node.
+*/
+
+    transforms = cellTransforms
+
+/*
+Add the child cells (if any) to the group as nodes.
+*/
+
+    children = childCells.map (_.toNode)
   }
 }

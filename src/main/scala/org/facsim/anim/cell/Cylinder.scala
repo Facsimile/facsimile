@@ -39,4 +39,4 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 private [cell] final class Cylinder (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent)
+extends Mesh3D (scene, parent)

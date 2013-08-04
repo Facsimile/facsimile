@@ -1,8 +1,4 @@
 <classpath>
-  <classpathentry kind="src" path="src\main\scala" output="target\scala-2.10\classes"/>
-  <classpathentry kind="src" path="src\main\java" output="target\scala-2.10\classes"/>
-  <classpathentry kind="src" path="src\test\scala" output="target\scala-2.10\test-classes"/>
-  <classpathentry kind="src" path="src\test\java" output="target\scala-2.10\test-classes"/>
   <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
   <classpathentry kind="lib" path="C:\Users\mallen\.sbt\boot\scala-2.10.2\lib\scala-reflect.jar"/>
   <classpathentry kind="lib" path="C:\Users\mallen\.ivy2\local\org.scalafx\scalafx_2.10\8.0.0-M1-SNAPSHOT\jars\scalafx_2.10.jar"/>
