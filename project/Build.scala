@@ -223,16 +223,32 @@ releases staging repository if this is an official release.
   }
 
 /**
-Common library dependencies.
+Base dependencies.
+
+These libraries are common to all sub-projects.  In particular, note that the
+Macro sub-project has very few dependencies.
 */
 
-  def commonDependencies = Seq (
+  def baseDependencies = Seq (
 
 /*
 Required scala standard libraries.
 */
 
     "org.scala-lang" % "scala-reflect" % (scalaVersionLong),
+
+/*
+ScalaTest unit-testing framework for Scala.
+*/
+
+    "org.scalatest" % ("scalatest_" + scalaVersionShort) % "2.0.M5b" % "test"
+  )
+
+/**
+Common library dependencies.
+*/
+
+  def commonDependencies = baseDependencies ++ Seq (
 
 /*
 ScalaFX libraries, for user-interface design and 3D animation.
@@ -251,13 +267,7 @@ Joda Time Convert library for conversion of Joda dates & times to Java dates &
 times.
 */
 
-    "org.joda" % "joda-convert" % "1.3.1",
-
-/*
-ScalaTest unit-testing framework for Scala.
-*/
-
-    "org.scalatest" % ("scalatest_" + scalaVersionShort) % "2.0.M5b" % "test"
+    "org.joda" % "joda-convert" % "1.3.1"
   )
 
 /**
@@ -282,29 +292,13 @@ Scala compiler options.
   )
 
 /**
-Primary Facsimile library build.
+Primary Facsimile root project.
+
+This "project" contains no sources, but owns - and is dependant upon - the
+others.
 */
 
-  lazy val facsimile = Project (projectArtifactId, file ("."))
-  .settings (
-
-/*
-Scala configuration.
-*/
-
-    scalaVersion := scalaVersionLong,
-
-/*
-Scala compiler options.
-*/
-
-    scalacOptions := projectScalacOptions,
-
-/*
-Library dependencies.
-*/
-
-    libraryDependencies ++= commonDependencies,
+  lazy val facsimile = Project (projectArtifactId, file (".")).settings (
 
 /*
 Maven POM (project object model) metadata.
@@ -371,25 +365,31 @@ NOTES:
     ),
 
 /*
-Ensure that macro classes, sources and documentation are copied to the
-corresponding distribution jar file.
+Ensure that core and macro classes, sources and documentation are copied to the
+corresponding distribution jar files.
 */
 
     mappings in (Compile, packageBin) ++= mappings.in (macros, Compile,
     packageBin).value,
+    mappings in (Compile, packageBin) ++= mappings.in (core, Compile,
+    packageBin).value,
     mappings in (Compile, packageSrc) ++= mappings.in (macros, Compile,
     packageSrc).value,
+    mappings in (Compile, packageSrc) ++= mappings.in (core, Compile,
+    packageSrc).value,
     mappings in (Compile, packageDoc) ++= mappings.in (macros, Compile,
+    packageDoc).value,
+    mappings in (Compile, packageDoc) ++= mappings.in (core, Compile,
     packageDoc).value,
 
 /*
 SBT-Eclipse plugin configuration.
 */
 
-    EclipseKeys.skipParents in ThisBuild := false,
-    EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
-    EclipseKeys.createSrc := EclipseCreateSrc.Source +
-    EclipseCreateSrc.Resource,
+//    EclipseKeys.skipParents in ThisBuild := false,
+//    EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
+//    EclipseKeys.createSrc := EclipseCreateSrc.Source +
+//    EclipseCreateSrc.Resource,
 
 /*
 SBT-GPG plugin configuration.
@@ -398,6 +398,67 @@ Specify the key to be used to sign the distribted jar file.
 */
 
     PgpKeys.pgpSigningKey := Some (0x3D700BBB797D614CL) // Public key
+  ).aggregate (core, macros)
+
+/**
+Core project.
+
+This is the sub-project containing the core library.
+
+This library is dependant upon the Macro sub-project.  (Scala currently
+requires that macro implementation code is compiled before code that uses the
+macro implementation is compiled.)
+*/
+
+  lazy val core = Project (projectArtifactId + "-core", file ("core"))
+  .settings (
+
+/*
+Exclude Java source directories (use Scala source directories only).
+
+NOTE: If this is not done, the sbteclipse plug-in creates src/main/java and
+/src/test/java directories.  If we ever need to add Java sources to the
+project, they'll go here.
+*/
+
+    unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)( _ ::
+    Nil),
+    unmanagedSourceDirectories in Test <<= (scalaSource in Test)( _ :: Nil),
+
+/*
+Scala configuration.
+*/
+
+    scalaVersion := scalaVersionLong,
+
+/*
+Scala compiler options.
+*/
+
+    scalacOptions := projectScalacOptions,
+
+/*
+Library dependencies.
+*/
+
+    libraryDependencies ++= commonDependencies,
+
+/*
+Basic package information.
+*/
+
+    normalizedName := projectArtifactId + "-core",
+    organization := projectGroupId,
+    version := projectVersion,
+    name := projectName + " Core",
+
+/*
+SBT-Eclipse plugin configuration.
+*/
+
+    EclipseKeys.useProjectId := true,
+    EclipseKeys.createSrc := EclipseCreateSrc.Default +
+    EclipseCreateSrc.Resource
   ).dependsOn (macros)
 
 /**
@@ -410,6 +471,18 @@ macro implementation is compiled.
 
   lazy val macros = Project (projectArtifactId + "-macro", file ("macro"))
   .settings (
+
+/*
+Exclude Java source directories (use Scala source directories only).
+
+NOTE: If this is not done, the sbteclipse plug-in creates src/main/java and
+/src/test/java directories.  If we ever need to add Java sources to the
+project, they'll go here.
+*/
+
+    unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)( _ ::
+    Nil),
+    unmanagedSourceDirectories in Test <<= (scalaSource in Test)( _ :: Nil),
 
 /*
 Scala configuration.
@@ -427,7 +500,7 @@ Scala compiler options.
 Macro dependencies.
 */
 
-    libraryDependencies ++= commonDependencies,
+    libraryDependencies ++= baseDependencies,
 
 /*
 Basic package information.
@@ -442,8 +515,8 @@ Basic package information.
 SBT-Eclipse plugin configuration.
 */
 
-    EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
-    EclipseKeys.createSrc := EclipseCreateSrc.Source +
+    EclipseKeys.useProjectId := true,
+    EclipseKeys.createSrc := EclipseCreateSrc.Default +
     EclipseCreateSrc.Resource
   )
 }

@@ -40,11 +40,16 @@
 # the settings in this file.
 #==============================================================================
 
+# List ignored files alphabetically, if possible.
+
 /.cache
 /.classpath
 /.externalToolBuilders
 /.worksheet
 /bin
+/core/.classpath
+/core/target
+/macro/.classpath
 /macro/target
 /project/project
 /project/target
