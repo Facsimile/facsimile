@@ -453,6 +453,14 @@ Basic package information.
     name := projectName + " Core",
 
 /*
+Make sure that tests execute in sequence (we may change this in future, but,
+for now, it's a lot easier to understand test output if tests execute
+sequentially.
+*/
+
+    parallelExecution in Test := false,
+
+/*
 SBT-Eclipse plugin configuration.
 */
 
@@ -510,6 +518,14 @@ Basic package information.
     organization := projectGroupId,
     version := projectVersion,
     name := projectName + " Macros",
+
+/*
+Make sure that tests execute in sequence (we may change this in future, but,
+for now, it's a lot easier to understand test output if tests execute
+sequentially.
+*/
+
+    parallelExecution in Test := false,
 
 /*
 SBT-Eclipse plugin configuration.

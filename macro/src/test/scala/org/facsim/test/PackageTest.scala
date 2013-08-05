@@ -64,7 +64,7 @@ requireNonNull macro tests.
     describe (".requireNonNull (AnyRef)") {
       it ("must throw NullPointerException if passed null argValue") {
         val e = intercept [NullPointerException] {
-          val arg = null
+          val arg: String = null
           requireNonNull (arg)
         }
         assertRequireNonNullMsg (e, "arg")
@@ -97,7 +97,7 @@ requireValid tests.
 requireFinite tests.
 */
 
-    describe (".requireFiniteValue (String, Double)") {
+    describe (".requireFinite (Double)") {
       def doFailure (value: Double) {
         val e = intercept [IllegalArgumentException] {
           requireFinite (value)
@@ -124,7 +124,7 @@ requireFinite tests.
         requireFinite (argOne)
         val argMinusOne = -1.0
         requireFinite (argMinusOne)
-        val argMinPostive = Double.MinPositiveValue
+        val argMinPositive = Double.MinPositiveValue
         requireFinite (argMinPositive)
       }
     }

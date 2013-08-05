@@ -62,7 +62,12 @@ Assert that a NullPointerException's message resulting from a
 //-----------------------------------------------------------------------------
 
   final def assertRequireNonNullMsg (e: NullPointerException, argName: String):
-  Unit = assert (e.getMessage () === LibResource ("requireNonNull", argName))
+  Unit = {
+    println ("DEBUG: e.getMessage () is: " + e.getMessage ())
+    println ("DEBUG: LibResource (\"requireNonNull\", \"" + argName +
+    "\") is: " + LibResource.apply ("requireNonNull", argName))
+    assert (e.getMessage () === LibResource ("requireNonNull", argName))
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -95,6 +100,14 @@ Assert that an IllegalArgumentException's message resulting from a
 //-----------------------------------------------------------------------------
 
   final def assertRequireFiniteMsg (e: IllegalArgumentException, argName:
-  String, argValue: Double): Unit = assert (e.getMessage () === LibResource
-  ("requireFinite", argName, argValue))
+  String, argValue: Double): Unit = {
+    val badValueCode = argValue match {
+      case x if x.isNaN => 0
+      case Double.PositiveInfinity => 1
+      case Double.NegativeInfinity => 2
+      case _ => throw new AssertionError ("Failed value IS finite!")
+    }
+    assert (e.getMessage () === LibResource ("requireFinite", argName,
+    badValueCode))
+  }
 }

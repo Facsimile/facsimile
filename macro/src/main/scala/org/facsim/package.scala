@@ -148,7 +148,6 @@ Convert an expression into a string expression.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
   private final def exprAsString (c: Context)(arg: c.Expr [Any]):
   c.Expr [String] = {
     import c.universe._
@@ -262,15 +261,6 @@ Convert the argument to a string.
     val argString = exprAsString (c)(arg)
 
 /*
-Now create the exception message AST.
-*/
-
-    val throwIAE = reify {
-      throw new IllegalArgumentException (LibResource ("requireFinite",
-      argString.splice, arg.splice))
-    }
-
-/*
 Generate the AST to be substituted for the macro reference.
 
 Determine whether the value is valid.
@@ -281,14 +271,22 @@ Determine whether the value is valid.
 
 /*
 In the case of the following values, throw the exception.
+
+Note: It's not possible to pattern match on NaN (since NaN != NaN), hence the
+slightly convoluted syntax of the first match statement.
 */
 
-        case Double.NaN => throwIAE.splice
-        case Double.NegativeInfinity => throwIAE.splice
-        case Double.PositiveInfinity => throwIAE.splice
+        case x if x.isNaN => throw new IllegalArgumentException (LibResource
+        ("requireFinite", argString.splice, 0))
+        case Double.PositiveInfinity => throw new
+        IllegalArgumentException (LibResource ("requireFinite",
+        argString.splice, 1))
+        case Double.NegativeInfinity =>  throw new
+        IllegalArgumentException (LibResource ("requireFinite",
+        argString.splice, 2))
 
 /*
-All other values are valid, so just return.
+All other values are valid, so do nothing.
 */
 
         case _ =>

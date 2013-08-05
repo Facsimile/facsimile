@@ -40,6 +40,7 @@ package org.facsim.util
 
 import java.text.MessageFormat
 import java.util.ResourceBundle
+import org.facsim.LibResource
 
 //=============================================================================
 /**
@@ -75,9 +76,18 @@ class Resource (bundleName: String) {
 
 /*
 Verify that we have a bundle name.
+
+Note that we cannot use the requireNonNull macro here, as this class is part of
+the macro compilation unit.  Instead, we have to do the equivalent manually
+(this is one reason why macros need to be compiled in-line, because things can
+easily get silly).
+
+Also, note that we have to explicitly pass the name of the argument, since this
+isn't a macro.
 */
 
-  assert (bundleName ne null)
+  if (bundleName eq null) throw new NullPointerException (LibResource
+  ("requireNonNull", "bundleName"))
 
 /**
 Resource bundle.
@@ -103,7 +113,9 @@ best matches the user's preference.
 @param key Key used to identify the string resource to be retrieved.
 
 @param arguments Arguments to be merged into, and formatted as part of, the
-resulting string resource.  May be omitted if no arguments are required.
+resulting string resource.  May be omitted if no arguments are required.  Note
+that any Scala type values (Double, Int, etc.) will be boxed into equivalent
+Java type wrappers (java.lang.Double, java.lang.Int, etc.).
 
 @return Locale-specific, formatted version of the requested string resource.
 
@@ -123,7 +135,22 @@ format elements in the retrieved string.
 */
 //-----------------------------------------------------------------------------
 
-  final def apply (key: String, arguments: Any*) = {
+  final def apply (key: String, arguments: Any*): String = {
+
+/*
+Verify that we have a key.
+
+Note that we cannot use the requireNonNull macro here, as this class is part of
+the macro compilation unit.  Instead, we have to do the equivalent manually
+(this is one reason why macros need to be compiled in-line, because things can
+easily get silly).
+
+Also, note that we have to explicitly pass the name of the argument, since this
+isn't a macro.
+*/
+
+    if (key eq null) throw new NullPointerException (LibResource
+    ("requireNonNull", "key"))
 
 /*
 To convert a Scala vararg to a Java vararg, while boxing numbers requires this
