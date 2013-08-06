@@ -2,5 +2,6 @@ eclipse.preferences.version=1
 encoding//core/src/main/resources=UTF-8
 encoding//core/src/main/scala=UTF-8
 encoding//core/src/test/resources=UTF-8
+encoding//core/src/test/resources/cellFiles=ISO-8859-1
 encoding//core/src/test/scala=UTF-8
 encoding/<project>=UTF-8
