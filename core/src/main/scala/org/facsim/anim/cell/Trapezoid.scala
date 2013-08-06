@@ -153,6 +153,11 @@ Trapezoid top Y-axis offset.
 @see [[org.facsim.anim.cell.Mesh3D!]]
 
 The mesh is a custom TriangleMesh object.
+
+Note that the base is an rectangle on the X-Y plane, with the origin at 0, 0, 0
+(relative to its parent).  This rectangle is aligned so that it's bottom and
+top edges are parallel to the X-axis, and it's left and right edges are
+parallel to the Y-axis.
 */
 //-----------------------------------------------------------------------------
 
@@ -168,14 +173,14 @@ Create the list of vertices.
 Some commonly used values.
 */
 
-      val xbl = -(baseXDim / 2.0).toFloat
-      val xbr = (baseXDim / 2.0).toFloat
-      val xtl = -((topXDim / 2.0) + xOffset).toFloat
-      val xtr = ((topXDim / 2.0) + xOffset).toFloat
-      val ybr = (baseYDim / 2.0).toFloat
-      val ybf = -(baseYDim / 2.0).toFloat
-      val ytr = ((topYDim / 2.0) + yOffset).toFloat
-      val ytf = -((topYDim / 2.0) + yOffset).toFloat
+      val x0_3 = -(baseXDim / 2.0).toFloat
+      val x1_2 = (baseXDim / 2.0).toFloat
+      val x4_7 = -((topXDim / 2.0) + xOffset).toFloat
+      val x5_6 = ((topXDim / 2.0) + xOffset).toFloat
+      val y0_1 = (baseYDim / 2.0).toFloat
+      val y2_3 = -(baseYDim / 2.0).toFloat
+      val y4_5 = ((topYDim / 2.0) + yOffset).toFloat
+      val y6_7 = -((topYDim / 2.0) + yOffset).toFloat
       val z = height.toFloat
 
 /*
@@ -186,14 +191,14 @@ Note that these coordinates are stored as floats.  Why?  No idea...
 */
 
       Array [Float] (
-        xbl, ybr, 0.0f,         // 0, base top-left
-        xbr, ybr, 0.0f,         // 1, base top-right
-        xbr, ybf, 0.0f,         // 2, base bottom-right
-        xbl, ybf, 0.0f,         // 3, base bottom-left
-        xtl, ytr, z,            // 4, top top-left
-        xtr, ytr, z,            // 5, top top-right
-        xtr, ytf, z,            // 6, top bottom-right
-        xtl, ytf, z             // 7, top bottom-left
+        x0_3, y0_1, 0.0f,       // 0, base upper-left
+        x1_2, y0_1, 0.0f,       // 1, base upper-right
+        x1_2, y2_3, 0.0f,       // 2, base lower-right
+        x0_3, y2_3, 0.0f,       // 3, base lower-left
+        x4_7, y4_5, z,          // 4, top upper-left
+        x5_6, y4_5, z,          // 5, top upper-right
+        x5_6, y6_7, z,          // 6, top lower-right
+        x4_7, y6_7, z           // 7, top lower-left
       )
     }
 
@@ -218,8 +223,8 @@ associated points defined above.
     )
 
 /*
-Now create the list of faces (triangles), constructed from indices of the
-associated points defined above.
+Now create the smoothing face groups (face index map to smoothing group),
+constructed from indices of the associated points defined above.
 */
 
     override val faceSmoothingGroups = Array [Int] (
@@ -231,6 +236,10 @@ associated points defined above.
       5, 5              // Top is made up of faces 10 & 11, group 5.
     )
 
-    override val UP TO HERE
+/*
+For now, don't define texture mapping co-ordinates. We will typically not apply
+textures to cells.
+*/
+
   }
 }
