@@ -38,7 +38,6 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import javafx.collections.ObservableFloatArray
 import org.facsim.LibResource
 import scala.math.sqrt
 import scalafx.scene.shape.TriangleMesh
@@ -198,7 +197,7 @@ associated points defined above.
 
 /*
 Now create the smoothing face groups (face index map to smoothing group),
-constructed from indices of the associated points defined above.
+constructed from indices of the associated faces defined above.
 */
 
     override val faceSmoothingGroups = Array [Int] (

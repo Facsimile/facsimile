@@ -38,5 +38,5 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] final class Frustum (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent)
+private [cell] final class ConicFrustum (scene: CellScene, parent: Option
+[Set]) extends Mesh3D (scene, parent)

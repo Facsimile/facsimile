@@ -98,7 +98,7 @@ Sets]]
 */
 //-----------------------------------------------------------------------------
 
-  private def readChildren () = {
+  private final def readChildren () = {
 
 /**
 Helper function to read the next child from the list.

@@ -509,8 +509,8 @@ maintain this order when modifying the list.
       341 -> classOf [Cone],                  // Originally, fine cone
       350 -> classOf [Cylinder],              // Originally, coarse cylinder
       351 -> classOf [Cylinder],              // Originally, fine cylinder
-      360 -> classOf [Frustum],               // Originally, coarse frustum
-      361 -> classOf [Frustum],               // Originally, fine frustum
+      360 -> classOf [ConicFrustum],          // Originally, coarse frustum
+      361 -> classOf [ConicFrustum],          // Originally, fine frustum
       388 -> classOf [FileReference],
       408 -> classOf [Instance],
       555 -> classOf [CompiledPicture],
