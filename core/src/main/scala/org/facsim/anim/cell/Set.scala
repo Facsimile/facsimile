@@ -46,8 +46,8 @@ import scalafx.scene.Group
 /**
 Abstract class for primitives that can themselves store primitives.
 
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod Cell
-File Format]] for further information.
+@see [[http://facsim.org/Documentation/Resources/Sets.htmls Sets]] for further
+information.
 
 @constructor Construct a new basic set primitive from the data stream.
 
