@@ -61,7 +61,9 @@ COPYING.LESSER text
 .fbprefs text
 .gitattributes text
 .gitignore text
+.jvmopts text
 .project text
+.sbtopts text
 *.apt text
 *.bat text
 *.c text
