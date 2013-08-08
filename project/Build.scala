@@ -82,7 +82,7 @@ is the most recent point release of the required short version.
 /**
 Project artifact ID.
 
-@note This is equivalent to the `project/artifactId` Maven POM co-ordinate, and
+@note This is equivalent to the `project/artifactId` Maven POM coordinate, and
 is employed as such during deployment to the Sonatype OSS Nexus repository.
 */
 
@@ -91,7 +91,7 @@ is employed as such during deployment to the Sonatype OSS Nexus repository.
 /**
 Project group ID.
 
-@note This is equivalent to the `project/groupId` Maven POM co-ordinate, and is
+@note This is equivalent to the `project/groupId` Maven POM coordinate, and is
 employed as such during deployment to the Sonatype OSS Nexus repository.
 */
 
@@ -105,7 +105,7 @@ un-versioned build that preceeds a formal release, the version of which is the
 prefix. For example, a version number of 1.0-SNAPSHOT is a temporary build
 leading up to the release of version 1.0.
 
-@note This is equivalent to the `project/version` Maven POM co-ordinate, has
+@note This is equivalent to the `project/version` Maven POM coordinate, has
 the same numbering system, and is employed as such during deployment to the
 Sonatype OSS Nexus repository. Refer to Maven version numbering documentation
 for further information.
