@@ -148,6 +148,16 @@ SafeOption companion object.
 
 object SafeOption {
 
+/*
+Enable implicit conversion functions.
+
+This is required to avoid warnings about this language feature not being
+explicitly permitted during compilation of the safeOptionToOption and
+optionToSafeOption functions.
+*/
+
+  import scala.language.implicitConversions
+
 //-----------------------------------------------------------------------------
 /**
 Safe option factory method.
