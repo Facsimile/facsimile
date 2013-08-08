@@ -66,4 +66,4 @@ Sets]]
 //=============================================================================
 
 private [cell] final class RegularSet (scene: CellScene, parent: Option [Set])
-extends Set (scene, parent)
+extends SetWithChildren (scene, parent)

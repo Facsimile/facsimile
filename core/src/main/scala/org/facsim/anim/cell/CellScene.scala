@@ -161,11 +161,11 @@ Return the scene read as a ''ScalaFX'' 3D scene graph.
 Read next cell element from the stream and return it.
 
 @param parent Set primitive that is to contain the cell read.  If `None`, then
-the cell is the root cell of the scene.
+the cell is the root cell of the scene, or is a definition.
 
 @param isDefinition Flag indicating whether the cell to be read is a definition
 cell (`true`) or a regular cell (`false`).  This should be known in advance by
-the caller.
+the caller.  If this flag is `true`, then `parent` must be `None`.
 
 @return Cell instance read from the file.  Note that the root cell contains all
 cells belonging to this scene as its contents.
@@ -174,8 +174,16 @@ cells belonging to this scene as its contents.
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def readNextCell (parent: Option [Set] = None,
-  isDefinition: Boolean = false) = {
+  private [cell] def readNextCell (parent: Option [Set] = None, isDefinition:
+  Boolean = false) = {
+
+/*
+Sanity check.
+
+If this is a definition, then the parent must be undefined.
+*/
+
+    assert (!isDefinition || parent == None)
 
 /*
 Determine the code of the next cell element in the file.
@@ -223,6 +231,36 @@ Return the cell read.
 */
 
     cell
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Helper function to read an unverified string value from the stream.
+
+@param description Function that is called to provide a description to supply
+to the user in the event that an exception occurs.
+
+@return Value read, if no exceptions arise.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def readString (description: => String) = {
+    val value = try {
+      reader.readString ()
+    }
+    catch {
+      case e: Throwable => CellScene.translateReaderException (e, LibResource
+      ("anim.cell.CellScene.readValue", description))
+    }
+    value
   }
 
 //-----------------------------------------------------------------------------
@@ -416,6 +454,22 @@ encountered during parsing of the file.
     }
     value
   }
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve definition with specified name.
+
+@param definitionName Name of the definition to be retrieved.
+
+@return `Some` definition, if the definition has already been defined; `None`
+if the definition has not yet been seen.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final def getDefinition (definitionName: String) =
+  definitions.get (definitionName)
 }
 
 //=============================================================================

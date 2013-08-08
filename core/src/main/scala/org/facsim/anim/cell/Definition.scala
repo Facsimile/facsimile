@@ -39,4 +39,4 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 private [cell] abstract class Definition (scene: CellScene, parent: Option
-[Set]) extends Set (scene, parent)
+[Set]) extends SetWithChildren (scene, parent)

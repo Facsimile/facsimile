@@ -39,16 +39,16 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import scalafx.scene.Group
+import scala.annotation.tailrec
 
 //=============================================================================
 /**
-Abstract class for primitives that can themselves store primitives.
+Abstract class for primitives that have children.
 
 @see [[http://facsim.org/Documentation/Resources/Sets.htmls Sets]] for further
 information.
 
-@constructor Construct a new basic set primitive from the data stream.
+@constructor Construct a new set primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -68,50 +68,70 @@ Sets]]
 */
 //=============================================================================
 
-private [cell] abstract class Set (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent) {
+private [cell] abstract class SetWithChildren (scene: CellScene, parent: Option
+[Set]) extends Set (scene, parent) {
 
-//-----------------------------------------------------------------------------
-/*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
-
-Note that sets are not rendered in a particular line style, neither do they use
-material (except for inheritance by children), employ a display style or
-anything else.  They're actually pretty basic.
-*/
-//-----------------------------------------------------------------------------
-
-  private [cell] final override def toNode =
-  new Group {
-
-/*
-If this cell has a name, then use it as an ID.
+/**
+Determine the number of children and read them in.
 */
 
-    id = name.orNull
-
-/*
-Apply the required transformations to the node.
-*/
-
-    transforms = cellTransforms
-
-/*
-Add the child cells (if any) to the group as nodes.
-*/
-
-    children = getChildren.map (_.toNode)
-  }
+  private val childCells = readChildren ()
 
 //-----------------------------------------------------------------------------
 /**
-Retrieve the set's children.
+Read in the children of the set and return them.
 
-@return A list of this set's child ''cells''.
+@return List of children belonging to the set.  This may be empty if no
+children are defined.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
+Sets]]
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] def getChildren: List [Cell]
+  private final def readChildren () = {
+
+/**
+Helper function to read the next child from the list.
+
+NOTE: The list will contain children defined in reserve order.
+*/
+
+    @tailrec
+    def readChild (count: Int, children: List [Cell]): List [Cell] = {
+      if (count == 0) children
+      else readChild (count - 1, scene.readNextCell (Some (this), false) ::
+      children)
+    }
+
+/*
+Read in the number of children from the data stream.  This must be a value that
+is >= 0.
+*/
+
+    val numChildren = scene.readInt (_ >= 0, LibResource
+    ("anim.cell.Set.readChildren"))
+
+/*
+Build the list of children and return it.
+*/
+
+    readChild (numChildren, Nil).reverse
+  }
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Set!.getChildren]]
+*/
+//-----------------------------------------------------------------------------
+
+  protected [cell] override def getChildren = childCells
 }
