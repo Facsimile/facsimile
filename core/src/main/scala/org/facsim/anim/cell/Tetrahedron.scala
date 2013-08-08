@@ -137,15 +137,15 @@ Create the list of vertices.
 /*
 Some commonly used values.
 
-Note the y1_2 & y4_5 co-ordinates are obtained from the expression tan 30° = y
-/ b/2, where "b" is the base dimension.  Since tan 30° is (√3)/3, then y is
-(b * √3)/6.  The value is then negated, because the base of the triangle lies
-below the X-axis.
+Note the y1_2 & y4_5 coordinates are obtained from the expression tan 30° = y /
+b/2, where "b" is the base dimension.  Since tan 30° is (√3)/3, then y is (b *
+√3)/6.  The value is then negated, because the base of the triangle lies below
+the X-axis.
 
 The height of the triangle, which represents the difference between y0 and y1_2
 or y3 and y4_5, is given by Pythagoras: √(b² - (b²/4)) = b(√3)/2.  Subtracting
-the corresponding Y co-ordinate calculated above gives the seconds Y
-co-ordinate as b(√3)/3.
+the corresponding Y coordinate calculated above gives the second Y coordinate
+as b(√3)/3.
 
 A picture is worth a 1000 words - if only we had one! 
 */
@@ -209,7 +209,7 @@ constructed from indices of the associated faces defined above.
     )
 
 /*
-For now, don't define texture mapping co-ordinates. We will typically not apply
+For now, don't define texture mapping coordinates.  We will typically not apply
 textures to cells.
 */
 

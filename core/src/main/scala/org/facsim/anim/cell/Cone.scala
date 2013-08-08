@@ -163,7 +163,7 @@ that there are divisions faces in each group.
     Cone.divisions)
 
 /*
-For now, don't define texture mapping co-ordinates. We will typically not apply
+For now, don't define texture mapping coordinates.  We will typically not apply
 textures to cells.
 */
 

@@ -87,8 +87,8 @@ Cell Bounding Box]]
   final def read (scene: CellScene): Unit = {
 
 /*
-Read in the minimum and maximum X co-ordinate values. The maximum co-ordinate
-must be greater than the minimum co-ordinate.
+Read in the minimum and maximum X coordinate values. The maximum coordinate
+must be greater than the minimum coordinate.
 */
 
     val minX = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
@@ -97,8 +97,8 @@ must be greater than the minimum co-ordinate.
     0, minX))
 
 /*
-Read in the minimum and maximum Y co-ordinate values. The maximum co-ordinate
-must be greater than the minimum co-ordinate.
+Read in the minimum and maximum Y coordinate values. The maximum coordinate
+must be greater than the minimum coordinate.
 */
 
     val minY = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
@@ -107,8 +107,8 @@ must be greater than the minimum co-ordinate.
     1, minY))
 
 /*
-Read in the minimum and maximum Z co-ordinate values. The maximum co-ordinate
-must be greater than the minimum co-ordinate.
+Read in the minimum and maximum Z coordinate values. The maximum coordinate
+must be greater than the minimum coordinate.
 */
 
     val minZ = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",

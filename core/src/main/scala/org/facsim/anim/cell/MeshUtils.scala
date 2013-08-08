@@ -65,9 +65,9 @@ value must be > 0.
 
 @param yOffset Y offset of circle center.
 
-@return Array of floats defining co-ordinates for points of the circle.  There
-are three floats for each co-ordinate, and the total number of co-ordinates is
-`divisions` + 1.  The first co-ordinate is for the center of the circle.
+@return Array of floats defining coordinates for points of the circle.  There
+are three floats for each coordinate, and the total number of coordinates is
+`divisions` + 1.  The first coordinate is for the center of the circle.
 
 @since 0.0
 */
@@ -101,9 +101,9 @@ value must be > 0.
 
 @param yOffset Y offset of sector's circle center.
 
-@return Array of floats defining co-ordinates for points of the sector.  There
-are three floats for each co-ordinate, and the total number of co-ordinates is
-`divisions` + 2.  The first co-ordinate is for the center of the sector's
+@return Array of floats defining coordinates for points of the sector.  There
+are three floats for each coordinate, and the total number of coordinates is
+`divisions` + 2.  The first coordinate is for the center of the sector's
 circle.
 
 @since 0.0
@@ -142,10 +142,10 @@ into.  This value must be > 0.
 
 @param yOffset Y offset of circle/sector center.
 
-@return Array of floats defining co-ordinates for points of the circle.  There
-are three floats for each co-ordinate, and the total number of co-ordinates is
+@return Array of floats defining coordinates for points of the circle.  There
+are three floats for each coordinate, and the total number of coordinates is
 `divisions` + 1 (for a circle) or `divisions` + 2 (for a sector).  The first
-co-ordinate is for the center of the circle.
+coordinate is for the center of the circle.
 
 @since 0.0
 */
@@ -168,7 +168,7 @@ Sanity checks.
     assert (divisions > 0)
 
 /*
-The z value of each co-ordinate is the height expressed as a float.
+The z value of each coordinate is the height expressed as a float.
 */
 
     val z = height.toFloat
@@ -199,7 +199,7 @@ circle/sector.
     val pointArray = new Array [Float] ((sectors + 1) * 3)
 
 /*
-Set the first co-ordinate to be the center of the circle/sector.
+Set the first coordinate to be the center of the circle/sector.
 */
 
     pointArray (0) = xOffset.toFloat

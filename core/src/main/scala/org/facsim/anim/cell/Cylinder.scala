@@ -73,7 +73,7 @@ extends Mesh3D (scene, parent) {
 /**
 Cylinder radius.
 
-Base side radius, measured on the X-Y plane.
+Base & top radius, measured on the X-Y plane.
 */
 
   private val radius = scene.readDouble (_ >= 0.0, LibResource
@@ -123,8 +123,8 @@ Create the list of vertices.
     override val points = {
 
 /*
-Use the MeshUtils to generate the points for the base of the cylinder, and then
-add points for the top of the cylinder.
+Use the MeshUtils to generate the points for the base, and then add points for
+the top of the cylinder.
 */
 
       MeshUtils.circleCoordinates (radius, 0.0, Cylinder.divisions, 0.0,
@@ -140,8 +140,9 @@ associated points defined above.
     override val faces = {
 
 /*
-Use the MeshUtils to generate the faces making up the base of the cylinder,
-then add an array with the faces making up the sides of the cylinder.
+Use the MeshUtils to generate the faces making up the base, then add an array
+with the faces making up the walls, then add an array with the faces making up
+the top of the cylinder. 
 */
 
       MeshUtils.circleFaces (Cylinder.divisions, 0) ++
@@ -169,7 +170,7 @@ middle group - making 4 * divisions faces altogether.
     }
 
 /*
-For now, don't define texture mapping co-ordinates. We will typically not apply
+For now, don't define texture mapping coordinates.  We will typically not apply
 textures to cells.
 */
 
