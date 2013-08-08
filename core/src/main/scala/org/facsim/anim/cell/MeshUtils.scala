@@ -346,7 +346,7 @@ Create the face array.
 Define the points making up the first n - 1 faces.
 */
 
-    for (f <- 0 until divisions) {
+    for (f <- 0 until (divisions - 1)) {
       val i = f * 3
       val p = firstFaceIndex + i
       faceArray (i) = p
@@ -375,4 +375,86 @@ Return the face array.
 
     faceArray
   } ensuring (_.length == divisions * 3)
+
+//-----------------------------------------------------------------------------
+/**
+Create face array describing a wall wrapping around two circles at either end.
+
+This is suitable for the walls of a cylinder or conic frustum.
+
+The walls are closed, so that the last set of points defined wraps around to
+first.
+
+@param divisions Number of equal sectors that the associated base/top circles
+are divided into.  Two triangular faces are defined for each division in the
+wall.
+
+@return Array of point indices defining the points making up each triangular
+face.  There are three points per face and a total of 2 * `divisions` faces.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def wallFaces (divisions: Int) = {
+
+/*
+Create the face array.
+*/
+
+    val faceArray = new Array [Int] (divisions * 6)
+
+/*
+Index of first circumference point of the base.
+*/
+
+    val b1 = 1
+
+/*
+Index of first circumference point of the top.
+*/
+
+    val t1 = b1 + divisions + 1
+
+/*
+Create the wall of faces.  There are two triangular faces created for each
+portion of the wall.  Note that point 0 and point divisions plus 1 define the
+center of the base and top circles respectively.
+
+Start off with the first n - 2 faces (we'll stitch the wall together at the
+end.
+*/
+
+    for (f <- 0 until (divisions - 1)) {
+      val i = f * 6
+      val bp = f + b1
+      val tp = f + t1
+      faceArray (i) = bp
+      faceArray (i + 1) = tp
+      faceArray (i + 2) = bp + 1
+      faceArray (i + 3) = tp
+      faceArray (i + 4) = tp + 1
+      faceArray (i + 5) = bp + 1
+    }
+
+/*
+Now stitch together the last and first points together.
+*/
+
+    val fi = (divisions - 1) * 6
+    val fbp = fi + b1
+    val ftp = fi + t1
+    faceArray (fi) = fbp
+    faceArray (fi + 1) = ftp
+    faceArray (fi + 2) = b1
+    faceArray (fi + 3) = ftp
+    faceArray (fi + 4) = t1
+    faceArray (fi + 5) = b1
+
+/*
+Return the face array.
+*/
+
+    faceArray
+  } ensuring (_.length == divisions * 6)
 }

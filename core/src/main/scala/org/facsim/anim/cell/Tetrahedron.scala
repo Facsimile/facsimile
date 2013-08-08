@@ -121,7 +121,7 @@ Tetrahedron top Y-axis offset.
 The mesh is a custom TriangleMesh object.
 
 Note that the base is an equilateral triangle on the X-Y plane, with the origin
-at 0, 0, 0 (relative to its parent).  This triangle is aligned so that it's
+at (0, 0, 0), relative to its parent.  This triangle is aligned so that it's
 bottom edge is parallel to the X-axis.
 */
 //-----------------------------------------------------------------------------

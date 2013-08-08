@@ -153,8 +153,8 @@ Trapezoid top Y-axis offset.
 
 The mesh is a custom TriangleMesh object.
 
-Note that the base is an rectangle on the X-Y plane, with the origin at 0, 0, 0
-(relative to its parent).  This rectangle is aligned so that it's bottom and
+Note that the base is an rectangle on the X-Y plane, with the origin at (0, 0,
+0), relative to its parent.  This rectangle is aligned so that it's bottom and
 top edges are parallel to the X-axis, and it's left and right edges are
 parallel to the Y-axis.
 */

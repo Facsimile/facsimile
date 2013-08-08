@@ -39,7 +39,6 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import scala.math.sqrt
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -48,10 +47,10 @@ Class representing ''[[http://www.automod.com/ AutoMod]] cell cone''
 primitives.
 
 @see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/Tetrahedron.html
-Tetrahedra]] for further information.
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/Cones.html Cones]]
+for further information.
 
-@constructor Construct a new tetrahedron primitive from the data stream.
+@constructor Construct a new cone primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -109,8 +108,8 @@ Cone top Y-axis offset.
 
 The mesh is a custom TriangleMesh object.
 
-Note that the base is a circle on the X-Y plane, with the center at 0, 0, 0
-(relative to its parent).
+Note that the base is a circle on the X-Y plane, with the center at (0, 0, 0),
+relative to its parent.
 */
 //-----------------------------------------------------------------------------
 
@@ -125,9 +124,6 @@ Create the list of vertices.
 /*
 Use the MeshUtils to generate the points for the base of the cone, and then add
 the vertex for the top of the cone.
-
-NOTE: The number of divisions used for a fine cone in AutoMod is just 16.
-We'll use the same value.
 */
 
       MeshUtils.circleCoordinates (radius, 0.0, Cone.divisions, 0.0, 0.0) ++
