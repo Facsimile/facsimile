@@ -172,32 +172,33 @@ Create the list of vertices.
 Some commonly used values.
 */
 
-      val x0_3 = -(baseXDim / 2.0).toFloat
-      val x1_2 = (baseXDim / 2.0).toFloat
-      val x4_7 = -((topXDim / 2.0) + xOffset).toFloat
-      val x5_6 = ((topXDim / 2.0) + xOffset).toFloat
-      val y0_1 = (baseYDim / 2.0).toFloat
-      val y2_3 = -(baseYDim / 2.0).toFloat
-      val y4_5 = ((topYDim / 2.0) + yOffset).toFloat
-      val y6_7 = -((topYDim / 2.0) + yOffset).toFloat
-      val z = height.toFloat
+      val x0_1 = -(baseXDim / 2.0).toFloat
+      val x2_3 = (baseXDim / 2.0).toFloat
+      val x4_5 = -((topXDim / 2.0) + xOffset).toFloat
+      val x6_7 = ((topXDim / 2.0) + xOffset).toFloat
+      val y0_3 = (baseYDim / 2.0).toFloat
+      val y1_2 = -(baseYDim / 2.0).toFloat
+      val y4_7 = ((topYDim / 2.0) + yOffset).toFloat
+      val y5_6 = -((topYDim / 2.0) + yOffset).toFloat
+      val z0_1_2_3 = 0.0f
+      val z4_5_6_7 = height.toFloat
 
 /*
-Co-ordinates, ordered clockwise from the upper-left-hand corner (when
+Co-ordinates, ordered counter-clockwise from the upper-left-hand corner (when
 looking at the base from above).
 
 Note that these coordinates are stored as floats.  Why?  No idea...
 */
 
       Array [Float] (
-        x0_3, y0_1, 0.0f,       // 0, base upper-left
-        x1_2, y0_1, 0.0f,       // 1, base upper-right
-        x1_2, y2_3, 0.0f,       // 2, base lower-right
-        x0_3, y2_3, 0.0f,       // 3, base lower-left
-        x4_7, y4_5, z,          // 4, top upper-left
-        x5_6, y4_5, z,          // 5, top upper-right
-        x5_6, y6_7, z,          // 6, top lower-right
-        x4_7, y6_7, z           // 7, top lower-left
+        x0_1, y0_3, z0_1_2_3,           // 0, base upper-left
+        x0_1, y1_2, z0_1_2_3,           // 1, base lower-left
+        x2_3, y1_2, z0_1_2_3,           // 2, base lower-right
+        x2_3, y0_3, z0_1_2_3,           // 3, base upper-right
+        x4_5, y4_7, z4_5_6_7,           // 4, top upper-left
+        x4_5, y5_6, z4_5_6_7,           // 5, top lower-left
+        x6_7, y5_6, z4_5_6_7,           // 6, top lower-right
+        x6_7, y4_7, z4_5_6_7            // 7, top upper-right
       )
     }
 

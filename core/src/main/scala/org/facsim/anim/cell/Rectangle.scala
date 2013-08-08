@@ -129,7 +129,8 @@ Create the list of vertices.
     override val points = {
 
 /*
-Common points.  Numbered counter-clockwise from top left.
+Common points.  Numbered counter-clockwise from top left (when looking at the
+rectangle from above).
 */
 
       val x0_1 = -(xDim / 2.0).toFloat
