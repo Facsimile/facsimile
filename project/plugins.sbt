@@ -36,7 +36,11 @@
 //=============================================================================
 
 // Use the Scalastyle sbt plugin.
-//addSbtPlugin ("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.3.2")
+//
+// NOTE: In order to parse the sources correctly, SBT needs to be invoked with
+// the JVM option "-Dfile.encoding=UTF-8" (typically, this will be placed in
+// ./.sbtopts).
+//addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.3.2")
 
 // Support SBT within Scala Eclipse IDE.
 addSbtPlugin ("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.2.0")

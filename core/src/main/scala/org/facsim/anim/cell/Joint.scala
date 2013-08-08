@@ -69,7 +69,7 @@ This class is the base class for all types of Joint.
 
 @constructor Create a new joint instance.
 
-@param scene Scene to which the associated ''cell'' element belongs.
+@param scene Scene to which this joint belongs.
 
 @param flags The current ''cell'''s flags.
 

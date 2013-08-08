@@ -38,5 +38,141 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+import scalafx.scene.shape.TriangleMesh
+
+//=============================================================================
+/**
+Class representing ''[[http://www.automod.com/ AutoMod]] cell rectangle''
+primitives.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/Rectangles.html
+Rectangles]] for further information.
+
+@constructor Construct a new rectangle primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//=============================================================================
+
 private [cell] final class Rectangle (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent)
+extends Mesh3D (scene, parent) {
+
+/**
+Rectangle Y-axis dimension.
+
+Rectangle measured along the Y-Axis.
+
+@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''length'',
+although most people would refer to it as the ''depth'' or ''width''.  Here, we
+refer to it as the Y-axis dimension to avoid confusion.
+*/
+
+  private val yDim = scene.readDouble (_ >= 0.0, LibResource
+  ("anim.cell.Rectangle.readDim", 1))
+
+/**
+Rectangle X-axis dimension.
+
+Rectangle measured along the X-Axis.
+
+@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''width'',
+although most people would refer to it as the ''length''.  Here, we refer to it
+as the X-axis dimension to avoid confusion.
+*/
+
+  private val xDim = scene.readDouble (_ >= 0.0, LibResource
+  ("anim.cell.Rectangle.readDim", 0))
+
+/*
+Read, but discard, the X-axis offset.
+*/
+
+  scene.readDouble (LibResource ("anim.cell.Rectangle.readOffset", 0))
+
+/**
+Read, but discard, the X-axis offset.
+*/
+
+  scene.readDouble (LibResource ("anim.cell.Rectangle.readOffset", 1))
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Mesh3D!]]
+
+The mesh is a custom TriangleMesh object.
+
+Note that the rectangle is on the X-Y plane, with the center at (0, 0, 0), relative
+to its parent.  Since this is not being drawn in wireframe mode, the rectangle is
+either drawn as a circle or a sector of a circle.
+*/
+//-----------------------------------------------------------------------------
+
+  protected [cell] override def cellMesh = new TriangleMesh {
+
+/*
+Create the list of vertices.
+*/
+
+    override val points = {
+
+/*
+Common points.  Numbered counter-clockwise from top left.
+*/
+
+      val x0_1 = -(xDim / 2.0).toFloat
+      val x2_3 = (xDim / 2.0).toFloat
+      val y0_3 = (yDim / 2.0).toFloat
+      val y1_2 = -(yDim / 2.0).toFloat
+      val z = 0.0f
+
+/*
+Create and return the point array.  Numbered counter-clockwise from top left.
+*/
+
+      Array [Float] (
+        x0_1, y0_3, z,          // Point 0, top left.
+        x0_1, y1_2, z,          // Point 1, bottom left.
+        x2_3, y1_2, z,          // Point 2, bottom right.
+        x2_3, y0_3, z           // Point 3, top right.
+      ) 
+    }
+
+/*
+Now create the list of faces (triangles), constructed from indices of the
+associated points defined above.
+*/
+
+    override val faces = Array [Int] (
+      0, 1, 2,                  // Face 0
+      0, 2, 3                   // Face 1
+    )
+
+/*
+Now create the smoothing face groups (face index map to smoothing group),
+constructed from indices of the associated faces defined above.
+
+Both faces in the rectangle belong to the same group, 0.
+*/
+
+    override val faceSmoothingGroups = Array [Int] (0, 0)
+
+/*
+For now, don't define texture mapping coordinates.  We will typically not apply
+textures to cells.
+*/
+
+  }
+}
