@@ -53,7 +53,7 @@ Class representing ''[[http://www.automod.com/ AutoMod]] cell arc'' primitives.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Arcs.html Arcs &
 Circles]] for further information.
 
-@constructor Construct a new cone primitive from the data stream.
+@constructor Construct a new arc primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -202,7 +202,7 @@ Arc companion object.
 private object Arc {
 
 /**
-Number of divisions per cone.
+Number of divisions per arc.
 
 The number of divisions for a fine arc in AutoMod is 16, and for a course arc
 it's 8.  For simplicity, we'll convert all arcs to have 16 divisions.
