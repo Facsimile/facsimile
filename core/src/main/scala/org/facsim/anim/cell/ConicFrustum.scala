@@ -205,9 +205,9 @@ private object ConicFrustum {
 /**
 Number of divisions per conic frustum.
 
-The number of divisions for a fine conic frustum in AutoMod is 16, and for a course
-conic frustum it's 8.  For simplicity, we'll convert all conic frustums to have 16
-divisions.
+The number of divisions for a fine conic frustum in AutoMod is 16, and for a
+course conic frustum it's 8.  For simplicity, we'll convert all conic frustums
+to have 16 divisions.
 */
 
   val divisions = 16

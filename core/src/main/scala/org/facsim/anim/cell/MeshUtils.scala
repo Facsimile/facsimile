@@ -380,7 +380,8 @@ Return the face array.
 /**
 Create face array describing a wall wrapping around two circles at either end.
 
-This is suitable for the walls of a cylinder or conic frustum.
+This is suitable for the walls of a cylinder or conic frustum as well as for
+the bands of a hemisphere.
 
 The walls are closed, so that the last set of points defined wraps around to
 first.
@@ -389,6 +390,10 @@ first.
 are divided into.  Two triangular faces are defined for each division in the
 wall.
 
+@param firstFaceIndex Index of the first points on the circumference of the
+lower circle/sector/cone.  The remaining points must follow immediately
+(numbering 2 * `divisions` in total).
+
 @return Array of point indices defining the points making up each triangular
 face.  There are three points per face and a total of 2 * `divisions` faces.
 
@@ -396,7 +401,7 @@ face.  There are three points per face and a total of 2 * `divisions` faces.
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def wallFaces (divisions: Int) = {
+  private [cell] def wallFaces (divisions: Int, firstFaceIndex: Int = 1) = {
 
 /*
 Create the face array.
@@ -408,7 +413,7 @@ Create the face array.
 Index of first circumference point of the base.
 */
 
-    val b1 = 1
+    val b1 = firstFaceIndex
 
 /*
 Index of first circumference point of the top.
