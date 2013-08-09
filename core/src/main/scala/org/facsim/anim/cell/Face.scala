@@ -40,78 +40,19 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scala.annotation.tailrec
-import scalafx.scene.Group
 
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell vector list''
-primitives.
+Class representing a basic 3D face.
 
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/VectorLists.html
-Vector Lists]] for further information.
+@note A single face may be made up of more than one triangle.
 
-@todo JavaFX 8 currently doesn't appear capable of handling 3D polylines.  When
-it becomes possible to do this, fully implement this class.  For now, we just
-read the associated data from the cell data stream and effectively ignore the
-data read.
+@constructor Construct a new basic face from the cell data stream.
 
-@constructor Construct a new vector list primitive from the data stream.
+@param scene Reference to the CellScene of which this point is a part.
 
-@param scene Reference to the CellScene of which this cell is a part.
-
-@param parent Parent set of this cell primitive.  If this value is `None`, then
-this cell is the scene's root cell.
-
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
-
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/VectorLists.html
-Vector Lists]] for further information.
-
-@since 0.0
-*/
-//=============================================================================
-
-private [cell] final class VectorList (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent) {
-
-/*
-Read the list of pointer from the cell data stream.
-*/
-
-  VectorList.read (scene)
-
-//-----------------------------------------------------------------------------
-/*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
-*/
-//-----------------------------------------------------------------------------
-
-  private [cell] final override def toNode = new Group ()
-}
-
-//=============================================================================
-/**
-VectorList companion object.
-
-@since 0.0
-*/
-//=============================================================================
-
-private object VectorList {
-
-//-----------------------------------------------------------------------------
-/**
-Read vector list data from the stream.
-
-@param scene Reference to the CellScene of which this cell is a part.
-
-@return List of move/draw points.  First point must be a move point.
+@param numPoints Number of defined points that can be used as vertex indices
+for the face. 
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -121,37 +62,128 @@ encountered during parsing of the file.
 
 @since 0.0
 */
+//=============================================================================
+
+private [cell] final class Face (scene: CellScene, numPoints: Int) {
+
+/*
+List of vertex indices making up the face.
+*/
+
+  private val vertices = Face.read (scene, numPoints)
+
+//-----------------------------------------------------------------------------
+/**
+Create a list of triangular faces from this face.
+
+Each triangular face is made up of three vertex indices.  If the face has just
+three, then we return a single triangular face.  However, it if has more than
+three, we construct the triangles starting from the first point and creating
+faces for each subsequence pair of indices.
+
+@return A list of triangular face indices.
+
+@since 0.0
+*/
 //-----------------------------------------------------------------------------
 
-  private def read (scene: CellScene) = {
+  private [cell] def toTriangularFaces = {
 
-/**
-Helper function to read the next point from the data stream.
+/*
+The lead vertex is the first point on the list.  Create the triangles from
+that.
+*/
 
-For now, we just discard the points read.  In future, when there's something to
-do with the data read, we'll return a list of points (see the Polyhedra class
-for how that might be done).
+    val leadPoint = vertices.head
+
+/*
+Helper function to construct the list of triangular faces.
+
+Note that, due to the need for tail recursion, the list of triangular faces is
+built in reverse.
 */
 
     @tailrec
-    def readPoint (count: Int, isFirst: Boolean): Unit = {
-      if (count > 0) {
-        new VectorListPoint (scene, isFirst)
-        readPoint (count - 1, false)
+    def addTriangle (points: List [Int], faces: List [List [Int]]): List [List
+    [Int]] = {
+      if (points.tail.isEmpty) faces
+      else {
+        val face = List (leadPoint, points.head, points.tail.head)
+        addTriangle (points.tail, face :: faces)
       }
     }
 
 /*
-Read the number of points from the data stream.  This value must be at least 2.
+Construct and return the list from the remaining points, reversing the list
+order so that they are put back into the original order.
 */
 
-    val points = scene.readInt (_ > 1, LibResource
-    ("anim.cell.VectorList.read"))
+    addTriangle (vertices.tail, Nil).reverse
+  } ensuring (!_.isEmpty)
+}
+
+//=============================================================================
+/**
+Face companion object.
+
+@since 0.0
+*/
+//=============================================================================
+
+private object Face {
+
+//-----------------------------------------------------------------------------
+/**
+Read face data from the stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param numPoints Number of defined points that can be used as vertex indices
+for the face. 
+
+@return List of vertex indices.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private def read (scene: CellScene, numPoints: Int) = {
+
+/**
+Helper function to read the list of point indices from the data stream.
+
+Note that, due to the need for tail recursion, the list is built in reverse
+*/
+
+    @tailrec
+    def readIndex (count: Int, list: List [Int]): List [Int] = {
+      if (count == 0) list
+      else {
+        val index = scene.readInt (i => i >= 0 && i < numPoints, LibResource
+        ("anim.cell.Face.readIndex", numPoints - 1))
+        readIndex (count - 1, index :: list)
+      }
+    }
 
 /*
-Read in all of the points.  The first point must be a move point.
+Read the number of indices from the data stream.  This value must be at least
+3.
 */
 
-    readPoint (points, true)
-  }
+    val indices = scene.readInt (_ > 2, LibResource
+    ("anim.cell.Face.readCount"))
+
+/*
+Return the list of vertex indices read, reversing the list order so that they
+are put back into the original order.
+*/
+
+    readIndex (indices, Nil).reverse
+  } ensuring (_.size >= 3)
 }

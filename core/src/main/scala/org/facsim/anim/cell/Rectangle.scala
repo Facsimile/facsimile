@@ -43,7 +43,7 @@ import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod]] cell rectangle''
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell rectangle''
 primitives.
 
 @see
@@ -62,6 +62,10 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/Rectangles.html
+Rectangles]] for further information.
 
 @since 0.0
 */
@@ -175,5 +179,6 @@ For now, don't define texture mapping coordinates.  We will typically not apply
 textures to cells.
 */
 
+    //override val getTexCoords =
   }
 }

@@ -47,11 +47,11 @@ import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod]] cell arc'' primitives.
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell arc & circle''
+primitives.
 
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/Arcs.html Arcs &
-Circles]] for further information.
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Arcs.html Arcs
+& Circles]] for further information.
 
 @constructor Construct a new arc primitive from the data stream.
 
@@ -65,6 +65,9 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Arcs.html Arcs
+& Circles]] for further information.
 
 @since 0.0
 */
@@ -188,6 +191,7 @@ For now, don't define texture mapping coordinates.  We will typically not apply
 textures to cells.
 */
 
+    //override val getTexCoords =
   }
 }
 

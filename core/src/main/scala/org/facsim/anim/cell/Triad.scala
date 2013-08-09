@@ -38,5 +38,60 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+import scalafx.scene.Group
+
+//=============================================================================
+/**
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell triad''
+primitives.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Triads.html
+Triads]] for further information.
+
+@todo In a cell file, a triad is used as a debugging aid to demonstrate the
+alignment of a primitive's local X-, Y- and Z-axes.  It may be a useful tool
+for users importing ''cell'' files into ''Facsimile''.  However, for now, we do
+not implement triads&mdash;they are processed, but otherwise ignored.
+
+@constructor Construct a new triad primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Triads.html
+Triads]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
 private [cell] final class Triad (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent)
+extends Cell (scene, parent) {
+
+/*
+Read and disregard the "unknown" triad flag.
+
+(The current theory is that this value is a visibility flag: a 0 value means
+that the triad is invisible; any other value, that it's visible.  It's academic
+here as we simply ignore it.
+*/
+
+  scene.readInt (LibResource ("anim.cell.Triad.read"))
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Cell!.toNode]]
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final override def toNode = new Group ()
+}

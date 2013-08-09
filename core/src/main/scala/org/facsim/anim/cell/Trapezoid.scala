@@ -43,10 +43,8 @@ import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod]] cell trapezoid''
-primitives.
-
-@note The ''cell box'' primitive is actually stored as a trapezoid.
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell trapezoid and
+box'' primitives.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Trapezoids.html
@@ -64,6 +62,10 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/Trapezoids.html
+Trapezoids & Boxes]] for further information.
 
 @since 0.0
 */
@@ -241,5 +243,6 @@ For now, don't define texture mapping coordinates.  We will typically not apply
 textures to cells.
 */
 
+    //override val getTexCoords =
   }
 }

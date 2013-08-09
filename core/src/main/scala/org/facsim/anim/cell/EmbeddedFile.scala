@@ -38,5 +38,35 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+//=============================================================================
+/**
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell embedded file''
+primitives.
+
+@see [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledEmbedded.html
+Embedded Files]] for further information.
+
+@constructor Construct a new embedded file primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledEmbedded.html
+Embedded Files]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
 private [cell] final class EmbeddedFile (scene: CellScene, parent: Option
-[Set]) extends Cell (scene, parent)
+[Set]) extends File (scene, parent)

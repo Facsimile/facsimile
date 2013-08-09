@@ -42,13 +42,8 @@ import org.facsim.LibResource
 
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod]] cell instance''
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell instance''
 primitives.
-
-An instance references a definition (either a block definition or a file
-reference), such that the definition is incorporated into the scene at the
-location of the instance.  In this way, a single definition can be incorporated
-into a scene any number of times&mdash;once for each instance.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Instances.html
 Instances]] for further information.
@@ -65,6 +60,9 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Instances.html
+Instances]] for further information.
 
 @since 0.0
 */
@@ -84,7 +82,7 @@ it.  Otherwise, the definition follows immediate after the instance as a new
 cell hierarchy that needs to be read in.
 */
 
-  private val definition: Definition = {
+  private val definition = {
 
 /*
 Retrieve the name of the definition from the file.  The name cannot be an empty
@@ -105,7 +103,8 @@ stream.
 */
 
     scene.getDefinition (defName).getOrElse {
-      val instDef = scene.readNextCell (None, true).asInstanceOf [Definition]
+      val instDef = scene.readNextCell (None, true)
+      assert (instDef.isInstanceOf [Definition])
 
 /*
 If the definition's name doesn't match what we expected, then give an error.

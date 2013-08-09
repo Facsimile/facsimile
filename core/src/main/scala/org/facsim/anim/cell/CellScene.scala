@@ -103,7 +103,7 @@ Flag indicating whether we have finished constructing the scene.
 ''Cell'' definitions, indexed by name and initially empty.
 */
 
-  private val definitions: Map [String, Definition] = Map ()
+  private val definitions: Map [String, Cell] = Map ()
 
 /**
 Process the cell data.
@@ -223,8 +223,10 @@ If this is a definition, then add it to the list of definitions.
 Note that if the cell has no name, then this will result in an exception.
 */
 
-    if (isDefinition) definitions += (cell.name.get -> cell.asInstanceOf
-    [Definition])
+    if (isDefinition) {
+      assert (cell.isInstanceOf [Definition])
+      definitions += (cell.name.get -> cell)
+    }
 
 /*
 Return the cell read.
@@ -299,7 +301,7 @@ encountered during parsing of the file.
 
 //-----------------------------------------------------------------------------
 /**
-Helper function to read a boolean value from the stream.
+Helper function to read an unrestricted boolean value from the stream.
 
 @param description Function that is called to provide a description to supply
 to the user in the event that an exception occurs.
@@ -319,6 +321,40 @@ encountered during parsing of the file.
   private [cell] def readBool (description: => String) = {
     val value = try {
       reader.readInt (value => value == 0 || value == 1)
+    }
+    catch {
+      case e: Throwable => CellScene.translateReaderException (e, LibResource
+      ("anim.cell.CellScene.readValue", description))
+    }
+    value == 1
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Helper function to read a verified boolean value from the stream.
+
+@param verifier Verification function to impose additional constraints upon the
+boolean value read.
+
+@param description Function that is called to provide a description to supply
+to the user in the event that an exception occurs.
+
+@return Value read, if no exceptions arise.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def readBool (verifier: Int => Boolean, description: =>
+  String) = {
+    val value = try {
+      reader.readInt (value => (value == 0 || value == 1) && verifier (value))
     }
     catch {
       case e: Throwable => CellScene.translateReaderException (e, LibResource
@@ -577,8 +613,8 @@ maintain this order when modifying the list.
 /*
 Class of the Definition cell type.
 
-All sub-classes of the Definition class are regarded as special cases: they
-can only be defined as a definition, and not as part of the primary cell scene.
+All sub-classes of the Definition trait are regarded as special cases: they can
+only be defined as a definition, and not as part of the primary cell scene.
 */
 
     val definition = classOf [Definition]

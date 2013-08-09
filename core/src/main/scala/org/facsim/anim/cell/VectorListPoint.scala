@@ -38,20 +38,21 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell world text
-list'' primitives.
+Class representing a 3D point with move/draw flag.
 
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
-Text Lists]] for further information.
+@todo Do something with the data read when there's an opportunity to do so.
+Refer to [[org.facsim.anim.cell.VectorList!]] for further information.
 
-@constructor Construct a new world text list primitive from the data stream.
+@constructor Construct a new decorated point from the cell data stream.
 
-@param scene Reference to the CellScene of which this cell is a part.
+@param scene Reference to the CellScene of which this point is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
-this cell is the scene's root cell.
+@param isFirst If `true`, then this is the first point, which '''must''' be a
+move point, rather than a draw point.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -59,12 +60,26 @@ is not an ''AutoMod® cell'' file.
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
-Text Lists]] for further information.
-
 @since 0.0
 */
 //=============================================================================
 
-private [cell] final class WorldTextList (scene: CellScene, parent: Option
-[Set]) extends TextList (scene, parent)
+private [cell] final class VectorListPoint (scene: CellScene, isFirst:Boolean)
+extends Point (scene, Point.VectorList) {
+
+/**
+Read the point's move/draw flag.
+
+A value of 0 indicates that this is a ''move'' point (''cursor'' is
+repositioned to the point); a value of 1 indicates that this is a ''draw''
+point, and that a 3D line should be drawn from the previous point (whether a
+draw or a move point) to this point.  As a consequence, the first point
+''must'' be a move point.
+
+@note Consecutive ''move'' points make no sense, but we do not disallow them.
+Nor do we verify whether this point differs from the last point.
+*/
+
+  private val isDrawTo = scene.readBool (_ == 0 || !isFirst, LibResource
+  ("anim.cell.VectorListPoint.read"))
+}

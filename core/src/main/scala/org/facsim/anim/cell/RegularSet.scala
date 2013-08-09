@@ -40,10 +40,11 @@ package org.facsim.anim.cell
 
 //=============================================================================
 /**
-Class for primitives that can themselves store primitives.
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell set''
+primitives.
 
-@see [[http://facsim.org/Documentation/Resources/Sets.html Sets]] for further
-information.
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
+Sets]] for further information.
 
 @constructor Construct a new set primitive from the data stream.
 
@@ -59,7 +60,7 @@ is not an ''AutoMod® cell'' file.
 encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
-Sets]]
+Sets]] for further information.
 
 @since 0.0
 */

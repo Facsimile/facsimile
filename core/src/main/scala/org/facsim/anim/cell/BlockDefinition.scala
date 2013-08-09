@@ -38,7 +38,36 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] final class BlockDefinition (scene: CellScene, parent: Option
-[Set]) extends Definition (scene, parent) {
+//=============================================================================
+/**
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell block
+definition'' primitives.
 
+@see [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/BlockDefinitions.html
+Block Definitions]] for further information.
+
+@constructor Construct a new block definition primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent This value should be None for a Definition.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/BlockDefinitions.html
+Block Definitions]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] final class BlockDefinition (scene: CellScene, parent: Option
+[Set]) extends SetWithChildren (scene, parent) with Definition {
+  assert (parent == None)
 }

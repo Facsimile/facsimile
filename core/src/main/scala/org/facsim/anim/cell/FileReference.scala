@@ -38,5 +38,36 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+//=============================================================================
+/**
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell file reference''
+primitives.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/FileReference.html
+File References]] for further information.
+
+@constructor Construct a new file references primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent This value should be None for a Definition.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see
+[[http://facsim.org/Documentation/Resources/AutoModCellFile/FileReference.html
+File References]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
 private [cell] final class FileReference (scene: CellScene, parent: Option
-[Set]) extends Definition (scene, parent)
+[Set]) extends File (scene, parent) with Definition {
+  assert (parent == None)
+}
