@@ -99,13 +99,17 @@ Create a mesh to represent this cell and return it.
 /**
 Draw this ''cell'' in wireframe mode.
 
+@note At the time of writing, ''JavaFX''/''ScalaFX'' does not appear to support
+3D polylines, so rendering of shapes in wireframe is not supported.  Instead,
+rather than not render the primitives, they are currently rendered as solids.
+
 @return Base node storing the wireframe form of this trapezoid.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private final def drawAsWireframe: Node = ???
+  private final def drawAsWireframe: Node = drawAsSolid
 
 //-----------------------------------------------------------------------------
 /**
