@@ -89,6 +89,9 @@ Read the list of pointer from the cell data stream.
 //-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.Cell!.toNode]]
+
+Vector List elements currently cannot be rendered.  See Issue 3 for further
+details.
 */
 //-----------------------------------------------------------------------------
 
