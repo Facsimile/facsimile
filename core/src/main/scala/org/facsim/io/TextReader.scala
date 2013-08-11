@@ -1065,17 +1065,6 @@ NumberFormatException.
 
 //-----------------------------------------------------------------------------
 /**
-Read and return everything from the current file pointer to the next line
-termination sequence.
-*/
-//-----------------------------------------------------------------------------
-
-  final def readToEOL (verify: TextReader.Verifier [String] =
-  TextReader.defaultStringVerifier): String =
-  readString (LineDelimiter)(verify)
-
-//-----------------------------------------------------------------------------
-/**
 Determine if the ''end-of-file'' has been reached.
 
 @return `true` if the end-of-file marker has been read from the stream,
