@@ -123,6 +123,16 @@ By the time execution reaches this point, we'll have constructed the scene.
 
 //-----------------------------------------------------------------------------
 /**
+Report the base URL for this scene.
+
+@return Specified base URL.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def getBaseUrl = baseUrl
+
+//-----------------------------------------------------------------------------
+/**
 Report the default face color for this scene.
 
 @return Specified face color as an optional value.
