@@ -38,5 +38,34 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+//=============================================================================
+/**
+Class representing a ''rotational joint''.
+
+A ''rotational joint'' allows children of the associated ''cell'' primitive be
+rotated about the joint's local Z-axis under kinematic control.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
+Joints]] for further information.
+
+@constructor Construct a new rotational joint from the data stream.
+
+@param scene Reference to the CellScene of which this joint is a part.
+
+@param flags Cell flags dictating how the joint data is formatted.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
+Joints]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
 private [cell] final class RotationalJoint (scene: CellScene, flags: CellFlags)
 extends Joint (scene, flags)

@@ -38,6 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
 import scalafx.scene.transform.Transform
 
 //=============================================================================
@@ -67,10 +68,11 @@ private [cell] final class Transformation (scene: CellScene, inMatrixForm:
 Boolean) extends NotNull {
 
 /*
-Matrix form not implemented yet.
+Matrix form not implemented yet.  See Issue #10 for further information.
 */
 
-  if (inMatrixForm) ???
+  if (inMatrixForm) throw new NotImplementedError (LibResource
+  ("anim.cell.Transformation.matrixForm"))
 
 /**
 Read the translation data from the stream.
