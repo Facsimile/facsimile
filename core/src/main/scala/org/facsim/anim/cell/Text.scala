@@ -160,7 +160,7 @@ Unrotate text type.
 Unrotate text is always displayed facing the viewer.
 */
 
-  private [cell] val unrotated = Value
+  private [cell] val unrotate = Value
 
 /**
 World text type.
