@@ -86,7 +86,8 @@ Read the text from the stream.
 /*
 @see [[org.facsim.anim.cell.Cell!.toNode]]
 
-Note: We currently render all text types as World text.
+Note: We currently render World and Unrotate text types as World text, and do
+not render Screen text.
 */
 //-----------------------------------------------------------------------------
 

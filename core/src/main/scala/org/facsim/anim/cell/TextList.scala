@@ -87,7 +87,8 @@ Each text list is prefixed by a set of translation co-ordinates.
 /*
 @see [[org.facsim.anim.cell.Cell!.toNode]]
 
-Note: We currently render all text types as World text.
+Note: We currently render World and Unrotate text list types as World text
+lists, and do not render Screen text lists.
 */
 //-----------------------------------------------------------------------------
 
