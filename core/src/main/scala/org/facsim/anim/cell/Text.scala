@@ -38,5 +38,121 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] abstract class Text (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent)
+import org.facsim.LibResource
+import scalafx.scene.text.{Text => SFXText}
+
+//=============================================================================
+/**
+Abstract class for all ''cell text'' primitives (except for ''cell text list''
+primitives).
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
+Text]] for further information.
+
+@constructor Construct a new basic text primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@param textType Type of text represented by this instance.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
+Text]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] abstract class Text (scene: CellScene, parent: Option [Set],
+textType: Text.Value) extends Cell (scene, parent) {
+
+/**
+Read the text from the stream.
+*/
+
+  private final val textValue = scene.readText (LibResource
+  ("anim.cell.Text.read", textType.id))
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Cell!.toNode]]
+
+Note: We currently render all text types as World text.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final override def toNode = {
+    val thisTextList = this
+    new SFXText {
+
+/*
+If this cell has a name, then use it as an ID.
+*/
+
+      id = name.orNull
+
+/*
+Apply the required transformations to the node.
+*/
+
+      transforms = cellTransforms
+
+/*
+Specify the color for this text.
+*/
+
+      stroke = cellPaint
+
+/*
+The text to be displayed.
+*/
+
+      text = textValue
+    }
+  }
+}
+
+//=============================================================================
+/**
+Text companion object and text type enumeration.
+
+This type enumeration is used for [[org.facsim.anim.cell.TestList!]]s as well.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] object Text extends Enumeration {
+
+/**
+Screen text type.
+
+Screen text is mapped to the viewing screen.
+*/
+
+  private [cell] val screen = Value
+
+/**
+Unrotate text type.
+
+Unrotate text is always displayed facing the viewer.
+*/
+
+  private [cell] val unrotated = Value
+
+/**
+World text type.
+
+World text is displayed ''in situ'' as part of the 3D scene.
+*/
+
+  private [cell] val world = Value
+}

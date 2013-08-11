@@ -40,8 +40,6 @@ package org.facsim.anim.cell
 
 import scalafx.scene.Node
 import scalafx.scene.paint.Color
-import scalafx.scene.paint.Material
-import scalafx.scene.paint.PhongMaterial
 import scalafx.scene.transform.Transform
 
 //=============================================================================
@@ -161,7 +159,7 @@ the scene's default face color as an option.
 */
 //-----------------------------------------------------------------------------
 
-  private final def parentFaceColor: Option [Material] = parent match {
+  private final def parentFaceColor: Option [CellColor.Value] = parent match {
     case Some (parentCell) => parentCell.faceColor
     case None => scene.defaultFaceColor
   }
@@ -177,7 +175,7 @@ the scene's default edge color as an option.
 */
 //-----------------------------------------------------------------------------
 
-  private final def parentEdgeColor: Option [Material] = parent match {
+  private final def parentEdgeColor: Option [CellColor.Value] = parent match {
     case Some (parentCell) => parentCell.edgeColor
     case None => scene.defaultEdgeColor
   }
@@ -227,21 +225,75 @@ varying degrees of transparency.
 
 //-----------------------------------------------------------------------------
 /**
-Color of this cell, as a material.
+Color of this cell.
 
 If cell is drawn in wireframe, then the cell will be drawn with the edge color,
 otherwise, with face color.
 
-@return Material with which the cell is to be drawn.  A valid material/color
-must be defined at some point in the chain of face/edge colors.
+@return Cell color with which the cell is to be drawn.  A valid color must be
+defined at some point in the chain of face/edge colors.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] final def cellMaterial =
+  private [cell] final def color =
   if (isWireframe) edgeColor.get
   else faceColor.get
+
+//-----------------------------------------------------------------------------
+/**
+Color of this cell, as a ''ScalaFX'' color.
+
+If cell is drawn in wireframe, then the cell will be drawn with the edge color,
+otherwise, with face color.
+
+@return Cell color with which the cell is to be drawn.  A valid color must be
+defined at some point in the chain of face/edge colors.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final def cellColor = CellColor.toColor (color)
+
+//-----------------------------------------------------------------------------
+/**
+Color of this cell, as a ''ScalaFX'' material.
+
+If cell is drawn in wireframe, then the cell will be drawn with the edge color,
+otherwise, with face color.
+
+@note Material is employed by [[scalafx.scene.shape.Shape3D!]] subclasses.
+
+@return Material with which the cell is to be drawn.  A valid color must be
+defined at some point in the chain of face/edge colors.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final def cellMaterial = CellColor.toMaterial (color)
+
+//-----------------------------------------------------------------------------
+/**
+Color of this cell, as a paint.
+
+The cell's opacity is included in the paint definition.
+
+If cell is drawn in wireframe, then the cell will be drawn with the edge color,
+otherwise, with face color.
+
+@note Paint is employed by [[scalafx.scene.shape.Shape!]] subclasses.
+
+@return Paint with which the cell is to be drawn.  A valid color must be
+defined at some point in the chain of face/edge colors.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final def cellPaint: Color = cellColor.opacity (cellOpacity)
 
 //-----------------------------------------------------------------------------
 /**

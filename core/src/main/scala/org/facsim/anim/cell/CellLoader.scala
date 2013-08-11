@@ -45,7 +45,7 @@ import org.facsim.SafeNone
 import org.facsim.SafeOption
 import org.facsim.io.TextReader
 import scalafx.scene.Node
-import scalafx.scene.paint.Material
+import scalafx.scene.paint.Color
 
 //=============================================================================
 /**
@@ -161,8 +161,9 @@ encountered during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  def load (url: URL, baseUrl: SafeOption [URL] = SafeNone, faceColor: Material
-  = CellColor.default, edgeColor: Material = CellColor.default): Node = {
+  def load (url: URL, baseUrl: SafeOption [URL] = SafeNone, faceColor:
+  CellColor.Value = CellColor.default, edgeColor: CellColor.Value =
+  CellColor.default): Node = {
 
 /*
 Verify that certain arguments are not null.

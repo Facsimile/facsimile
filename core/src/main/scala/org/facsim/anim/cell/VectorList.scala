@@ -145,13 +145,13 @@ for how that might be done).
 Read the number of points from the data stream.  This value must be at least 2.
 */
 
-    val points = scene.readInt (_ > 1, LibResource
+    val numPoints = scene.readInt (_ > 1, LibResource
     ("anim.cell.VectorList.read"))
 
 /*
 Read in all of the points.  The first point must be a move point.
 */
 
-    readPoint (points, true)
+    readPoint (numPoints, true)
   }
 }

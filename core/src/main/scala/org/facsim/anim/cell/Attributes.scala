@@ -70,7 +70,7 @@ extends CellAttributes with NotNull {
 Flag indicating whether attribute data is present in the cell file.
 */
 
-  private final val attributesPresent = flags.attributesPresent
+  private val attributesPresent = flags.attributesPresent
 
 /**
 Flag indicating whether colors are inherited from the parent cell.
@@ -79,19 +79,19 @@ Inherited colors are stored as `None`.  Non-inherited colors have `Some` cell
 color value.
 */
 
-  private final val inheritColors = flags.colorsInherited
+  private val inheritColors = flags.colorsInherited
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
 */
 
-  private [cell] final override val faceColor = readColor (0)
+  private [cell] override val faceColor = readColor (CellColorType.face)
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
 */
 
-  private [cell] final override val edgeColor = readColor (1)
+  private [cell] override val edgeColor = readColor (CellColorType.edge)
 
 /*
 If attributes are present, read the line type, otherwise use the default.
@@ -99,7 +99,7 @@ If attributes are present, read the line type, otherwise use the default.
 @see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
 */
 
-  private [cell] final override val lineStyle =
+  private [cell] override val lineStyle =
   if (attributesPresent) LineStyle.read (scene)
   else LineStyle.default
 
@@ -109,7 +109,7 @@ If attributes are present, read the line width, otherwise use the default.
 @see [[org.facsim.anim.cell.CellAttributes!.lineWidth]]
 */
 
-  private [cell] final override val lineWidth =
+  private [cell] override val lineWidth =
   if (attributesPresent) LineWidth.read (scene)
   else LineWidth.default
 
@@ -119,7 +119,7 @@ If attributes are present, read the line width, otherwise use the default.
 @see [[org.facsim.anim.cell.CellAttributes!.displayStyle]]
 */
 
-  private [cell] final override val displayStyle =
+  private [cell] override val displayStyle =
   if (attributesPresent) DisplayStyle.read (scene)
   else DisplayStyle.default
 
@@ -129,7 +129,7 @@ If attributes are present, read the name; otherwise, this cell has no name.
 @see [[org.facsim.anim.cell.CellAttributes!.name]]
 */
 
-  private [cell] final override val name =
+  private [cell] override val name =
   if (attributesPresent) {
     Some (scene.readString (value => value != "", LibResource
     ("anim.cell.Attributes.nameDesc")))
@@ -138,7 +138,7 @@ If attributes are present, read the name; otherwise, this cell has no name.
 
 //-----------------------------------------------------------------------------
 /**
-Function to determine the required color, as a ''ScalaFX material''.
+Function to determine the required color.
 
 The rules are not straightforward:
   - If attributes are present, then the color must be read from the ''cell''
@@ -164,7 +164,7 @@ encountered during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  private final def readColor (colorType: Int) = {
+  private final def readColor (colorType: CellColorType.Value) = {
 
 /*
 If attributes are present, then we must read them from the file - even if we're

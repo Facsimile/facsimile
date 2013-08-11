@@ -39,6 +39,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import scalafx.scene.transform.Translate
 
 //=============================================================================
 /**
@@ -47,6 +48,8 @@ Class representing a basic 3D point.
 @constructor Construct a new basic point from the cell data stream.
 
 @param scene Reference to the CellScene of which this point is a part.
+
+@param pointType Type of point represented by this instance.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -64,21 +67,21 @@ private [cell] class Point (scene: CellScene, pointType: Point.Value) {
 Read the point's X co-ordinate.
 */
 
-  private val x = scene.readDouble (LibResource ("anim.cell.Point.read",
+  private final val x = scene.readDouble (LibResource ("anim.cell.Point.read",
   pointType.id, 0))
 
 /**
 Read the point's Y co-ordinate.
 */
 
-  private val y = scene.readDouble (LibResource ("anim.cell.Point.read",
+  private final val y = scene.readDouble (LibResource ("anim.cell.Point.read",
   pointType.id, 1))
 
 /**
 Read the point's Z co-ordinate.
 */
 
-  private val z = scene.readDouble (LibResource ("anim.cell.Point.read",
+  private final val z = scene.readDouble (LibResource ("anim.cell.Point.read",
   pointType.id, 2))
 
 //-----------------------------------------------------------------------------
@@ -92,11 +95,23 @@ Convert the point to a list of Float values.
 //-----------------------------------------------------------------------------
 
   private [cell] final def toFloatList = List (x.toFloat, y.toFloat, z.toFloat)
+
+//-----------------------------------------------------------------------------
+/**
+Convert the point to a ''ScalaFX'' translation.
+
+@return Translation along local axes by co-ordinate values.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final def toTranslate = new Translate (x, y, z)
 }
 
 //=============================================================================
 /**
-Point companion object and point classificiation enumeration.
+Point companion object and point classification enumeration.
 
 @since 0.0
 */
@@ -104,13 +119,19 @@ Point companion object and point classificiation enumeration.
 
 private [cell] object Point extends Enumeration {
 
-/*
+/**
 Polyhedron point.
 */
 
   private [cell] val Polyhedron = Value
 
-/*
+/**
+Text list point.
+*/
+
+  private [cell] val TextList = Value
+
+/**
 Vector list point.
 */
 

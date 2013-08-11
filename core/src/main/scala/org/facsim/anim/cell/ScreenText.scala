@@ -40,13 +40,22 @@ package org.facsim.anim.cell
 
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell screen fast
-text'' primitives.
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell screen normal &
+fast text'' primitives.
+
+''Screen'' text is mapped to the screen, or viewing window, whose co-ordinates
+range from [-100, 100] on the X-axis, and from [-100, 100] on the Y-axis.
+Z-axis dimension is ignored.  Unit height is approximately 1.25% of the
+available screen height.
+
+@note In ''ScalaFX''/''JavaFX'', there is no difference between the ''cell''
+text styles of ''normal'' and ''fast'' (the former is a 3D font, the latter is
+a screen font).  Consequently, we represent both with a screen text class.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
 
-@constructor Construct a new screen fast text primitive from the data stream.
+@constructor Construct a new screen text primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -66,5 +75,5 @@ Text]] for further information.
 */
 //=============================================================================
 
-private [cell] final class ScreenFastText (scene: CellScene, parent: Option
-[Set]) extends Text (scene, parent)
+private [cell] final class ScreenText (scene: CellScene, parent: Option
+[Set]) extends Text (scene, parent, Text.screen)

@@ -38,5 +38,144 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] abstract class TextList (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent)
+import org.facsim.LibResource
+import scala.annotation.tailrec
+import scalafx.scene.Group
+
+//=============================================================================
+/**
+Abstract class for all ''cell text list'' primitives (except for ''cell text''
+primitives).
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
+Test Lists]] for further information.
+
+@constructor Construct a new basic text list primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@param textType Type of text represented by this instance.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
+Test Lists]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] abstract class TextList (scene: CellScene, parent: Option [Set],
+textType: Text.Value) extends Cell (scene, parent) {
+
+/*
+Read the text lists.
+
+Each text list is prefixed by a set of translation co-ordinates.
+*/
+
+  private val textList = TextList.read (scene, textType) 
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Cell!.toNode]]
+
+Note: We currently render all text types as World text.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final override def toNode = {
+    val thisTextList = this
+    new Group {
+
+/*
+If this cell has a name, then use it as an ID.
+*/
+
+      id = name.orNull
+
+/*
+Apply the required transformations to the node.
+*/
+
+      transforms = cellTransforms
+
+/*
+Add the text points to the group as nodes.
+*/
+
+      children = textList.map (_.toTextNode (thisTextList))
+    }
+  }
+}
+
+//=============================================================================
+/**
+TextList companion object.
+
+@since 0.0
+*/
+//=============================================================================
+
+private object TextList {
+
+//-----------------------------------------------------------------------------
+/**
+Read text list data from the stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param textType Type of text represented by the associates TextList instance.
+
+@return Text list read.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private def read (scene: CellScene, textType: Text.Value) = {
+
+/**
+Helper function to read the next text point from the data stream.
+
+Note that, due to the need for tail recursion, the list is built in reverse.
+*/
+
+    @tailrec
+    def readPoint (count: Int, points: List [TextListPoint]): List
+    [TextListPoint] = {
+      if (count == 0) points
+      else {
+        val point = new TextListPoint (scene, textType)
+        readPoint (count - 1, point :: points)
+      }
+    }
+
+/*
+Read the number of points from the data stream.  This value must be at least 1.
+*/
+
+    val numPoints = scene.readInt (_ > 0, LibResource
+    ("anim.cell.TextList.read", textType.id))
+
+/*
+Return the list of points read, reversing the list order so that they are put
+back into the original order.
+*/
+
+    readPoint (numPoints, Nil).reverse
+  }
+}

@@ -38,8 +38,6 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import scalafx.scene.paint.Material
-
 //=============================================================================
 /**
 Trait defining the attribute access functions of a cell.
@@ -54,8 +52,7 @@ private [cell] trait CellAttributes {
 /**
 Face color.
 
-@return Face color of the cell, as a ''ScalaFX''
-[[scalafx.scene.paint.Material!]] or `None` if a face color is not defined.
+@return Face color of the cell `None` if a face color is not defined.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
@@ -64,7 +61,7 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  def faceColor: Option [Material]
+  def faceColor: Option [CellColor.Value]
 
 //-----------------------------------------------------------------------------
 /**
@@ -75,8 +72,7 @@ AutoMod®]]'' version 10.0), edge color in ''cell'' files is ignored, with face
 color being used instead.  ''Facsimile'' honors edge color as far as possible,
 using it to render cell's if the cell employs ''wireframe'' rendering.
 
-@return Edge color of the cell, as a ''ScalaFX''
-[[scalafx.scene.paint.Material!]] or `None` if an edge color is not defined.
+@return Edge color of the cell or `None` if an edge color is not defined.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
@@ -85,7 +81,7 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  def edgeColor: Option [Material]
+  def edgeColor: Option [CellColor.Value]
 
 //-----------------------------------------------------------------------------
 /**

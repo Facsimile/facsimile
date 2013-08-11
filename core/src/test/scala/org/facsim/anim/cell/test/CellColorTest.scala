@@ -58,22 +58,22 @@ Test data.
   trait TestData {
     val validCodes = CellColor.minValue to CellColor.maxValue
     val validCellColors = Vector [CellColor.Value] (
-      CellColor.Black,
-      CellColor.Red,
-      CellColor.Green,
-      CellColor.Yellow,
-      CellColor.Blue,
-      CellColor.Magenta,
-      CellColor.Cyan,
-      CellColor.White,
-      CellColor.LightGray,
-      CellColor.DarkGray,
-      CellColor.Brown,
-      CellColor.LightBlue,
-      CellColor.Purple,
-      CellColor.Orange,
-      CellColor.LightGreen,
-      CellColor.LightYellow
+      CellColor.black,
+      CellColor.red,
+      CellColor.green,
+      CellColor.yellow,
+      CellColor.blue,
+      CellColor.magenta,
+      CellColor.cyan,
+      CellColor.white,
+      CellColor.lightGray,
+      CellColor.darkGray,
+      CellColor.brown,
+      CellColor.lightBlue,
+      CellColor.purple,
+      CellColor.orange,
+      CellColor.lightGreen,
+      CellColor.lightYellow
     )
     val validFXColors = Vector [Color] (
       Color.BLACK,
@@ -133,9 +133,8 @@ Test that the default color is reported correctly.
 
     describe (".default") {
       it ("must be Red") {
-        val material = CellColor.default.asInstanceOf [PhongMaterial]
-        assert (material.diffuseColor == Color.RED)
-        assert (material.specularColor == Color.WHITE)
+        val defaultColor = CellColor.default
+        assert (CellColor.default == CellColor.red)
       }
     }
 

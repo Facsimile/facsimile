@@ -38,20 +38,21 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+import scalafx.scene.text.{Text => SFXText}
+
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell screen normal
-text'' primitives.
+Class representing a 3D point with move/draw flag.
 
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
-Text]] for further information.
+@todo Do something with the data read when there's an opportunity to do so.
+Refer to [[org.facsim.anim.cell.VectorList!]] for further information.
 
-@constructor Construct a new screen normal text primitive from the data stream.
+@constructor Construct a new decorated point from the cell data stream.
 
-@param scene Reference to the CellScene of which this cell is a part.
+@param scene Reference to the CellScene of which this point is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
-this cell is the scene's root cell.
+@param textType Type of text represented by this instance.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -59,12 +60,35 @@ is not an ''AutoMod® cell'' file.
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
 
-@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
-Text]] for further information.
-
 @since 0.0
 */
 //=============================================================================
 
-private [cell] final class ScreenNormalText (scene: CellScene, parent: Option
-[Set]) extends Text (scene, parent)
+private [cell] final class TextListPoint (scene: CellScene, textType:
+Text.Value) extends Point (scene, Point.TextList) {
+
+/**
+Read the text from the stream.
+*/
+
+  private val textValue = scene.readText (LibResource
+  ("anim.cell.TextListPoint.read", textType.id))
+
+//-----------------------------------------------------------------------------
+/**
+Convert this text list point to a text node.
+
+@param textList Text list ''cell'' to which this point belongs.
+
+@return A ''ScalaFX'' text node to be added to the ''cell'' scene.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def toTextNode (textList: TextList) = new SFXText {
+    transforms = Seq (toTranslate)
+    stroke = textList.cellPaint
+    text = textValue
+  }
+}

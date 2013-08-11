@@ -48,7 +48,7 @@ import scalafx.scene.paint.PhongMaterial
 Cell color name enumeration.
 
 Encodes ''[[http://www.automod.com/ AutoMod®]]'' color codes and maps them to
-the corresponding ''ScalaFX'' colors.
+the corresponding ''ScalaFX'' colors and materials.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
@@ -57,7 +57,7 @@ Face & Edge Colors]]
 */
 //=============================================================================
 
-private [cell] object CellColor extends Enumeration {
+object CellColor extends Enumeration {
 
 /**
 Vector associating each ''cell'' color with the corresponding ''ScalaFX''
@@ -105,97 +105,105 @@ cell files small.
 Black, having the ''cell'' color code 0.
 */
 
-  private [cell] val Black = Value
+  val black = Value
 
 /**
 Red, having the ''cell'' color code 1.
 */
 
-  private [cell] val Red = Value
+  val red = Value
 
 /**
 Green, having the ''cell'' color code 2.
 */
 
-  private [cell] val Green = Value
+  val green = Value
 
 /**
 Yellow, having the ''cell'' color code 3.
 */
 
-  private [cell] val Yellow = Value
+  val yellow = Value
 
 /**
 Blue, having the ''cell'' color code 4.
 */
 
-  private [cell] val Blue = Value
+  val blue = Value
 
 /**
 Magenta, having the ''cell'' color code 5.
 */
 
-  private [cell] val Magenta = Value
+  val magenta = Value
 
 /**
 Cyan, having the ''cell'' color code 6.
 */
 
-  private [cell] val Cyan = Value
+  val cyan = Value
 
 /**
 White, having the ''cell'' color code 7.
 */
 
-  private [cell] val White = Value
+  val white = Value
 
 /**
 Light gray, having the ''cell'' color code 8.
 */
 
-  private [cell] val LightGray = Value
+  val lightGray = Value
 
 /**
 Dark gray, having the ''cell'' color code 9.
 */
 
-  private [cell] val DarkGray = Value
+  val darkGray = Value
 
 /**
 Brown, having the ''cell'' color code 10.
 */
 
-  private [cell] val Brown = Value
+  val brown = Value
 
 /**
 Purple, having the ''cell'' color code 11.
 */
 
-  private [cell] val Purple = Value
+  val purple = Value
 
 /**
 Orange, having the ''cell'' color code 12.
 */
 
-  private [cell] val Orange = Value
+  val orange = Value
 
 /**
 Light blue, having the ''cell'' color code 13.
 */
 
-  private [cell] val LightBlue = Value
+  val lightBlue = Value
 
 /**
 Light green, having the ''cell'' color code 14.
 */
 
-  private [cell] val LightGreen = Value
+  val lightGreen = Value
 
 /**
 Light yellow, having the ''cell'' color code 15.
 */
 
-  private [cell] val LightYellow = Value
+  val lightYellow = Value
+
+/**
+Default color, which is used if an explicit color is not specified.
+
+@note This is a material instance, not a color.
+*/
+
+  val default = red
 
 /**
 Minimum color code value.
@@ -208,14 +216,6 @@ Maximum color code value.
 */
 
   private [cell] val maxValue = maxId - 1
-
-/**
-Default color, which is used if an explicit color is not specified.
-
-@note This is a material instance, not a color.
-*/
-
-  private [cell] val default = toMaterial (Red)
 
 //-----------------------------------------------------------------------------
 /**
@@ -271,14 +271,13 @@ Verify a color code.
 
 //-----------------------------------------------------------------------------
 /**
-Read color from ''cell'' data stream as a material.
+Read color from ''cell'' data stream.
 
-@param scene Scene from which the material/color is to be read.
+@param scene Scene from which the color is to be read.
 
-@param colorType Code indicating the type of color being read: 0 = face, 1 =
-edge
+@param colorType Type of color value to be read.
 
-@return Material read, if valid.
+@return Cell color read, if valid.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -293,19 +292,20 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def read (scene: CellScene, colorType: Int) = {
+  private [cell] def read (scene: CellScene, colorType: CellColorType.Value) =
+  {
 
 /*
 Read the color code from the data stream.
 */
 
     val code = scene.readInt (verify (_), LibResource
-    ("anim.cell.CellColor.read", colorType, minValue, maxValue))
+    ("anim.cell.CellColor.read", colorType.id, minValue, maxValue))
 
 /*
-Convert to a ScalaFX material and return.
+Convert to cell color and return.
 */
 
-    cellToMaterial (code)
+    CellColor (code)
   }
 }

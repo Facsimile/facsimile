@@ -43,9 +43,9 @@ import java.net.URL
 import org.facsim.LibResource
 import org.facsim.io.FieldConversionException
 import org.facsim.io.FieldVerificationException
+import org.facsim.io.LineDelimiter
 import org.facsim.io.TextReader
 import scala.collection.mutable.Map
-import scalafx.scene.paint.Material
 
 //=============================================================================
 /**
@@ -80,7 +80,7 @@ encountered during parsing of the file.
 //=============================================================================
 
 private [cell] final class CellScene (reader: TextReader, baseUrl: URL,
-faceColor: Material, edgeColor: Material) extends NotNull {
+faceColor: CellColor.Value, edgeColor: CellColor.Value) extends NotNull {
 
 /*
 Sanity checks.
@@ -233,6 +233,50 @@ Return the cell read.
 */
 
     cell
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Helper function to read a text value from the stream.
+
+@note Unlike reading a string, reading text uses a different delimiter, that
+allows spaces and tabs to be included in text: everything is read from the
+stream up to the next line delimiter.  Note, however, that tabs are replaced
+with spaces during the read operation.
+
+@param description Function that is called to provide a description to supply
+to the user in the event that an exception occurs.
+
+@return Value read, if no exceptions arise.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] def readText (description: => String) = {
+    val value = try {
+      reader.readString (LineDelimiter)()
+    }
+    catch {
+      case e: Throwable => CellScene.translateReaderException (e, LibResource
+      ("anim.cell.CellScene.readValue", description))
+    }
+
+/*
+Replace any tabs in the input with spaces before returning.
+*/
+
+    value.map {
+      c =>
+      if (c == '\t') ' '
+      else c
+    }
   }
 
 //-----------------------------------------------------------------------------
@@ -580,15 +624,15 @@ maintain this order when modifying the list.
       130 -> classOf [Arc],                   // Originally, coarse arc
       131 -> classOf [Arc],                   // Originally, fine arc
       140 -> classOf [WorldText],
-      141 -> classOf [ScreenFastText],
-      142 -> classOf [ScreenNormalText],
-      143 -> classOf [UnrotateFastText],
-      144 -> classOf [UnrotateNormalText],
+      141 -> classOf [ScreenText],
+      142 -> classOf [ScreenText],
+      143 -> classOf [UnrotateText],
+      144 -> classOf [UnrotateText],
       150 -> classOf [WorldTextList],
-      151 -> classOf [ScreenFastTextList],
-      152 -> classOf [ScreenNormalTextList],
-      153 -> classOf [UnrotateFastTextList],
-      154 -> classOf [UnrotateNormalTextList],
+      151 -> classOf [ScreenTextList],
+      152 -> classOf [ScreenTextList],
+      153 -> classOf [UnrotateTextList],
+      154 -> classOf [UnrotateTextList],
       308 -> classOf [BlockDefinition],
       310 -> classOf [Trapezoid],
       311 -> classOf [Tetrahedron],

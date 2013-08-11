@@ -43,6 +43,9 @@ package org.facsim.anim.cell
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell world text''
 primitives.
 
+World text is simply text drawn at the specified location on the local X-Y
+plane.
+
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
 
@@ -67,4 +70,4 @@ Text]] for further information.
 //=============================================================================
 
 private [cell] final class WorldText (scene: CellScene, parent: Option [Set])
-extends Text (scene, parent)
+extends Text (scene, parent, Text.world)

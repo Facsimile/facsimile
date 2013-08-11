@@ -40,14 +40,21 @@ package org.facsim.anim.cell
 
 //=============================================================================
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell unrotate fast
-text list'' primitives.
+Class representing ''[[http://www.automod.com/ AutoMod®]] cell unrotate normal
+& fast text list'' primitives.
+
+''Unrotate'' text is always aligned so that it faces the viewer.  Unit height
+is approximately 1.25% of the available screen height&mdash;it is currently
+unsupported.
+
+@note In ''ScalaFX''/''JavaFX'', there is no difference between the ''cell''
+text styles of ''normal'' and ''fast'' (the former is a 3D font, the latter is
+a screen font).  Consequently, we represent both with a screen text class.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
 Text Lists]] for further information.
 
-@constructor Construct a new unrotate fast text list primitive from the data
-stream.
+@constructor Construct a new unrotate text list primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -67,5 +74,5 @@ Text Lists]] for further information.
 */
 //=============================================================================
 
-private [cell] final class UnrotateFastTextList (scene: CellScene, parent:
-Option [Set]) extends TextList (scene, parent)
+private [cell] final class UnrotateTextList (scene: CellScene, parent:
+Option [Set]) extends TextList (scene, parent, Text.unrotate)
