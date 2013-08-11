@@ -38,6 +38,9 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+import scalafx.scene.Group
+
 //=============================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell compiled
@@ -70,5 +73,16 @@ Compiled Pictures]] for further information.
 
 private [cell] final class CompiledPicture (scene: CellScene, parent: Option
 [Set]) extends Cell (scene, parent) {
-  ???
+  throw new NotImplementedError (LibResource ("anim.cell.CompiledPicture"))
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Cell!.toNode]]
+
+CompiledPicture elements currently cannot be rendered.  See Issue 8 for further
+details.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final override def toNode = new Group ()
 }

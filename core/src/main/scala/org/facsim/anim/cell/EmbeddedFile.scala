@@ -38,6 +38,9 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.LibResource
+import scalafx.scene.Group
+
 //=============================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell embedded file''
@@ -69,4 +72,17 @@ Embedded Files]] for further information.
 //=============================================================================
 
 private [cell] final class EmbeddedFile (scene: CellScene, parent: Option
-[Set]) extends File (scene, parent)
+[Set]) extends File (scene, parent) {
+  throw new NotImplementedError (LibResource ("anim.cell.EmbeddedFile"))
+
+//-----------------------------------------------------------------------------
+/*
+@see [[org.facsim.anim.cell.Cell!.toNode]]
+
+EmbeddedFile elements currently cannot be rendered.  See Issue 7 for further
+details.
+*/
+//-----------------------------------------------------------------------------
+
+  private [cell] final override def toNode = new Group ()
+}

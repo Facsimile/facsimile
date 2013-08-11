@@ -38,5 +38,39 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-private [cell] abstract class File (scene: CellScene, parent: Option
-[Set]) extends Cell (scene, parent)
+//=============================================================================
+/**
+Abstract class for primitives that reference or contain files in other 3D
+formats.
+
+@see [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/FileReferences.html
+File References]] & [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledEmbedded.html
+Embedded Files]] for further information.
+
+@constructor Construct a new basic 3D file primitive from the data stream.
+
+@param scene Reference to the CellScene of which this cell is a part.
+
+@param parent Parent set of this cell primitive.  If this value is `None`, then
+this cell is the scene's root cell.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+
+@see [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/FileReferences.html
+File References]] & [[
+http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledEmbedded.html
+Embedded Files]] for further information.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] abstract class File (scene: CellScene, parent: Option [Set])
+extends Cell (scene, parent)
