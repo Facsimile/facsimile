@@ -36,9 +36,10 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.engine
-import scala.math.Ordered
+package org.facsim.engine
+
 import org.facsim.measure.Time
+import scala.math.Ordered
 
 //=============================================================================
 /**
@@ -71,10 +72,8 @@ scheduled.
 */
 //=============================================================================
 
-final class Event private [engine] (private val action: Action, delay: Time,
-private val priority: Int)
-extends Ordered [Event] with NotNull
-{
+final class Event private [engine] (private val action: Action, delay:
+Time.Measure, private val priority: Int) extends Ordered [Event] with NotNull {
 
 /*
 Argument verification.
@@ -90,7 +89,7 @@ necessary, but better safe than sorry.
 Scheduled absolute dispatch time of this event.
 */
 
-  val due: Time = Simulation.currentTime + delay
+  val due = Simulation.currentTime + delay
 
 /**
 Unique event ID.

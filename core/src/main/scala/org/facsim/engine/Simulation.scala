@@ -36,11 +36,11 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.engine
+package org.facsim.engine
+
+import org.facsim.LibResource
+import org.facsim.measure.Time
 import scala.collection.mutable.PriorityQueue
-import org.facsim.facsimile.measure.Time
-import org.facsim.facsimile.measure.TimeUnit
-import org.facsim.util.Resource
 
 //=============================================================================
 /**
@@ -68,14 +68,14 @@ the eventQueue.
 Current event.
 */
 
-  private var currentEvent: Event = schedule (new NullAction, Time.time (0.0,
-  TimeUnit.seconds), 0)
+  private var currentEvent: Event = schedule (new NullAction, Time (0.0,
+  Time.seconds), 0)
 
 /**
 Absolute time at which the simulation's statistics were last reset.
 */
 
-  private var resetTime: Time = Time.time (0.0, TimeUnit.seconds)
+  private var resetTime = Time (0.0, Time.seconds)
 
 //-----------------------------------------------------------------------------
 /**
@@ -87,7 +87,7 @@ Report current simulation time.
 */
 //-----------------------------------------------------------------------------
 
-  final def currentTime = currentEvent.due
+  final def currentTime: Time.Measure = currentEvent.due
 
 //-----------------------------------------------------------------------------
 /**
@@ -109,7 +109,7 @@ priority are dispatched in the order that they are scheduled.
 */
 //-----------------------------------------------------------------------------
 
-  final def schedule (action: Action, dueIn: Time, priority: Int = 0) =
+  final def schedule (action: Action, dueIn: Time.Measure, priority: Int = 0) =
   scheduleEvent (new Event (action, dueIn, priority))
 
 //-----------------------------------------------------------------------------
@@ -197,25 +197,25 @@ is never actually executed.
   private final class NullAction
   extends Action {
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//-----------------------------------------------------------------------------
 /*
 Provide a description for the null actions.
 */
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//-----------------------------------------------------------------------------
 
     override final def description =
-    Resource.format ("engine.Simulation.NullEvent.description")
+    LibResource ("engine.Simulation.NullEvent.description")
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//-----------------------------------------------------------------------------
 /*
 Provide null actions.
 
 Null actions should never actually be executed; if this exception is thrown, an
 error is issued.
 */
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//-----------------------------------------------------------------------------
 
-    override final def execute = sys.error (Resource.format
+    override final def execute = sys.error (LibResource
     ("engine.Simulation.NullEvent.executeError"))
   }
 }

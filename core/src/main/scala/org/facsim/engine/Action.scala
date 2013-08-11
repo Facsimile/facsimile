@@ -36,7 +36,7 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.engine
+package org.facsim.engine
 
 //=============================================================================
 /**
@@ -50,9 +50,7 @@ Event]].
 */
 //=============================================================================
 
-abstract class Action
-extends NotNull
-{
+abstract class Action extends NotNull {
 
 //-----------------------------------------------------------------------------
 /**

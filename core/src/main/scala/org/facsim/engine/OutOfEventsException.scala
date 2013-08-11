@@ -36,7 +36,7 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-package org.facsim.facsimile.engine
+package org.facsim.engine
 
 import org.facsim.LibResource
 
@@ -64,8 +64,7 @@ org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-final class OutOfEventsException private [engine] ()
-extends RuntimeException {
+final class OutOfEventsException private [engine] () extends RuntimeException {
 
 //-----------------------------------------------------------------------------
 /*

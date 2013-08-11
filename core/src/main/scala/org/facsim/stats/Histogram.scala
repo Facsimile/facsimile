@@ -115,7 +115,9 @@ range: [0, [[org.facsim.stats.Histogram!.length]]).
 //-----------------------------------------------------------------------------
 
   @inline
-  final def apply (bin: Int) = synchronized frequency (bin) ensuring (_ >= 0)
+  final def apply (bin: Int) = synchronized {
+    frequency (bin) ensuring (_ >= 0)
+  }
 
 //-----------------------------------------------------------------------------
 /**

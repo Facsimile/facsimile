@@ -38,6 +38,8 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import scala.language.implicitConversions
+
 //=============================================================================
 /**
 Class representing a measurements from a specific, but generalized, physical

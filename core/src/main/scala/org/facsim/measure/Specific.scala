@@ -38,6 +38,8 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import scala.language.implicitConversions
+
 //=============================================================================
 /**
 Abstract base class for all physical quantity types associated with specific

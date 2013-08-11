@@ -81,10 +81,8 @@ applied.
 */
 //-----------------------------------------------------------------------------
 
-  private final def getOrThrow = appBehavior match {
-    case Some (behavior) => behavior
-    case None => throw new BehaviorUndefinedException ()
-  }
+  private final def getOrThrow = appBehavior.getOrElse (throw new
+  BehaviorUndefinedException ())
 
 //-----------------------------------------------------------------------------
 /**

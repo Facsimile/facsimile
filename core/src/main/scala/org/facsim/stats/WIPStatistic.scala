@@ -100,7 +100,7 @@ The time-weighted mean work-in-progress is calculated as:
 sum (size(i) * time(i))/(total time)
 */
 
-  private var sum: Time = 0.0
+  private var sum = Time (0.0, Time.seconds)
 
 /**
 Absolute simulation time at which we started collecting WIP data.
@@ -158,7 +158,7 @@ Check whether we have a new minimum or maximum value.
   final def maximum = max
   final def mean: Double = {
     val now = Simulation.currentTime
-    if (now > startTime) (sum + cur * (now - updated)) / (now - startTime)
+    if (now > startTime) (sum + (now - updated) * cur) / (now - startTime)
     else 0.0
   }
   final def minimum = min
