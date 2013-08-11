@@ -93,25 +93,37 @@ Note: We currently render all text types as World text.
 
   private [cell] final override def toNode = {
     val thisTextList = this
-    new Group {
+
+/*
+We render World text lists correctly, but, due to current limitations in the
+capabilities of JavaFX/ScalaFX, we can only render Unrotate text lists as World
+Text Lists (see Issue 5).  Furthermore, Screen text lists - while they are
+potentially supportable at present - are currently not rendered because a
+decision needs to be made about how they should be implemented (see Issue 4).
+*/
+
+    textType match {
+      case Text.screen => new Group {}
+      case _ => new Group {
 
 /*
 If this cell has a name, then use it as an ID.
 */
 
-      id = name.orNull
+        id = name.orNull
 
 /*
 Apply the required transformations to the node.
 */
 
-      transforms = cellTransforms
+        transforms = cellTransforms
 
 /*
 Add the text points to the group as nodes.
 */
 
-      children = textList.map (_.toTextNode (thisTextList))
+        children = textList.map (_.toTextNode (thisTextList))
+      }
     }
   }
 }

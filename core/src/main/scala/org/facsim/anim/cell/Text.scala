@@ -39,6 +39,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import scalafx.scene.Group
 import scalafx.scene.text.{Text => SFXText}
 
 //=============================================================================
@@ -91,31 +92,43 @@ Note: We currently render all text types as World text.
 
   private [cell] final override def toNode = {
     val thisTextList = this
-    new SFXText {
+
+/*
+We render World text correctly, but, due to current limitations in the
+capabilities of JavaFX/ScalaFX, we can only render Unrotate text as World Text
+(see Issue 5).  Furthermore, Screen text - while it is potentially supportable
+at present - is currently not rendered because a decision needs to be made
+about how it should be implemented (see Issue 4).
+*/
+
+    textType match {
+      case Text.screen => new Group {}
+      case _ => new SFXText {
 
 /*
 If this cell has a name, then use it as an ID.
 */
 
-      id = name.orNull
+        id = name.orNull
 
 /*
 Apply the required transformations to the node.
 */
 
-      transforms = cellTransforms
+        transforms = cellTransforms
 
 /*
 Specify the color for this text.
 */
 
-      stroke = cellPaint
+        stroke = cellPaint
 
 /*
 The text to be displayed.
 */
 
-      text = textValue
+        text = textValue
+      }
     }
   }
 }
