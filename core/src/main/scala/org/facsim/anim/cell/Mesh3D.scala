@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import scalafx.collections.ObservableFloatArray
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.Node
 import scalafx.scene.shape.Mesh
 import scalafx.scene.shape.MeshView
@@ -149,4 +151,59 @@ Have the concrete cell create the mesh to represent the image.
 
     mesh = cellMesh
   }
+}
+
+//=============================================================================
+/**
+Mesh3D companion object.
+
+@since 0.0
+*/
+//=============================================================================
+
+private [cell] object Mesh3D {
+
+/*
+Allow implicit conversions.
+*/
+
+  import scala.language.implicitConversions
+
+//-----------------------------------------------------------------------------
+/**
+Implicit conversion from an Array[Float] to a
+javafx.collection.ObservableFloatArray.
+
+@todo This is a little scrappy and ineffecient.  We can do better, but ScalaFX
+currently doesn't support ObservableFloatArrays.
+
+@param array Array to be converted.
+
+@return ObservableFloatArray with contents of initial array.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  implicit def arrayToFloatArray (array: Array [Float]) =
+  ObservableFloatArray (array)
+
+//-----------------------------------------------------------------------------
+/**
+Implicit conversion from an Array[Int] to a
+javafx.collection.ObservableIntegerArray.
+
+@todo This is a little scrappy and ineffecient.  We can do better, but ScalaFX
+currently doesn't support ObservableIntegerArrays.
+
+@param array Array to be converted.
+
+@return ObservableIntegerArray with contents of initial array.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  implicit def arrayToIntegerArray (array: Array [Int]) =
+  ObservableIntegerArray (array)
 }

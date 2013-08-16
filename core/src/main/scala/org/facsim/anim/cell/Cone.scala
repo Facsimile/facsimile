@@ -39,6 +39,8 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import scalafx.collections.ObservableFloatArray
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -129,7 +131,7 @@ the vertex for the top of the cone.
 */
 
       MeshUtils.circleCoordinates (radius, 0.0, Cone.divisions, 0.0, 0.0) ++
-      Array [Float] (
+      ObservableFloatArray (
         xOffset.toFloat,
         yOffset.toFloat,
         height.toFloat
@@ -161,8 +163,8 @@ faces making up the sides all belong to the side smoothing group (1).  Note
 that there are divisions faces in each group.
 */
 
-    override val faceSmoothingGroups = Array.tabulate (Cone.divisions * 2)(_ %
-    Cone.divisions)
+    override val faceSmoothingGroups =
+    ObservableIntegerArray.tabulate (Cone.divisions * 2)(_ % Cone.divisions)
 
 /*
 For now, don't define texture mapping coordinates.  We will typically not apply

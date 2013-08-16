@@ -40,6 +40,8 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scala.math.sqrt
+import scalafx.collections.ObservableFloatArray
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -175,7 +177,7 @@ base from above).
 Note that these coordinates are stored as floats.  Why?  No idea...
 */
 
-      Array [Float] (
+      ObservableFloatArray (
         x0, y0, z0_1_2,           // 0, base upper
         x1, y1_2, z0_1_2,         // 1, base lower-left
         x2, y1_2, z0_1_2,         // 2, base lower-right
@@ -190,7 +192,7 @@ Now create the list of faces (triangles), constructed from indices of the
 associated points defined above.
 */
 
-    override val faces = Array [Int] (
+    override val faces = ObservableIntegerArray (
       0, 1, 2,          // Base, face 0
       0, 3, 4,          // Left-rear, first half, face 1.
       0, 4, 1,          // Left-rear, second half, face 2.
@@ -206,7 +208,7 @@ Now create the smoothing face groups (face index map to smoothing group),
 constructed from indices of the associated faces defined above.
 */
 
-    override val faceSmoothingGroups = Array [Int] (
+    override val faceSmoothingGroups = ObservableIntegerArray (
       0,                // Base is made up of face 0, group 0.
       1, 1,             // Left-rear is made up of faces 1 & 2, group 1.
       2, 2,             // Front is made up of faces 3 & 4, group 2.

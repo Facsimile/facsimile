@@ -61,7 +61,7 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  def faceColor: Option [CellColor.Value]
+  private [cell] def faceColor: Option [CellColor.Value]
 
 //-----------------------------------------------------------------------------
 /**
@@ -81,7 +81,7 @@ Face & Edge Colors]]
 */
 //-----------------------------------------------------------------------------
 
-  def edgeColor: Option [CellColor.Value]
+  private [cell] def edgeColor: Option [CellColor.Value]
 
 //-----------------------------------------------------------------------------
 /**
@@ -96,7 +96,7 @@ Line Styles]]
 */
 //-----------------------------------------------------------------------------
 
-  def lineStyle: LineStyle.Value
+  private [cell] def lineStyle: LineStyle.Value
 
 //-----------------------------------------------------------------------------
 /**
@@ -111,7 +111,7 @@ Line Width]]
 */
 //-----------------------------------------------------------------------------
 
-  def lineWidth: LineWidth
+  private [cell] def lineWidth: LineWidth
 
 //-----------------------------------------------------------------------------
 /**
@@ -127,7 +127,7 @@ Display Styles]]
  */
 //-----------------------------------------------------------------------------
 
-  def displayStyle: DisplayStyle.Value
+  private [cell] def displayStyle: DisplayStyle.Value
 
 //-----------------------------------------------------------------------------
 /**
@@ -142,5 +142,5 @@ Names]]
 */
 //-----------------------------------------------------------------------------
 
-  def name: Option [String]
+  private [cell] def name: Option [String]
 }

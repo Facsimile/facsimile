@@ -43,6 +43,7 @@ import org.facsim.measure.Angle
 import scala.math.abs
 import scala.math.max
 import scala.math.min
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -184,7 +185,8 @@ constructed from indices of the associated faces defined above.
 All faces in the circle/sector belong to the same group, 0.
 */
 
-    override val faceSmoothingGroups = Array.tabulate (Arc.divisions)(_ => 0)
+    override val faceSmoothingGroups =
+    ObservableIntegerArray.tabulate (Arc.divisions)(_ => 0)
 
 /*
 For now, don't define texture mapping coordinates.  We will typically not apply

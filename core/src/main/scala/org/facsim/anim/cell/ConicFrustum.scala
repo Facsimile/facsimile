@@ -39,6 +39,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -176,7 +177,7 @@ middle group - making 4 * divisions faces altogether.
 */
 
     override val faceSmoothingGroups =
-    Array.tabulate (ConicFrustum.divisions * 4) {
+    ObservableIntegerArray.tabulate (ConicFrustum.divisions * 4) {
       face: Int =>
       if (face < ConicFrustum.divisions) 0
       else if (face < 3 * ConicFrustum.divisions) 1

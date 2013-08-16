@@ -39,6 +39,8 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.measure.Angle
+import scalafx.collections.ObservableFloatArray
+import scalafx.collections.ObservableIntegerArray
 
 //=============================================================================
 /**
@@ -196,7 +198,7 @@ We add one to the number of sectors since we need to define the center of the
 circle/sector.
 */
 
-    val pointArray = new Array [Float] ((sectors + 1) * 3)
+    val pointArray = new ObservableFloatArray ((sectors + 1) * 3)
 
 /*
 Set the first coordinate to be the center of the circle/sector.
@@ -340,7 +342,7 @@ Sanity checks.
 Create the face array.
 */
 
-    val faceArray = new Array [Int] (divisions * 3)
+    val faceArray = new ObservableIntegerArray (divisions * 3)
 
 /*
 Define the points making up the first n - 1 faces.
@@ -407,7 +409,7 @@ face.  There are three points per face and a total of 2 * `divisions` faces.
 Create the face array.
 */
 
-    val faceArray = new Array [Int] (divisions * 6)
+    val faceArray = new ObservableIntegerArray (divisions * 6)
 
 /*
 Index of first circumference point of the base.

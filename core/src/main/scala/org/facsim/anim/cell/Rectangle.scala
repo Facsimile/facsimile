@@ -39,6 +39,8 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import scalafx.collections.ObservableFloatArray
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -147,7 +149,7 @@ rectangle from above).
 Create and return the point array.  Numbered counter-clockwise from top left.
 */
 
-      Array [Float] (
+      ObservableFloatArray (
         x0_1, y0_3, z,          // Point 0, top left.
         x0_1, y1_2, z,          // Point 1, bottom left.
         x2_3, y1_2, z,          // Point 2, bottom right.
@@ -160,7 +162,7 @@ Now create the list of faces (triangles), constructed from indices of the
 associated points defined above.
 */
 
-    override val faces = Array [Int] (
+    override val faces = ObservableIntegerArray (
       0, 1, 2,                  // Face 0
       0, 2, 3                   // Face 1
     )
@@ -172,7 +174,7 @@ constructed from indices of the associated faces defined above.
 Both faces in the rectangle belong to the same group, 0.
 */
 
-    override val faceSmoothingGroups = Array [Int] (0, 0)
+    override val faceSmoothingGroups = ObservableIntegerArray (0, 0)
 
 /*
 For now, don't define texture mapping coordinates.  We will typically not apply

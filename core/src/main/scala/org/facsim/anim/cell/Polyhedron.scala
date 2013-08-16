@@ -40,6 +40,8 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scala.annotation.tailrec
+import scalafx.collections.ObservableFloatArray
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -105,7 +107,8 @@ Each point will be translated into three float values for x, y and z, and all
 such points combined into a single array of all points.
 */
 
-    override val points = pointList.map (_.toFloatList).flatten.toArray
+    override val points =
+    ObservableFloatArray (pointList.map (_.toFloatList).flatten.toArray)
 
 /*
 Now create the list of faces (as triangles), constructed from indices of the
@@ -113,7 +116,8 @@ associated points defined above.
 */
 
     override val faces =
-    faceList.map (_.toTriangularFaces.flatten).flatten.toArray
+    ObservableIntegerArray (faceList.map (_.toTriangularFaces.flatten).flatten.
+    toArray)
 
 /*
 For now, its not possible to define smoothing groups for the polyhedron.

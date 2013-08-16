@@ -41,6 +41,8 @@ package org.facsim.anim.cell
 import org.facsim.LibResource
 import org.facsim.measure.Angle
 import scala.annotation.tailrec
+import scalafx.collections.ObservableFloatArray
+import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
@@ -117,7 +119,8 @@ deal.
 */
 
       @tailrec
-      def addBandPoints (count: Int, coords: Array [Float]): Array [Float] = {
+      def addBandPoints (count: Int, coords: ObservableFloatArray):
+      ObservableFloatArray = {
 
 /*
 If we have no more bands, then return what we have.
@@ -151,7 +154,7 @@ Note: The pole will be at (0, 0) on the X-Y plane, and will be radius units
 above that point on the Z-axis.
 */
 
-      addBandPoints (Hemisphere.bands, Array.emptyFloatArray) ++
+      addBandPoints (Hemisphere.bands, ObservableFloatArray.empty) ++
       Array (0.0f, 0.0f, radius.toFloat)
     }
 
@@ -171,7 +174,8 @@ is a cone, not a wall.
 */
 
       @tailrec
-      def addBandFaces (count: Int, coords: Array [Int]): Array [Int] = {
+      def addBandFaces (count: Int, coords: ObservableIntegerArray):
+      ObservableIntegerArray = {
 
 /*
 Calculate the index of the first vertex point on the base of the current band.
@@ -215,7 +219,7 @@ the faces making up the bands all belong to the wall smoothing group (1).
 */
 
     override val faceSmoothingGroups =
-    Array.tabulate (Hemisphere.totalFaces) {
+    ObservableIntegerArray.tabulate (Hemisphere.totalFaces) {
       face: Int =>
       if (face < Hemisphere.divisions) 0
       else 12
