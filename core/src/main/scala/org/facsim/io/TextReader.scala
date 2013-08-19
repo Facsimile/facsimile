@@ -605,7 +605,7 @@ be verified by '''verify'''.
 
   final def readToEOL (verify: TextReader.Verifier [String] =
   TextReader.defaultStringVerifier): String =
-  readString (LineDelimiter)(verify)
+  readStringWithDelim (LineDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -632,7 +632,7 @@ be verified by '''verify'''.
 
   final def readString (verify: TextReader.Verifier [String] =
   TextReader.defaultStringVerifier): String =
-  readString (defaultDelimiter)(verify)
+  readStringWithDelim (defaultDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -660,9 +660,9 @@ be verified by '''verify'''.
 */
 //-----------------------------------------------------------------------------
 
-  final def readString (delimiter: Delimiter)(verify: TextReader.Verifier
-  [String] = TextReader.defaultStringVerifier): String = readField (delimiter,
-  verify)(field => field)
+  final def readStringWithDelim (delimiter: Delimiter)(verify:
+  TextReader.Verifier [String] = TextReader.defaultStringVerifier): String =
+  readField (delimiter, verify)(field => field)
 
 //-----------------------------------------------------------------------------
 /**
@@ -690,7 +690,8 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readByte (verify: TextReader.Verifier [Byte] =
-  TextReader.defaultByteVerifier): Byte = readByte (defaultDelimiter)(verify)
+  TextReader.defaultByteVerifier): Byte =
+  readByteWithDelim (defaultDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -721,9 +722,9 @@ be verified by '''verify'''.
 */
 //-----------------------------------------------------------------------------
 
-  final def readByte (delimiter: Delimiter)(verify: TextReader.Verifier [Byte]
-  = TextReader.defaultByteVerifier): Byte = readField [Byte] (delimiter,
-  verify)(field => field.toByte)
+  final def readByteWithDelim (delimiter: Delimiter)(verify:
+  TextReader.Verifier [Byte] = TextReader.defaultByteVerifier): Byte =
+  readField [Byte] (delimiter, verify)(field => field.toByte)
 
 //-----------------------------------------------------------------------------
 /**
@@ -753,7 +754,7 @@ be verified by '''verify'''.
 
   final def readShort (verify: TextReader.Verifier [Short] =
   TextReader.defaultShortVerifier): Short =
-  readShort (defaultDelimiter)(verify)
+  readShortWithDelim (defaultDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -784,9 +785,9 @@ be verified by '''verify'''.
 */
 //-----------------------------------------------------------------------------
 
-  final def readShort (delimiter: Delimiter)(verify: TextReader.Verifier
-  [Short] = TextReader.defaultShortVerifier): Short = readField
-  [Short] (delimiter, verify)(field => field.toShort)
+  final def readShortWithDelim (delimiter: Delimiter)(verify:
+  TextReader.Verifier [Short] = TextReader.defaultShortVerifier): Short =
+  readField [Short] (delimiter, verify)(field => field.toShort)
 
 //-----------------------------------------------------------------------------
 /**
@@ -815,7 +816,8 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readInt (verify: TextReader.Verifier [Int] =
-  TextReader.defaultIntVerifier): Int = readInt (defaultDelimiter)(verify)
+  TextReader.defaultIntVerifier): Int =
+  readIntWithDelim (defaultDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -846,9 +848,9 @@ be verified by '''verify'''.
 */
 //-----------------------------------------------------------------------------
 
-  final def readInt (delimiter: Delimiter)(verify: TextReader.Verifier [Int] =
-  TextReader.defaultIntVerifier): Int = readField [Int] (delimiter,
-  verify)(field => field.toInt)
+  final def readIntWithDelim (delimiter: Delimiter)(verify: TextReader.Verifier
+  [Int] = TextReader.defaultIntVerifier): Int =
+  readField [Int] (delimiter, verify)(field => field.toInt)
 
 //-----------------------------------------------------------------------------
 /**
@@ -877,7 +879,8 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readLong (verify: TextReader.Verifier [Long] =
-  TextReader.defaultLongVerifier): Long = readLong (defaultDelimiter)(verify)
+  TextReader.defaultLongVerifier): Long =
+  readLongWithDelim (defaultDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -908,9 +911,9 @@ be verified by '''verify'''.
 */
 //-----------------------------------------------------------------------------
 
-  final def readLong (delimiter: Delimiter)(verify: TextReader.Verifier [Long]
-  = TextReader.defaultLongVerifier): Long = readField [Long] (delimiter,
-  verify)(field => field.toLong)
+  final def readLongWithDelim (delimiter: Delimiter)(verify:
+  TextReader.Verifier [Long] = TextReader.defaultLongVerifier): Long =
+  readField [Long] (delimiter, verify)(field => field.toLong)
 
 //-----------------------------------------------------------------------------
 /**
@@ -939,7 +942,7 @@ be verified by '''verify'''.
 
   final def readFloat (verify: TextReader.Verifier [Float] =
   TextReader.defaultFloatVerifier): Float =
-  readFloat (defaultDelimiter)(verify)
+  readFloatWithDelim (defaultDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -970,15 +973,15 @@ be verified by '''verify'''.
 */
 //-----------------------------------------------------------------------------
 
-  final def readFloat (delimiter: Delimiter)(verify: TextReader.Verifier
-  [Float] = TextReader.defaultFloatVerifier): Float = readField
-  [Float] (delimiter, verify){field =>
+  final def readFloatWithDelim (delimiter: Delimiter)(verify:
+  TextReader.Verifier [Float] = TextReader.defaultFloatVerifier): Float =
+  readField [Float] (delimiter, verify){field =>
 
 /*
 The default toFloat method (actually java.lang.Float.parseFloat (String))
 allows leading and trailing whitespace, when it should not.  To overcome this,
-if the trimmed version of the string differs from the string, we'll throw a
-NumberFormatException.
+if the trimmed version of the string differs from the string supplied, we'll
+throw a NumberFormatException.
 */
 
     if (field != field.trim) throw new
@@ -1015,7 +1018,7 @@ be verified by '''verify'''.
 
   final def readDouble (verify: TextReader.Verifier [Double] =
   TextReader.defaultDoubleVerifier): Double =
-  readDouble (defaultDelimiter)(verify)
+  readDoubleWithDelim (defaultDelimiter)(verify)
 
 //-----------------------------------------------------------------------------
 /**
@@ -1046,15 +1049,15 @@ be verified by '''verify'''.
 */
 //-----------------------------------------------------------------------------
 
-  final def readDouble (delimiter: Delimiter)(verify: TextReader.Verifier
-  [Double] = TextReader.defaultDoubleVerifier): Double = readField
-  [Double] (delimiter, verify){field =>
+  final def readDoubleWithDelim (delimiter: Delimiter)(verify:
+  TextReader.Verifier [Double] = TextReader.defaultDoubleVerifier): Double =
+  readField [Double] (delimiter, verify){field =>
 
 /*
-The default toFloat method (actually java.lang.Float.parseFloat (String))
+The default toDouble method (actually java.lang.Double.parseDouble (String))
 allows leading and trailing whitespace, when it should not.  To overcome this,
-if the trimmed version of the string differs from the string, we'll throw a
-NumberFormatException.
+if the trimmed version of the string differs from the string supplied, we'll
+throw a NumberFormatException.
 */
 
     if (field != field.trim) throw new

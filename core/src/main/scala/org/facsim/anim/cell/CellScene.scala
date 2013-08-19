@@ -43,7 +43,6 @@ import java.net.URL
 import org.facsim.LibResource
 import org.facsim.io.FieldConversionException
 import org.facsim.io.FieldVerificationException
-import org.facsim.io.LineDelimiter
 import org.facsim.io.TextReader
 import scala.collection.mutable.Map
 
@@ -271,7 +270,7 @@ encountered during parsing of the file.
 
   private [cell] def readText (description: => String) = {
     val value = try {
-      reader.readString (LineDelimiter)()
+      reader.readToEOL ()
     }
     catch {
       case e: Throwable => CellScene.translateReaderException (e, LibResource
