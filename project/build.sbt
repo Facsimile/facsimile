@@ -46,6 +46,7 @@ scalacOptions ++= Seq (
   "-explaintypes",
   "-feature",
   "-g:vars",
+  "-optimize",
   "-target:jvm-1.7",
   "-unchecked",
   "-Xcheckinit",
