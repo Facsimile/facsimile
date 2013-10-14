@@ -241,7 +241,7 @@ Required scala standard libraries.
 ScalaTest unit-testing framework for Scala.
 */
 
-    "org.scalatest" % ("scalatest_" + scalaVersionShort) % "2.0.M5b" % "test"
+    "org.scalatest" %% "scalatest" % "2.0.RC2" % "test"
   )
 
 /**
