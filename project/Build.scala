@@ -115,7 +115,7 @@ Note: In the settings below, the assignment of the baseVersion value must
 follow the instruction to versionWithGit.
 */
 
-  val projectBaseVersion = "0.1"
+  val projectBaseVersion = "0.0"
   override val settings: Seq [Setting [_]] =
   super.settings ++ SbtGit.useJGit ++ SbtGit.versionWithGit ++
   (SbtGit.git.baseVersion := projectBaseVersion)
