@@ -43,7 +43,6 @@ scalacOptions ++= Seq (
   "-deprecation",
   "-encoding",
   "UTF-8",
-  "-explaintypes",
   "-feature",
   "-g:vars",
   "-optimize",

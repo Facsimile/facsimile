@@ -270,7 +270,6 @@ Scala compiler options.
     "-deprecation",
     "-encoding",
     "UTF-8",
-    "-explaintypes",
     "-feature",
     "-g:vars",
     "-optimize",
