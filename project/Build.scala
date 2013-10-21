@@ -45,6 +45,7 @@ same version of Scala that is used to build Facsimile (specified here).
 
 import sbt._
 import Keys._
+import com.typesafe.sbt.SbtGit
 import com.typesafe.sbt.pgp.PgpKeys
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 
@@ -100,18 +101,24 @@ employed as such during deployment to the Sonatype OSS Nexus repository.
 /**
 Project version number.
 
-A suffix of "-SNAPSHOT" indicates that this is a snapshot&mdash;an unstable,
-un-versioned build that preceeds a formal release, the version of which is the
-prefix. For example, a version number of 1.0-SNAPSHOT is a temporary build
-leading up to the release of version 1.0.
+We employ the sbt-git plugin to uniquely version each commit, so that we can
+support '''`git bisect`'''. To guarantee support, even if git isn't installed
+(which raises interesting questions about how the source was obtained), we use
+JGit to handle git commands.
 
-@note This is equivalent to the `project/version` Maven POM coordinate, has
-the same numbering system, and is employed as such during deployment to the
-Sonatype OSS Nexus repository. Refer to Maven version numbering documentation
-for further information.
+For further information, refer to Josh Suereth's presentation on "Effective
+SBT" at Scala Days 2013:
+
+[[http://www.parleys.com/play/51c3790ae4b0d38b54f46259 Effective SBT]]
+
+Note: In the settings below, the assignment of the baseVersion value must
+follow the instruction to versionWithGit.
 */
 
-  val projectVersion = "0.0-SNAPSHOT"
+  val projectBaseVersion = "0.1"
+  override val settings: Seq [Setting [_]] =
+  super.settings ++ SbtGit.useJGit ++ SbtGit.versionWithGit ++
+  (SbtGit.git.baseVersion := projectBaseVersion)
 
 /**
 Project name.
@@ -208,21 +215,6 @@ as such during development to the Sonatype OSS Nexus repository.
   )
 
 /**
-Sonatype OSS repository to publish to.
-
-We publish to the snapshots repository, if this is a snapshot, or to the
-releases staging repository if this is an official release.
-*/
-
-  val sonatypeRepository = {
-    val nexus = "https://oss.sonatype.org/"
-    if (projectVersion.endsWith ("-SNAPSHOT")) {
-      Some ("snapshots" at nexus + "content/repositories/snapshots")
-    }
-    else Some ("releases"  at nexus + "service/local/staging/deploy/maven2")
-  }
-
-/**
 Base dependencies.
 
 These libraries are common to all sub-projects.  In particular, note that the
@@ -235,7 +227,7 @@ Macro sub-project has very few dependencies.
 Required scala standard libraries.
 */
 
-    "org.scala-lang" % "scala-reflect" % (scalaVersionLong),
+    "org.scala-lang" % "scala-reflect" % scalaVersionLong,
 
 /*
 ScalaTest unit-testing framework for Scala.
@@ -254,7 +246,7 @@ Common library dependencies.
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
-    "org.scalafx" % ("scalafx_" + scalaVersionShort) % "8.0.0-M1-SNAPSHOT",
+    "org.scalafx" %% "scalafx" % "8.0.0-M1-SNAPSHOT",
 
 /*
 Joda Time library for processing dates & times accurately.
@@ -323,11 +315,14 @@ NOTES:
     software must be signed using the key for "software@facsim.org" - with
     public key "797D614C". (If your version of Facsimile is signed by a
     different key, then you do not have the official version.)
+
+We publish to the snapshots repository, if this is a snapshot, or to the
+releases staging repository if this is an official release (or a committed
+version - which seems wrong, right now).
 */
 
     normalizedName := projectArtifactId,
     organization := projectGroupId,
-    version := projectVersion,
     name := projectName,
     description := projectDescription,
     homepage := projectHomepage,
@@ -337,7 +332,16 @@ NOTES:
     licenses := projectLicenses,
     scmInfo := projectScmInfo,
     publishMavenStyle := true,
-    publishTo := sonatypeRepository,
+    publishTo <<= (version) {
+      version: String =>
+      val nexus = "https://oss.sonatype.org/"
+      val (name, u) =
+      if (version.contains ("-SNAPSHOT")) {
+        ("snapshots", nexus + "content/repositories/snapshots")
+      }
+      else ("releases", nexus + "service/local/staging/deploy/maven2")
+      Some(Resolver.url (name, url (u))(Resolver.ivyStylePatterns))
+    },
     publishArtifact in Test := false,
     pomIncludeRepository := {_ => false},
     pomExtra := (
@@ -450,7 +454,6 @@ Basic package information.
 
     normalizedName := projectArtifactId + "-core",
     organization := projectGroupId,
-    version := projectVersion,
     name := projectName + " Core",
 
 /*
@@ -517,7 +520,6 @@ Basic package information.
 
     normalizedName := projectArtifactId + "-macro",
     organization := projectGroupId,
-    version := projectVersion,
     name := projectName + " Macros",
 
 /*

@@ -40,7 +40,24 @@
 // NOTE: In order to parse the sources correctly, SBT needs to be invoked with
 // the JVM option "-Dfile.encoding=UTF-8" (typically, this will be placed in
 // ./.sbtopts).
+//
 //addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.3.2")
+
+// SBT sbt-git plugin.
+//
+// This plugin provides support for using git commit SHA codes for versioning
+// builds, which is essential for ensuring that the "git bisect" command
+// functions correctly.
+//
+// This plugin implements the behavior outlined by Josh Suereth (one of SBT's
+// authors) in his Scala Days 2013 presentation, "Effective SBT". Refer to the
+// following link for his presentation:
+//
+//   http://www.parleys.com/play/51c3790ae4b0d38b54f46259
+//
+addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.3")
+
+//resolvers += "jgit-repo" at "http://download.eclipse.org/jgit/maven"
 
 // Support SBT within Scala Eclipse IDE.
 addSbtPlugin ("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.2.0")
