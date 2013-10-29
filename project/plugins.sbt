@@ -62,5 +62,8 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.3")
 // Support SBT within Scala Eclipse IDE.
 addSbtPlugin ("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.2.0")
 
+// GPG plugin for signing distributed artifacts.
+addSbtPlugin ("com.typesafe.sbt" % "sbt-pgp" % "0.8")
+
 resolvers += "sonatype-releases" at
 "https://oss.sonatype.org/content/repositories/releases/"
