@@ -63,9 +63,6 @@ Assert that a NullPointerException's message resulting from a
 
   final def assertRequireNonNullMsg (e: NullPointerException, argName: String):
   Unit = {
-    println ("DEBUG: e.getMessage () is: " + e.getMessage ())
-    println ("DEBUG: LibResource (\"requireNonNull\", \"" + argName +
-    "\") is: " + LibResource.apply ("requireNonNull", argName))
     assert (e.getMessage () === LibResource ("requireNonNull", argName))
   }
 
