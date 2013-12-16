@@ -439,7 +439,7 @@ Much of the code for retrieving string fields is shared with the other read
 functions, so we can achieve most of our testing goals here.
 */
 
-    describe (".readString (Verifier [String])") {
+    describe (".readString (Verifier [String])(Delimiter)") {
 
 /*
 The function must fail correctly when reading an invalid field.  That is, the
@@ -551,14 +551,6 @@ If we pass a line delimiter, we must get individual lines of data.
           readLines (oldMacOsReader)
         }
       }
-    }
-
-/*
-Verify that the readString function operates correctly with a specific
-delimiter.
-*/
-
-    describe (".readStringWithDelim (Delimiter)(Verifier [String])") {
 
 /*
 If we pass the function an EOF delimiter, then the whole file must be returned
@@ -568,8 +560,7 @@ as a field, regardless of format.
       it ("must be able to override the default delimiter") {
         new LineDelimitedReaders {
           def readFile (reader: TextReader): Unit = {
-            assert (reader.readStringWithDelim (EOFDelimiter)() ===
-            rawFileData)
+            assert (reader.readString ()(EOFDelimiter) === rawFileData)
             assert (reader.atEOF === true)
           }
           readFile (pcReader)
@@ -583,7 +574,7 @@ as a field, regardless of format.
 Verify that the readByte function operates correctly.
 */
 
-    describe (".readByte (Verifier [Byte])") {
+    describe (".readByte (Verifier [Byte])(Delimiter)") {
 
 /*
 The function must fail correctly when reading an invalid field.  That is, the
@@ -685,7 +676,6 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
           readBytes (oldMacOsReader)
         }
       }
-    }
 
 /*
 Now process the same data as above by overriding the default delimiter with the
@@ -694,34 +684,30 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-    describe ("readByteWithDelim (Delimiter)(Verifier [Byte])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
           def readBytes (reader: TextReader) {
             intercept [FieldConversionException] {
-              reader.readByteWithDelim (WhitespaceDelimiter)() // "a"
+              reader.readByte ()(WhitespaceDelimiter) // "a"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() === "a")
-            assert (reader.readByteWithDelim (WhitespaceDelimiter)() === 1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "a")
+            assert (reader.readByte ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readByteWithDelim (WhitespaceDelimiter)() // "1.1e1"
+              reader.readByte ()(WhitespaceDelimiter) // "1.1e1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "1.1e1")
-            assert (reader.readByteWithDelim (WhitespaceDelimiter)() === -1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readByte ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readByteWithDelim (WhitespaceDelimiter)() // "-1.1e-1"
+              reader.readByte ()(WhitespaceDelimiter) // "-1.1e-1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "-1.1e-1")
-            assert (reader.readByteWithDelim (WhitespaceDelimiter)() === 2)
-            assert (reader.readByteWithDelim (WhitespaceDelimiter)() === 3)
-            assert (reader.readByteWithDelim (WhitespaceDelimiter)() === 4)
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readByte ()(WhitespaceDelimiter) === 2)
+            assert (reader.readByte ()(WhitespaceDelimiter) === 3)
+            assert (reader.readByte ()(WhitespaceDelimiter) === 4)
             intercept [FieldConversionException] {
-              reader.readByteWithDelim (WhitespaceDelimiter)() // "56fred"
+              reader.readByte ()(WhitespaceDelimiter) // "56fred"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "56fred")
+            assert (reader.readString ()(WhitespaceDelimiter) === "56fred")
           }
           readBytes (pcReader)
           readBytes (unixReader)
@@ -734,7 +720,7 @@ empty fields.
 Verify that the readShort function operates correctly.
 */
 
-    describe (".readShort (Verifier [Short])") {
+    describe (".readShort (Verifier [Short])(Delimiter)") {
 
 /*
 The function must fail correctly when reading an invalid field.  That is, the
@@ -836,7 +822,6 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
           readShorts (oldMacOsReader)
         }
       }
-    }
 
 /*
 Now process the same data as above by overriding the default delimiter with the
@@ -845,34 +830,30 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-    describe ("readShortWithDelim (Delimiter)(Verifier [Short])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
           def readShorts (reader: TextReader) {
             intercept [FieldConversionException] {
-              reader.readShortWithDelim (WhitespaceDelimiter)() // "a"
+              reader.readShort ()(WhitespaceDelimiter) // "a"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() === "a")
-            assert (reader.readShortWithDelim (WhitespaceDelimiter)() === 1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "a")
+            assert (reader.readShort ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readShortWithDelim (WhitespaceDelimiter)() // "1.1e1"
+              reader.readShort ()(WhitespaceDelimiter) // "1.1e1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "1.1e1")
-            assert (reader.readShortWithDelim (WhitespaceDelimiter)() === -1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readShort ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readShortWithDelim (WhitespaceDelimiter)() // "-1.1e-1"
+              reader.readShort ()(WhitespaceDelimiter) // "-1.1e-1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "-1.1e-1")
-            assert (reader.readShortWithDelim (WhitespaceDelimiter)() === 2)
-            assert (reader.readShortWithDelim (WhitespaceDelimiter)() === 3)
-            assert (reader.readShortWithDelim (WhitespaceDelimiter)() === 4)
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readShort ()(WhitespaceDelimiter) === 2)
+            assert (reader.readShort ()(WhitespaceDelimiter) === 3)
+            assert (reader.readShort ()(WhitespaceDelimiter) === 4)
             intercept [FieldConversionException] {
-              reader.readShortWithDelim (WhitespaceDelimiter)() // "56fred"
+              reader.readShort ()(WhitespaceDelimiter) // "56fred"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "56fred")
+            assert (reader.readString ()(WhitespaceDelimiter) === "56fred")
           }
           readShorts (pcReader)
           readShorts (unixReader)
@@ -885,7 +866,7 @@ empty fields.
 Verify that the readInt function operates correctly.
 */
 
-    describe (".readInt (Verifier [Int])") {
+    describe (".readInt (Verifier [Int])(Delimiter)") {
 
 /*
 The function must fail correctly when reading an invalid field.  That is, the
@@ -987,7 +968,6 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
           readInts (oldMacOsReader)
         }
       }
-    }
 
 /*
 Now process the same data as above by overriding the default delimiter with the
@@ -996,34 +976,30 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-    describe ("readIntWithDelim (Delimiter)(Verifier [Int])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
           def readInts (reader: TextReader) {
             intercept [FieldConversionException] {
-              reader.readIntWithDelim (WhitespaceDelimiter)() // "a"
+              reader.readInt ()(WhitespaceDelimiter) // "a"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() === "a")
-            assert (reader.readIntWithDelim (WhitespaceDelimiter)() === 1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "a")
+            assert (reader.readInt ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readIntWithDelim (WhitespaceDelimiter)() // "1.1e1"
+              reader.readInt ()(WhitespaceDelimiter) // "1.1e1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "1.1e1")
-            assert (reader.readIntWithDelim (WhitespaceDelimiter)() === -1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readInt ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readIntWithDelim (WhitespaceDelimiter)() // "-1.1e-1"
+              reader.readInt ()(WhitespaceDelimiter) // "-1.1e-1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "-1.1e-1")
-            assert (reader.readIntWithDelim (WhitespaceDelimiter)() === 2)
-            assert (reader.readIntWithDelim (WhitespaceDelimiter)() === 3)
-            assert (reader.readIntWithDelim (WhitespaceDelimiter)() === 4)
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readInt ()(WhitespaceDelimiter) === 2)
+            assert (reader.readInt ()(WhitespaceDelimiter) === 3)
+            assert (reader.readInt ()(WhitespaceDelimiter) === 4)
             intercept [FieldConversionException] {
-              reader.readIntWithDelim (WhitespaceDelimiter)() // "56fred"
+              reader.readInt ()(WhitespaceDelimiter) // "56fred"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "56fred")
+            assert (reader.readString ()(WhitespaceDelimiter) === "56fred")
           }
           readInts (pcReader)
           readInts (unixReader)
@@ -1036,7 +1012,7 @@ empty fields.
 Verify that the readLong function operates correctly.
 */
 
-    describe (".readLong (Verifier [Long])") {
+    describe (".readLong (Verifier [Long])(Delimiter)") {
 
 /*
 The function must fail correctly when reading an invalid field.  That is, the
@@ -1138,7 +1114,6 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
           readLongs (oldMacOsReader)
         }
       }
-    }
 
 /*
 Now process the same data as above by overriding the default delimiter with the
@@ -1147,34 +1122,30 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-    describe ("readLongWithDelim (Delimiter)(Verifier [Long])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
           def readLongs (reader: TextReader) {
             intercept [FieldConversionException] {
-              reader.readLongWithDelim (WhitespaceDelimiter)() // "a"
+              reader.readLong ()(WhitespaceDelimiter) // "a"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() === "a")
-            assert (reader.readLongWithDelim (WhitespaceDelimiter)() === 1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "a")
+            assert (reader.readLong ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readLongWithDelim (WhitespaceDelimiter)() // "1.1e1"
+              reader.readLong ()(WhitespaceDelimiter) // "1.1e1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "1.1e1")
-            assert (reader.readLongWithDelim (WhitespaceDelimiter)() === -1)
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readLong ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readLongWithDelim (WhitespaceDelimiter)() // "-1.1e-1"
+              reader.readLong ()(WhitespaceDelimiter) // "-1.1e-1"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "-1.1e-1")
-            assert (reader.readLongWithDelim (WhitespaceDelimiter)() === 2)
-            assert (reader.readLongWithDelim (WhitespaceDelimiter)() === 3)
-            assert (reader.readLongWithDelim (WhitespaceDelimiter)() === 4)
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readLong ()(WhitespaceDelimiter) === 2)
+            assert (reader.readLong ()(WhitespaceDelimiter) === 3)
+            assert (reader.readLong ()(WhitespaceDelimiter) === 4)
             intercept [FieldConversionException] {
-              reader.readLongWithDelim (WhitespaceDelimiter)() // "56fred"
+              reader.readLong ()(WhitespaceDelimiter) // "56fred"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "56fred")
+            assert (reader.readString ()(WhitespaceDelimiter) === "56fred")
           }
           readLongs (pcReader)
           readLongs (unixReader)
@@ -1187,7 +1158,7 @@ empty fields.
 Verify that the readFloat function operates correctly.
 */
 
-    describe (".readFloat (Verifier [Float])") {
+    describe (".readFloat (Verifier [Float])(Delimiter)") {
 
 /*
 The function must fail correctly when reading an invalid field.  That is, the
@@ -1284,7 +1255,6 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
           readFloats (oldMacOsReader)
         }
       }
-    }
 
 /*
 Now process the same data as above by overriding the default delimiter with the
@@ -1293,34 +1263,32 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-    describe ("readFloatWithDelim (Delimiter)(Verifier [Float])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
           def readFloats (reader: TextReader) {
             val tolerance = 1.0e-8
             intercept [FieldConversionException] {
-              reader.readFloatWithDelim (WhitespaceDelimiter)() // "a"
+              reader.readFloat ()(WhitespaceDelimiter) // "a"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() === "a")
-            assert (abs (reader.readFloatWithDelim (WhitespaceDelimiter)() -
-            1.0) < tolerance)
-            assert (abs (reader.readFloatWithDelim (WhitespaceDelimiter)() -
-            1.1e1) < tolerance)
-            assert (abs (reader.readFloatWithDelim (WhitespaceDelimiter)() -
-            -1.0) < tolerance)
-            assert (abs (reader.readFloatWithDelim (WhitespaceDelimiter)() -
-            -1.1e-1) < tolerance)
-            assert (abs (reader.readFloatWithDelim (WhitespaceDelimiter)() -
-            2.0) < tolerance)
-            assert (abs (reader.readFloatWithDelim (WhitespaceDelimiter)() -
-            3.0) < tolerance)
-            assert (abs (reader.readFloatWithDelim (WhitespaceDelimiter)() -
-            4.0) < tolerance)
+            assert (reader.readString ()(WhitespaceDelimiter) === "a")
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 1.0) <
+            tolerance)
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 1.1e1) <
+            tolerance)
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - -1.0) <
+            tolerance)
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - -1.1e-1) <
+            tolerance)
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 2.0) <
+            tolerance)
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 3.0) <
+            tolerance)
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 4.0) <
+            tolerance)
             intercept [FieldConversionException] {
-              reader.readFloatWithDelim (WhitespaceDelimiter)() // "56fred"
+              reader.readFloat ()(WhitespaceDelimiter) // "56fred"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "56fred")
+            assert (reader.readString ()(WhitespaceDelimiter) === "56fred")
           }
           readFloats (pcReader)
           readFloats (unixReader)
@@ -1333,7 +1301,7 @@ empty fields.
 Verify that the readDouble function operates correctly.
 */
 
-    describe (".readDouble (Verifier [Double])") {
+    describe (".readDouble (Verifier [Double])(Delimiter)") {
 
 /*
 The function must fail correctly when reading an invalid field.  That is, the
@@ -1430,7 +1398,6 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
           readDoubles (oldMacOsReader)
         }
       }
-    }
 
 /*
 Now process the same data as above by overriding the default delimiter with the
@@ -1439,34 +1406,32 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-    describe ("readDoubleWithDelim (Delimiter)(Verifier [Double])") {
       it ("must be able to read valid data and handle bad data") {
         new TestDelimitedReaders {
           def readDoubles (reader: TextReader) {
             val tolerance = 1.0e-14
             intercept [FieldConversionException] {
-              reader.readDoubleWithDelim (WhitespaceDelimiter)() // "a"
+              reader.readDouble ()(WhitespaceDelimiter) // "a"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() === "a")
-            assert (abs (reader.readDoubleWithDelim (WhitespaceDelimiter)() -
-            1.0) < tolerance)
-            assert (abs (reader.readDoubleWithDelim (WhitespaceDelimiter)() -
-            1.1e1) < tolerance)
-            assert (abs (reader.readDoubleWithDelim (WhitespaceDelimiter)() -
-            -1.0) < tolerance)
-            assert (abs (reader.readDoubleWithDelim (WhitespaceDelimiter)() -
-            -1.1e-1) < tolerance)
-            assert (abs (reader.readDoubleWithDelim (WhitespaceDelimiter)() -
-            2.0) < tolerance)
-            assert (abs (reader.readDoubleWithDelim (WhitespaceDelimiter)() -
-            3.0) < tolerance)
-            assert (abs (reader.readDoubleWithDelim (WhitespaceDelimiter)() -
-            4.0) < tolerance)
+            assert (reader.readString ()(WhitespaceDelimiter) === "a")
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 1.0) <
+            tolerance)
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 1.1e1) <
+            tolerance)
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - -1.0) <
+            tolerance)
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - -1.1e-1) <
+            tolerance)
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 2.0) <
+            tolerance)
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 3.0) <
+            tolerance)
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 4.0) <
+            tolerance)
             intercept [FieldConversionException] {
-              reader.readDoubleWithDelim (WhitespaceDelimiter)() // "56fred"
+              reader.readDouble ()(WhitespaceDelimiter) // "56fred"
             }
-            assert (reader.readStringWithDelim (WhitespaceDelimiter)() ===
-            "56fred")
+            assert (reader.readString ()(WhitespaceDelimiter) === "56fred")
           }
           readDoubles (pcReader)
           readDoubles (unixReader)

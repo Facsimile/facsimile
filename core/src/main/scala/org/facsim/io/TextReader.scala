@@ -75,8 +75,9 @@ all text streams to be treated as though they come from a ''Unix''-like system.
 @param textReader Reader from which data is to be read.
 
 @param defaultDelimiter Default set of characters and associated rules for
-delimiting fields.  This delimiter is used if an explicit delimiter is not
-specified during field read operations.
+delimiting fields, if an appropriate delimiter is not explicitly or implicitly
+specified for a field read operation. If omitted, this argument defaults to the
+WhitespaceDelimiter.
 
 @throws java.lang.NullPointerException if reader is null.
 
@@ -84,8 +85,9 @@ specified during field read operations.
 */
 //=============================================================================
 
-class TextReader (textReader: Reader, defaultDelimiter: Delimiter =
-WhitespaceDelimiter) extends NotNull {
+class TextReader (textReader: Reader,
+defaultDelimiter: Delimiter = WhitespaceDelimiter)
+extends NotNull {
 
 /*
 Preconditions: textReader cannot be null.
@@ -127,7 +129,7 @@ character actually read from the stream, and is used in processing line
 termination sequences.  If nothing has been read from the stream, this value
 will be 0.
 
-@param peekedChar Last peeked character read from the reader.  If no character 
+@param peekedChar Last peeked character read from the reader.  If no character
 has been peeked, the value is `None`.
 
 @param row Row from which we're currently reading data.  By convention, line
@@ -605,16 +607,19 @@ be verified by '''verify'''.
 
   final def readToEOL (verify: TextReader.Verifier [String] =
   TextReader.defaultStringVerifier): String =
-  readStringWithDelim (LineDelimiter)(verify)
+  readString (verify)(LineDelimiter)
 
 //-----------------------------------------------------------------------------
 /**
-Read the next default-delimited field from the stream and return it as a
-string.
+Read the next field from the stream and return it as a string.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
+
+@param delimiter Set of characters and associated rules for delimiting fields.
+If an implicit delimiter is in scope, it will be supplied implicitly by the
+Scala compiler.
 
 @return Next string field read from the stream.  If there is no data in the
 field, an empty string will be returned.
@@ -631,46 +636,23 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readString (verify: TextReader.Verifier [String] =
-  TextReader.defaultStringVerifier): String =
-  readStringWithDelim (defaultDelimiter)(verify)
+  TextReader.defaultStringVerifier)(implicit delimiter: Delimiter =
+  defaultDelimiter): String = readField [String] (delimiter, verify) {
+    field =>
+    field
+  }
 
 //-----------------------------------------------------------------------------
 /**
-Read the next field from the stream with the specified delimiter and return it
-as a string.
-
-@param delimiter Delimiter to be used for this read operation, overriding the
-default delimiter specified during construction.
+Read the next field from the stream and return it as a byte.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
 
-@return Next string field read from the stream.  If there is no data in the
-field, an empty string will be returned.
-
-@throws java.io.IOException if an attempt is made to read a character after an
-end-of-file condition has been signaled by a previous read operation, or if any
-other I/O error occurs during a read operation.
-
-@throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def readStringWithDelim (delimiter: Delimiter)(verify:
-  TextReader.Verifier [String] = TextReader.defaultStringVerifier): String =
-  readField (delimiter, verify)(field => field)
-
-//-----------------------------------------------------------------------------
-/**
-Read the next default-delimited field from the stream and return it as a byte.
-
-@param verify Function to verify the field's value before that value is
-returned.  If this function returns `false`, a
-[[org.facsim.io.FieldVerificationException!]] will be raised.
+@param delimiter Set of characters and associated rules for delimiting fields.
+If an implicit delimiter is in scope, it will be supplied implicitly by the
+Scala compiler.
 
 @return Next byte field read from the stream.  If there is no data in the
 field, a [[org.facsim.io.FieldConversionException!]] will result.
@@ -690,50 +672,20 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readByte (verify: TextReader.Verifier [Byte] =
-  TextReader.defaultByteVerifier): Byte =
-  readByteWithDelim (defaultDelimiter)(verify)
+  TextReader.defaultByteVerifier)(implicit delimiter: Delimiter =
+  defaultDelimiter): Byte = readField [Byte] (delimiter, verify)(_.toByte)
 
 //-----------------------------------------------------------------------------
 /**
-Read the next field from the stream with the specified delimiter and return it
-as a byte.
-
-@param delimiter Delimiter to be used for this read operation, overriding the
-default delimiter specified during construction.
+Read the next field from the stream and return it as a short integer.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
 
-@return Next byte field read from the stream.  If there is no data in the
-field, a [[org.facsim.io.FieldConversionException!]] will result.
-
-@throws java.io.IOException if an attempt is made to read a character after an
-end-of-file condition has been signaled by a previous read operation, or if any
-other I/O error occurs during a read operation.
-
-@throws org.facsim.io.FieldConversionException if this field's string value
-could not be converted into a byte value.
-
-@throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def readByteWithDelim (delimiter: Delimiter)(verify:
-  TextReader.Verifier [Byte] = TextReader.defaultByteVerifier): Byte =
-  readField [Byte] (delimiter, verify)(field => field.toByte)
-
-//-----------------------------------------------------------------------------
-/**
-Read the next default-delimited field from the stream and return it as a short
-integer.
-
-@param verify Function to verify the field's value before that value is
-returned.  If this function returns `false`, a
-[[org.facsim.io.FieldVerificationException!]] will be raised.
+@param delimiter Set of characters and associated rules for delimiting fields.
+If an implicit delimiter is in scope, it will be supplied implicitly by the
+Scala compiler.
 
 @return Next short integer field read from the stream.  If there is no data in
 the field, a [[org.facsim.io.FieldConversionException!]] will result.
@@ -753,50 +705,20 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readShort (verify: TextReader.Verifier [Short] =
-  TextReader.defaultShortVerifier): Short =
-  readShortWithDelim (defaultDelimiter)(verify)
+  TextReader.defaultShortVerifier)(implicit delimiter: Delimiter =
+  defaultDelimiter): Short = readField [Short] (delimiter, verify)(_.toShort)
 
 //-----------------------------------------------------------------------------
 /**
-Read the next field from the stream with the specified delimiter and return it
-as a short integer.
-
-@param delimiter Delimiter to be used for this read operation, overriding the
-default delimiter specified during construction.
+Read the next field from the stream and return it as an integer.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
 
-@return Next short integer field read from the stream.  If there is no data in
-the field, a [[org.facsim.io.FieldConversionException!]] will result.
-
-@throws java.io.IOException if an attempt is made to read a character after an
-end-of-file condition has been signaled by a previous read operation, or if any
-other I/O error occurs during a read operation.
-
-@throws org.facsim.io.FieldConversionException if this field's string value
-could not be converted into a short integer value.
-
-@throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def readShortWithDelim (delimiter: Delimiter)(verify:
-  TextReader.Verifier [Short] = TextReader.defaultShortVerifier): Short =
-  readField [Short] (delimiter, verify)(field => field.toShort)
-
-//-----------------------------------------------------------------------------
-/**
-Read the next default-delimited field from the stream and return it as an
-integer.
-
-@param verify Function to verify the field's value before that value is
-returned.  If this function returns `false`, a
-[[org.facsim.io.FieldVerificationException!]] will be raised.
+@param delimiter Set of characters and associated rules for delimiting fields.
+If an implicit delimiter is in scope, it will be supplied implicitly by the
+Scala compiler.
 
 @return Next integer field read from the stream.  If there is no data in the
 field, a [[org.facsim.io.FieldConversionException!]] will result.
@@ -816,50 +738,20 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readInt (verify: TextReader.Verifier [Int] =
-  TextReader.defaultIntVerifier): Int =
-  readIntWithDelim (defaultDelimiter)(verify)
+  TextReader.defaultIntVerifier)(implicit delimiter: Delimiter =
+  defaultDelimiter): Int = readField [Int] (delimiter, verify)(_.toInt)
 
 //-----------------------------------------------------------------------------
 /**
-Read the next field from the stream with the specified delimiter and return it
-as an integer.
-
-@param delimiter Delimiter to be used for this read operation, overriding the
-default delimiter specified during construction.
+Read the next field from the stream and return it as a long integer.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
 
-@return Next integer field read from the stream.  If there is no data in the
-field, a [[org.facsim.io.FieldConversionException!]] will result.
-
-@throws java.io.IOException if an attempt is made to read a character after an
-end-of-file condition has been signaled by a previous read operation, or if any
-other I/O error occurs during a read operation.
-
-@throws org.facsim.io.FieldConversionException if this field's string value
-could not be converted into an integer value.
-
-@throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def readIntWithDelim (delimiter: Delimiter)(verify: TextReader.Verifier
-  [Int] = TextReader.defaultIntVerifier): Int =
-  readField [Int] (delimiter, verify)(field => field.toInt)
-
-//-----------------------------------------------------------------------------
-/**
-Read the next default-delimited field from the stream and return it as a long
-integer.
-
-@param verify Function to verify the field's value before that value is
-returned.  If this function returns `false`, a
-[[org.facsim.io.FieldVerificationException!]] will be raised.
+@param delimiter Set of characters and associated rules for delimiting fields.
+If an implicit delimiter is in scope, it will be supplied implicitly by the
+Scala compiler.
 
 @return Next long integer field read from the stream.  If there is no data in
 the field, a [[org.facsim.io.FieldConversionException!]] will result.
@@ -879,49 +771,20 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readLong (verify: TextReader.Verifier [Long] =
-  TextReader.defaultLongVerifier): Long =
-  readLongWithDelim (defaultDelimiter)(verify)
+  TextReader.defaultLongVerifier)(implicit delimiter: Delimiter =
+  defaultDelimiter): Long = readField [Long] (delimiter, verify)(_.toLong)
 
 //-----------------------------------------------------------------------------
 /**
-Read the next field from the stream with the specified delimiter and return it
-as a long integer.
-
-@param delimiter Delimiter to be used for this read operation, overriding the
-default delimiter specified during construction.
+Read the next field from the stream and return it as a float.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
 
-@return Next long integer field read from the stream.  If there is no data in
-the field, a [[org.facsim.io.FieldConversionException!]] will result.
-
-@throws java.io.IOException if an attempt is made to read a character after an
-end-of-file condition has been signaled by a previous read operation, or if any
-other I/O error occurs during a read operation.
-
-@throws org.facsim.io.FieldConversionException if this field's string value
-could not be converted into a long integer value.
-
-@throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def readLongWithDelim (delimiter: Delimiter)(verify:
-  TextReader.Verifier [Long] = TextReader.defaultLongVerifier): Long =
-  readField [Long] (delimiter, verify)(field => field.toLong)
-
-//-----------------------------------------------------------------------------
-/**
-Read the next default-delimited field from the stream and return it as a float.
-
-@param verify Function to verify the field's value before that value is
-returned.  If this function returns `false`, a
-[[org.facsim.io.FieldVerificationException!]] will be raised.
+@param delimiter Set of characters and associated rules for delimiting fields.
+If an implicit delimiter is in scope, it will be supplied implicitly by the
+Scala compiler.
 
 @return Next float field read from the stream.  If there is no data in the
 field, a [[org.facsim.io.FieldConversionException!]] will result.
@@ -941,41 +804,9 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readFloat (verify: TextReader.Verifier [Float] =
-  TextReader.defaultFloatVerifier): Float =
-  readFloatWithDelim (defaultDelimiter)(verify)
-
-//-----------------------------------------------------------------------------
-/**
-Read the next field from the stream with the specified delimiter and return it
-as a float.
-
-@param delimiter Delimiter to be used for this read operation, overriding the
-default delimiter specified during construction.
-
-@param verify Function to verify the field's value before that value is
-returned.  If this function returns `false`, a
-[[org.facsim.io.FieldVerificationException!]] will be raised.
-
-@return Next float field read from the stream.  If there is no data in the
-field, a [[org.facsim.io.FieldConversionException!]] will result.
-
-@throws java.io.IOException if an attempt is made to read a character after an
-end-of-file condition has been signaled by a previous read operation, or if any
-other I/O error occurs during a read operation.
-
-@throws org.facsim.io.FieldConversionException if this field's string value
-could not be converted into a float value.
-
-@throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def readFloatWithDelim (delimiter: Delimiter)(verify:
-  TextReader.Verifier [Float] = TextReader.defaultFloatVerifier): Float =
-  readField [Float] (delimiter, verify){field =>
+  TextReader.defaultFloatVerifier)(implicit delimiter: Delimiter =
+  defaultDelimiter): Float = readField [Float] (delimiter, verify) {
+    field =>
 
 /*
 The default toFloat method (actually java.lang.Float.parseFloat (String))
@@ -992,12 +823,15 @@ throw a NumberFormatException.
 
 //-----------------------------------------------------------------------------
 /**
-Read the next default-delimited field from the stream and return it as a
-double.
+Read the next field from the stream and return it as a double.
 
 @param verify Function to verify the field's value before that value is
 returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
+
+@param delimiter Set of characters and associated rules for delimiting fields.
+If an implicit delimiter is in scope, it will be supplied implicitly by the
+Scala compiler.
 
 @return Next double field read from the stream.  If there is no data in the
 field, a [[org.facsim.io.FieldConversionException!]] will result.
@@ -1017,41 +851,9 @@ be verified by '''verify'''.
 //-----------------------------------------------------------------------------
 
   final def readDouble (verify: TextReader.Verifier [Double] =
-  TextReader.defaultDoubleVerifier): Double =
-  readDoubleWithDelim (defaultDelimiter)(verify)
-
-//-----------------------------------------------------------------------------
-/**
-Read the next field from the stream with the specified delimiter and return it
-as a double.
-
-@param delimiter Delimiter to be used for this read operation, overriding the
-default delimiter specified during construction.
-
-@param verify Function to verify the field's value before that value is
-returned.  If this function returns `false`, a
-[[org.facsim.io.FieldVerificationException!]] will be raised.
-
-@return Next double field read from the stream.  If there is no data in the
-field, a [[org.facsim.io.FieldConversionException!]] will result.
-
-@throws java.io.IOException if an attempt is made to read a character after an
-end-of-file condition has been signaled by a previous read operation, or if any
-other I/O error occurs during a read operation.
-
-@throws org.facsim.io.FieldConversionException if this field's string value
-could not be converted into a double value.
-
-@throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  final def readDoubleWithDelim (delimiter: Delimiter)(verify:
-  TextReader.Verifier [Double] = TextReader.defaultDoubleVerifier): Double =
-  readField [Double] (delimiter, verify){field =>
+  TextReader.defaultDoubleVerifier)(implicit delimiter: Delimiter =
+  defaultDelimiter): Double = readField [Double] (delimiter, verify) {
+    field =>
 
 /*
 The default toDouble method (actually java.lang.Double.parseDouble (String))
