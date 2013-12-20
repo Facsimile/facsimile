@@ -42,16 +42,20 @@
 
 # List ignored files alphabetically, if possible.
 
-/.cache
-/.classpath
-/.externalToolBuilders
-/.worksheet
-/bin
-/core/.classpath
-/core/target
-/macro/.classpath
-/macro/target
-/project/project
-/project/target
-/target
+.cache
+.classpath
+.externalToolBuilders/
+.project
+.scala_dependencies
+.settings/
+.worksheet/
+bin
+build.xml
+logs/
+pom.xml
+target/
+*.bak
+*.gradle
+*.log
 *.sc
+*.tmp
