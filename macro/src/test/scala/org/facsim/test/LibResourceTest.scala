@@ -189,6 +189,12 @@ Test string resource formatting.
           // always the same, the US English resource is always returned here.
           // Although the other locale-specific tests in this file seem to work
           // OK.
+          //
+          // Also, so long as these tests pass in the base class's test suite,
+          // then we're probably OK anyway.
+          //
+          // A better solution would be be run the test suite for multiple
+          // locale's to verify the data returned.
           try {
             // Check that we get the correct en_US response.
             Locale.setDefault (Locale.US)
