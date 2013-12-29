@@ -32,21 +32,62 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file defining the org.facsim.anim package.
+Scala source file belonging to the org.facsim.measure package.
 */
 //=============================================================================
 
-package org.facsim
+package org.facsim.measure
+
+import org.facsim.requireFinite
+import org.facsim.requireValid
 
 //=============================================================================
 /**
-''[[http://facsim.org/ Facsimile]]'' Simulation Library animation support.
+Constant converter.
 
-Package supporting the 3D animation of ''Facsimile'' simulations.
+Converts physical quantity measurement units of an associated, but unspecified,
+unit to and from the corresponding standard ''[[http://en.wikipedia.org/wiki/SI
+SI]]'' units for the unit family.  Values are ''imported'' (converted to ''SI''
+unit values) by adding the specified constant value; they are ''exported''
+(converted from ''SI'' unit values) by subtracting the same constant value.
+
+@constructor Create new constant converter from the specified `constant`.
+
+@param constant Constant value to be employed.  This value must be finite and
+cannot be zero (in which case, [[org.facsim.measure.SIConverter]] is a better
+option).
+
+@throws IllegalArgumentException if '''constant''' is NaN, infinite, or zero.
 
 @since 0.0
 */
 //=============================================================================
 
-package object anim {
+private [measure] final class ConstantConverter (constant: Double)
+extends Converter {
+
+/*
+Sanity checks.  Constant values must be finite and non-zero.
+*/
+
+  requireFinite (constant)
+  requireValid (constant, constant != 0.0)
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] override def importValue (value: Double): Double =
+  value + constant
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] override def exportValue (value: Double): Double =
+  value - constant
 }

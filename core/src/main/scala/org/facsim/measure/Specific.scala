@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -38,6 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import org.facsim.LibResource
 import scala.language.implicitConversions
 
 //=============================================================================
@@ -47,18 +48,34 @@ physical quantity families.
 
 @since 0.0
 */
+/*
+Developer notes:
+
+This is an abstract class, rather than a trait, to prevent it from being used
+as a base class. The rationale is that the implementation of this class, from
+the viewpoint of a subclass, might change dramatically during Facsimile's
+existence. Since there are no user-serviceable parts inside, it has been deemed
+that the best approach is simply to keep a tight lid on things.
+*/
 //=============================================================================
 
-private [measure] abstract class Specific extends PhysicalQuantity  {
+abstract class Specific protected [measure]
+extends Physical  {
 
 /**
-@inheritdocs
+Reference to this specific instance, for use in measure class definition below.
+*/
+
+  specific =>
+
+/*
+Specific measurement values.
 */
 
   override type Measure <: SpecificMeasure
 
-/**
-@inheritdocs
+/*
+Specific measurement units.
 */
 
   override type Units <: SpecificUnits
@@ -68,6 +85,14 @@ Physical quantity family represented by this specific type.
 */
 
   protected [measure] val family: Family
+
+
+/**
+Value representing a zero measurement in the associated
+''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+*/
+
+  final val Zero = apply (0.0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -79,9 +104,9 @@ result.
 
 @param measure Generic measure to be converted.
 
-@return Specific measurement equivalent to the specified generic '''measure'''.
+@return Specific measurement equivalent to the specified generic `measure`.
 
-@throws org.facsim.measure.GenericConversionException if '''measure''' is
+@throws [[org.facsim.measure.GenericConversionException!]] if `measure` is
 associated with different family to the target specific family.
 
 @since 0.0
@@ -89,7 +114,7 @@ associated with different family to the target specific family.
 //-----------------------------------------------------------------------------
 
   implicit final def fromGeneric (measure: Generic.Measure): Measure = {
-    if (measure.getFamily == family) apply (measure.getValue)
+    if (measure.family == family) apply (measure.value)
     else throw new GenericConversionException (measure, family)
   }
 
@@ -97,17 +122,17 @@ associated with different family to the target specific family.
 /**
 Factory method to create a new measurement value in the specified units.
 
-@param value Measurement's value in specified '''units'''.  This value must be
-finite and must lie within the defined domain for the associated physical
+@param value Measurement's value in specified `units`. This value must be
+finite and must lie within the defined range for the associated physical
 quantity.
 
-@param units Unit's in which the measurement's '''value''' is expressed.
+@param units Units in which the measurement's `value` is expressed.
 
 @return Corresponding measurement value.
 
-@throws java.lang.IllegalArgumentException If '''value''' in the specified
-'''units''' is not finite or is outside of the defined domain for the
-associated physical quantity.
+@throws [[java.lang.IllegalArgumentException!]] If `value` in the specified
+`units` is not finite or is outside of the defined domain for the associated
+physical quantity.
 
 @since 0.0
 */
@@ -122,126 +147,138 @@ Factory method to create a new measurement value in
 ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
 
 @note This function is not public because it introduces the potential for unit
-confusion.  Measurements can only be manipulated by users as
-[[org.facsim.measure.PhysicalQuantity.AbstractMeasure!]] subclass instances,
-not as raw values.  Allowing access to raw values encourages by-passing of the
+confusion. Measurements can only be manipulated by users as
+[[org.facsim.measure.PhysicalQuantity$.PhysicalMeasure!]] subclass instances,
+not as raw values. Allowing access to raw values encourages by-passing of the
 unit protection logic provided by these measurement classes.
 
-@param value Measurement's value in ''SI''.  This value must be finite and must
-lie within the defined domain for the associated physical quantity.
+@param measure Measurement's value in ''SI'' units. This value must be finite
+and must lie within the defined range for the associated physical quantity.
 
 @return Corresponding measurement value.
 
-@throws java.lang.IllegalArgumentException If '''value''' in ''SI'' units is
-not finite or is outside of the defined domain for the associate physical
+@throws [[java.lang.IllegalArgumentException!]] If `measure` in ''SI'' units is
+not finite or is outside of the defined range for the associate physical
 quantity.
+*/
+//-----------------------------------------------------------------------------
+
+  private [measure] def apply (measure: Double): Measure
+
+//-----------------------------------------------------------------------------
+/**
+Abstract base class for all specific ''Facsimile
+[[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
+measurement classes.
+
+Measurements are stored internally in the corresponding
+''[[http://en.wikipedia.org/wiki/SI SI]]'' units for this physical quantity
+family.
+
+@constructor Create new measurement for this
+''[[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''.
+
+@param measure Value of the measurement expressed in the associated
+''[[http://en.wikipedia.org/wiki/SI SI]]'' units. This value must be finite,
+but subclasses may impose additional restrictions.
+
+@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+is invalid for these units.
+
+@see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
+[[http://en.wikipedia.org/ Wikipedia]].
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] def apply (value: Double): Measure
+  abstract class SpecificMeasure protected [measure] (measure: Double)
+  extends PhysicalMeasure (measure)
+  with Ordered [Measure] {
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+//.............................................................................
+/*
+Use the family associated with this specific type.
+*/
+//.............................................................................
 
-  abstract class SpecificMeasure private [measure] (value: Double) extends
-  AbstractMeasure (value) with Ordered [Measure] {
+    protected [measure] final override def family = specific.family
+
+//.............................................................................
+/*
+Create a new measurement belonging to the same class as this measurement.
+*/
+//.............................................................................
+
+    protected [measure] final override def createNew (newMeasure: Double) =
+    apply (newMeasure)
 
 //.............................................................................
 /**
-@inheritdocs
+Compare this measurement with another measurement of the same type.
+
+@param that Measurement that this measurement is to be compared to.
+
+@return Negative value is this measurement is less than `that`'s value, 0 if
+this measurement equals `that`'s value, or a positive value if this measurement
+is greater than `that`'s value.
 
 @since 0.0
 */
 //.............................................................................
 
-    final override def getFamily = family
-
-//.............................................................................
-/**
-@inheritdocs
-
-@since 0.0
-*/
-//.............................................................................
-
-    @inline
-    final override def createNew (value: Double) = apply (value)
-
-//.............................................................................
-/**
-@inheritdoc
-
-@since 0.0
-*/
-//.............................................................................
-
-    final override def toString = {
-      val units = preferredUnits
-      units.format (getValue (units))
-    }
-
-//.............................................................................
-/**
-@inheritdoc
-
-@since 0.0
-*/
-//.............................................................................
-
-    @inline
-    final override def compare (that: Measure): Int =
-    value.compare (that.getValue)
+    final override def compare (that: Measure) = value.compare (that.value)
   }
 
 //-----------------------------------------------------------------------------
 /**
-@constructor Create new instance of a physical quantity unit family.
+Abstract base class for all specific physical quantity measurement units.
+
+@see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
+[[http://en.wikipedia.org/]].
+
+@constructor Create new instance of a specific physical quantity unit.
 
 @param converter Rules to be applied to convert a quantity measured in these
-units to the standard ''SI'' units for this unit family.
+units to and from the standard ''SI'' units for this unit family.
 
-@param symbol Symbol associated with these units.
+@param symbol Symbol to be used when outputting measurement values expressed in
+these units.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  abstract class SpecificUnits private [measure] (private val converter:
-  Converter, private val symbol: String) extends AbstractUnits {
+  abstract class SpecificUnits protected [measure] (converter: Converter,
+  protected [measure] val symbol: String)
+  extends PhysicalUnits {
 
 //.............................................................................
-/**
-@inheritdoc
+/*
+Employ the converter to handle importing of values.
 */
 //.............................................................................
 
-    @inline
-    private [measure] final override def importValue (value: Double): Double =
+    private [measure] final override def importValue (value: Double) =
     converter.importValue (value)
 
 //.............................................................................
-/**
-@inheritdoc
+/*
+Employ the converter to handle exporting of values.
 */
 //.............................................................................
 
-    @inline
-    private [measure] final override def exportValue (value: Double): Double =
+    private [measure] final override def exportValue (value: Double) =
     converter.exportValue (value)
 
 //.............................................................................
-/**
-Retrieve the symbol associated with these units.
-
-@return Standard symbol used to denote values in these units.
-
-@since 0.0
+/*
+Output using localized string formatting for these units.
 */
 //.............................................................................
 
-    @inline
-    final def getSymbol = symbol
+    private [measure] final override def format (value: Measure) =
+    LibResource ("measure.Physical.Units.format",
+    value.inUnits (this.asInstanceOf [Units]), symbol)
   }
 }

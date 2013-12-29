@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -60,8 +60,9 @@ existing instances rather than create new instances on each call.
 */
 //=============================================================================
 
-final class Family private (private val exponents: Vector
-[Int]) extends Equals with NotNull {
+final class Family private (private val exponents: Vector [Int])
+extends Equals
+with NotNull {
 
 /*
 Sanity check.  Since construction is tightly controlled, it should be
@@ -81,15 +82,15 @@ value in this family by a measurement value in the specified family.
 this instance.
 
 @return Physical quantity family resulting from the multiplication of this
-family by the specified multiplier family.
+family by the specified `multiplier` family.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def * (multiplier: Family) =
-  Family (exponents.zip (multiplier.exponents).map ((p: (Int,
-  Int)) => p._1 + p._2))
+  def * (multiplier: Family) =
+  Family (exponents.zip (multiplier.exponents).map ((p: (Int, Int)) => p._1 +
+  p._2))
 
 //-----------------------------------------------------------------------------
 /**
@@ -100,19 +101,19 @@ in this family by a measurement value in the specified family.
 instance.
 
 @return Physical quantity family resulting from the division of this family by
-the specified divisor family.
+the specified `divisor` family.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def / (divisor: Family) =
-  Family (exponents.zip (divisor.exponents).map ((p: (Int,
-  Int)) => p._1 - p._2))
+  def / (divisor: Family) =
+  Family (exponents.zip (divisor.exponents).map ((p: (Int, Int)) => p._1 -
+  p._2))
 
 //-----------------------------------------------------------------------------
 /**
-Determine whether these
+Determine whether this family is ''unitless''.
 
 @return `true` if this physical quantity family is unitless, or `false`
 otherwise.
@@ -121,7 +122,7 @@ otherwise.
 */
 //-----------------------------------------------------------------------------
 
-  final def isUnitless = Family.this == Family.unitless
+  def isUnitless = Family.this == Family.unitless
 
 //-----------------------------------------------------------------------------
 /*
@@ -132,7 +133,7 @@ Venners.
 */
 //-----------------------------------------------------------------------------
 
-  final override def canEqual (that: Any) = that match {
+  override def canEqual (that: Any) = that match {
 
 /*
 If the other object is a PhysicalQuantityFamily instance, then we can compare
@@ -161,7 +162,7 @@ compare equal, since hash-codes do not map to unique values.
 */
 //-----------------------------------------------------------------------------
 
-  final override def equals (that: Any): Boolean = that match {
+  override def equals (that: Any): Boolean = that match {
 
 /*
 If the other object is an PhysicalQuantityFamily instance, and that value can
@@ -196,8 +197,7 @@ contract.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
-  final override def hashCode = exponents.hashCode
+  override def hashCode = exponents.hashCode
 
 //-----------------------------------------------------------------------------
 /*
@@ -207,7 +207,7 @@ Convert to a string.
 */
 //-----------------------------------------------------------------------------
 
-  final override def toString: String = Family.typeMap.get (this) match {
+  override def toString: String = Family.typeMap.get (this) match {
 
 /*
 If this family has an associated specific physical quantity type, then retrieve
@@ -240,69 +240,70 @@ Physical quantity family companion object.
 */
 //=============================================================================
 
-object Family {
+private [measure] object Family
+extends Enumeration {
 
 /**
 Index of Time exponent in the exponents vector.
 */
 
-  private [measure] val timeExponentIndex = 0
+  private [measure] val timeExponentIndex = Value
 
 /**
 Index of Length exponent in the exponents vector.
 */
 
-  private [measure] val lengthExponentIndex = 1
+  private [measure] val lengthExponentIndex = Value
 
 /**
 Index of Plane Angle exponent in the exponents vector.
 */
 
-  private [measure] val planeAngleExponentIndex = 2
+  private [measure] val planeAngleExponentIndex = Value
 
 /**
 Index of Mass exponent in the exponents vector.
 */
 
-  private [measure] val massExponentIndex = 3
+  private [measure] val massExponentIndex = Value
 
 /**
 Index of Temperature exponent in the exponents vector.
 */
 
-  private [measure] val temperatureExponentIndex = 4
+  private [measure] val temperatureExponentIndex = Value
 
 /**
 Index of Current exponent in the exponents vector.
 */
 
-  private [measure] val currentExponentIndex = 5
+  private [measure] val currentExponentIndex = Value
 
 /**
 Index of Luminosity exponent in the exponents vector.
 */
 
-  private [measure] val luminosityExponentIndex = 6
+  private [measure] val luminousIntensityExponentIndex = Value
 
 /**
 Vector of base physical quantity families.
 */
 
-  private [measure] val baseFamilies = Vector [PhysicalQuantity] (
+  private [measure] val baseFamilies = Vector [Physical] (
     Time,
     Length,
     Angle,
     Mass,
     Temperature,
     Current,
-    Luminosity
+    LuminousIntensity
   )
 
 /**
 Total number of base physical quantity families in the exponents vector.
 */
 
-  private [measure] val numBaseFamilies = baseFamilies.length
+  private [measure] val numBaseFamilies = maxId
 
 /**
 Unitless physical quantity.
@@ -334,7 +335,7 @@ Registration should be performed once for each concrete
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] final def register (family: Family, specific: Specific):
+  private [measure] def register (family: Family, specific: Specific):
   Unit = synchronized {
     assert (!typeMap.contains (family))
     typeMap += (family -> specific)
@@ -356,7 +357,7 @@ Apply method to obtain family corresponding to specified exponent values.
 
 @param currentExponent Exponent of current base family.
 
-@param luminosityExponent Exponent of luminosity base family.
+@param luminousIntensityExponent Exponent of luminous intensity base family.
 
 @return corresponding physical quantity family instance.
 
@@ -365,11 +366,12 @@ Apply method to obtain family corresponding to specified exponent values.
 //-----------------------------------------------------------------------------
 
   @inline
-  private [measure] final def apply (timeExponent:Int = 0, lengthExponent:Int =
-  0, planeAngleExponent: Int = 0, massExponent: Int = 0, temperatureExponent:
-  Int = 0, currentExponent: Int = 0, luminosityExponent: Int = 0): Family =
+  private [measure] def apply (timeExponent: Int = 0, lengthExponent: Int = 0,
+  planeAngleExponent: Int = 0, massExponent: Int = 0, temperatureExponent: Int
+  = 0, currentExponent: Int = 0, luminousIntensityExponent: Int = 0): Family =
   apply (Vector (timeExponent, lengthExponent, planeAngleExponent,
-  massExponent, temperatureExponent, currentExponent, luminosityExponent))
+  massExponent, temperatureExponent, currentExponent,
+  luminousIntensityExponent))
 
 //-----------------------------------------------------------------------------
 /**
@@ -391,5 +393,5 @@ instance.
 */
 
   @inline
-  private final def apply (exponents: Vector [Int]) = new Family (exponents)
+  private def apply (exponents: Vector [Int]) = new Family (exponents)
 }

@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -77,8 +77,8 @@ are three floats for each coordinate, and the total number of coordinates is
 
   private [cell] def circleCoordinates (radius: Double, height: Double,
   divisions: Int, xOffset: Double, yOffset: Double) = {
-    circSectCoordinates (radius, height, Angle (0.0, Angle.radians), Angle
-    (Angle.τ, Angle.radians), divisions, xOffset, yOffset)
+    circSectCoordinates (radius, height, Angle.Zero, Angle.τ, divisions,
+    xOffset, yOffset)
   } ensuring (_.length == 3 * (divisions + 1))
 
 //-----------------------------------------------------------------------------
@@ -113,9 +113,9 @@ circle.
 //-----------------------------------------------------------------------------
 
   private [cell] def sectorCoordinates (radius: Double, height: Double,
-  startAngle: Angle.Measure, drawAngle: Angle.Measure, divisions: Int, xOffset:
-  Double, yOffset: Double) = {
-    assert (drawAngle < Angle (Angle.τ, Angle.radians))
+  startAngle: Angle.Measure, drawAngle: Angle.Measure, divisions: Int,
+  xOffset: Double, yOffset: Double) = {
+    assert (drawAngle < Angle.τ)
     circSectCoordinates (radius, height, startAngle, drawAngle, divisions,
     xOffset, yOffset)
   } ensuring (_.length == 3 * (divisions + 2))
@@ -153,9 +153,9 @@ coordinate is for the center of the circle.
 */
 //-----------------------------------------------------------------------------
 
-  private def circSectCoordinates (radius: Double, height: Double, startAngle:
-  Angle.Measure, drawAngle: Angle.Measure, divisions: Int, xOffset: Double,
-  yOffset: Double) = {
+  private def circSectCoordinates (radius: Double, height: Double,
+  startAngle: Angle.Measure, drawAngle: Angle.Measure, divisions: Int,
+  xOffset: Double, yOffset: Double) = {
 
 /*
 Sanity checks.
@@ -163,10 +163,8 @@ Sanity checks.
 
     assert (radius >= 0.0)
     assert (height >= 0.0)
-    assert (startAngle >= Angle (0.0, Angle.radians) && startAngle <= Angle
-    (Angle.τ, Angle.radians))
-    assert (drawAngle >= Angle (0.0, Angle.radians) && drawAngle <= Angle
-    (Angle.τ, Angle.radians))
+    assert (startAngle >= Angle.Zero && startAngle <= Angle.τ)
+    assert (drawAngle >= Angle.Zero && drawAngle <= Angle.τ)
     assert (divisions > 0)
 
 /*

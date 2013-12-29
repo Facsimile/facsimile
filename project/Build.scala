@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -264,6 +264,16 @@ times.
 
 /**
 Scala compiler options.
+
+This is a conundrum: -Xfatal-warnings is essential, since it forces all
+warnings to be addressed. However, when -optimize is specified, Scala will
+generate some inline warnings when initializing large maps (such as the cell
+code to cell type map in org.facsim.anim.cell.CellScene). Although the inline
+warnings themselves will only be issued when -Yinline-warnings is specified,
+Scala will still emit a warning that inline warnings occurred, which is then
+treated as fatal by Xfatal-warnings. It seems that the only way around this,
+right now, is to disable -optimize. This must be reviewed when newer Scala
+releases become available.
 */
 
   val projectScalacOptions = Seq (
@@ -272,13 +282,14 @@ Scala compiler options.
     "UTF-8",
     "-feature",
     "-g:vars",
-    "-optimize",
+    //"-optimize",
     "-target:jvm-1.7",
     "-unchecked",
     "-Xcheckinit",
     //"-Xcheck-null",
     "-Xfatal-warnings",
     "-Xlint",
+    //"-Yinline-warnings",
     "-Ynotnull",
     "-Ywarn-all"
   )
@@ -385,6 +396,12 @@ corresponding distribution jar files.
     packageDoc).value,
     mappings in (Compile, packageDoc) ++= mappings.in (core, Compile,
     packageDoc).value,
+
+/*
+Scala configuration.
+*/
+
+    scalaVersion := scalaVersionLong,
 
 /*
 SBT-Eclipse plugin configuration.

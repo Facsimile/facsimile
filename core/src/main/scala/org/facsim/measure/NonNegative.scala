@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -53,30 +53,40 @@ appropriate for a number of unit families, including
 
 @since 0.0
 */
+/*
+Developer notes:
+
+This is an abstract class, rather than a trait, to prevent it from being used
+as a base class. The rationale is that the implementation of this class, from
+the viewpoint of a subclass, might change dramatically during Facsimile's
+existence. Since there are no user-serviceable parts inside, it has been deemed
+that the best approach is simply to keep a tight lid on things.
+*/
 //=============================================================================
 
-abstract class NonNegative extends Specific {
+abstract class NonNegative protected [measure]
+extends Specific {
 
-/**
-@inheritdocs
+/*
+Non-negative measurement values.
 */
 
   override type Measure <: NonNegativeMeasure
 
-/**
-@inheritdocs
+/*
+Non-negative measurement units.
 */
 
   override type Units <: NonNegativeUnits
 
 //-----------------------------------------------------------------------------
 /**
-Base class for physical quantity measurements that cannot be negative.
+Abstract base class for physical quantity measurements that cannot be negative.
 
 @constructor Construct new non-negative measurement value.
 
-@param value Value of the measurement type in the associated ''SI'' units.
-This value must be finite and non-negative.  Sub-classes may impose additional
+@param measure Value of the measurement type in the associated ''SI'' units.
+This value must be finite and non-negative. Sub-classes may impose additional
 restrictions.
 
 @throws java.lang.IllegalArgumentException If the result is not finite or is
@@ -86,22 +96,34 @@ negative.
 */
 //-----------------------------------------------------------------------------
 
-  abstract class NonNegativeMeasure private [measure] (value: Double) extends
-  SpecificMeasure (value) {
+  abstract class NonNegativeMeasure protected [measure] (measure: Double)
+  extends SpecificMeasure (measure) {
 
 /*
-If the value is negative, then report an error.
+If the measure is negative, then report an error.
 */
 
-    requireValid (value, value >= 0.0)
+    requireValid (measure, measure >= 0.0)
   }
 
 //-----------------------------------------------------------------------------
 /**
+Abstract base class for all specific physical quantity measurement units, that
+do not support negative SI unit measurement values.
+
 @constructor Construct new non-negative measurement units.
+
+@param converter Rules to be applied to convert a quantity measured in these
+units to and from the standard ''SI'' units for this unit family.
+
+@param symbol Symbol to be used when outputting measurement values expressed in
+these units.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  abstract class NonNegativeUnits private [measure] (converter: Converter,
-  symbol: String) extends SpecificUnits (converter, symbol)
+  abstract class NonNegativeUnits protected [measure] (converter: Converter,
+  symbol: String)
+  extends SpecificUnits (converter, symbol)
 }

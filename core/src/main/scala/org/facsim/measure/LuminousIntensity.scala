@@ -42,15 +42,17 @@ import org.facsim.LibResource
 
 //=============================================================================
 /**
-''[[http://en.wikipedia.org/wiki/Temperature Temperature]]'' physical quantity
-type.
+''[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]''
+physical quantity type.
 
-All temperature values are stored internally in
-''[[http://en.wikipedia.org/wiki/Kelvin degrees Kelvin]]'', which is the
+
+All luminous intensity values are stored internally in
+''[[http://en.wikipedia.org/wiki/Candela candelas]]'', which is the
 ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
 
-@see [[http://en.wikipedia.org/wiki/Temperature Temperature]] on ''Wikipedia''.
-@see [[http://en.wikipedia.org/wiki/Kelvin Degrees Kelvin]] on ''Wikipedia''.
+@see [[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]] on
+''Wikipedia''.
+@see [[http://en.wikipedia.org/wiki/Candela Candelas]] on ''Wikipedia''.
 @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
 ''Wikipedia''.
 
@@ -58,106 +60,81 @@ All temperature values are stored internally in
 */
 //=============================================================================
 
-object Temperature
+object LuminousIntensity
 extends NonNegative {
 
 /*
-Temperature measurement values.
+Luminous intensity measurement values.
 */
 
-  override type Measure = TemperatureMeasure
+  override type Measure = LuminousIntensityMeasure
 
 /*
-Temperature measurement units.
+Luminous intensity measurement units.
 */
 
-  override type Units = TemperatureUnits
+  override type Units = LuminousIntensityUnits
 
 /**
-Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Celsius
-degrees Celsius]]''.
+Units for luminous intensity measured in
+''[[http://en.wikipedia.org/wiki/Candela candelas]]''.
 
-@see [[http://en.wikipedia.org/wiki/Celsius Degrees Celsius]] on ''Wikipedia''.
+@note ''Candelas'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard
+units for luminous intensity measurement, and the units that are used to store
+such measurements internally in ''Facsimile''.
 
-@since 0.0
-*/
+In ''Facsimile'', a ''candela'' is defined in accordance with ''SI'' standards.
 
-  val Celsius = new Units (new ConstantConverter (-273.15),
-  LibResource ("measure.Temperature.Celsius.sym"))
-
-/**
-Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Fahrenheit
-degrees Fahrenheit]]''.
-
-@see [[http://en.wikipedia.org/wiki/Fahrenheit Degrees Fahrenheit]] on
-''Wikipedia''.
-
-@since 0.0
-*/
-
-  val Fahrenheit = new Units (new LinearConverter (5.0 / 9.0, -(32.0 *
-  5.0 / 9.0) - 273.15), LibResource ("measure.Temperature.Fahrenheit.sym"))
-
-/**
-Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Kelvin
-degrees Kelvin]]''.
-
-@note ''Degrees Kelvin'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]''
-standard units for temperature measurement, and the units that are used to
-store such measurements internally in ''Facsimile''.
-
-In ''Facsimile'', a ''degree Kelvin'' is defined in accordance with ''SI''
-standards.
-
-@see [[http://en.wikipedia.org/wiki/Kelvin Degrees Kelvin]] on ''Wikipedia''.
+@see [[http://en.wikipedia.org/wiki/Candela Candelas]] on ''Wikipedia''.
 @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
 ''Wikipedia''.
 
 @since 0.0
 */
 
-  val Kelvin = new Units (SIConverter,
-  LibResource ("measure.Temperature.Kelvin.sym"))
+  val Candelas = new Units (SIConverter,
+  LibResource ("measure.LuminousIntensity.Candela.sym"))
 
 /**
-Physical quantity family for temperature measurements.
+Physical quantity family for luminous intensity measurements.
 */
 
-  protected [measure] val family = Family (temperatureExponent = 1)
+  protected [measure] val family = Family (luminousIntensityExponent = 1)
 
 /*
-Temperature SI units.
+Luminous intensity SI units.
 */
 
-  override val siUnits = Kelvin
+  override val siUnits = Candelas
 
 /*
 Register this family.
 */
 
-  Family.register (family, Temperature)
+  Family.register (family, LuminousIntensity)
 
 //-----------------------------------------------------------------------------
 /*
-Temperature measurement factory.
+Luminous intensity measurement factory.
 */
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new TemperatureMeasure (measure)
+  new LuminousIntensityMeasure (measure)
 
 //-----------------------------------------------------------------------------
 /**
-''[[http://en.wikipedia.org/wiki/Temperature Temperature]]'' measurement class.
+''[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]''
+measurement class.
 
-Instances of this class represent ''temperature'' measurements.
+Instances of this class represent ''luminous intensity'' measurements.
 
-@constructor Create new ''[[http://en.wikipedia.org/wiki/Temperature
-temperature]]'' measurement value.
+@constructor Create new ''[[http://en.wikipedia.org/wiki/Luminous_intensity
+luminous intensity]]'' measurement value.
 
-@param measure ''Temperature'' measurement expressed in
-''[[org.facsim.measure.Temperature$.kelvin]]''. This value must be finite and
-greater than or equal to zero.
+@param measure ''Luminous intensity'' measurement expressed in
+''[[org.facsim.measure.LuminousIntensity$.candelas]]''. This value must be
+finite and greater than or equal to zero.
 
 @throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
 is negative.
@@ -166,23 +143,23 @@ is negative.
 */
 //-----------------------------------------------------------------------------
 
-  final class TemperatureMeasure private [measure] (measure: Double)
+  final class LuminousIntensityMeasure private [measure] (measure: Double)
   extends NonNegativeMeasure (measure)
 
 //-----------------------------------------------------------------------------
 /**
-''[[http://en.wikipedia.org/wiki/Temperature Temperature]]'' unit of
-measurement family class.
+''[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]'' unit
+of measurement family class.
 
-Instances of this class represent units for expressing ''temperature''
+Instances of this class represent units for expressing ''luminous intensity''
 measurements.
 
-@constructor Create new ''[[http://en.wikipedia.org/wiki/Temperature
-temperature]]'' unit of measurement.
+@constructor Create new ''[[http://en.wikipedia.org/wiki/Luminous_intensity
+luminous intensity]]'' unit of measurement.
 
 @param converter Rules to be applied to convert a quantity measured in these
-units to and from the standard ''temperature [[http://en.wikipedia.org/wiki/SI
-SI]]'' units, ''degrees Kelvin''.
+units to and from the standard ''luminous intensity
+[[http://en.wikipedia.org/wiki/SI SI]]'' units, ''candelas''.
 
 @param symbol Symbol to be used when outputting measurement values expressed in
 these units.
@@ -191,7 +168,7 @@ these units.
 */
 //-----------------------------------------------------------------------------
 
-  final class TemperatureUnits private [measure] (converter: Converter, symbol:
-  String)
+  final class LuminousIntensityUnits private [measure] (converter: Converter,
+  symbol: String)
   extends NonNegativeUnits (converter, symbol)
 }

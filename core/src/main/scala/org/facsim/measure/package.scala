@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -40,10 +40,9 @@ package org.facsim
 
 //=============================================================================
 /**
-''[[http://facsim.org/ Facsimile]]'' physical quantity measurement
-elements.
+''[[http://facsim.org/ Facsimile]]'' physical quantity measurement elements.
 
-The `org.facsim..measure` package contains elements for expressing measurements
+The `org.facsim.measure` package contains elements for expressing measurements
 of a variety of ''physical quantities'', such as ''time'', ''mass'',
 ''length'', ''angle'', ''thermodynamic temperature'', etc., in whatever units
 the user believes to be the most appropriate.
@@ -56,10 +55,10 @@ measurements of that physical quantity can be expressed.  For instance,
 ''Facsimile'', such a set of units is termed a ''unit family''.
 
 Each unit family is encapsulated as a subclass of the
-[[org.facsim.measure.Unit!]] abstract base class.  For example, time units are
-encapsulated by the [[org.facsim.measure.TimeUnit!]] `Unit` subclass, mass
-units by the [[org.facsim.measure.MassUnit!]] `Unit` subclass, length units by
-the [[org.facsim.measure.LengthUnit!]]` `Unit` subclass, etc.
+[[org.facsim.measure.PhysicalQuantity!]] abstract base class.  For example,
+time units are encapsulated by the [[org.facsim.measure.TimeUnit!]] `Unit`
+subclass, mass units by the [[org.facsim.measure.MassUnit!]] `Unit` subclass,
+length units by the [[org.facsim.measure.LengthUnit!]]` `Unit` subclass, etc.
 
 =Physical Quantity Units=
 

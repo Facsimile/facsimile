@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -73,7 +73,7 @@ Test data.
 SafeOption Object testing.
 */
 
-  describe (classOf [SafeOption$].getCanonicalName) {
+  describe (classOf [SafeOption].getCanonicalName) {
 
 /*
 Test apply method.
@@ -155,7 +155,7 @@ Test implicit conversion function from an Option to a SafeOption.
 Test SafeNone object.
 */
 
-  describe (classOf [SafeNone$].getCanonicalName) {
+  describe (classOf [SafeNone].getCanonicalName) {
 
 /*
 Test .isEmpty function.
@@ -212,12 +212,13 @@ Test .filter function.
         it ("must always return SafeNone") {
           val stringOption = SafeOption (nullString)
           val valueOption = SafeOption [Int].empty
-          assert (stringOption.filter (_ == goodString) == SafeNone)
-          assert (stringOption.filter (_ != goodString) == SafeNone)
-          assert (stringOption.filter (_ == nullString) == SafeNone)
-          assert (stringOption.filter (_ != nullString) == SafeNone)
-          assert (valueOption.filter (_ == goodValue) == SafeNone)
-          assert (valueOption.filter (_ != goodValue) == SafeNone)
+          assert (stringOption.filter (_ == goodString) === SafeNone)
+          assert (stringOption.filter (_ != goodString) === SafeNone)
+          assert (stringOption.filter (_ == nullString) === SafeNone)
+          assert (stringOption.filter (_ != nullString) === SafeNone)
+          assert (valueOption.filter (_ == goodValue) === SafeNone)
+          assert (valueOption.filter (_ != goodValue) === SafeNone)
+        }
       }
     }
   }
@@ -226,7 +227,7 @@ Test .filter function.
 Test SafeSome class.
 */
 
-  describe (classOf [SafeSome!].getCanonicalName) {
+  describe (classOf [SafeSome].getCanonicalName) {
 
 /*
 Test constructor.
@@ -309,10 +310,11 @@ Test .filter function.
         it ("must apply predicate correctly") {
           val stringOption = SafeOption (goodString)
           val valueOption = SafeOption (goodValue)
-          assert (stringOption.filter (_ == goodString) == stringOption)
-          assert (stringOption.filter (_ != goodString) == SafeNone)
-          assert (valueOption.filter (_ == goodValue) == valueOption)
-          assert (valueOption.filter (_ != goodValue) == SafeNone)
+          assert (stringOption.filter (_ == goodString) === stringOption)
+          assert (stringOption.filter (_ != goodString) === SafeNone)
+          assert (valueOption.filter (_ == goodValue) === valueOption)
+          assert (valueOption.filter (_ != goodValue) === SafeNone)
+        }
       }
     }
   }

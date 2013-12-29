@@ -11,13 +11,13 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
   http://facsim.org/
@@ -28,7 +28,7 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
@@ -71,13 +71,13 @@ private [measure] trait Converter {
 /**
 Convert value to ''SI'' units.
 
-Convert a physical quantity's '''value''', expressed in the associated units to
-the corresponding value in the ''SI'' units for this unit family.
+Convert a physical quantity's `value`, expressed in the associated units to the
+corresponding value in the ''SI'' units for this unit family.
 
 @param value Value, expressed in associated units, to be converted to ''SI''
 units.
 
-@return '''value''' as expressed in ''SI'' units.
+@return `value` as expressed in ''SI'' units.
 
 @since 0.0
 */
@@ -89,13 +89,13 @@ units.
 /**
 Convert value from ''SI'' units.
 
-Convert a physical quantity's '''value''', expressed in the standard ''SI''
-units for this unit family, to the corresponding value in the associated units.
+Convert a physical quantity's `value`, expressed in the standard ''SI'' units
+for this unit family, to the corresponding value in the associated units.
 
 @param value Value, expressed in ''SI'' units, to be converted to associated
 units.
 
-@return '''value''' as expressed in associated units.
+@return `value` as expressed in associated units.
 
 @since 0.0
 */

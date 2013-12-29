@@ -38,20 +38,52 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import org.facsim.requireFinite
+import org.facsim.requireValid
+
 //=============================================================================
 /**
-Converter to be used for ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+Linear converter.
 
-Converter to be used for ''SI'' units, which preserves the original values
-without modification.  For example, this converter should be used for
-converting ''seconds'' to ''seconds'', ''kilograms'' to ''kilograms'', etc.
+Converts physical quantity measurement units of an associated, but unspecified,
+unit to and from the corresponding standard ''[[http://en.wikipedia.org/wiki/SI
+SI]]'' units for the unit family.  Values are ''imported'' (converted to ''SI''
+unit values) by multiplying by the specified linear scaling factor and then
+adding a constant value; they are ''exported'' (converted from ''SI'' unit
+values) by subtracting the same constant value then dividing the result by the
+same factor.
+
+@constructor Create new linear converter from the specified `factor` and
+`constant`.
+
+@param factor Linear scaling factor to be employed.  This value must be finite
+and cannot be zero or one.  A value of zero causes divide-by-zero exceptions
+when exporting values and implies that the magnitude of all measurement values
+is 0.  A value of one implies that the units are already ''SI'' units, since
+no scaling is performed, in which case the [[org.facsim.measure.SIConverter$]]
+object should be preferred.
+
+@param constant Constant value to be employed.  This value must be finite and
+cannot be zero (in which case, [[org.facsim.measure.SIConverter]] is a better
+option).
+
+@throws IllegalArgumentException if '''factor''' is NaN, infinite, zero or one
+or if ''constant is NaN, infinite or zero.
 
 @since 0.0
 */
 //=============================================================================
 
-private [measure] object SIConverter
-extends Converter {
+private [measure] final class LinearConverter (factor: Double, constant:
+Double)
+extends LinearScaleConverter (factor) {
+
+/*
+Sanity checks.  Constant values must be finite and non-zero.
+*/
+
+  requireFinite (constant)
+  requireValid (constant, constant != 0.0)
 
 //-----------------------------------------------------------------------------
 /**
@@ -59,7 +91,8 @@ extends Converter {
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] override def importValue (value: Double): Double = value
+  private [measure] override def importValue (value: Double): Double =
+  super.importValue (value) + constant
 
 //-----------------------------------------------------------------------------
 /**
@@ -67,5 +100,6 @@ extends Converter {
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] override def exportValue (value: Double): Double = value
+  private [measure] override def exportValue (value: Double): Double =
+  super.exportValue (value - constant)
 }

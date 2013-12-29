@@ -11,16 +11,16 @@ later version.
 
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU Lesser General Public License along
-with Facsimile.  If not, see http://www.gnu.org/licenses/.
+with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance.  For
+The developers welcome all comments, suggestions and offers of assistance. For
 further information, please visit the project home page at:
 
-  http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
@@ -28,9 +28,9 @@ IMPORTANT NOTE: All patches (modifications to existing files and/or the
 addition of new files) submitted for inclusion as part of the official
 Facsimile code base, must comply with the published Facsimile Coding Standards.
 If your code fails to comply with the standard, then your patches will be
-rejected.  For further information, please visit the coding standards at:
+rejected. For further information, please visit the coding standards at:
 
-  http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
 Scala source file belonging to the org.facsim.measure package.
 */
@@ -38,163 +38,195 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import org.facsim.LibResource
+
 //=============================================================================
 /**
-''Time'' physical quantity type.
+''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' physical quantity
+type.
 
-Both relative and absolute times can be represented by this class.  Time values
-cannot be negative.
+All time values are stored internally in
+''[[http://en.wikipedia.org/wiki/Second seconds]]'', which is the
+''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
 
-All times are stored internally in seconds, which is the SI standard unit of
-time.
+@see [[http://en.wikipedia.org/wiki/Time_in_physics Time]] on ''Wikipedia''.
+@see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
+@see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
+''Wikipedia''.
 
 @since 0.0
 */
 //=============================================================================
 
-object Time extends NonNegative {
+object Time
+extends NonNegative {
 
-/**
-@inheritdoc
+/*
+Time measurement values.
 */
 
-  final override type Measure = TimeMeasure
+  override type Measure = TimeMeasure
 
-/**
-@inheritdoc
+/*
+Time measurement units.
 */
 
-  final override type Units = TimeUnits
+  override type Units = TimeUnits
 
 /**
-Units for time measured in ''milliseconds''.
+Units for time measured in ''[[http://en.wikipedia.org/wiki/Millisecond
+milliseconds]]''.
 
-In ''Facsimile'', a millisecond is defined as being exactly 1/1000 of a
-''second'' (refer to [[org.facsim.measure.Time.seconds]] for the definition of
-a second.
+@see [[http://en.wikipedia.org/wiki/Millisecond Milliseconds]] on
+''Wikipedia''.
+
+@since 0.0
 */
 
-  final val milliseconds = new Units (new LinearScaleConverter (1.0e-3), "ms")
+  val Milliseconds = new Units (new LinearScaleConverter (0.001),
+  LibResource ("measure.Time.Millisecond.sym"))
 
 /**
-Units for time measured in ''seconds''.
+Units for time measured in ''[[http://en.wikipedia.org/wiki/Second seconds'']].
 
-@note Seconds are the ''SI'' standard units for time measurement, and the units
-that are used to stored time measurements internally in ''Facsimile''.
+@note ''Seconds'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard
+units for time measurement, and the units that are used to store such
+measurements internally in ''Facsimile''.
 
-In ''Facsimile'', a second is defined in accordance with ''SI'' standards.
+In ''Facsimile'', a ''second'' is defined in accordance with ''SI'' standards.
 
-@see [[http://en.wikipedia.org/wiki/Second Second]] for further information.
+@see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
+@see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
+''Wikipedia''.
+
+@since 0.0
 */
 
-  final val seconds = new Units (SIConverter, "s")
+  val Seconds = new Units (SIConverter,
+  LibResource ("measure.Time.Second.sym"))
 
 /**
-Units for time measured in ''minutes''.
+Units for time measured in ''[[http://en.wikipedia.org/wiki/Minute minutes]]''.
 
-In ''Facsimile'', a minute is defined as being exactly 60 ''seconds'' (refer to
-[[org.facsim.measure.Time.seconds]] for the definition of a second.
+@see [[http://en.wikipedia.org/wiki/Minute Minutes]] on ''Wikipedia''.
+
+@since 0.0
 */
 
-  final val minutes = new Units (new LinearScaleConverter (60.0), "min")
+  val Minutes = new Units (new LinearScaleConverter (60.0),
+  LibResource ("measure.Time.Minute.sym"))
 
 /**
-Units for time measured in ''hours''.
+Units for time measured in ''[[http://en.wikipedia.org/wiki/Hour hours]]''.
 
-In ''Facsimile'', an hour is defined as being exactly 60 ''minutes'' (refer to
-[[org.facsim.measure.Time.minutes]] for the definition of a minute.
+@see [[http://en.wikipedia.org/wiki/Hour Hours]] on ''Wikipedia''.
+
+@since 0.0
 */
 
-  final val hours = new Units (new LinearScaleConverter (60.0 * 60.0), "h")
+  val Hours = new Units (new LinearScaleConverter (60.0 * 60.0),
+  LibResource ("measure.Time.Hour.sym"))
 
 /**
-Units for time measured in ''days''.
+Units for time measured in ''[[http://en.wikipedia.org/wiki/Day days]]''.
 
-In ''Facsimile'', a day is defined as being exactly 24 ''hours'' (refer to
-[[org.facsim.measure.Time.hours]] for the definition of an hour.
+@see [[http://en.wikipedia.org/wiki/Day Days]] on ''Wikipedia''.
+
+@since 0.0
 */
 
-  final val days = new Units (new LinearScaleConverter (60.0 * 60.0 * 24.0),
-  "d")
+  val Days = new Units (new LinearScaleConverter (60.0 * 60.0 * 24.0),
+  LibResource ("measure.Time.Day.sym"))
 
 /**
-Units for time measured in ''weeks''.
+Units for time measured in ''[[http://en.wikipedia.org/wiki/Week weeks]]''.
 
-In ''Facsimile'', a week is defined as being exactly 7 ''days'' (refer to
-[[org.facsim.measure.Time.days]] for the definition of a day.
+@note This is the largest unit of time currently supported by ''Facsimile''.
+Note that months, years, decades, centuries, millenia, etc. vary in duration
+depending upon a number of factors: leap seconds, leap years, days per month,
+etc. Consequently, there is no simple ''standard'' definition for higher units
+of time.
 
-@note This is the largest unit of time supported by ''Facsimile''.  Note that
-months, years, decades, centuries, millenia, etc. vary in duration depending
-upon a number of factors: leap seconds, leap years, days per month, etc.
-Consequently, there is no simple ''standard'' definition for higher units of
-time.
+@see [[http://en.wikipedia.org/wiki/Week Weeks]] on ''Wikipedia''.
+
+@since 0.0
 */
 
-  final val weeks = new Units (new LinearScaleConverter (60.0 * 60.0 * 24.0 *
-  7.0), "wk")
+  val Weeks = new Units (new LinearScaleConverter (60.0 * 60.0 * 24.0 * 7.0),
+  LibResource ("measure.Time.Week.sym"))
 
 /**
 Physical quantity family for time measurements.
 */
 
-  private [measure] final val family = Family (timeExponent = 1)
+  protected [measure] val family = Family (timeExponent = 1)
 
-/**
-@inheritdoc
+/*
+Time SI Units.
 */
 
-  final override val siUnits = seconds
+  override val siUnits = Seconds
 
 /*
 Register this family.
 */
 
-  Family.register(family, Angle)
+  Family.register (family, Time)
 
 //-----------------------------------------------------------------------------
-/**
-@inheritdoc
+/*
+Time measurement factory.
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] final override def apply (value: Double) = new
-  TimeMeasure (value)
+  private [measure] override def apply (measure: Double) =
+  new TimeMeasure (measure)
 
 //-----------------------------------------------------------------------------
 /**
-''Time'' measurement class.
+''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' measurement class.
 
-@constructor Create new time value.
+Instances of this class represent ''time'' measurements.
 
-@param value Time value in seconds.  This value must be finite and
-non-negative.
+@constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics
+time]]'' measurement value.
 
-@throws java.lang.IllegalArgumentException if '''value''' is not finite or is
-negative.
+@param measure ''Time'' measurement expressed in
+''[[org.facsim.measure.Time$.seconds]]''. This value must be finite and greater
+than or equal to zero.
+
+@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+is negative.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final class TimeMeasure private [measure] (value: Double) extends
-  NonNegativeMeasure (value)
+  final class TimeMeasure private [measure] (measure: Double)
+  extends NonNegativeMeasure (measure)
 
 //-----------------------------------------------------------------------------
 /**
-''Time'' unit of measurement family class.
+''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' unit of measurement
+family class.
 
-@constructor Create new time unit of measurement.
+Instances of this class represent units for expressing ''time'' measurements.
+
+@constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics
+time]]'' unit of measurement.
 
 @param converter Rules to be applied to convert a quantity measured in these
-units to the standard ''Time SI'' units, ''seconds''.
+units to and from the standard ''time [[http://en.wikipedia.org/wiki/SI SI]]''
+units, ''seconds''.
 
-@param symbol Symbol to be used when outputting measurement values in these
-units.
+@param symbol Symbol to be used when outputting measurement values expressed in
+these units.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
   final class TimeUnits private [measure] (converter: Converter, symbol:
-  String) extends NonNegativeUnits (converter, symbol)
+  String)
+  extends NonNegativeUnits (converter, symbol)
 }
