@@ -487,7 +487,7 @@ SBT-Eclipse plugin configuration.
     EclipseKeys.useProjectId := true,
     EclipseKeys.createSrc := EclipseCreateSrc.Default +
     EclipseCreateSrc.Resource
-  ).dependsOn (macros)
+  ).dependsOn (macros % "test->test;compile->compile")
 
 /**
 Macro project.
