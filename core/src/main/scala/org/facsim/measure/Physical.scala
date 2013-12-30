@@ -204,6 +204,24 @@ or is invalid for these units.
 
 //.............................................................................
 /**
+Change the sign of a measurement value.
+
+@note All measurements that do not permit negative values will throw exceptions
+when this operation is invoked on a valid value.
+
+@return Measurement value having a sign opposite that of this value.
+
+@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+is invalid for these units.
+
+@since 0.0
+*/
+//.............................................................................
+
+    final def unary_- = createNew (-value)
+
+//.............................................................................
+/**
 Add a measurement value of the same physical quantity family to this
 measurement.
 
