@@ -38,6 +38,7 @@ Scala source file from the org.facsim.util.test package.
 
 package org.facsim.util.test
 
+import org.facsim.test.CommonTestMethods
 import org.facsim.util.Version
 import org.scalatest.FunSpec
 
@@ -48,7 +49,9 @@ Test harness for the [[org.facsim.util.Version!]] class and
 */
 //=============================================================================
 
-class VersionTest extends FunSpec {
+class VersionTest
+extends FunSpec
+with CommonTestMethods {
 
 /*
 Name the class we're testing.
@@ -65,7 +68,7 @@ Application tests.
         val e = intercept [NullPointerException] {
           Version (null)
         }
-        assert (e.getMessage () === "Argument 'version' cannot be null.")
+        assertRequireNonNullMsg (e, "version")
       }
       it ("must return a version if passed a valid version string") {
         val v = Version ("1.0")
