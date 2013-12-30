@@ -41,8 +41,6 @@ package org.facsim.anim.cell
 import java.io.InputStreamReader
 import java.net.URL
 import org.facsim.requireNonNull
-import org.facsim.SafeNone
-import org.facsim.SafeOption
 import org.facsim.io.TextReader
 import scalafx.scene.Node
 import scalafx.scene.paint.Color
@@ -58,7 +56,7 @@ This helper object is responsible for loading 3D scenes stored in
 The ''AutoMod®'' cell format defines a number of ''3D'' graphics primitives,
 including ''sets'', ''trapezoids'' (which include ''boxes''), ''cylinders'',
 ''cones'', ''frustums'', ''polyhedra'', etc. as well as a ''compiled picture''
-format.  Furthermore, cell files can also reference and/or embed ''VRML 1.0'',
+format. Furthermore, cell files can also reference and/or embed ''VRML 1.0'',
 ''VRML 97'' and ''OpenInventor'' graphics files (but note that ''Facsimile''
 actually permits ''cell'' files to embed and/or reference any 3D file format
 that is supported by ''ScalaFX''/''JavaFX'').
@@ -90,7 +88,7 @@ located as follows:
 In all cases, once a search location has been established, the search will fail
 if the file could not be found at, or relative to, that search location.
 
-Most of the time, these rules will do what you expect of them.  In short, you
+Most of the time, these rules will do what you expect of them. In short, you
 should only specify a base URL for the loader function if, and only if, you
 have reason to expect files to be located relative to a specific URL that
 differs from the location of the ''cell'' file being processed; in all other
@@ -122,21 +120,21 @@ URL and return it as a ''ScalaFX 3D Parent'' node.
 
 @note If a base URL is specified, then any files referenced by the cell data
 will be searched for relative to that URL; otherwise, files should be present
-at the same location as the named file.  Refer to
+at the same location as the named file. Refer to
 [[org.facsim.anim.cell.CellLoader$]] for further information.
 
 @param url URL of file from which cell data is to be read.
 
 @param baseUrl Optional base URL identifying the location relative to which any
-referenced files should be located.  If `SafeNone`, then referenced files
-should be located relative to the processed ''cell'' file's location.
+referenced files should be located. If `None`, then referenced files should be
+located relative to the processed ''cell'' file's location.
 
 @param faceColor Face color (as a material) to be assigned to all ''cell''
-elements in the scene that inherit their face color from the root node.  This
+elements in the scene that inherit their face color from the root node. This
 value cannot be `null`.
 
 @param edgeColor Edge color (as a material) to be assigned to all ''cell''
-elements in the scene that inherit their edge color from the root node.  This
+elements in the scene that inherit their edge color from the root node. This
 value cannot be `null`.
 
 @return ''ScalaFX'' [[scalafx.scene.Node!]] containing the ''cell'''s contents.
@@ -161,15 +159,16 @@ encountered during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  def load (url: URL, baseUrl: SafeOption [URL] = SafeNone, faceColor:
-  CellColor.Value = CellColor.default, edgeColor: CellColor.Value =
-  CellColor.default): Node = {
+  def load (url: URL, baseUrl: Option [URL] = None,
+  faceColor: CellColor.Value = CellColor.default,
+  edgeColor: CellColor.Value = CellColor.default): Node = {
 
 /*
 Verify that certain arguments are not null.
 */
 
     requireNonNull (url)
+    requireNonNull (baseUrl)
     requireNonNull (faceColor)
     requireNonNull (edgeColor)
 
