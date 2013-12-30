@@ -268,7 +268,7 @@ some useful information.
 
     reify {
       if (!isValid.splice) throw new IllegalArgumentException (LibResource
-      ("requireValid", cleanArgName (argString.splice), arg.splice))
+      ("requireValid", cleanArgName (argString.splice), arg.splice.toString))
     }
   }
 

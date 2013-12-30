@@ -48,7 +48,9 @@ Test suite for the [[org.facsim.anim.cell.LineWidth!]] object.
 */
 //=============================================================================
 
-class LineWidthTest extends FunSpec with CommonTestMethods {
+class LineWidthTest
+extends FunSpec
+with CommonTestMethods {
 
 /*
 Test data.
