@@ -49,15 +49,17 @@ and that does not permit `null` instances.
 `null` is a different value to `None`), then you should use [[scala.Option!]],
 [[scala.Some]] and [[scala.None]] instead of this class hierarchy.
  
-@tparam T Type of optional value to be stored.  Note that instance of T
+@tparam T Type of optional value to be stored. Note that instance of T
 subclasses can be stored and the result will still be a SafeOption [T] type.
 
 @since 0.0
 */
 //=============================================================================
 
-sealed abstract class SafeOption [+T] extends Product with Serializable with
-NotNull {
+sealed abstract class SafeOption [+T]
+extends Product
+with Serializable
+with NotNull {
 
 //-----------------------------------------------------------------------------
 /**
@@ -104,7 +106,7 @@ Return the optional value if present, or perform a default action otherwise.
 
 @param default Function to execute if optional value is missing.
 
-@tparam V Actual type of the stored value, if present.  V must the same type as
+@tparam V Actual type of the stored value, if present. V must the same type as
 T or a sub-class of it.
 
 @return Optional value, if present; value returned by `default` if missing.
@@ -164,7 +166,7 @@ Safe option factory method.
 
 @param x Value to be stored.
 
-@tparam T Type of optional value to be stored.  Note that instances of T
+@tparam T Type of optional value to be stored. Note that instances of T
 subclasses can be stored and the result will still have a SafeOption [T] type.
 
 @return `SafeSome (x)` if x is non-`null`; `SafeNone` otherwise. 
@@ -181,7 +183,7 @@ subclasses can be stored and the result will still have a SafeOption [T] type.
 /**
 Safe option factory method that returns an ''empty'' option.
 
-@tparam T Type of optional value to be stored.  Note that instances of T
+@tparam T Type of optional value to be stored. Note that instances of T
 subclasses can be stored and the result will still have a SafeOption [T] type.
 
 @return An empty safe option value, i.e. `SafeNone`.

@@ -73,7 +73,7 @@ Test data.
 SafeOption Object testing.
 */
 
-  describe (classOf [SafeOption].getCanonicalName) {
+  describe (classOf [SafeOption [Any]].getCanonicalName) {
 
 /*
 Test apply method.
@@ -85,8 +85,9 @@ Test apply method.
           assert (SafeOption (nullString) === SafeNone)
         }
         it ("must return SafeSome(value) if passed a non-null value") {
-          assert (SafeOption (goodString).getClass === classOf (SafeSome))
-          assert (SafeOption (goodValue).getClass === classOf (SafeSome))
+          assert (SafeOption (goodString).getClass ===
+          classOf [SafeSome [String]])
+          assert (SafeOption (goodValue).getClass === classOf [SafeSome [Int]])
         }
       }
     }
@@ -97,7 +98,7 @@ Test empty method.
 
     describe (".empty") {
       it ("must return SafeNone when called") {
-        assert (SafeOption.empty === SafeNone)
+        assert (SafeOption.empty == SafeNone)
       }
     }
 
@@ -155,7 +156,7 @@ Test implicit conversion function from an Option to a SafeOption.
 Test SafeNone object.
 */
 
-  describe (classOf [SafeNone].getCanonicalName) {
+  describe (SafeNone.getClass.getCanonicalName) {
 
 /*
 Test .isEmpty function.
@@ -211,7 +212,7 @@ Test .filter function.
       new TestData {
         it ("must always return SafeNone") {
           val stringOption = SafeOption (nullString)
-          val valueOption = SafeOption [Int].empty
+          val valueOption = SafeOption.empty
           assert (stringOption.filter (_ == goodString) === SafeNone)
           assert (stringOption.filter (_ != goodString) === SafeNone)
           assert (stringOption.filter (_ == nullString) === SafeNone)
@@ -227,7 +228,7 @@ Test .filter function.
 Test SafeSome class.
 */
 
-  describe (classOf [SafeSome].getCanonicalName) {
+  describe (classOf [SafeSome[Any]].getCanonicalName) {
 
 /*
 Test constructor.

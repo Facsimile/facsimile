@@ -55,7 +55,8 @@ command line, or both, depending upon the registered behavior.
 */
 //=============================================================================
 
-object App extends AppImplementation
+object App
+extends AppImplementation
 
 /*
 Do not add functionality here!

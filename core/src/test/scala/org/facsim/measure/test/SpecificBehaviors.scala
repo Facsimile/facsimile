@@ -45,16 +45,19 @@ import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test behaviors for the [[org.facsim.measure.Specific!]] abstract class.
+Test behaviors for [[org.facsim.measure.Specific$]] subclasses.
+
+@tparam Q The `Specific` subclass being tested.
 */
 //=============================================================================
 
-trait SpecificBehaviors [Q <: Specific] extends PhysicalQuantityBehaviors [Q] {
+trait SpecificBehaviors [Q <: Specific]
+extends PhysicalBehaviors [Q] {
   this: FunSpec =>
 
 //-----------------------------------------------------------------------------
 /**
-Verify a [[org.facsim.measure.Specific!]]-implementing object.
+Verify a [[org.facsim.measure.Specific$]] subclass implementation.
 
 @param fixture Test fixture providing information to be used by the tests.
 */
@@ -66,16 +69,16 @@ Verify a [[org.facsim.measure.Specific!]]-implementing object.
 Firstly, verify the physical quantity type behavior.
 */
 
-    it must behave like physicalQuantityTypeBehavior (fixture)
+    it must behave like physicalBehavior (fixture)
 
 /*
-Verify that the family reported for this physical quantity matches
+Verify that the family reported for this specific physical quantity matches
 requirements.
 */
 
     describe (".family") {
       it ("must report the correct family") {
-        assert (fixture.physQty.family === fixture.expectedFamily)
+        assert (fixture.instance.family === fixture.expectedFamily)
       }
     }
 
@@ -94,7 +97,7 @@ Verify that non-finite values are rejected.
         fixture.nonFiniteValues.foreach {
           value =>
           val e = intercept [IllegalArgumentException] {
-            fixture.physQty.apply (value)
+            fixture.instance.apply (value)
           }
           assertRequireFiniteMsg (e, "value", value)
         }
@@ -107,10 +110,9 @@ exception.
 
       it ("must throw an IllegalArgumentException if passed a bad value") {
         fixture.invalidValues.foreach {
-          pair =>
-          val (value, condition) = pair
+          value =>
           val e = intercept [IllegalArgumentException] {
-            fixture.physQty.apply (value)
+            fixture.instance.apply (value)
           }
           assertRequireValidMsg (e, "value", value)
         }
@@ -124,7 +126,7 @@ thrown.
       it ("must not throw an exception when passed a valid value") {
         fixture.validValues.foreach {
           value =>
-          assert (fixture.physQty.apply (value) ne null)
+          assert (fixture.instance.apply (value) ne null)
         }
       }
     }

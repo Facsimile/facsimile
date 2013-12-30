@@ -45,26 +45,26 @@ import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test behaviors for [[org.facsim.measure.PhysicalQuantity!]] sub-classes.
+Test behaviors for [[org.facsim.measure.Physical$]] subclasses.
 
-@tparam V PhysicalQuantity sub-class to be tested.
+@tparam Q Physical subclass to be tested.
 */
 //=============================================================================
 
-trait PhysicalQuantityBehaviors [Q <: Physical] extends
-CommonTestMethods {
+trait PhysicalBehaviors [Q <: Physical]
+extends EqualsBehaviors [Q#Measure]
+with CommonTestMethods {
   this: FunSpec =>
 
 //-----------------------------------------------------------------------------
 /**
-Verify a [[org.facsim.measure.PhysicalQuantity!]]-implementing object.
+Verify a [[org.facsim.measure.Physical$]] subclass implementation.
 
 @param fixture Test fixture providing information to be used by the tests.
 */
 //-----------------------------------------------------------------------------
 
-  final def physicalQuantityTypeBehavior (fixture: PhysicalQuantityFixture
-  [Q]): Unit = {
+  final def physicalBehavior (fixture: PhysicalFixture [Q]): Unit = {
 
 /*
 Test the physical quantity's SI units are reported correctly.
@@ -72,7 +72,7 @@ Test the physical quantity's SI units are reported correctly.
 
     describe (".siUnits") {
       it ("must report correct SI units for this type") {
-        assert (fixture.physQty.siUnits === fixture.expectedSIUnits)
+        assert (fixture.instance.siUnits === fixture.expectedSIUnits)
       }
     }
 
@@ -86,8 +86,16 @@ in time.
 
     describe (".preferredUnits") {
       it ("must report user's preferred units for this type") {
-        assert (fixture.physQty.preferredUnits === fixture.expectedSIUnits)
+        assert (fixture.instance.preferredUnits === fixture.expectedSIUnits)
       }
+    }
+
+/*
+Test that measurements of this physical quantity fulfill the "equals contract".
+*/
+
+    describe (".Measure") {
+      it must behave like equalsBehavior (fixture.equalsFixture)
     }
   }
 }

@@ -55,7 +55,9 @@ hence this specific test fixture, based upon the `ResourceTest` test fixture.
 */
 //=============================================================================
 
-class LibResourceTest extends FunSpec with CommonTestMethods {
+class LibResourceTest
+extends FunSpec
+with CommonTestMethods {
 
 /*
 Some commonly used strings.

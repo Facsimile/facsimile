@@ -60,7 +60,8 @@ shortly.  The recommended way to create version instances is via
 */
 //=============================================================================
 
-final class Version private [util] (version: String) extends NotNull {
+final class Version private [facsim] (version: String)
+extends NotNull {
 
 //-----------------------------------------------------------------------------
 /*

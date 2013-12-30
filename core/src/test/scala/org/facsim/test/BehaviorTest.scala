@@ -49,7 +49,8 @@ Test suite for the [[org.facsim.Behavior!]] trait.
 */
 //=============================================================================
 
-class BehaviorTest extends FunSpec {
+class BehaviorTest
+extends FunSpec {
 
 /**
 Test trait - unpopulated behavior.
@@ -81,7 +82,7 @@ Test trait - populated behavior.
       override def organization = orgBasic
     }
     val range = new BasicBehavior {
-      override def inceptionData = inceptionLastYear
+      override def inceptionDate = inceptionLastYear
       override def organization = orgRange
     }
   }
@@ -197,12 +198,12 @@ Test copyright function.
         new PopulatedBehavior {
 
 /*
-Note.  If the release and inception dates have the same year, we should get a
+Note. If the release and inception dates have the same year, we should get a
 single year in the copyright message, otherwise, we should get a range of years
-reported.  Also, if the organization name ends in a period, it should be
+reported. Also, if the organization name ends in a period, it should be
 stripped when producing the copyright string (which should always end in a
-period ".", not in two periods "..").  We test this explicitly by having one
-org name ending in a period, and one that does not.
+period ".", not in two periods ".."). We test this explicitly by having one org
+name ending in a period, and one that does not.
 */
 
           assert (basic.copyright === "Copyright © " + release.year + ", " +

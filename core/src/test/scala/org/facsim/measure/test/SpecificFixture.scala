@@ -43,16 +43,19 @@ import org.facsim.measure.Specific
 
 //=============================================================================
 /**
-Test fixture trait for all specific [[org.facsim.measure.PhysicalQuantity!]]
-sub-classes.
+Test fixture trait for all [[org.facsim.measure.Specific$]] subclasses.
+
+@tparam Q The `Specific` subclass being tested.
 */
 //=============================================================================
 
-trait SpecificFixture [Q <: Specific] extends PhysicalQuantityFixture [Q] {
+trait SpecificFixture [Q <: Specific]
+extends PhysicalFixture [Q] {
 
 //-----------------------------------------------------------------------------
 /**
-Retrieve the expected family that this physical quantity should report.
+Retrieve the expected family that this specific physical quantity should
+report.
 
 @return Expected physical quantity family.
 */
@@ -66,24 +69,21 @@ List of bad measurement values, in associated SI units, that ought to be
 incapable of valid measurement construction, and which should result in an
 exception being thrown.
 
-Each invalid value is paired with a string defining the condition that the test
-should fail.
-
 @note This function ought to provide values that test the boundaries of
-acceptable ranges.  For example, if valid measurements are acceptable over the
+acceptable ranges. For example, if valid measurements are acceptable over the
 range [0, 1], then both -[[scala.Double.MinPositiveValue]] and 1 +
 [[scala.Double.MinPositiveValue]] should be included as invalid values.
 
 @note This function should not include non-finite values, which are tested
 separately.
 
-@return List of pairs of bad values and associated condition failure strings.
-None of the bad values should be capable of valid construction when expressed
-in SI units.
+@return List of bad values. None of the bad values should be capable of valid
+construction when expressed in SI units. If there are no bad values, then an
+empty list should be returned.
 */
 //-----------------------------------------------------------------------------
 
-  def invalidValues: List [(Double, String)]
+  def invalidValues: List [Double]
 
 //-----------------------------------------------------------------------------
 /**
@@ -91,7 +91,7 @@ List of good measurement values, in associated SI units, that ought to be
 capable of valid measurement construction.
 
 @note This function ought to provide values that test the boundaries of
-acceptable ranges.  For example, if valid measurements are acceptable over the
+acceptable ranges. For example, if valid measurements are acceptable over the
 range [0, 1], then both 0 and 1 should be included as valid values.
 
 @return List of values all of which should be capable of valid construction

@@ -48,4 +48,5 @@ Helper object reporting ''Facsimile'' library resources.
 */
 //=============================================================================
 
-private [facsim] object LibResource extends Resource ("facsimile")
+private [facsim] object LibResource
+extends Resource ("facsimile")

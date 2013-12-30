@@ -55,7 +55,9 @@ object.
 */
 //=============================================================================
 
-trait Behavior extends AppBehaviorInterface with NotNull {
+trait Behavior
+extends AppBehaviorInterface
+with NotNull {
 
 
 //-----------------------------------------------------------------------------
@@ -109,7 +111,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 
 @note The copyright message is built from the
 [[org.facsim.Behavior!.organization]], [[org.facsim.Behavior!.inceptionDate]]
-and [[org.facsim.Behavior!.releaseDate]] functions.  If any of those fields are
+and [[org.facsim.Behavior!.releaseDate]] functions. If any of those fields are
 missing, then a [[java.util.NoSuchElementException]] will result.
 */
 //-----------------------------------------------------------------------------

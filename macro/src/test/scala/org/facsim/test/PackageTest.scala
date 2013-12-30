@@ -49,7 +49,9 @@ Test suite for the [[org.facsim$]] package object.
 */
 //=============================================================================
 
-class PackageTest extends FunSpec with CommonTestMethods {
+class PackageTest
+extends FunSpec
+with CommonTestMethods {
 
 /*
 Test fixture description.

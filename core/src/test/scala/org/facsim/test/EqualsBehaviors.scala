@@ -54,15 +54,17 @@ the ''equals contract'':
     answer for various non-`null` `x` & `y`.
  -  ''Transitive'': `x == y`, `y == z` and `x == z` should all give the same,
     expected answer for various non-`null` `x`, `y` & `z`.
- -  ''Consistent'': `x == y` must always hold `true` (or always hold `false`)
-    if `x` & `y` not modified (guaranteed if `x` & `y` immutable).
+ -  ''Consistent'': `x == y` must always hold `true`, or always hold `false`,
+    if `x` & `y` are not modified (guaranteed if `x` & `y` are immutable).
  -  `x != y` if `x` and `y` are not comparable objects, regardless of contents,
     for various non-`null` `x` & `y`.
- -  `x != null` for various non-`null` `x`.  Should not see
+ -  `x != null` for various non-`null` `x`. Should not see
     [[java.lang.NullPointerException!]] thrown.
  -  If `x == y`, then verify also that `x.hashMap = y.hashMap`, for various
     non-`null` `x` & `y`.
  -  etc.
+
+@tparam V Type, implementing the [[scala.Equals!]] trait, to be tested.
 */
 //=============================================================================
 
@@ -83,14 +85,14 @@ Function to compare a value to every value in a list, verifying the result.
 
     def compare (list: List [V], expectedResult: Boolean): Unit = {
       @tailrec
-      def doCompare (value: V, list: List [V]): Unit = {
-        if (!list.isEmpty) {
-          list.foreach {
+      def doCompare (value: V, remainder: List [V]): Unit = {
+        if (!remainder.isEmpty) {
+          remainder.foreach {
             other =>
             assert (value.equals (other) === expectedResult)
             assert (other.equals (value) === expectedResult)
           }
-          doCompare (list.head, list.tail)
+          doCompare (remainder.head, remainder.tail)
         }
       }
       doCompare (list.head, list.tail)
@@ -122,8 +124,8 @@ Tests for the canEquals method.
     describe (".canEqual (Any)") {
 
 /*
-Verify that the object cannot compare as equals to null and does not result in
-a NullPointerException being thrown.
+Verify that the object cannot compare as equal to null and does not result in a
+NullPointerException being thrown.
 */
 
       it ("must return false if passed null") {
@@ -238,10 +240,13 @@ Test the hash code function, whose operation must be consistent with equals.
 /*
 The hash codes of dissimilar values are not necessarily different (we can have
 the same hash code for two different values purely by chance, although that
-should happen rarely).  However, for the purposes of our test, we ought to get
-a different hash code for every unique value we test.  If this test should
-fail, down to pure bad luck, rather than bad hash code implementation, then
-choose a different set of test values.
+should happen rarely). However, for the purposes of our test, we ought to get
+a different hash code for every unique value we test. If this test should
+fail, down to pure bad luck (two completely different values end up with the
+same hash code purely by chance), rather than bad hash code implementation (two
+completely different values end up with the same hash code because, say, every
+object is given the same hash code), then simply choose a different set of test
+values.
 
 If the set of unique hash codes is the same size as the list of test values,
 then we're doing OK.

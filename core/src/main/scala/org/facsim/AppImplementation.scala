@@ -42,7 +42,7 @@ package org.facsim
 /**
 [[org.facsim.App$]] object's implementation.
 
-All of the functionality offered by `App` must be defined here.  The primary
+All of the functionality offered by `App` must be defined here. The primary
 reason is to support more thorough testing: if implemented within the `App`
 object, it would be possible to test the application of a single behavior only;
 this trait allows us to create test subclasses that can be used to test the
@@ -55,13 +55,14 @@ instance.
 */
 //=============================================================================
 
-private [facsim] trait AppImplementation extends AppBehaviorInterface {
+private [facsim] trait AppImplementation
+extends AppBehaviorInterface {
 
 /**
 Applied behavior.
 
 This value is None until a behavior is applied via the
-[[org.facsim.AppImplementation!.apply(Behavior)*]] function.  Only a single
+[[org.facsim.AppImplementation!.apply(Behavior)*]] function. Only a single
 behavior can be applied successfully.
 */
 

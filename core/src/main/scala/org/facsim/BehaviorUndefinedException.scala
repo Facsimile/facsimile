@@ -49,8 +49,8 @@ Thrown if an attempt to access an [[org.facsim.App$]]'s behavior before any
 */
 //=============================================================================
 
-final class BehaviorUndefinedException private [facsim] () extends
-RuntimeException {
+final class BehaviorUndefinedException private [facsim] ()
+extends RuntimeException {
 
 //-----------------------------------------------------------------------------
 /*

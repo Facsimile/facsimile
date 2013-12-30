@@ -76,14 +76,14 @@ verify that the reference is non-`null` as one of its preconditions; this
 function makes such precondition verification simpler.
 
 Furthermore, even if the ''JVM'' can be relied upon to throw this exception,
-performing this verification explicitly is regarded as good practice.  One
+performing this verification explicitly is regarded as good practice. One
 reason is that exceptions thrown by the ''JVM'' provide limited explanation to
 the user as to their cause; this function provides an explanation
 automatically.
 
 @param arg Argument whose value is to be compared to `null`.
 
-@throws java.lang.NullPointerException if '''arg''' is `null`.
+@throws java.lang.NullPointerException if `arg` is `null`.
 
 @since 0.0
 */
@@ -106,10 +106,10 @@ invalid.
 @param arg Argument being verified.
 
 @param isValid Flag representing the result of a condition determining the
-validity of '''arg'''.  If `true`, function merely returns; if `false` an
+validity of `arg`. If `true`, function merely returns; if `false` an
 `IllegalArgumentException` is raised.
 
-@throws java.lang.IllegalArgumentException if '''isValid''' is `false`.
+@throws java.lang.IllegalArgumentException if `isValid` is `false`.
 
 @since 0.0
 */
@@ -127,7 +127,7 @@ result in an [[java.lang.IllegalArgumentException!]] being thrown.
 
 @param arg Argument whose value is being validated.
 
-@throws java.lang.IllegalArgumentException if '''arg''' does not have a finite
+@throws java.lang.IllegalArgumentException if `arg` does not have a finite
 value.
 */
 //-----------------------------------------------------------------------------
@@ -160,11 +160,11 @@ Provides implementation of the [[org.facsim.requireNonNull(AnyRef)*]] macro.
 
 @param c Abstract syntax tree (AST) context for this macro definition.
 
-@param arg Argument whose value is to be tested.  If this argument evaluates to
+@param arg Argument whose value is to be tested. If this argument evaluates to
 `null`, then a [[java.lang.NullPointerException!]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
-@return Implementation of this instance of the ''requireNonNull'' macro.
+@return Implementation of this instance of the `requireNonNull` macro.
  
 @since 0.0
 */
@@ -201,11 +201,11 @@ Provides implementation of the [[org.facsim.requireValid(Any,Boolean)*]] macro.
 
 @param c Abstract syntax tree (AST) context for this macro definition.
 
-@param arg Argument whose value is to be tested.  If '''isValid''' is evaluated
-to `false`, then a [[java.lang.IllegalArgumentException!]] is thrown by the
-macro implementation, together with the name of the failed argument.
+@param arg Argument whose value is to be tested. If `isValid` is evaluated to
+`false`, then a [[java.lang.IllegalArgumentException!]] is thrown by the macro
+implementation, together with the name of the failed argument.
 
-@return Implementation of this instance of the ''requireValid'' macro.
+@return Implementation of this instance of the `requireValid` macro.
 
 @since 0.0
 */
@@ -240,11 +240,11 @@ Provides implementation of the [[org.facsim.requireFinite(Double)*]] macro.
 
 @param c Abstract syntax tree (AST) context for this macro definition.
 
-@param arg Argument whose value is to be tested.  If evaluated as `NaN`, `+∞`
-or `-∞`, then a [[java.lang.IllegalArgumentException!]] is thrown by the macro
+@param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or
+`-∞`, then a [[java.lang.IllegalArgumentException!]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
-@return Implementation of this instance of the ''requireFinite'' macro.
+@return Implementation of this instance of the `requireFinite` macro.
 
 @since 0.0
 */

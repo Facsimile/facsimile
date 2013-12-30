@@ -52,7 +52,8 @@ Test suite for the [[org.facsim.AppImplementation!]] trait.
 */
 //=============================================================================
 
-class AppImplementationTest extends FunSpec {
+class AppImplementationTest
+extends FunSpec {
 
 /**
 Test data.
@@ -65,7 +66,6 @@ Test data.
       override def organization = "appImplementationOrganization"
       override def inceptionDate = releaseDate.minus (600)
       override def releaseDate = DateTime.now ()
-      override def copyright = "Copyright © Me"
       override def version = new Version ("7.3.1")
     }
     val app = new AppImplementation {}

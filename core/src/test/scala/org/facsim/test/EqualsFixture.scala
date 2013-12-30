@@ -43,7 +43,7 @@ package org.facsim.test
 Fixture trait for testing if an associated object implements the ''equals
 contract''.
 
-@tparam Type, implementing the [[scala.Equals!]] trait, to be tested.
+@tparam V Type, implementing the [[scala.Equals!]] trait, to be tested.
 */
 //=============================================================================
 
@@ -60,21 +60,6 @@ Sanity checks on the reported fixtures.
 
 //-----------------------------------------------------------------------------
 /**
-Return a sample list of unique values.
-
-@note All of the values in this list should be of type '''V''' (or, to be more
-explicit, their canEqual methods should return true for each value in this
-list).  Duplicate values are not permitted.  Further, there must be at least 2
-values in the list.
-
-@return List of unique values to be tested.
-*/
-//-----------------------------------------------------------------------------
-
-  def valueSample: List [V]
-
-//-----------------------------------------------------------------------------
-/**
 Return a list of lists, such that every value in the inner list should compare
 equal.
 
@@ -86,16 +71,31 @@ equal.
 
 //-----------------------------------------------------------------------------
 /**
-Return a sample list of values of a type different to '''V'''.
+Return a sample list of values of a type different to `V`.
 
-@note None of the values in this list should be of type '''V'''.  However, to
+@note None of the values in this list should be of type `V`. However, to
 improve the thoroughness of the testing, if possible the contents of these
 objects should match the contents of some of the objects in
 [[org.facsim.EqualsFixture!.valueSample]].
 
-@return List of values of a different type to '''V'''.
+@return List of values of a different type to `V`.
 */
 //-----------------------------------------------------------------------------
 
   def nonValueSample: List [Any]
+
+//-----------------------------------------------------------------------------
+/**
+Return a sample list of unique values.
+
+@note All of the values in this list should be of type `V` (or, to be more
+explicit, their `canEqual` methods should return `true` for each value in this
+list). Duplicate values are not permitted. Further, there must be at least 2
+values in the list.
+
+@return List of unique values to be tested.
+*/
+//-----------------------------------------------------------------------------
+
+  final def valueSample: List [V] = equalListSample.map (_.head)
 }

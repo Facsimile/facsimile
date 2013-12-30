@@ -43,19 +43,24 @@ import org.facsim.test.EqualsFixture
 
 //=============================================================================
 /**
-Test fixture for testing [[org.facsim.measure.PhysicalQuantity]] sub-classes.
+Test fixture for testing [[org.facsim.measure.Physical$]] subclasses.
 
-@tparam Q The `PhysicalQuantity` sub-class being tested.
+@tparam Q The `Physical` subclass being tested.
 */
 //=============================================================================
 
-trait PhysicalQuantityFixture [Q <: Physical] {
+trait PhysicalFixture [Q <: Physical] {
 
+//-----------------------------------------------------------------------------
 /**
-Physical quantity associated with this fixture.
-*/
+Retrieve the associated concrete [[org.facsim.measure.Physical$]] subclass
+instance.
 
-  val physQty: Q
+@return Physical quantity instance associated with this fixture.
+*/
+//-----------------------------------------------------------------------------
+
+  def instance: Q
 
 //-----------------------------------------------------------------------------
 /**
@@ -65,7 +70,7 @@ Retrieve this physical quantities expected SI units.
 */
 //-----------------------------------------------------------------------------
 
-  def expectedSIUnits: physQty.Units
+  def expectedSIUnits: Q#Units
 
 //-----------------------------------------------------------------------------
 /**
@@ -78,18 +83,21 @@ construction when expressed in SI units.
 */
 //-----------------------------------------------------------------------------
 
-  final def nonFiniteValues: List [Double] = Double.NaN ::
-  Double.NegativeInfinity :: Double.PositiveInfinity :: Nil
+  final def nonFiniteValues = List (
+    Double.NaN,
+    Double.NegativeInfinity,
+    Double.PositiveInfinity
+  )
 
 //-----------------------------------------------------------------------------
 /**
 Retrieve a fixture for testing the equality of different measurements.
 
-@return Equals test fixture for this physical quantity.  The test fixture will
+@return Equals test fixture for this physical quantity. The test fixture will
 be used to verify that this physical quantity's measurement class correctly
 implements the ''equality contract''.
 */
 //-----------------------------------------------------------------------------
 
-  def equalsFixture: EqualsFixture [physQty.Measure]
+  def equalsFixture: EqualsFixture [Q#Measure]
 }

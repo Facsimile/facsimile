@@ -59,10 +59,10 @@ The user's current preferred locale is identified through a call to
 
 @param bundleName Identifies the base name of the resource bundle to be loaded.
 
-@throws java.lang.NullPointerException if '''bundleName''' is `null`.
+@throws java.lang.NullPointerException if `bundleName` is `null`.
 
 @throws java.util.MissingResourceException if a resource bundle with base name
-'''bundleName''' cannot be found.
+`bundleName` cannot be found.
 
 @see [[java.util.ResourceBundle!]] for information on Java resource bundles.
 
@@ -78,7 +78,7 @@ class Resource (bundleName: String) {
 Verify that we have a bundle name.
 
 Note that we cannot use the requireNonNull macro here, as this class is part of
-the macro compilation unit.  Instead, we have to do the equivalent manually
+the macro compilation unit. Instead, we have to do the equivalent manually
 (this is one reason why macros need to be compiled in-line, because things can
 easily get silly).
 
@@ -106,29 +106,29 @@ bundle will be loaded.
 Retrieve and format a locale-specific string resource.
 
 Retrieves the string resource corresponding to the supplied key from the
-application resource bundle.  Optional arguments are used to populate the
+application resource bundle. Optional arguments are used to populate the
 formatted version of the resulting string, which will be in the locale that
 best matches the user's preference.
 
 @param key Key used to identify the string resource to be retrieved.
 
 @param arguments Arguments to be merged into, and formatted as part of, the
-resulting string resource.  May be omitted if no arguments are required.  Note
+resulting string resource. May be omitted if no arguments are required. Note
 that any Scala type values (Double, Int, etc.) will be boxed into equivalent
 Java type wrappers (java.lang.Double, java.lang.Int, etc.).
 
 @return Locale-specific, formatted version of the requested string resource.
 
-@throws java.lang.NullPointerException if '''key''' is `null`.
+@throws java.lang.NullPointerException if `key` is `null`.
 
 @throws java.util.MissingResourceException if there is no string resource
-indexed by '''key'''.
+indexed by `key`.
 
-@throws java.lang.ClassCastException if the resource indexed by '''key''' is
-not a string.
+@throws java.lang.ClassCastException if the resource indexed by `key` is not a
+string.
 
 @throws java.lang.IllegalArgumentException if the retrieved string is invalid
-or if the '''arguments''' supplied are of the wrong type for the corresponding
+or if the `arguments` supplied are of the wrong type for the corresponding
 format elements in the retrieved string.
 
 @since 0.0
@@ -141,7 +141,7 @@ format elements in the retrieved string.
 Verify that we have a key.
 
 Note that we cannot use the requireNonNull macro here, as this class is part of
-the macro compilation unit.  Instead, we have to do the equivalent manually
+the macro compilation unit. Instead, we have to do the equivalent manually
 (this is one reason why macros need to be compiled in-line, because things can
 easily get silly).
 

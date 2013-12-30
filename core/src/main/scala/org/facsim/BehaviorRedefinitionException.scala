@@ -57,7 +57,8 @@ behavior instances.
 //=============================================================================
 
 final class BehaviorRedefinitionException private [facsim] (existing: Behavior,
-replacement: Behavior) extends RuntimeException () {
+replacement: Behavior)
+extends RuntimeException () {
 
 //-----------------------------------------------------------------------------
 /*

@@ -42,7 +42,7 @@ package org.facsim
 /**
 Thrown if use of deprecated feature is attempted.
 
-@note This exception should only be thrown in extreme cases.  Not every
+@note This exception should only be thrown in extreme cases. Not every
 ''deprecated'' class or function should throw this exception when referenced;
 if so, releases containing newly deprecated features would break a lot of
 existing user models&mdash;and that would not be good!  Instead, it should only
@@ -58,8 +58,8 @@ object, etc.) that has been flagged as being both deprecated and unsupported.
 */
 //=============================================================================
 
-final class DeprecatedException private [facsim] (feature: AnyRef) extends
-RuntimeException {
+final class DeprecatedException private [facsim] (feature: AnyRef)
+extends RuntimeException {
 
 //-----------------------------------------------------------------------------
 /*

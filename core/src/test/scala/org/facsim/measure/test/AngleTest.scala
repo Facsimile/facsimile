@@ -41,159 +41,273 @@ package org.facsim.measure.test
 import org.facsim.measure.Angle
 import org.facsim.measure.Angle.π
 import org.facsim.measure.Angle.τ
+import org.facsim.measure.Current
+import org.facsim.measure.Family
+import org.facsim.measure.Length
+import org.facsim.measure.LuminousIntensity
+import org.facsim.measure.Mass
+import org.facsim.measure.Temperature
+import org.facsim.measure.Time
+import org.facsim.test.EqualsFixture
 import org.scalatest.FunSpec
 
 //=============================================================================
 /**
 Test suite for the [[org.facsim.measure.Angle$]] object.
-
-If you're curious why τ is used in place of 2π, refer to the [[
 */
 //=============================================================================
 
-class AngleTest extends FunSpec with SpecificBehaviors [Angle.type] {
+class AngleTest
+extends FunSpec
+with SpecificBehaviors [Angle.type] {
 
 /*
-Test fixture for angles.
+Fixture for testing that angle measurements fulfill the "equals contract".
 */
 
-  trait AngleFixture extends SpecificFixture [Angle.type] {
+  trait AngleEqualsFixture
+  extends EqualsFixture [Angle.Measure] {
 
 /*
-Specify the physical type.
+Specify a list for equality testing.
+
+Each list within this list should contain values that compare equal and that
+have the same hashCode. The first member of each list should NOT compare equal
+to the first member of any other list.
 */
 
-    final override val physQty = Angle
-
-/*
-
- */
-  }
-
-/*
-Angle test data.
-*/
-
-  trait TestData {
+    override def equalListSample = List (
 
 /*
 All of these values should have a value of -τ radians (-360 degrees), which
 should normalize to 0 radians (0 degrees).
 */
 
-    val minusTauRadians = Angle (-τ, Angle.radians)
-    val minusThreeHundredSixtyDegrees = Angle (-360.0, Angle.degrees)
-    val minusFourHundredGradients = Angle (-400.0, Angle.gradients)
-    val minusOneRevolution = Angle (-1.0, Angle.revolutions)
+      List (
+        -τ,
+        Angle (-360.0, Angle.Degrees),
+        Angle (-400.0, Angle.Gradians),
+        Angle (-1.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of -τ/2 radians (-180 degrees).
 */
 
-    val minusTauOverTwoRadians = Angle (-τ / 2.0, Angle.radians)
-    val minusOneHundredEightyDegrees = Angle (-180.0, Angle.degrees)
-    val minusTwoHundredGradients = Angle (-200.0, Angle.gradients)
-    val minusOneHalfRevolution = Angle (-1.0 / 2.0, Angle.revolutions)
+      List (
+        -τ / 2.0,
+        Angle (-180.0, Angle.Degrees),
+        Angle (-200.0, Angle.Gradians),
+        Angle (-1.0 / 2.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of -τ/4 radians (-90 degrees).
 */
 
-    val minusTauOverFourRadians = Angle (-τ / 4.0, Angle.radians)
-    val minusNinetyDegrees = Angle (-90.0, Angle.degrees)
-    val minusOneHundredGradients = Angle (-100.0, Angle.gradients)
-    val minusOneQuarterRevolution = Angle (-1.0 / 4.0, Angle.revolutions)
+      List (
+        -τ / 4.0,
+        Angle (-90.0, Angle.Degrees),
+        Angle (-100.0, Angle.Gradians),
+        Angle (-1.0 / 4.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of -τ/6 radians (-60 degrees).
 */
 
-    val minusTauOverSixRadians = Angle (-τ / 6.0, Angle.radians)
-    val minusSixtyDegrees = Angle (-60.0, Angle.degrees)
-    val minusSixtySixTwoThirdsGradients = Angle (-200.0 / 3.0, Angle.gradients)
-    val minusOneSixthRevolution = Angle (-1.0 / 6.0, Angle.revolutions)
+      List (
+        -τ / 6.0,
+        Angle (-60.0, Angle.Degrees),
+        Angle (-200.0 / 3.0, Angle.Gradians),
+        Angle (-1.0 / 6.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of -τ/8 radians (-45 degrees).
 */    
 
-    val minusTauOverEightRadians = Angle (-τ / 8.0, Angle.radians)
-    val minusFortyFiveDegrees = Angle (-45.0, Angle.degrees)
-    val minusFiftyGradients = Angle (-50.0, Angle.gradients)
-    val minusOneEighthRevolution = Angle (-1.0 / 8.0, Angle.revolutions)
+      List (
+        -τ / 8.0,
+        Angle (-45.0, Angle.Degrees),
+        Angle (-50.0, Angle.Gradians),
+        Angle (-1.0 / 8.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of -τ/12 radians (-30 degrees).
 */
 
-    val minusTauOverTwelveRadians = Angle (-τ / 12.0, Angle.radians)
-    val minusThirtyDegrees = Angle (-30.0, Angle.degrees)
-    val minusThirtyThreeThirdGradients = Angle (-100.0 / 3.0, Angle.gradients)
-    val minusOneTwelfthRevolution = Angle (-1.0 / 12.0, Angle.revolutions)
+      List (
+        -τ / 12.0,
+        Angle (-30.0, Angle.Degrees),
+        Angle (-100.0 / 3.0, Angle.Gradians),
+        Angle (-1.0 / 12.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have the value 0 radians (0 degrees).
 */
 
-    val zeroRadians = Angle (0.0, Angle.radians)
-    val zeroDegrees = Angle (0.0, Angle.degrees)
-    val zeroGradients = Angle (0.0, Angle.gradients)
-    val zeroRevolutions = Angle (0.0, Angle.revolutions)
+      List (
+        Angle.Zero,
+        Angle (0.0, Angle.Degrees),
+        Angle (0.0, Angle.Gradians),
+        Angle (0.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of τ/12 radians (30 degrees).
 */
 
-    val tauOverTwelveRadians = Angle (τ / 12.0, Angle.radians)
-    val thirtyDegrees = Angle (30.0, Angle.degrees)
-    val thirtyThreeThirdGradients = Angle (100.0 / 3.0, Angle.gradients)
-    val oneTwelfthRevolution = Angle (1.0 / 12.0, Angle.revolutions)
+      List (
+        τ / 12.0,
+        Angle (30.0, Angle.Degrees),
+        Angle (100.0 / 3.0, Angle.Gradians),
+        Angle (1.0 / 12.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of τ/8 radians (45 degrees).
 */    
 
-    val tauOverEightRadians = Angle (τ / 8.0, Angle.radians)
-    val fortyFiveDegrees = Angle (45.0, Angle.degrees)
-    val fiftyGradients = Angle (50.0, Angle.gradients)
-    val oneEighthRevolution = Angle (1.0 / 8.0, Angle.revolutions)
+      List (
+        τ / 8.0,
+        Angle (45.0, Angle.Degrees),
+        Angle (50.0, Angle.Gradians),
+        Angle (1.0 / 8.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of τ/6 radians (60 degrees).
 */
 
-    val tauOverSixRadians = Angle (τ / 6.0, Angle.radians)
-    val sixtyDegrees = Angle (60.0, Angle.degrees)
-    val sixtySixTwoThirdsGradients = Angle (200.0 / 3.0, Angle.gradients)
-    val oneSixthRevolution = Angle (1.0 / 6.0, Angle.revolutions)
+      List (
+        τ / 6.0,
+        Angle (60.0, Angle.Degrees),
+        Angle (200.0 / 3.0, Angle.Gradians),
+        Angle (1.0 / 6.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of τ/4 radians (90 degrees).
 */
 
-    val tauOverFourRadians = Angle (τ / 4.0, Angle.radians)
-    val ninetyDegrees = Angle (90.0, Angle.degrees)
-    val oneHundredGradients = Angle (100.0, Angle.gradients)
-    val oneQuarterRevolution = Angle (1.0 / 4.0, Angle.revolutions)
+      List (
+        τ / 4.0,
+        Angle (90.0, Angle.Degrees),
+        Angle (100.0, Angle.Gradians),
+        Angle (1.0 / 4.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of τ/2 radians (180 degrees).
 */
 
-    val tauOverTwoRadians = Angle (τ / 2.0, Angle.radians)
-    val oneHundredEightyDegrees = Angle (180.0, Angle.degrees)
-    val twoHundredGradients = Angle (200.0, Angle.gradients)
-    val oneHalfRevolution = Angle (1.0 / 2.0, Angle.revolutions)
+      List (
+        τ / 2.0,
+        Angle (180.0, Angle.Degrees),
+        Angle (200.0, Angle.Gradians),
+        Angle (1.0 / 2.0, Angle.Turns)
+      ),
 
 /*
 All of these values should have a value of τ radians (360 degrees), which
 should normalize to 0 radians (0 degrees).
 */
 
-    val tauRadians = Angle (τ, Angle.radians)
-    val threeHundredSixtyDegrees = Angle (360.0, Angle.degrees)
-    val fourHundredGradients = Angle (400.0, Angle.gradients)
-    val oneRevolution = Angle (1.0, Angle.revolutions)
+      List (
+        τ,
+        Angle (360.0, Angle.Degrees),
+        Angle (400.0, Angle.Gradians),
+        Angle (1.0, Angle.Turns)
+      ),
+
+/*
+All of these values should have a value of 2τ radians (720 degrees), which
+should normalize to 0 radians (0 degrees).
+*/
+
+      List (
+        τ * 2.0,
+        Angle (720.0, Angle.Degrees),
+        Angle (800.0, Angle.Gradians),
+        Angle (2.0, Angle.Turns)
+      )
+    )
+
+/*
+Specify a list of values (null is tested separately and does not need to be
+included) that are of a different type to Angle.Measure and so should not
+compare equal and should fail canEqual also.
+*/
+
+    override def nonValueSample = List (
+      0,
+      1.0,
+      "Hello",
+      true,
+      Current.Zero,
+      Length.Zero,
+      LuminousIntensity.Zero,
+      Mass.Zero,
+      Temperature.Zero,
+      Time.Zero
+    )
+  }
+
+/*
+Test fixture for angles.
+*/
+
+  trait AngleFixture
+  extends SpecificFixture [Angle.type] {
+
+/*
+Specify the Angle instance.
+*/
+
+    override def instance = Angle
+
+/*
+Specify the expected SI units for Angles.
+*/
+
+    override def expectedSIUnits = Angle.Radians
+
+/*
+Create a test fixture for testing "equals contract" fulfillment.
+*/
+
+    override def equalsFixture = new AngleEqualsFixture {}
+
+/*
+Specify the physical quantity family that angle measurements should belong to.
+*/
+
+    override def expectedFamily = Family (planeAngleExponent = 1)
+
+/*
+Specify list of invalid SI unit measurement values that should fail
+construction.
+
+This list is empty - there are no invalid finite measurement values for angles.
+*/
+
+    override def invalidValues = Nil
+
+/*
+Specify list of valid SI unit measurement values that should lead to successful
+creation.
+*/
+
+    override def validValues = List (
+      Double.MinValue,
+      -Double.MinPositiveValue,
+      0.0,
+      Double.MinPositiveValue,
+      Double.MaxValue
+    )
   }
 
 /*
@@ -208,7 +322,7 @@ Test that the constant π has the correct value.
 
     describe (".π") {
       it ("must equal the value of physical constant π") {
-        assert (π === Math.PI)
+        assert (π === Angle (Math.PI, Angle.Radians))
       }
     }
 
@@ -218,7 +332,7 @@ Test that the constant τ has the correct value.
 
     describe (".τ") {
       it ("must equal the value of physical constant τ (=2π)") {
-        assert (τ === 2.0 * Math.PI)
+        assert (τ === Angle (2.0 * Math.PI, Angle.Radians))
       }
     }
 
@@ -228,13 +342,6 @@ This should come after the constant testing above, but before the higher-level
 stuff below.
 */
 
-    it must behave like specificBehavior (/* test fixtures instances go here */)
-
-/*
-Test the arc sine function.
-*/
-
-    describe (".arcsine (Double)") {
-    }
+    it must behave like specificBehavior (new AngleFixture {})
   }
 }

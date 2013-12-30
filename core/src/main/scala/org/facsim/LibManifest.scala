@@ -48,4 +48,5 @@ Helper object reporting ''Facsimile'' library manifest attributes.
 */
 //=============================================================================
 
-private [facsim] object LibManifest extends Manifest
+private [facsim] object LibManifest
+extends Manifest

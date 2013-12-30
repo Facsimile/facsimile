@@ -47,7 +47,7 @@ Ensures a common interface for [[org.facsim.App$]] and
 [[org.facsim.Behavior!]].
 
 All function documentation should be defined here, as it will be inherited by
-implementing classes and traits, ensuring consistency throughout.  Functions
+implementing classes and traits, ensuring consistency throughout. Functions
 should be written as though present in both `App` and `Behavior`, with any need
 to customize inherited documentation minimized.
 
