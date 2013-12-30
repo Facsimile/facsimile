@@ -80,8 +80,8 @@ Function to verify a NoSuchElementException's message.
 */
 
   def assertMessage (e: NoSuchElementException, field: String) =
-  assert (e.getMessage () === "Behavior element not implemented: '" + field +
-  "'")
+  assert (e.getMessage () === "Behavior element not implemented: \"" + field +
+  "\"")
 
 /*
 Test fixture description.

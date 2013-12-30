@@ -61,6 +61,12 @@ enabled via this import statements.
 
   import scala.language.experimental.macros
 
+/**
+Regular expression to match class argument name.
+*/
+
+  private val classArgRE = """[0-9A-Za-z_]+\.this\.([0-9A-Za-z_]+)""".r
+
 //-----------------------------------------------------------------------------
 /**
 Require that argument value is non-`null`.
@@ -136,6 +142,38 @@ value.
 
 //-----------------------------------------------------------------------------
 /**
+Clean argument names.
+
+Class arguments are prefixed by "{ClassName}.this." (where "{ClassName}" is the
+name of the class to which the argument belonds), which creates confusion when
+identifying failing arguments, and testing that failed argument messages match
+expected messages. This function removes class argument prefixes so that the
+raw argument name is returned.
+
+@param arg A class or method argument to be cleaned.
+
+@return Cleaned argument name, matching the value expected by the user.
+*/
+//-----------------------------------------------------------------------------
+
+  final def cleanArgName (arg: String): String = arg match {
+
+/*
+If this is a class argument, remove the prefix and return the actual name of
+the argument.
+*/
+
+    case classArgRE (classArg) => classArg
+
+/*
+Otherwise, just return the value supplied.
+*/
+
+    case basicArg => basicArg
+  }
+
+//-----------------------------------------------------------------------------
+/**
 Convert an expression into a string expression.
 
 @param c AST context for the conversion.
@@ -191,7 +229,7 @@ useful information.
 
     reify {
       if (arg.splice eq null) throw new NullPointerException (LibResource
-      ("requireNonNull", argString.splice))
+      ("requireNonNull", cleanArgName (argString.splice)))
     }
   }
 
@@ -230,7 +268,7 @@ some useful information.
 
     reify {
       if (!isValid.splice) throw new IllegalArgumentException (LibResource
-      ("requireValid", argString.splice, arg.splice))
+      ("requireValid", cleanArgName (argString.splice), arg.splice))
     }
   }
 
@@ -277,13 +315,13 @@ slightly convoluted syntax of the first match statement.
 */
 
         case x if x.isNaN => throw new IllegalArgumentException (LibResource
-        ("requireFinite", argString.splice, 0))
+        ("requireFinite", cleanArgName (argString.splice), 0))
         case Double.PositiveInfinity => throw new
         IllegalArgumentException (LibResource ("requireFinite",
-        argString.splice, 1))
+        cleanArgName (argString.splice), 1))
         case Double.NegativeInfinity =>  throw new
         IllegalArgumentException (LibResource ("requireFinite",
-        argString.splice, 2))
+        cleanArgName (argString.splice), 2))
 
 /*
 All other values are valid, so do nothing.

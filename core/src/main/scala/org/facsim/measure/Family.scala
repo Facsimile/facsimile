@@ -289,7 +289,7 @@ Index of Luminosity exponent in the exponents vector.
 Vector of base physical quantity families.
 */
 
-  private [measure] val baseFamilies = Vector [Physical] (
+  private [measure] val baseFamilies = Vector [Specific] (
     Time,
     Length,
     Angle,
