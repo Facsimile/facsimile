@@ -144,11 +144,11 @@ value.
 /**
 Clean argument names.
 
-Class arguments are prefixed by "{ClassName}.this." (where "{ClassName}" is the
-name of the class to which the argument belonds), which creates confusion when
-identifying failing arguments, and testing that failed argument messages match
-expected messages. This function removes class argument prefixes so that the
-raw argument name is returned.
+Class argument names are prefixed by "{ClassName}.this." (where "{ClassName}"
+is the name of the class to which the argument belongs), which creates
+confusion when identifying failing arguments, and testing that failed argument
+messages match expected messages. This function removes class argument prefixes
+so that the raw argument name is returned.
 
 @param arg A class or method argument to be cleaned.
 
