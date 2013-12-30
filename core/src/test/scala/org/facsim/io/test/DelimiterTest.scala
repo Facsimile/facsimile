@@ -38,9 +38,9 @@ Scala source file from the org.facsim.io.test package.
 
 package org.facsim.io.test
 
-import org.facsim.CommonTestFunctions._
 import org.facsim.io.Delimiter
 import org.facsim.io.TextReader
+import org.facsim.test.CommonTestMethods
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -49,7 +49,9 @@ Test suite for the [[org.facsim.io.Delimiter!]] class.
 */
 //=============================================================================
 
-class DelimiterTest extends FunSpec {
+class DelimiterTest
+extends FunSpec
+with CommonTestMethods {
 
 /*
 Test fixture description.
@@ -66,7 +68,7 @@ Primary constructor tests.
         val e = intercept [NullPointerException] {
           new Delimiter (null, true)
         }
-        assertNullPointerMessage (e, "delimiters")
+        assertRequireNonNullMsg (e, "delimiters")
       }
       it ("must accept an empty set of delimiters") {
         new Delimiter (Set (), true)
@@ -77,7 +79,7 @@ Primary constructor tests.
         val e = intercept [IllegalArgumentException] {
           new Delimiter (nulSet, true)
         }
-        assertIllegalArgumentMessage (e, "delimiters", nulSet)
+        assertRequireValidMsg (e, "delimiters", nulSet)
       }
       it ("must throw IllegalArgumentException if passed a set containing " +
       "carriage return character") {
@@ -85,7 +87,7 @@ Primary constructor tests.
         val e = intercept [IllegalArgumentException] {
           new Delimiter (crSet, true)
         }
-        assertIllegalArgumentMessage (e, "delimiters", crSet)
+        assertRequireValidMsg (e, "delimiters", crSet)
       }
     }
   }
