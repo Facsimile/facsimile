@@ -40,7 +40,6 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.paint.Color
-import scalafx.scene.paint.Material
 import scalafx.scene.paint.PhongMaterial
 
 //=============================================================================
@@ -76,9 +75,9 @@ color.
     Color.LIGHTGRAY,
     Color.DARKGRAY,
     Color.BROWN,
+    Color.LIGHTBLUE,
     Color.PURPLE,
     Color.ORANGE,
-    Color.LIGHTBLUE,
     Color.LIGHTGREEN,
     Color.LIGHTYELLOW
   )
@@ -92,7 +91,7 @@ In each case the ''specular'' color is set to white.
 cell files small.
 */
 
-  private val cellToMaterial: Vector [Material] = cellToColor.map {
+  private val cellToMaterial: Vector [PhongMaterial] = cellToColor.map {
     color =>
     new PhongMaterial {
       diffuseColor = color
@@ -168,22 +167,22 @@ Brown, having the ''cell'' color code 10.
   val brown = Value
 
 /**
-Purple, having the ''cell'' color code 11.
+Light blue, having the ''cell'' color code 11.
+*/
+
+  val lightBlue = Value
+
+/**
+Purple, having the ''cell'' color code 12.
 */
 
   val purple = Value
 
 /**
-Orange, having the ''cell'' color code 12.
+Orange, having the ''cell'' color code 13.
 */
 
   val orange = Value
-
-/**
-Light blue, having the ''cell'' color code 13.
-*/
-
-  val lightBlue = Value
 
 /**
 Light green, having the ''cell'' color code 14.

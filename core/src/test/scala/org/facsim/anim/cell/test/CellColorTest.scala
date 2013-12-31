@@ -183,10 +183,12 @@ Test that the toMaterial function works as expected.
         it ("must return correct associated ScalaFX material") {
           CellColor.values.foreach {
             color =>
-            val material = CellColor.toMaterial (color).asInstanceOf
-            [PhongMaterial] 
-            assert (material.diffuseColor == validFXColors (color.id))
-            assert (material.specularColor == Color.WHITE)
+            val material = CellColor.toMaterial (color)
+            // This is very fugly - update ScalaFX accordingly?
+            assert (material.diffuseColor.value ===
+            Color.sfxColor2jfx (validFXColors (color.id)))
+            assert (material.specularColor.value ===
+            Color.sfxColor2jfx (Color.WHITE))
           }
         }
       }
