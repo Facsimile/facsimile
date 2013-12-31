@@ -47,19 +47,17 @@ Constant converter.
 
 Converts physical quantity measurement units of an associated, but unspecified,
 unit to and from the corresponding standard ''[[http://en.wikipedia.org/wiki/SI
-SI]]'' units for the unit family.  Values are ''imported'' (converted to ''SI''
+SI]]'' units for the unit family. Values are ''imported'' (converted to ''SI''
 unit values) by adding the specified constant value; they are ''exported''
 (converted from ''SI'' unit values) by subtracting the same constant value.
 
 @constructor Create new constant converter from the specified `constant`.
 
-@param constant Constant value to be employed.  This value must be finite and
+@param constant Constant value to be employed. This value must be finite and
 cannot be zero (in which case, [[org.facsim.measure.SIConverter]] is a better
 option).
 
 @throws IllegalArgumentException if '''constant''' is NaN, infinite, or zero.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -67,15 +65,15 @@ private [measure] final class ConstantConverter (constant: Double)
 extends Converter {
 
 /*
-Sanity checks.  Constant values must be finite and non-zero.
+Sanity checks. Constant values must be finite and non-zero.
 */
 
   requireFinite (constant)
   requireValid (constant, constant != 0.0)
 
 //-----------------------------------------------------------------------------
-/**
-@inheritdoc
+/*
+Add constant to imported value.
 */
 //-----------------------------------------------------------------------------
 
@@ -83,8 +81,8 @@ Sanity checks.  Constant values must be finite and non-zero.
   value + constant
 
 //-----------------------------------------------------------------------------
-/**
-@inheritdoc
+/*
+Subtract constant from exported value.
 */
 //-----------------------------------------------------------------------------
 

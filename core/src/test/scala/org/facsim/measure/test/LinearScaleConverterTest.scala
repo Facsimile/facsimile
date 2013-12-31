@@ -40,6 +40,7 @@ package org.facsim.measure.test
 
 import scala.math.abs
 import org.facsim.measure.LinearScaleConverter
+import org.facsim.test.CommonTestMethods
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -49,7 +50,10 @@ Test suite for the [[org.facsim.measure.LinearScaleConverter!]] class.
 //=============================================================================
 
 
-class LinearScaleConverterTest extends FunSpec {
+class LinearScaleConverterTest
+extends FunSpec
+with CommonTestMethods
+{
 
 /**
 Construction test data.
@@ -74,12 +78,12 @@ Import/export test data.
     val tolerance = 1.0e-12
     val factorTen = new LinearScaleConverter (10.0)
     val factorMinusTen = new LinearScaleConverter (-10.0)
-    val i1 = 100.0
-    val e1_1 = 10.0
-    val e1_2 = -10.0
-    val i2 = -100.0
-    val e2_1 = -10.0
-    val e2_2 = 10.0
+    val i1 = 10.0
+    val e1_1 = 100.0
+    val e1_2 = -100.0
+    val i2 = -10.0
+    val e2_1 = -100.0
+    val e2_2 = 100.0
   }
 
 /*
@@ -102,8 +106,7 @@ Verify that it should reject illegal factor values.
         val e = intercept [IllegalArgumentException] {
           new LinearScaleConverter (badFactor)
         }
-        assert (e.getMessage () === "Argument 'factor' must be finite, but " +
-        "has value '" + badFactor + "'.")
+        assertRequireFiniteMsg (e, "factor", badFactor)
       }
       it ("must throw an IllegalArgumentException if passed NaN") {
         doFiniteFailure (Double.NaN)
@@ -118,8 +121,7 @@ Verify that it should reject illegal factor values.
         val e = intercept [IllegalArgumentException] {
           new LinearScaleConverter (badFactor)
         }
-        assert (e.getMessage () === "Argument 'factor' has illegal value: '" +
-        badFactor + "'.")
+        assertRequireValidMsg (e, "factor", badFactor)
       }
       it ("must throw an IllegalArgumentException if passed a zero factor") {
         doValidFailure (0.0)
@@ -134,8 +136,7 @@ sense).
 */
 
       it ("must accept valid factor values") {
-        new ConstructorTestData {
-        }
+        new ConstructorTestData {}
       }
     }
 
@@ -158,8 +159,7 @@ Helper function to perform comparisons.
 
           def checkReturn (factor: LinearScaleConverter, importVal: Double,
           exportVal: Double): Unit = {
-            assert (abs (factor.importValue (importVal) - exportVal) <
-            tolerance)
+            assert (factor.importValue (importVal) === exportVal)
           }
 
 /*
@@ -196,8 +196,7 @@ Helper function to perform comparisons.
 
           def checkReturn (factor: LinearScaleConverter, importVal: Double,
           exportVal: Double): Unit = {
-            assert (abs (factor.exportValue (exportVal) - importVal) <
-            tolerance)
+            assert (factor.exportValue (exportVal) == importVal)
           }
 
 /*

@@ -60,8 +60,6 @@ process of converting an ''SI'' value to the associated unit is termed
 
 @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
 [[http://en.wikipedia.org/ Wikipedia]].
-
-@since 0.0
 */
 //=============================================================================
 
@@ -78,8 +76,6 @@ corresponding value in the ''SI'' units for this unit family.
 units.
 
 @return `value` as expressed in ''SI'' units.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -96,8 +92,6 @@ for this unit family, to the corresponding value in the associated units.
 units.
 
 @return `value` as expressed in associated units.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 

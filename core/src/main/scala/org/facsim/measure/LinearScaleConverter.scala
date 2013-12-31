@@ -47,7 +47,7 @@ Linear scale converter.
 
 Converts physical quantity measurement units of an associated, but unspecified,
 unit to and from the corresponding standard ''[[http://en.wikipedia.org/wiki/SI
-SI]]'' units for the unit family.  Values are ''imported'' (converted to ''SI''
+SI]]'' units for the unit family. Values are ''imported'' (converted to ''SI''
 unit values) by multiplying by the specified linear scaling factor and are
 ''exported'' (converted from ''SI'' unit values) by dividing by the same
 factor.
@@ -55,16 +55,14 @@ factor.
 @constructor Create new linear scale converter from the specified linear
 scaling '''factor'''.
 
-@param factor Linear scaling factor to be employed.  This value must be finite
-and cannot be zero or one.  A value of zero causes divide-by-zero exceptions
+@param factor Linear scaling factor to be employed. This value must be finite
+and cannot be zero or one. A value of zero causes divide-by-zero exceptions
 when exporting values and implies that the magnitude of all measurement values
-is 0.  A value of one implies that the units are already ''SI'' units, since
-no scaling is performed, in which case the [[org.facsim.measure.SIConverter$]]
+is 0. A value of one implies that the units are already ''SI'' units, since no
+scaling is performed, in which case the [[org.facsim.measure.SIConverter$]]
 object should be preferred.
 
 @throws IllegalArgumentException if '''factor''' is NaN, infinite, zero or one.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -73,7 +71,7 @@ extends Converter
 {
 
 /*
-Sanity checks.  Factor values must be finite, cannot ever be 0.0 (nonsensical),
+Sanity checks. Factor values must be finite, cannot ever be 0.0 (nonsensical),
 nor can they allowed to be 1.0 (in the latter case, the SIConverter should be
 employed).
 */
@@ -82,8 +80,8 @@ employed).
   requireValid (factor, factor != 0.0 && factor != 1.0)
 
 //-----------------------------------------------------------------------------
-/**
-@inheritdoc
+/*
+Scale imported value.
 */
 //-----------------------------------------------------------------------------
 
@@ -91,8 +89,8 @@ employed).
   value * factor
 
 //-----------------------------------------------------------------------------
-/**
-@inheritdoc
+/*
+Scale exported value.
 */
 //-----------------------------------------------------------------------------
 
