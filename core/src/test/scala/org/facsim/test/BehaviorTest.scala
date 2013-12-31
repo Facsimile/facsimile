@@ -39,6 +39,7 @@ Scala source file from the org.facsim.test package.
 package org.facsim.test
 
 import org.facsim.Behavior
+import org.facsim.LibResource
 import org.facsim.util.Version
 import org.joda.time.DateTime
 import org.scalatest.FunSpec
@@ -91,9 +92,8 @@ Test trait - populated behavior.
 Function to verify a NoSuchElementException's message.
 */
 
-  def assertMessage (e: NoSuchElementException, field: String) =
-  assert (e.getMessage () === "Behavior element not implemented: '" + field +
-  "'")
+  def assertMessage (e: NoSuchElementException, field: String): Unit =
+  assert (e.getMessage () === LibResource ("Behavior.NoSuchElement", field))
 
 /*
 Test fixture description.
@@ -206,10 +206,10 @@ period ".", not in two periods ".."). We test this explicitly by having one org
 name ending in a period, and one that does not.
 */
 
-          assert (basic.copyright === "Copyright © " + release.year + ", " +
-          orgBasic + ".")
-          assert (range.copyright === "Copyright © " + inceptionLastYear.year +
-          "-" + release.year + ", " + orgRange + ".")
+          assert (basic.copyright === LibResource ("Behavior.CopyrightBasic",
+          orgBasic.init, release.toDate ()))
+          assert (range.copyright === LibResource ("Behavior.CopyrightRange",
+          orgRange, inceptionLastYear.toDate (), release.toDate ()))
         }
       }
     }
