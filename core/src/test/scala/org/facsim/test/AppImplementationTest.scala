@@ -42,6 +42,7 @@ import org.facsim.AppImplementation
 import org.facsim.Behavior
 import org.facsim.BehaviorRedefinitionException
 import org.facsim.BehaviorUndefinedException
+import org.facsim.LibResource
 import org.facsim.util.Version
 import org.joda.time.DateTime
 import org.scalatest.FunSpec
@@ -62,17 +63,18 @@ Test data.
   trait TestData {
     val nullBehavior = new Behavior {}
     val behavior = new Behavior {
+      val now = DateTime.now ()
+      val ver = new Version ("7.3.1")
       override def title = "appImplementationTitle"
       override def organization = "appImplementationOrganization"
       override def inceptionDate = releaseDate.minus (600)
-      override def releaseDate = DateTime.now ()
-      override def version = new Version ("7.3.1")
+      override def releaseDate = now
+      override def version = ver
     }
     val app = new AppImplementation {}
-    val redefined = "Attempt to override existing behavior ('" + app +
-    "') with new behavior ('" + app + "') failed."
-    val undefined = "Attempt to access org.facsim.App behavior failed " +
-    "because no org.facsim.Behavior instance been been applied."
+    val redefined = LibResource ("BehaviorRedefinition", behavior,
+    nullBehavior)
+    val undefined = LibResource ("BehaviorUndefined")
   }
 
 /*
@@ -80,8 +82,7 @@ Function to verify a NoSuchElementException's message.
 */
 
   def assertMessage (e: NoSuchElementException, field: String) =
-  assert (e.getMessage () === "Behavior element not implemented: \"" + field +
-  "\"")
+  assert (e.getMessage () === LibResource ("Behavior.NoSuchElement", field))
 
 /*
 Test fixture description.
@@ -165,6 +166,7 @@ Test title function.
       }
       it ("must correctly report defined behavior") {
         new TestData {
+          app (behavior)
           assert (app.title === behavior.title)
         }
       }
@@ -194,6 +196,7 @@ Test organization function.
       }
       it ("must correctly report defined behavior") {
         new TestData {
+          app (behavior)
           assert (app.organization === behavior.organization)
         }
       }
@@ -223,6 +226,7 @@ Test inceptionDate function.
       }
       it ("must correctly report defined behavior") {
         new TestData {
+          app (behavior)
           assert (app.inceptionDate === behavior.inceptionDate)
         }
       }
@@ -252,6 +256,7 @@ Test releaseDate function.
       }
       it ("must correctly report defined behavior") {
         new TestData {
+          app (behavior)
           assert (app.releaseDate === behavior.releaseDate)
         }
       }
@@ -290,6 +295,7 @@ as it doesn't really matter - all that matters is that we get the exception.
       }
       it ("must correctly report defined behavior") {
         new TestData {
+          app (behavior)
           assert (app.copyright === behavior.copyright)
         }
       }
@@ -319,6 +325,7 @@ Test organization function.
       }
       it ("must correctly report defined behavior") {
         new TestData {
+          app (behavior)
           assert (app.version === behavior.version)
         }
       }
