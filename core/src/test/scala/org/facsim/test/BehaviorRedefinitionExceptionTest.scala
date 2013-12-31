@@ -40,6 +40,7 @@ package org.facsim.test
 
 import org.facsim.Behavior
 import org.facsim.BehaviorRedefinitionException
+import org.facsim.LibResource
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -48,7 +49,8 @@ Test suite for the [[org.facsim.BehaviorRedefinitionException!]] class.
 */
 //=============================================================================
 
-class BehaviorRedefinitionExceptionTest extends FunSpec {
+class BehaviorRedefinitionExceptionTest
+extends FunSpec {
 
 /**
 Test trait.
@@ -84,8 +86,8 @@ Test getMessage.
     describe (".getMessage ()") {
       it ("must return correct message") {
         new TestData {
-          assert (e.getMessage () === "Attempt to override existing behavior "
-          + "('" + b + "') with new behavior ('" + b + "') failed.")
+          assert (e.getMessage () === LibResource ("BehaviorRedefinition", b,
+          b))
         }
       }
     }
