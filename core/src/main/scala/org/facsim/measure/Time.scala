@@ -73,6 +73,12 @@ Time measurement units.
 
   override type Units = TimeUnits
 
+/*
+Name of this physical quantity.
+*/
+
+  override val name = "time"
+
 /**
 Units for time measured in ''[[http://en.wikipedia.org/wiki/Millisecond
 milliseconds]]''.

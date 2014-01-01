@@ -72,6 +72,12 @@ Mass measurement units.
 
   override type Units = MassUnits
 
+/*
+Name of this physical quantity.
+*/
+
+  override val name = "mass"
+
 /**
 Units for masses measured in
 ''[[http://en.wikipedia.org/wiki/Milligram#SI_multiples milligrams]]''.

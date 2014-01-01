@@ -90,9 +90,19 @@ Physical quantity family represented by this specific type.
 /**
 Value representing a zero measurement in the associated
 ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+
+@since 0.0
 */
 
   final val Zero = apply (0.0)
+
+/**
+Name of this physical quantity.
+
+@since 0.0
+*/
+
+  val name: String
 
 //-----------------------------------------------------------------------------
 /**

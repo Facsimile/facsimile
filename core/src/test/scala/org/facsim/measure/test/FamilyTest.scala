@@ -48,7 +48,8 @@ Test suite for the [[org.facsim.measure.Family!]] class and
 */
 //=============================================================================
 
-class FamilyTest extends FunSpec {
+class FamilyTest
+extends FunSpec {
 
 /**
 Test data.
@@ -66,10 +67,11 @@ Test data.
   }
 
 /*
-Test fixture description.
+Test fixture companion object description.
 */
 
-  describe (classOf [Family].getCanonicalName) {
+//  describe (Family.getClass.getCanonicalName) {
+  describe ("org.facsim.measure.Family$") {
 
 /*
 Test construction via apply method, which includes testing of construction.
@@ -78,10 +80,17 @@ Since construction is handled internally, it should be impossible
 
     describe (".apply(Vector[Int])") {
       it ("must create required physical quantity families") {
-        new TestData {
-        }
+        new TestData {}
       }
     }
+  }
+
+/*
+Test fixture class description.
+*/
+
+//  describe (classOf [Family].getCanonicalName) {
+  describe ("org.facsim.measure.Family") {
 
 /*
 Verify that equality of unit families is handled correctly.

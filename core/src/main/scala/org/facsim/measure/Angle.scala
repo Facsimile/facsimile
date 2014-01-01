@@ -73,6 +73,12 @@ Angle measurement units.
 
   override type Units = AngleUnits
 
+/*
+Name of this physical quantity.
+*/
+
+  override val name = "planar angle"
+
 /**
 The mathematical constant ''[[http://en.wikipedia.org/wiki/Pi π]]'' in the form
 of an angle value.

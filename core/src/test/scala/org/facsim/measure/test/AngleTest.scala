@@ -328,7 +328,7 @@ Test that the constant π has the correct value.
 
     describe (".π") {
       it ("must equal the value of physical constant π") {
-        assert (π === Angle (Math.PI, Angle.Radians))
+        assert (Angle.π === Angle (Math.PI, Angle.Radians))
       }
     }
 
@@ -338,7 +338,7 @@ Test that the constant τ has the correct value.
 
     describe (".τ") {
       it ("must equal the value of physical constant τ (=2π)") {
-        assert (τ === Angle (2.0 * Math.PI, Angle.Radians))
+        assert (Angle.τ === Angle (2.0 * Math.PI, Angle.Radians))
       }
     }
 
@@ -348,6 +348,6 @@ This should come after the constant testing above, but before the higher-level
 stuff below.
 */
 
-    //it must behave like specificBehavior (new AngleFixture {})
+    it must behave like specificBehavior (new AngleFixture {})
   }
 }

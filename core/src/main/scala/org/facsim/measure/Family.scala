@@ -71,7 +71,7 @@ constructor.  As a result, we just need to assert this condition, rather than
 use requireValid.
 */
 
-  assert (exponents.length == Family.numBaseFamilies)
+  assert (exponents.length == Family.NumBaseFamilies)
 
 //-----------------------------------------------------------------------------
 /**
@@ -123,6 +123,145 @@ otherwise.
 //-----------------------------------------------------------------------------
 
   def isUnitless = Family.this == Family.unitless
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve the symbol of this family, constructed from the symbols of the
+preferred base units.
+
+@return Symbol for this family.
+*/
+//-----------------------------------------------------------------------------
+
+  private def baseSymbol = {
+
+/*
+Helper function to build the symbol of the units given the index of the family
+and the exponent power.
+*/
+
+    def buildSymbol (idx: Int, exp: Int): String = {
+      assert (exp > 0)
+
+/*
+Retrieve the symbol of this base family and append its exponent. If the
+exponent is 1, then the suffix is an empty string; if 2, then it is superscript
+2; 3, superscript 3; otherwise it is denoted by a circumflex followed by the
+power (e.g. ^5).
+*/
+
+      val suffix = exp match {
+        case 1 => ""
+        case 2 => "²"
+        case 3 => "³"
+        case _ => s"^$exp"
+      }
+      Family.symbol (Family.baseFamily (idx)) + suffix
+    }
+
+/*
+The first part of the name is a list of the components with positive exponents.
+*/
+
+    val positive = for {
+      i <- 0 until exponents.size
+      if exponents (i) > 0
+    } yield buildSymbol (i, exponents (i))
+
+/*
+Repeat for the components with negative exponents, changing the sign of the
+exponent in the process.
+*/
+
+    val negative = for {
+      i <- 0 until exponents.size
+      if exponents (i) < 0
+    } yield buildSymbol (i, -exponents (i))
+
+/*
+If we have any negative content, then append it to the positive content (which
+may be empty) separated by a slash.
+*/
+
+    if (!negative.isEmpty) {
+      positive.mkString ("") + "/" + negative.mkString ("")
+    }
+
+/*
+Otherwise, just report the positive content.
+*/
+
+    else positive.mkString (" ")
+  } ensuring (_ != "")
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve the name of this family, constructed from the names of the base units.
+
+@return Name of this family.
+*/
+//-----------------------------------------------------------------------------
+
+  private def baseName = {
+
+/*
+Helper function to build the name of the units given the index of the family
+and the exponent power.
+*/
+
+    def buildName (idx: Int, exp: Int): String = {
+      assert (exp > 0)
+
+/*
+Retrieve the name of this base family and append its exponent. If the exponent
+is 1, then the suffix is an empty string; if 2, then it is superscript 2; 3,
+superscript 3; otherwise it is denoted by a circumflex followed by the power
+(e.g. ^5).
+*/
+
+      val suffix = exp match {
+        case 1 => ""
+        case 2 => "²"
+        case 3 => "³"
+        case _ => s"^$exp"
+      }
+      Family.name (Family.baseFamily (idx)) + suffix
+    }
+
+/*
+The first part of the name is a list of the components with positive exponents.
+*/
+
+    val positive = for {
+      i <- 0 until exponents.size
+      if exponents (i) > 0
+    } yield buildName (i, exponents (i))
+
+/*
+Repeat for the components with negative exponents, changing the sign of the
+exponent in the process.
+*/
+
+    val negative = for {
+      i <- 0 until exponents.size
+      if exponents (i) < 0
+    } yield buildName (i, -exponents (i))
+
+/*
+If we have any negative content, then append it to the positive content (which
+may be empty) separated by a slash.
+*/
+
+    if (!negative.isEmpty) {
+      positive.mkString (" ") + "/" + negative.mkString (" ")
+    }
+
+/*
+Otherwise, just report the positive content.
+*/
+
+    else positive.mkString (" ")
+  } ensuring (_ != "")
 
 //-----------------------------------------------------------------------------
 /*
@@ -207,28 +346,13 @@ Convert to a string.
 */
 //-----------------------------------------------------------------------------
 
-  override def toString: String = Family.typeMap.get (this) match {
-
-/*
-If this family has an associated specific physical quantity type, then retrieve
-and output its name.
-*/
-
-    case Some (x) => x.getClass.getSimpleName
-
-/*
-In all other cases, apply the names of the base units with the appropriate
-exponents.
-*/
-
-    case _ => {
-      val types = for {
-        i <- 0 until exponents.length
-        if exponents (i) != 0
-      } yield Family.baseFamilies (i).getClass.getSimpleName + (if (exponents
-      (i) != 1) "(^" + exponents (i) + ")")
-      types.mkString (",")
+  override def toString: String = {
+    val name = Family.name (this)
+    if (!isUnitless) {
+      val symbol = Family.symbol (this)
+      s"$name ($symbol)"
     }
+    else name
   }
 }
 
@@ -241,69 +365,30 @@ Physical quantity family companion object.
 //=============================================================================
 
 private [measure] object Family
-extends Enumeration {
+{
 
 /**
-Index of Time exponent in the exponents vector.
+Vector of base families.
+
+The order in which these families are listed must match the order in which the
+corresponding exponents are listed in each Family instance vector.
 */
 
-  private [measure] val timeExponentIndex = Value
-
-/**
-Index of Length exponent in the exponents vector.
-*/
-
-  private [measure] val lengthExponentIndex = Value
-
-/**
-Index of Plane Angle exponent in the exponents vector.
-*/
-
-  private [measure] val planeAngleExponentIndex = Value
-
-/**
-Index of Mass exponent in the exponents vector.
-*/
-
-  private [measure] val massExponentIndex = Value
-
-/**
-Index of Temperature exponent in the exponents vector.
-*/
-
-  private [measure] val temperatureExponentIndex = Value
-
-/**
-Index of Current exponent in the exponents vector.
-*/
-
-  private [measure] val currentExponentIndex = Value
-
-/**
-Index of Luminosity exponent in the exponents vector.
-*/
-
-  private [measure] val luminousIntensityExponentIndex = Value
-
-/**
-Vector of base physical quantity families.
-*/
-
-  private [measure] val baseFamilies = Vector [Specific] (
-    Time,
-    Length,
-    Angle,
-    Mass,
-    Temperature,
-    Current,
-    LuminousIntensity
+  private val baseFamily = Vector (
+    apply (timeExponent = 1),
+    apply (lengthExponent = 1),
+    apply (planeAngleExponent = 1),
+    apply (massExponent = 1),
+    apply (temperatureExponent = 1),
+    apply (currentExponent = 1),
+    apply (luminousIntensityExponent = 1)
   )
 
 /**
-Total number of base physical quantity families in the exponents vector.
+Number of base physical quantity families in the exponents vector.
 */
 
-  private [measure] val numBaseFamilies = maxId
+  private val NumBaseFamilies = baseFamily.size
 
 /**
 Unitless physical quantity.
@@ -394,4 +479,109 @@ instance.
 
   @inline
   private def apply (exponents: Vector [Int]) = new Family (exponents)
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve symbol associated with specified family.
+
+If there is a specific physical quantity registered with the specified
+`family`, then the symbol for the preferred units of that class is returned. If
+there is no registered physical quantity, then the symbols of the base
+component physical quantities of this family will be listed instead, with
+appropriate exponent powers. If the supplied family is unitless, then an empty
+string will be returned as the symbol.
+
+@param family Family for which a symbol is sought.
+
+@return Symbol of the preferred units of the associated physical quantity.
+*/
+//-----------------------------------------------------------------------------
+
+  private def symbol (family: Family): String = {
+
+/*
+Retrieve the specific physical quantity (if any) associated with this family.
+Access to typeMap needs to be synchronized, since it is shared mutable state.
+*/
+
+    val specific = synchronized {
+      typeMap.get (family)
+    }
+
+/*
+Check what we have.
+*/
+
+    specific match {
+
+/*
+If there is a registered specific physical quantity for this family, then
+retrieve and return the symbol of its preferred units.
+*/
+
+      case Some (x) => x.preferredUnits.symbol
+
+/*
+Otherwise, this is a generic physical quantity. If it is unitless, then return
+an empty string.
+*/
+
+      case None => {
+        if (family == unitless) ""
+        else family.baseSymbol
+      }
+    }
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve name associated with specified family.
+
+If there is a specific physical quantity registered with the specified
+`family`, then the name of that quantity is returned. If there is no registered
+physical quantity, then the names of the base component physical quantities of
+this family will be listed instead, with appropriate exponent powers. If the
+supplied family is unitless, then "Double" will be returned as the name.
+
+@param family Family for which a name is sought.
+
+@return Name of the the associated physical quantity.
+*/
+//-----------------------------------------------------------------------------
+
+  private def name (family: Family): String = {
+
+/*
+Retrieve the specific physical quantity (if any) associated with this family.
+Access to typeMap needs to be synchronized, since it is shared mutable state.
+*/
+
+    val specific = synchronized {
+      typeMap.get (family)
+    }
+
+/*
+Check what we have.
+*/
+
+    specific match {
+
+/*
+If there is a registered specific physical quantity for this family, then
+retrieve and return the symbol of its preferred units.
+*/
+
+      case Some (x) => x.name
+
+/*
+Otherwise, this is a generic physical quantity. If it is unitless, then return
+an empty string.
+*/
+
+      case None => {
+        if (family == unitless) ""
+        else family.baseName
+      }
+    }
+  }
 }

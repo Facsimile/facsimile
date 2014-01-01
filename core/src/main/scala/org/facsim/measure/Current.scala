@@ -74,6 +74,12 @@ Electric current measurement units.
 
   override type Units = CurrentUnits
 
+/*
+Name of this physical quantity.
+*/
+
+  override val name = "electric current"
+
 /**
 Units for current measured in ''[[http://en.wikipedia.org/wiki/Ampere
 amperes]]''.

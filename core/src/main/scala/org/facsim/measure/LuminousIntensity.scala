@@ -75,6 +75,12 @@ Luminous intensity measurement units.
 
   override type Units = LuminousIntensityUnits
 
+/*
+Name of this physical quantity.
+*/
+
+  override val name = "luminous intensity"
+
 /**
 Units for luminous intensity measured in
 ''[[http://en.wikipedia.org/wiki/Candela candelas]]''.

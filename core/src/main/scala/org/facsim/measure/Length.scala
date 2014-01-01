@@ -72,6 +72,12 @@ Length measurement units.
 
   override type Units = LengthUnits
 
+/*
+Name of this physical quantity.
+*/
+
+  override val name = "length"
+
 /**
 Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Millimetre
 millimeters]]''.

@@ -73,6 +73,12 @@ Temperature measurement units.
 
   override type Units = TemperatureUnits
 
+/*
+Name of this physical quantity.
+*/
+
+  override val name = "temperature"
+
 /**
 Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Celsius
 degrees Celsius]]''.
