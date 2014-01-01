@@ -58,7 +58,9 @@ Test suite for the [[org.facsim.io.Delimiter!]] class.
 */
 //=============================================================================
 
-class TextReaderTest extends FunSpec with CommonTestMethods {
+class TextReaderTest
+extends FunSpec
+with CommonTestMethods {
 
 /**
 Trait for empty data & reader.
@@ -633,7 +635,8 @@ Here, we test both conversion and verification.
 Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with default " +
+      "delimiter") {
         new TestDelimitedReaders {
           def readBytes (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -684,7 +687,8 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with specific "
+      + "delimiter") {
         new TestDelimitedReaders {
           def readBytes (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -779,7 +783,8 @@ Here, we test both conversion and verification.
 Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with default " +
+      "delimiter") {
         new TestDelimitedReaders {
           def readShorts (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -830,7 +835,8 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with specific "
+      + "delimiter") {
         new TestDelimitedReaders {
           def readShorts (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -925,7 +931,8 @@ Here, we test both conversion and verification.
 Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with default " +
+      "delimiter") {
         new TestDelimitedReaders {
           def readInts (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -976,7 +983,8 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with specific "
+      + "delimiter") {
         new TestDelimitedReaders {
           def readInts (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -1071,7 +1079,8 @@ Here, we test both conversion and verification.
 Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with default " +
+      "delimiter") {
         new TestDelimitedReaders {
           def readLongs (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -1122,7 +1131,8 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with specific "
+      + "delimiter") {
         new TestDelimitedReaders {
           def readLongs (reader: TextReader) {
             intercept [FieldConversionException] {
@@ -1217,7 +1227,8 @@ Here, we test both conversion and verification.
 Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with default " +
+      "delimiter") {
         new TestDelimitedReaders {
           def readFloats (reader: TextReader) {
             val tolerance = 1.0e-8
@@ -1263,7 +1274,8 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with specific "
+      + "delimiter") {
         new TestDelimitedReaders {
           def readFloats (reader: TextReader) {
             val tolerance = 1.0e-8
@@ -1360,7 +1372,8 @@ Here, we test both conversion and verification.
 Firstly, read using the test delimiter that does not merge adjacent delimiters.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with default " +
+      "delimiter") {
         new TestDelimitedReaders {
           def readDoubles (reader: TextReader) {
             val tolerance = 1.0e-14
@@ -1406,7 +1419,8 @@ many of the exceptions (due to spaces being merged with tabs) and will remove
 empty fields.
 */
 
-      it ("must be able to read valid data and handle bad data") {
+      it ("must be able to read valid data and handle bad data with specific "
+      + "delimiter") {
         new TestDelimitedReaders {
           def readDoubles (reader: TextReader) {
             val tolerance = 1.0e-14
