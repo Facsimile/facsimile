@@ -44,6 +44,7 @@ import java.io.Reader
 import java.lang.StringBuilder
 import org.facsim.LibResource
 import org.facsim.requireNonNull
+import scala.annotation.tailrec
 
 //=============================================================================
 /**
@@ -280,6 +281,13 @@ indicated character.
     private final def updateRowColumn (char: Int): Unit = char match {
 
 /*
+If the character just read was is end-of-file marker, then do nothing - we
+should not increment the row or column beyond its current position.
+*/
+
+      case TextReader.EOF =>
+
+/*
 If the character we just read is a line feed, then update the row and column of
 the next character to be read.
 */
@@ -503,13 +511,14 @@ be verified by the '''verify''' function.
 */
 //-----------------------------------------------------------------------------
 
-  private final def readField [T] (delimiter: Delimiter, verify:
-  TextReader.Verifier [T])(convertField: (String) => T): T = {
+  private final def readField [T] (delimiter: Delimiter,
+  verify: TextReader.Verifier [T])(convertField: (String) => T): T = {
 
 /*
 Tail-recursive helper function to build the field read.
 */
 
+    @tailrec
     def buildField (field: StringBuilder): StringBuilder = {
 
 /*
@@ -563,7 +572,7 @@ a FieldConversionException.
       case e: NumberFormatException => {
         state.reset (cachedState)
         throw new FieldConversionException (cachedState.getRow,
-        cachedState.getColumn, field, convertField.getClass ())
+        cachedState.getColumn, field)
       }
     }
 
@@ -816,7 +825,7 @@ throw a NumberFormatException.
 */
 
     if (field != field.trim) throw new
-    NumberFormatException (LibResource ("io.TextReader.numberFormatException",
+    NumberFormatException (LibResource ("io.TextReader.NumberFormatException",
     field))
     else field.toFloat
   }
@@ -863,7 +872,7 @@ throw a NumberFormatException.
 */
 
     if (field != field.trim) throw new
-    NumberFormatException (LibResource ("io.TextReader.numberFormatException",
+    NumberFormatException (LibResource ("io.TextReader.NumberFormatException",
     field))
     else field.toDouble
   }

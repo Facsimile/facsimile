@@ -92,7 +92,7 @@ appropriate delimiters
 */
 
   trait TestData {
-    val data = "a\t1\t1.1e1\t-1\t-1.1e-1\t 2\t3 \t 4 \t\t56fred"
+    val data = "a\t1\t1.1E1\t-1\t-1.1E-1\t 2\t3 \t 4 \t\t56fred"
     val emptyLine = ""
     val dataEnd = "end"
     val rawFileData = data + "\n" + data + "\n" + emptyLine + "\n" + dataEnd
@@ -107,7 +107,8 @@ appropriate delimiters
 Trait for test data readers using default delimiter.
 */
 
-  trait DefaultDelimitedReaders extends TestData {
+  trait DefaultDelimitedReaders
+  extends TestData {
     val pcReader = new TextReader (pcData)
     val unixReader = new TextReader (unixData)
     val oldMacOsReader = new TextReader (oldMacOsData)
@@ -117,7 +118,8 @@ Trait for test data readers using default delimiter.
 Trait for test data readers using an EOF delimiter.
 */
 
-  trait EOFDelimitedReaders extends TestData {
+  trait EOFDelimitedReaders
+  extends TestData {
     val pcReader = new TextReader (pcData, EOFDelimiter)
     val unixReader = new TextReader (unixData, EOFDelimiter)
     val oldMacOsReader = new TextReader (oldMacOsData, EOFDelimiter)
@@ -127,7 +129,8 @@ Trait for test data readers using an EOF delimiter.
 Trait for test data readers using a line delimiter.
 */
 
-  trait LineDelimitedReaders extends TestData {
+  trait LineDelimitedReaders
+  extends TestData {
     val pcReader = new TextReader (pcData, LineDelimiter)
     val unixReader = new TextReader (unixData, LineDelimiter)
     val oldMacOsReader = new TextReader (oldMacOsData, LineDelimiter)
@@ -139,7 +142,8 @@ are not merged) which is used to test whether leading/trailing spaces, or empty
 fields, affect field parsing.
 */
 
-  trait TestDelimitedReaders extends TestData {
+  trait TestDelimitedReaders
+  extends TestData {
     val testDelimiter = new Delimiter (Set (TextReader.HT, TextReader.LF),
     false)
     val pcReader = new TextReader (pcData, testDelimiter)
@@ -216,7 +220,7 @@ EOFException.
           val e = intercept [EOFException] {
             emptyReader.read ()
           }
-          assertEOFException (e, 1, 0)
+          assertEOFException (e, 1, 1)
         }
       }
 
@@ -231,10 +235,10 @@ end-of-file (to ensure that we're not re-reading data etc.
       it ("must handle line termination sequences correctly") {
         new EOLDataReader {
           def readLines (reader: TextReader): Unit = {
-            assert (pcEOLReader.read () === TextReader.LF)
-            assert (pcEOLReader.read () === TextReader.LF)
-            assert (pcEOLReader.read () === TextReader.LF)
-            assert (pcEOLReader.read () === TextReader.EOF)
+            assert (reader.read () === TextReader.LF)
+            assert (reader.read () === TextReader.LF)
+            assert (reader.read () === TextReader.LF)
+            assert (reader.read () === TextReader.EOF)
           }
           readLines (pcEOLReader)
           readLines (unixEOLReader)
@@ -251,7 +255,7 @@ format.
         new DefaultDelimitedReaders {
           def iterate (reader: TextReader, data: String): Unit = {
             val char = reader.read ()
-            if (char == TextReader.EOF) {
+            if (char != TextReader.EOF) {
               assert (char === data.head)
               iterate (reader, data.tail)
             }
@@ -284,7 +288,7 @@ the EOF signal.  If we peek a third time, we must see the exception.
           val e = intercept [EOFException] {
             emptyReader.peek ()
           }
-          assertEOFException (e, 1, 0)
+          assertEOFException (e, 1, 1)
         }
       }
 
@@ -428,7 +432,7 @@ true afterwards.
             emptyReader.read ()
           }
           assert (emptyReader.atEOF === true)
-          assertEOFException (e, 1, 0)
+          assertEOFException (e, 1, 1)
         }
       }
     }
@@ -458,8 +462,8 @@ reader must be reset back to the beginning of the field read.
                   false
                 }
               }
-              assert (e.getMessage () === "Field verification of value '" +
-              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldVerification",
+              row, column, field))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.head.toInt)
@@ -467,9 +471,9 @@ reader must be reset back to the beginning of the field read.
             }
             failField (1, 1, "a")
             failField (1, 3, "1")
-            failField (1, 5, "1.1e1")
+            failField (1, 5, "1.1E1")
             failField (1, 11, "-1")
-            failField (1, 14, "-1.1e-1")
+            failField (1, 14, "-1.1E-1")
             failField (1, 23, "2")
             failField (1, 25, "3")
             failField (1, 29, "4")
@@ -500,9 +504,9 @@ reader must advance to the next field and the field value must be returned.
             }
             acceptField (1, 3, "a")
             acceptField (1, 5, "1")
-            acceptField (1, 11, "1.1e1")
+            acceptField (1, 11, "1.1E1")
             acceptField (1, 14, "-1")
-            acceptField (1, 23, "-1.1e-1")
+            acceptField (1, 23, "-1.1E-1")
             acceptField (1, 25, "2")
             acceptField (1, 29, "3")
             acceptField (1, 33, "4")
@@ -592,9 +596,8 @@ Here, we test both conversion and verification.
               val e = intercept [FieldConversionException] {
                 reader.readByte ()
               }
-              assert (e.getMessage () === "Field conversion of value '" + field
-              + "' to type 'java.lang.Byte' failed. Row: " + row + ", Column: "
-              + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldConversion",
+              row, column, field))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.head.toInt)
@@ -607,18 +610,18 @@ Here, we test both conversion and verification.
                   false
                 }
               }
-              assert (e.getMessage () === "Field verification of value '" +
-              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldVerification",
+              row, column, field.toString))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.toString.head.toInt)
-              assert (reader.readString () === field)
+              assert (reader.readString ().toByte === field)
             }
             failFieldConversion (1, 1, "a")
             failFieldVerification (1, 3, 1.toByte)
-            failFieldConversion (1, 5, "1.1e1")
+            failFieldConversion (1, 5, "1.1E1")
             failFieldVerification (1, 11, -1.toByte)
-            failFieldConversion (1, 14, "-1.1e-1")
+            failFieldConversion (1, 14, "-1.1E-1")
             failFieldVerification (1, 23, 2.toByte)
             failFieldVerification (1, 25, 3.toByte)
             failFieldVerification (1, 29, 4.toByte)
@@ -645,14 +648,14 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
             assert (reader.readString () === "a")
             assert (reader.readByte () === 1)
             intercept [FieldConversionException] {
-              reader.readByte () // "1.1e1"
+              reader.readByte () // "1.1E1"
             }
-            assert (reader.readString () === "1.1e1")
+            assert (reader.readString () === "1.1E1")
             assert (reader.readByte () === -1)
             intercept [FieldConversionException] {
-              reader.readByte () // "-1.1e-1"
+              reader.readByte () // "-1.1E-1"
             }
-            assert (reader.readString () === "-1.1e-1")
+            assert (reader.readString () === "-1.1E-1")
             intercept [FieldConversionException] {
               reader.readByte () // " 2"
             }
@@ -697,14 +700,14 @@ empty fields.
             assert (reader.readString ()(WhitespaceDelimiter) === "a")
             assert (reader.readByte ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readByte ()(WhitespaceDelimiter) // "1.1e1"
+              reader.readByte ()(WhitespaceDelimiter) // "1.1E1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1E1")
             assert (reader.readByte ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readByte ()(WhitespaceDelimiter) // "-1.1e-1"
+              reader.readByte ()(WhitespaceDelimiter) // "-1.1E-1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1E-1")
             assert (reader.readByte ()(WhitespaceDelimiter) === 2)
             assert (reader.readByte ()(WhitespaceDelimiter) === 3)
             assert (reader.readByte ()(WhitespaceDelimiter) === 4)
@@ -740,9 +743,8 @@ Here, we test both conversion and verification.
               val e = intercept [FieldConversionException] {
                 reader.readShort ()
               }
-              assert (e.getMessage () === "Field conversion of value '" + field
-              + "' to type 'java.lang.Short' failed. Row: " + row +
-              ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldConversion",
+              row, column, field))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.head.toInt)
@@ -755,18 +757,18 @@ Here, we test both conversion and verification.
                   false
                 }
               }
-              assert (e.getMessage () === "Field verification of value '" +
-              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldVerification",
+              row, column, field.toString))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.toString.head.toInt)
-              assert (reader.readString () === field)
+              assert (reader.readString ().toShort === field)
             }
             failFieldConversion (1, 1, "a")
             failFieldVerification (1, 3, 1.toShort)
-            failFieldConversion (1, 5, "1.1e1")
+            failFieldConversion (1, 5, "1.1E1")
             failFieldVerification (1, 11, -1.toShort)
-            failFieldConversion (1, 14, "-1.1e-1")
+            failFieldConversion (1, 14, "-1.1E-1")
             failFieldVerification (1, 23, 2.toShort)
             failFieldVerification (1, 25, 3.toShort)
             failFieldVerification (1, 29, 4.toShort)
@@ -793,14 +795,14 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
             assert (reader.readString () === "a")
             assert (reader.readShort () === 1)
             intercept [FieldConversionException] {
-              reader.readShort () // "1.1e1"
+              reader.readShort () // "1.1E1"
             }
-            assert (reader.readString () === "1.1e1")
+            assert (reader.readString () === "1.1E1")
             assert (reader.readShort () === -1)
             intercept [FieldConversionException] {
-              reader.readShort () // "-1.1e-1"
+              reader.readShort () // "-1.1E-1"
             }
-            assert (reader.readString () === "-1.1e-1")
+            assert (reader.readString () === "-1.1E-1")
             intercept [FieldConversionException] {
               reader.readShort () // " 2"
             }
@@ -845,14 +847,14 @@ empty fields.
             assert (reader.readString ()(WhitespaceDelimiter) === "a")
             assert (reader.readShort ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readShort ()(WhitespaceDelimiter) // "1.1e1"
+              reader.readShort ()(WhitespaceDelimiter) // "1.1E1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1E1")
             assert (reader.readShort ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readShort ()(WhitespaceDelimiter) // "-1.1e-1"
+              reader.readShort ()(WhitespaceDelimiter) // "-1.1E-1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1E-1")
             assert (reader.readShort ()(WhitespaceDelimiter) === 2)
             assert (reader.readShort ()(WhitespaceDelimiter) === 3)
             assert (reader.readShort ()(WhitespaceDelimiter) === 4)
@@ -888,9 +890,8 @@ Here, we test both conversion and verification.
               val e = intercept [FieldConversionException] {
                 reader.readInt ()
               }
-              assert (e.getMessage () === "Field conversion of value '" + field
-              + "' to type 'java.lang.Int' failed. Row: " + row + ", Column: "
-              + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldConversion",
+              row, column, field))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.head.toInt)
@@ -903,21 +904,21 @@ Here, we test both conversion and verification.
                   false
                 }
               }
-              assert (e.getMessage () === "Field verification of value '" +
-              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldVerification",
+              row, column, field.toString))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.toString.head.toInt)
-              assert (reader.readString () === field)
+              assert (reader.readString ().toInt === field)
             }
             failFieldConversion (1, 1, "a")
-            failFieldVerification (1, 3, 1.toInt)
-            failFieldConversion (1, 5, "1.1e1")
-            failFieldVerification (1, 11, -1.toInt)
-            failFieldConversion (1, 14, "-1.1e-1")
-            failFieldVerification (1, 23, 2.toInt)
-            failFieldVerification (1, 25, 3.toInt)
-            failFieldVerification (1, 29, 4.toInt)
+            failFieldVerification (1, 3, 1)
+            failFieldConversion (1, 5, "1.1E1")
+            failFieldVerification (1, 11, -1)
+            failFieldConversion (1, 14, "-1.1E-1")
+            failFieldVerification (1, 23, 2)
+            failFieldVerification (1, 25, 3)
+            failFieldVerification (1, 29, 4)
             failFieldConversion (1, 33, "56fred")
             failFieldConversion (2, 1, "a")
           }
@@ -941,14 +942,14 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
             assert (reader.readString () === "a")
             assert (reader.readInt () === 1)
             intercept [FieldConversionException] {
-              reader.readInt () // "1.1e1"
+              reader.readInt () // "1.1E1"
             }
-            assert (reader.readString () === "1.1e1")
+            assert (reader.readString () === "1.1E1")
             assert (reader.readInt () === -1)
             intercept [FieldConversionException] {
-              reader.readInt () // "-1.1e-1"
+              reader.readInt () // "-1.1E-1"
             }
-            assert (reader.readString () === "-1.1e-1")
+            assert (reader.readString () === "-1.1E-1")
             intercept [FieldConversionException] {
               reader.readInt () // " 2"
             }
@@ -993,14 +994,14 @@ empty fields.
             assert (reader.readString ()(WhitespaceDelimiter) === "a")
             assert (reader.readInt ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readInt ()(WhitespaceDelimiter) // "1.1e1"
+              reader.readInt ()(WhitespaceDelimiter) // "1.1E1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1E1")
             assert (reader.readInt ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readInt ()(WhitespaceDelimiter) // "-1.1e-1"
+              reader.readInt ()(WhitespaceDelimiter) // "-1.1E-1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1E-1")
             assert (reader.readInt ()(WhitespaceDelimiter) === 2)
             assert (reader.readInt ()(WhitespaceDelimiter) === 3)
             assert (reader.readInt ()(WhitespaceDelimiter) === 4)
@@ -1036,9 +1037,8 @@ Here, we test both conversion and verification.
               val e = intercept [FieldConversionException] {
                 reader.readLong ()
               }
-              assert (e.getMessage () === "Field conversion of value '" + field
-              + "' to type 'java.lang.Long' failed. Row: " + row + ", Column: "
-              + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldConversion",
+              row, column, field))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.head.toInt)
@@ -1051,21 +1051,21 @@ Here, we test both conversion and verification.
                   false
                 }
               }
-              assert (e.getMessage () === "Field verification of value '" +
-              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldVerification",
+              row, column, field.toString))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.toString.head.toInt)
-              assert (reader.readString () === field)
+              assert (reader.readString ().toLong === field)
             }
             failFieldConversion (1, 1, "a")
-            failFieldVerification (1, 3, 1.toLong)
-            failFieldConversion (1, 5, "1.1e1")
-            failFieldVerification (1, 11, -1.toLong)
-            failFieldConversion (1, 14, "-1.1e-1")
-            failFieldVerification (1, 23, 2.toLong)
-            failFieldVerification (1, 25, 3.toLong)
-            failFieldVerification (1, 29, 4.toLong)
+            failFieldVerification (1, 3, 1L)
+            failFieldConversion (1, 5, "1.1E1")
+            failFieldVerification (1, 11, -1L)
+            failFieldConversion (1, 14, "-1.1E-1")
+            failFieldVerification (1, 23, 2L)
+            failFieldVerification (1, 25, 3L)
+            failFieldVerification (1, 29, 4L)
             failFieldConversion (1, 33, "56fred")
             failFieldConversion (2, 1, "a")
           }
@@ -1089,14 +1089,14 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
             assert (reader.readString () === "a")
             assert (reader.readLong () === 1)
             intercept [FieldConversionException] {
-              reader.readLong () // "1.1e1"
+              reader.readLong () // "1.1E1"
             }
-            assert (reader.readString () === "1.1e1")
+            assert (reader.readString () === "1.1E1")
             assert (reader.readLong () === -1)
             intercept [FieldConversionException] {
-              reader.readLong () // "-1.1e-1"
+              reader.readLong () // "-1.1E-1"
             }
-            assert (reader.readString () === "-1.1e-1")
+            assert (reader.readString () === "-1.1E-1")
             intercept [FieldConversionException] {
               reader.readLong () // " 2"
             }
@@ -1141,14 +1141,14 @@ empty fields.
             assert (reader.readString ()(WhitespaceDelimiter) === "a")
             assert (reader.readLong ()(WhitespaceDelimiter) === 1)
             intercept [FieldConversionException] {
-              reader.readLong ()(WhitespaceDelimiter) // "1.1e1"
+              reader.readLong ()(WhitespaceDelimiter) // "1.1E1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "1.1e1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "1.1E1")
             assert (reader.readLong ()(WhitespaceDelimiter) === -1)
             intercept [FieldConversionException] {
-              reader.readLong ()(WhitespaceDelimiter) // "-1.1e-1"
+              reader.readLong ()(WhitespaceDelimiter) // "-1.1E-1"
             }
-            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1e-1")
+            assert (reader.readString ()(WhitespaceDelimiter) === "-1.1E-1")
             assert (reader.readLong ()(WhitespaceDelimiter) === 2)
             assert (reader.readLong ()(WhitespaceDelimiter) === 3)
             assert (reader.readLong ()(WhitespaceDelimiter) === 4)
@@ -1184,36 +1184,37 @@ Here, we test both conversion and verification.
               val e = intercept [FieldConversionException] {
                 reader.readFloat ()
               }
-              assert (e.getMessage () === "Field conversion of value '" + field
-              + "' to type 'java.lang.Float' failed. Row: " + row +
-              ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldConversion",
+              row, column, field))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.head.toInt)
               assert (reader.readString () === field)
             }
-            def failFieldVerification (row: Int, column: Int, field: Float) {
+            def failFieldVerification (row: Int, column: Int, rawField: String,
+            actualField: Float) {
               val e = intercept [FieldVerificationException] {
-                reader.readFloat {i =>
-                  assert (i === field)
+                reader.readFloat {
+                  x =>
+                  assert (x === actualField)
                   false
                 }
               }
-              assert (e.getMessage () === "Field verification of value '" +
-              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldVerification",
+              row, column, rawField))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
-              assert (reader.peek () === field.toString.head.toInt)
-              assert (reader.readString () === field)
+              assert (reader.peek () === rawField.head.toInt)
+              assert (reader.readString () === rawField)
             }
             failFieldConversion (1, 1, "a")
-            failFieldVerification (1, 3, 1.toFloat)
-            failFieldVerification (1, 5, 1.1e1.toFloat)
-            failFieldVerification (1, 11, -1.toFloat)
-            failFieldVerification (1, 14, -1.1e-1.toFloat)
-            failFieldVerification (1, 23, 2.toFloat)
-            failFieldVerification (1, 25, 3.toFloat)
-            failFieldVerification (1, 29, 4.toFloat)
+            failFieldVerification (1, 3, "1", 1f)
+            failFieldVerification (1, 5, "1.1E1", 1.1E1f)
+            failFieldVerification (1, 11, "-1", -1f)
+            failFieldVerification (1, 14, "-1.1E-1", -1.1E-1f)
+            failFieldVerification (1, 23, "2", 2f)
+            failFieldVerification (1, 25, "3", 3f)
+            failFieldVerification (1, 29, "4", 4f)
             failFieldConversion (1, 33, "56fred")
             failFieldConversion (2, 1, "a")
           }
@@ -1237,9 +1238,9 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
             }
             assert (reader.readString () === "a")
             assert (abs (reader.readFloat () - 1.0) < tolerance)
-            assert (abs (reader.readFloat () - 1.1e1) < tolerance)
+            assert (abs (reader.readFloat () - 1.1E1) < tolerance)
             assert (abs (reader.readFloat () - -1.0) < tolerance)
-            assert (abs (reader.readFloat () - -1.1e-1) < tolerance)
+            assert (abs (reader.readFloat () - -1.1E-1) < tolerance)
             intercept [FieldConversionException] {
               reader.readFloat () // " 2"
             }
@@ -1285,11 +1286,11 @@ empty fields.
             assert (reader.readString ()(WhitespaceDelimiter) === "a")
             assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 1.0) <
             tolerance)
-            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 1.1e1) <
-            tolerance)
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 1.1E1) <
+            tolerance )
             assert (abs (reader.readFloat ()(WhitespaceDelimiter) - -1.0) <
             tolerance)
-            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - -1.1e-1) <
+            assert (abs (reader.readFloat ()(WhitespaceDelimiter) - -1.1E-1) <
             tolerance)
             assert (abs (reader.readFloat ()(WhitespaceDelimiter) - 2.0) <
             tolerance)
@@ -1329,36 +1330,37 @@ Here, we test both conversion and verification.
               val e = intercept [FieldConversionException] {
                 reader.readDouble ()
               }
-              assert (e.getMessage () === "Field conversion of value '" + field
-              + "' to type 'java.lang.Double' failed. Row: " + row +
-              ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldConversion",
+              row, column, field))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
               assert (reader.peek () === field.head.toInt)
               assert (reader.readString () === field)
             }
-            def failFieldVerification (row: Int, column: Int, field: Double) {
+            def failFieldVerification (row: Int, column: Int, rawField: String,
+            actualField: Double) {
               val e = intercept [FieldVerificationException] {
-                reader.readDouble {i =>
-                  assert (i === field)
+                reader.readDouble {
+                  x =>
+                  assert (x === actualField)
                   false
                 }
               }
-              assert (e.getMessage () === "Field verification of value '" +
-              field + "' failed. Row: " + row + ", Column: " + column + ".")
+              assert (e.getMessage () === LibResource ("io.FieldVerification",
+              row, column, rawField))
               assert (reader.getRow === row)
               assert (reader.getColumn === column)
-              assert (reader.peek () === field.toString.head.toInt)
-              assert (reader.readString () === field)
+              assert (reader.peek () === rawField.head.toInt)
+              assert (reader.readString () === rawField)
             }
             failFieldConversion (1, 1, "a")
-            failFieldVerification (1, 3, 1.toDouble)
-            failFieldVerification (1, 5, 1.1e1.toDouble)
-            failFieldVerification (1, 11, -1.toDouble)
-            failFieldVerification (1, 14, -1.1e-1.toDouble)
-            failFieldVerification (1, 23, 2.toDouble)
-            failFieldVerification (1, 25, 3.toDouble)
-            failFieldVerification (1, 29, 4.toDouble)
+            failFieldVerification (1, 3, "1", 1.0)
+            failFieldVerification (1, 5, "1.1E1", 1.1E1)
+            failFieldVerification (1, 11, "-1", -1.0)
+            failFieldVerification (1, 14, "-1.1E-1", -1.1E-1)
+            failFieldVerification (1, 23, "2", 2.0)
+            failFieldVerification (1, 25, "3", 3.0)
+            failFieldVerification (1, 29, "4", 4.0)
             failFieldConversion (1, 33, "56fred")
             failFieldConversion (2, 1, "a")
           }
@@ -1382,9 +1384,9 @@ Firstly, read using the test delimiter that does not merge adjacent delimiters.
             }
             assert (reader.readString () === "a")
             assert (abs (reader.readDouble () - 1.0) < tolerance)
-            assert (abs (reader.readDouble () - 1.1e1) < tolerance)
+            assert (abs (reader.readDouble () - 1.1E1) < tolerance)
             assert (abs (reader.readDouble () - -1.0) < tolerance)
-            assert (abs (reader.readDouble () - -1.1e-1) < tolerance)
+            assert (abs (reader.readDouble () - -1.1E-1) < tolerance)
             intercept [FieldConversionException] {
               reader.readDouble () // " 2"
             }
@@ -1430,12 +1432,12 @@ empty fields.
             assert (reader.readString ()(WhitespaceDelimiter) === "a")
             assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 1.0) <
             tolerance)
-            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 1.1e1) <
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 1.1E1) <
             tolerance)
             assert (abs (reader.readDouble ()(WhitespaceDelimiter) - -1.0) <
             tolerance)
-            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - -1.1e-1) <
-            tolerance)
+            assert (abs (reader.readDouble ()(WhitespaceDelimiter) - -1.1E-1)
+            < tolerance)
             assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 2.0) <
             tolerance)
             assert (abs (reader.readDouble ()(WhitespaceDelimiter) - 3.0) <

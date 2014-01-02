@@ -56,15 +56,13 @@ throwing such exceptions must implement ''failure atomicity''.
 
 @param field Value of the associated field as a string.
 
-@param valueType Type to which field was attempting to be converted to.
-
 @since 0.0
 */
 //=============================================================================
 
 final class FieldConversionException private [io] (row: Int, column: Int,
-field: String, final val valueType: Class [_]) extends FieldException (row,
-column, field) {
+field: String)
+extends FieldException (row, column, field) {
 
 //-----------------------------------------------------------------------------
 /*
@@ -73,5 +71,5 @@ column, field) {
 //-----------------------------------------------------------------------------
 
   final override def getMessage () = LibResource ("io.FieldConversion", row,
-  column, field, valueType.getCanonicalName)
+  column, field)
 }
