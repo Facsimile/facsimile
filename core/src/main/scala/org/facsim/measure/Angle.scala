@@ -97,7 +97,7 @@ information about ''τ''.
 @since 0.0
 */
 
-  val π = apply (Math.PI)
+  lazy val π = apply (Math.PI)
 
 /**
 A proposed mathematical constant,
@@ -138,7 +138,7 @@ information.
 @since 0.0
 */
 
-  val τ = apply (τValue)
+  lazy val τ = apply (τValue)
 
 /**
 Units for angles measured in ''[[http://en.wikipedia.org/wiki/Degree_(angle)
@@ -221,7 +221,7 @@ Angle measurement factory.
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new AngleMeasure (measure)
+  new Measure (measure)
 
 //-----------------------------------------------------------------------------
 /**

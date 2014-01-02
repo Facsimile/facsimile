@@ -217,7 +217,7 @@ Length measurement factory.
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new LengthMeasure (measure)
+  new Measure (measure)
 
 //-----------------------------------------------------------------------------
 /**

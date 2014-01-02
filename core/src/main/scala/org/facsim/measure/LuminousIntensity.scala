@@ -126,7 +126,7 @@ Luminous intensity measurement factory.
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new LuminousIntensityMeasure (measure)
+  new Measure (measure)
 
 //-----------------------------------------------------------------------------
 /**

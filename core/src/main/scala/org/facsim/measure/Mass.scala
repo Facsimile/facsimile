@@ -195,7 +195,7 @@ Mass measurement factory.
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new MassMeasure (measure)
+  new Measure (measure)
 
 //-----------------------------------------------------------------------------
 /**

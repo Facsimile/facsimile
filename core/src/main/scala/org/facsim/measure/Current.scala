@@ -125,7 +125,7 @@ Electric current measurement factory.
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new CurrentMeasure (measure)
+  new Measure (measure)
 
 //-----------------------------------------------------------------------------
 /**

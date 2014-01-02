@@ -150,7 +150,7 @@ Temperature measurement factory.
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new TemperatureMeasure (measure)
+  new Measure (measure)
 
 //-----------------------------------------------------------------------------
 /**

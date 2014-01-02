@@ -186,7 +186,7 @@ Time measurement factory.
 //-----------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
-  new TimeMeasure (measure)
+  new Measure (measure)
 
 //-----------------------------------------------------------------------------
 /**

@@ -94,7 +94,7 @@ Value representing a zero measurement in the associated
 @since 0.0
 */
 
-  final val Zero = apply (0.0)
+  final lazy val Zero = apply (0.0)
 
 /**
 Name of this physical quantity.

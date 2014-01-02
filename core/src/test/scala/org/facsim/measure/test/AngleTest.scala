@@ -83,156 +83,162 @@ All of these values should have a value of -τ radians (-360 degrees), which
 should normalize to 0 radians (0 degrees).
 */
 
-      List (
-        -τ,
-        Angle (-360.0, Angle.Degrees),
-        Angle (-400.0, Angle.Gradians),
-        Angle (-1.0, Angle.Turns)
-      ),
+//      List (
+//        -τ,
+//        Angle (-360.0, Angle.Degrees),
+//        Angle (-400.0, Angle.Gradians),
+//        Angle (-1.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of -τ/2 radians (-180 degrees).
 */
 
-      List (
-        -τ / 2.0,
-        Angle (-180.0, Angle.Degrees),
-        Angle (-200.0, Angle.Gradians),
-        Angle (-1.0 / 2.0, Angle.Turns)
-      ),
+//      List (
+//        -τ / 2.0,
+//        Angle (-180.0, Angle.Degrees),
+//        Angle (-200.0, Angle.Gradians),
+//        Angle (-1.0 / 2.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of -τ/4 radians (-90 degrees).
 */
 
-      List (
-        -τ / 4.0,
-        Angle (-90.0, Angle.Degrees),
-        Angle (-100.0, Angle.Gradians),
-        Angle (-1.0 / 4.0, Angle.Turns)
-      ),
+//      List (
+//        -τ / 4.0,
+//        Angle (-90.0, Angle.Degrees),
+//        Angle (-100.0, Angle.Gradians),
+//        Angle (-1.0 / 4.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of -τ/6 radians (-60 degrees).
 */
 
-      List (
-        -τ / 6.0,
-        Angle (-60.0, Angle.Degrees),
-        Angle (-200.0 / 3.0, Angle.Gradians),
-        Angle (-1.0 / 6.0, Angle.Turns)
-      ),
+//      List (
+//        -τ / 6.0,
+//        Angle (-60.0, Angle.Degrees),
+//        Angle (-200.0 / 3.0, Angle.Gradians),
+//        Angle (-1.0 / 6.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of -τ/8 radians (-45 degrees).
 */    
 
-      List (
-        -τ / 8.0,
-        Angle (-45.0, Angle.Degrees),
-        Angle (-50.0, Angle.Gradians),
-        Angle (-1.0 / 8.0, Angle.Turns)
-      ),
+//      List (
+//        -τ / 8.0,
+//        Angle (-45.0, Angle.Degrees),
+//        Angle (-50.0, Angle.Gradians),
+//        Angle (-1.0 / 8.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of -τ/12 radians (-30 degrees).
 */
 
-      List (
-        -τ / 12.0,
-        Angle (-30.0, Angle.Degrees),
-        Angle (-100.0 / 3.0, Angle.Gradians),
-        Angle (-1.0 / 12.0, Angle.Turns)
-      ),
+//      List (
+//        -τ / 12.0,
+//        Angle (-30.0, Angle.Degrees),
+//        Angle (-100.0 / 3.0, Angle.Gradians),
+//        Angle (-1.0 / 12.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have the value 0 radians (0 degrees).
 */
 
       List (
+        Angle.τ,
+//        Angle (360.0, Angle.Degrees),
+//        Angle (400.0, Angle.Gradians),
+        Angle (1.0, Angle.Turns)
+      ),
+      List (
         Angle.Zero,
         Angle (0.0, Angle.Degrees),
         Angle (0.0, Angle.Gradians),
         Angle (0.0, Angle.Turns)
-      ),
+//      ),
 
 /*
 All of these values should have a value of τ/12 radians (30 degrees).
 */
 
-      List (
-        τ / 12.0,
-        Angle (30.0, Angle.Degrees),
-        Angle (100.0 / 3.0, Angle.Gradians),
-        Angle (1.0 / 12.0, Angle.Turns)
-      ),
+//      List (
+//        τ / 12.0,
+//        Angle (30.0, Angle.Degrees),
+//        Angle (100.0 / 3.0, Angle.Gradians),
+//        Angle (1.0 / 12.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of τ/8 radians (45 degrees).
 */    
 
-      List (
-        τ / 8.0,
-        Angle (45.0, Angle.Degrees),
-        Angle (50.0, Angle.Gradians),
-        Angle (1.0 / 8.0, Angle.Turns)
-      ),
+//      List (
+//        τ / 8.0,
+//        Angle (45.0, Angle.Degrees),
+//        Angle (50.0, Angle.Gradians),
+//        Angle (1.0 / 8.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of τ/6 radians (60 degrees).
 */
 
-      List (
-        τ / 6.0,
-        Angle (60.0, Angle.Degrees),
-        Angle (200.0 / 3.0, Angle.Gradians),
-        Angle (1.0 / 6.0, Angle.Turns)
-      ),
+//      List (
+//        τ / 6.0,
+//        Angle (60.0, Angle.Degrees),
+//        Angle (200.0 / 3.0, Angle.Gradians),
+//        Angle (1.0 / 6.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of τ/4 radians (90 degrees).
 */
 
-      List (
-        τ / 4.0,
-        Angle (90.0, Angle.Degrees),
-        Angle (100.0, Angle.Gradians),
-        Angle (1.0 / 4.0, Angle.Turns)
-      ),
+//      List (
+//        τ / 4.0,
+//        Angle (90.0, Angle.Degrees),
+//        Angle (100.0, Angle.Gradians),
+//        Angle (1.0 / 4.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of τ/2 radians (180 degrees).
 */
 
-      List (
-        τ / 2.0,
-        Angle (180.0, Angle.Degrees),
-        Angle (200.0, Angle.Gradians),
-        Angle (1.0 / 2.0, Angle.Turns)
-      ),
+//      List (
+//        τ / 2.0,
+//        Angle (180.0, Angle.Degrees),
+//        Angle (200.0, Angle.Gradians),
+//        Angle (1.0 / 2.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of τ radians (360 degrees), which
 should normalize to 0 radians (0 degrees).
 */
 
-      List (
-        τ,
-        Angle (360.0, Angle.Degrees),
-        Angle (400.0, Angle.Gradians),
-        Angle (1.0, Angle.Turns)
-      ),
+//      List (
+//        τ,
+//        Angle (360.0, Angle.Degrees),
+//        Angle (400.0, Angle.Gradians),
+//        Angle (1.0, Angle.Turns)
+//      ),
 
 /*
 All of these values should have a value of 2τ radians (720 degrees), which
 should normalize to 0 radians (0 degrees).
 */
 
-      List (
-        τ * 2.0,
-        Angle (720.0, Angle.Degrees),
-        Angle (800.0, Angle.Gradians),
-        Angle (2.0, Angle.Turns)
+//      List (
+//        τ * 2.0,
+//        Angle (720.0, Angle.Degrees),
+//        Angle (800.0, Angle.Gradians),
+//        Angle (2.0, Angle.Turns)
       )
     )
 
