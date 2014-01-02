@@ -69,9 +69,14 @@ Sanity check.  Since construction is tightly controlled, it should be
 impossible to pass a vector with the wrong number of members to this
 constructor.  As a result, we just need to assert this condition, rather than
 use requireValid.
+
+Note: Do NOT compare to the size of Family.baseFamilies since that Vector isn't
+initialized until after a number of instances of this class have been created.
+Hardcoding the expected exponents vector length here is adequate for a sanity
+check.
 */
 
-  assert (exponents.length == Family.NumBaseFamilies)
+  assert (exponents.length == 7)
 
 //-----------------------------------------------------------------------------
 /**
@@ -364,8 +369,7 @@ Physical quantity family companion object.
 */
 //=============================================================================
 
-private [measure] object Family
-{
+private [measure] object Family {
 
 /**
 Vector of base families.
@@ -383,12 +387,6 @@ corresponding exponents are listed in each Family instance vector.
     apply (currentExponent = 1),
     apply (luminousIntensityExponent = 1)
   )
-
-/**
-Number of base physical quantity families in the exponents vector.
-*/
-
-  private val NumBaseFamilies = baseFamily.size
 
 /**
 Unitless physical quantity.
@@ -450,7 +448,6 @@ Apply method to obtain family corresponding to specified exponent values.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
   private [measure] def apply (timeExponent: Int = 0, lengthExponent: Int = 0,
   planeAngleExponent: Int = 0, massExponent: Int = 0, temperatureExponent: Int
   = 0, currentExponent: Int = 0, luminousIntensityExponent: Int = 0): Family =
@@ -477,7 +474,6 @@ re-use an existing instance for the requested family, rather than a new
 instance.
 */
 
-  @inline
   private def apply (exponents: Vector [Int]) = new Family (exponents)
 
 //-----------------------------------------------------------------------------
