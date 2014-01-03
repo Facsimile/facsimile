@@ -54,7 +54,7 @@ Embedded Files]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -71,15 +71,16 @@ Embedded Files]] for further information.
 */
 //=============================================================================
 
-private [cell] final class EmbeddedFile (scene: CellScene, parent: Option
-[Set]) extends File (scene, parent) {
+private [cell] final class EmbeddedFile (scene: CellScene,
+parent: Option [Set])
+extends File (scene, parent) {
   throw new NotImplementedError (LibResource ("anim.cell.EmbeddedFile"))
 
 //-----------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.Cell!.toNode]]
 
-EmbeddedFile elements currently cannot be rendered.  See Issue 7 for further
+EmbeddedFile elements currently cannot be rendered. See Issue 7 for further
 details.
 */
 //-----------------------------------------------------------------------------

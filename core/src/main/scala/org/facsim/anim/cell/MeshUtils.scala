@@ -67,9 +67,9 @@ value must be > 0.
 
 @param yOffset Y offset of circle center.
 
-@return Array of floats defining coordinates for points of the circle.  There
+@return Array of floats defining coordinates for points of the circle. There
 are three floats for each coordinate, and the total number of coordinates is
-`divisions` + 1.  The first coordinate is for the center of the circle.
+`divisions` + 1. The first coordinate is for the center of the circle.
 
 @since 0.0
 */
@@ -93,7 +93,7 @@ Create point array describing a sector of a circle.
 begins.
 
 @param drawAngle Angle (in radians) through which the sector's circumference is
-drawn.  This value must lie in the range [0, τ) (τ = 2π, refer to the
+drawn. This value must lie in the range [0, τ) (τ = 2π, refer to the
 [[http://tauday.com/tau-manifesto Tau Manifesto]] for further details).
 
 @param divisions Number of equal sectors that this sector is divided into. This
@@ -103,10 +103,9 @@ value must be > 0.
 
 @param yOffset Y offset of sector's circle center.
 
-@return Array of floats defining coordinates for points of the sector.  There
+@return Array of floats defining coordinates for points of the sector. There
 are three floats for each coordinate, and the total number of coordinates is
-`divisions` + 2.  The first coordinate is for the center of the sector's
-circle.
+`divisions` + 2. The first coordinate is for the center of the sector's circle.
 
 @since 0.0
 */
@@ -132,21 +131,21 @@ Create point array describing a circle or sector of a circle.
 circumference begins.
 
 @param drawAngle Angle (in radians) through which the circle's/sector's
-circumference is drawn.  This value must lie in the range [0, τ] (τ = 2π, refer
+circumference is drawn. This value must lie in the range [0, τ] (τ = 2π, refer
 to the [[http://tauday.com/tau-manifesto Tau Manifesto]] for further details).
 If this value equals 2π, then a circle will be defined, otherwise, a sector
 will be defined.
 
 @param divisions Number of equal sectors that this circle/sector is divided
-into.  This value must be > 0.
+into. This value must be > 0.
 
 @param xOffset X offset of circle/sector center.
 
 @param yOffset Y offset of circle/sector center.
 
-@return Array of floats defining coordinates for points of the circle.  There
+@return Array of floats defining coordinates for points of the circle. There
 are three floats for each coordinate, and the total number of coordinates is
-`divisions` + 1 (for a circle) or `divisions` + 2 (for a sector).  The first
+`divisions` + 1 (for a circle) or `divisions` + 2 (for a sector). The first
 coordinate is for the center of the circle.
 
 @since 0.0
@@ -174,7 +173,7 @@ The z value of each coordinate is the height expressed as a float.
     val z = height.toFloat
 
 /*
-Determine the number of circumference points that we will define.  If this is a
+Determine the number of circumference points that we will define. If this is a
 sector, then it will equal the number of divisions plus one; if a circle, then
 it will equal the number of divisions (since the first and last point are the
 same).
@@ -210,9 +209,9 @@ Set the first coordinate to be the center of the circle/sector.
 The remaining points are defined on the circumference.
 
 X coordinates are determined as the radius * cosine of the angle from the
-center to the point, measured about the Z-axis.  Y coordinates are determined
-as the radius * sine of the angle from the centre to the point, measured about
-the Z-axis.  Z coordinates are simply the height of the element.
+center to the point, measured about the Z-axis. Y coordinates are determined as
+the radius * sine of the angle from the centre to the point, measured about the
+Z-axis. Z coordinates are simply the height of the element.
 */
 
     for (p <- 1 to sectors) {
@@ -234,15 +233,15 @@ Return the point array.
 /**
 Create face array defining a circle.
 
-@param divisions Number of equal sectors that this circle is divided into.  One
+@param divisions Number of equal sectors that this circle is divided into. One
 triangular face is defined for each division.
 
 @param centerIndex Index of the point in the associated point array that
-identifies the center of the circle.  Points on the circumference of the circle
+identifies the center of the circle. Points on the circumference of the circle
 (numbering `divisions` in total) must follow immediately.
 
 @return Array of point indices defining the points making up each triangular
-face.  There are three points per face and a total of `divisions` faces.
+face. There are three points per face and a total of `divisions` faces.
 
 @since 0.0
 */
@@ -255,7 +254,7 @@ face.  There are three points per face and a total of `divisions` faces.
 /**
 Create face array defining a sector.
 
-@param divisions Number of equal sectors that this sector is divided into.  One
+@param divisions Number of equal sectors that this sector is divided into. One
 triangular face is defined for each division.
 
 @param centerIndex Index of the point in the associated point array that
@@ -265,7 +264,7 @@ identifies the cone apex.
 `divisions` in total) must follow immediately.
 
 @return Array of point indices defining the points making up each triangular
-face.  There are three points per face and a total of `divisions` faces.
+face. There are three points per face and a total of `divisions` faces.
 
 @since 0.0
 */
@@ -279,15 +278,15 @@ face.  There are three points per face and a total of `divisions` faces.
 /**
 Create face array defining a sector.
 
-@param divisions Number of equal sectors that this sector is divided into.  One
+@param divisions Number of equal sectors that this sector is divided into. One
 triangular face is defined for each division.
 
 @param centerIndex Index of the point in the associated point array that
-identifies the center of the sector's circle.  Points on the circumference of
+identifies the center of the sector's circle. Points on the circumference of
 the sector (numbering `divisions` + 1 in total) must follow immediately.
 
 @return Array of point indices defining the points making up each triangular
-face.  There are three points per face and a total of `divisions` faces.
+face. There are three points per face and a total of `divisions` faces.
 
 @since 0.0
 */
@@ -302,7 +301,7 @@ Create face array describing a circle or sector of a circle, or sides of a
 cone.
 
 @param divisions Number of equal sectors that this circle/sector/cone is
-divided into.  One triangular face is defined for each division.
+divided into. One triangular face is defined for each division.
 
 @param centerIndex Index of the point in the associated point array that
 identifies the center of the circle/sector's circle/cone.
@@ -315,11 +314,11 @@ not) must follow immediately.
 circumference point with the center (and the number of circumference points
 equals the number of divisions); if `false` then there is no face defined that
 links the first and last circumference points (and the number of circumference
-points is the number of divisions + 1).  In either case, the number of faces is
+points is the number of divisions + 1). In either case, the number of faces is
 the same.
  
 @return Array of point indices defining the points making up each triangular
-face.  There are three points per face and a total of `divisions` faces.
+face. There are three points per face and a total of `divisions` faces.
 
 @since 0.0
 */
@@ -356,9 +355,9 @@ Define the points making up the first n - 1 faces.
 
 /*
 For the final face, if this is a closed face, then the last face joins the last
-circumference point to the first circumference point.  Otherwise, the final
-face joins the penultimate circumference point (#division) to the final
-circumference point (#division + 1).  In either case, the first two points
+circumference point to the first circumference point. Otherwise, the final face
+joins the penultimate circumference point (#division) to the final
+circumference point (#division + 1). In either case, the first two points
 making up the face are the same.
 */
 
@@ -387,15 +386,15 @@ The walls are closed, so that the last set of points defined wraps around to
 first.
 
 @param divisions Number of equal sectors that the associated base/top circles
-are divided into.  Two triangular faces are defined for each division in the
+are divided into. Two triangular faces are defined for each division in the
 wall.
 
 @param firstFaceIndex Index of the first points on the circumference of the
-lower circle/sector/cone.  The remaining points must follow immediately
+lower circle/sector/cone. The remaining points must follow immediately
 (numbering 2 * `divisions` in total).
 
 @return Array of point indices defining the points making up each triangular
-face.  There are three points per face and a total of 2 * `divisions` faces.
+face. There are three points per face and a total of 2 * `divisions` faces.
 
 @since 0.0
 */
@@ -422,8 +421,8 @@ Index of first circumference point of the top.
     val t1 = b1 + divisions + 1
 
 /*
-Create the wall of faces.  There are two triangular faces created for each
-portion of the wall.  Note that point 0 and point divisions plus 1 define the
+Create the wall of faces. There are two triangular faces created for each
+portion of the wall. Note that point 0 and point divisions plus 1 define the
 center of the base and top circles respectively.
 
 Start off with the first n - 2 faces (we'll stitch the wall together at the

@@ -54,7 +54,8 @@ Line Styles]]
 */
 //=============================================================================
 
-private [cell] object LineStyle extends Enumeration {
+private [cell] object LineStyle
+extends Enumeration {
 
 /**
 Solid, having the ''cell'' line style 0.

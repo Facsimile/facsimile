@@ -64,8 +64,9 @@ encountered during parsing of the file.
 */
 //=============================================================================
 
-private [cell] final class TextListPoint (scene: CellScene, textType:
-Text.Value) extends Point (scene, Point.TextList) {
+private [cell] final class TextListPoint (scene: CellScene,
+textType: Text.Value)
+extends Point (scene, Point.TextList) {
 
 /**
 Read the text from the stream.

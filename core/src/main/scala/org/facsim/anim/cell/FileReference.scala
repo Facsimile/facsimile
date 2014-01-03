@@ -70,8 +70,10 @@ File References]] for further information.
 */
 //=============================================================================
 
-private [cell] final class FileReference (scene: CellScene, parent: Option
-[Set]) extends File (scene, parent) with Definition {
+private [cell] final class FileReference (scene: CellScene,
+parent: Option [Set])
+extends File (scene, parent)
+with Definition {
   assert (parent == None)
 
 /**
@@ -79,7 +81,7 @@ File reference.
 
 Retrieve the path and name of the 3D file to be referenced.
 
-@note The path and name cannot contain any spaces.  This is a limitation of the
+@note The path and name cannot contain any spaces. This is a limitation of the
 cell file format, which uses spaces as field delimiter characters.
 */
 
@@ -90,7 +92,7 @@ cell file format, which uses spaces as field delimiter characters.
 /*
 @see [[org.facsim.anim.cell.Cell!.toNode]]
 
-File Reference definition elements currently cannot be rendered.  See Issue 6
+File Reference definition elements currently cannot be rendered. See Issue 6
 for further details.
 */
 //-----------------------------------------------------------------------------

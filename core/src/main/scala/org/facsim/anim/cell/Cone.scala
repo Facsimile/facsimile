@@ -55,7 +55,7 @@ Cones]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -159,15 +159,15 @@ Now create the smoothing face groups (face index map to smoothing group),
 constructed from indices of the associated faces defined above.
 
 The faces making up the base all belong to the base smoothing group (0) and the
-faces making up the sides all belong to the side smoothing group (1).  Note
-that there are divisions faces in each group.
+faces making up the sides all belong to the side smoothing group (1). Note that
+there are divisions faces in each group.
 */
 
     override val faceSmoothingGroups =
     ObservableIntegerArray.tabulate (Cone.divisions * 2)(_ % Cone.divisions)
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 
@@ -189,7 +189,7 @@ private object Cone {
 Number of divisions per cone.
 
 The number of divisions for a fine cone in AutoMod is 16, and for a course cone
-it's 8.  For simplicity, we'll convert all cones to have 16 divisions.
+it's 8. For simplicity, we'll convert all cones to have 16 divisions.
 */
 
   val divisions = 16

@@ -67,7 +67,9 @@ Block Definitions]] for further information.
 */
 //=============================================================================
 
-private [cell] final class BlockDefinition (scene: CellScene, parent: Option
-[Set]) extends SetWithChildren (scene, parent) with Definition {
+private [cell] final class BlockDefinition (scene: CellScene,
+parent: Option [Set])
+extends SetWithChildren (scene, parent)
+with Definition {
   assert (parent == None)
 }

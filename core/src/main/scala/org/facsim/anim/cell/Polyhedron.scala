@@ -56,7 +56,7 @@ Polyhedra]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -123,21 +123,21 @@ associated points defined above.
 For now, its not possible to define smoothing groups for the polyhedron.
 
 For one thing, explicit smoothing group information is not provided as part of
-Polyhedron data.  For another, even if we assume that multi-triangle faces
+Polyhedron data. For another, even if we assume that multi-triangle faces
 (polyhedron faces made up of more than 1 triangle) belong to the same face and
 should be smoother, we neither track which faces can be so smoothed (right now,
 although that would be relatively easy to overcome), and ScalaFX/JavaFX imposes
 a hard limit of just 32 smoothing groups, which we might easily exceed.
 
 By default, faces are not added to smoothing groups, so each is rendered with a
-hard surface.  That should work out OK for us, as AutoMod/ACE does the exact
+hard surface. That should work out OK for us, as AutoMod/ACE does the exact
 same thing.
 */
 
     //override val faceSmoothingGroups =
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 
@@ -191,7 +191,7 @@ Note that, due to the need for tail recursion, the list is built in reverse.
     }
 
 /*
-Read the number of points from the data stream.  This value must be at least 3.
+Read the number of points from the data stream. This value must be at least 3.
 */
 
     val points = scene.readInt (_ > 2, LibResource
@@ -212,7 +212,7 @@ Read polyhedron face data from the stream.
 @param scene Reference to the CellScene of which this cell is a part.
 
 @param numPoints Number of points that may be used to define the associated
-faces.  It is an error for a point index to equal or exceed this value.
+faces. It is an error for a point index to equal or exceed this value.
 
 @return List of faces.
 
@@ -244,7 +244,7 @@ Note that, due to the need for tail recursion, the list is built in reverse.
     }
 
 /*
-Read the number of points from the data stream.  This value must be at least 1.
+Read the number of points from the data stream. This value must be at least 1.
 */
 
     val faces = scene.readInt (_ > 0, LibResource

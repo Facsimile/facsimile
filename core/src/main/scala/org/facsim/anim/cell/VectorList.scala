@@ -51,8 +51,8 @@ primitives.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/VectorLists.html
 Vector Lists]] for further information.
 
-@todo JavaFX 8 currently doesn't appear capable of handling 3D polylines.  When
-it becomes possible to do this, fully implement this class.  For now, we just
+@todo JavaFX 8 currently doesn't appear capable of handling 3D polylines. When
+it becomes possible to do this, fully implement this class. For now, we just
 read the associated data from the cell data stream and effectively ignore the
 data read.
 
@@ -60,7 +60,7 @@ data read.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -90,7 +90,7 @@ Read the list of pointer from the cell data stream.
 /*
 @see [[org.facsim.anim.cell.Cell!.toNode]]
 
-Vector List elements currently cannot be rendered.  See Issue 3 for further
+Vector List elements currently cannot be rendered. See Issue 3 for further
 details.
 */
 //-----------------------------------------------------------------------------
@@ -114,7 +114,7 @@ Read vector list data from the stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@return List of move/draw points.  First point must be a move point.
+@return List of move/draw points. First point must be a move point.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -131,7 +131,7 @@ encountered during parsing of the file.
 /**
 Helper function to read the next point from the data stream.
 
-For now, we just discard the points read.  In future, when there's something to
+For now, we just discard the points read. In future, when there's something to
 do with the data read, we'll return a list of points (see the Polyhedra class
 for how that might be done).
 */
@@ -145,14 +145,14 @@ for how that might be done).
     }
 
 /*
-Read the number of points from the data stream.  This value must be at least 2.
+Read the number of points from the data stream. This value must be at least 2.
 */
 
     val numPoints = scene.readInt (_ > 1, LibResource
     ("anim.cell.VectorList.read"))
 
 /*
-Read in all of the points.  The first point must be a move point.
+Read in all of the points. The first point must be a move point.
 */
 
     readPoint (numPoints, true)

@@ -53,7 +53,8 @@ value.
 */
 //=============================================================================
 
-private [cell] final class CellFlags (val flags: Int) extends AnyVal {
+private [cell] final class CellFlags (val flags: Int)
+extends AnyVal {
 
 //-----------------------------------------------------------------------------
 /**

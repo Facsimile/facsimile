@@ -73,8 +73,8 @@ Read the point's move/draw flag.
 A value of 0 indicates that this is a ''move'' point (''cursor'' is
 repositioned to the point); a value of 1 indicates that this is a ''draw''
 point, and that a 3D line should be drawn from the previous point (whether a
-draw or a move point) to this point.  As a consequence, the first point
-''must'' be a move point.
+draw or a move point) to this point. As a consequence, the first point ''must''
+be a move point.
 
 @note Consecutive ''move'' points make no sense, but we do not disallow them.
 Nor do we verify whether this point differs from the last point.

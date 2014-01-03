@@ -52,7 +52,7 @@ Instances]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -76,22 +76,22 @@ Obtain definition reference.
 
 This is a slightly complex process...
 
-Firstly, we read the name of the definition from the cell file.  If there is
+Firstly, we read the name of the definition from the cell file. If there is
 already a definition with that name, then we retrieve and store a reference to
-it.  Otherwise, the definition follows immediate after the instance as a new
+it. Otherwise, the definition follows immediate after the instance as a new
 cell hierarchy that needs to be read in.
 */
 
   private val definition = {
 
 /*
-Retrieve the name of the definition from the file.  The name cannot be an empty
+Retrieve the name of the definition from the file. The name cannot be an empty
 string, or be made up of purely whitespace (although the delimiter should
 ensure that doesn't happen).
 
 There are rules governing the make up of cell element names, but it's probably
 not worth enforcing them since there also seem to be common exceptions to those
-rules.  Maybe in the future...
+rules. Maybe in the future...
 */
 
     val defName = scene.readString (!_.trim.isEmpty, LibResource

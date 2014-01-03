@@ -53,7 +53,7 @@ primitives implmented as 3D meshes.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -102,7 +102,7 @@ Create a mesh to represent this cell and return it.
 Draw this ''cell'' in wireframe mode.
 
 @note At the time of writing, ''JavaFX''/''ScalaFX'' does not appear to support
-3D polylines, so rendering of shapes in wireframe is not supported.  Instead,
+3D polylines, so rendering of shapes in wireframe is not supported. Instead,
 rather than not render the primitives, they are currently rendered as solids.
 
 @return Base node storing the wireframe form of this trapezoid.
@@ -151,59 +151,4 @@ Have the concrete cell create the mesh to represent the image.
 
     mesh = cellMesh
   }
-}
-
-//=============================================================================
-/**
-Mesh3D companion object.
-
-@since 0.0
-*/
-//=============================================================================
-
-private [cell] object Mesh3D {
-
-/*
-Allow implicit conversions.
-*/
-
-  import scala.language.implicitConversions
-
-//-----------------------------------------------------------------------------
-/**
-Implicit conversion from an Array[Float] to a
-javafx.collection.ObservableFloatArray.
-
-@todo This is a little scrappy and ineffecient.  We can do better, but ScalaFX
-currently doesn't support ObservableFloatArrays.
-
-@param array Array to be converted.
-
-@return ObservableFloatArray with contents of initial array.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  implicit def arrayToFloatArray (array: Array [Float]) =
-  ObservableFloatArray (array)
-
-//-----------------------------------------------------------------------------
-/**
-Implicit conversion from an Array[Int] to a
-javafx.collection.ObservableIntegerArray.
-
-@todo This is a little scrappy and ineffecient.  We can do better, but ScalaFX
-currently doesn't support ObservableIntegerArrays.
-
-@param array Array to be converted.
-
-@return ObservableIntegerArray with contents of initial array.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  implicit def arrayToIntegerArray (array: Array [Int]) =
-  ObservableIntegerArray (array)
 }

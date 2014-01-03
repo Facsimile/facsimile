@@ -53,7 +53,7 @@ Text Lists]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -69,5 +69,6 @@ Text Lists]] for further information.
 */
 //=============================================================================
 
-private [cell] final class WorldTextList (scene: CellScene, parent: Option
-[Set]) extends TextList (scene, parent, Text.world)
+private [cell] final class WorldTextList (scene: CellScene,
+parent: Option [Set])
+extends TextList (scene, parent, Text.world)

@@ -61,11 +61,11 @@ contents.
 ''cell'' files that have non-absolute paths, will be searched.
 
 @param faceColor Face color to be assigned to all ''cell'' elements in this
-scene that inherit their face color from the root node.  This value cannot be
+scene that inherit their face color from the root node. This value cannot be
 `null`.
 
 @param edgeColor Edge color to be assigned to all ''cell'' elements in this
-scene that inherit their edge color from the root node.  This value cannot be
+scene that inherit their edge color from the root node. This value cannot be
 `null`.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -93,7 +93,7 @@ Sanity checks.
 /**
 Flag indicating whether we have finished constructing the scene.
 
-@todo This is a little fugly, but it works, so hey...  :-(
+@todo This is a little fugly, but it works, so hey... :-(
 */
 
   private var sceneRead = false
@@ -169,14 +169,14 @@ Return the scene read as a ''ScalaFX'' 3D scene graph.
 /**
 Read next cell element from the stream and return it.
 
-@param parent Set primitive that is to contain the cell read.  If `None`, then
+@param parent Set primitive that is to contain the cell read. If `None`, then
 the cell is the root cell of the scene, or is a definition.
 
 @param isDefinition Flag indicating whether the cell to be read is a definition
-cell (`true`) or a regular cell (`false`).  This should be known in advance by
-the caller.  If this flag is `true`, then `parent` must be `None`.
+cell (`true`) or a regular cell (`false`). This should be known in advance by
+the caller. If this flag is `true`, then `parent` must be `None`.
 
-@return Cell instance read from the file.  Note that the root cell contains all
+@return Cell instance read from the file. Note that the root cell contains all
 cells belonging to this scene as its contents.
 
 @since 0.0
@@ -214,7 +214,7 @@ Determine the constructor for this cell, and invoke it with the appropriate
 arguments.
 
 This will fail with an exception if a constructor taking the appropriate
-arguments cannot be found.  Needless to say, this shouldn't happen if the
+arguments cannot be found. Needless to say, this shouldn't happen if the
 associated class has been supplied with such a constructor.
 */
 
@@ -250,7 +250,7 @@ Helper function to read a text value from the stream.
 
 @note Unlike reading a string, reading text uses a different delimiter, that
 allows spaces and tabs to be included in text: everything is read from the
-stream up to the next line delimiter.  Note, however, that tabs are replaced
+stream up to the next line delimiter. Note, however, that tabs are replaced
 with spaces during the read operation.
 
 @param description Function that is called to provide a description to supply
@@ -591,7 +591,7 @@ Function to initialize the relation between definition/regular cell status and
 maps of cell code to cell class.
 
 Regular cell elements (sets, tetrahedra, vector lists, instances, etc.) can
-appear in the normal tree of elements.  However, definition cell elements can
+appear in the normal tree of elements. However, definition cell elements can
 only appear at the root of a definition&mdash;they are then included in the
 scene via reference (by an instance cell element).
 
@@ -622,8 +622,8 @@ All classes contained in his map must be concrete classes and must provide a
 constructor taking CellScene reference and an Option [Set] arguments.
  
 @note This map is defined in order of the cell codes for ease of maintenance by
-a human (the resulting map itself is not ordered by cell code).  Please
-maintain this order when modifying the list.
+a human (the resulting map itself is not ordered by cell code). Please maintain
+this order when modifying the list.
 */
 
     val classMap = Map [Int, CellClass] (
@@ -768,27 +768,26 @@ AutoMod Cell Type Codes]]
 Translate a reader exception.
 
 This function translates caught exceptions from [[org.facsim.io.TextReader!]]
-operations into more appropriate cell error exceptions.  In addition, it adds
+operations into more appropriate cell error exceptions. In addition, it adds
 some extra information to the exception to assist with debugging cell read
 failures.
 
 @note The distinction between a [[org.facsim.anim.cell.ParsingErrorException!]]
 (indicating that a file of the wrong type was passed to a loader) and a
 [[org.facsim.anim.cell.IncorrectFormatException!]] (indicating that a problem
-parsing the file was encountered) can be a fine one.  This function attempts to
+parsing the file was encountered) can be a fine one. This function attempts to
 address this distinction in a standard manner.
 
 Firstly, all [[org.facsim.io.FieldConversionException]]s, indicating that cell
 data failed to match the expected type of data (string, integer, double, etc.),
-are treated as `IncorrectFormatException`s.  If a string is encountered when an
+are treated as `IncorrectFormatException`s. If a string is encountered when an
 integer is expected, for instance, then that's a pretty good sign that the file
 may not be a valid cell file.
 
-[[org.facsim.io.FieldVerificationException]]s are more troublesome.  Mapping
-all such exceptions to `IncorrectFormatException`s may be too severe, while
-mapping them to `ParsingErrorException`s may be too lenient.  Still, a standard
-mapping is required, so ''Facsimile'' treats such exceptions as the latter
-type.
+[[org.facsim.io.FieldVerificationException]]s are more troublesome. Mapping all
+such exceptions to `IncorrectFormatException`s may be too severe, while mapping
+them to `ParsingErrorException`s may be too lenient. Still, a standard mapping
+is required, so ''Facsimile'' treats such exceptions as the latter type.
 
 Similarly, IOExceptions are also treated as `ParsingErrorException`s.
 
@@ -812,8 +811,8 @@ encountered during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def translateReaderException (exception: Throwable, msg:
-  String): Nothing = exception match {
+  private [cell] def translateReaderException (exception: Throwable,
+  msg: String): Nothing = exception match {
 
 /*
 Map field conversion exceptions (expected an Int, but got a string, for

@@ -56,7 +56,7 @@ control frame'' (''TCF'')&mdash;a ''cell'' marking a location at which another
 object can be attached.
 
 Typically, joints and TCFs are implemented in separate sets, but$mdash;for some
-reason$mdash;their data sets are tied together.  As a consequence, it is
+reason$mdash;their data sets are tied together. As a consequence, it is
 possible for:
   - Joints to be defined without an accompanying TCF.
   - Joints to be defined with an accompanying TCF.

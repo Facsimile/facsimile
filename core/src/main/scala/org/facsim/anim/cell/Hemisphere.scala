@@ -58,7 +58,7 @@ Hemispheres]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -114,7 +114,7 @@ Use the MeshUtils to generate the points for the base, and then add points for
 the the two intermediate bands and the pole.
 
 Note: This will give us (Hemisphere.bands - 1) points in the middle of the
-hemisphere that we will not actually reference for faces.  Shouldn't be any big
+hemisphere that we will not actually reference for faces. Shouldn't be any big
 deal.
 */
 
@@ -169,7 +169,7 @@ associated points defined above.
 Helper function to add faces for the current band to an array of face vertex
 indices.
 
-Use the MeshUtils to generate the faces for each band.  Note that the last band
+Use the MeshUtils to generate the faces for each band. Note that the last band
 is a cone, not a wall.
 */
 
@@ -226,7 +226,7 @@ the faces making up the bands all belong to the wall smoothing group (1).
     }
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 
@@ -248,8 +248,8 @@ private object Hemisphere {
 Number of divisions per hemisphere.
 
 The number of divisions for a fine hemisphere in AutoMod is 16, and for a
-course hemisphere it's 8.  For simplicity, we'll convert all hemispheres to
-have 16 divisions.
+course hemisphere it's 8. For simplicity, we'll convert all hemispheres to have
+16 divisions.
 
 Note that these divisions apply around the circumference of the base of the
 hemipshere, and each band above it.
@@ -270,7 +270,7 @@ pretty low-resolution 3D system).
 Increase in latitude at each band.
 
 Each band is 90°/Hemisphere.bands higher "latitude" than the band before it
-(the first band is also for the base).  The height and radius of each band vary
+(the first band is also for the base). The height and radius of each band vary
 accordingly.
 */
 
@@ -287,7 +287,7 @@ Number of vertex points per band (including the base of the band only).
 /**
 Pole vertex index.
 
-Index of the vertex corresponding to the pole.  We don't need to add 1, since
+Index of the vertex corresponding to the pole. We don't need to add 1, since
 point numbering starts at 0.
 */
 

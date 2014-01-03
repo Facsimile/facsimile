@@ -76,8 +76,8 @@ List of vertex indices making up the face.
 /**
 Create a list of triangular faces from this face.
 
-Each triangular face is made up of three vertex indices.  If the face has just
-three, then we return a single triangular face.  However, it if has more than
+Each triangular face is made up of three vertex indices. If the face has just
+three, then we return a single triangular face. However, it if has more than
 three, we construct the triangles starting from the first point and creating
 faces for each subsequence pair of indices.
 
@@ -90,8 +90,7 @@ faces for each subsequence pair of indices.
   private [cell] def toTriangularFaces = {
 
 /*
-The lead vertex is the first point on the list.  Create the triangles from
-that.
+The lead vertex is the first point on the list. Create the triangles from that.
 */
 
     val leadPoint = vertices.head
@@ -172,8 +171,7 @@ Note that, due to the need for tail recursion, the list is built in reverse
     }
 
 /*
-Read the number of indices from the data stream.  This value must be at least
-3.
+Read the number of indices from the data stream. This value must be at least 3.
 */
 
     val indices = scene.readInt (_ > 2, LibResource

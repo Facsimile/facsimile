@@ -46,8 +46,8 @@ import org.facsim.requireValid
 Class encapsulating ''cell'' line width pixel values.
 
 @note This would be a value class, except that it is not possible to access
-anything referenced via `this`&mdash;even an implied one.  So, consequently,
-value classes cannot be employed to self-verify their values.  Or so it
+anything referenced via `this`&mdash;even an implied one. So, consequently,
+value classes cannot be employed to self-verify their values. Or so it
 currently appears (Scala 2.10).
 
 @constructor Create a new valid line width value.

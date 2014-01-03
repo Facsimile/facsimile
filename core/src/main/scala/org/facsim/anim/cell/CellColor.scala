@@ -56,7 +56,8 @@ Face & Edge Colors]]
 */
 //=============================================================================
 
-object CellColor extends Enumeration {
+object CellColor
+extends Enumeration {
 
 /**
 Vector associating each ''cell'' color with the corresponding ''ScalaFX''

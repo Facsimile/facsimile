@@ -45,7 +45,7 @@ import scalafx.scene.transform.Transform
 /**
 ''[[http://www.automod.com/ AutoMod®]] cell'' transformation.
 
-In ''AutoMod'', a ''transformation'' is called ''geometry data''.  It
+In ''AutoMod'', a ''transformation'' is called ''geometry data''. It
 encompasses a translation along each local axis, a rotation about each local
 axis (applied in a specified sequence) and a scaling along each local axis.
 
@@ -64,11 +64,12 @@ instance from the ''cell'' data stream.
 */
 //=============================================================================
 
-private [cell] final class Transformation (scene: CellScene, inMatrixForm:
-Boolean) extends NotNull {
+private [cell] final class Transformation (scene: CellScene,
+inMatrixForm: Boolean)
+extends NotNull {
 
 /*
-Matrix form not implemented yet.  See Issue #10 for further information.
+Matrix form not implemented yet. See Issue #10 for further information.
 */
 
   if (inMatrixForm) throw new NotImplementedError (LibResource

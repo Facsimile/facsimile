@@ -56,7 +56,7 @@ Rectangles]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -82,7 +82,7 @@ Rectangle Y-axis dimension.
 Rectangle measured along the Y-Axis.
 
 @note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''length'',
-although most people would refer to it as the ''depth'' or ''width''.  Here, we
+although most people would refer to it as the ''depth'' or ''width''. Here, we
 refer to it as the Y-axis dimension to avoid confusion.
 */
 
@@ -95,7 +95,7 @@ Rectangle X-axis dimension.
 Rectangle measured along the X-Axis.
 
 @note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''width'',
-although most people would refer to it as the ''length''.  Here, we refer to it
+although most people would refer to it as the ''length''. Here, we refer to it
 as the X-axis dimension to avoid confusion.
 */
 
@@ -120,9 +120,9 @@ Read, but discard, the X-axis offset.
 
 The mesh is a custom TriangleMesh object.
 
-Note that the rectangle is on the X-Y plane, with the center at (0, 0, 0), relative
-to its parent.  Since this is not being drawn in wireframe mode, the rectangle is
-either drawn as a circle or a sector of a circle.
+Note that the rectangle is on the X-Y plane, with the center at (0, 0, 0),
+relative to its parent. Since this is not being drawn in wireframe mode, the
+rectangle is either drawn as a circle or a sector of a circle.
 */
 //-----------------------------------------------------------------------------
 
@@ -135,7 +135,7 @@ Create the list of vertices.
     override val points = {
 
 /*
-Common points.  Numbered counter-clockwise from top left (when looking at the
+Common points. Numbered counter-clockwise from top left (when looking at the
 rectangle from above).
 */
 
@@ -146,7 +146,7 @@ rectangle from above).
       val z = 0.0f
 
 /*
-Create and return the point array.  Numbered counter-clockwise from top left.
+Create and return the point array. Numbered counter-clockwise from top left.
 */
 
       ObservableFloatArray (
@@ -177,7 +177,7 @@ Both faces in the rectangle belong to the same group, 0.
     override val faceSmoothingGroups = ObservableIntegerArray (0, 0)
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 

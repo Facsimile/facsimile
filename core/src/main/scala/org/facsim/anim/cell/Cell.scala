@@ -54,7 +54,7 @@ File Format]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -70,8 +70,10 @@ File Format]] for further information.
 */
 //=============================================================================
 
-private [cell] abstract class Cell (scene: CellScene, private val parent:
-Option [Set]) extends CellAttributes with NotNull {
+private [cell] abstract class Cell (scene: CellScene,
+private val parent: Option [Set])
+extends CellAttributes
+with NotNull {
 
 /**
 Cell flags.
@@ -152,7 +154,7 @@ Cell transformation data.
 /**
 Face color of the parent.
 
-@return If we have a parent, then return it's face color.  Otherwise, we return
+@return If we have a parent, then return it's face color. Otherwise, we return
 the scene's default face color as an option.
 
 @since 0.0
@@ -168,7 +170,7 @@ the scene's default face color as an option.
 /**
 Edge color of the parent.
 
-@return If we have a parent, then return it's edge color.  Otherwise, we return
+@return If we have a parent, then return it's edge color. Otherwise, we return
 the scene's default edge color as an option.
 
 @since 0.0
@@ -230,7 +232,7 @@ Color of this cell.
 If cell is drawn in wireframe, then the cell will be drawn with the edge color,
 otherwise, with face color.
 
-@return Cell color with which the cell is to be drawn.  A valid color must be
+@return Cell color with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
 
 @since 0.0
@@ -248,7 +250,7 @@ Color of this cell, as a ''ScalaFX'' color.
 If cell is drawn in wireframe, then the cell will be drawn with the edge color,
 otherwise, with face color.
 
-@return Cell color with which the cell is to be drawn.  A valid color must be
+@return Cell color with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
 
 @since 0.0
@@ -266,7 +268,7 @@ otherwise, with face color.
 
 @note Material is employed by [[scalafx.scene.shape.Shape3D!]] subclasses.
 
-@return Material with which the cell is to be drawn.  A valid color must be
+@return Material with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
 
 @since 0.0
@@ -286,8 +288,8 @@ otherwise, with face color.
 
 @note Paint is employed by [[scalafx.scene.shape.Shape!]] subclasses.
 
-@return Paint with which the cell is to be drawn.  A valid color must be
-defined at some point in the chain of face/edge colors.
+@return Paint with which the cell is to be drawn. A valid color must be defined
+at some point in the chain of face/edge colors.
 
 @since 0.0
 */
@@ -306,7 +308,6 @@ Opacity of this cell.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
   protected [cell] final def cellOpacity =
   DisplayStyle.asOpacity (attrs.displayStyle)
 
@@ -321,7 +322,6 @@ parent.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
   protected [cell] final def cellTransforms = transformation match {
     case Some (t) => t.toList
     case None => Nil

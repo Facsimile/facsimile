@@ -61,7 +61,8 @@ encountered during parsing of the file.
 */
 //=============================================================================
 
-private [cell] final class JointData (scene: CellScene) extends NotNull {
+private [cell] final class JointData (scene: CellScene)
+extends NotNull {
 
 /**
 Joint speed.

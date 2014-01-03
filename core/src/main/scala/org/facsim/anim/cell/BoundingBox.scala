@@ -1,4 +1,3 @@
-/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2014, Michael J Allen.
 
@@ -58,11 +57,11 @@ private [cell] object BoundingBox {
 /**
 Read in bounding box data and verify it makes sense.
 
-If bounding box data is present, we must read it, but will ignore it.  However,
+If bounding box data is present, we must read it, but will ignore it. However,
 note that we must verify the data read (in terms of the consistency of the
 specified minimum & maximum values, rather than whether the bounding box is
-appropriately sized).  This is to ensure that we stay in sync with cell data
-and so can report meaningful errors to the user.
+appropriately sized). This is to ensure that we stay in sync with cell data and
+so can report meaningful errors to the user.
 
 @note This function must only be called if the current cell has bounding box
 data present, and must be called in the correct sequence for reading from the

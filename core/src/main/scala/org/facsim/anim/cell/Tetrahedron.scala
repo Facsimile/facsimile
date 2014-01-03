@@ -57,7 +57,7 @@ Tetrahedra]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -127,7 +127,7 @@ Tetrahedron top Y-axis offset.
 The mesh is a custom TriangleMesh object.
 
 Note that the base is an equilateral triangle on the X-Y plane, with the origin
-at (0, 0, 0), relative to its parent.  This triangle is aligned so that it's
+at (0, 0, 0), relative to its parent. This triangle is aligned so that it's
 bottom edge is parallel to the X-axis.
 */
 //-----------------------------------------------------------------------------
@@ -141,16 +141,16 @@ Create the list of vertices.
     override val points = {
 
 /*
-Some commonly used values.  Numbered counter-clockwise from top (when looking
-at the tetrahedron from above).
+Some commonly used values. Numbered counter-clockwise from top (when looking at
+the tetrahedron from above).
 
 Note the y1_2 & y4_5 coordinates are obtained from the expression tan 30° = y /
-b/2, where "b" is the base dimension.  Since tan 30° is (√3)/3, then y is (b *
-√3)/6.  The value is then negated, because the base of the triangle lies below
+b/2, where "b" is the base dimension. Since tan 30° is (√3)/3, then y is (b *
+√3)/6. The value is then negated, because the base of the triangle lies below
 the X-axis.
 
 The height of the triangle, which represents the difference between y0 and y1_2
-or y3 and y4_5, is given by Pythagoras: √(b² - (b²/4)) = b(√3)/2.  Subtracting
+or y3 and y4_5, is given by Pythagoras: √(b² - (b²/4)) = b(√3)/2. Subtracting
 the corresponding Y coordinate calculated above gives the second Y coordinate
 as b(√3)/3.
 
@@ -174,7 +174,7 @@ A picture is worth a 1000 words - if only we had one!
 Co-ordinates, ordered clockwise from the top-hand corner (when looking at the
 base from above).
 
-Note that these coordinates are stored as floats.  Why?  No idea...
+Note that these coordinates are stored as floats. Why?  No idea...
 */
 
       ObservableFloatArray (
@@ -217,7 +217,7 @@ constructed from indices of the associated faces defined above.
     )
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 

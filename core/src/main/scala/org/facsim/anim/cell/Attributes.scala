@@ -64,7 +64,8 @@ encountered during parsing of the file.
 //=============================================================================
 
 private [cell] final class Attributes (scene: CellScene, flags: CellFlags)
-extends CellAttributes with NotNull {
+extends CellAttributes
+with NotNull {
 
 /**
 Flag indicating whether attribute data is present in the cell file.
@@ -75,7 +76,7 @@ Flag indicating whether attribute data is present in the cell file.
 /**
 Flag indicating whether colors are inherited from the parent cell.
 
-Inherited colors are stored as `None`.  Non-inherited colors have `Some` cell
+Inherited colors are stored as `None`. Non-inherited colors have `Some` cell
 color value.
 */
 
@@ -176,7 +177,7 @@ inheriting the color from the parent ''cell''.
 
 /*
 If we're inheriting color, then - no matter what color code we just read - the
-color is None.  Otherwise, we use the color associated with the color code.
+color is None. Otherwise, we use the color associated with the color code.
 */
 
       if (inheritColors) None
@@ -185,8 +186,8 @@ color is None.  Otherwise, we use the color associated with the color code.
 
 /*
 Otherwise, cell attributes are not present, so we do not read anything from the
-data stream.  Instead, assign None if we're inheriting color, or use the
-default color otherwise.
+data stream. Instead, assign None if we're inheriting color, or use the default
+color otherwise.
 */
 
     else {

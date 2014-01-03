@@ -50,15 +50,15 @@ primitives.
 Triads]] for further information.
 
 @todo In a cell file, a triad is used as a debugging aid to demonstrate the
-alignment of a primitive's local X-, Y- and Z-axes.  It may be a useful tool
-for users importing ''cell'' files into ''Facsimile''.  However, for now, we do
-not implement triads&mdash;they are processed, but otherwise ignored.
+alignment of a primitive's local X-, Y- and Z-axes. It may be a useful tool for
+users importing ''cell'' files into ''Facsimile''. However, for now, we do not
+implement triads&mdash;they are processed, but otherwise ignored.
 
 @constructor Construct a new triad primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -81,7 +81,7 @@ extends Cell (scene, parent) {
 Read and disregard the "unknown" triad flag.
 
 (The current theory is that this value is a visibility flag: a 0 value means
-that the triad is invisible; any other value, that it's visible.  It's academic
+that the triad is invisible; any other value, that it's visible. It's academic
 here as we simply ignore it.
 */
 

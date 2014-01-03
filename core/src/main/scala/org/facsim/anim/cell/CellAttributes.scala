@@ -69,7 +69,7 @@ Edge color.
 
 @note In ''VR Graphics'' mode (available since ''[[http://www.automod.com/
 AutoMod®]]'' version 10.0), edge color in ''cell'' files is ignored, with face
-color being used instead.  ''Facsimile'' honors edge color as far as possible,
+color being used instead. ''Facsimile'' honors edge color as far as possible,
 using it to render cell's if the cell employs ''wireframe'' rendering.
 
 @return Edge color of the cell or `None` if an edge color is not defined.

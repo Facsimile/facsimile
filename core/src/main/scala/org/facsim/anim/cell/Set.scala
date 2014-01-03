@@ -52,7 +52,7 @@ information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -77,7 +77,7 @@ extends Cell (scene, parent) {
 
 Note that sets are not rendered in a particular line style, neither do they use
 material (except for inheritance by children), employ a display style or
-anything else.  They're actually pretty basic.
+anything else. They're actually pretty basic.
 */
 //-----------------------------------------------------------------------------
 

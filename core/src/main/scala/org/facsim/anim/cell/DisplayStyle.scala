@@ -55,7 +55,8 @@ Display Styles]]
 */
 //=============================================================================
 
-private [cell] object DisplayStyle extends Enumeration {
+private [cell] object DisplayStyle
+extends Enumeration {
 
 /**
 Vector mapping the display style ID to an opacity value.
@@ -94,7 +95,7 @@ Solid, having the ''cell'' display style 1.
   private [cell] val Solid = Value
 
 /**
-Transparent 1, having the ''cell'' display style 2.  Almost solid.
+Transparent 1, having the ''cell'' display style 2. Almost solid.
 */
 
   private [cell] val Transparent1 = Value
@@ -178,7 +179,7 @@ Transparent 14, having the ''cell'' display style 15.
   private [cell] val Transparent14 = Value
 
 /**
-Transparent 15, having the ''cell'' display style 16.  Almost invisible.
+Transparent 15, having the ''cell'' display style 16. Almost invisible.
 */
 
   private [cell] val Transparent15 = Value
@@ -261,7 +262,7 @@ Report the display style as an opacity value.
 @param displayStyle Display style for which an opacity is required.
 
 @return A double precision value between 0 (invisible) and 1 (fully opaque)
-indicating the opacity of the associated element.  Wireframe is mapped as fully
+indicating the opacity of the associated element. Wireframe is mapped as fully
 opaque.
 */
 //-----------------------------------------------------------------------------

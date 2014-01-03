@@ -54,7 +54,7 @@ Cylinders]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -65,32 +65,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Cylinders.html
 Cylinders]] for further information.
-
-@since 0.0
-*/
-//=============================================================================
-
-//=============================================================================
-/**
-Class representing ''[[http://www.automod.com/ AutoMod]] cell cylinder''
-primitives.
-
-@see
-[[http://facsim.org/Documentation/Resources/AutoModCellFile/Cylinders.html
-Cylinders]] for further information.
-
-@constructor Construct a new cylinder primitive from the data stream.
-
-@param scene Reference to the CellScene of which this cell is a part.
-
-@param parent Parent set of this cell primitive.  If this value is `None`, then
-this cell is the scene's root cell.
-
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
-
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
 
 @since 0.0
 */
@@ -185,7 +159,7 @@ constructed from indices of the associated faces defined above.
 
 The faces making up the base all belong to the base smoothing group (0), the
 faces making up the walls all belong to the wall smoothing group (1), and the
-faces making up the top all belong to the top smoothing group (2).  Note that
+faces making up the top all belong to the top smoothing group (2). Note that
 there are divisions faces in the first and last group, and 2 * divisions in the
 middle group - making 4 * divisions faces altogether.
 */
@@ -199,7 +173,7 @@ middle group - making 4 * divisions faces altogether.
     }
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 
@@ -221,7 +195,7 @@ private object Cylinder {
 Number of divisions per cylinder.
 
 The number of divisions for a fine cylinder in AutoMod is 16, and for a course
-cylinder it's 8.  For simplicity, we'll convert all cylinders to have 16
+cylinder it's 8. For simplicity, we'll convert all cylinders to have 16
 divisions.
 */
 

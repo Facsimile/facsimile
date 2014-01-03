@@ -54,7 +54,8 @@ Joint Type]]
 */
 //=============================================================================
 
-private [cell] object JointType extends Enumeration {
+private [cell] object JointType
+extends Enumeration {
 
 /**
 TCFOnly, having the joint type 0.

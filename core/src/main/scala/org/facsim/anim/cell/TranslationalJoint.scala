@@ -67,5 +67,6 @@ Joints]] for further information.
 */
 //=============================================================================
 
-private [cell] final class TranslationalJoint (scene: CellScene, flags:
-CellFlags) extends Joint (scene, flags)
+private [cell] final class TranslationalJoint (scene: CellScene,
+flags: CellFlags)
+extends Joint (scene, flags)

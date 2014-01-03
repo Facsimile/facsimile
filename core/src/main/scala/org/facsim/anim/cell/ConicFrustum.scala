@@ -55,7 +55,7 @@ Conic Frustums]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -72,8 +72,9 @@ Conic Frustums]] for further information.
 */
 //=============================================================================
 
-private [cell] final class ConicFrustum (scene: CellScene, parent: Option
-[Set]) extends Mesh3D (scene, parent) {
+private [cell] final class ConicFrustum (scene: CellScene,
+parent: Option [Set])
+extends Mesh3D (scene, parent) {
 
 /**
 Conic frustum base radius.
@@ -171,7 +172,7 @@ constructed from indices of the associated faces defined above.
 
 The faces making up the base all belong to the base smoothing group (0), the
 faces making up the walls all belong to the wall smoothing group (1), and the
-faces making up the top all belong to the top smoothing group (2).  Note that
+faces making up the top all belong to the top smoothing group (2). Note that
 there are divisions faces in the first and last group, and 2 * divisions in the
 middle group - making 4 * divisions faces altogether.
 */
@@ -185,7 +186,7 @@ middle group - making 4 * divisions faces altogether.
     }
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 
@@ -207,7 +208,7 @@ private object ConicFrustum {
 Number of divisions per conic frustum.
 
 The number of divisions for a fine conic frustum in AutoMod is 16, and for a
-course conic frustum it's 8.  For simplicity, we'll convert all conic frustums
+course conic frustum it's 8. For simplicity, we'll convert all conic frustums
 to have 16 divisions.
 */
 

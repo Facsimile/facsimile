@@ -54,7 +54,7 @@ Test Lists]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @param textType Type of text represented by this instance.
@@ -73,7 +73,8 @@ Test Lists]] for further information.
 //=============================================================================
 
 private [cell] abstract class TextList (scene: CellScene, parent: Option [Set],
-textType: Text.Value) extends Cell (scene, parent) {
+textType: Text.Value)
+extends Cell (scene, parent) {
 
 /*
 Read the text lists.
@@ -98,7 +99,7 @@ lists, and do not render Screen text lists.
 /*
 We render World text lists correctly, but, due to current limitations in the
 capabilities of JavaFX/ScalaFX, we can only render Unrotate text lists as World
-Text Lists (see Issue 5).  Furthermore, Screen text lists - while they are
+Text Lists (see Issue 5). Furthermore, Screen text lists - while they are
 potentially supportable at present - are currently not rendered because a
 decision needs to be made about how they should be implemented (see Issue 4).
 */
@@ -178,7 +179,7 @@ Note that, due to the need for tail recursion, the list is built in reverse.
     }
 
 /*
-Read the number of points from the data stream.  This value must be at least 1.
+Read the number of points from the data stream. This value must be at least 1.
 */
 
     val numPoints = scene.readInt (_ > 0, LibResource

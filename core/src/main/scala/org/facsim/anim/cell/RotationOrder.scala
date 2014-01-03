@@ -56,7 +56,8 @@ Rotation Order & Rotations]]
 */
 //=============================================================================
 
-private [cell] object RotationOrder extends Enumeration {
+private [cell] object RotationOrder
+extends Enumeration {
 
 /**
 Vector to a sequence of axes corresponding to each enumeration.

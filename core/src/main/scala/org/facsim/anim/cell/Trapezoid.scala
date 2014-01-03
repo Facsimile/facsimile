@@ -56,7 +56,7 @@ Trapezoids & Boxes]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -95,7 +95,7 @@ Trapezoid base X-axis dimension.
 Base of the trapezoid measured along the X-Axis.
 
 @note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''base width'',
-although most people would refer to it as the ''base length''.  Here, we refer
+although most people would refer to it as the ''base length''. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
@@ -121,7 +121,7 @@ Trapezoid top X-axis dimension.
 Top of the trapezoid measured along the X-Axis.
 
 @note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''top width'',
-although most people would refer to it as the ''top length''.  Here, we refer
+although most people would refer to it as the ''top length''. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
@@ -158,7 +158,7 @@ Trapezoid top Y-axis offset.
 The mesh is a custom TriangleMesh object.
 
 Note that the base is an rectangle on the X-Y plane, with the origin at (0, 0,
-0), relative to its parent.  This rectangle is aligned so that it's bottom and
+0), relative to its parent. This rectangle is aligned so that it's bottom and
 top edges are parallel to the X-axis, and it's left and right edges are
 parallel to the Y-axis.
 */
@@ -191,7 +191,7 @@ Some commonly used values.
 Co-ordinates, ordered counter-clockwise from the upper-left-hand corner (when
 looking at the base from above).
 
-Note that these coordinates are stored as floats.  Why?  No idea...
+Note that these coordinates are stored as floats. Why?  No idea...
 */
 
       ObservableFloatArray (
@@ -241,7 +241,7 @@ constructed from indices of the associated faces defined above.
     )
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 

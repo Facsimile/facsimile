@@ -58,7 +58,7 @@ primitives.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -74,8 +74,8 @@ encountered during parsing of the file.
 */
 //=============================================================================
 
-private [cell] final class Arc (scene: CellScene, parent: Option [Set]) extends
-Mesh3D (scene, parent) {
+private [cell] final class Arc (scene: CellScene, parent: Option [Set])
+extends Mesh3D (scene, parent) {
 
 /**
 Arc radius.
@@ -98,8 +98,8 @@ First angle associated with this arc.
 /**
 Arc second angle.
 
-Second angle associated with this arc.  This value must be positive, and it
-must be within ± 360° of angle 1.
+Second angle associated with this arc. This value must be positive, and it must
+be within ± 360° of angle 1.
 */
 
   private val angle2 = {
@@ -125,7 +125,7 @@ sector/arc.
 The mesh is a custom TriangleMesh object.
 
 Note that the arc is on the X-Y plane, with the center at (0, 0, 0), relative
-to its parent.  Since this is not being drawn in wireframe mode, the arc is
+to its parent. Since this is not being drawn in wireframe mode, the arc is
 either drawn as a circle or a sector of a circle.
 */
 //-----------------------------------------------------------------------------
@@ -148,8 +148,8 @@ sector.
       else {
 
 /*
-Find the start angle and the draw angle.  The start angle is the lower of the
-two values and the draw angle larger angle less the smaller.  If the difference
+Find the start angle and the draw angle. The start angle is the lower of the
+two values and the draw angle larger angle less the smaller. If the difference
 between the two
 is 360°, then we're drawing a circle, not a sector.
 */
@@ -189,7 +189,7 @@ All faces in the circle/sector belong to the same group, 0.
     ObservableIntegerArray.tabulate (Arc.divisions)(_ => 0)
 
 /*
-For now, don't define texture mapping coordinates.  We will typically not apply
+For now, don't define texture mapping coordinates. We will typically not apply
 textures to cells.
 */
 
@@ -211,7 +211,7 @@ private object Arc {
 Number of divisions per arc.
 
 The number of divisions for a fine arc in AutoMod is 16, and for a course arc
-it's 8.  For simplicity, we'll convert all arcs to have 16 divisions.
+it's 8. For simplicity, we'll convert all arcs to have 16 divisions.
 */
 
   val divisions = 16

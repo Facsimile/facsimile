@@ -117,7 +117,8 @@ Point companion object and point classification enumeration.
 */
 //=============================================================================
 
-private [cell] object Point extends Enumeration {
+private [cell] object Point
+extends Enumeration {
 
 /**
 Polyhedron point.

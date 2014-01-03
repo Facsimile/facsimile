@@ -54,7 +54,7 @@ Text]] for further information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @param textType Type of text represented by this instance.
@@ -73,7 +73,8 @@ Text]] for further information.
 //=============================================================================
 
 private [cell] abstract class Text (scene: CellScene, parent: Option [Set],
-textType: Text.Value) extends Cell (scene, parent) {
+textType: Text.Value)
+extends Cell (scene, parent) {
 
 /**
 Read the text from the stream.
@@ -97,7 +98,7 @@ not render Screen text.
 /*
 We render World text correctly, but, due to current limitations in the
 capabilities of JavaFX/ScalaFX, we can only render Unrotate text as World Text
-(see Issue 5).  Furthermore, Screen text - while it is potentially supportable
+(see Issue 5). Furthermore, Screen text - while it is potentially supportable
 at present - is currently not rendered because a decision needs to be made
 about how it should be implemented (see Issue 4).
 */
@@ -144,7 +145,8 @@ This type enumeration is used for [[org.facsim.anim.cell.TestList!]]s as well.
 */
 //=============================================================================
 
-private [cell] object Text extends Enumeration {
+private [cell] object Text
+extends Enumeration {
 
 /**
 Screen text type.

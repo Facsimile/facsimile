@@ -52,7 +52,7 @@ information.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param parent Parent set of this cell primitive.  If this value is `None`, then
+@param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
@@ -68,8 +68,9 @@ Sets]]
 */
 //=============================================================================
 
-private [cell] abstract class SetWithChildren (scene: CellScene, parent: Option
-[Set]) extends Set (scene, parent) {
+private [cell] abstract class SetWithChildren (scene: CellScene,
+parent: Option [Set])
+extends Set (scene, parent) {
 
 /**
 Determine the number of children and read them in.
@@ -81,8 +82,8 @@ Determine the number of children and read them in.
 /**
 Read in the children of the set and return them.
 
-@return List of children belonging to the set.  This may be empty if no
-children are defined.
+@return List of children belonging to the set. This may be empty if no children
+are defined.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
@@ -113,7 +114,7 @@ NOTE: The list will contain children defined in reserve order.
     }
 
 /*
-Read in the number of children from the data stream.  This must be a value that
+Read in the number of children from the data stream. This must be a value that
 is >= 0.
 */
 

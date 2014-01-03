@@ -49,7 +49,8 @@ Face & Edge Colors]]
 */
 //=============================================================================
 
-private [cell] object CellColorType extends Enumeration {
+private [cell] object CellColorType
+extends Enumeration {
 
 /**
 Face.
