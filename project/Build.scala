@@ -246,7 +246,7 @@ Common library dependencies.
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
-    "org.scalafx" %% "scalafx" % "8.0.0-M3-SNAPSHOT",
+    "org.scalafx" %% "scalafx" % "8.0.0-M4-SNAPSHOT",
 
 /*
 Joda Time library for processing dates & times accurately.
