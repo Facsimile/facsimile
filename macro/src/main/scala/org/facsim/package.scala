@@ -71,7 +71,7 @@ Regular expression to match class argument name.
 /**
 Require that argument value is non-`null`.
 
-Throw a [[java.lang.NullPointerException!]] if supplied argument value is
+Throw a [[java.lang.NullPointerException]] if supplied argument value is
 `null`.
 
 Normally, a `NullPointerException` will be thrown by the ''Java'' virtual
@@ -101,7 +101,7 @@ automatically.
 /**
 Require that argument value is valid.
 
-Throw a [[java.lang.IllegalArgumentException!]] if supplied parameter value is
+Throw a [[java.lang.IllegalArgumentException]] if supplied parameter value is
 invalid.
 
 @note This function supersedes the [[scala.Predef$]] `require` methods.
@@ -129,12 +129,14 @@ validity of `arg`. If `true`, function merely returns; if `false` an
 Require a finite double value.
 
 Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will
-result in an [[java.lang.IllegalArgumentException!]] being thrown.
+result in a [[java.lang.IllegalArgumentException]] being thrown.
 
 @param arg Argument whose value is being validated.
 
 @throws java.lang.IllegalArgumentException if `arg` does not have a finite
 value.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -194,12 +196,12 @@ Convert an expression into a string expression.
 
 //-----------------------------------------------------------------------------
 /**
-Provides implementation of the [[org.facsim.requireNonNull(AnyRef)*]] macro.
+Provides implementation of the [[org.facsim.requireNonNull]] macro.
 
 @param c Abstract syntax tree (AST) context for this macro definition.
 
 @param arg Argument whose value is to be tested. If this argument evaluates to
-`null`, then a [[java.lang.NullPointerException!]] is thrown by the macro
+`null`, then a [[java.lang.NullPointerException]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
 @return Implementation of this instance of the `requireNonNull` macro.
@@ -235,12 +237,12 @@ useful information.
 
 //-----------------------------------------------------------------------------
 /**
-Provides implementation of the [[org.facsim.requireValid(Any,Boolean)*]] macro.
+Provides implementation of the [[org.facsim.requireValid]] macro.
 
 @param c Abstract syntax tree (AST) context for this macro definition.
 
 @param arg Argument whose value is to be tested. If `isValid` is evaluated to
-`false`, then a [[java.lang.IllegalArgumentException!]] is thrown by the macro
+`false`, then a [[java.lang.IllegalArgumentException]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
 @return Implementation of this instance of the `requireValid` macro.
@@ -274,12 +276,12 @@ some useful information.
 
 //-----------------------------------------------------------------------------
 /**
-Provides implementation of the [[org.facsim.requireFinite(Double)*]] macro.
+Provides implementation of the [[org.facsim.requireFinite]] macro.
 
 @param c Abstract syntax tree (AST) context for this macro definition.
 
 @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or
-`-∞`, then a [[java.lang.IllegalArgumentException!]] is thrown by the macro
+`-∞`, then a [[java.lang.IllegalArgumentException]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
 @return Implementation of this instance of the `requireFinite` macro.
@@ -319,7 +321,7 @@ slightly convoluted syntax of the first match statement.
         case Double.PositiveInfinity => throw new
         IllegalArgumentException (LibResource ("requireFinite",
         cleanArgName (argString.splice), 1))
-        case Double.NegativeInfinity =>  throw new
+        case Double.NegativeInfinity => throw new
         IllegalArgumentException (LibResource ("requireFinite",
         cleanArgName (argString.splice), 2))
 

@@ -295,6 +295,26 @@ releases become available.
   )
 
 /**
+Scaladoc options.
+
+These should be scoped Compile,doc (for primary sources) or (Test,doc) for test
+sources.
+*/
+
+  val projectScaladocOptions = Seq (
+    "-diagrams",
+    "-doc-footer",
+    "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
+    "-doc-format:html",
+    "-doc-title",
+    projectName + " API Documentation",
+    "-doc-version",
+    projectBaseVersion,
+    "-groups",
+    "-implicits"
+  )
+
+/**
 Primary Facsimile root project.
 
 This "project" contains no sources, but owns - and is dependant upon - the
@@ -380,6 +400,19 @@ version - which seems wrong, right now).
     ),
 
 /*
+Tell any dependent projects where to find published Facsimile API documentation
+to link to (via autoAPIMappings).
+
+This link will be published in the project's Maven POM file.
+
+Note: This documentation is versioned so that links will always be to the
+version of Facsimile in use by the dependent project.
+*/
+
+    apiURL := Some (url ("http://facsim.org/Documentation/API/" +
+    projectBaseVersion)),
+
+/*
 Ensure that core and macro classes, sources and documentation are copied to the
 corresponding distribution jar files.
 */
@@ -459,10 +492,22 @@ Scala compiler options.
     scalacOptions := projectScalacOptions,
 
 /*
+Scaladoc options.
+*/
+
+    scalacOptions in (Compile, doc) ++= projectScaladocOptions,
+
+/*
 Library dependencies.
 */
 
     libraryDependencies ++= commonDependencies,
+
+/*
+Scaladoc configuration.
+*/
+
+    autoAPIMappings := true,
 
 /*
 Basic package information.
@@ -523,6 +568,17 @@ Scala compiler options.
 */
 
     scalacOptions := projectScalacOptions,
+
+/*
+Scaladoc configuration.
+*/
+
+    scalacOptions in (Compile, doc) ++= projectScaladocOptions,
+    autoAPIMappings := true,
+    apiMappings += (
+      unmanagedBase.value / "jt.jar" ->
+      url ("http://download.java.net/jdk8/docs/api/")
+    ),
 
 /*
 Macro dependencies.
