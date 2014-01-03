@@ -1,3 +1,4 @@
+/*
 Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2014, Michael J Allen.
 
