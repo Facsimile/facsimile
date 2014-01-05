@@ -41,6 +41,8 @@ package org.facsim.anim.cell
 import scalafx.collections.ObservableFloatArray
 import scalafx.collections.ObservableIntegerArray
 import scalafx.scene.Node
+import scalafx.scene.shape.CullFace
+import scalafx.scene.shape.DrawMode
 import scalafx.scene.shape.Mesh
 import scalafx.scene.shape.MeshView
 
@@ -75,15 +77,54 @@ extends Cell(scene, parent) {
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] final override def toNode =
+  private [cell] final override def toNode = {
 
 /*
-If the cell is to be displayed as a wireframe, then draw it as a series of
-lines; otherwise, draw as a solid.
+Have the sub-class create and populate a mesh that we will associate with a
+mesh view.
 */
 
-  if (isWireframe) drawAsWireframe
-  else drawAsSolid
+    new MeshView (cellMesh) {
+
+/*
+If this cell has a name, then use it as an ID.
+*/
+
+      id = name.orNull
+
+/*
+Apply the required transformations to the node.
+*/
+
+      transforms = cellTransforms
+
+/*
+Ensure that the cell is drawn with the correct materials and opacity.
+*/
+
+      material = cellMaterial
+      opacity = cellOpacity
+
+/*
+Use the default back cull-face option. (Cell files actually employ front face
+culling - in ScalaFX terms - but that has already been accounted for during
+processing of the cell shape data. For consistency, we should only use the one
+face-culling style.)
+*/
+
+      cullFace = CullFace.BACK
+
+/*
+Determine how the mesh is to be rendered.
+
+(Note: This may not work too well for elements such as "Arc", which look very
+different in wireframe compared to solid).
+*/
+
+      drawMode = if (isWireframe) DrawMode.LINE
+      else DrawMode.FILL
+    }
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -96,59 +137,4 @@ Create a mesh to represent this cell and return it.
 //-----------------------------------------------------------------------------
 
   protected [cell] def cellMesh: Mesh
-
-//-----------------------------------------------------------------------------
-/**
-Draw this ''cell'' in wireframe mode.
-
-@note At the time of writing, ''JavaFX''/''ScalaFX'' does not appear to support
-3D polylines, so rendering of shapes in wireframe is not supported. Instead,
-rather than not render the primitives, they are currently rendered as solids.
-
-@return Base node storing the wireframe form of this trapezoid.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private final def drawAsWireframe: Node = drawAsSolid
-
-//-----------------------------------------------------------------------------
-/**
-Draw this ''cell'' in solid mode, as a collection of 3D meshes.
-
-@return Base node storing the solid form of this cell.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private final def drawAsSolid: Node =
-  new MeshView {
-
-/*
-If this cell has a name, then use it as an ID.
-*/
-
-    id = name.orNull
-
-/*
-Apply the required transformations to the node.
-*/
-
-    transforms = cellTransforms
-
-/*
-Ensure that the cell is drawn with the correct materials and opacity.
-*/
-
-    material = cellMaterial
-    opacity = cellOpacity
-
-/*
-Have the concrete cell create the mesh to represent the image.
-*/
-
-    mesh = cellMesh
-  }
 }
