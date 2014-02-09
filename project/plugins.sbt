@@ -35,14 +35,6 @@
 // SBT plugins file.
 //=============================================================================
 
-// Use the Scalastyle sbt plugin.
-//
-// NOTE: In order to parse the sources correctly, SBT needs to be invoked with
-// the JVM option "-Dfile.encoding=UTF-8" (typically, this will be placed in
-// ./.sbtopts).
-//
-//addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.3.2")
-
 // SBT sbt-git plugin.
 //
 // This plugin provides support for using git commit SHA codes for versioning
