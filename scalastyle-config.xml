@@ -258,33 +258,38 @@ use of such functions is most likely a mistake.
   level="error" />
 
 <!--
-Forbid the use of the Java-style procedure declaration syntax.
+Ensure that "procedure"-style function declarations are not used.
 
-Rationale: Martin Odersky (Scala designer) has hinted that he may deprecate
-this method declaration syntax in a future release, due to potential confusion
-of intent.
+For example,
 
-Specifically, functions of the form:
+  def soSomething {
+    //...
+  }
 
-def doSomething () {
-  //...
-}
+should be avoided, with one of the following preferred:
 
-Will be rejected, in favor of:
+  def doSomething: Unit = {
+    // ...
+  }
 
-def doSomething () = {
-  // ...
-}
+or (which should still be avoided, since it includes the possibility that a
+non-Unit value will be returned):
 
-or (preferably):
+  def doSomething = {
+    // ...
+  }
 
-def doSomething (): Unit = {
-  // ...
-}
+Rationale: Martin Odersky has hinted that the procedure declaration syntax may
+be deprecated in a future Scala release, as it is problematical and prevents
+the Scala compiler from trapping certain compile-time errors. It would also
+reduce the confusion of new Scala developers. In the meantime, this Scalastyle
+warning is useful as it forbids procedure syntax.
+
+Refer to https://issues.scala-lang.org/browse/SI-7605 for further information.
 -->
 
   <check class="org.scalastyle.scalariform.ProcedureDeclarationChecker"
-  enabled="true" level="error" />
+  enabled="true" level="error"/>
 
 <!--
 Method names are typically alphanumeric, starting with a lowercase characters.
@@ -366,6 +371,30 @@ Rationale: Redundancy makes code more opaque and difficult to read.
 -->
 
   <check class="org.scalastyle.scalariform.RedundantIfChecker" enabled="true"
+  level="error" />
+
+<!--
+Prefer the use of braces over parentheses in for comprehensions.
+
+That is, prefer:
+
+for {
+  p <-people
+  if (p.isRetired)
+} yield p
+
+over
+
+for (
+  p <- people;
+  if (p.isRetired)
+) yield p
+
+Rationale: The brace style is cleaner and does not require semicolons at the
+all but the last statement. Braces also look more correct for multi-line code.
+-->
+
+  <check class="org.scalastyle.scalariform.ForBraceChecker" enabled="true"
   level="error" />
 
 <!--
