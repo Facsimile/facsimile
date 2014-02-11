@@ -205,7 +205,7 @@ Provides implementation of the [[org.facsim.requireNonNull]] macro.
 implementation, together with the name of the failed argument.
 
 @return Implementation of this instance of the `requireNonNull` macro.
- 
+
 @since 0.0
 */
 //-----------------------------------------------------------------------------
