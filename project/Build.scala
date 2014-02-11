@@ -48,6 +48,7 @@ import Keys._
 import com.typesafe.sbt.SbtGit
 import com.typesafe.sbt.pgp.PgpKeys
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
+import org.scalastyle.sbt.ScalastylePlugin
 
 //=============================================================================
 /**
@@ -315,13 +316,91 @@ sources.
   )
 
 /**
+Default settings.
+
+These settings are common to all projects.
+*/
+
+  lazy val defaultSettings = Defaults.defaultSettings ++ Seq (
+
+/*
+Scala configuration.
+*/
+
+    scalaVersion := scalaVersionLong
+  )
+
+/**
+Source project settings.
+
+Projects and sub-projects with source files have these settings, which include
+the default settings and Scalastyle.
+*/
+
+  lazy val sourceSettings = defaultSettings ++ ScalastylePlugin.Settings ++
+  Seq (
+
+/*
+Exclude Java source directories (use Scala source directories only).
+
+NOTE: If this is not done, the sbteclipse plug-in creates src/main/java and
+/src/test/java directories.  If we ever need to add Java sources to the
+project, they'll go here.
+*/
+
+    unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)( _ ::
+    Nil),
+    unmanagedSourceDirectories in Test <<= (scalaSource in Test)( _ :: Nil),
+
+/*
+Scala compiler options.
+*/
+
+    scalacOptions := projectScalacOptions,
+
+/*
+Scaladoc configuration.
+*/
+
+    scalacOptions in (Compile, doc) ++= projectScaladocOptions,
+    autoAPIMappings := true,
+    apiMappings += (
+      unmanagedBase.value / "jt.jar" ->
+      url ("http://download.java.net/jdk8/docs/api/")
+    ),
+
+/*
+Scaladoc configuration.
+*/
+
+    autoAPIMappings := true,
+
+/*
+Make sure that tests execute in sequence (we may change this in future, but,
+for now, it's a lot easier to understand test output if tests execute
+sequentially.
+*/
+
+    parallelExecution in Test := false,
+
+/*
+SBT-Eclipse plugin configuration.
+*/
+
+    EclipseKeys.useProjectId := true,
+    EclipseKeys.createSrc := EclipseCreateSrc.Default +
+    EclipseCreateSrc.Resource
+  )
+
+/**
 Primary Facsimile root project.
 
 This "project" contains no sources, but owns - and is dependant upon - the
 others.
 */
 
-  lazy val facsimile = Project (projectArtifactId, file (".")).settings (
+  lazy val facsimile = Project (projectArtifactId, file ("."),
+  settings = defaultSettings ++ Seq (
 
 /*
 Maven POM (project object model) metadata.
@@ -431,28 +510,13 @@ corresponding distribution jar files.
     packageDoc).value,
 
 /*
-Scala configuration.
-*/
-
-    scalaVersion := scalaVersionLong,
-
-/*
-SBT-Eclipse plugin configuration.
-*/
-
-//    EclipseKeys.skipParents in ThisBuild := false,
-//    EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
-//    EclipseKeys.createSrc := EclipseCreateSrc.Source +
-//    EclipseCreateSrc.Resource,
-
-/*
 SBT-GPG plugin configuration.
 
 Specify the key to be used to sign the distribted jar file.
 */
 
     PgpKeys.pgpSigningKey := Some (0x3D700BBB797D614CL) // Public key
-  ).aggregate (core, macros)
+  )).aggregate (core, macros)
 
 /**
 Core project.
@@ -464,38 +528,8 @@ requires that macro implementation code is compiled before code that uses the
 macro implementation is compiled.)
 */
 
-  lazy val core = Project (projectArtifactId + "-core", file ("core"))
-  .settings (
-
-/*
-Exclude Java source directories (use Scala source directories only).
-
-NOTE: If this is not done, the sbteclipse plug-in creates src/main/java and
-/src/test/java directories.  If we ever need to add Java sources to the
-project, they'll go here.
-*/
-
-    unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)( _ ::
-    Nil),
-    unmanagedSourceDirectories in Test <<= (scalaSource in Test)( _ :: Nil),
-
-/*
-Scala configuration.
-*/
-
-    scalaVersion := scalaVersionLong,
-
-/*
-Scala compiler options.
-*/
-
-    scalacOptions := projectScalacOptions,
-
-/*
-Scaladoc options.
-*/
-
-    scalacOptions in (Compile, doc) ++= projectScaladocOptions,
+  lazy val core = Project (projectArtifactId + "-core", file ("core"),
+  settings = sourceSettings ++ Seq (
 
 /*
 Library dependencies.
@@ -504,35 +538,13 @@ Library dependencies.
     libraryDependencies ++= commonDependencies,
 
 /*
-Scaladoc configuration.
-*/
-
-    autoAPIMappings := true,
-
-/*
 Basic package information.
 */
 
     normalizedName := projectArtifactId + "-core",
     organization := projectGroupId,
-    name := projectName + " Core",
-
-/*
-Make sure that tests execute in sequence (we may change this in future, but,
-for now, it's a lot easier to understand test output if tests execute
-sequentially.
-*/
-
-    parallelExecution in Test := false,
-
-/*
-SBT-Eclipse plugin configuration.
-*/
-
-    EclipseKeys.useProjectId := true,
-    EclipseKeys.createSrc := EclipseCreateSrc.Default +
-    EclipseCreateSrc.Resource
-  ).dependsOn (macros % "test->test;compile->compile")
+    name := projectName + " Core"
+  )).dependsOn (macros % "test->test;compile->compile")
 
 /**
 Macro project.
@@ -542,43 +554,8 @@ requires that macro implementation code is compiled before code that uses the
 macro implementation is compiled.
 */
 
-  lazy val macros = Project (projectArtifactId + "-macro", file ("macro"))
-  .settings (
-
-/*
-Exclude Java source directories (use Scala source directories only).
-
-NOTE: If this is not done, the sbteclipse plug-in creates src/main/java and
-/src/test/java directories.  If we ever need to add Java sources to the
-project, they'll go here.
-*/
-
-    unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)( _ ::
-    Nil),
-    unmanagedSourceDirectories in Test <<= (scalaSource in Test)( _ :: Nil),
-
-/*
-Scala configuration.
-*/
-
-    scalaVersion := scalaVersionLong,
-
-/*
-Scala compiler options.
-*/
-
-    scalacOptions := projectScalacOptions,
-
-/*
-Scaladoc configuration.
-*/
-
-    scalacOptions in (Compile, doc) ++= projectScaladocOptions,
-    autoAPIMappings := true,
-    apiMappings += (
-      unmanagedBase.value / "jt.jar" ->
-      url ("http://download.java.net/jdk8/docs/api/")
-    ),
+  lazy val macros = Project (projectArtifactId + "-macro", file ("macro"),
+  settings = sourceSettings ++ Seq (
 
 /*
 Macro dependencies.
@@ -592,22 +569,6 @@ Basic package information.
 
     normalizedName := projectArtifactId + "-macro",
     organization := projectGroupId,
-    name := projectName + " Macros",
-
-/*
-Make sure that tests execute in sequence (we may change this in future, but,
-for now, it's a lot easier to understand test output if tests execute
-sequentially.
-*/
-
-    parallelExecution in Test := false,
-
-/*
-SBT-Eclipse plugin configuration.
-*/
-
-    EclipseKeys.useProjectId := true,
-    EclipseKeys.createSrc := EclipseCreateSrc.Default +
-    EclipseCreateSrc.Resource
-  )
+    name := projectName + " Macros"
+  ))
 }
