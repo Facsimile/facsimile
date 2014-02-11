@@ -49,5 +49,4 @@ Package providing miscellaneous utility elements.
 */
 //=============================================================================
 
-package object util {
-}
+package object util
