@@ -155,9 +155,12 @@ isn't a macro.
 /*
 To convert a Scala vararg to a Java vararg, while boxing numbers requires this
 rather ugly code...
+
+Disable scalastyle complaints about casting - there's no real alternative to
+this, at the time of writing.
 */
 
-    MessageFormat.format (bundle.getString (key), arguments.map (_.asInstanceOf
-    [AnyRef]): _*)
+    MessageFormat.format (bundle.getString (key), arguments.map
+    (_.asInstanceOf [AnyRef]): _*) // scalastyle:ignore
   }
 }
