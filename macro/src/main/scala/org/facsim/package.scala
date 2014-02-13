@@ -67,6 +67,25 @@ Regular expression to match class argument name.
 
   private val classArgRE = """[0-9A-Za-z_]+\.this\.([0-9A-Za-z_]+)""".r
 
+/**
+Key for requireNonNull string resource.
+*/
+
+  private [facsim] val RequireNonNullKey = "requireNonNull"
+
+/**
+Key for requireValid string resource.
+*/
+
+  private [facsim] val RequireValidKey = "requireValid"
+
+/**
+Key for requireFinite string resource.
+*/
+
+  private [facsim] val RequireFiniteKey = "requireFinite"
+
+
 //-----------------------------------------------------------------------------
 /**
 Require that argument value is non-`null`.
@@ -228,7 +247,7 @@ useful information.
 
     reify {
       if (arg.splice eq null) throw new NullPointerException (LibResource
-      ("requireNonNull", cleanArgName (argString.splice)))
+      (RequireNonNullKey, cleanArgName (argString.splice)))
     }
   }
 
@@ -267,7 +286,7 @@ some useful information.
 
     reify {
       if (!isValid.splice) throw new IllegalArgumentException (LibResource
-      ("requireValid", cleanArgName (argString.splice), arg.splice.toString))
+      (RequireValidKey, cleanArgName (argString.splice), arg.splice.toString))
     }
   }
 
@@ -304,7 +323,7 @@ Determine whether the value is finite; if not, then throw an exception.
 
     reify {
       if (arg.splice.isNaN || arg.splice.isInfinite) {
-        throw new IllegalArgumentException (LibResource ("requireFinite",
+        throw new IllegalArgumentException (LibResource (RequireFiniteKey,
         cleanArgName (argString.splice), arg.splice))
       }
     }

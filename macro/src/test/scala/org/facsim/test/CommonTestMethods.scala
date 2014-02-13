@@ -39,6 +39,9 @@ Scala source file from the org.facsim.test package.
 package org.facsim.test
 
 import org.facsim.LibResource
+import org.facsim.RequireFiniteKey
+import org.facsim.RequireNonNullKey
+import org.facsim.RequireValidKey
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -63,7 +66,7 @@ Assert that a NullPointerException's message resulting from a
 
   final def assertRequireNonNullMsg (e: NullPointerException, argName: String):
   Unit = {
-    assert (e.getMessage () === LibResource ("requireNonNull", argName))
+    assert (e.getMessage () === LibResource (RequireNonNullKey, argName))
   }
 
 //-----------------------------------------------------------------------------
@@ -81,7 +84,7 @@ Assert that an IllegalArgumentException's message resulting from a
 
   final def assertRequireValidMsg (e: IllegalArgumentException, argName:
   String, argValue: Any): Unit = assert (e.getMessage () === LibResource
-  ("requireValid", argName, argValue.toString))
+  (RequireValidKey, argName, argValue.toString))
 
 //-----------------------------------------------------------------------------
 /**
@@ -98,7 +101,7 @@ Assert that an IllegalArgumentException's message resulting from a
 
   final def assertRequireFiniteMsg (e: IllegalArgumentException, argName:
   String, argValue: Double): Unit = {
-    assert (e.getMessage () === LibResource ("requireFinite", argName,
+    assert (e.getMessage () === LibResource (RequireFiniteKey, argName,
     argValue))
   }
 }

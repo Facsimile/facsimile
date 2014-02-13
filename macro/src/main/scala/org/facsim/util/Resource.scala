@@ -41,6 +41,7 @@ package org.facsim.util
 import java.text.MessageFormat
 import java.util.ResourceBundle
 import org.facsim.LibResource
+import org.facsim.RequireNonNullKey
 
 //=============================================================================
 /**
@@ -87,7 +88,7 @@ isn't a macro.
 */
 
   if (bundleName eq null) throw new NullPointerException (LibResource
-  ("requireNonNull", "bundleName"))
+  (RequireNonNullKey, "bundleName"))
 
 /**
 Resource bundle.
@@ -150,7 +151,7 @@ isn't a macro.
 */
 
     if (key eq null) throw new NullPointerException (LibResource
-    ("requireNonNull", "key"))
+    (RequireNonNullKey, "key"))
 
 /*
 To convert a Scala vararg to a Java vararg, while boxing numbers requires this
