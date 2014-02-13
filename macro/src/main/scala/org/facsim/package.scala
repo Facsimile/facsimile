@@ -95,7 +95,7 @@ automatically.
 */
 //-----------------------------------------------------------------------------
 
-  final def requireNonNull (arg: AnyRef): Unit = macro requireNonNullImpl
+  def requireNonNull (arg: AnyRef): Unit = macro requireNonNullImpl
 
 //-----------------------------------------------------------------------------
 /**
@@ -121,8 +121,7 @@ validity of `arg`. If `true`, function merely returns; if `false` an
 */
 //-----------------------------------------------------------------------------
 
-  final def requireValid (arg: Any, isValid: Boolean): Unit =
-  macro requireValidImpl
+  def requireValid (arg: Any, isValid: Boolean): Unit = macro requireValidImpl
 
 //-----------------------------------------------------------------------------
 /**
@@ -140,7 +139,7 @@ value.
 */
 //-----------------------------------------------------------------------------
 
-  final def requireFinite (arg: Double): Unit = macro requireFiniteImpl
+  def requireFinite (arg: Double): Unit = macro requireFiniteImpl
 
 //-----------------------------------------------------------------------------
 /**
@@ -155,10 +154,12 @@ so that the raw argument name is returned.
 @param arg A class or method argument to be cleaned.
 
 @return Cleaned argument name, matching the value expected by the user.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def cleanArgName (arg: String): String = arg match {
+  def cleanArgName (arg: String): String = arg match {
 
 /*
 If this is a class argument, remove the prefix and return the actual name of
@@ -183,13 +184,10 @@ Convert an expression into a string expression.
 @param arg Expression to be converted.
 
 @return String expression capturing contents of original expression.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private final def exprAsString (c: Context)(arg: c.Expr [Any]):
-  c.Expr [String] = {
+  private def exprAsString (c: Context)(arg: c.Expr [Any]): c.Expr [String] = {
     import c.universe._
     c.Expr [String] (Literal (Constant (show (arg.tree))))
   }
@@ -210,8 +208,7 @@ implementation, together with the name of the failed argument.
 */
 //-----------------------------------------------------------------------------
 
-  final def requireNonNullImpl (c: Context)(arg: c.Expr [AnyRef]):
-  c.Expr [Unit] = {
+  def requireNonNullImpl (c: Context)(arg: c.Expr [AnyRef]): c.Expr [Unit] = {
 
 /*
 Convert the argument into a string that represents the expression that was
@@ -251,8 +248,8 @@ implementation, together with the name of the failed argument.
 */
 //-----------------------------------------------------------------------------
 
-  final def requireValidImpl (c: Context)(arg: c.Expr [Any], isValid: c.Expr
-  [Boolean]): c.Expr [Unit] = {
+  def requireValidImpl (c: Context)(arg: c.Expr [Any],
+  isValid: c.Expr [Boolean]): c.Expr [Unit] = {
 
 /*
 Convert the arguments to strings.
@@ -290,8 +287,7 @@ implementation, together with the name of the failed argument.
 */
 //-----------------------------------------------------------------------------
 
-  final def requireFiniteImpl (c: Context)(arg: c.Expr [Double]):
-  c.Expr [Unit] = {
+  def requireFiniteImpl (c: Context)(arg: c.Expr [Double]): c.Expr [Unit] = {
 
 /*
 Convert the argument to a string.
@@ -303,33 +299,13 @@ Convert the argument to a string.
 /*
 Generate the AST to be substituted for the macro reference.
 
-Determine whether the value is valid.
+Determine whether the value is finite; if not, then throw an exception.
 */
 
     reify {
-      arg.splice match {
-
-/*
-In the case of the following values, throw the exception.
-
-Note: It's not possible to pattern match on NaN (since NaN != NaN), hence the
-slightly convoluted syntax of the first match statement.
-*/
-
-        case x if x.isNaN => throw new IllegalArgumentException (LibResource
-        ("requireFinite", cleanArgName (argString.splice), 0))
-        case Double.PositiveInfinity => throw new
-        IllegalArgumentException (LibResource ("requireFinite",
-        cleanArgName (argString.splice), 1))
-        case Double.NegativeInfinity => throw new
-        IllegalArgumentException (LibResource ("requireFinite",
-        cleanArgName (argString.splice), 2))
-
-/*
-All other values are valid, so do nothing.
-*/
-
-        case _ =>
+      if (arg.splice.isNaN || arg.splice.isInfinite) {
+        throw new IllegalArgumentException (LibResource ("requireFinite",
+        cleanArgName (argString.splice), arg.splice))
       }
     }
   }
