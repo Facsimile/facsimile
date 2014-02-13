@@ -98,13 +98,7 @@ Assert that an IllegalArgumentException's message resulting from a
 
   final def assertRequireFiniteMsg (e: IllegalArgumentException, argName:
   String, argValue: Double): Unit = {
-    val badValueCode = argValue match {
-      case x if x.isNaN => 0
-      case Double.PositiveInfinity => 1
-      case Double.NegativeInfinity => 2
-      case _ => throw new AssertionError ("Failed value IS finite!")
-    }
     assert (e.getMessage () === LibResource ("requireFinite", argName,
-    badValueCode))
+    argValue))
   }
 }
