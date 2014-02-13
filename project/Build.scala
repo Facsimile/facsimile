@@ -58,7 +58,8 @@ Facsimile SBT Build object.
  */
 //=============================================================================
 
-object FacsimileBuild extends Build {
+object FacsimileBuild
+extends Build {
 
 /**
 Required short scala version.
