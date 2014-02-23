@@ -89,12 +89,6 @@ Each source file must commence with a standard header.
 Rationale: The header is required to ensure that all sources have a correct
 copyright and distribution notice, which must be up-to-date and valid for all
 sources.
-
-NOTE: This is currently disabled pending a resolution to Scalastyle issue #84:
-https://github.com/scalastyle/scalastyle/issues/84
-
-For some reason, a blank line is appended to the header definition, causing it
-to fail to match.
 -->
 
   <check class="org.scalastyle.file.HeaderMatchesChecker" enabled="true"
