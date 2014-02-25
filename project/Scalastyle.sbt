@@ -32,7 +32,7 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //=============================================================================
-// SBT file to include ScalaStyle plugin.
+// SBT file to include Scalastyle plugin.
 //=============================================================================
 
 addSbtPlugin ("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.4.0")
