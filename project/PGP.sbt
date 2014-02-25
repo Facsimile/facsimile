@@ -32,11 +32,9 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //=============================================================================
-// SBT plugins file.
+// SBT file to include sbt-pgp plugin.
+//
+// This plugin supports signing of artifacts to guarantee their provenance.
 //=============================================================================
 
-// GPG plugin for signing distributed artifacts.
 addSbtPlugin ("com.typesafe.sbt" % "sbt-pgp" % "0.8")
-
-resolvers += "sonatype-releases" at
-"https://oss.sonatype.org/content/repositories/releases/"
