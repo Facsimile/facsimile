@@ -192,6 +192,8 @@ Rationale: Braces for such classes are redundant and need not be specified.
 <!--
 Enforce use of a single uppercase character for the name of class/trait type
 parameters.
+
+Rationale: This is a common Scala convention.
 -->
 
   <check class="org.scalastyle.scalariform.ClassTypeParameterChecker"
@@ -257,7 +259,7 @@ use of such functions is most likely a mistake.
   level="error" />
 
 <!--
-Ensure that "procedure"-style function declarations are not used.
+Ensure that Java-style "procedure"-style function declarations are not used.
 
 For example,
 
@@ -373,9 +375,9 @@ Rationale: Redundancy makes code more opaque and difficult to read.
   level="error" />
 
 <!--
-Prefer the use of braces over parentheses in for comprehensions.
+Enforce the use of braces over parentheses in for comprehensions.
 
-That is, prefer:
+That is, enforce:
 
 for {
   p <-people
