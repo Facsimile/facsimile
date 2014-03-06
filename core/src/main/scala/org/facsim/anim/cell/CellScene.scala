@@ -73,8 +73,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -85,7 +83,7 @@ faceColor: CellColor.Value, edgeColor: CellColor.Value) extends NotNull {
 Sanity checks.
 */
 
-  assert (reader.isInstanceOf [NotNull])
+  assert (reader.isInstanceOf [NotNull]) // scalastyle:ignore
   assert (baseUrl ne null)
   assert (faceColor ne null)
   assert (edgeColor ne null)
@@ -96,7 +94,7 @@ Flag indicating whether we have finished constructing the scene.
 @todo This is a little fugly, but it works, so hey... :-(
 */
 
-  private var sceneRead = false
+  private var sceneRead = false // scalastyle:ignore
 
 /**
 ''Cell'' definitions, indexed by name and initially empty.
@@ -155,8 +153,6 @@ Report the default edge color for this scene.
 Return the scene read as a ''ScalaFX'' 3D scene graph.
 
 @return Cell's contents as a ''ScalaFX'' 3D scene graph.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -178,8 +174,6 @@ the caller. If this flag is `true`, then `parent` must be `None`.
 
 @return Cell instance read from the file. Note that the root cell contains all
 cells belonging to this scene as its contents.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -199,9 +193,8 @@ Determine the code of the next cell element in the file.
 */
 
     val cellCode = readInt (CellScene.verifyCellCode (isDefinition),
-    LibResource ("anim.cell.CellScene.readNextCell.cellCodeDesc", if
-    (isDefinition) 1 else 0, CellScene.permittedCellCodes
-    (isDefinition)))
+    LibResource ("anim.cell.CellScene.readNextCell.cellCodeDesc",
+    if (isDefinition) 1 else 0, CellScene.permittedCellCodes (isDefinition)))
 
 /*
 Retrieve the cell class associated with the indicated cell code.
@@ -233,7 +226,7 @@ Note that if the cell has no name, then this will result in an exception.
 */
 
     if (isDefinition) {
-      assert (cell.isInstanceOf [Definition])
+      assert (cell.isInstanceOf [Definition]) // scalastyle:ignore
       definitions += (cell.name.get -> cell)
     }
 
@@ -263,8 +256,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -273,8 +264,7 @@ encountered during parsing of the file.
       reader.readToEOL ()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
 
 /*
@@ -302,8 +292,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -312,8 +300,7 @@ encountered during parsing of the file.
       reader.readString ()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value
   }
@@ -335,8 +322,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -346,8 +331,7 @@ encountered during parsing of the file.
       reader.readString (verifier)
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value
   }
@@ -366,8 +350,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -376,8 +358,7 @@ encountered during parsing of the file.
       reader.readInt (value => value == 0 || value == 1)
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value == 1
   }
@@ -399,8 +380,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -410,8 +389,7 @@ encountered during parsing of the file.
       reader.readInt (value => (value == 0 || value == 1) && verifier (value))
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value == 1
   }
@@ -430,8 +408,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -440,8 +416,7 @@ encountered during parsing of the file.
       reader.readInt ()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value
   }
@@ -463,8 +438,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -474,8 +447,7 @@ encountered during parsing of the file.
       reader.readInt (verifier)
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value
   }
@@ -494,8 +466,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -504,8 +474,7 @@ encountered during parsing of the file.
       reader.readDouble ()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value
   }
@@ -527,8 +496,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -538,8 +505,7 @@ encountered during parsing of the file.
       reader.readDouble (verifier)
     }
     catch {
-      case e: Throwable  => CellScene.translateReaderException (e, LibResource
-      ("anim.cell.CellScene.readValue", description))
+      case e: Throwable => CellScene.translateReaderException (e, description)
     }
     value
   }
@@ -552,8 +518,6 @@ Retrieve definition with specified name.
 
 @return `Some` definition, if the definition has already been defined; `None`
 if the definition has not yet been seen.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -564,8 +528,6 @@ if the definition has not yet been seen.
 //=============================================================================
 /**
 CellScene companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -608,8 +570,6 @@ regular cell) to a map that relates cell codes to cell classes.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -620,7 +580,7 @@ Map associating cell type code with corresponding ''regular'' cell class.
 
 All classes contained in his map must be concrete classes and must provide a
 constructor taking CellScene reference and an Option [Set] arguments.
- 
+
 @note This map is defined in order of the cell codes for ease of maintenance by
 a human (the resulting map itself is not ordered by cell code). Please maintain
 this order when modifying the list.
@@ -711,8 +671,6 @@ not a valid expected cell code.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
-
-@since 0.0 
 */
 //-----------------------------------------------------------------------------
 
@@ -734,8 +692,6 @@ cell; if `false`, the cell code must be for a regular cell.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -755,8 +711,6 @@ cell (`true`) or a regular cell (`false`).
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -796,8 +750,8 @@ handling of 3D file importing.
 
 @param exception Exception to be translated.
 
-@param msg A message to be added to the exception to explain what might have
-just happened.
+@param description A general description to be mixed into the exception message
+string to explain what might have just happened.
 
 @return This function does not return and always throws an exception.
 
@@ -806,21 +760,31 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def translateReaderException (exception: Throwable,
-  msg: String): Nothing = exception match {
+  private def translateReaderException (exception: Throwable,
+  description: String): Nothing = {
+
+/*
+Retrieve the error message, mixing in the description.
+*/
+
+    val msg = LibResource ("anim.cell.CellScene.readValue", description)
+
+/*
+Determine the correct reader exception.
+*/
+
+    exception match {
 
 /*
 Map field conversion exceptions (expected an Int, but got a string, for
 example) to incorrect format exceptions.
 */
 
-    case e: FieldConversionException =>
-    throw new IncorrectFormatException (msg, e)
+      case e: FieldConversionException =>
+      throw new IncorrectFormatException (msg, e)
 
 /*
 Map field verification exceptions (data is correct type, but doesn't have an
@@ -828,20 +792,21 @@ acceptable value, such as an integer being outside of an allowed range) to
 parsing error exceptions.
 */
 
-    case e: FieldVerificationException =>
-    throw new ParsingErrorException (msg, e)
+      case e: FieldVerificationException =>
+      throw new ParsingErrorException (msg, e)
 
 /*
 Map I/O exceptions (of which there are many different types) to parsing error
 exceptions.
 */
 
-    case e: IOException => throw new ParsingErrorException (msg, e)
+      case e: IOException => throw new ParsingErrorException (msg, e)
 
 /*
 For all other exceptions, re-throw the original exception.
 */
 
-    case _ => throw exception
+      case _ => throw exception
+    }
   }
 }
