@@ -51,12 +51,10 @@ the corresponding ''ScalaFX'' colors and materials.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
-
-@since 0.0
 */
 //=============================================================================
 
-object CellColor
+private [cell] object CellColor
 extends Enumeration {
 
 /**
@@ -227,8 +225,6 @@ of ''cell'' colors in regular code, when ideally we want to bury them.
 @param ''Cell'' color value to be converted.
 
 @return Corresponding ''ScalaFX'' color.
-
-@since 0.0 
 */
 //-----------------------------------------------------------------------------
 
@@ -245,8 +241,6 @@ of ''cell'' colors in regular code, when ideally we want to bury them.
 @param ''Cell'' color value to be converted.
 
 @return Corresponding ''ScalaFX'' material.
-
-@since 0.0 
 */
 //-----------------------------------------------------------------------------
 
@@ -261,8 +255,6 @@ Verify a color code.
 @param colorCode Code for the color to be verified.
 
 @return `true` if the code maps to a valid color, `false` otherwise.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -287,8 +279,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
