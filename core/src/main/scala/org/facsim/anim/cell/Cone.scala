@@ -65,8 +65,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Cones.html
 Cones]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -79,8 +77,8 @@ Cone radius.
 Base side radius, measured on the X-Y plane.
 */
 
-  private val radius = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Cone.readDim", 0))
+  private val radius = scene.readDouble (_ >= 0.0,
+  LibResource (Cone.ReadDimKey, 0))
 
 /**
 Cone height (Z-dimension).
@@ -88,22 +86,20 @@ Cone height (Z-dimension).
 Height of the cone measured along the Z-Axis.
 */
 
-  private val height = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Cone.readDim", 1))
+  private val height = scene.readDouble (_ >= 0.0,
+  LibResource (Cone.ReadDimKey, 1))
 
 /**
 Cone top X-axis offset.
 */
 
-  private val xOffset = scene.readDouble (LibResource
-  ("anim.cell.Cone.readOffset", 0))
+  private val xOffset = scene.readDouble (LibResource (Cone.ReadOffsetKey, 0))
 
 /**
 Cone top Y-axis offset.
 */
 
-  private val yOffset = scene.readDouble (LibResource
-  ("anim.cell.Cone.readOffset", 1))
+  private val yOffset = scene.readDouble (LibResource (Cone.ReadOffsetKey, 1))
 
 //-----------------------------------------------------------------------------
 /*
@@ -124,12 +120,22 @@ The origin of the cell is at the center of its base.
 //=============================================================================
 /**
 Cone companion object.
-
-@since 0.0
 */
 //=============================================================================
 
 private object Cone {
+
+/**
+Read dimension string resource key.
+*/
+
+  val ReadDimKey = "anim.cell.Cone.readDim"
+
+/**
+Read offset string resource key.
+*/
+
+  val ReadOffsetKey = "anim.cell.Cone.readOffset"
 
 /**
 Number of divisions per cone.
