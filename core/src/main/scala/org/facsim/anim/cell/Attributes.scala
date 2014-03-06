@@ -192,7 +192,7 @@ color otherwise.
 
     else {
       if (inheritColors) None
-      else Some (CellColor.default)
+      else Some (CellColor.Default)
     }
   }
 }

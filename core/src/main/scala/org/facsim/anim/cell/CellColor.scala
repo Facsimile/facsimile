@@ -105,97 +105,97 @@ cell files small.
 Black, having the ''cell'' color code 0.
 */
 
-  val black = Value
+  val Black = Value
 
 /**
 Red, having the ''cell'' color code 1.
 */
 
-  val red = Value
+  val Red = Value
 
 /**
 Green, having the ''cell'' color code 2.
 */
 
-  val green = Value
+  val Green = Value
 
 /**
 Yellow, having the ''cell'' color code 3.
 */
 
-  val yellow = Value
+  val Yellow = Value
 
 /**
 Blue, having the ''cell'' color code 4.
 */
 
-  val blue = Value
+  val Blue = Value
 
 /**
 Magenta, having the ''cell'' color code 5.
 */
 
-  val magenta = Value
+  val Magenta = Value
 
 /**
 Cyan, having the ''cell'' color code 6.
 */
 
-  val cyan = Value
+  val Cyan = Value
 
 /**
 White, having the ''cell'' color code 7.
 */
 
-  val white = Value
+  val White = Value
 
 /**
 Light gray, having the ''cell'' color code 8.
 */
 
-  val lightGray = Value
+  val LightGray = Value
 
 /**
 Dark gray, having the ''cell'' color code 9.
 */
 
-  val darkGray = Value
+  val DarkGray = Value
 
 /**
 Brown, having the ''cell'' color code 10.
 */
 
-  val brown = Value
+  val Brown = Value
 
 /**
 Light blue, having the ''cell'' color code 11.
 */
 
-  val lightBlue = Value
+  val LightBlue = Value
 
 /**
 Purple, having the ''cell'' color code 12.
 */
 
-  val purple = Value
+  val Purple = Value
 
 /**
 Orange, having the ''cell'' color code 13.
 */
 
-  val orange = Value
+  val Orange = Value
 
 /**
 Light green, having the ''cell'' color code 14.
 */
 
-  val lightGreen = Value
+  val LightGreen = Value
 
 /**
 Light yellow, having the ''cell'' color code 15.
 */
 
-  val lightYellow = Value
+  val LightYellow = Value
 
 /**
 Default color, which is used if an explicit color is not specified.
@@ -203,7 +203,7 @@ Default color, which is used if an explicit color is not specified.
 @note This is a material instance, not a color.
 */
 
-  val default = red
+  val Default = Red
 
 /**
 Minimum color code value.

@@ -160,8 +160,8 @@ encountered during parsing of the file.
 //-----------------------------------------------------------------------------
 
   def load (url: URL, baseUrl: Option [URL] = None,
-  faceColor: CellColor.Value = CellColor.default,
-  edgeColor: CellColor.Value = CellColor.default): Node = {
+  faceColor: CellColor.Value = CellColor.Default,
+  edgeColor: CellColor.Value = CellColor.Default): Node = {
 
 /*
 Verify that certain arguments are not null.
