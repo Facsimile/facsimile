@@ -41,6 +41,7 @@ package org.facsim.anim.cell
 import org.facsim.LibResource
 import scalafx.scene.Group
 
+//scalastyle:off
 //=============================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell compiled
@@ -70,6 +71,7 @@ Compiled Pictures]] for further information.
 @since 0.0
 */
 //=============================================================================
+//scalastyle:on
 
 private [cell] final class CompiledPicture (scene: CellScene,
 parent: Option [Set])
