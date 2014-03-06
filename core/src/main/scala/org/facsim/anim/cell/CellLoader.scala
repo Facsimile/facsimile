@@ -84,7 +84,7 @@ located as follows:
       relative to this base URL location.
     - Otherwise, it will search the referenced file relative to the location of
       the ''cell'' file being processed.
-        
+
 In all cases, once a search location has been established, the search will fail
 if the file could not be found at, or relative to, that search location.
 
