@@ -47,12 +47,22 @@ Bounding Box companion object.
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/BoundingBox.html
 Cell Bounding Box]]
-
-@since 0.0
 */
 //=============================================================================
 
 private [cell] object BoundingBox {
+
+/**
+Read minimum value string resource key.
+*/
+
+  val ReadMinKey = "anim.cell.BoundingBox.read.min"
+
+/**
+Read minimum value string resource key.
+*/
+
+  val ReadMaxKey = "anim.cell.BoundingBox.read.max"
 
 //-----------------------------------------------------------------------------
 /**
@@ -67,9 +77,9 @@ so can report meaningful errors to the user.
 @note This function must only be called if the current cell has bounding box
 data present, and must be called in the correct sequence for reading from the
 cell file, otherwise exceptions will occur.
- 
+
 @param scene Scene to which this ''cell'' definition belongs.
- 
+
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
@@ -91,29 +101,23 @@ Read in the minimum and maximum X coordinate values. The maximum coordinate
 must be greater than the minimum coordinate.
 */
 
-    val minX = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
-    0))
-    scene.readDouble (_ >= minX, LibResource ("anim.cell.BoundingBox.read.max",
-    0, minX))
+    val minX = scene.readDouble (LibResource (ReadMinKey, 0))
+    scene.readDouble (_ >= minX, LibResource (ReadMaxKey, 0, minX))
 
 /*
 Read in the minimum and maximum Y coordinate values. The maximum coordinate
 must be greater than the minimum coordinate.
 */
 
-    val minY = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
-    1))
-    scene.readDouble (_ >= minY, LibResource ("anim.cell.BoundingBox.read.max",
-    1, minY))
+    val minY = scene.readDouble (LibResource (ReadMinKey, 1))
+    scene.readDouble (_ >= minY, LibResource (ReadMaxKey, 1, minY))
 
 /*
 Read in the minimum and maximum Z coordinate values. The maximum coordinate
 must be greater than the minimum coordinate.
 */
 
-    val minZ = scene.readDouble (LibResource ("anim.cell.BoundingBox.read.min",
-    2))
-    scene.readDouble (_ >= minZ, LibResource ("anim.cell.BoundingBox.read.max",
-    2, minZ))
+    val minZ = scene.readDouble (LibResource (ReadMinKey, 2))
+    scene.readDouble (_ >= minZ, LibResource (ReadMaxKey, 2, minZ))
   }
 }
