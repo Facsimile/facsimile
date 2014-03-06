@@ -83,8 +83,8 @@ Arc radius.
 Arc radius, measured on the X-Y plane.
 */
 
-  private val radius = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Arc.readDim", 0))
+  private val radius = scene.readDouble (_ >= 0.0,
+  LibResource (Arc.ReadDimKey, 0))
 
 /**
 Arc first angle.
@@ -92,8 +92,8 @@ Arc first angle.
 First angle associated with this arc.
 */
 
-  private val angle1 = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Arc.readDim", 1))
+  private val angle1 = scene.readDouble (_ >= 0.0,
+  LibResource (Arc.ReadDimKey, 1))
 
 /**
 Arc second angle.
@@ -106,7 +106,7 @@ be within ± 360° of angle 1.
     val minAngle = max (0.0, angle1 - 360.0)
     val maxAngle = angle1 + 360.0
     scene.readDouble ((angle: Double) => (angle >= minAngle) && (angle <=
-    maxAngle), LibResource ("anim.cell.Arc.readDim2", minAngle, maxAngle))
+    maxAngle), LibResource (Arc.ReadAnglesKey, minAngle, maxAngle))
   }
 
 /**
@@ -144,6 +144,14 @@ Arc companion object.
 //=============================================================================
 
 private object Arc {
+
+/**
+Arc read dimension string resource key.
+*/
+
+  val ReadDimKey = "anim.cell.Arc.readDim"
+
+  val ReadAnglesKey = "anim.cell.Arc.readAngles"
 
 /**
 Number of divisions per arc.
