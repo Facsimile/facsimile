@@ -353,7 +353,7 @@ as appropriate.
   level="error">
     <parameters>
       <parameter name="singleLineAllowed"><![CDATA[true]]></parameter>
-      <parameter name="doubleLineAllowed"><![CDATA[false]]></parameter>
+      <parameter name="doubleLineAllowed"><![CDATA[true]]></parameter>
     </parameters>
   </check>
 
