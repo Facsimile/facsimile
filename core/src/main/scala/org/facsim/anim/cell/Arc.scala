@@ -39,12 +39,12 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import org.facsim.anim.Mesh
+import org.facsim.anim.Point3D
 import org.facsim.measure.Angle
 import scala.math.abs
 import scala.math.max
 import scala.math.min
-import scalafx.collections.ObservableIntegerArray
-import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
 /**
@@ -75,7 +75,7 @@ encountered during parsing of the file.
 //=============================================================================
 
 private [cell] final class Arc (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+extends Mesh2D (scene, parent) {
 
 /**
 Arc radius.
@@ -120,81 +120,19 @@ sector/arc.
 
 //-----------------------------------------------------------------------------
 /*
-@see [[org.facsim.anim.cell.Mesh3D!]]
+Create an arc mesh to represent this cell and return it.
 
-The mesh is a custom TriangleMesh object.
+The origin of the cell is at its center.
 
-Note that the arc is on the X-Y plane, with the center at (0, 0, 0), relative
-to its parent. Since this is not being drawn in wireframe mode, the arc is
-either drawn as a circle or a sector of a circle.
+@return Mesh representing the cell.
+
+@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] override def cellMesh = new TriangleMesh {
-
-/*
-Create the list of vertices.
-*/
-
-    override val points = {
-
-/*
-If the arc is actually a circle, then draw it as such; otherwise, draw it as a
-sector.
-*/
-
-      if (isCircle) MeshUtils.circleCoordinates (radius, 0.0, Arc.divisions,
-      0.0, 0.0)
-      else {
-
-/*
-Find the start angle and the draw angle. The start angle is the lower of the
-two values and the draw angle larger angle less the smaller. If the difference
-between the two
-is 360°, then we're drawing a circle, not a sector.
-*/
-
-        val startAngle = Angle (min (angle1, angle2), Angle.Degrees)
-        val drawAngle = Angle (max (angle1, angle2), Angle.Degrees) -
-        startAngle
-        MeshUtils.sectorCoordinates (radius, 0.0, startAngle, drawAngle,
-        Arc.divisions, 0.0, 0.0)
-      }
-    }
-
-/*
-Now create the list of faces (triangles), constructed from indices of the
-associated points defined above.
-*/
-
-    override val faces = {
-
-/*
-Use the MeshUtils to generate the faces making up the circle or sector as
-required.
-*/
-
-      if (isCircle) MeshUtils.circleFaces (Arc.divisions, 0)
-      else MeshUtils.sectorFaces (Arc.divisions, 0)
-    }
-
-/*
-Now create the smoothing face groups (face index map to smoothing group),
-constructed from indices of the associated faces defined above.
-
-All faces in the circle/sector belong to the same group, 0.
-*/
-
-    override val faceSmoothingGroups =
-    ObservableIntegerArray.tabulate (Arc.divisions)(_ => 0)
-
-/*
-For now, don't define texture mapping coordinates. We will typically not apply
-textures to cells.
-*/
-
-    //override val getTexCoords =
-  }
+  protected [cell] override def cellMesh: Mesh = Mesh.arc (Point3D.Origin,
+  radius, Angle (angle1, Angle.Degrees),
+  Angle (angle2 - angle1, Angle.Degrees), Arc.divisions)
 }
 
 //=============================================================================

@@ -39,10 +39,11 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import org.facsim.anim.Face
+import org.facsim.anim.Mesh
+import org.facsim.anim.Point3D
 import scala.annotation.tailrec
-import scalafx.collections.ObservableFloatArray
-import scalafx.collections.ObservableIntegerArray
-import scalafx.scene.shape.TriangleMesh
+import scala.collection.immutable.VectorBuilder
 
 //=============================================================================
 /**
@@ -67,8 +68,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Polyhedra.html
 Polyhedra]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -76,80 +75,40 @@ private [cell] final class Polyhedron (scene: CellScene, parent: Option [Set])
 extends Mesh3D (scene, parent) {
 
 /**
-List of points.
+Points defining this polyhedron.
+
+Points are stored as a vector, preserving the order of definition.
 */
 
-  private val pointList = Polyhedron.readPoints (scene)
+  private val points = Polyhedron.readPoints (scene)
 
 /**
-List of faces - note that these are not necessarily triangular faces.
+Faces making up this polyhedron.
+
+Faces are stored as a list of faces. The order in which faces are defined is
+irrelevant.
 */
 
-  private val faceList = Polyhedron.readFaces (scene, pointList.size)
+  private val faces = Polyhedron.readFaces (scene, points)
 
 //-----------------------------------------------------------------------------
 /*
-@see [[org.facsim.anim.cell.Mesh3D!]]
+Create a mesh to represent this cell and return it.
 
-The mesh is a custom TriangleMesh object.
+The origin of the cell is at the center of its base.
 
-Note that the Polyhedron's origin is at (0, 0, 0) local to its parent: the
-position of all points are relative to this origin.
+@return Mesh representing the cell.
+
+@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] override def cellMesh = new TriangleMesh {
-
-/*
-Create the vertices array from the list of points.
-
-Each point will be translated into three float values for x, y and z, and all
-such points combined into a single array of all points.
-*/
-
-    override val points =
-    ObservableFloatArray (pointList.map (_.toFloatList).flatten.toArray)
-
-/*
-Now create the list of faces (as triangles), constructed from indices of the
-associated points defined above.
-*/
-
-    override val faces =
-    ObservableIntegerArray (faceList.map (_.toTriangularFaces.flatten).flatten.
-    toArray)
-
-/*
-For now, its not possible to define smoothing groups for the polyhedron.
-
-For one thing, explicit smoothing group information is not provided as part of
-Polyhedron data. For another, even if we assume that multi-triangle faces
-(polyhedron faces made up of more than 1 triangle) belong to the same face and
-should be smoother, we neither track which faces can be so smoothed (right now,
-although that would be relatively easy to overcome), and ScalaFX/JavaFX imposes
-a hard limit of just 32 smoothing groups, which we might easily exceed.
-
-By default, faces are not added to smoothing groups, so each is rendered with a
-hard surface. That should work out OK for us, as AutoMod/ACE does the exact
-same thing.
-*/
-
-    //override val faceSmoothingGroups =
-
-/*
-For now, don't define texture mapping coordinates. We will typically not apply
-textures to cells.
-*/
-
-    //override val getTexCoords =
-  }
+  protected [cell] override def cellMesh: Mesh = new Mesh (faces)
 }
 
 //=============================================================================
 /**
 Polyhedron companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -168,41 +127,56 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
   private def readPoints (scene: CellScene) = {
 
-/**
-Helper function to read the list of points from the data stream.
-
-Note that, due to the need for tail recursion, the list is built in reverse.
-*/
-
-    @tailrec
-    def readPoint (count: Int, points: List [Point]): List [Point] = {
-      if (count == 0) points
-      else {
-        val point = new Point (scene, Point.Polyhedron)
-        readPoint (count - 1, point :: points)
-      }
-    }
-
 /*
 Read the number of points from the data stream. This value must be at least 3.
 */
 
-    val points = scene.readInt (_ > 2, LibResource
-    ("anim.cell.Polyhedron.readPoints"))
+    val numPoints = scene.readInt (_ > 2, LibResource
+    ("anim.cell.Polyhedron.readNumPoints"))
 
 /*
-Return the list of points read, reversing the list order so that they are put
-back into the original order.
+Create a vector builder with sufficient space for the required number of
+points.
 */
 
-    readPoint (points, Nil).reverse
+    val points = new VectorBuilder [Point3D] ()
+    points.sizeHint (numPoints)
+
+/*
+Helper function to read the list of points from the data stream.
+*/
+
+    @tailrec
+    def readPoint (count: Int): Vector [Point3D] = {
+
+/*
+If we've processed all the points, then convert it to a vector and return.
+*/
+
+      if (count == 0) points.result ()
+
+/*
+Otherwise, read the next point and add it to the vector. Then perform the next
+iteration.
+*/
+
+      else {
+        val point = Point.read (scene, Point.Polyhedron)
+        points += point
+        readPoint (count - 1)
+      }
+    }
+
+/*
+Return a vector containing the points read, in the order that they were read.
+*/
+
+    readPoint (numPoints)
   }
 
 //-----------------------------------------------------------------------------
@@ -211,50 +185,107 @@ Read polyhedron face data from the stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
-@param numPoints Number of points that may be used to define the associated
-faces. It is an error for a point index to equal or exceed this value.
+@param points Vector of points defining face vertices. Point indices should be
+in the range [0, points.size - 1].
 
-@return List of faces.
+@return List of faces belonging to the polyhedron.
 
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private def readFaces (scene: CellScene, numPoints: Int) = {
+  private def readFaces (scene: CellScene, points: Vector [Point3D]):
+  List [Face] = {
 
-/**
+/*
+Number of points making up this polyhedron.
+*/
+
+    val numPoints = points.size
+
+/*
+Helper function to read the list of point indices from the data stream.
+*/
+
+    @tailrec
+    def readVertex (count: Int, list: List [Int]): Face = {
+
+/*
+If we've read all of the vertices, then use them to construct a face.
+
+Note that since the list is built in reverse, we have to reverse it when
+mapping it back to the defined points.
+*/
+
+      if (count == 0) new Face (list.reverse.map (i => points (i)))
+      else {
+        val index = scene.readInt (i => i >= 0 && i < numPoints, LibResource
+        ("anim.cell.Polyhedron.readIndex", numPoints - 1))
+        readVertex (count - 1, index :: list)
+      }
+    }
+
+/*
 Helper function to read the list of faces from the data stream.
 
-Note that, due to the need for tail recursion, the list is built in reverse.
+Note that faces are listed in the reverse order that they appear in the cell
+data. This doesn't matter too much, since the order in which faces are defined
+is unimportant.
 */
 
     @tailrec
     def readFace (count: Int, faces: List [Face]): List [Face] = {
+
+/*
+If we have defined all of the faces, then return the list of faces now.
+*/
+
       if (count == 0) faces
+
+/*
+Otherwise, read the next face.
+*/
+
       else {
-        val face = new Face (scene, numPoints)
+
+/*
+Start by reading the number of vertices making up the face.
+
+There must be at least three. Furthermore, all of these vertices should be
+defined on the same plane, which is guaranteed for just 3 points, but isn't
+verified if there are more than 3.
+*/
+
+        val indices = scene.readInt (_ > 2, LibResource
+        ("anim.cell.Polyhedron.readNumIndices"))
+
+/*
+Now read the vertices and use them to create the face. Prepend the face to the
+current list of faces and perform the next iteration.
+*/
+
+        val face = readVertex (indices, Nil)
         readFace (count - 1, face :: faces)
       }
     }
 
 /*
-Read the number of points from the data stream. This value must be at least 1.
+Read the number of faces making up this polyhedron from the data stream. This
+value must be at least 1.
 */
 
     val faces = scene.readInt (_ > 0, LibResource
-    ("anim.cell.Polyhedron.readFaces"))
+    ("anim.cell.Polyhedron.readNumFaces"))
 
 /*
 Return the list of faces read, reversing the list order so that they are put
 back into the original order.
 */
 
-    readFace (faces, Nil).reverse
+    readFace (faces, Nil)
   }
 }

@@ -32,64 +32,29 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.anim.cell package.
+Scala source file from the org.facsim.anim package.
 */
 //=============================================================================
 
-package org.facsim.anim.cell
-
-import org.facsim.LibResource
-import scalafx.scene.text.{Text => SFXText}
+package org.facsim.anim
 
 //=============================================================================
 /**
-Class representing a 3D point with move/draw flag.
+Rich animation point.
 
-@todo Do something with the data read when there's an opportunity to do so.
-Refer to [[org.facsim.anim.cell.VectorList!]] for further information.
+A ''rich'' animation point is formed from pairing a point in 3D animation space
+with a texture map coordinate. This allows faces defined from rich points to
+automate texture mapping of images.
 
-@constructor Construct a new decorated point from the cell data stream.
+@constructor Construct a ''rich'' point from a 3D animation space point and an
+associated texture point.
 
-@param scene Reference to the CellScene of which this point is a part.
+@param point Point in 3D in animation space.
 
-@param textType Type of text represented by this instance.
-
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
-
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@since 0.0
+@param texturePoint Texture map point.
 */
 //=============================================================================
 
-private [cell] final class TextListPoint (scene: CellScene,
-textType: Text.Value)
-extends Point (scene, Point.TextList) {
-
-/**
-Read the text from the stream.
-*/
-
-  private val textValue = scene.readText (LibResource
-  ("anim.cell.TextListPoint.read", textType.id))
-
-//-----------------------------------------------------------------------------
-/**
-Convert this text list point to a text node.
-
-@param textList Text list ''cell'' to which this point belongs.
-
-@return A ''ScalaFX'' text node to be added to the ''cell'' scene.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private [cell] def toTextNode (textList: TextList) = new SFXText {
-    transforms = Seq (point.toTranslate)
-    stroke = textList.cellPaint
-    text = textValue
-  }
-}
+private [anim] final case class RichPoint (val point: Point3D,
+val texturePoint: TexturePoint)
+extends NotNull

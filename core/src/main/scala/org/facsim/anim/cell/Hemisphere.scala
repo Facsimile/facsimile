@@ -39,11 +39,10 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
+import org.facsim.anim.Mesh
+import org.facsim.anim.Point3D
 import org.facsim.measure.Angle
 import scala.annotation.tailrec
-import scalafx.collections.ObservableFloatArray
-import scalafx.collections.ObservableIntegerArray
-import scalafx.scene.shape.TriangleMesh
 
 //=============================================================================
 /**
@@ -89,149 +88,18 @@ This value must be >= 0.
 
 //-----------------------------------------------------------------------------
 /*
-@see [[org.facsim.anim.cell.Mesh3D!]]
+Create a hemisphere mesh to represent this cell and return it.
 
-The mesh is a custom TriangleMesh object.
+The origin of the cell is at the center of its base.
 
-Note that the base is a circle on the X-Y plane, with its center at (0, 0, 0)
-and that the top is also a circle on the X-Y plane, with its center at
-(xOffset, yOffset, height), relative to its parent .
+@return Mesh representing the cell.
+
+@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] override def cellMesh = new TriangleMesh {
-
-/*
-Create the list of vertices.
-*/
-
-    override val points = {
-
-/*
-Helper function to add points for the current band to an array of points.
-
-Use the MeshUtils to generate the points for the base, and then add points for
-the the two intermediate bands and the pole.
-
-Note: This will give us (Hemisphere.bands - 1) points in the middle of the
-hemisphere that we will not actually reference for faces. Shouldn't be any big
-deal.
-*/
-
-      @tailrec
-      def addBandPoints (count: Int, coords: ObservableFloatArray):
-      ObservableFloatArray = {
-
-/*
-If we have no more bands, then return what we have.
-*/
-
-        if (count == 0) coords
-        else {
-          
-/*
-Calculate the latitude, radius and height of this band.
-*/
-
-          val latitude = Angle ((Hemisphere.bands - count) *
-          Hemisphere.bandAngle, Angle.Degrees)
-          val r = radius * latitude.cos
-          val h = radius * latitude.sin
-
-/*
-Add the points for this band to the array and repeat.
-*/
-
-          addBandPoints (count - 1, coords ++ MeshUtils.circleCoordinates (r,
-          h, Hemisphere.divisions, 0.0, 0.0))
-        }
-      }
-
-/*
-Create the array of points for each band and add the pole.
-
-Note: The pole will be at (0, 0) on the X-Y plane, and will be radius units
-above that point on the Z-axis.
-*/
-
-      addBandPoints (Hemisphere.bands, ObservableFloatArray.empty) ++
-      Array (0.0f, 0.0f, radius.toFloat)
-    }
-
-/*
-Now create the list of faces (triangles), constructed from indices of the
-associated points defined above.
-*/
-
-    override val faces = {
-
-/*
-Helper function to add faces for the current band to an array of face vertex
-indices.
-
-Use the MeshUtils to generate the faces for each band. Note that the last band
-is a cone, not a wall.
-*/
-
-      @tailrec
-      def addBandFaces (count: Int, coords: ObservableIntegerArray):
-      ObservableIntegerArray = {
-
-/*
-Calculate the index of the first vertex point on the base of the current band.
-We need to add 1 to identify the first circumference point (the zeroth point in
-each band is at the center).
-*/
-
-        val firstBandIndex = (3 - count) * Hemisphere.bandPoints + 1
-
-/*
-If this is the last band, then append a cone to the list of cones so far.
-*/
-
-        if (count == 1) coords ++ MeshUtils.coneFaces (Hemisphere.divisions,
-        Hemisphere.poleIndex, firstBandIndex)
-
-/*
-Otherwise, re-run adding another wall of faces to the current array of faces.
-*/
-
-        else {
-          addBandFaces (count - 1, coords ++ MeshUtils.wallFaces
-          (Hemisphere.divisions, firstBandIndex))
-        }
-      }
-
-/*
-Create the array of points for the base and append the faces for the bands.
-*/
-
-      addBandFaces (Hemisphere.bands, MeshUtils.circleFaces
-      (Hemisphere.divisions, 0))
-    }
-
-/*
-Now create the smoothing face groups (face index map to smoothing group),
-constructed from indices of the associated faces defined above.
-
-The faces making up the base all belong to the base smoothing group (0), and
-the faces making up the bands all belong to the wall smoothing group (1).
-*/
-
-    override val faceSmoothingGroups =
-    ObservableIntegerArray.tabulate (Hemisphere.totalFaces) {
-      face: Int =>
-      if (face < Hemisphere.divisions) 0
-      else 12
-    }
-
-/*
-For now, don't define texture mapping coordinates. We will typically not apply
-textures to cells.
-*/
-
-    //override val getTexCoords =
-  }
+  protected [cell] override def cellMesh: Mesh =
+  Mesh.hemisphere (Point3D.Origin, radius, Hemisphere.divisions)
 }
 
 //=============================================================================

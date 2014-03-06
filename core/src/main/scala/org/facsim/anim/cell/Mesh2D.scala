@@ -38,18 +38,14 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.anim.Mesh
-import scalafx.scene.Node
 import scalafx.scene.shape.CullFace
-import scalafx.scene.shape.DrawMode
-import scalafx.scene.shape.MeshView
 
 //=============================================================================
 /**
 Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
-primitives implemented as 3D meshes.
+primitives implemented as 2D meshes.
 
-@constructor Construct a new 3D-mesh-based primitive from the data stream.
+@constructor Construct a new 2D-mesh-based primitive from the data stream.
 
 @param scene Reference to the CellScene of which this cell is a part.
 
@@ -66,84 +62,17 @@ encountered during parsing of the file.
 */
 //=============================================================================
 
-private [cell] abstract class Mesh3D (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent) {
+private [cell] abstract class Mesh2D (scene: CellScene, parent: Option [Set])
+extends Mesh3D (scene, parent) {
 
 //-----------------------------------------------------------------------------
 /*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
+2D objects should be visible from both sides, so no face culling should be
+performed.
+
+@see [[org.facsim.anim.cell.Mesh3D.faceCulling]].
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] final override def toNode = {
-
-/*
-Have the sub-class create and populate a mesh that we will associate with a
-mesh view.
-*/
-
-    new MeshView (cellMesh.triangleMesh) {
-
-/*
-If this cell has a name, then use it as an ID.
-*/
-
-      id = name.orNull
-
-/*
-Apply the required transformations to the node.
-*/
-
-      transforms = cellTransforms
-
-/*
-Ensure that the cell is drawn with the correct materials and opacity.
-*/
-
-      material = cellMaterial
-      opacity = cellOpacity
-
-/*
-Use the default back cull-face option.
-*/
-
-      cullFace = faceCulling
-
-/*
-Determine how the mesh is to be rendered.
-
-(Note: This may not work too well for elements such as "Arc", which look very
-different in wireframe compared to solid).
-*/
-
-      drawMode = if (isWireframe) DrawMode.Line
-      else DrawMode.Fill
-    }
-  }
-
-//-----------------------------------------------------------------------------
-/**
-Determine the cull face setting for this shape.
-
-This default version of the function applies the default cull face setting that
-removes the back face. Shapes that require an alternative cull face setting
-should override this method.
-
-@return Cull face setting for this shape.
-*/
-//-----------------------------------------------------------------------------
-
-  protected [cell] def faceCulling: CullFace = CullFace.Back
-
-//-----------------------------------------------------------------------------
-/**
-Create a mesh to represent this cell and return it.
-
-@return Mesh representing the cell.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  protected [cell] def cellMesh: Mesh
+  protected [cell] final override def faceCulling: CullFace = CullFace.None
 }

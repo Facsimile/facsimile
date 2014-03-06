@@ -39,9 +39,9 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import scalafx.collections.ObservableFloatArray
-import scalafx.collections.ObservableIntegerArray
-import scalafx.scene.shape.TriangleMesh
+import org.facsim.anim.Mesh
+import org.facsim.anim.Point3D
+import org.facsim.anim.TexturePoint
 
 //=============================================================================
 /**
@@ -74,7 +74,7 @@ Rectangles]] for further information.
 //=============================================================================
 
 private [cell] final class Rectangle (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+extends Mesh2D (scene, parent) {
 
 /**
 Rectangle Y-axis dimension.
@@ -108,79 +108,41 @@ Read, but discard, the X-axis offset.
 
   scene.readDouble (LibResource ("anim.cell.Rectangle.readOffset", 0))
 
-/**
-Read, but discard, the X-axis offset.
+/*
+Read, but discard, the Y-axis offset.
 */
 
   scene.readDouble (LibResource ("anim.cell.Rectangle.readOffset", 1))
 
 //-----------------------------------------------------------------------------
 /*
-@see [[org.facsim.anim.cell.Mesh3D!]]
+Create an arc mesh to represent this cell and return it.
 
-The mesh is a custom TriangleMesh object.
+The origin of the cell is at its center.
 
-Note that the rectangle is on the X-Y plane, with the center at (0, 0, 0),
-relative to its parent. Since this is not being drawn in wireframe mode, the
-rectangle is either drawn as a circle or a sector of a circle.
+@return Mesh representing the cell.
+
+@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] override def cellMesh = new TriangleMesh {
+  protected [cell] override def cellMesh: Mesh = {
 
 /*
-Create the list of vertices.
+Create the necessary X and Y plane coordinates.
 */
 
-    override val points = {
+    val xr = xDim / 2.0
+    val xl = -xr
+    val yt = yDim / 2.0
+    val yb = -yt
 
 /*
-Common points. Numbered counter-clockwise from top left (when looking at the
-rectangle from above).
+Create and return the quadrilateral using these coordinates.
 */
 
-      val x0_1 = -(xDim / 2.0).toFloat
-      val x2_3 = (xDim / 2.0).toFloat
-      val y0_3 = (yDim / 2.0).toFloat
-      val y1_2 = -(yDim / 2.0).toFloat
-      val z = 0.0f
-
-/*
-Create and return the point array. Numbered counter-clockwise from top left.
-*/
-
-      ObservableFloatArray (
-        x0_1, y0_3, z,          // Point 0, top left.
-        x0_1, y1_2, z,          // Point 1, bottom left.
-        x2_3, y1_2, z,          // Point 2, bottom right.
-        x2_3, y0_3, z           // Point 3, top right.
-      ) 
-    }
-
-/*
-Now create the list of faces (triangles), constructed from indices of the
-associated points defined above.
-*/
-
-    override val faces = ObservableIntegerArray (
-      0, 1, 2,                  // Face 0
-      0, 2, 3                   // Face 1
-    )
-
-/*
-Now create the smoothing face groups (face index map to smoothing group),
-constructed from indices of the associated faces defined above.
-
-Both faces in the rectangle belong to the same group, 0.
-*/
-
-    override val faceSmoothingGroups = ObservableIntegerArray (0, 0)
-
-/*
-For now, don't define texture mapping coordinates. We will typically not apply
-textures to cells.
-*/
-
-    //override val getTexCoords =
+    Mesh.quadrilateral (Point3D (xl, yt, 0.0), Point3D (xl, yb, 0.0),
+    Point3D (xr, yb, 0.0), Point3D (xr, yt, 0.0), TexturePoint.Origin,
+    TexturePoint.BottomRight)
   }
 }

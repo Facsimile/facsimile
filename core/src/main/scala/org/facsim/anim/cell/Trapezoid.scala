@@ -39,14 +39,22 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import scalafx.collections.ObservableFloatArray
-import scalafx.collections.ObservableIntegerArray
-import scalafx.scene.shape.TriangleMesh
+import org.facsim.anim.Mesh
+import org.facsim.anim.Point3D
 
 //=============================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell trapezoid and
 box'' primitives.
+
+@note The use by ''AutoMod'' of the term ''trapezoid'' is a misnomer. These
+shapes are more correctly and generally described as
+''[[http://en.wikipedia.org/wiki/Frustum rectangular frusta]]''. More specific
+shapes that can be represented by this cell include ''boxes'', ''cubes'',
+''cuboids'' and ''square frusta''. A ''[[http://en.wikipedia.org/wiki/Trapezoid
+trapezoid]]'' is the name for a 2D quadrilateral with two parallel sides.
+However, the term ''trapezoid'' is used throughout this file since it will be
+familiar to users of ''AutoMod'' & ''cell files''.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Trapezoids.html
@@ -153,98 +161,17 @@ Trapezoid top Y-axis offset.
 
 //-----------------------------------------------------------------------------
 /*
-@see [[org.facsim.anim.cell.Mesh3D!]]
+Create a trapezoid mesh to represent this cell and return it.
 
-The mesh is a custom TriangleMesh object.
+The origin of the cell is at the center of its base.
 
-Note that the base is an rectangle on the X-Y plane, with the origin at (0, 0,
-0), relative to its parent. This rectangle is aligned so that it's bottom and
-top edges are parallel to the X-axis, and it's left and right edges are
-parallel to the Y-axis.
+@return Mesh representing the cell.
+
+@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] override def cellMesh = new TriangleMesh {
-
-/*
-Create the list of vertices.
-*/
-
-    override val points = {
-
-/*
-Some commonly used values.
-*/
-
-      val x0_1 = -(baseXDim / 2.0).toFloat
-      val x2_3 = (baseXDim / 2.0).toFloat
-      val x4_5 = -((topXDim / 2.0) + xOffset).toFloat
-      val x6_7 = ((topXDim / 2.0) + xOffset).toFloat
-      val y0_3 = (baseYDim / 2.0).toFloat
-      val y1_2 = -(baseYDim / 2.0).toFloat
-      val y4_7 = ((topYDim / 2.0) + yOffset).toFloat
-      val y5_6 = -((topYDim / 2.0) + yOffset).toFloat
-      val z0_1_2_3 = 0.0f
-      val z4_5_6_7 = height.toFloat
-
-/*
-Co-ordinates, ordered counter-clockwise from the upper-left-hand corner (when
-looking at the base from above).
-
-Note that these coordinates are stored as floats. Why?  No idea...
-*/
-
-      ObservableFloatArray (
-        x0_1, y0_3, z0_1_2_3,           // 0, base upper-left
-        x0_1, y1_2, z0_1_2_3,           // 1, base lower-left
-        x2_3, y1_2, z0_1_2_3,           // 2, base lower-right
-        x2_3, y0_3, z0_1_2_3,           // 3, base upper-right
-        x4_5, y4_7, z4_5_6_7,           // 4, top upper-left
-        x4_5, y5_6, z4_5_6_7,           // 5, top lower-left
-        x6_7, y5_6, z4_5_6_7,           // 6, top lower-right
-        x6_7, y4_7, z4_5_6_7            // 7, top upper-right
-      )
-    }
-
-/*
-Now create the list of faces (triangles), constructed from indices of the
-associated points defined above.
-*/
-
-    override val faces = ObservableIntegerArray (
-      0, 1, 2,          // Base, first half, face 0.
-      0, 2, 3,          // Base, second half, face 1.
-      0, 4, 5,          // Back, first half, face 2.
-      0, 5, 1,          // Back, second half, face 3.
-      1, 5, 6,          // Right, first half, face 4.
-      1, 6, 2,          // Right, second half, face 5.
-      2, 6, 7,          // Front, first half, face 6.
-      2, 7, 3,          // Front, second half, face 7.
-      3, 7, 4,          // Left, first half, face 8.
-      3, 4, 0,          // Left, second half, face 9.
-      4, 5, 6,          // Top, first half, face 10.
-      4, 6, 7           // Top, second half, face 11.
-    )
-
-/*
-Now create the smoothing face groups (face index map to smoothing group),
-constructed from indices of the associated faces defined above.
-*/
-
-    override val faceSmoothingGroups = ObservableIntegerArray (
-      0, 0,             // Base is made up of faces 0 & 1, group 0.
-      1, 1,             // Back is made up of faces 2 & 3, group 1.
-      2, 2,             // Right is made up of faces 4 & 5, group 2.
-      3, 3,             // Front is made up of faces 6 & 7, group 3.
-      4, 4,             // Left is made up of faces 8 & 9, group 4.
-      5, 5              // Top is made up of faces 10 & 11, group 5.
-    )
-
-/*
-For now, don't define texture mapping coordinates. We will typically not apply
-textures to cells.
-*/
-
-    //override val getTexCoords =
-  }
+  protected [cell] override def cellMesh: Mesh =
+  Mesh.rectangularFrustum (Point3D.Origin, baseXDim, baseYDim,
+  Point3D (xOffset, yOffset, height), topXDim, topYDim)
 }

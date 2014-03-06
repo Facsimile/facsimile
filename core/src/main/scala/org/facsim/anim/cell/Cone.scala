@@ -39,9 +39,8 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import scalafx.collections.ObservableFloatArray
-import scalafx.collections.ObservableIntegerArray
-import scalafx.scene.shape.TriangleMesh
+import org.facsim.anim.Mesh
+import org.facsim.anim.Point3D
 
 //=============================================================================
 /**
@@ -108,71 +107,18 @@ Cone top Y-axis offset.
 
 //-----------------------------------------------------------------------------
 /*
-@see [[org.facsim.anim.cell.Mesh3D!]]
+Create a cone mesh to represent this cell and return it.
 
-The mesh is a custom TriangleMesh object.
+The origin of the cell is at the center of its base.
 
-Note that the base is a circle on the X-Y plane, with the center at (0, 0, 0),
-relative to its parent.
+@return Mesh representing the cell.
+
+@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] override def cellMesh = new TriangleMesh {
-
-/*
-Create the list of vertices.
-*/
-
-    override val points = {
-
-/*
-Use the MeshUtils to generate the points for the base of the cone, and then add
-the vertex for the top of the cone.
-*/
-
-      MeshUtils.circleCoordinates (radius, 0.0, Cone.divisions, 0.0, 0.0) ++
-      ObservableFloatArray (
-        xOffset.toFloat,
-        yOffset.toFloat,
-        height.toFloat
-      )
-    }
-
-/*
-Now create the list of faces (triangles), constructed from indices of the
-associated points defined above.
-*/
-
-    override val faces = {
-
-/*
-Use the MeshUtils to generate the faces making up the base of the cone, then
-add an array with the faces making up the sides of the cone.
-*/
-
-      MeshUtils.circleFaces (Cone.divisions, 0) ++
-      MeshUtils.coneFaces (Cone.divisions, Cone.divisions + 1, 1)
-    }
-
-/*
-Now create the smoothing face groups (face index map to smoothing group),
-constructed from indices of the associated faces defined above.
-
-The faces making up the base all belong to the base smoothing group (0) and the
-faces making up the sides all belong to the side smoothing group (1). Note that
-there are divisions faces in each group.
-*/
-
-    override val faceSmoothingGroups =
-    ObservableIntegerArray.tabulate (Cone.divisions * 2)(_ % Cone.divisions)
-
-/*
-For now, don't define texture mapping coordinates. We will typically not apply
-textures to cells.
-*/
-
-    //override val getTexCoords =
-  }
+  protected [cell] override def cellMesh: Mesh = Mesh.cone (Point3D.Origin,
+  radius, Point3D (xOffset, yOffset, height), Cone.divisions)
 }
 
 //=============================================================================

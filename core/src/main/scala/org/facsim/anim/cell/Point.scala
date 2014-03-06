@@ -39,11 +39,11 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import scalafx.scene.transform.Translate
+import org.facsim.anim.Point3D
 
 //=============================================================================
 /**
-Class representing a basic 3D point.
+Class representing a basic cell point in 3D space.
 
 @constructor Construct a new basic point from the cell data stream.
 
@@ -56,64 +56,21 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //=============================================================================
 
 private [cell] class Point (scene: CellScene, pointType: Point.Value) {
 
 /**
-Read the point's X co-ordinate.
+Read the 3D point from the cell data stream.
 */
 
-  private final val x = scene.readDouble (LibResource ("anim.cell.Point.read",
-  pointType.id, 0))
-
-/**
-Read the point's Y co-ordinate.
-*/
-
-  private final val y = scene.readDouble (LibResource ("anim.cell.Point.read",
-  pointType.id, 1))
-
-/**
-Read the point's Z co-ordinate.
-*/
-
-  private final val z = scene.readDouble (LibResource ("anim.cell.Point.read",
-  pointType.id, 2))
-
-//-----------------------------------------------------------------------------
-/**
-Convert the point to a list of Float values.
-
-@return List with the co-ordinates are members, as Floats.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private [cell] final def toFloatList = List (x.toFloat, y.toFloat, z.toFloat)
-
-//-----------------------------------------------------------------------------
-/**
-Convert the point to a ''ScalaFX'' translation.
-
-@return Translation along local axes by co-ordinate values.
-
-@since 0.0
-*/
-//-----------------------------------------------------------------------------
-
-  private [cell] final def toTranslate = new Translate (x, y, z)
+  private [cell] final val point = Point.read (scene, pointType)
 }
 
 //=============================================================================
 /**
-Point companion object and point classification enumeration.
-
-@since 0.0
+Utility enumeration object for processing cell file points.
 */
 //=============================================================================
 
@@ -137,4 +94,52 @@ Vector list point.
 */
 
   private [cell] val VectorList = Value
+
+//-----------------------------------------------------------------------------
+/**
+Read a point from the cell scene and return it.
+
+@param scene Reference to the CellScene of which this point is a part.
+
+@param pointType Type of point represented by this instance.
+
+@return Point read from the scene.
+
+@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
+is not an ''AutoMod® cell'' file.
+
+@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
+encountered during parsing of the file.
+*/
+//-----------------------------------------------------------------------------
+
+  def read (scene: CellScene, pointType: Value): Point3D = {
+
+/**
+Read the point's X coordinate.
+*/
+
+    val x = scene.readDouble (LibResource ("anim.cell.Point.read",
+    pointType.id, 0))
+
+/**
+Read the point's Y coordinate.
+*/
+
+    val y = scene.readDouble (LibResource ("anim.cell.Point.read",
+    pointType.id, 1))
+
+/**
+Read the point's Z coordinate.
+*/
+
+    val z = scene.readDouble (LibResource ("anim.cell.Point.read",
+    pointType.id, 2))
+
+/*
+Return the point read.
+*/
+
+    Point3D (x, y, z)
+  }
 }
