@@ -67,8 +67,6 @@ encountered during parsing of the file.
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/ConicFrustums.html
 Conic Frustums]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -83,7 +81,7 @@ Base radius, measured on the X-Y plane.
 */
 
   private val baseRadius = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.ConicFrustum.readDim", 0))
+  (ConicFrustum.ReadDimKey, 0))
 
 /**
 Conic frustum top radius.
@@ -92,7 +90,7 @@ Top radius, measured on the X-Y plane.
 */
 
   private val topRadius = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.ConicFrustum.readDim", 1))
+  (ConicFrustum.ReadDimKey, 1))
 
 /**
 ConicFrustum height (Z-dimension).
@@ -101,21 +99,21 @@ Height of the conic frustum measured along the Z-Axis.
 */
 
   private val height = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.ConicFrustum.readDim", 2))
+  (ConicFrustum.ReadDimKey, 2))
 
 /**
 ConicFrustum top X-axis offset.
 */
 
   private val xOffset = scene.readDouble (LibResource
-  ("anim.cell.ConicFrustum.readOffset", 0))
+  (ConicFrustum.ReadOffsetKey, 0))
 
 /**
 ConicFrustum top Y-axis offset.
 */
 
   private val yOffset = scene.readDouble (LibResource
-  ("anim.cell.ConicFrustum.readOffset", 1))
+  (ConicFrustum.ReadOffsetKey, 1))
 
 //-----------------------------------------------------------------------------
 /*
@@ -137,12 +135,22 @@ The origin of the cell is at the center of its base.
 //=============================================================================
 /**
 ConicFrustum companion object.
-
-@since 0.0
 */
 //=============================================================================
 
 private object ConicFrustum {
+
+/**
+Read dimension string resource key.
+*/
+
+  val ReadDimKey = "anim.cell.ConicFrustum.readDim"
+
+/**
+Read offset string resource key.
+*/
+
+  val ReadOffsetKey = "anim.cell.ConicFrustum.readOffset"
 
 /**
 Number of divisions per conic frustum.
