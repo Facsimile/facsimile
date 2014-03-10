@@ -87,7 +87,7 @@ refer to it as the Y-axis dimension to avoid confusion.
 */
 
   private val yDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Rectangle.readDim", 1))
+  (Rectangle.ReadDimKey, 1))
 
 /**
 Rectangle X-axis dimension.
@@ -100,19 +100,19 @@ as the X-axis dimension to avoid confusion.
 */
 
   private val xDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Rectangle.readDim", 0))
+  (Rectangle.ReadDimKey, 0))
 
 /*
 Read, but discard, the X-axis offset.
 */
 
-  scene.readDouble (LibResource ("anim.cell.Rectangle.readOffset", 0))
+  scene.readDouble (LibResource (Rectangle.ReadOffsetKey, 0))
 
 /*
 Read, but discard, the Y-axis offset.
 */
 
-  scene.readDouble (LibResource ("anim.cell.Rectangle.readOffset", 1))
+  scene.readDouble (LibResource (Rectangle.ReadOffsetKey, 1))
 
 //-----------------------------------------------------------------------------
 /*
@@ -145,4 +145,25 @@ Create and return the quadrilateral using these coordinates.
     Point3D (xr, yb, 0.0), Point3D (xr, yt, 0.0), TexturePoint.Origin,
     TexturePoint.BottomRight)
   }
+}
+
+//=============================================================================
+/**
+Rectangle companion object.
+*/
+//=============================================================================
+
+private object Rectangle {
+
+/**
+Read dimension string resource key.
+*/
+
+  val ReadDimKey = "anim.cell.Rectangle.readDim"
+
+/**
+Read offset string resource key.
+*/
+
+  val ReadOffsetKey = "anim.cell.Rectangle.readOffset"
 }
