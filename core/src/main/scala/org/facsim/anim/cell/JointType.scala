@@ -152,7 +152,7 @@ Read joint ''cell'' data stream.
 @param flags The current ''cell'''s flags.
 
 @return Joint read, if valid.
- 
+
 @throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
 is not an ''AutoMod® cell'' file.
 
