@@ -65,8 +65,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Cylinders.html
 Cylinders]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -80,7 +78,7 @@ Base & top radius, measured on the X-Y plane.
 */
 
   private val radius = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Cylinder.readDim", 0))
+  (Cylinder.ReadDimKey, 0))
 
 /**
 Cylinder height (Z-dimension).
@@ -89,21 +87,21 @@ Height of the cylinder measured along the Z-Axis.
 */
 
   private val height = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Cylinder.readDim", 1))
+  (Cylinder.ReadDimKey, 1))
 
 /**
 Cylinder top X-axis offset.
 */
 
   private val xOffset = scene.readDouble (LibResource
-  ("anim.cell.Cylinder.readOffset", 0))
+  (Cylinder.ReadOffsetKey, 0))
 
 /**
 Cylinder top Y-axis offset.
 */
 
   private val yOffset = scene.readDouble (LibResource
-  ("anim.cell.Cylinder.readOffset", 1))
+  (Cylinder.ReadOffsetKey, 1))
 
 
 //-----------------------------------------------------------------------------
@@ -125,12 +123,22 @@ The origin of the cell is at the center of its base.
 //=============================================================================
 /**
 Cylinder companion object.
-
-@since 0.0
 */
 //=============================================================================
 
 private object Cylinder {
+
+/**
+Read dimension string resource key.
+*/
+
+  val ReadDimKey = "anim.cell.Cylinder.readDim"
+
+/**
+Read offset string resource key.
+*/
+
+  val ReadOffsetKey = "anim.cell.Cylinder.readOffset"
 
 /**
 Number of divisions per cylinder.
