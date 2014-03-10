@@ -69,11 +69,9 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
 Text Lists]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
 private [cell] final class UnrotateTextList (scene: CellScene,
 parent: Option [Set])
-extends TextList (scene, parent, Text.unrotate)
+extends TextList (scene, parent, Text.Unrotate)

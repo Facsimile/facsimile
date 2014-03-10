@@ -70,11 +70,9 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
 private [cell] final class UnrotateText (scene: CellScene,
 parent: Option [Set])
-extends Text (scene, parent, Text.unrotate)
+extends Text (scene, parent, Text.Unrotate)

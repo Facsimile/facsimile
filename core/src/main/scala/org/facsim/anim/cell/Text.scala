@@ -67,8 +67,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -104,7 +102,7 @@ about how it should be implemented (see Issue 4).
 */
 
     textType match {
-      case Text.screen => new Group {}
+      case Text.Screen => new Group {}
       case _ => new SFXText {
 
 /*
@@ -140,8 +138,6 @@ The text to be displayed.
 Text companion object and text type enumeration.
 
 This type enumeration is used for [[org.facsim.anim.cell.TestList!]]s as well.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -154,7 +150,7 @@ Screen text type.
 Screen text is mapped to the viewing screen.
 */
 
-  private [cell] val screen = Value
+  private [cell] val Screen = Value
 
 /**
 Unrotate text type.
@@ -162,7 +158,7 @@ Unrotate text type.
 Unrotate text is always displayed facing the viewer.
 */
 
-  private [cell] val unrotate = Value
+  private [cell] val Unrotate = Value
 
 /**
 World text type.
@@ -170,5 +166,5 @@ World text type.
 World text is displayed ''in situ'' as part of the 3D scene.
 */
 
-  private [cell] val world = Value
+  private [cell] val World = Value
 }

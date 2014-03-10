@@ -67,8 +67,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
 Test Lists]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -105,7 +103,7 @@ decision needs to be made about how they should be implemented (see Issue 4).
 */
 
     textType match {
-      case Text.screen => new Group {}
+      case Text.Screen => new Group {}
       case _ => new Group {
 
 /*
@@ -133,8 +131,6 @@ Add the text points to the group as nodes.
 //=============================================================================
 /**
 TextList companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -155,8 +151,6 @@ is not an ''AutoMod® cell'' file.
 
 @throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
 encountered during parsing of the file.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
