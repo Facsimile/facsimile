@@ -85,7 +85,7 @@ Halftone, having the ''cell'' line style 3.
 Default line style, which is used if an explicit style is not available.
 */
 
-  private [cell] val default = Solid
+  private [cell] val Default = Solid
 
 /**
 Minimum line width value.

@@ -102,7 +102,7 @@ Test that the default line style is reported correctly.
 
     describe (".default") {
       it ("must be Solid") {
-        assert (LineStyle.default === LineStyle.Solid)
+        assert (LineStyle.Default === LineStyle.Solid)
       }
     }
 

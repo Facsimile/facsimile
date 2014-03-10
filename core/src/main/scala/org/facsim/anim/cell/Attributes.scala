@@ -102,7 +102,7 @@ If attributes are present, read the line type, otherwise use the default.
 
   private [cell] override val lineStyle =
   if (attributesPresent) LineStyle.read (scene)
-  else LineStyle.default
+  else LineStyle.Default
 
 /*
 If attributes are present, read the line width, otherwise use the default.
