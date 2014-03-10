@@ -99,7 +99,7 @@ Vector list point.
 Point read string resource key.
 */
 
-  private val PointReadKey = "anim.cell.Point.read"
+  private val ReadKey = "anim.cell.Point.read"
 
 //-----------------------------------------------------------------------------
 /**
@@ -125,19 +125,19 @@ encountered during parsing of the file.
 Read the point's X coordinate.
 */
 
-    val x = scene.readDouble (LibResource (PointReadKey, pointType.id, 0))
+    val x = scene.readDouble (LibResource (ReadKey, pointType.id, 0))
 
 /**
 Read the point's Y coordinate.
 */
 
-    val y = scene.readDouble (LibResource (PointReadKey, pointType.id, 1))
+    val y = scene.readDouble (LibResource (ReadKey, pointType.id, 1))
 
 /**
 Read the point's Z coordinate.
 */
 
-    val z = scene.readDouble (LibResource (PointReadKey, pointType.id, 2))
+    val z = scene.readDouble (LibResource (ReadKey, pointType.id, 2))
 
 /*
 Return the point read.
