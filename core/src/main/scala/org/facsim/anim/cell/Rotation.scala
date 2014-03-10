@@ -69,8 +69,6 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -94,7 +92,7 @@ we do not need to worry about conversions.
 
         val angle = scene.readDouble (LibResource ("anim.cell.Rotation.read",
         count))
- 
+
 /*
 If the angle is zero, then we can ignore it.
 */
