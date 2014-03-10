@@ -75,8 +75,6 @@ encountered during parsing of the file.
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Tetrahedron.html
 Tetrahedra]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -91,7 +89,7 @@ tetrahedron, measured on the X-Y plane.
 */
 
   private val baseDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Tetrahedron.readDim", 0))
+  (Tetrahedron.ReadDimKey, 0))
 
 /**
 Tetrahedron top dimension.
@@ -101,7 +99,7 @@ tetrahedron, measured on the X-Y plane.
 */
 
   private val topDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Tetrahedron.readDim", 1))
+  (Tetrahedron.ReadDimKey, 1))
 
 /**
 Tetrahedron height (Z-dimension).
@@ -110,21 +108,21 @@ Height of the tetrahedron measured along the Z-Axis.
 */
 
   private val height = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Tetrahedron.readDim", 2))
+  (Tetrahedron.ReadDimKey, 2))
 
 /**
 Tetrahedron top X-axis offset.
 */
 
   private val xOffset = scene.readDouble (LibResource
-  ("anim.cell.Tetrahedron.readOffset", 0))
+  (Tetrahedron.ReadOffsetKey, 0))
 
 /**
 Tetrahedron top Y-axis offset.
 */
 
   private val yOffset = scene.readDouble (LibResource
-  ("anim.cell.Tetrahedron.readOffset", 1))
+  (Tetrahedron.ReadOffsetKey, 1))
 
 //-----------------------------------------------------------------------------
 /*
@@ -141,4 +139,25 @@ The origin of the cell is at its center.
   protected [cell] override def cellMesh: Mesh =
   Mesh.triangularFrustum (Point3D.Origin, baseDim,
   Point3D (xOffset, yOffset, height), topDim)
+}
+
+//=============================================================================
+/**
+Tetrahedron companion object.
+*/
+//=============================================================================
+
+private object Tetrahedron {
+
+/**
+Read dimension string resource key.
+*/
+
+  val ReadDimKey = "anim.cell.Tetrahedron.readDim"
+
+/**
+Read offset string resource key.
+*/
+
+  val ReadOffsetKey = "anim.cell.Tetrahedron.readOffset"
 }
