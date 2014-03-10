@@ -86,13 +86,13 @@ color value.
 @see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
 */
 
-  private [cell] override val faceColor = readColor (CellColorType.face)
+  private [cell] override val faceColor = readColor (CellColorType.Face)
 
 /*
 @see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
 */
 
-  private [cell] override val edgeColor = readColor (CellColorType.edge)
+  private [cell] override val edgeColor = readColor (CellColorType.Edge)
 
 /*
 If attributes are present, read the line type, otherwise use the default.

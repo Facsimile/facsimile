@@ -58,7 +58,7 @@ Face.
 Associated color is a face color.
 */
 
-  private [cell] val face = Value
+  private [cell] val Face = Value
 
 /**
 Edge.
@@ -66,5 +66,5 @@ Edge.
 Associated color is an edge color.
 */
 
-  private [cell] val edge = Value
+  private [cell] val Edge = Value
 }
