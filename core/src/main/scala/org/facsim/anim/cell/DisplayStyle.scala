@@ -50,8 +50,6 @@ them to the corresponding display styles.
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
 Display Styles]]
-
-@since 0.0
 */
 //=============================================================================
 
@@ -65,20 +63,20 @@ Vector mapping the display style ID to an opacity value.
   private val opacity = Vector (
       1.0,
       1.0,
-      15.0 / 16.0,      
-      14.0 / 16.0,      
-      13.0 / 16.0,      
-      12.0 / 16.0,      
-      11.0 / 16.0,      
-      10.0 / 16.0,      
-      9.0 / 16.0,      
-      8.0 / 16.0,      
-      7.0 / 16.0,      
-      6.0 / 16.0,      
-      5.0 / 16.0,      
-      4.0 / 16.0,      
-      3.0 / 16.0,      
-      2.0 / 16.0,      
+      15.0 / 16.0,
+      14.0 / 16.0,
+      13.0 / 16.0,
+      12.0 / 16.0,
+      11.0 / 16.0,
+      10.0 / 16.0,
+      9.0 / 16.0,
+      8.0 / 16.0,
+      7.0 / 16.0,
+      6.0 / 16.0,
+      5.0 / 16.0,
+      4.0 / 16.0,
+      3.0 / 16.0,
+      2.0 / 16.0,
       1.0 / 16.0
     )
 
@@ -188,7 +186,7 @@ Transparent 15, having the ''cell'' display style 16. Almost invisible.
 Default display style, which is used if an explicit style is not available.
 */
 
-  private [cell] val default = Solid
+  private [cell] val Default = Solid
 
 /**
 Minimum display style code value.
@@ -209,8 +207,6 @@ Verify a display style code.
 @param displayStyleCode Code for the display style to be verified.
 
 @return `true` if the code maps to a valid display style, `false` otherwise.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -234,8 +230,6 @@ encountered during parsing of the file.
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
 Display Styles]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
