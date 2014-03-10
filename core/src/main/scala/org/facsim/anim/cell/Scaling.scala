@@ -44,13 +44,16 @@ import scalafx.scene.transform.Scale
 //=============================================================================
 /**
 Scaling object.
-
-@since 0.0
 */
 //=============================================================================
 
 private [cell] object Scaling {
 
+/**
+Read string resource key.
+*/
+
+  private val ReadKey = "anim.cell.Scaling.read"
 //-----------------------------------------------------------------------------
 /**
 Read scale data from ''cell'' data stream.
@@ -68,12 +71,10 @@ encountered during parsing of the file.
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Scaling.html
 Scaling]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def read (scene: CellScene) = {
+  def read (scene: CellScene) = {
 
 /*
 Function to verify scaling values, which must all be > 0.
@@ -85,22 +86,19 @@ Function to verify scaling values, which must all be > 0.
 Read the X axis scaling from the data stream.
 */
 
-    val x = scene.readDouble (verify (_), LibResource
-    ("anim.cell.Scaling.read", 0))
+    val x = scene.readDouble (verify (_), LibResource (ReadKey, 0))
 
 /*
 Read the Y axis translation from the data stream.
 */
 
-    val y = scene.readDouble (verify (_), LibResource
-    ("anim.cell.Scaling.read", 1))
+    val y = scene.readDouble (verify (_), LibResource (ReadKey, 1))
 
 /*
 Read the Z axis translation from the data stream.
 */
 
-    val z = scene.readDouble (verify (_), LibResource
-    ("anim.cell.Scaling.read", 2))
+    val z = scene.readDouble (verify (_), LibResource (ReadKey, 2))
 
 /*
 Convert to a Translate instance and return.
