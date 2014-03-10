@@ -81,19 +81,25 @@ extends Enumeration {
 Polyhedron point.
 */
 
-  private [cell] val Polyhedron = Value
+  val Polyhedron = Value
 
 /**
 Text list point.
 */
 
-  private [cell] val TextList = Value
+  val TextList = Value
 
 /**
 Vector list point.
 */
 
-  private [cell] val VectorList = Value
+  val VectorList = Value
+
+/**
+Point read string resource key.
+*/
+
+  private val PointReadKey = "anim.cell.Point.read"
 
 //-----------------------------------------------------------------------------
 /**
@@ -119,22 +125,19 @@ encountered during parsing of the file.
 Read the point's X coordinate.
 */
 
-    val x = scene.readDouble (LibResource ("anim.cell.Point.read",
-    pointType.id, 0))
+    val x = scene.readDouble (LibResource (PointReadKey, pointType.id, 0))
 
 /**
 Read the point's Y coordinate.
 */
 
-    val y = scene.readDouble (LibResource ("anim.cell.Point.read",
-    pointType.id, 1))
+    val y = scene.readDouble (LibResource (PointReadKey, pointType.id, 1))
 
 /**
 Read the point's Z coordinate.
 */
 
-    val z = scene.readDouble (LibResource ("anim.cell.Point.read",
-    pointType.id, 2))
+    val z = scene.readDouble (LibResource (PointReadKey, pointType.id, 2))
 
 /*
 Return the point read.
