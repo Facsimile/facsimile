@@ -76,22 +76,22 @@ Test data.
       CellColor.LightYellow
     )
     val validFXColors = Vector [Color] (
-      Color.BLACK,
-      Color.RED,
-      Color.GREEN,
-      Color.YELLOW,
-      Color.BLUE,
-      Color.MAGENTA,
-      Color.CYAN,
-      Color.WHITE,
-      Color.LIGHTGRAY,
-      Color.DARKGRAY,
-      Color.BROWN,
-      Color.LIGHTBLUE,
-      Color.PURPLE,
-      Color.ORANGE,
-      Color.LIGHTGREEN,
-      Color.LIGHTYELLOW
+      Color.Black,
+      Color.Red,
+      Color.Green,
+      Color.Yellow,
+      Color.Blue,
+      Color.Magenta,
+      Color.Cyan,
+      Color.White,
+      Color.LightGray,
+      Color.DarkGray,
+      Color.Brown,
+      Color.LightBlue,
+      Color.Purple,
+      Color.Orange,
+      Color.LightGreen,
+      Color.LightYellow
     )
     val invalidCodes = List (Int.MinValue, CellColor.minValue - 1,
     CellColor.maxValue + 1, Int.MaxValue)
@@ -188,7 +188,7 @@ Test that the toMaterial function works as expected.
             assert (material.diffuseColor.value ===
             Color.sfxColor2jfx (validFXColors (color.id)))
             assert (material.specularColor.value ===
-            Color.sfxColor2jfx (Color.WHITE))
+            Color.sfxColor2jfx (Color.White))
           }
         }
       }

@@ -63,22 +63,22 @@ color.
 */
 
   private val cellToColor = Vector (
-    Color.BLACK,
-    Color.RED,
-    Color.GREEN,
-    Color.YELLOW,
-    Color.BLUE,
-    Color.MAGENTA,
-    Color.CYAN,
-    Color.WHITE,
-    Color.LIGHTGRAY,
-    Color.DARKGRAY,
-    Color.BROWN,
-    Color.LIGHTBLUE,
-    Color.PURPLE,
-    Color.ORANGE,
-    Color.LIGHTGREEN,
-    Color.LIGHTYELLOW
+    Color.Black,
+    Color.Red,
+    Color.Green,
+    Color.Yellow,
+    Color.Blue,
+    Color.Magenta,
+    Color.Cyan,
+    Color.White,
+    Color.LightGray,
+    Color.DarkGray,
+    Color.Brown,
+    Color.LightBlue,
+    Color.Purple,
+    Color.Orange,
+    Color.LightGreen,
+    Color.LightYellow
   )
 
 /**
@@ -94,7 +94,7 @@ cell files small.
     color =>
     new PhongMaterial {
       diffuseColor = color
-      specularColor = Color.WHITE
+      specularColor = Color.White
       specularPower = 1.0
     }
   }
