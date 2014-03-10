@@ -170,5 +170,5 @@ the last band, plus another set of divisions faces for base.
 So, there are 2 * divisions * bands faces in total.
 */
 
-  val totalFaces = divisions * bands * 2 
+  val totalFaces = divisions * bands * 2
 }
