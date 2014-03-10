@@ -49,5 +49,4 @@ scenes into ''Facsimile''.
 */
 //=============================================================================
 
-package object cell {
-}
+package object cell
