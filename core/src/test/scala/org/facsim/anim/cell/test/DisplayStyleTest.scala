@@ -115,7 +115,7 @@ Test that the default display style is reported correctly.
 
     describe (".default") {
       it ("must be Solid") {
-        assert (DisplayStyle.default === DisplayStyle.Solid)
+        assert (DisplayStyle.Default === DisplayStyle.Solid)
       }
     }
 

@@ -122,7 +122,7 @@ If attributes are present, read the line width, otherwise use the default.
 
   private [cell] override val displayStyle =
   if (attributesPresent) DisplayStyle.read (scene)
-  else DisplayStyle.default
+  else DisplayStyle.Default
 
 /*
 If attributes are present, read the name; otherwise, this cell has no name.
