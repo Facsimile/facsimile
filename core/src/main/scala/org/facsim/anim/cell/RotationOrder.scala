@@ -51,8 +51,6 @@ them to the appropriate rotations.
 
 @see [http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
-
-@since 0.0
 */
 //=============================================================================
 
@@ -76,49 +74,49 @@ Vector to a sequence of axes corresponding to each enumeration.
 X, then Y, then Z, code 0.
 */
 
-  private [cell] val XYZ = Value
+  val XYZ = Value
 
 /**
 X, then Z, then Y, code 1.
 */
 
-  private [cell] val XZY = Value
+  val XZY = Value
 
 /**
 Y, then X, then Z, code 2.
 */
 
-  private [cell] val YXZ = Value
+  val YXZ = Value
 
 /**
 Y, then Z, then X, code 3.
 */
 
-  private [cell] val YZX = Value
+  val YZX = Value
 
 /**
 Z, then X, then Y, code 4.
 */
 
-  private [cell] val ZXY = Value
+  val ZXY = Value
 
 /**
 Z, then Y, then X, code 5.
 */
 
-  private [cell] val ZYX = Value
+  val ZYX = Value
 
 /**
 Minimum rotation order code value.
 */
 
-  private [cell] val minValue = 0
+  val minValue = 0
 
 /**
 Maximum rotation order code value.
 */
 
-  private [cell] val maxValue = maxId - 1
+ val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -132,13 +130,11 @@ bury them.
 @param ''Cell'' axis rotation value to be converted.
 
 @return Corresponding ''ScalaFX'' axis rotation sequence.
-
-@since 0.0 
 */
 //-----------------------------------------------------------------------------
 
   @inline
-  private [cell] def toAxisSequence (rotationOrder: RotationOrder.Value) =
+  def toAxisSequence (rotationOrder: RotationOrder.Value) =
   axisSequence (rotationOrder.id) ensuring (_.length == 3)
 
 //-----------------------------------------------------------------------------
@@ -149,12 +145,10 @@ Verify an axis rotation order code.
 
 @return `true` if the code maps to a valid axis rotation order, `false`
 otherwise.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def verify (rotationOrderCode: Int) =
+  def verify (rotationOrderCode: Int) =
   (rotationOrderCode >= minValue && rotationOrderCode <= maxValue)
 
 //-----------------------------------------------------------------------------
@@ -173,12 +167,10 @@ encountered during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def read (scene: CellScene) = {
+  def read (scene: CellScene) = {
 
 /*
 Read the axis rotation code from the data stream.
