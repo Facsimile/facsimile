@@ -621,7 +621,7 @@ this order when modifying the list.
       700 -> classOf [RegularSet],
       7000 -> classOf [RegularSet],
       10000 -> classOf [RegularSet]
-  )
+    )
 
 /*
 Class of the Definition cell type.
