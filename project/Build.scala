@@ -508,9 +508,16 @@ corresponding distribution jar files.
 SBT-GPG plugin configuration.
 
 Specify the key to be used to sign the distribted jar file.
+
+NOTE: The full hex ID of the private key is obtained by using the command:
+
+  gpg --keyid-format 0xLONG -k {key-id}
+
+where {key-id} is the short key ID - which ought to match the last 8 characters
+of the long key ID.
 */
 
-    PgpKeys.pgpSigningKey := Some (0x3D700BBB797D614CL) // Public key
+    PgpKeys.usePgpKeyHex ("0xAC65F306C9B7223F")
   )).aggregate (core, macros)
 
 /**
