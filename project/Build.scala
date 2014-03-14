@@ -371,12 +371,6 @@ Scaladoc configuration.
     ),
 
 /*
-Scaladoc configuration.
-*/
-
-    autoAPIMappings := true,
-
-/*
 Make sure that tests execute in sequence (we may change this in future, but,
 for now, it's a lot easier to understand test output if tests execute
 sequentially.
