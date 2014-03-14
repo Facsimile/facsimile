@@ -382,7 +382,7 @@ sequentially.
 SBT-Eclipse plugin configuration.
 */
 
-    EclipseKeys.useProjectId := true,
+    EclipseKeys.useProjectId := false,
     EclipseKeys.createSrc := EclipseCreateSrc.Default +
     EclipseCreateSrc.Resource
   )
@@ -517,7 +517,7 @@ where {key-id} is the short key ID - which ought to match the last 8 characters
 of the long key ID.
 */
 
-    PgpKeys.usePgpKeyHex ("0xAC65F306C9B7223F")
+    PgpKeys.pgpSigningKey := Some (0xAC65F306C9B7223FL)
   )).aggregate (core, macros)
 
 /**
