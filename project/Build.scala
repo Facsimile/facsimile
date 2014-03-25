@@ -80,7 +80,7 @@ This is the full scala version required to compile the sources. Typically, it
 is the most recent point release of the required short version.
 */
 
-  val scalaVersionLong = scalaVersionShort + ".3"
+  val scalaVersionLong = scalaVersionShort + ".4"
 
 /**
 Project artifact ID.
