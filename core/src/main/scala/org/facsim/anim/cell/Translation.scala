@@ -51,6 +51,12 @@ Translation object.
 
 private [cell] object Translation {
 
+/**
+Read dimension string resource key.
+*/
+
+  val ReadKey = "anim.cell.Translation.read"
+
 //-----------------------------------------------------------------------------
 /**
 Read translation data from ''cell'' data stream.
@@ -79,19 +85,19 @@ Translation]]
 Read the X axis translation from the data stream.
 */
 
-    val x = scene.readDouble (LibResource ("anim.cell.Translation.read", 0))
+    val x = scene.readDouble (LibResource (ReadKey, 0))
 
 /*
 Read the Y axis translation from the data stream.
 */
 
-    val y = scene.readDouble (LibResource ("anim.cell.Translation.read", 1))
+    val y = scene.readDouble (LibResource (ReadKey, 1))
 
 /*
 Read the Z axis translation from the data stream.
 */
 
-    val z = scene.readDouble (LibResource ("anim.cell.Translation.read", 2))
+    val z = scene.readDouble (LibResource (ReadKey, 2))
 
 /*
 Convert to a Translate instance and return.
