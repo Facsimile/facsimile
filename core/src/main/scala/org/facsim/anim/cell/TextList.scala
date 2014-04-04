@@ -80,7 +80,7 @@ Read the text lists.
 Each text list is prefixed by a set of translation co-ordinates.
 */
 
-  private val textList = TextList.read (scene, textType) 
+  private val textList = TextList.read (scene, textType)
 
 //-----------------------------------------------------------------------------
 /*
