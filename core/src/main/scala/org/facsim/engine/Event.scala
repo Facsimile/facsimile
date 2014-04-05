@@ -77,16 +77,6 @@ delay: Time.Measure, private val priority: Int)
 extends Ordered [Event]
 with NotNull {
 
-/*
-Argument verification.
-
-Since these arguments are types that implement NotNull, this may not be
-necessary, but better safe than sorry.
-*/
-
-  require (action ne null)
-  require (delay ne null)
-
 /**
 Scheduled absolute dispatch time of this event.
 */
@@ -132,31 +122,35 @@ Compare the due times of the two events.  If there's a difference, return it.
 */
 
     val dueCompare = due.compare (that.due)
-    if (dueCompare != 0) return dueCompare
+    if (dueCompare != 0) dueCompare
 
 /*
-We only make it this far if the two events have the same due time.  Now compare
-their priorities.  Note that we negate the result of the priority comparison
-since we want this event to come before the other event its has a higher
-priority value, and after the other event if it has a lower priority value.
+Otherwise, the two events have the same due time. Now compare their priorities.
+Note that we negate the result of the priority comparison since we want this
+event to come before the other event its has a higher priority value, and after
+the other event if it has a lower priority value.
 */
 
-    assert (due == that.due && dueCompare == 0)
-    val priorityCompare = priority.compare (that.priority)
-    if (priorityCompare != 0) return -priorityCompare
+    else {
+      assert (due == that.due && dueCompare == 0)
+      val priorityCompare = priority.compare (that.priority)
+      if (priorityCompare != 0) -priorityCompare
 
 /*
-OK.  If we have made it to here, the two events have the same due time and the
-same priority.  So we return the result of comparing their ids.  (If the two
-events have the same ID, then it ought to be the same event.
+Otherwise, the two events have the same due time and the same priority. Return
+the result of comparing their ids.  (If the two events have the same ID, then
+it ought to be the same event.)
 
 TODO: It might be worth attempting to remove the ID from event at some point in
 the future if it can be done without breaking the ordering rules.
 */
 
-    assert (priority == that.priority && priorityCompare == 0)
-    assert (id != that.id || (this eq that))
-    id.compare (that.id)
+      else {
+        assert (priority == that.priority && priorityCompare == 0)
+        assert (id != that.id || (this eq that))
+        id.compare (that.id)
+      }
+    }
   }
 
 //-----------------------------------------------------------------------------
