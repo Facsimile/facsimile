@@ -129,11 +129,13 @@ If the organization name ends in a period, then remove it.
 Format and retrieve this application's copyright string.
 */
 
-    if (inceptionDate.getYear () < releaseDate.getYear ())
-    LibResource ("Behavior.CopyrightRange", orgAdj, inceptionDate.toDate (),
-    releaseDate.toDate ())
-    else LibResource ("Behavior.CopyrightBasic", orgAdj, inceptionDate.toDate
-    ())
+    if (inceptionDate.getYear () < releaseDate.getYear ()) {
+      LibResource ("Behavior.CopyrightRange", orgAdj, inceptionDate.toDate (),
+      releaseDate.toDate ())
+    }
+    else {
+      LibResource ("Behavior.CopyrightBasic", orgAdj, inceptionDate.toDate ())
+    }
   }
 
 //-----------------------------------------------------------------------------
