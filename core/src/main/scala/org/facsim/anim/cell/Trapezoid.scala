@@ -94,8 +94,8 @@ although most people would refer to it as the ''base depth'' or ''base width''.
 Here, we refer to it as the base Y-axis dimension to avoid confusion.
 */
 
-  private val baseYDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Trapezoid.readDim", 1))
+  private val baseYDim = scene.readDouble (_ >= 0.0,
+  LibResource (Trapezoid.ReadDimKey, 1))
 
 /**
 Trapezoid base X-axis dimension.
@@ -107,8 +107,8 @@ although most people would refer to it as the ''base length''. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
-  private val baseXDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Trapezoid.readDim", 0))
+  private val baseXDim = scene.readDouble (_ >= 0.0,
+  LibResource (Trapezoid.ReadDimKey, 0))
 
 /**
 Trapezoid top Y-axis dimension.
@@ -120,8 +120,8 @@ although most people would refer to it as the ''top depth'' or ''top width''.
 Here, we refer to it as the top Y-axis dimension to avoid confusion.
 */
 
-  private val topYDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Trapezoid.readDim", 3))
+  private val topYDim = scene.readDouble (_ >= 0.0,
+  LibResource (Trapezoid.ReadDimKey, 3)) // scalastyle:ignore
 
 /**
 Trapezoid top X-axis dimension.
@@ -133,8 +133,8 @@ although most people would refer to it as the ''top length''. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
-  private val topXDim = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Trapezoid.readDim", 2))
+  private val topXDim = scene.readDouble (_ >= 0.0,
+  LibResource (Trapezoid.ReadDimKey, 2))
 
 /**
 Trapezoid height (Z-dimension).
@@ -142,22 +142,22 @@ Trapezoid height (Z-dimension).
 Height of the trapezoid measured along the Z-Axis.
 */
 
-  private val height = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Trapezoid.readDim", 4))
+  private val height = scene.readDouble (_ >= 0.0,
+  LibResource (Trapezoid.ReadDimKey, 4)) // scalastyle:ignore
 
 /**
 Trapezoid top X-axis offset.
 */
 
   private val xOffset = scene.readDouble (LibResource
-  ("anim.cell.Trapezoid.readOffset", 0))
+  (Trapezoid.ReadOffsetKey, 0))
 
 /**
 Trapezoid top Y-axis offset.
 */
 
   private val yOffset = scene.readDouble (LibResource
-  ("anim.cell.Trapezoid.readOffset", 1))
+  (Trapezoid.ReadOffsetKey, 1))
 
 //-----------------------------------------------------------------------------
 /*
@@ -174,4 +174,26 @@ The origin of the cell is at the center of its base.
   protected [cell] override def cellMesh: Mesh =
   Mesh.rectangularFrustum (Point3D.Origin, baseXDim, baseYDim,
   Point3D (xOffset, yOffset, height), topXDim, topYDim)
+}
+
+//=============================================================================
+/**
+Trapezoid companion object.
+*/
+//=============================================================================
+
+private object Trapezoid {
+
+/**
+Read dimension string resource key.
+*/
+
+  val ReadDimKey = "anim.cell.Trapezoid.readDim"
+
+/**
+Read offset string resource key.
+*/
+
+  val ReadOffsetKey = "anim.cell.Trapezoid.readOffset"
+
 }
