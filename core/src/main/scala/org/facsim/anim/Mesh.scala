@@ -67,7 +67,8 @@ list of faces.
 */
 //-----------------------------------------------------------------------------
 
-  def + (newFaces: List [Face]) = new Mesh (faces ::: newFaces)
+  def + (newFaces: List [Face]) = //scalastyle:ignore
+  new Mesh (faces ::: newFaces)
 
 //-----------------------------------------------------------------------------
 /**
@@ -80,7 +81,8 @@ mesh's list of faces.
 */
 //-----------------------------------------------------------------------------
 
-  def + (newMesh: Mesh) = new Mesh (faces ::: newMesh.faces)
+  def + (newMesh: Mesh) = //scalastyle:ignore
+  new Mesh (faces ::: newMesh.faces)
 
 //-----------------------------------------------------------------------------
 /**
@@ -333,7 +335,7 @@ them visible from above the plane of the circumference.
 //-----------------------------------------------------------------------------
 
   private def conicMesh (c: Point3D, r: Double, a: Point3D,
-  divisions: Int = 16, topLeft: TexturePoint = TexturePoint.TopLeft,
+  divisions: Int, topLeft: TexturePoint = TexturePoint.TopLeft,
   botRight: TexturePoint = TexturePoint.BottomRight,
   beginAngle: Angle.Measure = Angle.Zero, drawAngle: Angle.Measure = Angle.τ,
   smoothGroup: Int = 0, down: Boolean = false): Mesh = {
@@ -529,8 +531,7 @@ must be greater than 2.
 //-----------------------------------------------------------------------------
 
   private def circularWallMesh (cb: Point3D, rb: Double, ct: Point3D,
-  rt: Double, divisions: Int = 16,
-  topLeft: TexturePoint = TexturePoint.TopLeft,
+  rt: Double, divisions: Int, topLeft: TexturePoint = TexturePoint.TopLeft,
   botRight: TexturePoint = TexturePoint.BottomRight, smoothGroup: Int = 0) = {
 
 /*
@@ -691,7 +692,7 @@ be less than three.
 //-----------------------------------------------------------------------------
 
   def arc (c: Point3D, r: Double, begin: Angle.Measure, draw: Angle.Measure,
-  divisions: Int = 16) = {
+  divisions: Int) = {
 
 /*
 Sanity checks.
@@ -739,7 +740,7 @@ This value cannot be less than three.
 */
 //-----------------------------------------------------------------------------
 
-  def cone (c: Point3D, r: Double, a: Point3D, divisions: Int = 16) = {
+  def cone (c: Point3D, r: Double, a: Point3D, divisions: Int) = {
 
 /*
 Sanity checks.
@@ -799,7 +800,7 @@ resulting conic frustum. This value cannot be less than three.
 //-----------------------------------------------------------------------------
 
   def conicFrustum (cb: Point3D, rb: Double, ct: Point3D, rt: Double,
-  divisions: Int = 16) = {
+  divisions: Int) = {
 
 /*
 Sanity checks.
@@ -841,7 +842,7 @@ The top third of the texture map is used for this purpose.
 */
 
     val top = conicMesh (ct, rt, ct, divisions, TexturePoint.Origin,
-    TexturePoint (1.0f, oneThird), smoothGroup = 4)
+    TexturePoint (1.0f, oneThird), smoothGroup = 4) // scalastyle:ignore
 
 /*
 Add the meshes together and return.
@@ -874,7 +875,7 @@ resulting cylinder. This value cannot be less than three.
 */
 //-----------------------------------------------------------------------------
 
-  def cylinder (cb: Point3D, r: Double, ct: Point3D, divisions: Int = 16) = {
+  def cylinder (cb: Point3D, r: Double, ct: Point3D, divisions: Int) = {
 
 /*
 Sanity checks.
@@ -914,7 +915,7 @@ The top third of the texture map is used for this purpose.
 */
 
     val top = conicMesh (ct, r, ct, divisions, TexturePoint.Origin,
-    TexturePoint (1.0f, oneThird), smoothGroup = 4)
+    TexturePoint (1.0f, oneThird), smoothGroup = 4) // scalastyle:ignore
 
 /*
 Add the meshes together and return.
@@ -942,7 +943,7 @@ the resulting hemisphere. This value cannot be less than three.
 */
 //-----------------------------------------------------------------------------
 
-  def hemisphere (c: Point3D, r: Double, divisions: Int = 16) = {
+  def hemisphere (c: Point3D, r: Double, divisions: Int) = {
 
 /*
 Sanity checks.
