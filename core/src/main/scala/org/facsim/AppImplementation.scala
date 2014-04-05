@@ -66,7 +66,7 @@ This value is None until a behavior is applied via the
 behavior can be applied successfully.
 */
 
-  private final var appBehavior: Option [Behavior] = None
+  private final var appBehavior: Option [Behavior] = None //scalastyle:ignore
 
 //-----------------------------------------------------------------------------
 /**
@@ -105,22 +105,24 @@ will be retained.
 //-----------------------------------------------------------------------------
 
   final def apply (newBehavior: Behavior): AppImplementation =
-  appBehavior match {
+  this.synchronized {
+    appBehavior match {
 
 /*
 If we already have an applied behavior, then we must throw an exception.
 */
 
-    case Some (behavior) => throw new BehaviorRedefinitionException (behavior,
-    newBehavior)
+      case Some (behavior) => throw new
+      BehaviorRedefinitionException (behavior, newBehavior)
 
 /*
 Otherwise, store the new behavior.
 */
 
-    case None => {
-      appBehavior = Option (newBehavior)
-      this
+      case None => {
+        appBehavior = Option (newBehavior)
+        this
+      }
     }
   }
 
