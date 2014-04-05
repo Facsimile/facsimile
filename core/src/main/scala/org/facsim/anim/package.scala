@@ -48,5 +48,4 @@ Package supporting the 3D animation of ''Facsimile'' simulations.
 */
 //=============================================================================
 
-package object anim {
-}
+package object anim
