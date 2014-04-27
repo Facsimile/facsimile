@@ -398,7 +398,7 @@ Normalize the angle to a value in the range [0, ''τ'') ''radians'' ([0, 360)
 /*
 Note: I originally tried this as value % τ - but, alas, that yields a value in
 the range (-τ, τ) instead of [0, τ). The solution below provides the right
-answer, even if it is a little more long-winded. 
+answer, even if it is a little more long-winded.
 */
 
       apply (value - τValue * (value / τValue).floor)
