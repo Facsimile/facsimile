@@ -49,5 +49,4 @@ Package supporting ''input / output'' facilities.
 */
 //=============================================================================
 
-package object io {
-}
+package object io
