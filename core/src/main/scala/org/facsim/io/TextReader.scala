@@ -329,7 +329,7 @@ Otherwise, we haven't yet peeked at the next character, so read and store it.
           peekedChar.get
         }
       }
-    } ensuring (_ >= -1)
+    } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
 
 //.............................................................................
 /**
@@ -371,7 +371,7 @@ Update the row and column number for the character we're returning.
       val char = peekedOrRead ()
       updateRowColumn (char)
       char
-    } ensuring (_ >= -1)
+    } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
 
 //.............................................................................
 /**
@@ -469,7 +469,7 @@ read beyond the end-of-file (see top of this function).
           lastChar
         }
       }
-    } ensuring (_ >= -1)
+    } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
   }
 
 //-----------------------------------------------------------------------------
@@ -824,9 +824,7 @@ if the trimmed version of the string differs from the string supplied, we'll
 throw a NumberFormatException.
 */
 
-    if (field != field.trim) throw new
-    NumberFormatException (LibResource ("io.TextReader.NumberFormatException",
-    field))
+    if (field != field.trim) throwNumberFormatException (field)
     else field.toFloat
   }
 
@@ -871,9 +869,7 @@ if the trimmed version of the string differs from the string supplied, we'll
 throw a NumberFormatException.
 */
 
-    if (field != field.trim) throw new
-    NumberFormatException (LibResource ("io.TextReader.NumberFormatException",
-    field))
+    if (field != field.trim) throwNumberFormatException (field)
     else field.toDouble
   }
 
@@ -969,6 +965,19 @@ other I/O error occurs during a read operation.
 
   @inline
   private [io] final def read (): Int = state.read ()
+
+//-----------------------------------------------------------------------------
+/**
+Throw a number format exception for the specified field.
+
+@param field Field that resulted in a number format exception.
+*/
+//-----------------------------------------------------------------------------
+
+  @inline
+  private final def throwNumberFormatException (field: String) = throw new
+  NumberFormatException (LibResource ("io.TextReader.NumberFormatException",
+  field))
 }
 
 //=============================================================================
