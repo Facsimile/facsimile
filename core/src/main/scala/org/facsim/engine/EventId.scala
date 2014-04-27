@@ -52,8 +52,6 @@ the visibility of the object generally, while also ensuring that the [[id]]
 member is solely access through the [[nextId]] method.  Furthermore, it's
 possible that we may not even need this object in future $FACSIMILE releases,
 so hiding it as much as possible makes even more sense.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -66,17 +64,15 @@ This event is initialized to be 0, so that events are effectively numbered 1,
 2, 3, etc.
 */
 
-  private var id = 0L
+  private var id = 0L // scalastyle:ignore
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
 Retrieve the identifier of the next event created.
-
-@since 0.0
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  private [engine] def nextId = {
+  private [engine] def nextId = synchronized {
 
 /*
 Increment the ID by 1 and return it.
@@ -85,9 +81,7 @@ Since this mutates the state of the Event object, we synchronize access to it
 to prevent more than one thread accessing this code at the same time.
 */
 
-    synchronized {
-      id += 1
-      id
-    }
+    id += 1
+    id
   }
 }
