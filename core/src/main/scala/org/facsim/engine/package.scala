@@ -48,5 +48,4 @@ Package providing event scheduling and dispatching engine.
 */
 //=============================================================================
 
-package object engine {
-}
+package object engine
