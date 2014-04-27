@@ -68,13 +68,14 @@ the eventQueue.
 Current event.
 */
 
-  private var currentEvent: Event = schedule (new NullAction, Time.Zero, 0)
+  private var currentEvent: Event = // scalastyle:ignore
+  schedule (new NullAction, Time.Zero, 0)
 
 /**
 Absolute time at which the simulation's statistics were last reset.
 */
 
-  private var resetTime = Time.Zero
+  private var resetTime = Time.Zero // scalastyle:ignore
 
 //-----------------------------------------------------------------------------
 /**
