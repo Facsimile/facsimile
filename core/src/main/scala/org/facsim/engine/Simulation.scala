@@ -40,6 +40,7 @@ package org.facsim.engine
 
 import org.facsim.LibResource
 import org.facsim.measure.Time
+import scala.annotation.tailrec
 import scala.collection.mutable.PriorityQueue
 
 //=============================================================================
@@ -87,7 +88,9 @@ Report current simulation time.
 */
 //-----------------------------------------------------------------------------
 
-  final def currentTime: Time.Measure = currentEvent.due
+  final def currentTime: Time.Measure = synchronized {
+    currentEvent.due
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -110,7 +113,9 @@ priority are dispatched in the order that they are scheduled.
 //-----------------------------------------------------------------------------
 
   final def schedule (action: Action, dueIn: Time.Measure, priority: Int = 0) =
-  scheduleEvent (new Event (action, dueIn, priority))
+  synchronized {
+    scheduleEvent (new Event (action, dueIn, priority))
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -122,7 +127,7 @@ Schedule event.
 */
 //-----------------------------------------------------------------------------
 
-  private [engine] def scheduleEvent (event: Event) = {
+  private [engine] def scheduleEvent (event: Event) = synchronized {
     (eventQueue += event)
     event
   }
@@ -139,6 +144,7 @@ This function never returns, but might terminate if an exception occurs.
 */
 //-----------------------------------------------------------------------------
 
+  @tailrec
   private [engine] def run (): Nothing = {
 
 /*
@@ -180,7 +186,9 @@ reset.
 */
 //-----------------------------------------------------------------------------
 
-  def lastReset = resetTime
+  def lastReset = synchronized {
+    resetTime
+  }
 
 //-----------------------------------------------------------------------------
 /**
