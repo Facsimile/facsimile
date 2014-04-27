@@ -90,8 +90,8 @@ delimiter characters.
 */
 //=============================================================================
 
-class Delimiter (delimiters: Set [Int], mergeConsecutive: Boolean) extends
-NotNull {
+class Delimiter (delimiters: Set [Int], mergeConsecutive: Boolean)
+extends NotNull {
 
 /*
 Preconditions: forbid the use of null and carriage return characters as
@@ -141,12 +141,13 @@ we're done.
 */
 
       val peekedChar = reader.peek ()
-      if (peekedChar == TextReader.EOF || !delimiters.contains (peekedChar))
-      result
+      if (peekedChar == TextReader.EOF || !delimiters.contains (peekedChar)) {
+        result
+      }
 
 /*
 Otherwise, we have a delimiter character, so first read it from the stream to
-consume it. 
+consume it.
 */
 
       else {
