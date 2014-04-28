@@ -93,7 +93,7 @@ family by the specified `multiplier` family.
 */
 //-----------------------------------------------------------------------------
 
-  def * (multiplier: Family) =
+  def * (multiplier: Family) = // scalastyle:ignore
   Family (exponents.zip (multiplier.exponents).map ((p: (Int, Int)) => p._1 +
   p._2))
 
@@ -112,7 +112,7 @@ the specified `divisor` family.
 */
 //-----------------------------------------------------------------------------
 
-  def / (divisor: Family) =
+  def / (divisor: Family) = // scalastyle:ignore
   Family (exponents.zip (divisor.exponents).map ((p: (Int, Int)) => p._1 -
   p._2))
 
@@ -155,12 +155,7 @@ exponent is 1, then the suffix is an empty string; if 2, then it is superscript
 power (e.g. ^5).
 */
 
-      val suffix = exp match {
-        case 1 => ""
-        case 2 => "²"
-        case 3 => "³"
-        case _ => s"^$exp"
-      }
+      val suffix = Family.expToString (exp)
       Family.symbol (Family.baseFamily (idx)) + suffix
     }
 
@@ -189,14 +184,14 @@ may be empty) separated by a slash.
 */
 
     if (!negative.isEmpty) {
-      positive.mkString ("") + "/" + negative.mkString ("")
+      positive.mkString ("") + Family.Slash + negative.mkString ("")
     }
 
 /*
 Otherwise, just report the positive content.
 */
 
-    else positive.mkString (" ")
+    else positive.mkString (Family.Space)
   } ensuring (_ != "")
 
 //-----------------------------------------------------------------------------
@@ -224,12 +219,7 @@ superscript 3; otherwise it is denoted by a circumflex followed by the power
 (e.g. ^5).
 */
 
-      val suffix = exp match {
-        case 1 => ""
-        case 2 => "²"
-        case 3 => "³"
-        case _ => s"^$exp"
-      }
+      val suffix = Family.expToString (exp)
       Family.name (Family.baseFamily (idx)) + suffix
     }
 
@@ -258,14 +248,15 @@ may be empty) separated by a slash.
 */
 
     if (!negative.isEmpty) {
-      positive.mkString (" ") + "/" + negative.mkString (" ")
+      positive.mkString (Family.Space) + Family.Slash +
+      negative.mkString (Family.Space)
     }
 
 /*
 Otherwise, just report the positive content.
 */
 
-    else positive.mkString (" ")
+    else positive.mkString (Family.Space)
   } ensuring (_ != "")
 
 //-----------------------------------------------------------------------------
@@ -372,6 +363,18 @@ Physical quantity family companion object.
 private [measure] object Family {
 
 /**
+Slash string constant.
+*/
+
+  private val Slash = "/"
+
+/**
+Space string constant.
+*/
+
+  private val Space = " "
+
+/**
 Vector of base families.
 
 The order in which these families are listed must match the order in which the
@@ -402,7 +405,28 @@ entries in this map do not have associated types an exist as generic values
 only.
 */
 
-  private var typeMap = HashMap.empty [Family, Specific]
+  private var typeMap = HashMap.empty [Family, Specific] // scalastyle:ignore
+
+//-----------------------------------------------------------------------------
+/**
+Convert an exponent value to a string.
+
+@param exp Exponent value to be converted. This value must be greater than
+zero.
+
+@return String representing the exponent.
+*/
+//-----------------------------------------------------------------------------
+
+  private def expToString (exp: Int) = {
+    assert (exp > 0)
+    exp match {
+      case 1 => ""
+      case 2 => "²"
+      case 3 => "³" // scalastyle:ignore
+      case _ => s"^$exp"
+    }
+  }
 
 //-----------------------------------------------------------------------------
 /**
