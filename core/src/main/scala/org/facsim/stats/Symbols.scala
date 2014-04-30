@@ -46,7 +46,8 @@ Common statistical symbols.
 */
 //=============================================================================
 
-object Symbols extends Nomenclature {
+object Symbols
+extends Nomenclature {
 
 /**
 @inheritdoc.

@@ -46,7 +46,8 @@ Common statistic names.
 */
 //=============================================================================
 
-object Names extends Nomenclature {
+object Names
+extends Nomenclature {
 
 /**
 @inheritdoc.

@@ -64,7 +64,8 @@ an exception is thrown if this value is negative.
 */
 //=============================================================================
 
-class WIPStatistic (initial: Int = 0) extends Statistic {
+class WIPStatistic (initial: Int = 0)
+extends Statistic {
 
 /*
 Argument sanity checks.

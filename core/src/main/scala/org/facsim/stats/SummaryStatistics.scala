@@ -63,7 +63,8 @@ but would be more functional.
 */
 //=============================================================================
 
-trait SummaryStatistics extends Statistic {
+trait SummaryStatistics
+extends Statistic {
 
 /**
 Observation count.

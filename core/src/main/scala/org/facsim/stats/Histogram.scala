@@ -69,8 +69,9 @@ or if '''binWidth''' is zero or negative.
 */
 //=============================================================================
 
-class Histogram (private final val minimumValue: Double, private final val
-bins: Int, private final val binWidth: Double) extends SummaryStatistics {
+class Histogram (private final val minimumValue: Double,
+private final val bins: Int, private final val binWidth: Double)
+extends SummaryStatistics {
 
 /*
 Argument sanity checks.

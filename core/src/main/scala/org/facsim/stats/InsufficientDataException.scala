@@ -60,9 +60,11 @@ requested.
 */
 //=============================================================================
 
-final class InsufficientDataException private [stats] (private final val
-statisticName: String, private final val minimumObservations: Int, private
-final val observations: Int) extends RuntimeException {
+final class InsufficientDataException private [stats]
+(private final val statisticName: String,
+private final val minimumObservations: Int,
+private final val observations: Int)
+extends RuntimeException {
 
 //-----------------------------------------------------------------------------
 /*
