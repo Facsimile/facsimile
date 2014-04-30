@@ -75,7 +75,7 @@ statistics have undefined values unless the count is at least 1, and some
 have been made.
 */
 
-  private final var count = 0
+  private final var count = 0 // scalastyle:ignore
 
 /**
 Minimum value observed.
@@ -83,7 +83,7 @@ Minimum value observed.
 If no observations have been made, then value is undefined.
 */
 
-  private final var minValue = 0.0
+  private final var minValue = 0.0 // scalastyle:ignore
 
 /**
 Maximum value observed.
@@ -91,7 +91,7 @@ Maximum value observed.
 If no observations have been made, then value is undefined.
 */
 
-  private final var maxValue = 0.0
+  private final var maxValue = 0.0 // scalastyle:ignore
 
 /**
 Sum of all observations made.
@@ -102,7 +102,7 @@ observation is recorded, its value is added to total.
 If no observations have been made, value must be zero.
 */
 
-  private final var sumValues = 0.0
+  private final var sumValues = 0.0 // scalastyle:ignore
 
 /**
 Sum of the squares of each observation.
@@ -112,7 +112,7 @@ Whenever an observation is recorded, the square of its value is added to this
 total.
 */
 
-  private final var sumValuesSquared = 0.0
+  private final var sumValuesSquared = 0.0 // scalastyle:ignore
 
 //-----------------------------------------------------------------------------
 /**
