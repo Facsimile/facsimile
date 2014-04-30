@@ -46,5 +46,4 @@ Trait for all simulation statistics classes.
 */
 //=============================================================================
 
-trait Statistic {
-}
+trait Statistic
