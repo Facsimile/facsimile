@@ -79,19 +79,19 @@ Current work-in-progress statistic.
 This value cannot become negative.
 */
 
-  private var cur = initial
+  private var cur = initial // scalastyle:ignore
 
 /**
 Maximum observed work-in-progress statistic.
 */
 
-  private var max = initial
+  private var max = initial // scalastyle:ignore
 
 /**
 Minimum observed work-in-progress statistic.
 */
 
-  private var min = initial
+  private var min = initial // scalastyle:ignore
 
 /**
 Sum of size(i) * time(i).
@@ -101,18 +101,19 @@ The time-weighted mean work-in-progress is calculated as:
 sum (size(i) * time(i))/(total time)
 */
 
-  private var sum = Time.Zero
+  private var sum = Time.Zero // scalastyle:ignore
 
 /**
 Absolute simulation time at which we started collecting WIP data.
 */
 
   private val startTime = Simulation.currentTime
+
 /**
 Absolute simulation time at which this statistic was last updated.
 */
 
-  private var updated = startTime
+  private var updated = startTime // scalastyle:ignore
 
 //-----------------------------------------------------------------------------
 /**
