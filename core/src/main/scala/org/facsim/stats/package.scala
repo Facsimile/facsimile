@@ -49,5 +49,4 @@ Package supporting statistics collation.
 //=============================================================================
 
 
-package object stats {
-}
+package object stats
