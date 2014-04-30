@@ -38,6 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import org.facsim.LibResource
 import scala.language.implicitConversions
 
 //=============================================================================
@@ -225,6 +226,12 @@ definition.
   object GenericUnits
   extends PhysicalUnits {
 
+/*
+Self-reference to these units.
+*/
+
+    self =>
+
 //.............................................................................
 /*
 Importing simply accepts values "as is".
@@ -247,6 +254,8 @@ Format generic values for output.
 */
 //.............................................................................
 
-    private [measure] override def format (measure: Measure): String = ???
+    private [measure] override def format (measure: Measure): String =
+    LibResource ("measure.Generic.Units.format", measure.inUnits (self),
+    measure.family.baseSymbol)
   }
 }

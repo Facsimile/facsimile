@@ -289,6 +289,6 @@ Output using localized string formatting for these units.
 
     private [measure] final override def format (value: Measure) =
     LibResource ("measure.Physical.Units.format",
-    value.inUnits (this.asInstanceOf [Units]), symbol)
+    value.inUnits (this.asInstanceOf [Units]), symbol) // scalastyle:ignore
   }
 }

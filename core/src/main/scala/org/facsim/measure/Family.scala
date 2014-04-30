@@ -138,7 +138,7 @@ preferred base units.
 */
 //-----------------------------------------------------------------------------
 
-  private def baseSymbol = {
+  private [measure] def baseSymbol = {
 
 /*
 Helper function to build the symbol of the units given the index of the family
