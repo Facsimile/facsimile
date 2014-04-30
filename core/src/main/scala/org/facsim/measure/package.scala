@@ -98,5 +98,4 @@ Facsimile ensures data integrity throughout all runs.
 */
 //=============================================================================
 
-package object measure {
-}
+package object measure
