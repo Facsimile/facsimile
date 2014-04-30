@@ -84,8 +84,11 @@ be `/com/mycompany/myproject`.
 package of the jar file.
 */
 
-    val packagePath = '/' +: getClass.getPackage.getName.map (c => if (c ==
-    '.') '/' else c)
+    val packagePath = '/' +: getClass.getPackage.getName.map {
+      c =>
+      if (c == '.') '/'
+      else c
+    }
 
 /*
 Now retrieve the URL for the package path.  If this value is null, indicating
