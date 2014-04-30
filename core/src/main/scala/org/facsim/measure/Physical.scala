@@ -218,7 +218,7 @@ is invalid for these units.
 */
 //.............................................................................
 
-    final def unary_- = createNew (-value)
+    final def unary_- = createNew (-value) // scalastyle:ignore
 
 //.............................................................................
 /**
@@ -237,7 +237,8 @@ is invalid for these units.
 */
 //.............................................................................
 
-    final def + (addend: Measure) = createNew (value + addend.value)
+    final def + (addend: Measure) = // scalastyle:ignore
+    createNew (value + addend.value)
 
 //.............................................................................
 /**
@@ -256,7 +257,8 @@ is invalid for these units.
 */
 //.............................................................................
 
-    final def - (subtrahend: Measure) = createNew (value - subtrahend.value)
+    final def - (subtrahend: Measure) = // scalastyle:ignore
+    createNew (value - subtrahend.value)
 
 //.............................................................................
 /**
@@ -274,7 +276,8 @@ is invalid for these units.
 */
 //.............................................................................
 
-    final def * (factor: Double) = createNew (value * factor)
+    final def * (factor: Double) = // scalastyle:ignore
+    createNew (value * factor)
 
 //.............................................................................
 /**
@@ -294,7 +297,7 @@ is invalid for these units.
 */
 //.............................................................................
 
-    final def * (factor: PhysicalMeasure) =
+    final def * (factor: PhysicalMeasure) = // scalastyle:ignore
     Generic (value * factor.value, family * factor.family)
 
 //.............................................................................
@@ -314,7 +317,8 @@ is invalid for these units. For example, an infinite result will occur if
 */
 //.............................................................................
 
-    final def / (divisor: Double) = createNew (value / divisor)
+    final def / (divisor: Double) = // scalastyle:ignore
+    createNew (value / divisor)
 
 //.............................................................................
 /**
@@ -334,7 +338,8 @@ is invalid for these units. For example, an infinite result will occur if
 */
 //.............................................................................
 
-    final def / (divisor: Measure) = value / divisor.value
+    final def / (divisor: Measure) = // scalastyle:ignore
+    value / divisor.value
 
 //.............................................................................
 /**
@@ -355,7 +360,7 @@ is invalid for these units. For example, an infinite result will occur if
 */
 //.............................................................................
 
-    final def / (divisor: PhysicalMeasure) =
+    final def / (divisor: PhysicalMeasure) = // scalastyle:ignore
     Generic (value / divisor.value, family / divisor.family)
 
 //.............................................................................
@@ -488,7 +493,7 @@ the measurement is expressed, in the user's preferred locale.
 //.............................................................................
 
     final override def toString =
-    preferredUnits.format (this.asInstanceOf [Measure])
+    preferredUnits.format (this.asInstanceOf [Measure]) // scalastyle:ignore
   }
 
 //-----------------------------------------------------------------------------
