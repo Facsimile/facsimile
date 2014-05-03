@@ -367,7 +367,7 @@ Scaladoc configuration.
     autoAPIMappings := true,
     apiMappings += (
       unmanagedBase.value / "jt.jar" ->
-      url ("http://download.java.net/jdk8/docs/api/")
+      url ("http://docs.oracle.com/javase/8/docs/api/")
     ),
 
 /*
