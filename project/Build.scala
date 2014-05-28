@@ -62,27 +62,6 @@ object FacsimileBuild
 extends Build {
 
 /**
-Required short scala version.
-
-This includes just the major and minor version number of scala, for projects
-that are cross built against this information (such as ScalaTest).
-
-@note The version specified must be compatible with all third-party Scala
-libraries utilized by Facsimile.
-*/
-
-  val scalaVersionShort = "2.10"
-
-/**
-Required long scala version.
-
-This is the full scala version required to compile the sources. Typically, it
-is the most recent point release of the required short version.
-*/
-
-  val scalaVersionLong = scalaVersionShort + ".4"
-
-/**
 Project artifact ID.
 
 @note This is equivalent to the `project/artifactId` Maven POM coordinate, and
@@ -217,128 +196,40 @@ as such during development to the Sonatype OSS Nexus repository.
   )
 
 /**
-Base dependencies.
-
-These libraries are common to all sub-projects.  In particular, note that the
-Macro sub-project has very few dependencies.
-*/
-
-  def baseDependencies = Seq (
-
-/*
-Required scala standard libraries.
-*/
-
-    "org.scala-lang" % "scala-reflect" % scalaVersionLong,
-
-/*
-ScalaTest unit-testing framework for Scala.
-*/
-
-    "org.scalatest" %% "scalatest" % "2.1.0" % "test"
-  )
-
-/**
-Common library dependencies.
-*/
-
-  def commonDependencies = baseDependencies ++ Seq (
-
-/*
-ScalaFX libraries, for user-interface design and 3D animation.
-*/
-
-    "org.scalafx" %% "scalafx" % "8.0.0-R5-SNAPSHOT",
-
-/*
-Joda Time library for processing dates & times accurately.
-*/
-
-    "joda-time" % "joda-time" % "2.2",
-
-/*
-Joda Time Convert library for conversion of Joda dates & times to Java dates &
-times.
-*/
-
-    "org.joda" % "joda-convert" % "1.3.1"
-  )
-
-/**
-Scala compiler options.
-
-This is a conundrum: -Xfatal-warnings is essential, since it forces all
-warnings to be addressed. However, when -optimize is specified, Scala will
-generate some inline warnings when initializing large maps (such as the cell
-code to cell type map in org.facsim.anim.cell.CellScene). Although the inline
-warnings themselves will only be issued when -Yinline-warnings is specified,
-Scala will still emit a warning that inline warnings occurred, which is then
-treated as fatal by Xfatal-warnings. It seems that the only way around this,
-right now, is to disable -optimize. This must be reviewed when newer Scala
-releases become available.
-*/
-
-  val projectScalacOptions = Seq (
-    "-deprecation",
-    "-encoding",
-    "UTF-8",
-    "-feature",
-    "-g:vars",
-    //"-optimize",
-    "-target:jvm-1.7",
-    "-unchecked",
-    "-Xcheckinit",
-    //"-Xcheck-null",
-    "-Xfatal-warnings",
-    "-Xlint",
-    //"-Yinline-warnings",
-    "-Ynotnull",
-    "-Ywarn-all"
-  )
-
-/**
-Scaladoc options.
-
-These should be scoped Compile,doc (for primary sources) or (Test,doc) for test
-sources.
-*/
-
-  val projectScaladocOptions = Seq (
-    "-diagrams",
-    "-doc-footer",
-    "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
-    "-doc-format:html",
-    "-doc-title",
-    projectName + " API Documentation",
-    "-doc-version",
-    projectBaseVersion,
-    "-groups",
-    "-implicits"
-  )
-
-/**
 Default settings.
 
 These settings are common to all projects.
+
+NOTE: Previously, it was necessary to inherit from Defaults.defaultSettings,
+but this has been deprecated SBT as of 0.13.2. Since that release, it appears
+that default settings are automatically provided.
 */
 
-  lazy val defaultSettings = Defaults.defaultSettings ++ Seq (
+  lazy val defaultSettings = Seq (
+
+/*
+Scala cross compiling.
+*/
+
+    crossScalaVersions := Seq ("2.10.4", "2.11.1"),
 
 /*
 Scala configuration.
 */
 
-    scalaVersion := scalaVersionLong
+    scalaVersion <<= crossScalaVersions {
+      versions => versions.head
+    }
   )
 
 /**
-Source project settings.
+Base settings for source projects.
 
-Projects and sub-projects with source files have these settings, which include
-the default settings and Scalastyle.
+These settings are common to all sub-projects that contain Scala sources. In
+particular, note that the Macro sub-project has very few dependencies.
 */
 
-  lazy val sourceSettings = defaultSettings ++ ScalastylePlugin.Settings ++
+  lazy val baseSourceSettings = defaultSettings ++ ScalastylePlugin.Settings ++
   Seq (
 
 /*
@@ -355,15 +246,54 @@ project, they'll go here.
 
 /*
 Scala compiler options.
+
+This is a conundrum: -Xfatal-warnings is essential, since it forces all
+warnings to be addressed. However, when -optimize is specified, Scala will
+generate some inline warnings when initializing large maps (such as the cell
+code to cell type map in org.facsim.anim.cell.CellScene). Although the inline
+warnings themselves will only be issued when -Yinline-warnings is specified,
+Scala will still emit a warning that inline warnings occurred, which is then
+treated as fatal by Xfatal-warnings. It seems that the only way around this,
+right now, is to disable -optimize. This must be reviewed when newer Scala
+releases become available.
 */
 
-    scalacOptions := projectScalacOptions,
+    scalacOptions := Seq (
+      "-deprecation",
+      "-encoding",
+      "UTF-8",
+      "-feature",
+      "-g:vars",
+      //"-optimize",
+      "-target:jvm-1.7",
+      "-unchecked",
+      "-Xcheckinit",
+      //"-Xcheck-null",
+      "-Xfatal-warnings",
+      "-Xlint",
+      //"-Yinline-warnings",
+      "-Ynotnull",
+      "-Ywarn-all"
+    ),
 
 /*
 Scaladoc configuration.
-*/
 
-    scalacOptions in (Compile, doc) ++= projectScaladocOptions,
+These should be scoped Compile,doc (for primary sources) or (Test,doc) for test
+sources.
+*/
+    scalacOptions in (Compile, doc) := Seq (
+      "-diagrams",
+      "-doc-footer",
+      "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
+      "-doc-format:html",
+      "-doc-title",
+      projectName + " API Documentation",
+      "-doc-version",
+      projectBaseVersion,
+      "-groups",
+      "-implicits"
+    ),
     autoAPIMappings := true,
     apiMappings += (
       unmanagedBase.value / "jt.jar" ->
@@ -384,7 +314,81 @@ SBT-Eclipse plugin configuration.
 
     EclipseKeys.useProjectId := false,
     EclipseKeys.createSrc := EclipseCreateSrc.Default +
-    EclipseCreateSrc.Resource
+    EclipseCreateSrc.Resource,
+
+/*
+Required scala standard libraries.
+
+Scala 2.11 introduced a more modular library structure. This section allows
+dependencies to be specified by supported Scala version.
+*/
+
+    libraryDependencies := {
+      CrossVersion.partialVersion (scalaVersion.value) match {
+
+/*
+Scala 2.11+ dependencies.
+
+The scala-xml package is currently only required by Scalatest, hence the "test"
+scope.
+*/
+
+        case Some ((2, scalaMajor)) if scalaMajor >= 11 =>
+        libraryDependencies.value :+ "org.scala-lang.modules" %%
+        "scala-reflect" % scalaVersion.value
+        libraryDependencies.value :+ "org.scala-lang.modules" %% "scala-xml" %
+        "1.0.2" % "test"
+
+/*
+Scala 2.10 dependencies.
+*/
+
+        case _ =>
+        libraryDependencies.value :+ "org.scala-lang" % "scala-reflect" %
+        scalaVersion.value
+      }
+    },
+
+/*
+Other base library dependencies.
+*/
+
+    libraryDependencies ++= Seq (
+      "org.scalatest" %% "scalatest" % "2.1.6" % "test"
+    )
+  )
+
+/**
+Common source settings.
+*/
+
+  lazy val commonSourceSettings = baseSourceSettings ++ Seq (
+
+/*
+Additional library dependencies.
+*/
+
+    libraryDependencies ++= Seq (
+
+/*
+ScalaFX libraries, for user-interface design and 3D animation.
+*/
+
+      "org.scalafx" %% "scalafx" % "8.0.0-R5-SNAPSHOT",
+
+/*
+Joda Time library for processing dates & times accurately.
+*/
+
+      "joda-time" % "joda-time" % "2.2",
+
+/*
+Joda Time Convert library for conversion of Joda dates & times to Java dates &
+times.
+*/
+
+      "org.joda" % "joda-convert" % "1.3.1"
+    )
   )
 
 /**
@@ -531,13 +535,7 @@ macro implementation is compiled.)
 */
 
   lazy val core = Project (projectArtifactId + "-core", file ("core"),
-  settings = sourceSettings ++ Seq (
-
-/*
-Library dependencies.
-*/
-
-    libraryDependencies ++= commonDependencies,
+  settings = commonSourceSettings ++ Seq (
 
 /*
 Basic package information.
@@ -553,17 +551,11 @@ Macro project.
 
 This is a sub-project that the primary project depends upon. (Scala currently
 requires that macro implementation code is compiled before code that uses the
-macro implementation is compiled.
+macro implementation is compiled.)
 */
 
   lazy val macros = Project (projectArtifactId + "-macro", file ("macro"),
-  settings = sourceSettings ++ Seq (
-
-/*
-Macro dependencies.
-*/
-
-    libraryDependencies ++= baseDependencies,
+  settings = baseSourceSettings ++ Seq (
 
 /*
 Basic package information.
