@@ -113,25 +113,6 @@ is employed as such during deployment to the Sonatype OSS Nexus repository.
   val projectName = "Facsimile Simulation Library"
 
 /**
-Project description.
-
-Brief description of the project, its purpose and aims.
-
-@note This is equivalent to the `project/description` Maven POM information
-field, and is employed as such during deployment to the Sonatype OSS Nexus
-repository.
-*/
-
-  val projectDescription = """
-    The Facsimile project's goal is to develop and maintain a high-quality, 3D,
-    discrete-event simulation library that can be used for industrial
-    simulation projects in an engineering and/or manufacturing environment.
-
-    Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS,
-    BSD and Unix on the Java virtual machine.
-  """
-
-/**
 Project homepage.
 
 @note This is equivalent to the `project/url` Maven POM information field, and
@@ -139,61 +120,6 @@ is employed as such during development to the Sonatype OSS Nexus repository.
 */
 
   val projectHomepage = Some (url ("http://facsim.org/"))
-
-/**
-Project start year.
-
-@note This is equivalent to the `project/inceptionYear` Maven POM information
-field, and is employed as such during development to the Sonatype OSS Nexus
-repository.
-*/
-
-  val projectStartYear = Some (2004)
-
-/**
-Project organization name.
-
-@note This is equivalent to the `project/organization/name` Maven POM field,
-and is employed as such during development to the Sonatype OSS Nexus
-repository.
-*/
-
-  val projectOrganizationName = "Michael J. Allen"
-
-/**
-Project organization URL.
-
-@note This is equivalent to the `project/organization/url` Maven POM field, and
-is employed as such during development to the Sonatype OSS Nexus repository.
-*/
-
-  val projectOrganizationHomepage = projectHomepage
-
-/**
-Project licenses.
-
-@note This is equivalent to the `project/licenses` Maven POM fields, and is
-employed as such during development to the Sonatype OSS Nexus repository.
-*/
-
-  val projectLicenses =
-  Seq ("GNU Lesser General Public License version 3 (LGPLv3)" ->
-  url ("http://www.gnu.org/licenses/lgpl-3.0-standalone.html"))
-
-/**
-Source code management repository for this project.
-
-@note This is equivalent to the `project/scm` Maven POM fields, and is employed
-as such during development to the Sonatype OSS Nexus repository.
-* */
-
-  val projectScmInfo = Some (
-    ScmInfo (
-      url ("https://github.com/Facsimile/facsimile"),
-      "scm:git:https://github.com/Facsimile/facsimile.git",
-      Some ("scm:git:https://github.com/Facsimile/facsimile.git")
-    )
-  )
 
 /**
 Default settings.
@@ -432,13 +358,29 @@ version - which seems wrong, right now).
     normalizedName := projectArtifactId,
     organization := projectGroupId,
     name := projectName,
-    description := projectDescription,
+    description := """
+      The Facsimile project's goal is to develop and maintain a high-quality,
+      3D, discrete-event simulation library that can be used for industrial
+      simulation projects in an engineering and/or manufacturing environment.
+
+      Facsimile simulations run on Microsoft Windows as well as on Linux, Mac
+      OS, BSD and Unix on the Java virtual machine.
+    """,
     homepage := projectHomepage,
-    startYear := projectStartYear,
-    organizationName := projectOrganizationName,
-    organizationHomepage := projectOrganizationHomepage,
-    licenses := projectLicenses,
-    scmInfo := projectScmInfo,
+    startYear := Some (2004),
+    organizationName := "Michael J. Allen",
+    organizationHomepage := projectHomepage,
+    licenses := Seq (
+      "GNU Lesser General Public License version 3 (LGPLv3)" ->
+      url ("http://www.gnu.org/licenses/lgpl-3.0-standalone.html")
+    ),
+    scmInfo := Some (
+      ScmInfo (
+        url ("https://github.com/Facsimile/facsimile"),
+        "scm:git:https://github.com/Facsimile/facsimile.git",
+        Some ("scm:git:https://github.com/Facsimile/facsimile.git")
+      )
+    ),
     publishMavenStyle := true,
     publishTo <<= (version) {
       version: String =>
@@ -451,7 +393,9 @@ version - which seems wrong, right now).
       Some(Resolver.url (name, url (u))(Resolver.ivyStylePatterns))
     },
     publishArtifact in Test := false,
-    pomIncludeRepository := {_ => false},
+    pomIncludeRepository := {
+      _ => false
+    },
     pomExtra := (
       <developers>
         <developer>
@@ -471,6 +415,9 @@ version - which seems wrong, right now).
       </developers>
       <contributors>
       </contributors>
+      <prerequisites>
+        <maven>3.0</maven>
+      </prerequisites>
       <issueManagement>
         <system>GitHub Issues</system>
         <url>https://github.com/Facsimile/facsimile/issues</url>
