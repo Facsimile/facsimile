@@ -49,6 +49,7 @@ import com.typesafe.sbt.SbtGit
 import com.typesafe.sbt.pgp.PgpKeys
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import org.scalastyle.sbt.ScalastylePlugin
+import xerial.sbt.Sonatype._
 
 //=============================================================================
 /**
@@ -325,7 +326,7 @@ others.
 */
 
   lazy val facsimile = Project (projectArtifactId, file ("."),
-  settings = defaultSettings ++ Seq (
+  settings = defaultSettings ++ sonatypeSettings ++ Seq (
 
 /*
 Maven POM (project object model) metadata.
@@ -382,16 +383,6 @@ version - which seems wrong, right now).
       )
     ),
     publishMavenStyle := true,
-    publishTo <<= (version) {
-      version: String =>
-      val nexus = "https://oss.sonatype.org/"
-      val (name, u) =
-      if (version.contains ("-SNAPSHOT")) {
-        ("snapshots", nexus + "content/repositories/snapshots")
-      }
-      else ("releases", nexus + "service/local/staging/deploy/maven2")
-      Some(Resolver.url (name, url (u))(Resolver.ivyStylePatterns))
-    },
     publishArtifact in Test := false,
     pomIncludeRepository := {
       _ => false
