@@ -45,4 +45,4 @@
 //   http://www.parleys.com/play/51c3790ae4b0d38b54f46259
 //=============================================================================
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.3")
+addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.4")
