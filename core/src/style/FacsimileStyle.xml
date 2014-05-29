@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Facsimile - A Discrete-Event Simulation Library
+Copyright © 2004-2014, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+
+The developers welcome all comments, suggestions and offers of assistance.
+For further information, please visit the project home page at:
+
+    http://facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+    http://facsim.org/Documentation/CodingStandards/
+===============================================================================
+Scalastyle configuration file for Facsimile.
+
+This file should be edited manually as text, rather than using a structured
+editor such as Eclipse's "Maven POM Editor" or the "XML Editor".
+===============================================================================
+-->
+
+<scalastyle>
+  <name>Facsimile ScalaStyle Configuration</name>
+
+<!--
+===============================================================================
+Checks defined in this section relate to miscellaneous text file formatting.
+===============================================================================
+-->
+
+<!--
+Verify that source files do not contain any tab characters.
+
+Rationale: Tab widths (spaces per tab character) are interpreted inconsistently
+across editors and user preferences, resulting in source indentation and other
+formatting becoming corrupted when viewed and edited in a different editor or
+by a different user.  Furthermore, the use of tabs can create problems for
+source version control (particularly for branching and merging) if edited by
+programs that automatically remove and/or repace tabs.  The only way to ensure
+that code is correctly formatted and consistent from one editor to another, and
+from one user to another, is to ensure that source files do not contain tabs.
+-->
+
+  <check class="org.scalastyle.file.FileTabChecker" enabled="true"
+  level="error" />
+
+<!--
+Verify that source lines do not contain trailing whitespace.
+
+Rationale: Trailing whitespace makes files larger and can interfere with source
+version control (particularly for branching and merging).  In particular,
+trailing whitespace can indicate incorrectly formatted character strings.  To
+ensure that sources are correctly formatted, trailing whitespace is forbidden.
+-->
+
+  <check class="org.scalastyle.file.WhitespaceEndOfLineChecker" enabled="true"
+  level="error" />
+
+<!--
+Verify that source lines do not exceed 79 characters in length.
+
+Rationale: Eclipse provides a limited amount of screen space for viewing
+source files, even on large monitors.  This is particularly evident when
+performing side-by-side source diffs (common when resolving conflicts after a
+merge).  Furthermore, long source lines can be difficult to follow and read.
+The value of 79 was chosen because it can be viewed without either truncation
+or wrapping on standard printers, terminal applications and most source
+editors.
+-->
+
+  <check class="org.scalastyle.file.FileLineLengthChecker" enabled="true"
+  level="error">
+    <parameters>
+      <parameter name="maxLineLength"><![CDATA[79]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Verify that the header of each source file matches the required text.
+
+Rationale: Each source file should have the same header (copyright information,
+licensing information, etc.), without exception.  Source files that fail this
+check have improper legal requirements.
+-->
+
+  <check class="org.scalastyle.file.HeaderMatchesChecker" enabled="true"
+  level="error">
+    <parameters>
+      <parameter name="header"><![CDATA[/*
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2014, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with Facsimile.  If not, see http://www.gnu.org/licenses/lgpl.
+
+The developers welcome all comments, suggestions and offers of assistance.  For
+further information, please visit the project home page at:
+
+  http://facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the
+addition of new files) submitted for inclusion as part of the official
+Facsimile code base, must comply with the published Facsimile Coding Standards.
+If your code fails to comply with the standard, then your patches will be
+rejected.  For further information, please visit the coding standards at:
+
+  http://facsim.org/Documentation/CodingStandards/
+]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Do not verify the length (measured by number of lines) in a source file.
+
+Rationale: Files are as long as they need to be.  Issuing warnings or errors on
+long files may cause developers to skimp on comments, or the clarity of their
+code.
+-->
+
+  <check class="org.scalastyle.file.FileLengthChecker" enabled="false"
+  level="error" />
+
+<!--
+===============================================================================
+Checks defined in this section relate to Scala element naming.
+
+Note: There do not currently appear to be checks available for Trait, type, val
+or var declarations.
+===============================================================================
+-->
+
+<!--
+Verify that class names begin with an uppercase alphabetic character, with the
+remainder made up of mixed-case alphanumeric characters.
+-->
+
+  <check class="org.scalastyle.scalariform.ClassNamesChecker" enabled="true"
+  level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[A-Z][A-Za-z0-9]+$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Verify that object names begin with an uppercase alphabetic character, with the
+remainder made up of mixed-case alphanumeric characters.
+-->
+
+  <check class="org.scalastyle.scalariform.ObjectNamesChecker" enabled="true"
+  level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[A-Z][A-Za-z0-9]+$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Verify that package object names begin with a lowercase alphabetic character,
+with the remainder made up of lowercase alphanumeric characters and the
+underscore.
+-->
+
+  <check class="org.scalastyle.scalariform.PackageObjectNamesChecker"
+  enabled="true" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[a-z][a-z0-9_]+$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Verify that method/function names begin with a lowercase alphabetic character,
+with the remainder made up of mixed-case alphanumeric characters.
+-->
+
+  <check class="org.scalastyle.scalariform.MethodNamesChecker" enabled="true"
+  level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[a-z][A-Za-z0-9]+$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+The remaining checks are commented out for now, until I figure out how to use
+them...
+
+ <check level="error" class="org.scalastyle.scalariform.SpacesAfterPlusChecker" enabled="false"></check>
+ <check level="error" class="org.scalastyle.scalariform.SpacesBeforePlusChecker" enabled="false"></check>
+ <check level="error" class="org.scalastyle.scalariform.PackageObjectNamesChecker" enabled="true">
+  <parameters>
+   <parameter name="regex"><![CDATA[^[a-z][A-Za-z]*$]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.EqualsHashCodeChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.IllegalImportsChecker" enabled="true">
+  <parameters>
+   <parameter name="illegalImports"><![CDATA[sun._,java.awt._]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.ParameterNumberChecker" enabled="true">
+  <parameters>
+   <parameter name="maxParameters"><![CDATA[8]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.MagicNumberChecker" enabled="false">
+  <parameters>
+   <parameter name="ignore"><![CDATA[-1,0,1,2,3]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.NoWhitespaceBeforeLeftBracketChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.NoWhitespaceAfterLeftBracketChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.ReturnChecker" enabled="false"></check>
+ <check level="error" class="org.scalastyle.scalariform.NullChecker" enabled="false"></check>
+ <check level="error" class="org.scalastyle.scalariform.NoCloneChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.NoFinalizeChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.CovariantEqualsChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.StructuralTypeChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.file.RegexChecker" enabled="false">
+  <parameters>
+   <parameter name="regex"><![CDATA[println]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.NumberOfTypesChecker" enabled="true">
+  <parameters>
+   <parameter name="maxTypes"><![CDATA[30]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.CyclomaticComplexityChecker" enabled="true">
+  <parameters>
+   <parameter name="maximum"><![CDATA[10]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.UppercaseLChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" enabled="true"></check>
+ <check level="error" class="org.scalastyle.scalariform.IfBraceChecker" enabled="true">
+  <parameters>
+   <parameter name="singleLineAllowed"><![CDATA[true]]></parameter>
+   <parameter name="doubleLineAllowed"><![CDATA[false]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.MethodLengthChecker" enabled="true">
+  <parameters>
+   <parameter name="maxLength"><![CDATA[50]]></parameter>
+  </parameters>
+ </check>
+ <check level="error" class="org.scalastyle.scalariform.NumberOfMethodsInTypeChecker" enabled="true">
+  <parameters>
+   <parameter name="maxMethods"><![CDATA[30]]></parameter>
+  </parameters>
+ </check>
+
+End of commented out checks.
+-->
+</scalastyle>
