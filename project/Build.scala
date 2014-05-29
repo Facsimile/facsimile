@@ -46,7 +46,6 @@ same version of Scala that is used to build Facsimile (specified here).
 import sbt._
 import Keys._
 import com.typesafe.sbt.SbtGit
-import com.typesafe.sbt.pgp.PgpKeys
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import org.scalastyle.sbt.ScalastylePlugin
 import xerial.sbt.Sonatype._
@@ -210,7 +209,7 @@ These should be scoped Compile,doc (for primary sources) or (Test,doc) for test
 sources.
 */
     scalacOptions in (Compile, doc) := Seq (
-      "-diagrams",
+      //"-diagrams",
       "-doc-footer",
       "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
       "-doc-format:html",
@@ -444,22 +443,7 @@ corresponding distribution jar files.
     mappings in (Compile, packageDoc) ++= mappings.in (macros, Compile,
     packageDoc).value,
     mappings in (Compile, packageDoc) ++= mappings.in (core, Compile,
-    packageDoc).value,
-
-/*
-SBT-GPG plugin configuration.
-
-Specify the key to be used to sign the distribted jar file.
-
-NOTE: The full hex ID of the private key is obtained by using the command:
-
-  gpg --keyid-format 0xLONG -k {key-id}
-
-where {key-id} is the short key ID - which ought to match the last 8 characters
-of the long key ID.
-*/
-
-    PgpKeys.pgpSigningKey := Some (0xAC65F306C9B7223FL)
+    packageDoc).value
   )).aggregate (core, macros)
 
 /**
