@@ -48,6 +48,7 @@ import Keys._
 import com.typesafe.sbt.SbtGit
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import org.scalastyle.sbt.ScalastylePlugin
+import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
 import xerial.sbt.Sonatype._
 
 //=============================================================================
@@ -80,7 +81,7 @@ employed as such during deployment to the Sonatype OSS Nexus repository.
   val projectGroupId = "org.facsim"
 
 /**
-Project version number.
+Project base version number.
 
 We employ the sbt-git plugin to uniquely version each commit, so that we can
 support '''`git bisect`'''. To guarantee support, even if git isn't installed
@@ -91,15 +92,9 @@ For further information, refer to Josh Suereth's presentation on "Effective
 SBT" at Scala Days 2013:
 
 [[http://www.parleys.com/play/51c3790ae4b0d38b54f46259 Effective SBT]]
-
-Note: In the settings below, the assignment of the baseVersion value must
-follow the instruction to versionWithGit.
 */
 
   val projectBaseVersion = "0.0"
-  override val settings: Seq [Setting [_]] =
-  super.settings ++ SbtGit.useJGit ++ SbtGit.versionWithGit ++
-  (SbtGit.git.baseVersion := projectBaseVersion)
 
 /**
 Project name.
@@ -126,12 +121,18 @@ Default settings.
 
 These settings are common to all projects.
 
+Note that we implement git versioning for artifacts (see note on
+projectBaseVersion above). Note: In the settings below, the assignment of the
+baseVersion value must follow the instruction to versionWithGit.
+
 NOTE: Previously, it was necessary to inherit from Defaults.defaultSettings,
 but this has been deprecated SBT as of 0.13.2. Since that release, it appears
 that default settings are automatically provided.
 */
 
-  lazy val defaultSettings = Seq (
+  lazy val defaultSettings = super.settings ++ SbtGit.useJGit ++
+  SbtGit.versionWithGit ++ (SbtGit.git.baseVersion:= projectBaseVersion) ++
+  Seq (
 
 /*
 Scala cross compiling.
@@ -157,6 +158,29 @@ particular, note that the Macro sub-project has very few dependencies.
 
   lazy val baseSourceSettings = defaultSettings ++ ScalastylePlugin.Settings ++
   Seq (
+
+/*
+Ensure that we only publish/package the root project and source subprojects.
+This assumes that all projects implementing these settings are subprojects,
+rather than primary projects.
+*/
+
+    publishArtifact := false,
+
+/*
+Even though we're not publishing anything, it appears that we still need to
+specify a location to publish to to prevent unnecessary output.
+*/
+
+    publishTo := Some (Resolver.file ("Unpublished files",
+    file ("target/unusedrepo"))),
+
+/*
+Ensure that doc only operates for the root project (using Unidoc) and not any
+subprojects.
+*/
+
+    sources in doc in Compile := List(),
 
 /*
 Exclude Java source directories (use Scala source directories only).
@@ -200,30 +224,6 @@ releases become available.
       //"-Yinline-warnings",
       "-Ynotnull",
       "-Ywarn-all"
-    ),
-
-/*
-Scaladoc configuration.
-
-These should be scoped Compile,doc (for primary sources) or (Test,doc) for test
-sources.
-*/
-    scalacOptions in (Compile, doc) := Seq (
-      //"-diagrams",
-      "-doc-footer",
-      "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
-      "-doc-format:html",
-      "-doc-title",
-      projectName + " API Documentation",
-      "-doc-version",
-      projectBaseVersion,
-      "-groups",
-      "-implicits"
-    ),
-    autoAPIMappings := true,
-    apiMappings += (
-      unmanagedBase.value / "jt.jar" ->
-      url ("http://docs.oracle.com/javase/8/docs/api/")
     ),
 
 /*
@@ -318,14 +318,28 @@ times.
   )
 
 /**
+Customize the Unidoc settings.
+
+This ensures that the "doc" command executes "unidoc", and changes the output
+directory to "/api" from "/unidoc" so that the generated documentation is
+included in packaging & publishing.
+*/
+
+  lazy val customUnidocSettings = unidocSettings ++ Seq (
+    doc in Compile := (doc in ScalaUnidoc).value,
+    target in UnidocKeys.unidoc in ScalaUnidoc := crossTarget.value / "api"
+  )
+
+/**
 Primary Facsimile root project.
 
 This "project" contains no sources, but owns - and is dependant upon - the
-others.
+others. It also creates documentation for all sub-documents by employing
+Unidoc.
 */
 
-  lazy val facsimile = Project (projectArtifactId, file ("."),
-  settings = defaultSettings ++ sonatypeSettings ++ Seq (
+  lazy val facsimile = Project (projectArtifactId, file ("."), settings =
+  defaultSettings ++ sonatypeSettings ++ customUnidocSettings ++ Seq (
 
 /*
 Maven POM (project object model) metadata.
@@ -415,6 +429,32 @@ version - which seems wrong, right now).
     ),
 
 /*
+Scaladoc configuration.
+
+The -Ymacro-no-expand prevents macro definitions from being expanded in macro
+sub-classes.
+*/
+
+    scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq (
+      "-diagrams",
+      "-doc-footer",
+      "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
+      "-doc-format:html",
+      "-doc-title",
+      projectName + " API Documentation",
+      "-doc-version",
+      projectBaseVersion,
+      "-groups",
+      "-implicits",
+      "-Ymacro-no-expand"
+    ),
+    autoAPIMappings := true,
+    apiMappings += (
+      unmanagedBase.value / "jt.jar" ->
+      url ("http://docs.oracle.com/javase/8/docs/api/")
+    ),
+
+/*
 Tell any dependent projects where to find published Facsimile API documentation
 to link to (via autoAPIMappings).
 
@@ -428,8 +468,8 @@ version of Facsimile in use by the dependent project.
     projectBaseVersion)),
 
 /*
-Ensure that core and macro classes, sources and documentation are copied to the
-corresponding distribution jar files.
+Ensure that core and macro classes and sources are copied to the corresponding
+distribution jar files.
 */
 
     mappings in (Compile, packageBin) ++= mappings.in (macros, Compile,
@@ -439,11 +479,7 @@ corresponding distribution jar files.
     mappings in (Compile, packageSrc) ++= mappings.in (macros, Compile,
     packageSrc).value,
     mappings in (Compile, packageSrc) ++= mappings.in (core, Compile,
-    packageSrc).value,
-    mappings in (Compile, packageDoc) ++= mappings.in (macros, Compile,
-    packageDoc).value,
-    mappings in (Compile, packageDoc) ++= mappings.in (core, Compile,
-    packageDoc).value
+    packageSrc).value
   )).aggregate (core, macros)
 
 /**
