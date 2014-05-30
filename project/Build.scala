@@ -171,19 +171,11 @@ rather than primary projects.
     publishArtifact := false,
 
 /*
-Even though we're not publishing anything, it appears that we still need to
-specify a location to publish to to prevent unnecessary output.
-*/
-
-    publishTo := Some (Resolver.file ("Unpublished files",
-    file ("target/unusedrepo"))),
-
-/*
 Ensure that doc only operates for the root project (using Unidoc) and not any
 subprojects.
 */
 
-    sources in doc in Compile := List(),
+    //sources in doc in Compile := List(),
 
 /*
 Exclude Java source directories (use Scala source directories only).
@@ -430,6 +422,14 @@ version - which seems wrong, right now).
         <url>https://github.com/Facsimile/facsimile/issues</url>
       </issueManagement>
     ),
+
+/*
+Disable aggregation of the "doc" command, so that we do not attempt to generate
+documentation for "macros" and "core" individually - we just rely on the
+Unidoc plugin to take care of that for us.
+*/
+
+    aggregate in doc := false,
 
 /*
 Scaladoc configuration.
