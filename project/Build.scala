@@ -47,8 +47,7 @@ import sbt._
 import Keys._
 import com.typesafe.sbt.SbtGit
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.Instant
 import java.util.jar.Attributes.Name
 import org.scalastyle.sbt.ScalastylePlugin
 import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
@@ -480,8 +479,7 @@ extended. We also add a timestamp for eporting purposes.
     packageOptions in (Compile, packageBin) +=
     Package.ManifestAttributes (Name.SEALED -> "true"),
     packageOptions in (Compile, packageBin) +=
-    Package.ManifestAttributes ("Build-Timestamp" ->
-    LocalDateTime.now (ZoneOffset.UTC).toString),
+    Package.ManifestAttributes ("Build-Timestamp" -> Instant.now ().toString),
 
 /*
 Ensure that core and macro classes and sources are copied to the corresponding
