@@ -38,10 +38,11 @@ Scala source file from the org.facsim.test package.
 
 package org.facsim.test
 
+import java.time.ZonedDateTime
 import org.facsim.Behavior
 import org.facsim.LibResource
+import org.facsim.util.toDate
 import org.facsim.util.Version
-import org.joda.time.DateTime
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -69,7 +70,7 @@ Test trait - populated behavior.
     val name = "SomeTitle"
     val orgBasic = "SomeOrg, Inc."
     val orgRange = "SomeOrg"
-    val release = DateTime.now
+    val release = ZonedDateTime.now
     val inceptionThisYear = release
     val inceptionLastYear = release.minusYears (1)
     val ver = new Version ("5.12-231")
@@ -207,9 +208,9 @@ name ending in a period, and one that does not.
 */
 
           assert (basic.copyright === LibResource ("Behavior.CopyrightBasic",
-          orgBasic.init, release.toDate ()))
+          orgBasic.init, toDate (release)))
           assert (range.copyright === LibResource ("Behavior.CopyrightRange",
-          orgRange, inceptionLastYear.toDate (), release.toDate ()))
+          orgRange, toDate (inceptionLastYear), toDate (release)))
         }
       }
     }

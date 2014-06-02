@@ -38,8 +38,8 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
+import java.time.ZonedDateTime
 import org.facsim.util.Version
-import org.joda.time.DateTime
 
 //=============================================================================
 /**
@@ -98,13 +98,13 @@ Report date upon which development of the executing application commenced.
 */
 //-----------------------------------------------------------------------------
 
-  def inceptionDate: DateTime
+  def inceptionDate: ZonedDateTime
 
 //-----------------------------------------------------------------------------
 /**
 Report release date of this version of the executing application.
 
-@return Release data of executing application's current version.
+@return Release date of executing application's current version.
 
 @throws java.util.NoSuchElementException if this information is not available.
 
@@ -112,7 +112,7 @@ Report release date of this version of the executing application.
 */
 //-----------------------------------------------------------------------------
 
-  def releaseDate: DateTime
+  def releaseDate: ZonedDateTime
 
 //-----------------------------------------------------------------------------
 /**

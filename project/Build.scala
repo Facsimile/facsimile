@@ -47,7 +47,7 @@ import sbt._
 import Keys._
 import com.typesafe.sbt.SbtGit
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
-import java.time.Instant
+import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import org.scalastyle.sbt.ScalastylePlugin
 import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
@@ -81,6 +81,28 @@ employed as such during deployment to the Sonatype OSS Nexus repository.
 */
 
   val projectGroupId = "org.facsim"
+
+/**
+Date the facsimile project was started.
+
+This is the date that the project was announced on the Facsimile web-site
+(which was actually a few days after the project was registered on
+Sourceforge).
+
+DO NOT CHANGE THIS VALUE.
+*/
+
+  val projectStartDate =
+  ZonedDateTime.parse ("2004-06-22T18:16:00-04:00[America/New_York]")
+
+/**
+Date this build was made.
+
+Ideally, this ought to be the date of the current commit, but the current time
+is probably OK for custom builds too.
+*/
+
+  val projectBuildDate = ZonedDateTime.now ();
 
 /**
 Project base version number.
@@ -168,13 +190,6 @@ rather than primary projects.
 */
 
     publishArtifact := false,
-
-/*
-Ensure that doc only operates for the root project (using Unidoc) and not any
-subprojects.
-*/
-
-    //sources in doc in Compile := List(),
 
 /*
 Exclude Java source directories (use Scala source directories only).
@@ -294,20 +309,7 @@ Additional library dependencies.
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
-      "org.scalafx" %% "scalafx" % "8.0.0-R5-SNAPSHOT",
-
-/*
-Joda Time library for processing dates & times accurately.
-*/
-
-      "joda-time" % "joda-time" % "2.2",
-
-/*
-Joda Time Convert library for conversion of Joda dates & times to Java dates &
-times.
-*/
-
-      "org.joda" % "joda-convert" % "1.3.1"
+      "org.scalafx" %% "scalafx" % "8.0.0-R5-SNAPSHOT"
     )
   )
 
@@ -375,7 +377,7 @@ version - which seems wrong, right now).
       OS, BSD and Unix on the Java virtual machine.
     """,
     homepage := projectHomepage,
-    startYear := Some (2004),
+    startYear := Some (projectStartDate.getYear ()),
     organizationName := "Michael J. Allen",
     organizationHomepage := projectHomepage,
     licenses := Seq (
@@ -440,7 +442,8 @@ sub-classes.
     scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq (
       "-diagrams",
       "-doc-footer",
-      "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
+      "Copyright © " + projectStartDate.getYear () + "-" +
+      projectBuildDate.getYear () + ", Michael J Allen. All rights reserved.",
       "-doc-format:html",
       "-doc-title",
       projectName + " API Documentation",
@@ -448,6 +451,7 @@ sub-classes.
       projectBaseVersion,
       "-groups",
       "-implicits",
+      //"-Xfatal-warnings",
       "-Ymacro-no-expand"
     ),
     autoAPIMappings := true,
@@ -473,13 +477,16 @@ version of Facsimile in use by the dependent project.
 Manifest additions for the main library jar file.
 
 The jar file should be sealed so that the org.facsim packages cannot be
-extended. We also add a timestamp for eporting purposes.
+extended. We also add inception & build timestamps for manifest purposes.
 */
 
-    packageOptions in (Compile, packageBin) +=
-    Package.ManifestAttributes (Name.SEALED -> "true"),
-    packageOptions in (Compile, packageBin) +=
-    Package.ManifestAttributes ("Build-Timestamp" -> Instant.now ().toString),
+    packageOptions in (Compile, packageBin) ++= Seq (
+      Package.ManifestAttributes (Name.SEALED -> "true"),
+      Package.ManifestAttributes ("Inception-Timestamp" ->
+      projectStartDate.toString),
+      Package.ManifestAttributes ("Build-Timestamp" ->
+      projectBuildDate.toString)
+    ),
 
 /*
 Ensure that core and macro classes and sources are copied to the corresponding

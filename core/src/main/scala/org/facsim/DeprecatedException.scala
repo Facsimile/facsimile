@@ -67,6 +67,5 @@ extends RuntimeException {
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage = LibResource ("BehaviorUndefined",
-  feature.toString)
+  final override def getMessage = LibResource ("Deprecated", feature.toString)
 }

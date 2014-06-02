@@ -38,6 +38,10 @@ Scala source file defining the org.facsim.util package.
 
 package org.facsim
 
+import java.time.ZonedDateTime
+import java.util.GregorianCalendar
+import scala.language.implicitConversions
+
 //=============================================================================
 /**
 ''[[http://facsim.org/ Facsimile]]'' Simulation Library miscellaneous
@@ -49,4 +53,27 @@ Package providing miscellaneous utility elements.
 */
 //=============================================================================
 
-package object util
+package object util {
+
+//-----------------------------------------------------------------------------
+/**
+Implicit conversion of a [[java.time.ZonedDateTime]] to a [[java.util.Date]].
+
+For some reason best known only to themselves, conversion between older
+`java.util` time classes (such as [[java.util.Date]],
+[[java.util.GregorianCalendar]], etc.) and the new `java.time` time classes
+[[java.time.Instant]], [[java.time.ZonedDateTime]], etc) is cumbersome at best.
+The former could be dispensed with completly if if wasn't for the fact that
+only the `java.util.Date` class is supported by [[java.text.MessageFormat]].
+
+@param date Date, expressed as a [[java.time.ZonedDateTime]] to be converted.
+
+@return `date` expressed as a [[java.util.Date]].
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  implicit def toDate (date: ZonedDateTime) =
+  GregorianCalendar.from (date).getTime ()
+}

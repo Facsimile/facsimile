@@ -38,8 +38,9 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
+import java.time.ZonedDateTime
+import org.facsim.util.toDate
 import org.facsim.util.Version
-import org.joda.time.DateTime
 
 //=============================================================================
 /**
@@ -95,7 +96,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 */
 //-----------------------------------------------------------------------------
 
-  override def inceptionDate: DateTime = raiseException ("inceptionDate")
+  override def inceptionDate: ZonedDateTime = raiseException ("inceptionDate")
 
 //-----------------------------------------------------------------------------
 /**
@@ -103,7 +104,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 */
 //-----------------------------------------------------------------------------
 
-  override def releaseDate: DateTime = raiseException ("releaseDate")
+  override def releaseDate: ZonedDateTime = raiseException ("releaseDate")
 
 //-----------------------------------------------------------------------------
 /**
@@ -127,14 +128,20 @@ If the organization name ends in a period, then remove it.
 
 /*
 Format and retrieve this application's copyright string.
+
+What the hell is going on with date & time in Java? The java.text.MessageFormat
+class (employed by LibResource) does not recognize anything but java.util.Date
+or java.lang.Number (milliseconds from 1st Jan 1970) objects. But there's no
+conversion from the new date & time classes
+types
 */
 
-    if (inceptionDate.getYear () < releaseDate.getYear ()) {
-      LibResource ("Behavior.CopyrightRange", orgAdj, inceptionDate.toDate (),
-      releaseDate.toDate ())
+    if (inceptionDate.getYear < releaseDate.getYear) {
+      LibResource ("Behavior.CopyrightRange", orgAdj, toDate (inceptionDate),
+      toDate (releaseDate))
     }
     else {
-      LibResource ("Behavior.CopyrightBasic", orgAdj, inceptionDate.toDate ())
+      LibResource ("Behavior.CopyrightBasic", orgAdj, toDate (inceptionDate))
     }
   }
 

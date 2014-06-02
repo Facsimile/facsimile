@@ -40,9 +40,9 @@ package org.facsim.util
 
 import java.io.File
 import java.net.URI
+import java.time.ZonedDateTime
 import java.util.jar.JarFile
 import org.facsim.LibResource
-import org.joda.time.DateTime
 
 //=============================================================================
 /**
@@ -178,27 +178,59 @@ required.
 
 //-----------------------------------------------------------------------------
 /**
-Retrieve the build timestamp of this manifest.
+Retrieve the inception timestamp of this manifest.
 
-This is a custom field that will likely be unavailable for many packages.  To
+This is a custom field that will likely be unavailable for many packages. To
 include it in your jar files, ensure that the META-INF/MANIFEST.MF file
 contains an entry of the following form:
 
-`Build-Timestamp: yyyy-MM-ddTHH:mm:ss.SSSZ`
+`Inception-Timestamp: ''timeformat''`
 
-Refer to the joda.time.DateTime.parse(String) documentation for further
-information on supported formats.
+where ''timeformat'' is a string that can be successfully parsed by
+[[java.time.ZonedDateTime.parse(CharSequence)]].
 
-@return Date and time that package associated with the manifest was built.
+@return Date & time that the associated project was started.
 
-@throws java.util.NoSuchElementException if the manifest has no build
+@throws java.util.NoSuchElementException if the manifest has no inception
 timestamp.
+
+@throws java.time.format.DateTimeFormatException if the inception timestamp
+could not be parsed correctly.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def buildTimestamp = DateTime.parse (getAttribute ("Build-Timestamp"))
+  final def inceptionTimestamp =
+  ZonedDateTime.parse (getAttribute ("Inception-Timestamp"))
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve the build timestamp of this manifest.
+
+This is a custom field that will likely be unavailable for many packages. To
+include it in your jar files, ensure that the META-INF/MANIFEST.MF file
+contains an entry of the following form:
+
+`Build-Timestamp: ''timeformat''`
+
+where ''timeformat'' is a string that can be successfully parsed by
+[[java.time.ZonedDateTime.parse(CharSequence)]].
+
+@return Date & time that the associated project was built.
+
+@throws java.util.NoSuchElementException if the manifest has no build
+timestamp.
+
+@throws java.time.format.DateTimeFormatException if the build timestamp could
+not be parsed correctly.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  final def buildTimestamp =
+  ZonedDateTime.parse (getAttribute ("Build-Timestamp"))
 
 //-----------------------------------------------------------------------------
 /**

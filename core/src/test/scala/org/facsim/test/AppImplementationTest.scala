@@ -38,13 +38,14 @@ Scala source file from the org.facsim.test package.
 
 package org.facsim.test
 
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 import org.facsim.AppImplementation
 import org.facsim.Behavior
 import org.facsim.BehaviorRedefinitionException
 import org.facsim.BehaviorUndefinedException
 import org.facsim.LibResource
 import org.facsim.util.Version
-import org.joda.time.DateTime
 import org.scalatest.FunSpec
 
 //=============================================================================
@@ -63,11 +64,11 @@ Test data.
   trait TestData {
     val nullBehavior = new Behavior {}
     val behavior = new Behavior {
-      val now = DateTime.now ()
+      val now = ZonedDateTime.now ()
       val ver = new Version ("7.3.1")
       override def title = "appImplementationTitle"
       override def organization = "appImplementationOrganization"
-      override def inceptionDate = releaseDate.minus (600)
+      override def inceptionDate = releaseDate.minus (600, ChronoUnit.MILLIS)
       override def releaseDate = now
       override def version = ver
     }
