@@ -500,8 +500,17 @@ distribution jar files.
     mappings in (Compile, packageSrc) ++= mappings.in (macros, Compile,
     packageSrc).value,
     mappings in (Compile, packageSrc) ++= mappings.in (core, Compile,
-    packageSrc).value
-  )).aggregate (core, macros)
+    packageSrc).value,
+
+/*
+Ensure that the root project is an Eclipse project too, but without any source
+directories.
+*/
+
+    EclipseKeys.skipParents in ThisBuild := false,
+    unmanagedSourceDirectories in Compile := Nil,
+    unmanagedSourceDirectories in Test := Nil
+)).aggregate (core, macros)
 
 /**
 Core project.
