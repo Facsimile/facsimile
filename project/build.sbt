@@ -53,7 +53,6 @@ scalacOptions ++= Seq (
   "-Xfatal-warnings",
   "-Xlint",
   //"-Yinline-warnings",
-  "-Ynotnull",
   "-Ywarn-all"
 )
 
