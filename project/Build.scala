@@ -288,7 +288,7 @@ Other base library dependencies.
 */
 
     libraryDependencies ++= Seq (
-      "org.scalatest" %% "scalatest" % "2.1.6" % "test"
+      "org.scalatest" %% "scalatest" % "2.2.0" % "test"
     )
   )
 
