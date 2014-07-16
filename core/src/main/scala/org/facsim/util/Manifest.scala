@@ -108,7 +108,7 @@ Otherwise, we have some further processing...
 /*
 OK.  So that jarURL will be of the (String) form:
 
-jar:file:/{path-of-jar-file}!{pacakgePath}
+jar:file:/{path-of-jar-file}!{packagePath}
 
 In order to create a jar file instance, we need to convert this into a
 hierarchical URI.  We do this using a regular expression extraction.  What we
