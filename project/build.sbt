@@ -39,6 +39,22 @@
 // library files!
 //=============================================================================
 
+import scala.util.Properties
+
+// Enforce the use of Java 8+. Earlier versions do not provide the Java FX 3D
+// features required by Facsimile.
+//
+// NOTE: The first statement within the braces runs the default initialization.
+
+initialize := {
+  val _ = initialize.value
+  if (!Properties.isJavaAtLeast ("1.8")) {
+    sys.error ("Facsimile requires Java 8 or later")
+  }
+}
+
+// Options for compiling the main build project.
+
 scalacOptions ++= Seq (
   "-deprecation",
   "-encoding",
@@ -55,4 +71,5 @@ scalacOptions ++= Seq (
   //"-Yinline-warnings",
   "-Ywarn-all"
 )
+
 
