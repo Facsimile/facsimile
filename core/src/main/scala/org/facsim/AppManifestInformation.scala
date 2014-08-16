@@ -38,41 +38,31 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
-import java.time.ZonedDateTime
-import org.facsim.util.toDate
-import org.facsim.util.Version
+import org.facsim.util.Manifest
 
 //=============================================================================
 /**
-Application behavior trait.
+Application manifest-based information.
 
-Implementing classes provide functionality to applications developed with the
-''Facsimile'' library.
-
-Behavior instances are activated when applied to the [[org.facsim.App$]]
-object.
+Employs manifest data (information embedded in the application's ''jar'' file)
+to fulfill the [[org.facsim.AppInformation]] trait's interface. This is the
+simplest option, provided that all information is available.
 
 @since 0.0
 */
 //=============================================================================
 
-trait Behavior
-extends AppBehaviorInterface
-with NotNull {
+trait AppManifestInformation
+extends AppInformation {
 
-
-//-----------------------------------------------------------------------------
 /**
-Raise [[java.util.NoSuchElementException!]] for missing field.
+The manifest of the associated application jar file.
 
-@param field Name of field for which information is missing.
-
-@since 0.0
+This is obtained from whichever application class this trait is instantiated
+within.
 */
-//-----------------------------------------------------------------------------
 
-  private final def raiseException (field: String): Nothing = throw new
-  NoSuchElementException (LibResource ("Behavior.NoSuchElement", field))
+  private final val manifest = Manifest (getClass)
 
 //-----------------------------------------------------------------------------
 /**
@@ -80,7 +70,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 */
 //-----------------------------------------------------------------------------
 
-  override def title: String = raiseException ("title")
+  final override def title = manifest.title
 
 //-----------------------------------------------------------------------------
 /**
@@ -88,7 +78,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 */
 //-----------------------------------------------------------------------------
 
-  override def organization: String = raiseException ("organization")
+  final override def organization = manifest.vendor
 
 //-----------------------------------------------------------------------------
 /**
@@ -96,7 +86,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 */
 //-----------------------------------------------------------------------------
 
-  override def inceptionDate: ZonedDateTime = raiseException ("inceptionDate")
+  final override def inceptionDate = manifest.inceptionTimestamp
 
 //-----------------------------------------------------------------------------
 /**
@@ -104,46 +94,7 @@ Raise [[java.util.NoSuchElementException!]] for missing field.
 */
 //-----------------------------------------------------------------------------
 
-  override def releaseDate: ZonedDateTime = raiseException ("releaseDate")
-
-//-----------------------------------------------------------------------------
-/**
-@inheritdoc
-
-@note The copyright message is built from the
-[[org.facsim.Behavior!.organization]], [[org.facsim.Behavior!.inceptionDate]]
-and [[org.facsim.Behavior!.releaseDate]] functions. If any of those fields are
-missing, then a [[java.util.NoSuchElementException]] will result.
-*/
-//-----------------------------------------------------------------------------
-
-  final override def copyright: String = {
-
-/*
-If the organization name ends in a period, then remove it.
-*/
-
-    val org = organization
-    val orgAdj = if (org.last == '.') org.init else org
-
-/*
-Format and retrieve this application's copyright string.
-
-What the hell is going on with date & time in Java? The java.text.MessageFormat
-class (employed by LibResource) does not recognize anything but java.util.Date
-or java.lang.Number (milliseconds from 1st Jan 1970) objects. But there's no
-conversion from the new date & time classes
-types
-*/
-
-    if (inceptionDate.getYear < releaseDate.getYear) {
-      LibResource ("Behavior.CopyrightRange", orgAdj, toDate (inceptionDate),
-      toDate (releaseDate))
-    }
-    else {
-      LibResource ("Behavior.CopyrightBasic", orgAdj, toDate (inceptionDate))
-    }
-  }
+  final override def releaseDate = manifest.buildTimestamp
 
 //-----------------------------------------------------------------------------
 /**
@@ -151,5 +102,5 @@ types
 */
 //-----------------------------------------------------------------------------
 
-  override def version: Version = raiseException ("version")
+  final override def version = manifest.version
 }

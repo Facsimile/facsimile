@@ -38,63 +38,125 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
-import org.facsim.util.Manifest
+import java.time.ZonedDateTime
+import org.facsim.util.{toDate, Version}
 
 //=============================================================================
 /**
-Application manifest-based behavior.
+Ensures a common interface for providing application information.
 
-Employs manifest data (information embedded in the user application's ''jar''
-file) to fulfill the [[.org.facsim.Behavior]] trait's interface. This is the
-simplest option, provided that all information is available.
-
-Behavior instances are activated when applied to the [[org.facsim.App$]]
-object.
+An implementation of this interface must either be defined, or mixed in, when
+creating instances of [[org.facsim.App]].
 
 @since 0.0
 */
 //=============================================================================
 
-class ManifestBehavior (manifest: Manifest)
-extends Behavior {
+trait AppInformation {
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Report the executing application's official title.
+
+@return Executing application's title.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def title = manifest.title
+  def title: String
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Report name of the organization responsible for developing the executing
+application.
+
+@return Executing application's owning organization name.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def organization = manifest.vendor
+  def organization: String
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Report date upon which development of the executing application commenced.
+
+@return Executing application's commencement date.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def inceptionDate = manifest.inceptionTimestamp
+  def inceptionDate: ZonedDateTime
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Report release date of this version of the executing application.
+
+@return Release date of executing application's current version.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def releaseDate = manifest.buildTimestamp
+  def releaseDate: ZonedDateTime
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Report the executing application's copyright message.
+
+@note The copyright message is built from the [[.inceptionDate]] and
+[[.releaseDate]] properties. If these properaties are unavailable, then an
+exception will result.
+
+@return Executing application's copyright message.
+
+@throws java.util.NoSuchElementException if either the [[.inceptionDate]] or
+[[.releaseDate]] properties are unavailable.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def version = manifest.version
+  final def copyright = {
+
+/*
+If the organization name ends in a period, then remove it.
+*/
+
+    val org = organization
+    val orgAdj = if (org.last == '.') org.init else org
+
+/*
+Format and retrieve this application's copyright string.
+
+What the hell is going on with date & time in Java? The java.text.MessageFormat
+class (employed by LibResource) does not recognize anything but java.util.Date
+or java.lang.Number (milliseconds from 1st Jan 1970) objects. But there's no
+conversion from the new date & time classes.
+*/
+
+    if (inceptionDate.getYear < releaseDate.getYear) {
+      LibResource ("AppInformation.CopyrightRange", orgAdj,
+      toDate (inceptionDate), toDate (releaseDate))
+    }
+    else {
+      LibResource ("AppInformation.CopyrightBasic", orgAdj,
+      toDate (inceptionDate))
+    }
+  }
+
+//-----------------------------------------------------------------------------
+/**
+Report executing application's version.
+
+@return Executing application's version.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  def version: Version
 }

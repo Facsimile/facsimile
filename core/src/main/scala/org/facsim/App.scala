@@ -40,13 +40,18 @@ package org.facsim
 
 //=============================================================================
 /**
-Application object.
+Application trait.
 
-Provide information and functionality for applications built with the
+Provide common information and functionality for applications built with the
 ''Facsimile'' library.
 
-In order to function, client applications '''must''' apply an application
-[[org.facsim.Behavior!]] via the [[org.facsim.App$.apply(Behavior)*]] function.
+`App` employs the common ''Scala cake pattern'' to avoid hard-coding
+dependencies and to instead employ
+''[[http://en.wikipedia.org/wiki/Dependency_injection dependency injection]]''
+to provide access to facilities that may not be available at compile-time. In
+order to compile, client applications '''must''' mix-in an
+[[org.facsim.AppInformation]]-implementation instance when creating an
+application ''object'' from this trait.
 
 The application may utilize a graphical user interface, or be driven from the
 command line, or both, depending upon the registered behavior.
@@ -55,12 +60,6 @@ command line, or both, depending upon the registered behavior.
 */
 //=============================================================================
 
-object App
-extends AppImplementation
-
-/*
-Do not add functionality here!
-
-To assist with testing, all functionality must be inherited from the
-AppImplementation class instead.
-*/
+trait App {
+  self: AppInformation =>
+}
