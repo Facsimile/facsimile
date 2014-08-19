@@ -39,7 +39,8 @@ Scala source file from the org.facsim package.
 package org.facsim
 
 import java.time.ZonedDateTime
-import org.facsim.util.{toDate, Version}
+import javafx.scene.image.Image
+import org.facsim.util.{Version, toDate}
 
 //=============================================================================
 /**
@@ -159,4 +160,50 @@ Report executing application's version.
 //-----------------------------------------------------------------------------
 
   def version: Version
+
+//-----------------------------------------------------------------------------
+/**
+Provide a set of icons for the executing application.
+
+By default, the icons for the ''Facsimile'' project are provided. To customize
+the application icons, this function should be overridden and a custom icon set
+returned instead. If an empty set of icons are provided, then the application
+will use the default ''JavaFX'' application icon set.
+
+For highest quality icon rendering, a number of different size icons (measured
+in ''pixels'') should be returned. Note that not all sizes are required for all
+platforms, but it is recommended that all of the following sizes are provided:
+
+ - 16x16
+ - 32x32
+ - 48x48
+ - 64x64
+ - 128x128
+ - 256x256
+ - 512x512
+ - 1024x1024
+
+The most appropriate size will be selected selected automatically. All icon
+sizes should contain the same image (although some simplification may be
+required for smaller icon sizes).
+
+@note This function will only be called if the application is running as a
+''GUI'' application.
+
+@return A list of images to be utilized as application icons.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  def icons = List {
+    new Image ("file:Images/FacsimileIcon_16x16.png")
+    new Image ("file:Images/FacsimileIcon_32x32.png")
+    new Image ("file:Images/FacsimileIcon_48x48.png")
+    new Image ("file:Images/FacsimileIcon_64x64.png")
+    new Image ("file:Images/FacsimileIcon_128x128.png")
+    new Image ("file:Images/FacsimileIcon_256x256.png")
+    new Image ("file:Images/FacsimileIcon_512x512.png")
+    new Image ("file:Images/FacsimileIcon_1024x1024.png")
+  }
 }
