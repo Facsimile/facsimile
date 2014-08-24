@@ -40,7 +40,6 @@ package org.facsim
 
 import javafx.application.{Application => JApplication, Platform}
 import javafx.stage.Stage
-import javafx.scene.image.Image
 import org.facsim.util.Manifest
 import scala.collection.mutable.ListBuffer
 
@@ -289,7 +288,7 @@ Initialize this ''JavaFX'' application.
 
 @note This method is called on the ''JavaFX Application Thread''.
 
-@param stage Application's primary ''JavaFX'' stage.
+@param stage Application's primary ''JavaFX'' stage, created by JavaFX.
 */
 //.............................................................................
 

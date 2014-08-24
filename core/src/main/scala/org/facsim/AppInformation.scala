@@ -59,7 +59,13 @@ trait AppInformation {
 /**
 Report the executing application's official title.
 
+@note If the application title is not available, then a
+[[java.util.NoSuchElementException]] should be thrown.
+
 @return Executing application's title.
+
+@throws java.util.NoSuchElementException if the application's title is
+unavailable.
 
 @since 0.0
 */
@@ -72,7 +78,13 @@ Report the executing application's official title.
 Report name of the organization responsible for developing the executing
 application.
 
+@note If the name of the organization is not available, then a
+[[java.util.NoSuchElementException]] should be thrown.
+
 @return Executing application's owning organization name.
+
+@throws java.util.NoSuchElementException if the application's organization is
+unavailable.
 
 @since 0.0
 */
@@ -84,7 +96,13 @@ application.
 /**
 Report date upon which development of the executing application commenced.
 
+@note If the application's inception date is not available, then a
+[[java.util.NoSuchElementException]] should be thrown.
+
 @return Executing application's commencement date.
+
+@throws java.util.NoSuchElementException if the application's inception date is
+unavailable.
 
 @since 0.0
 */
@@ -96,7 +114,13 @@ Report date upon which development of the executing application commenced.
 /**
 Report release date of this version of the executing application.
 
+@note If the application's release date is not available, then a
+[[java.util.NoSuchElementException]] should be thrown.
+
 @return Release date of executing application's current version.
+
+@throws java.util.NoSuchElementException if the application's release date is
+unavailable.
 
 @since 0.0
 */
@@ -108,14 +132,18 @@ Report release date of this version of the executing application.
 /**
 Report the executing application's copyright message.
 
-@note The copyright message is built from the [[.inceptionDate]] and
-[[.releaseDate]] properties. If these properaties are unavailable, then an
-exception will result.
+@note The copyright message is built from the
+[[org.facsim.AppInformation.organization]],
+[[org.facsim.AppInformation.inceptionDate]] and
+[[org.facsim.AppInformation.releaseDate]] properties. If any of these
+properties are unavailable, then an exception will result.
 
 @return Executing application's copyright message.
 
-@throws java.util.NoSuchElementException if either the [[.inceptionDate]] or
-[[.releaseDate]] properties are unavailable.
+@throws java.util.NoSuchElementException if either the
+[[org.facsim.AppInformation.organization]],
+[[org.facsim.AppInformation.inceptionDate]] or
+[[org.facsim.AppInformation.releaseDate]] properties are unavailable.
 
 @since 0.0
 */
@@ -153,7 +181,13 @@ conversion from the new date & time classes.
 /**
 Report executing application's version.
 
+@note If the application's version is not available, then a
+[[java.util.NoSuchElementException]] should be thrown.
+
 @return Executing application's version.
+
+@throws java.util.NoSuchElementException if the application's version is
+unavailable.
 
 @since 0.0
 */
