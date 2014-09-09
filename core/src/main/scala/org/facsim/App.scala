@@ -207,6 +207,23 @@ clean-up.
 
 //-----------------------------------------------------------------------------
 /**
+Automatically show application's primary stage.
+
+The function's default implementation always displays the primary stage
+automatically. Override this function if different behavior is required.
+
+@note If this function returns `false`, it is the responsibility of the user
+application to display the primary stage manually.
+
+@return `true` if application's primary stage should be automatically shown
+following construction; `false` otherwise.
+*/
+//-----------------------------------------------------------------------------
+
+  def autoShow = true
+
+//-----------------------------------------------------------------------------
+/**
 Report the application's primary stage.
 
 @note Attempts to modify the primary stage should only be made on the ''JavaFX
@@ -324,12 +341,10 @@ Now initialize our outer class, so that sub-class construction is completed.
       self.init (this)
 
 /*
-Show the stage.
-
-TODO: This may be a bad idea for console/text only application invocation.
+Show the stage - if required.
 */
 
-      stage.show ()
+      if (self.autoShow) stage.show ()
     }
 
 //.............................................................................
