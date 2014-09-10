@@ -32,17 +32,10 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //=============================================================================
-// SBT file to include sbt-git plugin.
+// SBT file to automate release versioning.
 //
-// This plugin provides support for using git commit SHA codes for versioning
-// builds, which is essential for ensuring that the "git bisect" command
-// functions correctly.
-//
-// This plugin implements the behavior outlined by Josh Suereth (one of SBT's
-// authors) in his Scala Days 2013 presentation, "Effective SBT". Refer to the
-// following link for his presentation:
-//
-//   http://www.parleys.com/play/51c3790ae4b0d38b54f46259
+// This plugin assists with the version numbering of Facsimile releases, and
+// replaces the more cumbersome sbt-git plugin.
 //=============================================================================
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.4")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.5")
