@@ -77,7 +77,8 @@ encountered during parsing of the file.
 //=============================================================================
 
 private [cell] final class CellScene (reader: TextReader, baseUrl: URL,
-faceColor: CellColor.Value, edgeColor: CellColor.Value) extends NotNull {
+faceColor: CellColor.Value, edgeColor: CellColor.Value)
+extends NotNull {
 
 /*
 Sanity checks.
@@ -211,7 +212,7 @@ arguments cannot be found. Needless to say, this shouldn't happen if the
 associated class has been supplied with such a constructor.
 */
 
-    val classCtor = cellClass.getConstructor (getClass, classOf [Set])
+    val classCtor = cellClass.getConstructor (getClass, classOf [Option [Set]])
 
 /*
 Create the new cell instance and return it.
