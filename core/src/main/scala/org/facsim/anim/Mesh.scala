@@ -1113,12 +1113,12 @@ Create the list of rich points that will define the face by decorating the
 vertices with the texture co-ordinates.
 */
 
-    val faces = List {
-      RichPoint (tl, ttl)
-      RichPoint (bl, TexturePoint (ttl.u, tbr.v))
-      RichPoint (br, tbr)
+    val faces = List (
+      RichPoint (tl, ttl),
+      RichPoint (bl, TexturePoint (ttl.u, tbr.v)),
+      RichPoint (br, tbr),
       RichPoint (tr, TexturePoint (tbr.u, ttl.v))
-    }
+    )
 
 /*
 Create and return the quadrilateral mesh.
