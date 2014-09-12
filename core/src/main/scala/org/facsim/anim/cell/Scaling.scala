@@ -54,6 +54,7 @@ Read string resource key.
 */
 
   private val ReadKey = "anim.cell.Scaling.read"
+
 //-----------------------------------------------------------------------------
 /**
 Read scale data from ''cell'' data stream.
@@ -77,10 +78,10 @@ Scaling]]
   def read (scene: CellScene) = {
 
 /*
-Function to verify scaling values, which must all be > 0.
+Function to verify scaling values, which must all be != 0.
 */
 
-    def verify (scale: Double) = scale > 0
+    def verify (scale: Double) = scale != 0.0
 
 /*
 Read the X axis scaling from the data stream.
