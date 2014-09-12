@@ -543,8 +543,8 @@ ever made public, then we need "requireFinite" & "requireValid" macros.
     assert (rt > 0.0)
     assert (ct.z > cb.z)
     assert (divisions > 2)
-    assert (topLeft.u < botRight.u)
-    assert (topLeft.v < botRight.v)
+    assert (topLeft.u <= botRight.u)
+    assert (topLeft.v <= botRight.v)
 
 /*
 Determine the angle for drawing each segment.
@@ -957,14 +957,14 @@ The number of vertical divisions for the sphere is divisions / 2, rounded up to
 the nearest whole number.
 */
 
-    val vDiv = Math.ceil (divisions / 2.0)
+    val vDiv = if (divisions % 2 == 0) divisions / 2 else 1 + divisions / 2
 
 /*
 The number of texture divisions is the number of vertical divisions + one for
 the base.
 */
 
-    val tDiv = vDiv + 1.0
+    val tDiv = vDiv + 1
 
 /*
 Create a (flat) conic mesh representing the base. The "apex" of the conic mesh
@@ -974,8 +974,8 @@ The bottom tDiv'th of the texture map is used for this purpose.
 */
 
     val base = conicMesh (c, r, c, divisions, TexturePoint (0.0f,
-    (vDiv / tDiv).toFloat), TexturePoint.BottomRight, down = true,
-    smoothGroup = 1)
+    (vDiv.toDouble / tDiv.toDouble).toFloat), TexturePoint.BottomRight,
+    down = true, smoothGroup = 1)
 
 /*
 Helper function create the circular walls of the hemisphere, including the
@@ -1014,7 +1014,7 @@ If this is the last wall, then create the pole, add it to the prior meshes and
 return the result.
 */
 
-      if (wall + 1 == vDiv) prior + conicMesh (bc, br,
+      if (wall == vDiv - 1) prior + conicMesh (bc, br,
       Point3D (c.x, c.y, c.z + r), divisions,
       botRight = TexturePoint (1.0f, (1.0 / tDiv).toFloat), smoothGroup = 2)
 
@@ -1054,8 +1054,10 @@ Create this wall.
 */
 
         val wallMesh = circularWallMesh (bc, br, tc, tr, divisions,
-        TexturePoint (0.0f, ((vDiv - (wall - 1)) / tDiv).toFloat),
-        TexturePoint (1.0f, ((vDiv - wall) / tDiv).toFloat), smoothGroup = 2)
+        TexturePoint (0.0f, ((vDiv - (wall + 1)).toDouble /
+        tDiv.toDouble).toFloat),
+        TexturePoint (1.0f, ((vDiv - wall).toDouble / tDiv.toDouble).toFloat),
+        smoothGroup = 2)
 
 /*
 Append to the prior meshes and iterate for the next wall.
