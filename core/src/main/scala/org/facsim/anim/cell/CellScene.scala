@@ -39,6 +39,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import java.io.IOException
+import java.lang.reflect.InvocationTargetException
 import java.net.URL
 import org.facsim.LibResource
 import org.facsim.io.FieldConversionException
@@ -215,10 +216,26 @@ associated class has been supplied with such a constructor.
     val classCtor = cellClass.getConstructor (getClass, classOf [Option [Set]])
 
 /*
-Create the new cell instance and return it.
+Create the new cell instance and return it, or review the exceptions thrown.
 */
 
-    val cell = classCtor.newInstance (this, parent)
+    val cell = try {
+      classCtor.newInstance (this, parent)
+    }
+    catch {
+
+/*
+If there is an invocation target exception (that is, if the constructor throws
+an exception while executing), then recover the thrown exception and rethrow
+it. All other exceptions are passed back to the caller.
+*/
+
+      case e: InvocationTargetException => {
+        val cause = e.getCause
+        assert (cause != null)
+        throw cause
+      }
+    }
 
 /*
 If this is a definition, then add it to the list of definitions.
