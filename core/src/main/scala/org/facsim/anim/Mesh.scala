@@ -679,7 +679,7 @@ defined center, radius, begin angle and draw through angle.
 @param begin Angle at which drawing of the arc starts. This value must be in
 the range [0, τ) radians (τ = 2π).
 
-@param drawe Angle through which the arc is drawn, counterclockwise from
+@param draw Angle through which the arc is drawn, counterclockwise from
 `angle`. This value must be in the range [0, τ] radians (τ = 2π). If this value
 is τ, then the result is a circle.
 
