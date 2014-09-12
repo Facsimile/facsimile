@@ -107,14 +107,16 @@ stream.
       assert (instDef.isInstanceOf [Definition]) // scalastyle:ignore
 
 /*
-If the definition's name doesn't match what we expected, then give an error.
+If the definition's name doesn't match the name specified in the preceding
+instance, then give an error.
 
 @see [[https://github.com/Facsimile/facsimile/issues/1 Issue 1]].
 */
 
-      if (instDef.name != defName) {
+      val instDefName = instDef.name.getOrElse ("")
+      if (instDefName != defName) {
         throw new ParsingErrorException (LibResource
-        ("anim.cell.Definition.name", defName), null)
+        ("anim.cell.Definition.name", defName, instDefName), null)
       }
       instDef
     }
