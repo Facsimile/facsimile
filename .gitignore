@@ -46,6 +46,7 @@
 .classpath
 .externalToolBuilders/
 .idea/
+.idea_modules/
 .project
 .scala_dependencies
 .settings/

@@ -48,7 +48,7 @@ import Keys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
-import org.scalastyle.sbt.{PluginKeys, ScalastylePlugin}
+import org.scalastyle.sbt.ScalastylePlugin
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.{releaseTask, ReleaseStep, Version}
 import sbtrelease.ReleasePlugin.{releaseSettings, ReleaseKeys}
@@ -222,6 +222,7 @@ This will also take care of signing the release.
 Update the "Version.sbt" file so that it contains the new development version
 number.
 */
+
       setNextVersion,
 
 /*
