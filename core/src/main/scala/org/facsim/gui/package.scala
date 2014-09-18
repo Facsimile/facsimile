@@ -32,46 +32,26 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.facsimile.engine package.
+Scala source file defining the org.facsim.gui package.
 */
 //=============================================================================
 
-package org.facsim.engine
-
-import org.facsim.LibResource
+package org.facsim
 
 //=============================================================================
 /**
-Thrown when the simulation runs of out events.
+''Facsimile graphical user interface'' (''GUI'') elements.
 
-In general, this should be regarded as abnormal termination of a simulation
-run and treated accordingly.
-
-A ''non-terminating'' simulation should never run out of events.
-
-A ''terminating'' simulation is anticipated to ultimately run out of events;
-however, since ''(a)'' a terminating simulation might run out of events
-prematurely, due to a bug, and ''(b)'' terminating simulations may have
-background events (such as scheduled operator breaks, etc.) that continue to
-occur event after the simulation has effectively terminated. it is preferable
-that terminating simulations detect that termination criteria have been met
-resulting in a controlled termination of the simulation run.
-
-@contructor Create new out-of-events exception.  Constructor is private to
-org.facsim.facsimile.engine package.
-
-@since 0.0
+@note Facsimile utilizes the ''[http://docs.oracle.com/javafx JavaFX]]'' rich
+client library to provide user interface facilities, as well as 3D animation.
 */
 //=============================================================================
 
-final class OutOfEventsException private [engine] () extends RuntimeException {
+package object gui {
 
-//-----------------------------------------------------------------------------
-/*
-@see [[java.lang.Throwable!.getMessage()]]
+/**
+Shorthand for GUI application type.
 */
-//-----------------------------------------------------------------------------
 
-  final override def getMessage =
-  LibResource ("engine.OutOfEventsException")
+  type GuiApplication = GuiApp with AppInformation
 }

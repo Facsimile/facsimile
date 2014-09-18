@@ -32,46 +32,23 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.facsimile.engine package.
+Scala source file defining the org.facsim.cli package.
 */
 //=============================================================================
 
-package org.facsim.engine
-
-import org.facsim.LibResource
+package org.facsim
 
 //=============================================================================
 /**
-Thrown when the simulation runs of out events.
-
-In general, this should be regarded as abnormal termination of a simulation
-run and treated accordingly.
-
-A ''non-terminating'' simulation should never run out of events.
-
-A ''terminating'' simulation is anticipated to ultimately run out of events;
-however, since ''(a)'' a terminating simulation might run out of events
-prematurely, due to a bug, and ''(b)'' terminating simulations may have
-background events (such as scheduled operator breaks, etc.) that continue to
-occur event after the simulation has effectively terminated. it is preferable
-that terminating simulations detect that termination criteria have been met
-resulting in a controlled termination of the simulation run.
-
-@contructor Create new out-of-events exception.  Constructor is private to
-org.facsim.facsimile.engine package.
-
-@since 0.0
+''Facsimile command line interface'' (''CLI'') elements.
 */
 //=============================================================================
 
-final class OutOfEventsException private [engine] () extends RuntimeException {
+package object cli {
 
-//-----------------------------------------------------------------------------
-/*
-@see [[java.lang.Throwable!.getMessage()]]
+/**
+Shorthand for CLI application type.
 */
-//-----------------------------------------------------------------------------
 
-  final override def getMessage =
-  LibResource ("engine.OutOfEventsException")
+  type CliApplication = CliApp with AppInformation
 }

@@ -211,8 +211,8 @@ Provide a description for the null actions.
 */
 //-----------------------------------------------------------------------------
 
-    override final def description =
-    LibResource ("engine.Simulation.NullEvent.description")
+    override def description =
+    LibResource ("engine.Simulation.NullAction.description")
 
 //-----------------------------------------------------------------------------
 /*
@@ -223,7 +223,7 @@ error is issued.
 */
 //-----------------------------------------------------------------------------
 
-    override final def execute = sys.error (LibResource
-    ("engine.Simulation.NullEvent.executeError"))
+    override def execute = sys.error (LibResource
+    ("engine.Simulation.NullAction.execute"))
   }
 }

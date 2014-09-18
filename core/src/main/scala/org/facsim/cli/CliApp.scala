@@ -32,46 +32,44 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.facsimile.engine package.
+Scala source file from the org.facsim.cli package.
 */
 //=============================================================================
 
-package org.facsim.engine
+package org.facsim.cli
 
-import org.facsim.LibResource
+import org.facsim.{App, AppInformation}
 
 //=============================================================================
 /**
-Thrown when the simulation runs of out events.
+''Command line interface'' (''CLI'') application trait.
 
-In general, this should be regarded as abnormal termination of a simulation
-run and treated accordingly.
-
-A ''non-terminating'' simulation should never run out of events.
-
-A ''terminating'' simulation is anticipated to ultimately run out of events;
-however, since ''(a)'' a terminating simulation might run out of events
-prematurely, due to a bug, and ''(b)'' terminating simulations may have
-background events (such as scheduled operator breaks, etc.) that continue to
-occur event after the simulation has effectively terminated. it is preferable
-that terminating simulations detect that termination criteria have been met
-resulting in a controlled termination of the simulation run.
-
-@contructor Create new out-of-events exception.  Constructor is private to
-org.facsim.facsimile.engine package.
+Applications implementing this trait will execute from the command line and
+will not feature a ''graphical user interface'' (''GUI''). All output will be
+in the form of text written to the system's standard output and standard error
+output. Consequently, such applications are suitable for execution as batch
+jobs on a server.
 
 @since 0.0
 */
 //=============================================================================
 
-final class OutOfEventsException private [engine] () extends RuntimeException {
+trait CliApp
+extends App  {
+  self: AppInformation =>
 
 //-----------------------------------------------------------------------------
-/*
-@see [[java.lang.Throwable!.getMessage()]]
+/**
+@inheritdoc
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage =
-  LibResource ("engine.OutOfEventsException")
+  protected [facsim] final override def createApp (): Unit = {
+
+/*
+Initialize the application to run as a regular command line application.
+*/
+
+    self.init ()
+  }
 }

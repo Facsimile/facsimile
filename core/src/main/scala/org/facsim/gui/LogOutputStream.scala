@@ -32,46 +32,48 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file belonging to the org.facsim.facsimile.engine package.
+Scala source file from the org.facsim.gui package.
 */
 //=============================================================================
 
-package org.facsim.engine
+package org.facsim.gui
 
-import org.facsim.LibResource
+import java.io.OutputStream
+import javafx.scene.control.TextArea
 
 //=============================================================================
 /**
-Thrown when the simulation runs of out events.
+Class that writes output into a text area element.
 
-In general, this should be regarded as abnormal termination of a simulation
-run and treated accordingly.
-
-A ''non-terminating'' simulation should never run out of events.
-
-A ''terminating'' simulation is anticipated to ultimately run out of events;
-however, since ''(a)'' a terminating simulation might run out of events
-prematurely, due to a bug, and ''(b)'' terminating simulations may have
-background events (such as scheduled operator breaks, etc.) that continue to
-occur event after the simulation has effectively terminated. it is preferable
-that terminating simulations detect that termination criteria have been met
-resulting in a controlled termination of the simulation run.
-
-@contructor Create new out-of-events exception.  Constructor is private to
-org.facsim.facsimile.engine package.
-
-@since 0.0
+@param textArea Text area to be written to.
 */
 //=============================================================================
 
-final class OutOfEventsException private [engine] () extends RuntimeException {
+private [gui] final class LogOutputStream (private val textArea: TextArea)
+extends OutputStream {
+
+/*
+Sanity check.
+*/
+
+  assert (textArea ne null)
 
 //-----------------------------------------------------------------------------
-/*
-@see [[java.lang.Throwable!.getMessage()]]
+/**
+Write a single character into the log window.
+
+@todo This may be a problem if the executing thread is not the ''JavaFX
+Application Thread'' (''JAT''). If so, it would be necessary to use the
+[[javafx.application.Platform.runLater(Runnable)]] method to append text to the
+text area on the JAT. However, it would be very inefficient to schedule every
+single character to be written in this way. Instead, each line of output would
+need to be buffered and only written to the text area when a line termination
+sequence is encountered.
+
+@param c Character to be written.
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage =
-  LibResource ("engine.OutOfEventsException")
+  override def write (c: Int): Unit =
+  textArea.appendText (String.valueOf (c.toChar))
 }
