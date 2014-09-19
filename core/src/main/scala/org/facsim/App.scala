@@ -188,8 +188,6 @@ Retrieve the command line arguments.
 //-----------------------------------------------------------------------------
 /**
 Create and initialize the application.
-
-@param args Command line arguments.
 */
 //-----------------------------------------------------------------------------
 
