@@ -39,12 +39,8 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import org.facsim.anim.Mesh
-import org.facsim.anim.Point3D
+import org.facsim.anim.{Mesh, Point3D}
 import org.facsim.measure.Angle
-import scala.math.abs
-import scala.math.max
-import scala.math.min
 
 //=============================================================================
 /**
@@ -61,16 +57,14 @@ primitives.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Arcs.html Arcs
 & Circles]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -87,59 +81,54 @@ Arc radius, measured on the X-Y plane.
   LibResource (Arc.ReadDimKey, 0))
 
 /**
-Arc first angle.
+Arc start angle.
 
-First angle associated with this arc.
+The starting angle for this arc. This may be any valid double value.
 */
 
-  private val angle1 = scene.readDouble (_ >= 0.0,
-  LibResource (Arc.ReadDimKey, 1))
+  private val startAngle = Angle (scene.readDouble (LibResource
+  (Arc.ReadAngleKey, 0)), Angle.Degrees).normalize ()
 
 /**
-Arc second angle.
+Arc end angle.
 
-Second angle associated with this arc. This value must be positive, and it must
-be within ± 360° of angle 1.
+This is the end angle for this arc. This may be any valid double value.
 */
 
-  private val angle2 = {
-    val minAngle = max (0.0, angle1 - 360.0)
-    val maxAngle = angle1 + 360.0
-    scene.readDouble ((angle: Double) => (angle >= minAngle) && (angle <=
-    maxAngle), LibResource (Arc.ReadAnglesKey, minAngle, maxAngle))
-  }
+  private val endAngle = Angle (scene.readDouble (LibResource
+  (Arc.ReadAngleKey, 1)), Angle.Degrees).normalize ()
 
 /**
 Flag indicating whether this is a circle or a sector/arc.
 
-If the difference between the two is 360°, then we're drawing a circle, not a
-sector/arc.
+If both start and end angle are 0 radians, then the.
 */
 
-  private val isCircle = abs (abs (angle1 - angle2) - 360.0) < 1.0e-6
+  private val isCircle = startAngle == Angle.Zero && endAngle == Angle.Zero
 
 //-----------------------------------------------------------------------------
-/*
-Create an arc mesh to represent this cell and return it.
+/**
+@inheritdoc
 
-The origin of the cell is at its center.
-
-@return Mesh representing the cell.
-
-@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
+@note The origin of the arc is the center of as the circle of which it is a
+part.
 */
 //-----------------------------------------------------------------------------
 
-  protected [cell] override def cellMesh: Mesh = Mesh.arc (Point3D.Origin,
-  radius, Angle (angle1, Angle.Degrees),
-  Angle (angle2 - angle1, Angle.Degrees), Arc.divisions)
+  protected [cell] override def cellMesh: Mesh = {
+    val drawAngle = if (isCircle) {
+      Angle.τ
+    }
+    else {
+      (endAngle - startAngle).normalize ()
+    }
+    Mesh.arc (Point3D.Origin, radius, startAngle, drawAngle, Arc.Divisions)
+  }
 }
 
 //=============================================================================
 /**
 Arc companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -149,9 +138,13 @@ private object Arc {
 Arc read dimension string resource key.
 */
 
-  val ReadDimKey = "anim.cell.Arc.readDim"
+  private val ReadDimKey = "anim.cell.Arc.readDim"
 
-  val ReadAnglesKey = "anim.cell.Arc.readAngles"
+/**
+Arc read angle string resource key.
+*/
+
+  private val ReadAngleKey = "anim.cell.Arc.readAngle"
 
 /**
 Number of divisions per arc.
@@ -160,5 +153,5 @@ The number of divisions for a fine arc in AutoMod is 16, and for a course arc
 it's 8. For simplicity, we'll convert all arcs to have 16 divisions.
 */
 
-  val divisions = 16
+  private val Divisions = 16
 }

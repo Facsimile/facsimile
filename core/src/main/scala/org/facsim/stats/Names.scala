@@ -50,73 +50,73 @@ object Names
 extends Nomenclature {
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationMean = LibResource ("stats.Names.PopulationMean")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationMeanEstimate =
   LibResource ("stats.Names.PopulationMeanEstimate")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationStandardDeviation =
   LibResource ("stats.Names.PopulationStandardDeviation")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationStandardDeviationEstimate =
   LibResource ("stats.Names.PopulationStandardDeviationEstimate")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationVariance =
   LibResource ("stats.Names.PopulationVariance")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationVarianceEstimate =
   LibResource ("stats.Names.PopulationVarianceEstimate")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleMaximum = LibResource ("stats.Names.SampleMaximum")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleMean = LibResource ("stats.Names.SampleMean")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleMinimum = LibResource ("stats.Names.SampleMinimum")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleStandardDeviation =
   LibResource ("stats.Names.SampleStandardDeviation")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleVariance = LibResource ("stats.Names.SampleVariance")

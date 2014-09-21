@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scalafx.geometry.Point3D
 import scalafx.scene.transform.Rotate
 
@@ -49,7 +49,7 @@ Cell rotation order enumeration.
 Encodes ''[[http://www.automod.com/ AutoMod®]]'' axis rotation order and maps
 them to the appropriate rotations.
 
-@see [http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
+@see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
 */
 //=============================================================================
@@ -74,49 +74,49 @@ Vector to a sequence of axes corresponding to each enumeration.
 X, then Y, then Z, code 0.
 */
 
-  val XYZ = Value
+  private [cell] val XYZ = Value
 
 /**
 X, then Z, then Y, code 1.
 */
 
-  val XZY = Value
+  private [cell] val XZY = Value
 
 /**
 Y, then X, then Z, code 2.
 */
 
-  val YXZ = Value
+  private [cell] val YXZ = Value
 
 /**
 Y, then Z, then X, code 3.
 */
 
-  val YZX = Value
+  private [cell] val YZX = Value
 
 /**
 Z, then X, then Y, code 4.
 */
 
-  val ZXY = Value
+  private [cell] val ZXY = Value
 
 /**
 Z, then Y, then X, code 5.
 */
 
-  val ZYX = Value
+  private [cell] val ZYX = Value
 
 /**
 Minimum rotation order code value.
 */
 
-  val minValue = 0
+  private [cell] val minValue = 0
 
 /**
 Maximum rotation order code value.
 */
 
- val maxValue = maxId - 1
+  private [cell] val maxValue = maxId - 1
 
 //-----------------------------------------------------------------------------
 /**
@@ -127,15 +127,16 @@ values.
 of ''cell'' axis rotation order values in regular code, when ideally we want to
 bury them.
 
-@param ''Cell'' axis rotation value to be converted.
+@param rotationOrder ''Cell'' axis rotation value to be converted.
 
 @return Corresponding ''ScalaFX'' axis rotation sequence.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
-  def toAxisSequence (rotationOrder: RotationOrder.Value) =
-  axisSequence (rotationOrder.id) ensuring (_.length == 3)
+  def toAxisSequence (rotationOrder: RotationOrder.Value) = {
+    assertNonNull (rotationOrder)
+    axisSequence (rotationOrder.id)
+  } ensuring (_.length == 3)
 
 //-----------------------------------------------------------------------------
 /**
@@ -149,7 +150,7 @@ otherwise.
 //-----------------------------------------------------------------------------
 
   def verify (rotationOrderCode: Int) =
-  (rotationOrderCode >= minValue && rotationOrderCode <= maxValue)
+  rotationOrderCode >= minValue && rotationOrderCode <= maxValue
 
 //-----------------------------------------------------------------------------
 /**
@@ -159,11 +160,11 @@ Read axis rotation order code from ''cell'' data stream.
 
 @return Sequence of ScalaFX axis rotations, in specified order.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
@@ -173,10 +174,16 @@ Rotation Order & Rotations]]
   def read (scene: CellScene) = {
 
 /*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
+
+/*
 Read the axis rotation code from the data stream.
 */
 
-    val code = scene.readInt (verify (_), LibResource
+    val code = scene.readInt (verify, LibResource
     ("anim.cell.RotationOrder.read", minValue, maxValue))
 
 /*

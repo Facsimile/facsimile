@@ -32,14 +32,44 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-
+Scala source file from the org.facsim.cli package.
 */
 //=============================================================================
 
-package org.facsim.test
+package org.facsim.cli
 
-import org.scalatest.FunSpec
+import org.facsim.{App, AppInformation}
 
-/*trait OrderedBehaviors [O <: Ordered [O]] {
-  this =>
-}*/
+//=============================================================================
+/**
+''Command line interface'' (''CLI'') application trait.
+
+Applications implementing this trait will execute from the command line and
+will not feature a ''graphical user interface'' (''GUI''). All output will be
+in the form of text written to the system's standard output and standard error
+output. Consequently, such applications are suitable for execution as batch
+jobs on a server.
+
+@since 0.0
+*/
+//=============================================================================
+
+trait CliApp
+extends App  {
+  self: AppInformation =>
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  protected [facsim] final override def createApp (): Unit = {
+
+/*
+Initialize the application to run as a regular command line application.
+*/
+
+    self.init ()
+  }
+}

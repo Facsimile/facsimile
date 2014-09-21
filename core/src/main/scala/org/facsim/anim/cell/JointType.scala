@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -49,8 +49,6 @@ to the corresponding joint types.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/JointType.html
 Joint Type]]
-
-@since 0.0
 */
 //=============================================================================
 
@@ -97,8 +95,6 @@ Verify a joint type code.
 @param jointTypeCode Code for the joint type to be verified.
 
 @return `true` if the code maps to a valid joint type, `false` otherwise.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -113,28 +109,32 @@ Read joint type from ''cell'' data stream.
 
 @return Joint type read, if valid.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/JointType.html
 Joint Type]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def read (scene: CellScene) = {
 
 /*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
+
+/*
 Read the joint type code from the data stream.
 */
 
-    val code = scene.readInt (verify (_), LibResource
-    ("anim.cell.JointType.read", minValue, maxValue))
+    val code = scene.readInt (verify, LibResource ("anim.cell.JointType.read",
+    minValue, maxValue))
 
 /*
 Convert to a joint type and return.
@@ -149,25 +149,29 @@ Read joint ''cell'' data stream.
 
 @param scene Scene from which the joint type is to be read.
 
-@param flags The current ''cell'''s flags.
+@param flags The current ''cell's'' flags.
 
 @return Joint read, if valid.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joint.html Cell
 Joint Data]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readJoint (scene: CellScene, flags: CellFlags) = {
+
+/*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
 
 /*
 Determine the type of joint to be read and create it.

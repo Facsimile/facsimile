@@ -55,16 +55,14 @@ Instances]] for further information.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Instances.html
 Instances]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -107,14 +105,16 @@ stream.
       assert (instDef.isInstanceOf [Definition]) // scalastyle:ignore
 
 /*
-If the definition's name doesn't match what we expected, then give an error.
+If the definition's name doesn't match the name specified in the preceding
+instance, then give an error.
 
 @see [[https://github.com/Facsimile/facsimile/issues/1 Issue 1]].
 */
 
-      if (instDef.name != defName) {
+      val instDefName = instDef.name.getOrElse ("")
+      if (instDefName != defName) {
         throw new ParsingErrorException (LibResource
-        ("anim.cell.Definition.name", defName), null)
+        ("anim.cell.Definition.name", defName, instDefName), null)
       }
       instDef
     }

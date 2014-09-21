@@ -93,7 +93,7 @@ milliseconds]]''.
   LibResource ("measure.Time.Millisecond.sym"))
 
 /**
-Units for time measured in ''[[http://en.wikipedia.org/wiki/Second seconds'']].
+Units for time measured in ''[[http://en.wikipedia.org/wiki/Second seconds]]''.
 
 @note ''Seconds'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard
 units for time measurement, and the units that are used to store such
@@ -198,10 +198,10 @@ Instances of this class represent ''time'' measurements.
 time]]'' measurement value.
 
 @param measure ''Time'' measurement expressed in
-''[[org.facsim.measure.Time$.seconds]]''. This value must be finite and greater
+''[[org.facsim.measure.Time.Seconds]]''. This value must be finite and greater
 than or equal to zero.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+@throws java.lang.IllegalArgumentException if `measure` is not finite or
 is negative.
 
 @since 0.0

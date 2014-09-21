@@ -38,7 +38,7 @@ Scala source file from the org.facsim.io package.
 
 package org.facsim.io
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -64,12 +64,18 @@ final class FieldConversionException private [io] (row: Int, column: Int,
 field: String)
 extends FieldException (row, column, field) {
 
+/*
+Sanity checks.
+*/
+
+  assertNonNull (field)
+
 //-----------------------------------------------------------------------------
 /*
 @see [[java.lang.Throwable!.getMessage()]]
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage () = LibResource ("io.FieldConversion", row,
-  column, field)
+  override def getMessage = LibResource ("io.FieldConversion", row,  column,
+  field)
 }

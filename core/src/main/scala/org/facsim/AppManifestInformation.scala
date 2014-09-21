@@ -38,34 +38,69 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
+import org.facsim.util.Manifest
+
 //=============================================================================
 /**
-Thrown if an attempt to apply a second [[org.facsim.Behavior!]] to
-[[org.facsim.App$]] is made.
+Application manifest-based information.
 
-@note The application will retain its existing behavior.
-
-@constructor Create behavior redefinition exception from existing and redefined
-behavior instances.
-
-@param existing Application's current applied behavior.
-
-@param replacement Attempted replacement behavior.
+Employs manifest data (information embedded in the application's ''jar'' file)
+to fulfill the [[org.facsim.AppInformation]] trait's interface. This is the
+simplest option, provided that all information is available.
 
 @since 0.0
 */
 //=============================================================================
 
-final class BehaviorRedefinitionException private [facsim] (existing: Behavior,
-replacement: Behavior)
-extends RuntimeException () {
+trait AppManifestInformation
+extends AppInformation {
+
+/**
+The manifest of the associated application jar file.
+
+This is obtained from whichever application class this trait is instantiated
+within.
+*/
+
+  private final val manifest = Manifest (getClass)
 
 //-----------------------------------------------------------------------------
-/*
-@see [[java.lang.Throwable!.getMessage()]]
+/**
+@inheritdoc
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage = LibResource ("BehaviorRedefinition",
-  existing, replacement)
+  final override def title = manifest.title
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  final override def organization = manifest.vendor
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  final override def inceptionDate = manifest.inceptionTimestamp
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  final override def releaseDate = manifest.buildTimestamp
+
+//-----------------------------------------------------------------------------
+/**
+@inheritdoc
+*/
+//-----------------------------------------------------------------------------
+
+  final override def version = manifest.version
 }

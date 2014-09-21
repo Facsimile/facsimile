@@ -192,10 +192,10 @@ Report number of recorded observations.
 Report minimum observed value.
 
 If no observations have been added to this dataset, then there is no observed
-minimum value; an [[org.facsim.stats.InsufficientData!]] exception is thrown
-instead.
+minimum value; an [[org.facsim.stats.InsufficientDataException]] exception is
+thrown instead.
 
-@returns Minimum observed value.
+@return Minimum observed value.
 
 @throws org.facsim.stats.InsufficientDataException if no observations have been
 made.
@@ -215,10 +215,10 @@ made.
 Report maximum observed value.
 
 If no observations have been added to this dataset, then there is no observed
-maximum value; an [[org.facsim.stats.InsufficientData!]] exception is thrown
-instead.
+maximum value; an [[org.facsim.stats.InsufficientDataException]] exception is
+thrown instead.
 
-@returns Maximum observed value.
+@return Maximum observed value.
 
 @throws org.facsim.stats.InsufficientDataException if no observations have been
 made.
@@ -239,8 +239,8 @@ Report [[http://en.wikipedia.org/wiki/Arithmetic_mean arithmetic mean]] of
 observed values.
 
 If no observations have been added to this dataset, then there is no observed
-mean value; an [[org.facsim.stats.InsufficientData!]] exception is thrown
-instead.
+mean value; an [[org.facsim.stats.InsufficientDataException]] exception is
+thrown instead.
 
 The mean value is determined as the arithmetic mean of the dataset's values.
 
@@ -288,7 +288,7 @@ Report sample variance of observed values.
 
 Calculation of the sample mean requires at least two observations to have been
 made; if this function is called for a dataset with fewer observations, an
-[[org.facsim.stats.InsufficientData!]] exception is thrown.
+[[org.facsim.stats.InsufficientDataException]] exception is thrown.
 
 The unbiased variance estimate for the sample
 represented by the dataset (using Bessel's correction); population variance is

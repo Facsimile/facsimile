@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -53,19 +53,16 @@ belongs.
 @param flags ''Cell'' flags associated with the ''cell'' owning these
 attributes.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@since 0.0
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //=============================================================================
 
 private [cell] final class Attributes (scene: CellScene, flags: CellFlags)
-extends CellAttributes
-with NotNull {
+extends CellAttributes {
 
 /**
 Flag indicating whether attribute data is present in the cell file.
@@ -82,52 +79,52 @@ color value.
 
   private val inheritColors = flags.colorsInherited
 
-/*
-@see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
+/**
+@inheritdoc
 */
 
   private [cell] override val faceColor = readColor (CellColorType.Face)
 
-/*
-@see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
+/**
+@inheritdoc
 */
 
   private [cell] override val edgeColor = readColor (CellColorType.Edge)
 
-/*
-If attributes are present, read the line type, otherwise use the default.
+/**
+@inheritdoc
 
-@see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
+If attributes are present, read the line type, otherwise use the default.
 */
 
   private [cell] override val lineStyle =
   if (attributesPresent) LineStyle.read (scene)
   else LineStyle.Default
 
-/*
-If attributes are present, read the line width, otherwise use the default.
+/**
+@inheritdoc
 
-@see [[org.facsim.anim.cell.CellAttributes!.lineWidth]]
+If attributes are present, read the line width, otherwise use the default.
 */
 
   private [cell] override val lineWidth =
   if (attributesPresent) LineWidth.read (scene)
   else LineWidth.default
 
-/*
-If attributes are present, read the line width, otherwise use the default.
+/**
+@inheritdoc
 
-@see [[org.facsim.anim.cell.CellAttributes!.displayStyle]]
+If attributes are present, read the line width, otherwise use the default.
 */
 
   private [cell] override val displayStyle =
   if (attributesPresent) DisplayStyle.read (scene)
   else DisplayStyle.Default
 
-/*
-If attributes are present, read the name; otherwise, this cell has no name.
+/**
+@inheritdoc
 
-@see [[org.facsim.anim.cell.CellAttributes!.name]]
+If attributes are present, read the name; otherwise, this cell has no name.
 */
 
   private [cell] override val name =
@@ -155,17 +152,21 @@ which is passed as an argument to an exception description message.
 
 @return Color if not inherited, `None` otherwise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@since 0.0
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
-  private final def readColor (colorType: CellColorType.Value) = {
+  private def readColor (colorType: CellColorType.Value) = {
+
+/*
+Sanity checks.
+*/
+
+    assertNonNull (colorType)
 
 /*
 If attributes are present, then we must read them from the file - even if we're

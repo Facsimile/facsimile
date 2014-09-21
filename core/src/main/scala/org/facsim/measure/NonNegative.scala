@@ -48,8 +48,8 @@ units.
 
 Subclasses are forbidden from having negative measurement values, which is
 appropriate for a number of unit families, including
-[[org.facsim.measure.Time$]], [[org.facsim.measure.Temperature$]],
-[[org.facsim.measure.Mass$]], etc.
+[[org.facsim.measure.Time]], [[org.facsim.measure.Temperature]],
+[[org.facsim.measure.Mass]], etc.
 
 @since 0.0
 */

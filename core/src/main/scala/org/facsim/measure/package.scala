@@ -55,10 +55,10 @@ measurements of that physical quantity can be expressed.  For instance,
 ''Facsimile'', such a set of units is termed a ''unit family''.
 
 Each unit family is encapsulated as a subclass of the
-[[org.facsim.measure.PhysicalQuantity!]] abstract base class.  For example,
-time units are encapsulated by the [[org.facsim.measure.TimeUnit!]] `Unit`
-subclass, mass units by the [[org.facsim.measure.MassUnit!]] `Unit` subclass,
-length units by the [[org.facsim.measure.LengthUnit!]]` `Unit` subclass, etc.
+[[org.facsim.measure.Physical]] abstract base class.  For example, time units
+are encapsulated by the [[org.facsim.measure.Time.TimeUnits]] `Unit` subclass,
+mass units by the [[org.facsim.measure.Mass.MassUnits]] `Unit` subclass, length
+units by the `[[org.facsim.measure.Length.LengthUnits]]` `Unit` subclass, etc.
 
 =Physical Quantity Units=
 
@@ -70,8 +70,8 @@ errors.
 
 Individual physical quantity units are represented by instances of the
 corresponding unit family class.  For example, ''seconds'', ''minutes'' and
-''hours'' are represented by instances of the [[org.facsim.measure.TimeUnit!]]
-class.
+''hours'' are represented by instances of the
+[[org.facsim.measure.Time.TimeUnits]] class.
 
 =Physical Quantity Measurements=
 
@@ -83,7 +83,7 @@ employed by the user, there are never conversion issues when merging models
 that use different units.
 
 @todo Expand on Facsimile's use of types for each measurement quantity.
-Instead of using a [[scala.Double!]], like other simulation systems, Facsimile
+Instead of using a [[scala.Double]], like other simulation systems, Facsimile
 uses different types for each measurement quantity.  Consequently, it's not
 possible to confuse a distance with a time, or a linear velocity with an
 angular velocity, or a mass with a temperature.  By employing an appropriate

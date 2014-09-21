@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scalafx.scene.transform.Scale
 
 //=============================================================================
@@ -54,6 +54,7 @@ Read string resource key.
 */
 
   private val ReadKey = "anim.cell.Scaling.read"
+
 //-----------------------------------------------------------------------------
 /**
 Read scale data from ''cell'' data stream.
@@ -62,11 +63,11 @@ Read scale data from ''cell'' data stream.
 
 @return A scaling transformation to be applied to the associated node.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Scaling.html
@@ -77,28 +78,34 @@ Scaling]]
   def read (scene: CellScene) = {
 
 /*
-Function to verify scaling values, which must all be > 0.
+Sanity checks.
 */
 
-    def verify (scale: Double) = scale > 0
+    assertNonNull (scene)
+
+/*
+Function to verify scaling values, which must all be != 0.
+*/
+
+    def verify (scale: Double) = scale != 0.0
 
 /*
 Read the X axis scaling from the data stream.
 */
 
-    val x = scene.readDouble (verify (_), LibResource (ReadKey, 0))
+    val x = scene.readDouble (verify, LibResource (ReadKey, 0))
 
 /*
 Read the Y axis translation from the data stream.
 */
 
-    val y = scene.readDouble (verify (_), LibResource (ReadKey, 1))
+    val y = scene.readDouble (verify, LibResource (ReadKey, 1))
 
 /*
 Read the Z axis translation from the data stream.
 */
 
-    val z = scene.readDouble (verify (_), LibResource (ReadKey, 2))
+    val z = scene.readDouble (verify, LibResource (ReadKey, 2))
 
 /*
 Convert to a Translate instance and return.

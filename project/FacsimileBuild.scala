@@ -45,12 +45,13 @@ same version of Scala that is used to build Facsimile (specified here).
 
 import sbt._
 import Keys._
-import com.typesafe.sbt.SbtGit
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import org.scalastyle.sbt.ScalastylePlugin
+import sbtrelease.ReleaseStateTransformations._
+import sbtrelease.{releaseTask, ReleaseStep, Version}
+import sbtrelease.ReleasePlugin.{releaseSettings, ReleaseKeys}
 import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
 import xerial.sbt.Sonatype._
 
@@ -84,20 +85,26 @@ employed as such during deployment to the Sonatype OSS Nexus repository.
   val projectGroupId = "org.facsim"
 
 /**
-Project base version number.
+Date the facsimile project was started.
 
-We employ the sbt-git plugin to uniquely version each commit, so that we can
-support '''`git bisect`'''. To guarantee support, even if git isn't installed
-(which raises interesting questions about how the source was obtained), we use
-JGit to handle git commands.
+This is the date that the project was announced on the Facsimile web-site
+(which was actually a few days after the project was registered on
+Sourceforge).
 
-For further information, refer to Josh Suereth's presentation on "Effective
-SBT" at Scala Days 2013:
-
-[[http://www.parleys.com/play/51c3790ae4b0d38b54f46259 Effective SBT]]
+DO NOT CHANGE THIS VALUE.
 */
 
-  val projectBaseVersion = "0.0"
+  val projectStartDate =
+  ZonedDateTime.parse ("2004-06-22T18:16:00-04:00[America/New_York]")
+
+/**
+Date this build was made.
+
+Ideally, this ought to be the date of the current commit, but the current time
+is probably OK for custom builds too.
+*/
+
+  val projectBuildDate = ZonedDateTime.now ()
 
 /**
 Project name.
@@ -124,24 +131,20 @@ Default settings.
 
 These settings are common to all projects.
 
-Note that we implement git versioning for artifacts (see note on
-projectBaseVersion above). Note: In the settings below, the assignment of the
-baseVersion value must follow the instruction to versionWithGit.
+Note that we implement release versioning for artifacts.
 
 NOTE: Previously, it was necessary to inherit from Defaults.defaultSettings,
 but this has been deprecated SBT as of 0.13.2. Since that release, it appears
 that default settings are automatically provided.
 */
 
-  lazy val defaultSettings = super.settings ++ SbtGit.useJGit ++
-  SbtGit.versionWithGit ++ (SbtGit.git.baseVersion:= projectBaseVersion) ++
-  Seq (
+  lazy val defaultSettings = super.settings ++ Seq (
 
 /*
 Scala cross compiling.
 */
 
-    crossScalaVersions := Seq ("2.10.4", "2.11.1"),
+    crossScalaVersions := Seq ("2.11.2"),
 
 /*
 Scala configuration.
@@ -171,21 +174,6 @@ rather than primary projects.
     publishArtifact := false,
 
 /*
-Even though we're not publishing anything, it appears that we still need to
-specify a location to publish to to prevent unnecessary output.
-*/
-
-    publishTo := Some (Resolver.file ("Unpublished files",
-    file ("target/unusedrepo"))),
-
-/*
-Ensure that doc only operates for the root project (using Unidoc) and not any
-subprojects.
-*/
-
-    sources in doc in Compile := List(),
-
-/*
 Exclude Java source directories (use Scala source directories only).
 
 NOTE: If this is not done, the sbteclipse plug-in creates src/main/java and
@@ -207,8 +195,23 @@ code to cell type map in org.facsim.anim.cell.CellScene). Although the inline
 warnings themselves will only be issued when -Yinline-warnings is specified,
 Scala will still emit a warning that inline warnings occurred, which is then
 treated as fatal by Xfatal-warnings. It seems that the only way around this,
-right now, is to disable -optimize. This must be reviewed when newer Scala
-releases become available.
+right now, is to disable -Xfatal-warnings. This is a known Scala compiler issue
+documented at https://issues.scala-lang.org/browse/SI-6723.
+
+-Xfatal-warnings is also disabled since there were some deliberate decisions
+taken (such as using the deprecated DelayedInit trait in org.facsim.App) that
+cannot currently be suppressed. (The Scala team have been deprecating a lot of
+features as of 2.11, but there are no alternatives to many of the deprecated
+classes, which is becoming a nuisance.)
+
+As Xfatal-warnings is not in use, it's possible to have builds that generate
+tons of warnings, but which do not fail a build. This is unacceptable.
+Facsimile must build clean, without any errors or warnings, as a basic
+requirement for any release to be performned.
+
+-Xstrict-inference is currently disabled as it outputs some erroneous warnings
+for some generic code. See https://issues.scala-lang.org/browse/SI-7991 for
+further details.
 */
 
     scalacOptions := Seq (
@@ -217,16 +220,19 @@ releases become available.
       "UTF-8",
       "-feature",
       "-g:vars",
-      //"-optimize",
+      "-optimize",
       "-target:jvm-1.7",
       "-unchecked",
       "-Xcheckinit",
-      //"-Xcheck-null",
-      "-Xfatal-warnings",
-      "-Xlint",
-      //"-Yinline-warnings",
-      "-Ynotnull",
-      "-Ywarn-all"
+      //"-Xfatal-warnings",
+      "-Xlint:_",
+      //"-Xstrict-inference",
+      "-Yclosure-elim",
+      "-Yconst-opt",
+      "-Ydead-code",
+      "-Yinline",
+      "-Yinline-handlers",
+      "-Yinline-warnings"
     ),
 
 /*
@@ -247,13 +253,9 @@ SBT-Eclipse plugin configuration.
 
 /*
 Required scala standard libraries.
-
-Scala 2.11 introduced a more modular library structure. This section allows
-dependencies to be specified by supported Scala version.
 */
 
-    libraryDependencies := {
-      CrossVersion.partialVersion (scalaVersion.value) match {
+    libraryDependencies ++= Seq (
 
 /*
 Scala 2.11+ dependencies.
@@ -262,28 +264,14 @@ The scala-xml package is currently only required by Scalatest, hence the "test"
 scope.
 */
 
-        case Some ((2, scalaMajor)) if scalaMajor >= 11 =>
-        libraryDependencies.value :+ "org.scala-lang.modules" %%
-        "scala-reflect" % scalaVersion.value
-        libraryDependencies.value :+ "org.scala-lang.modules" %% "scala-xml" %
-        "1.0.2" % "test"
-
-/*
-Scala 2.10 dependencies.
-*/
-
-        case _ =>
-        libraryDependencies.value :+ "org.scala-lang" % "scala-reflect" %
-        scalaVersion.value
-      }
-    },
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+      "org.scala-lang.modules" %% "scala-xml" % "1.0.2" % "test",
 
 /*
 Other base library dependencies.
 */
 
-    libraryDependencies ++= Seq (
-      "org.scalatest" %% "scalatest" % "2.1.6" % "test"
+      "org.scalatest" %% "scalatest" % "2.2.1" % "test"
     )
   )
 
@@ -303,20 +291,7 @@ Additional library dependencies.
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
-      "org.scalafx" %% "scalafx" % "8.0.0-R5-SNAPSHOT",
-
-/*
-Joda Time library for processing dates & times accurately.
-*/
-
-      "joda-time" % "joda-time" % "2.2",
-
-/*
-Joda Time Convert library for conversion of Joda dates & times to Java dates &
-times.
-*/
-
-      "org.joda" % "joda-convert" % "1.3.1"
+      "org.scalafx" %% "scalafx" % "8.0.5-R6-SNAPSHOT"
     )
   )
 
@@ -342,7 +317,8 @@ Unidoc.
 */
 
   lazy val facsimile = Project (projectArtifactId, file ("."), settings =
-  defaultSettings ++ sonatypeSettings ++ customUnidocSettings ++ Seq (
+  defaultSettings ++ releaseSettings ++ sonatypeSettings ++
+  customUnidocSettings ++ Seq (
 
 /*
 Maven POM (project object model) metadata.
@@ -384,7 +360,7 @@ version - which seems wrong, right now).
       OS, BSD and Unix on the Java virtual machine.
     """,
     homepage := projectHomepage,
-    startYear := Some (2004),
+    startYear := Some (projectStartDate.getYear),
     organizationName := "Michael J. Allen",
     organizationHomepage := projectHomepage,
     licenses := Seq (
@@ -403,33 +379,40 @@ version - which seems wrong, right now).
     pomIncludeRepository := {
       _ => false
     },
-    pomExtra := (
-      <developers>
-        <developer>
-          <id>mja</id>
-          <name>Michael J Allen</name>
-          <email>mike.allen@facsim.org</email>
-          <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
-          <organization>Hindsight Consulting, Inc.</organization>
-          <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
-          <roles>
-            <role>Project Lead</role>
-            <role>Architect</role>
-            <role>Developer</role>
-          </roles>
-          <timezone>US/Eastern</timezone>
-        </developer>
-      </developers>
-      <contributors>
-      </contributors>
-      <prerequisites>
-        <maven>3.0</maven>
-      </prerequisites>
-      <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/Facsimile/facsimile/issues</url>
-      </issueManagement>
-    ),
+    pomExtra :=
+    <developers>
+      <developer>
+        <id>mja</id>
+        <name>Michael J Allen</name>
+        <email>mike.allen@facsim.org</email>
+        <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
+        <organization>Hindsight Consulting, Inc.</organization>
+        <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
+        <roles>
+          <role>Project Lead</role>
+          <role>Architect</role>
+          <role>Developer</role>
+        </roles>
+        <timezone>US/Eastern</timezone>
+      </developer>
+    </developers>
+    <contributors>
+    </contributors>
+    <prerequisites>
+      <maven>3.0</maven>
+    </prerequisites>
+    <issueManagement>
+      <system>GitHub Issues</system>
+      <url>https://github.com/Facsimile/facsimile/issues</url>
+    </issueManagement>,
+
+/*
+Disable aggregation of the "doc" command, so that we do not attempt to generate
+documentation for "macros" and "core" individually - we just rely on the
+Unidoc plugin to take care of that for us.
+*/
+
+    aggregate in doc := false,
 
 /*
 Scaladoc configuration.
@@ -441,15 +424,19 @@ sub-classes.
     scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq (
       "-diagrams",
       "-doc-footer",
-      "Copyright © 2004-2014, Michael J Allen. All rights reserved.",
+      "Copyright © " + projectStartDate.getYear + "-" +
+      projectBuildDate.getYear + ", " + organizationName.value +
+      ". All rights reserved.",
       "-doc-format:html",
       "-doc-title",
       projectName + " API Documentation",
       "-doc-version",
-      projectBaseVersion,
+      version.value,
       "-groups",
       "-implicits",
-      "-Ymacro-no-expand"
+      "-no-link-warnings", // <- Temporarily disable warnings of bad links
+      "-Xfatal-warnings",
+      "-Ymacro-expand:none"
     ),
     autoAPIMappings := true,
     apiMappings += (
@@ -468,20 +455,22 @@ version of Facsimile in use by the dependent project.
 */
 
     apiURL := Some (url ("http://facsim.org/Documentation/API/" +
-    projectBaseVersion)),
+    version.value)),
 
 /*
 Manifest additions for the main library jar file.
 
 The jar file should be sealed so that the org.facsim packages cannot be
-extended. We also add a timestamp for eporting purposes.
+extended. We also add inception & build timestamps for manifest purposes.
 */
 
-    packageOptions in (Compile, packageBin) +=
-    Package.ManifestAttributes (Name.SEALED -> "true"),
-    packageOptions in (Compile, packageBin) +=
-    Package.ManifestAttributes ("Build-Timestamp" ->
-    LocalDateTime.now (ZoneOffset.UTC).toString),
+    packageOptions in (Compile, packageBin) ++= Seq (
+      Package.ManifestAttributes (Name.SEALED -> "true"),
+      Package.ManifestAttributes ("Inception-Timestamp" ->
+      projectStartDate.toString),
+      Package.ManifestAttributes ("Build-Timestamp" ->
+      projectBuildDate.toString)
+    ),
 
 /*
 Ensure that core and macro classes and sources are copied to the corresponding
@@ -495,7 +484,115 @@ distribution jar files.
     mappings in (Compile, packageSrc) ++= mappings.in (macros, Compile,
     packageSrc).value,
     mappings in (Compile, packageSrc) ++= mappings.in (core, Compile,
-    packageSrc).value
+    packageSrc).value,
+
+/*
+Ensure that the root project is an Eclipse project too, but without any source
+directories.
+*/
+
+    EclipseKeys.skipParents in ThisBuild := false,
+    unmanagedSourceDirectories in Compile := Nil,
+    unmanagedSourceDirectories in Test := Nil,
+
+/*
+Employ the following custom release process.
+
+This differs from the standard sbt-release process in that:
+ a) We must perform static source checking (using Scalastyle) before setting
+    the release version.
+ b) We employ the sbt-sonatype plugin to publish the project, which also takes
+    care of signing published artifacts.
+*/
+
+    ReleaseKeys.releaseProcess := Seq [ReleaseStep] (
+
+/*
+Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
+*/
+
+      checkSnapshotDependencies,
+
+/*
+Prompt for the version to be released and for the next development version.
+*/
+
+      inquireVersions,
+
+/*
+Clean all build files, to ensure the release is built from scratch.
+*/
+
+      runClean,
+
+/*
+Run the test suite, to verify that all tests pass.
+*/
+
+      runTest,
+
+/*
+Run scalastyle to ensure that sources are correctly formatted and contain no
+static errors.
+*/
+
+      //releaseTask (testScalastyle),
+
+/*
+Update the "Version.sbt" file so that it contains the release version number.
+*/
+
+      setReleaseVersion,
+
+/*
+Commit and tag the release version.
+*/
+
+      commitReleaseVersion,
+      tagRelease,
+
+/*
+Publish the released version to the Sonatype OSS repository.
+
+This will also take care of signing the release.
+*/
+
+      releaseTask (SonatypeKeys.sonatypeReleaseAll),
+
+/*
+Update the "Version.sbt" file so that it contains the new development version
+number.
+*/
+
+      setNextVersion,
+
+/*
+Commit the updated working directory, so that the new development version takes
+effect, and push all local commits to the "upstream" repository.
+
+Note: This will fail if an "upstream" repository has not been configured.
+*/
+
+      commitNextVersion,
+      pushChanges
+    ),
+
+/*
+By default, we'll bump the bug-fix/release number of the version following a
+release.
+*/
+
+    ReleaseKeys.versionBump := Version.Bump.Bugfix,
+
+/*
+Have the release plugin write current version information into Version.sbt, in
+the project's root directory.
+
+NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained
+under version control.
+*/
+
+    ReleaseKeys.versionFile := file ("Version.sbt")
   )).aggregate (core, macros)
 
 /**

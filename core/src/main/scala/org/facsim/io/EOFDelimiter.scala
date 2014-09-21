@@ -43,11 +43,12 @@ package org.facsim.io
 Delimiter for parsing the remainder of a text data stream as a single field,
 for use with [[org.facsim.io.TextReader!]]-based readers.
 
-@note If data has already been read from the stream, then a subsequence field
+@note If data has already been read from the stream, then a subsequent field
 read operation with this delimiter will return the remainder of the stream.
 
 @since 0.0
 */
 //=============================================================================
 
-object EOFDelimiter extends Delimiter (Set (), false)
+object EOFDelimiter
+extends Delimiter (Set (), false)

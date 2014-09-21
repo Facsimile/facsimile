@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -211,7 +211,7 @@ Verify a display style code.
 //-----------------------------------------------------------------------------
 
   private [cell] def verify (displayStyleCode: Int) =
-  (displayStyleCode >= minValue && displayStyleCode <= maxValue)
+  displayStyleCode >= minValue && displayStyleCode <= maxValue
 
 //-----------------------------------------------------------------------------
 /**
@@ -221,11 +221,11 @@ Read display style from ''cell'' data stream.
 
 @return Display style read, if valid.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
@@ -236,10 +236,16 @@ Display Styles]]
   private [cell] def read (scene: CellScene) = {
 
 /*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
+
+/*
 Read the display style code from the data stream.
 */
 
-    val code = scene.readInt (verify (_), LibResource
+    val code = scene.readInt (verify, LibResource
     ("anim.cell.DisplayStyle.read", minValue, maxValue))
 
 /*
@@ -261,7 +267,8 @@ opaque.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
-  private [cell] def asOpacity (displayStyle: Value) =
-  opacity (displayStyle.id)
+  private [cell] def asOpacity (displayStyle: Value) = {
+    assertNonNull (displayStyle)
+    opacity (displayStyle.id)
+  }
 }

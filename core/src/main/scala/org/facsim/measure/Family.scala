@@ -38,6 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
+import org.facsim.{assertNonNull, requireNonNull}
 import scala.collection.immutable.HashMap
 
 //=============================================================================
@@ -50,9 +51,9 @@ An instance having only zero base measure exponents has no units; i.e. it is
 
 @constructor Construct a new physical quantity family.  This constructor is
 private and should be called only from the
-[[org.facsim.measure.Family$.apply(Vector[Int])*]]
-method&mdash;the rationale being that we have the possibility to re-use
-existing instances rather than create new instances on each call.
+[[org.facsim.measure.Family.apply(Vector[Int])]] method&mdash;the rationale
+being that we have the possibility to re-use existing instances rather than
+create new instances on each call.
 
 @param exponents Vector of base unit exponents associated with this family.
 
@@ -61,8 +62,7 @@ existing instances rather than create new instances on each call.
 //=============================================================================
 
 final class Family private (private val exponents: Vector [Int])
-extends Equals
-with NotNull {
+extends Equals {
 
 /*
 Sanity check.  Since construction is tightly controlled, it should be
@@ -89,13 +89,17 @@ this instance.
 @return Physical quantity family resulting from the multiplication of this
 family by the specified `multiplier` family.
 
+@throws java.lang.NullPointerException if `multiplier` is `null`.
+
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  def * (multiplier: Family) = // scalastyle:ignore
-  Family (exponents.zip (multiplier.exponents).map ((p: (Int, Int)) => p._1 +
-  p._2))
+  def * (multiplier: Family) = { // scalastyle:ignore
+    requireNonNull (multiplier)
+    Family (exponents.zip (multiplier.exponents).map ((p: (Int, Int)) => p._1 +
+    p._2))
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -108,13 +112,17 @@ instance.
 @return Physical quantity family resulting from the division of this family by
 the specified `divisor` family.
 
+@throws java.lang.NullPointerException if `multiplier` is `null`.
+
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  def / (divisor: Family) = // scalastyle:ignore
-  Family (exponents.zip (divisor.exponents).map ((p: (Int, Int)) => p._1 -
-  p._2))
+  def / (divisor: Family) = { // scalastyle:ignore
+    requireNonNull (divisor)
+    Family (exponents.zip (divisor.exponents).map ((p: (Int, Int)) => p._1 -
+    p._2))
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -183,7 +191,7 @@ If we have any negative content, then append it to the positive content (which
 may be empty) separated by a slash.
 */
 
-    if (!negative.isEmpty) {
+    if (negative.nonEmpty) {
       positive.mkString ("") + Family.Slash + negative.mkString ("")
     }
 
@@ -247,7 +255,7 @@ If we have any negative content, then append it to the positive content (which
 may be empty) separated by a slash.
 */
 
-    if (!negative.isEmpty) {
+    if (negative.nonEmpty) {
       positive.mkString (Family.Space) + Family.Slash +
       negative.mkString (Family.Space)
     }
@@ -305,8 +313,7 @@ be compared as equal to this value, and they have the same contents, then that
 equals this.
 */
 
-    case other: Family => other.canEqual (Family.this) && exponents ==
-    other.exponents
+    case other: Family => other.canEqual (this) && exponents == other.exponents
 
 /*
 In that is any other type, then the two are not equal.
@@ -332,7 +339,7 @@ contract.
 */
 //-----------------------------------------------------------------------------
 
-  override def hashCode = exponents.hashCode
+  override def hashCode = exponents.hashCode ()
 
 //-----------------------------------------------------------------------------
 /*
@@ -355,8 +362,6 @@ Convert to a string.
 //=============================================================================
 /**
 Physical quantity family companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -433,7 +438,7 @@ zero.
 Register a specific physical quantity type with a family value.
 
 Registration should be performed once for each concrete
-[[org.facsim.measure.Specific!]] class instance.
+[[org.facsim.measure.Specific]] class instance.
 
 @param family Family value to be registered as associated with the
 '''specific''' class.
@@ -442,8 +447,10 @@ Registration should be performed once for each concrete
 */
 //-----------------------------------------------------------------------------
 
-  private [measure] def register (family: Family, specific: Specific):
-  Unit = synchronized {
+  private [measure] def register (family: Family, specific: Specific): Unit =
+  synchronized {
+    assertNonNull (family)
+    assertNonNull (specific)
     assert (!typeMap.contains (family))
     typeMap += (family -> specific)
   }
@@ -467,8 +474,6 @@ Apply method to obtain family corresponding to specified exponent values.
 @param luminousIntensityExponent Exponent of luminous intensity base family.
 
 @return corresponding physical quantity family instance.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -487,8 +492,6 @@ This method should only be called from within this file
 @param exponents Base family exponents vector.
 
 @return corresponding physical quantity family instance.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -546,10 +549,9 @@ Otherwise, this is a generic physical quantity. If it is unitless, then return
 an empty string.
 */
 
-      case None => {
-        if (family == unitless) ""
-        else family.baseSymbol
-      }
+      case None =>
+      if (family == unitless) ""
+      else family.baseSymbol
     }
   }
 
@@ -598,10 +600,9 @@ Otherwise, this is a generic physical quantity. If it is unitless, then return
 an empty string.
 */
 
-      case None => {
-        if (family == unitless) ""
-        else family.baseName
-      }
+      case None =>
+      if (family == unitless) ""
+      else family.baseName
     }
   }
 }

@@ -58,7 +58,7 @@ Function to retrieve a test resource file's URL.
 Files should be present in src/test/resources/cellFiles.
 */
 
-  def testRscFile (file: String) = getClass.getResource("cellFiles/" + file)
+  def testRscFile (file: String) = getClass.getResource ("/cellFiles/" + file)
 
 /**
 Trait populated with cell file URL's to be loaded.
@@ -113,7 +113,7 @@ Cell file load tests.
         new CellFiles {
           @tailrec
           def loadFile (list: List[URL]): Unit = {
-            if (list.isEmpty) {
+            if (!list.isEmpty) {
               CellLoader.load (list.head)
               loadFile (list.tail)
             }

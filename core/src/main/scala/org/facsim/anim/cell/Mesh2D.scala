@@ -52,13 +52,11 @@ primitives implemented as 2D meshes.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@since 0.0
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //=============================================================================
 

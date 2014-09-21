@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scalafx.scene.Group
 import scalafx.scene.text.{Text => SFXText}
 
@@ -59,11 +59,11 @@ this cell is the scene's root cell.
 
 @param textType Type of text represented by this instance.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
@@ -74,6 +74,12 @@ private [cell] abstract class Text (scene: CellScene, parent: Option [Set],
 textType: Text.Value)
 extends Cell (scene, parent) {
 
+/*
+Sanity checks.
+*/
+
+  assertNonNull (textType)
+
 /**
 Read the text from the stream.
 */
@@ -82,16 +88,15 @@ Read the text from the stream.
   ("anim.cell.Text.read", textType.id))
 
 //-----------------------------------------------------------------------------
-/*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
+/**
+@inheritdoc
 
-Note: We currently render World and Unrotate text types as World text, and do
-not render Screen text.
+@note We currently render ''World'' and ''Unrotate'' text types as World text,
+and do not render ''Screen'' text.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] final override def toNode = {
-    val thisTextList = this
 
 /*
 We render World text correctly, but, due to current limitations in the

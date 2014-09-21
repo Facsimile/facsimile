@@ -57,7 +57,7 @@ Population mean.
 @since 0.0
 */
 
-  val PopulationMean: String
+  def PopulationMean: String // scalastyle:ignore
 
 /**
 Estimate of population mean.
@@ -65,7 +65,7 @@ Estimate of population mean.
 @since 0.0
 */
 
-  val PopulationMeanEstimate: String
+  def PopulationMeanEstimate: String // scalastyle:ignore
 
 /**
 Population standard deviation.
@@ -73,7 +73,7 @@ Population standard deviation.
 @since 0.0
 */
 
-  val PopulationStandardDeviation: String
+  def PopulationStandardDeviation: String // scalastyle:ignore
 
 /**
 Estimate of population standard deviation.
@@ -81,7 +81,7 @@ Estimate of population standard deviation.
 @since 0.0
 */
 
-  val PopulationStandardDeviationEstimate: String
+  def PopulationStandardDeviationEstimate: String // scalastyle:ignore
 
 /**
 Population variance.
@@ -89,7 +89,7 @@ Population variance.
 @since 0.0
 */
 
-  val PopulationVariance: String
+  def PopulationVariance: String // scalastyle:ignore
 
 /**
 Estimate of population variance.
@@ -97,7 +97,7 @@ Estimate of population variance.
 @since 0.0
 */
 
-  val PopulationVarianceEstimate: String
+  def PopulationVarianceEstimate: String // scalastyle:ignore
 
 /**
 Sample minimum.
@@ -105,7 +105,7 @@ Sample minimum.
 @since 0.0
 */
 
-  val SampleMinimum: String
+  def SampleMinimum: String // scalastyle:ignore
 
 /**
 Sample mean.
@@ -113,7 +113,7 @@ Sample mean.
 @since 0.0
 */
 
-  val SampleMean: String
+  def SampleMean: String // scalastyle:ignore
 
 /**
 Sample maximum.
@@ -121,7 +121,7 @@ Sample maximum.
 @since 0.0
 */
 
-  val SampleMaximum: String
+  def SampleMaximum: String // scalastyle:ignore
 
 /**
 Sample standard deviation.
@@ -129,7 +129,7 @@ Sample standard deviation.
 @since 0.0
 */
 
-  val SampleStandardDeviation: String
+  def SampleStandardDeviation: String // scalastyle:ignore
 
 /**
 Sample variance.
@@ -137,5 +137,5 @@ Sample variance.
 @since 0.0
 */
 
-  val SampleVariance: String
+  def SampleVariance: String // scalastyle:ignore
 }

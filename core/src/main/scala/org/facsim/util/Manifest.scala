@@ -38,105 +38,81 @@ Scala source file from the org.facsim.util package.
 
 package org.facsim.util
 
-import java.io.File
-import java.net.URI
-import java.util.jar.JarFile
-import org.facsim.LibResource
-import org.joda.time.DateTime
+import java.time.ZonedDateTime
+import java.util.jar.{Manifest => JManifest}
+import org.facsim.{LibResource, requireNonNull}
 
 //=============================================================================
 /**
-Provide ''manifest'' information for the user's library or application.
+Provide ''manifest'' information for a library or application.
 
-To use this trait, simply create a concrete subclass instance; this instance
-can then be used to access the manifest information of the package (whether a
-library or an application) to which it belongs.
+The manifest attributes are stored within a file named `MANIFEST.MF` located in
+the `/META-INF` folder of the associated ''Java'' archive file (or ''jar
+file''). If there is no associated jar file, then no manifest information will
+be available.
 
-The manifest is provided by a file named `MANIFEST.MF` located in the
-`/META-INF` folder of the ''Java'' archive file (or ''jar file'') that contains
-the concrete `Manifest` subclass definition.  If this subclass does not belong
-to a jar file, then no manifest information will be available.
+@note ''Facsimile'' manifests, including the manifests of associated programs
+or simulation models, are expected to have a number of custom attributes that
+will not be present in all ''jar'' files.
+
+@constructor Create a new instance from a ''Java'' manifest instance.
+
+@param manifest [[java.util.jar.Manifest]] instance from which manifest
+attributes will be extracted.
+
+@throws java.lang.NullPointerException if `manifest` is `null`.
 
 @since 0.0
 */
 //=============================================================================
 
-trait Manifest {
-
-/**
-Manifest for the application.
-*/
-
-  private final val manifest = {
+final class Manifest private (private val manifest: JManifest) {
 
 /*
-If there's a simpler way of doing this, feel free to implement it!
+Sanity checks.
 
-This is expressed as a path within a jar file.  It is obtained by retrieving
-the name of the package to which this instance belongs, replacing any periods
-('.') with slashes ('/'), then prefixing the result with another slash.
-
-For example, if our concrete subclass has the fully-qualified name
-`com.mycompany.myproject.MyManifestClass`, then the resulting package path will
-be `/com/mycompany/myproject`.
-
-@note It doesn't matter whether the package containing the class is the root
-package of the jar file.
+Since construction is permitted only via companion factory methods, we can
+simply assert non null.
 */
 
-    val packagePath = '/' +: getClass.getPackage.getName.map {
-      c =>
-      if (c == '.') '/'
-      else c
-    }
-
-/*
-Now retrieve the URL for the package path.  If this value is null, indicating
-that we do not have an associated jar file, then return None as the manifest
-value.
-*/
-
-    val jarURL = getClass.getResource (packagePath)
-    if (jarURL eq null) None
-
-/*
-Otherwise, we have some further processing...
-*/
-
-    else {
-
-/*
-OK.  So that jarURL will be of the (String) form:
-
-jar:file:/{path-of-jar-file}!{pacakgePath}
-
-In order to create a jar file instance, we need to convert this into a
-hierarchical URI.  We do this using a regular expression extraction.  What we
-want is just the file:{path-of-jar-file} portion of the URL.
-*/
-
-      val jarExtractor = """^jar\:(.+)\!.+$""".r
-      val jarURI = jarURL.toString match {
-        case jarExtractor (uriString) => new URI (uriString)
-        case _ => throw new Error ()
-      }
-
-/*
-Now obtain a JarFile object from this URI.
-*/
-
-      val jarFile = new JarFile (new File (jarURI))
-      Option (jarFile.getManifest ())
-    }
-  }
+  assert (manifest ne null)
 
 /**
 Entries defined in the manifest.
 */
 
-  private final val entries = manifest match {
-    case None => new java.util.jar.Attributes ()
-    case Some (m) => m.getMainAttributes
+  private val entries = manifest.getMainAttributes
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve specified manifest attribute as a string.
+
+@param name Name of attribute to be retrieved.
+
+@return Attribute's value as a string, if the attributes is defined.
+
+@throws java.lang.IllegalArgumentException if `name` is not a valid element
+name.
+
+@throws java.util.NoSuchElementException if there is no attribute with `name`.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  def getAttribute (name: String) = {
+
+/*
+Verify the argument name.
+*/
+
+    requireNonNull (name)
+
+/*
+Look-up and return the element name.
+*/
+
+    getAttr (name)
   }
 
 //-----------------------------------------------------------------------------
@@ -147,58 +123,92 @@ Retrieve specified manifest attribute as a string.
 
 @return Attribute's value as a string, if the attributes is defined.
 
-@throws java.util.NoSuchElementException if there is there is no attribute with
-the specified name.
+@throws java.util.NoSuchElementException if there is no attribute with `name`.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def getAttribute (name: String) = {
+  private def getAttr (name: String) = {
 
 /*
-Attempt to retrieve the attribute value.
+Retrieve the specified attribute's value.
+
+This may throw an IllegalArgumentException if name isn't a valid attribute
+name.
 */
 
-    try {
-      entries.getValue (name)
-    }
+    val attribute = entries.getValue (name)
 
 /*
 If there was no such attribute, then throw a NoSuchElementException, as
 required.
 */
 
-    catch {
-      case e: IllegalArgumentException => throw new
-      NoSuchElementException (LibResource ("util.Manifest.NoSuchElement",
-      name))
-    }
+    if (attribute eq null) throw new NoSuchElementException (LibResource
+    ("util.Manifest.NoSuchElement.Attribute", name))
+
+/*
+Return the attribute.
+*/
+
+    attribute
   }
 
 //-----------------------------------------------------------------------------
 /**
-Retrieve the build timestamp of this manifest.
+Retrieve the inception timestamp of this manifest.
 
-This is a custom field that will likely be unavailable for many packages.  To
-include it in your jar files, ensure that the META-INF/MANIFEST.MF file
+This is a custom field that will likely be unavailable for many packages. To
+include it in your ''jar'' files, ensure that the META-INF/MANIFEST.MF file
 contains an entry of the following form:
 
-`Build-Timestamp: yyyy-MM-ddTHH:mm:ss.SSSZ`
+`Inception-Timestamp: ''timeformat''`
 
-Refer to the joda.time.DateTime.parse(String) documentation for further
-information on supported formats.
+where ''timeformat'' is a string that can be successfully parsed by
+[[java.time.ZonedDateTime.parse(CharSequence)]].
 
-@return Date and time that package associated with the manifest was built.
+@return Date & time that the associated project was started.
 
-@throws java.util.NoSuchElementException if the manifest has no build
+@throws java.util.NoSuchElementException if the manifest has no inception
 timestamp.
+
+@throws java.time.format.DateTimeParseException if the inception timestamp
+could not be parsed correctly.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def buildTimestamp = DateTime.parse (getAttribute ("Build-Timestamp"))
+  def inceptionTimestamp =
+  ZonedDateTime.parse (getAttr ("Inception-Timestamp"))
+
+//-----------------------------------------------------------------------------
+/**
+Retrieve the build timestamp of this manifest.
+
+This is a custom field that will likely be unavailable for many packages. To
+include it in your ''jar'' files, ensure that the META-INF/MANIFEST.MF file
+contains an entry of the following form:
+
+`Build-Timestamp: ''timeformat''`
+
+where ''timeformat'' is a string that can be successfully parsed by
+[[java.time.ZonedDateTime.parse(CharSequence)]].
+
+@return Date & time that the associated project was built.
+
+@throws java.util.NoSuchElementException if the manifest has no build
+timestamp.
+
+@throws java.time.format.DateTimeParseException if the build timestamp could
+not be parsed correctly.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  def buildTimestamp = ZonedDateTime.parse (getAttr ("Build-Timestamp"))
 
 //-----------------------------------------------------------------------------
 /**
@@ -206,13 +216,14 @@ Title of this application or library.
 
 @return Manifest implementation title.
 
-@throws java.util.NoSuchElementException if the manifest has no title field.
+@throws java.util.NoSuchElementException if the manifest has no implementation
+title field.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def title = getAttribute ("Implementation-Title")
+  def title = getAttr ("Implementation-Title")
 
 //-----------------------------------------------------------------------------
 /**
@@ -228,7 +239,7 @@ This may be an individual or an organization, depending upon circumstances.
 */
 //-----------------------------------------------------------------------------
 
-  final def vendor = getAttribute ("Implementation-Vendor")
+  def vendor = getAttr ("Implementation-Vendor")
 
 //-----------------------------------------------------------------------------
 /**
@@ -242,7 +253,7 @@ Version of this release of this application or library.
 */
 //-----------------------------------------------------------------------------
 
-  final def version = new Version (getAttribute ("Implementation-Version"))
+  def version = new Version (getAttr ("Implementation-Version"))
 
 //-----------------------------------------------------------------------------
 /**
@@ -250,14 +261,14 @@ Title of the specification to which this application or library conforms.
 
 @return Manifest specification title.
 
-@throws org.facsim.inf.MissingManifestDataException if
-the manifest specification title field is undefined.
+@throws java.util.NoSuchElementException if the manifest specification title
+field is undefined.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final def specTitle = getAttribute ("Specification-Title")
+  def specTitle = getAttr ("Specification-Title")
 
 //-----------------------------------------------------------------------------
 /**
@@ -275,7 +286,7 @@ vendor field.
 */
 //-----------------------------------------------------------------------------
 
-  final def specVendor = getAttribute ("Specification-Vendor")
+  def specVendor = getAttr ("Specification-Vendor")
 
 //-----------------------------------------------------------------------------
 /**
@@ -291,5 +302,83 @@ version field.
 */
 //-----------------------------------------------------------------------------
 
-  final def specVersion = new Version (getAttribute ("Specification-Version"))
+  def specVersion = new Version (getAttr ("Specification-Version"))
+}
+
+//=============================================================================
+/**
+Manifest companion object.
+
+Object defining factory methods for obtaining [[org.facsim.util.Manifest]]
+instances.
+*/
+//=============================================================================
+
+object Manifest {
+
+//-----------------------------------------------------------------------------
+/**
+Element type manifest factory method.
+
+Create and return a new [[org.facsim.util.Manifest]] instance by retrieving the
+manifest associated with the specified specified `element` type.
+
+@param elementType Element type instance for which manifest information will be
+obtained.
+
+@return Resource [[org.facsim.util.Manifest!]] information associated with
+`elementType`.
+
+@throws java.lang.NullPointerException if `elementType` is `null`.
+
+@throws java.util.NoSuchElementException if `elementType` was not obtained from
+a ''jar'' file, or if a manifest could not be obtained from its ''jar'' file.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  def apply (elementType: Class [_]) = {
+
+/*
+Argument verification.
+*/
+
+    requireNonNull (elementType)
+
+/*
+Retrieve the resource URL associated with this type.
+
+Note: This may result in a NoSuchElement exception being thrown.
+*/
+
+    val url = resourceUrl (elementType)
+
+/*
+Retrieve the identified JAR file.
+
+Note: This may result in a NoSuchElement exception being thrown.
+*/
+
+    val jar = jarFile (url)
+
+/*
+Now the JAR file's manifest.
+*/
+
+    val manifest = jar.getManifest
+
+/*
+If there is no manifest, then throw an exception.
+*/
+
+    if (manifest eq null) throw new NoSuchElementException (LibResource
+    ("util.Manifest.NoSuchElement.Missing", elementType.getName, jar.getName))
+
+/*
+Create and return manifest instance for this element.
+*/
+
+    new Manifest (manifest)
+  }
 }

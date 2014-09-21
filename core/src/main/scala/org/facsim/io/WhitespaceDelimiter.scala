@@ -47,5 +47,5 @@ Delimiter for parsing whitespace-delimited data fields, for use with
 */
 //=============================================================================
 
-object WhitespaceDelimiter extends Delimiter (Set (TextReader.SPC,
-TextReader.HT, TextReader.LF), true)
+object WhitespaceDelimiter
+extends Delimiter (Set (TextReader.SPC, TextReader.HT, TextReader.LF), true)

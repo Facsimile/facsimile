@@ -32,61 +32,49 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.test package.
+Scala source file from the org.facsim.gui package.
 */
 //=============================================================================
 
-package org.facsim.test
+package org.facsim.gui
 
-import org.facsim.BehaviorUndefinedException
-import org.scalatest.FunSpec
+import java.io.OutputStream
+import javafx.scene.control.TextArea
+import org.facsim.assertNonNull
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim.BehaviorUndefinedException!]] class.
+Class that writes output into a text area element.
+
+@param textArea Text area to be written to.
 */
 //=============================================================================
 
-class BehaviorUndefinedExceptionTest extends FunSpec {
+private [gui] final class LogOutputStream (private val textArea: TextArea)
+extends OutputStream {
 
+/*
+Sanity check.
+*/
+
+  assertNonNull (textArea)
+
+//-----------------------------------------------------------------------------
 /**
-Test trait.
+Write a single character into the log window.
+
+@todo This may be a problem if the executing thread is not the ''JavaFX
+Application Thread'' (''JAT''). If so, it would be necessary to use the
+[[javafx.application.Platform.runLater(Runnable)]] method to append text to the
+text area on the JAT. However, it would be very inefficient to schedule every
+single character to be written in this way. Instead, each line of output would
+need to be buffered and only written to the text area when a line termination
+sequence is encountered.
+
+@param c Character to be written.
 */
+//-----------------------------------------------------------------------------
 
-  trait TestData {
-    val e = new BehaviorUndefinedException ()
-  }
-
-/*
-Test fixture description.
-*/
-
-  describe (classOf [BehaviorUndefinedException].getCanonicalName) {
-
-/*
-Construction tests.
-*/
-
-    describe (".this ()") {
-      it ("must construct OK") {
-        new TestData {
-          assert (e ne null)
-        }
-      }
-    }
-
-/*
-Test getMessage.
-*/
-
-    describe (".getMessage ()") {
-      it ("must return correct message") {
-        new TestData {
-          assert (e.getMessage () === "Attempt to access org.facsim.App " +
-          "behavior failed because no org.facsim.Behavior instance been been "
-          + "applied.")
-        }
-      }
-    }
-  }
+  override def write (c: Int): Unit =
+  textArea.appendText (String.valueOf (c.toChar))
 }

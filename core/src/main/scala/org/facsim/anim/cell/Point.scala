@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import org.facsim.anim.Point3D
 
 //=============================================================================
@@ -51,15 +51,22 @@ Class representing a basic cell point in 3D space.
 
 @param pointType Type of point represented by this instance.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //=============================================================================
 
 private [cell] class Point (scene: CellScene, pointType: Point.Value) {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (scene)
+  assertNonNull (pointType)
 
 /**
 Read the 3D point from the cell data stream.
@@ -111,15 +118,22 @@ Read a point from the cell scene and return it.
 
 @return Point read from the scene.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   def read (scene: CellScene, pointType: Value): Point3D = {
+
+/*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
+    assertNonNull (pointType)
 
 /**
 Read the point's X coordinate.

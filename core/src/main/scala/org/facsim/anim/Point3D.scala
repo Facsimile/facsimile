@@ -61,8 +61,7 @@ value.
 */
 //=============================================================================
 
-private [anim] final case class Point3D (x: Double, y: Double, z: Double)
-extends NotNull {
+private [anim] final case class Point3D (x: Double, y: Double, z: Double) {
 
 /*
 Sanity checks.

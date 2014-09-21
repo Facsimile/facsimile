@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scalafx.scene.text.{Text => SFXText}
 
 //=============================================================================
@@ -54,19 +54,23 @@ Refer to [[org.facsim.anim.cell.VectorList!]] for further information.
 
 @param textType Type of text represented by this instance.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
-
-@since 0.0
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //=============================================================================
 
 private [cell] final class TextListPoint (scene: CellScene,
 textType: Text.Value)
 extends Point (scene, Point.TextList) {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (textType)
 
 /**
 Read the text from the stream.
@@ -82,14 +86,25 @@ Convert this text list point to a text node.
 @param textList Text list ''cell'' to which this point belongs.
 
 @return A ''ScalaFX'' text node to be added to the ''cell'' scene.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def toTextNode (textList: TextList) = new SFXText {
-    transforms = Seq (point.toTranslate)
-    stroke = textList.cellPaint
-    text = textValue
+  private [cell] def toTextNode (textList: TextList) = {
+
+/*
+Sanity checks.
+*/
+
+    assertNonNull (textList)
+
+/*
+Create the new text element.
+*/
+
+    new SFXText {
+      transforms = Seq (point.toTranslate)
+      stroke = textList.cellPaint
+      text = textValue
+    }
   }
 }

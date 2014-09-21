@@ -38,9 +38,9 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.assertNonNull
 import scalafx.scene.Node
 import scalafx.scene.paint.Color
-import scalafx.scene.transform.Transform
 
 //=============================================================================
 /**
@@ -57,23 +57,27 @@ File Format]] for further information.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod Cell
 File Format]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
 private [cell] abstract class Cell (scene: CellScene,
 private val parent: Option [Set])
-extends CellAttributes
-with NotNull {
+extends CellAttributes {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (scene)
+  assertNonNull (parent)
 
 /**
 Cell flags.
@@ -126,26 +130,26 @@ Cell transformation data.
   flags.geometryDataInMatrixForm))
   else None
 
-/*
-@see [[org.facsim.anim.cell.CellAttributes!.lineStyle]]
+/**
+@inheritdoc
 */
 
   private [cell] final override val lineStyle = attrs.lineStyle
 
-/*
-@see [[org.facsim.anim.cell.CellAttributes!.lineWidth]]
+/**
+@inheritdoc
 */
 
   private [cell] final override val lineWidth = attrs.lineWidth
 
-/*
-@see [[org.facsim.anim.cell.CellAttributes!.displayStyle]]
+/**
+@inheritdoc
 */
 
   private [cell] final override val displayStyle = attrs.displayStyle
 
-/*
-@see [[org.facsim.anim.cell.CellAttributes!.name]]
+/**
+@inheritdoc
 */
 
   private [cell] final override val name = attrs.name
@@ -156,8 +160,6 @@ Face color of the parent.
 
 @return If we have a parent, then return it's face color. Otherwise, we return
 the scene's default face color as an option.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -172,8 +174,6 @@ Edge color of the parent.
 
 @return If we have a parent, then return it's edge color. Otherwise, we return
 the scene's default edge color as an option.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -183,13 +183,14 @@ the scene's default edge color as an option.
   }
 
 //-----------------------------------------------------------------------------
-/*
-Face color is determined thus:
-- If face color is defined, return it.
-- Otherwise, if parent is defined, return its face color.
-- Otherwise, use this scene's default face color.
+/**
+@inheritdoc
 
-@see [[org.facsim.anim.cell.CellAttributes!.faceColor]]
+Face color is determined thus:
+  - If face color is defined, return it.
+  - Otherwise, if color is inherited and parent is defined, return its face
+    color.
+  - Otherwise, use this scene's default face color.
 */
 //-----------------------------------------------------------------------------
 
@@ -197,13 +198,14 @@ Face color is determined thus:
   attrs.faceColor.orElse (parentFaceColor)
 
 //-----------------------------------------------------------------------------
-/*
-Edge color is determined thus:
-- If edge color is defined, return it.
-- Otherwise, if parent is defined, return its edge color.
-- Otherwise, use this scene's default edge color.
+/**
+@inheritdoc
 
-@see [[org.facsim.anim.cell.CellAttributes!.edgeColor]]
+Edge color is determined thus:
+  - If edge color is defined, return it.
+  - Otherwise, if color is inherited and parent is defined, return its edge
+    color.
+  - Otherwise, use this scene's default edge color.
 */
 //-----------------------------------------------------------------------------
 
@@ -214,10 +216,8 @@ Edge color is determined thus:
 /**
 Report whether this cell is wireframe or not.
 
-@return `true` if the cell is drawn in wireframe mode, `false if solid (with
+@return `true` if the cell is drawn in wireframe mode, `false` if solid (with
 varying degrees of transparency.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -234,8 +234,6 @@ otherwise, with face color.
 
 @return Cell color with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -252,8 +250,6 @@ otherwise, with face color.
 
 @return Cell color with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -270,8 +266,6 @@ otherwise, with face color.
 
 @return Material with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -290,8 +284,6 @@ otherwise, with face color.
 
 @return Paint with which the cell is to be drawn. A valid color must be defined
 at some point in the chain of face/edge colors.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -303,8 +295,6 @@ Opacity of this cell.
 
 @return Opacity of the cell as a value in the range 0 (invisible) through 1
 (fully opaque).
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -317,8 +307,6 @@ Transforms for this cell relative to its parent.
 
 @return A sequence of transforms to be applied to the cell relative to its
 parent.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -333,8 +321,6 @@ Function to convert this ''cell'' and its contents (if any) to a ''ScalaFX''
 [[scalafx.scene.Node!]] instance.
 
 @return Cell as a [[scalafx.scene.Node!]].
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 

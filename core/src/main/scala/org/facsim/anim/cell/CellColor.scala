@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scalafx.scene.paint.Color
 import scalafx.scene.paint.PhongMaterial
 
@@ -222,14 +222,16 @@ Conversion of ''cell'' color to ''ScalaFX'' color.
 @note This could be made an implicit function, but that might encourage the use
 of ''cell'' colors in regular code, when ideally we want to bury them.
 
-@param ''Cell'' color value to be converted.
+@param color ''Cell'' color value to be converted.
 
 @return Corresponding ''ScalaFX'' color.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
-  private [cell] def toColor (color: CellColor.Value) = cellToColor (color.id)
+  private [cell] def toColor (color: CellColor.Value) = {
+    assertNonNull (color)
+    cellToColor (color.id)
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -238,15 +240,16 @@ Conversion of ''cell'' color to ''ScalaFX'' material.
 @note This could be made an implicit function, but that might encourage the use
 of ''cell'' colors in regular code, when ideally we want to bury them.
 
-@param ''Cell'' color value to be converted.
+@param color ''Cell'' color value to be converted.
 
 @return Corresponding ''ScalaFX'' material.
 */
 //-----------------------------------------------------------------------------
 
-  @inline
-  private [cell] def toMaterial (color: CellColor.Value) =
-  cellToMaterial (color.id)
+  private [cell] def toMaterial (color: CellColor.Value) = {
+    assertNonNull (color)
+    cellToMaterial (color.id)
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -271,11 +274,11 @@ Read color from ''cell'' data stream.
 
 @return Cell color read, if valid.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
@@ -284,6 +287,13 @@ Face & Edge Colors]]
 
   private [cell] def read (scene: CellScene, colorType: CellColorType.Value) =
   {
+
+/*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
+    assertNonNull (colorType)
 
 /*
 Read the color code from the data stream.

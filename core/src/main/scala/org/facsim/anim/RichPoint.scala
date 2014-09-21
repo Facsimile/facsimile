@@ -57,4 +57,3 @@ associated texture point.
 
 private [anim] final case class RichPoint (val point: Point3D,
 val texturePoint: TexturePoint)
-extends NotNull

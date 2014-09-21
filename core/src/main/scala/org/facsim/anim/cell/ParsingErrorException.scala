@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.assertNonNull
+
 //=============================================================================
 /**
 Thrown if errors are encountered during parsing of a ''cell'' file.
@@ -53,4 +55,13 @@ Thrown if errors are encountered during parsing of a ''cell'' file.
 //=============================================================================
 
 final class ParsingErrorException private [cell] (msg: String, e: Throwable)
-extends RuntimeException (msg, e)
+extends RuntimeException (msg, e) {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (msg)
+  assertNonNull (e)
+}
+

@@ -32,24 +32,28 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim package.
+Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-package org.facsim
+package org.facsim.engine
+
+import org.facsim.LibResource
 
 //=============================================================================
 /**
-Thrown if an attempt to access an [[org.facsim.App$]]'s behavior before any
-[[org.facsim.Behavior!]] has been applied.
+Thrown if an attempt is made to execute a null action.
 
-@constructor Create new undefined behavior exception.
+In general, this should be regarded as abnormal termination of a simulation
+run and treated accordingly.
+
+@constructor Create new null action exception.
 
 @since 0.0
 */
 //=============================================================================
 
-final class BehaviorUndefinedException private [facsim] ()
+final class NullActionException private [facsim]
 extends RuntimeException {
 
 //-----------------------------------------------------------------------------
@@ -58,5 +62,5 @@ extends RuntimeException {
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage = LibResource ("BehaviorUndefined")
+  override def getMessage =  LibResource ("engine.NullAction")
 }

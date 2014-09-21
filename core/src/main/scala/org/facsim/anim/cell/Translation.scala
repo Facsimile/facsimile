@@ -44,8 +44,6 @@ import scalafx.scene.transform.Translate
 //=============================================================================
 /**
 Translation object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -65,17 +63,15 @@ Read translation data from ''cell'' data stream.
 
 @return A translation transformation to be applied to the associated node.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Translation.html
 Translation]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 

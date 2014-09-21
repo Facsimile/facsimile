@@ -57,17 +57,15 @@ Embedded Files]] for further information.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[
 http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledEmbedded.html
 Embedded Files]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -77,13 +75,13 @@ extends File (scene, parent) {
   throw new NotImplementedError (LibResource ("anim.cell.EmbeddedFile"))
 
 //-----------------------------------------------------------------------------
-/*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
+/**
+@inheritddoc
 
-EmbeddedFile elements currently cannot be rendered. See Issue 7 for further
-details.
+@note EmbeddedFile elements currently cannot be rendered. See Issue 7 for
+further details.
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] final override def toNode = new Group ()
+  private [cell] override def toNode = new Group ()
 }

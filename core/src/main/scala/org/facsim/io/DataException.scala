@@ -50,10 +50,9 @@ exceptions must implement ''failure atomicity''.
 @param row Row in data stream at which exception was detected.
 
 @param column Column in data stream at which the exception was detected.
-
-@since 0.0
 */
 //=============================================================================
 
-private [io] abstract class DataException (final val row: Int, final val
-column: Int) extends Exception
+private [io] abstract class DataException (final val row: Int,
+final val column: Int)
+extends Exception

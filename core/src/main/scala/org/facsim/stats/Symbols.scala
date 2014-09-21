@@ -50,73 +50,73 @@ object Symbols
 extends Nomenclature {
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationMean = LibResource ("stats.Symbols.PopulationMean")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationMeanEstimate =
   LibResource ("stats.Symbols.PopulationMeanEstimate")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationStandardDeviation =
   LibResource ("stats.Symbols.PopulationStandardDeviation")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationStandardDeviationEstimate =
   LibResource ("stats.Symbols.PopulationStandardDeviationEstimate")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationVariance =
   LibResource ("stats.Symbols.PopulationVariance")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val PopulationVarianceEstimate =
   LibResource ("stats.Symbols.PopulationVarianceEstimate")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleMaximum = LibResource ("stats.Symbols.SampleMaximum")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleMean = LibResource ("stats.Symbols.SampleMean")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleMinimum = LibResource ("stats.Symbols.SampleMinimum")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleStandardDeviation =
   LibResource ("stats.Symbols.SampleStandardDeviation")
 
 /**
-@inheritdoc.
+@inheritdoc
 */
 
   override val SampleVariance = LibResource ("stats.Symbols.SampleVariance")

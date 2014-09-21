@@ -38,8 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
-import org.facsim.requireValid
+import org.facsim.{assertNonNull, requireValid, LibResource}
 
 //=============================================================================
 /**
@@ -53,8 +52,6 @@ currently appears (Scala 2.10).
 @constructor Create a new valid line width value.
 
 @param lineWidth Line width value in pixels.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -70,8 +67,6 @@ Verify that the value is within the valid range.
 //=============================================================================
 /**
 Line width companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -102,13 +97,11 @@ Verify that an integer line width value is valid.
 @param lineWidth Line width value, in pixels, to be verified.
 
 @return `true` if `lineWidth` is a valid value, `false` otherwise.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] def verify (lineWidth: Int) = (lineWidth >= minValue &&
-  lineWidth <= maxValue)
+  private [cell] def verify (lineWidth: Int) = lineWidth >= minValue &&
+  lineWidth <= maxValue
 
 //-----------------------------------------------------------------------------
 /**
@@ -118,27 +111,31 @@ Read line width from ''cell'' data stream.
 
 @return Line width read, if valid.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
 Line Width]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def read (scene: CellScene) = {
 
 /*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
+
+/*
 Read the line width value from the data stream.
 */
 
-    val code = scene.readInt (verify (_), LibResource
-    ("anim.cell.LineWidth.read", minValue, maxValue))
+    val code = scene.readInt (verify, LibResource ("anim.cell.LineWidth.read",
+    minValue, maxValue))
 
 /*
 Convert to a line width and return.

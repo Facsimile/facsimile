@@ -139,10 +139,10 @@ Instances of this class represent ''luminous intensity'' measurements.
 luminous intensity]]'' measurement value.
 
 @param measure ''Luminous intensity'' measurement expressed in
-''[[org.facsim.measure.LuminousIntensity$.candelas]]''. This value must be
+''[[org.facsim.measure.LuminousIntensity.Candelas]]''. This value must be
 finite and greater than or equal to zero.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+@throws java.lang.IllegalArgumentException if `measure` is not finite or
 is negative.
 
 @since 0.0

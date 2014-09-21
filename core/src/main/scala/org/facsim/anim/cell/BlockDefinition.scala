@@ -53,17 +53,15 @@ Block Definitions]] for further information.
 
 @param parent This value should be None for a Definition.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[
 http://facsim.org/Documentation/Resources/AutoModCellFile/BlockDefinitions.html
 Block Definitions]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 

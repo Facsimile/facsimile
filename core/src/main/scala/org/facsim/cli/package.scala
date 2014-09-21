@@ -32,7 +32,7 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim package.
+Scala source file defining the org.facsim.cli package.
 */
 //=============================================================================
 
@@ -40,33 +40,17 @@ package org.facsim
 
 //=============================================================================
 /**
-Thrown if use of deprecated feature is attempted.
-
-@note This exception should only be thrown in extreme cases. Not every
-''deprecated'' class or function should throw this exception when referenced;
-if so, releases containing newly deprecated features would break a lot of
-existing user models&mdash;and that would not be good!  Instead, it should only
-be thrown only if a previously deprecated feature becomes unsupportable, or if
-a feature is deliberately unsupported from day one of its use.
-
-@constructor Create new deprecation  exception.
-
-@param feature Feature (typically a class, constructor, function, trait,
-object, etc.) that has been flagged as being both deprecated and unsupported.
+''Facsimile command line interface'' (''CLI'') elements.
 
 @since 0.0
 */
 //=============================================================================
 
-final class DeprecatedException private [facsim] (feature: AnyRef)
-extends RuntimeException {
+package object cli {
 
-//-----------------------------------------------------------------------------
-/*
-@see [[java.lang.Throwable!.getMessage()]]
+/**
+Shorthand for CLI application type.
 */
-//-----------------------------------------------------------------------------
 
-  final override def getMessage = LibResource ("BehaviorUndefined",
-  feature.toString)
+  type CliApplication = CliApp with AppInformation
 }

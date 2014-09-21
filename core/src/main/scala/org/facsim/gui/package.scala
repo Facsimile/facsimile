@@ -32,64 +32,28 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.test package.
+Scala source file defining the org.facsim.gui package.
 */
 //=============================================================================
 
-package org.facsim.test
-
-import org.facsim.Behavior
-import org.facsim.BehaviorRedefinitionException
-import org.facsim.LibResource
-import org.scalatest.FunSpec
+package org.facsim
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim.BehaviorRedefinitionException!]] class.
+''Facsimile graphical user interface'' (''GUI'') elements.
+
+@note Facsimile utilizes the ''[http://docs.oracle.com/javafx JavaFX]]'' rich
+client library to provide user interface facilities, as well as 3D animation.
+
+@since 0.0
 */
 //=============================================================================
 
-class BehaviorRedefinitionExceptionTest
-extends FunSpec {
+package object gui {
 
 /**
-Test trait.
+Shorthand for GUI application type.
 */
 
-  trait TestData {
-    val b = new Behavior {}
-    val e = new BehaviorRedefinitionException (b, b)
-  }
-
-/*
-Test fixture description.
-*/
-
-  describe (classOf [BehaviorRedefinitionException].getCanonicalName) {
-
-/*
-Construction tests.
-*/
-
-    describe (".this ()") {
-      it ("must construct OK") {
-        new TestData {
-          assert (e ne null)
-        }
-      }
-    }
-
-/*
-Test getMessage.
-*/
-
-    describe (".getMessage ()") {
-      it ("must return correct message") {
-        new TestData {
-          assert (e.getMessage () === LibResource ("BehaviorRedefinition", b,
-          b))
-        }
-      }
-    }
-  }
+  type GuiApplication = GuiApp with AppInformation
 }

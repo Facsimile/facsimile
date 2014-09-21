@@ -56,17 +56,15 @@ File References]] for further information.
 
 @param parent This value should be None for a Definition.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/FileReference.html
 File References]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -89,13 +87,13 @@ cell file format, which uses spaces as field delimiter characters.
   ("anim.cell.FileReference.read"))
 
 //-----------------------------------------------------------------------------
-/*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
+/**
+@inheritdoc
 
-File Reference definition elements currently cannot be rendered. See Issue 6
-for further details.
+@note File Reference definition elements currently cannot be rendered. See
+Issue 6 for further details.
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] final override def toNode = new Group ()
+  private [cell] override def toNode = new Group ()
 }

@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -47,9 +47,7 @@ Value class representing a ''cell'' element's flags.
 @constructor Create a new ''cell'' flags instance from an integer bit-field
 value.
 
-@param scene Scene from which the current cell's flags should be read.
-
-@since 0.0
+@param flags ''Cell'' element's flags to be parsed.
 */
 //=============================================================================
 
@@ -61,17 +59,15 @@ extends AnyVal {
 Report whether the ''attributes present'' flag is set.
 
 If this flag is set, then the cell's definition includes explicitly defined
-[[org.facsim.anim.cell.Attributes!]]; if clear, then default `Attributes` will
-be assigned.
+[[org.facsim.anim.cell.Attributes]]; if clear, then default attributes will be
+assigned.
 
 @return `true` if attributes are present in the ''cell'' definition; `false` if
 not.
-
-@since 0.0
- */
+*/
 //-----------------------------------------------------------------------------
 
-  private [cell] def attributesPresent = ((flags & 0x1) != 0)
+  private [cell] def attributesPresent = (flags & 0x1) != 0
 
 //-----------------------------------------------------------------------------
 /**
@@ -82,12 +78,10 @@ data; if clear, no joint data is present.
 
 @return `true` if joint data is present in the ''cell'' definition; `false` if
 not.
-
-@since 0.0
- */
+*/
 //-----------------------------------------------------------------------------
 
-  private [cell] def jointDataPresent = ((flags & 0x2) != 0)
+  private [cell] def jointDataPresent = (flags & 0x2) != 0
 
 //-----------------------------------------------------------------------------
 /**
@@ -101,12 +95,10 @@ rotation and scaling data, rather than shape geometry.
 
 @return `true` if geometry data is present in the ''cell'' definition; `false`
 if not.
-
-@since 0.0
- */
+*/
 //-----------------------------------------------------------------------------
 
-  private [cell] def geometryDataPresent = ((flags & 0x4) != 0)
+  private [cell] def geometryDataPresent = (flags & 0x4) != 0
 
 //-----------------------------------------------------------------------------
 /**
@@ -124,12 +116,10 @@ rotation and scaling data, rather than shape geometry.
 
 @return `true` if geometry data is in matrix form in the ''cell'' definition;
 `false` if in non-matrix form.
-
-@since 0.0
- */
+*/
 //-----------------------------------------------------------------------------
 
-  private [cell] def geometryDataInMatrixForm = ((flags & 0x8) != 0)
+  private [cell] def geometryDataInMatrixForm = (flags & 0x8) != 0
 
 //-----------------------------------------------------------------------------
 /**
@@ -139,14 +129,12 @@ If this flag is set, then the cell's face and edge colors are inherited from
 its parent; if clear, then it has defined colors that are not inherited from
 its parent.
 
-@return `true` if colors are inherited from the ''cell'''s parent; `false` if
+@return `true` if colors are inherited from the ''cell's'' parent; `false` if
 not.
-
-@since 0.0
- */
+*/
 //-----------------------------------------------------------------------------
 
-  private [cell] def colorsInherited = ((flags & 0x10) != 0)
+  private [cell] def colorsInherited = (flags & 0x10) != 0
 
 //-----------------------------------------------------------------------------
 /**
@@ -159,19 +147,15 @@ specification is provided.
 @note Bounding box information is read but discarded by ''Facsimile''.
 
 @return `true` if ''bounding box data'' is present; `false` if not.
-
-@since 0.0
- */
+*/
 //-----------------------------------------------------------------------------
 
-  private [cell] def boundingBoxPresent = ((flags & 0x40) != 0)
+  private [cell] def boundingBoxPresent = (flags & 0x40) != 0
 }
 
 //=============================================================================
 /**
 CellFlags companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -185,20 +169,24 @@ Read ''cell'' flags from data stream.
 
 @return Flags read, if valid.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Flags.html
 Cell Flags]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def read (scene: CellScene) = {
+
+/*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
 
 /*
 Read the flags from the data stream.

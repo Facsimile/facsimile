@@ -38,12 +38,9 @@ Scala source file from the org.facsim.io package.
 
 package org.facsim.io
 
-import java.io.BufferedReader
-import java.io.EOFException
-import java.io.Reader
+import java.io.{BufferedReader, EOFException, Reader}
 import java.lang.StringBuilder
-import org.facsim.LibResource
-import org.facsim.requireNonNull
+import org.facsim.{assertNonNull, requireNonNull, LibResource}
 import scala.annotation.tailrec
 
 //=============================================================================
@@ -87,14 +84,14 @@ WhitespaceDelimiter.
 //=============================================================================
 
 class TextReader (textReader: Reader,
-defaultDelimiter: Delimiter = WhitespaceDelimiter)
-extends NotNull {
+defaultDelimiter: Delimiter = WhitespaceDelimiter) {
 
 /*
-Preconditions: textReader cannot be null.
+Sanity checks.
 */
 
   requireNonNull (textReader)
+  requireNonNull (defaultDelimiter)
 
 /**
 Create a buffered reader, if the specified reader is not already a buffered
@@ -146,14 +143,12 @@ character is read.  The column number must be reset to 1 each time a line
 termination sequence has been read&mdash;the same point at which the line
 number is incremented.  Column numbering is not to be updated until a character
 has been read (rather than being peeked).
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
   private final class State private [this] (private var lastChar: Int, private
   var peekedChar: Option [Int], private var row: Int, private var column: Int)
-  extends NotNull {
+  {
 
 //.............................................................................
 /**
@@ -162,12 +157,10 @@ Default auxiliary constructor for new state instances.
 The last character read is set to 0 (the ''null character''), which is OK for
 initialization purposes.  The peeked character is set to `None`.  Row and
 column numbers are initialized to 1.
-
-@since 0.0
 */
 //.............................................................................
 
-    def this () = this (0, None, 1, 1)
+    private [TextReader] def this () = this (0, None, 1, 1)
 
 //.............................................................................
 /**
@@ -177,13 +170,11 @@ The copied state is cached in case it needs to be restored later.  This
 operation is performed as part of the state caching operation.
 
 @param other State to be copied.
-
-@since 0.0
 */
 //.............................................................................
 
-    private def this (other: State) = this (other.lastChar, other.peekedChar,
-    other.row, other.column)
+    private [TextReader] def this (other: State) = this (other.lastChar,
+    other.peekedChar, other.row, other.column)
 
 //.............................................................................
 /**
@@ -192,7 +183,7 @@ operation is performed as part of the state caching operation.
 //.............................................................................
 
     @inline
-    final def atEOF = lastChar == TextReader.EOF
+    private [TextReader] def atEOF = lastChar == TextReader.EOF
 
 //.............................................................................
 /**
@@ -201,7 +192,7 @@ operation is performed as part of the state caching operation.
 //.............................................................................
 
     @inline
-    final def getRow = row ensuring (_ > 0)
+    private [TextReader] def getRow = row ensuring (_ > 0)
 
 //.............................................................................
 /**
@@ -210,7 +201,7 @@ operation is performed as part of the state caching operation.
 //.............................................................................
 
     @inline
-    final def getColumn = column ensuring (_ > 0)
+    private [TextReader] def getColumn = column ensuring (_ > 0)
 
 //.............................................................................
 /**
@@ -225,12 +216,10 @@ to the cached data is made, then an [[java.io.IOException!]] will result.
 mark and reset operations, which enforce use of a fixed size buffer.
 
 @return Cached state.
-
-@since 0.0
 */
 //.............................................................................
 
-    final def cache () = {
+    private [TextReader] def cache () = {
       assert (reader.markSupported ())
       reader.mark (TextReader.BufferSize)
       new State (this)
@@ -254,17 +243,16 @@ made to `cache`, then a [[java.io.IOException!]] will result.
 @throws java.io.IOException if the reader was not previously cached, or if more
 data than could be stored in the reader's buffer was read since the cache
 operation.
-
-@since 0.0
 */
 //.............................................................................
 
-    final def reset (other: State): Unit = {
+    private [TextReader] def reset (other: State): Unit = {
+      assertNonNull (other)
       lastChar = other.lastChar
       peekedChar = other.peekedChar
       row = other.row
       column = other.column
-      reader.reset
+      reader.reset ()
     }
 
 //.............................................................................
@@ -273,12 +261,10 @@ Update the row and column number to the appropriate values after reading the
 indicated character.
 
 @param char Character that we're about to report as having been read.
-
-@since 0.0
 */
 //.............................................................................
 
-    private final def updateRowColumn (char: Int): Unit = char match {
+    private def updateRowColumn (char: Int): Unit = char match {
 
 /*
 If the character just read was is end-of-file marker, then do nothing - we
@@ -292,10 +278,9 @@ If the character we just read is a line feed, then update the row and column of
 the next character to be read.
 */
 
-      case TextReader.LF => {
-        row += 1
-        column = 1
-      }
+      case TextReader.LF =>
+      row += 1
+      column = 1
 
 /*
 Otherwise, update the column number being read from.
@@ -310,7 +295,7 @@ Otherwise, update the column number being read from.
 */
 //.............................................................................
 
-    final def peek (): Int =  {
+    private [TextReader] def peek (): Int =  {
       peekedChar match {
 
 /*
@@ -324,10 +309,9 @@ then return it.
 Otherwise, we haven't yet peeked at the next character, so read and store it.
 */
 
-        case None => {
-          peekedChar = Option (readChar ())
-          peekedChar.get
-        }
+        case None =>
+        peekedChar = Option (readChar ())
+        peekedChar.get
       }
     } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
 
@@ -337,7 +321,7 @@ Otherwise, we haven't yet peeked at the next character, so read and store it.
 */
 //.............................................................................
 
-    final def read (): Int = {
+    private [TextReader] def read (): Int = {
 
 /*
 Helper function to determine whether we're reporting a previously peeked
@@ -351,10 +335,9 @@ If we have a previously peeked character, then return it and clear the cached
 peeked character.
 */
 
-        case Some (char) => {
-          peekedChar = None
-          char
-        }
+        case Some (ch) =>
+        peekedChar = None
+        ch
 
 /*
 Otherwise, supply a fresh character from the stream.  We don't need to cache
@@ -385,12 +368,10 @@ encountered during the read.
 
 @throws java.io.EOFException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation.
-
-@since 0.0
 */
 //.............................................................................
 
-    private final def readChar (): Int = {
+    private def readChar (): Int = {
 
 /*
 If the last character read indicated end-of-file, then throw the EOFException.
@@ -426,10 +407,9 @@ termination sequences.  We don't check for that, right now, but it's not likely
 to happen in practice.
 */
 
-        case TextReader.CR => {
-          lastChar = TextReader.CR
-          TextReader.LF
-        }
+        case TextReader.CR =>
+        lastChar = TextReader.CR
+        TextReader.LF
 
 /*
 Is this character a line feed character?  If so, was our last character a
@@ -447,15 +427,14 @@ Line feeds should only be encountered in two situations:
     In this case, we just return the line feed.
 */
 
-        case TextReader.LF => {
-          if (lastChar != TextReader.CR) {
-            lastChar = TextReader.LF
-            lastChar
-          }
-          else {
-            lastChar = TextReader.LF
-            readChar ()
-          }
+        case TextReader.LF =>
+        if (lastChar != TextReader.CR) {
+          lastChar = TextReader.LF
+          lastChar
+        }
+        else {
+          lastChar = TextReader.LF
+          readChar ()
         }
 
 /*
@@ -464,10 +443,9 @@ sure we store it, so that we can correctly identify when we're attempting to
 read beyond the end-of-file (see top of this function).
 */
 
-        case char => {
-          lastChar = char
-          lastChar
-        }
+        case char =>
+        lastChar = char
+        lastChar
       }
     } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
   }
@@ -506,8 +484,6 @@ not be converted to '''T''' by the '''convertField''' function.
 
 @throws org.facsim.io.FieldVerificationException if the field's value could not
 be verified by the '''verify''' function.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -569,11 +545,10 @@ a FieldConversionException.
       convertField (field)
     }
     catch {
-      case e: NumberFormatException => {
-        state.reset (cachedState)
-        throw new FieldConversionException (cachedState.getRow,
-        cachedState.getColumn, field)
-      }
+      case e: NumberFormatException =>
+      state.reset (cachedState)
+      throw new FieldConversionException (cachedState.getRow,
+      cachedState.getColumn, field)
     }
 
 /*
@@ -940,8 +915,6 @@ will be returned.
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -958,8 +931,6 @@ read operation, then a value of `EOF` (-1) will be returned.
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -1022,7 +993,7 @@ Magic number, storing Unicode value of the ''line feed'' character.
 Magic number, storing Unicode value of the ''nul'' character.
 */
 
-  val NUL = '\0'.toInt
+  val NUL = 0
 
 /**
 Magic number, storing Unicode value of the ''space'' character.

@@ -57,14 +57,14 @@ occur event after the simulation has effectively terminated. it is preferable
 that terminating simulations detect that termination criteria have been met
 resulting in a controlled termination of the simulation run.
 
-@contructor Create new out-of-events exception.  Constructor is private to
-org.facsim.facsimile.engine package.
+@constructor Create new out-of-events exception.
 
 @since 0.0
 */
 //=============================================================================
 
-final class OutOfEventsException private [engine] () extends RuntimeException {
+final class OutOfEventsException private [engine]
+extends RuntimeException {
 
 //-----------------------------------------------------------------------------
 /*
@@ -72,6 +72,6 @@ final class OutOfEventsException private [engine] () extends RuntimeException {
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage =
-  LibResource ("engine.OutOfEventsException.message")
+  override def getMessage =
+  LibResource ("engine.OutOfEventsException")
 }

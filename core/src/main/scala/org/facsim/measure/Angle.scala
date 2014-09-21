@@ -38,8 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.LibResource
-import org.facsim.requireValid
+import org.facsim.{requireNonNull, requireValid, LibResource}
 
 //=============================================================================
 /**
@@ -86,13 +85,13 @@ of an angle value.
 ''π'' is defined as the ratio of the circumference of a circle to its diameter.
 
 @note The authors of ''Facsimile'' prefer the use of
-''[[org.facsim.measure.Angle$.τ]]'' to ''π'', because the former is
+''[[org.facsim.measure.Angle.τ]]'' to ''π'', because the former is
 significantly easier to work with.
 
 @see [[http://tauday.com/tau-manifesto The Tau Manifesto]] for further
 information about ''τ''.
 @see [[http://en.wikipedia.org/wiki/Pi Pi]] on ''Wikipedia''.
-@see [[org.facsim.measure.Angle$.τ]].
+@see [[org.facsim.measure.Angle.τ]].
 
 @since 0.0
 */
@@ -215,7 +214,7 @@ Register this family.
   Family.register (family, Angle)
 
 //-----------------------------------------------------------------------------
-/*
+/**
 Angle measurement factory.
 */
 //-----------------------------------------------------------------------------
@@ -232,8 +231,8 @@ Compute arc sine from sine value
 @return Angle in the range [-^''τ''^/,,4,,, ^''τ''^/,,4,,] radians ([-90, 90]
 degrees).
 
-@throws [[java.lang.IllegalArgumentException!]] if `sine` is `NaN` or is
-outside of the range [-1, 1].
+@throws java.lang.IllegalArgumentException if `sine` is `NaN` or is outside of
+the range [-1, 1].
 
 @since 0.0
 */
@@ -252,8 +251,8 @@ Compute arc cosine from cosine value.
 
 @return Angle in the range [0, ^''τ''^/,,2,,] radians ([0, 180] degrees).
 
-@throws [[java.lang.IllegalArgumentException!]] if `cosine` is `NaN` or is
-outside of the range [-1, 1].
+@throws java.lang.IllegalArgumentException if `cosine` is `NaN` or is outside
+of the range [-1, 1].
 
 @since 0.0
 */
@@ -268,8 +267,8 @@ outside of the range [-1, 1].
 /**
 Compute arc tangent from tangent value.
 
-@note The [[org.facsim.measure.Angle$.atan2(org.facsim.measure.Length$.Measure,
-org.facsim.measure.Length$.Measure)*]] function should be preferred where
+@note The [[org.facsim.measure.Angle.atan2(org.facsim.measure.Length.Measure,
+org.facsim.measure.Length$.Measure)]] function should be preferred where
 applicable, since it returns a fuller range of angle values.
 
 @param tangent Tangent value, which must be in the range [-∞, ∞].
@@ -277,14 +276,14 @@ applicable, since it returns a fuller range of angle values.
 @return Angle in the range [-^''τ''^/,,4,,, ^''τ''^/,,4,,] radians ([-90, 90]
 degrees).
 
-@throws [[java.lang.IllegalArgumentException!]] if `tangent` is `NaN`.
+@throws java.lang.IllegalArgumentException if `tangent` is `NaN`.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
   def atan (tangent: Double) = {
-    requireValid (tangent, !tangent.isNaN())
+    requireValid (tangent, !tangent.isNaN)
     apply (Math.atan (tangent))
   } ensuring (!_.value.isNaN)
 
@@ -294,7 +293,7 @@ Returns the angle ''θ'' from the conversion of rectangular coordinates (`x`,
 `y`) to polar coordinates (''r'', ''θ'').
 
 @note This function should be preferred over the
-[[org.facsim.measure.Angle$.atan(Double)*]] function where applicable.
+[[org.facsim.measure.Angle.atan(Double)]] function where applicable.
 
 @param y ''Ordinate'' (Y-axis value) of the rectangular coordinate.
 
@@ -303,11 +302,15 @@ Returns the angle ''θ'' from the conversion of rectangular coordinates (`x`,
 @return Angle in the range [-^''τ''^/,,2,,, ^''τ''^/,,2,,] radians ([-180, 180]
 degrees).
 
+@throws java.lang.NullPointerException if `x` or `y` are `null`.
+
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
   def atan2 (y: Length.Measure, x: Length.Measure) = {
+    requireNonNull (y)
+    requireNonNull (x)
     apply (Math.atan2 (y.value, x.value))
   } ensuring (!_.value.isNaN)
 
@@ -321,9 +324,9 @@ Instances of this class represent ''plane angle'' measurements.
 measurement value.
 
 @param measure ''Plane angle'' measurement expressed in
-''[[org.facsim.measure.Angle$.radians]]''. This value must be finite.
+''[[org.facsim.measure.Angle.radians]]''. This value must be finite.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite.
+@throws java.lang.IllegalArgumentException if `measure` is not finite.
 
 @since 0.0
 */

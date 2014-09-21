@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -71,23 +71,26 @@ This class is the base class for all types of Joint.
 
 @param scene Scene to which this joint belongs.
 
-@param flags The current ''cell'''s flags.
+@param flags The current ''cell's'' flags.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
 Cell Joint Data]]
-
-@since 0.0
 */
 //=============================================================================
 
-private [cell] abstract class Joint (scene: CellScene, flags: CellFlags)
-extends NotNull {
+private [cell] abstract class Joint (scene: CellScene, flags: CellFlags) {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (scene)
 
 /**
 Joint data.
@@ -99,7 +102,7 @@ Joint data.
 If geometry data is present, then read the joint's geometry.
 */
 
-  private val jointGeomtry =
+  private val jointGeometry =
   if (flags.geometryDataPresent) Some (new Transformation (scene,
   flags.geometryDataInMatrixForm))
   else None

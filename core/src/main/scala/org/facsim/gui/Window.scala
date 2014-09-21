@@ -32,117 +32,111 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim package.
+Scala source file from the org.facsim.gui package.
 */
 //=============================================================================
 
-package org.facsim
+package org.facsim.gui
 
-import org.facsim.util.Version
-import org.joda.time.DateTime
+import javafx.scene.Scene
+import javafx.stage.{Stage, StageStyle}
+import org.facsim.requireNonNull
 
 //=============================================================================
 /**
-Application behavior trait.
+Abstract base class for application windows.
 
-Implementing classes provide functionality to applications developed with the
-''Facsimile'' library.
+@constructor Create a new window.
 
-Behavior instances are activated when applied to the [[org.facsim.App$]]
-object.
+@param app ''GUI'' application to which the log window belongs.
+
+@param style Style of window to be created. Refer to
+[[javafx.stage.StageStyle]] for further details.
+
+@throws java.lang.NullPointerException if either `app` or `style` is `null`.
 
 @since 0.0
 */
 //=============================================================================
 
-trait Behavior
-extends AppBehaviorInterface
-with NotNull {
+abstract class Window (app: GuiApplication,
+style: StageStyle = StageStyle.DECORATED) {
 
+/*
+Sanity checks.
+*/
+
+  requireNonNull (app)
+  requireNonNull (style)
+
+/**
+This window's stage.
+
+All application windows should be owned by the application window, so that they
+can all be minimized individually.
+*/
+
+  private final val stage = new Stage (style)
+  stage.initOwner (app.primaryStage)
 
 //-----------------------------------------------------------------------------
 /**
-Raise [[java.util.NoSuchElementException!]] for missing field.
+Report window's title.
 
-@param field Name of field for which information is missing.
+@return Contents of window's title bar.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private final def raiseException (field: String): Nothing = throw new
-  NoSuchElementException (LibResource ("Behavior.NoSuchElement", field))
+  final def title = stage.getTitle
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Define the window's title.
+
+@param value Text to be written to the window's title bar.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  override def title: String = raiseException ("title")
+  final def title_= (value: String): Unit = stage.setTitle (value)
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Report window's scene.
+
+@note It would be preferable not to have this method, but ''Scala'' does not
+support the setter syntax (scene_= (value)) otherwise.
+
+@return Scene contained by the window.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  override def organization: String = raiseException ("organization")
+  final def scene = stage.getScene
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Define the window's scene.
+
+@param value Scene to be applied to this window.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  override def inceptionDate: DateTime = raiseException ("inceptionDate")
+  final def scene_= (value: Scene): Unit = stage.setScene (value)
 
 //-----------------------------------------------------------------------------
 /**
-@inheritdoc
+Show this window.
+
+@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  override def releaseDate: DateTime = raiseException ("releaseDate")
-
-//-----------------------------------------------------------------------------
-/**
-@inheritdoc
-
-@note The copyright message is built from the
-[[org.facsim.Behavior!.organization]], [[org.facsim.Behavior!.inceptionDate]]
-and [[org.facsim.Behavior!.releaseDate]] functions. If any of those fields are
-missing, then a [[java.util.NoSuchElementException]] will result.
-*/
-//-----------------------------------------------------------------------------
-
-  final override def copyright: String = {
-
-/*
-If the organization name ends in a period, then remove it.
-*/
-
-    val org = organization
-    val orgAdj = if (org.last == '.') org.init else org
-
-/*
-Format and retrieve this application's copyright string.
-*/
-
-    if (inceptionDate.getYear () < releaseDate.getYear ()) {
-      LibResource ("Behavior.CopyrightRange", orgAdj, inceptionDate.toDate (),
-      releaseDate.toDate ())
-    }
-    else {
-      LibResource ("Behavior.CopyrightBasic", orgAdj, inceptionDate.toDate ())
-    }
-  }
-
-//-----------------------------------------------------------------------------
-/**
-@inheritdoc
-*/
-//-----------------------------------------------------------------------------
-
-  override def version: Version = raiseException ("version")
+  final def show () = stage.show ()
 }
