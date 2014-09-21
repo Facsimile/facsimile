@@ -138,7 +138,7 @@ but this has been deprecated SBT as of 0.13.2. Since that release, it appears
 that default settings are automatically provided.
 */
 
-  lazy val defaultSettings = super.settings ++ releaseSettings ++ Seq (
+  lazy val defaultSettings = super.settings ++ Seq (
 
 /*
 Scala cross compiling.
@@ -152,106 +152,7 @@ Scala configuration.
 
     scalaVersion <<= crossScalaVersions {
       versions => versions.head
-    },
-
-/*
-Employ the following custom release process.
-
-This differs from the standard sbt-release process in that:
- a) We must perform static source checking (using Scalastyle) before setting
-    the release version.
- b) We employ the sbt-sonatype plugin to publish the project, which also takes
-    care of signing published artifacts.
-*/
-
-    ReleaseKeys.releaseProcess := Seq [ReleaseStep] (
-
-/*
-Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
-*/
-
-      checkSnapshotDependencies,
-
-/*
-Prompt for the version to be released and for the next development version.
-*/
-
-      inquireVersions,
-
-/*
-Clean all build files, to ensure the release is built from scratch.
-*/
-
-      runClean,
-
-/*
-Run the test suite, to verify that all tests pass.
-*/
-
-      runTest,
-
-/*
-Run scalastyle to ensure that sources are correctly formatted and contain no
-static errors.
-*/
-
-      //releaseTask (testScalastyle),
-
-/*
-Update the "Version.sbt" file so that it contains the release version number.
-*/
-
-      setReleaseVersion,
-
-/*
-Commit and tag the release version.
-*/
-
-      commitReleaseVersion,
-      tagRelease,
-
-/*
-Publish the released version to the Sonatype OSS repository.
-
-This will also take care of signing the release.
-*/
-
-      releaseTask (SonatypeKeys.sonatypeReleaseAll),
-
-/*
-Update the "Version.sbt" file so that it contains the new development version
-number.
-*/
-
-      setNextVersion,
-
-/*
-Commit the updated working directory, so that the new development version takes
-effect, and push all local commits to the "upstream" repository.
-
-Note: This will fail if an "upstream" repository has not been configured.
-*/
-
-      commitNextVersion,
-      pushChanges
-    ),
-
-/*
-By default, we'll bump the bug-fix/release number of the version following a
-release.
-*/
-
-    ReleaseKeys.versionBump := Version.Bump.Bugfix,
-
-/*
-Have the release plugin write current version information into Version.sbt, in
-the project's root directory.
-
-NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained
-under version control.
-*/
-
-    ReleaseKeys.versionFile := file ("Version.sbt")
+    }
   )
 
 /**
@@ -416,7 +317,8 @@ Unidoc.
 */
 
   lazy val facsimile = Project (projectArtifactId, file ("."), settings =
-  defaultSettings ++ sonatypeSettings ++ customUnidocSettings ++ Seq (
+  defaultSettings ++ releaseSettings ++ sonatypeSettings ++
+  customUnidocSettings ++ Seq (
 
 /*
 Maven POM (project object model) metadata.
@@ -591,8 +493,107 @@ directories.
 
     EclipseKeys.skipParents in ThisBuild := false,
     unmanagedSourceDirectories in Compile := Nil,
-    unmanagedSourceDirectories in Test := Nil
-)).aggregate (core, macros)
+    unmanagedSourceDirectories in Test := Nil,
+
+/*
+Employ the following custom release process.
+
+This differs from the standard sbt-release process in that:
+ a) We must perform static source checking (using Scalastyle) before setting
+    the release version.
+ b) We employ the sbt-sonatype plugin to publish the project, which also takes
+    care of signing published artifacts.
+*/
+
+    ReleaseKeys.releaseProcess := Seq [ReleaseStep] (
+
+/*
+Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
+*/
+
+      checkSnapshotDependencies,
+
+/*
+Prompt for the version to be released and for the next development version.
+*/
+
+      inquireVersions,
+
+/*
+Clean all build files, to ensure the release is built from scratch.
+*/
+
+      runClean,
+
+/*
+Run the test suite, to verify that all tests pass.
+*/
+
+      runTest,
+
+/*
+Run scalastyle to ensure that sources are correctly formatted and contain no
+static errors.
+*/
+
+      //releaseTask (testScalastyle),
+
+/*
+Update the "Version.sbt" file so that it contains the release version number.
+*/
+
+      setReleaseVersion,
+
+/*
+Commit and tag the release version.
+*/
+
+      commitReleaseVersion,
+      tagRelease,
+
+/*
+Publish the released version to the Sonatype OSS repository.
+
+This will also take care of signing the release.
+*/
+
+      releaseTask (SonatypeKeys.sonatypeReleaseAll),
+
+/*
+Update the "Version.sbt" file so that it contains the new development version
+number.
+*/
+
+      setNextVersion,
+
+/*
+Commit the updated working directory, so that the new development version takes
+effect, and push all local commits to the "upstream" repository.
+
+Note: This will fail if an "upstream" repository has not been configured.
+*/
+
+      commitNextVersion,
+      pushChanges
+    ),
+
+/*
+By default, we'll bump the bug-fix/release number of the version following a
+release.
+*/
+
+    ReleaseKeys.versionBump := Version.Bump.Bugfix,
+
+/*
+Have the release plugin write current version information into Version.sbt, in
+the project's root directory.
+
+NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained
+under version control.
+*/
+
+    ReleaseKeys.versionFile := file ("Version.sbt")
+  )).aggregate (core, macros)
 
 /**
 Core project.
