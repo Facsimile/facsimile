@@ -165,7 +165,7 @@ temperature]]'' measurement value.
 ''[[org.facsim.measure.Temperature$.kelvin]]''. This value must be finite and
 greater than or equal to zero.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+@throws java.lang.IllegalArgumentException if `measure` is not finite or
 is negative.
 
 @since 0.0

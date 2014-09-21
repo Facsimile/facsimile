@@ -144,7 +144,7 @@ that default settings are automatically provided.
 Scala cross compiling.
 */
 
-    crossScalaVersions := Seq ("2.10.4", "2.11.1"),
+    crossScalaVersions := Seq ("2.11.2"),
 
 /*
 Scala configuration.
@@ -294,8 +294,23 @@ code to cell type map in org.facsim.anim.cell.CellScene). Although the inline
 warnings themselves will only be issued when -Yinline-warnings is specified,
 Scala will still emit a warning that inline warnings occurred, which is then
 treated as fatal by Xfatal-warnings. It seems that the only way around this,
-right now, is to disable -optimize. This must be reviewed when newer Scala
-releases become available.
+right now, is to disable -Xfatal-warnings. This is a known Scala compiler issue
+documented at https://issues.scala-lang.org/browse/SI-6723.
+
+-Xfatal-warnings is also disabled since there were some deliberate decisions
+taken (such as using the deprecated DelayedInit trait in org.facsim.App) that
+cannot currently be suppressed. (The Scala team have been deprecating a lot of
+features as of 2.11, but there are no alternatives to many of the deprecated
+classes, which is becoming a nuisance.)
+
+As Xfatal-warnings is not in use, it's possible to have builds that generate
+tons of warnings, but which do not fail a build. This is unacceptable.
+Facsimile must build clean, without any errors or warnings, as a basic
+requirement for any release to be performned.
+
+-Xstrict-inference is currently disabled as it outputs some erroneous warnings
+for some generic code. See https://issues.scala-lang.org/browse/SI-7991 for
+further details.
 */
 
     scalacOptions := Seq (
@@ -304,15 +319,19 @@ releases become available.
       "UTF-8",
       "-feature",
       "-g:vars",
-      //"-optimize",
+      "-optimize",
       "-target:jvm-1.7",
       "-unchecked",
       "-Xcheckinit",
-      //"-Xcheck-null",
-      "-Xfatal-warnings",
-      "-Xlint",
-      //"-Yinline-warnings",
-      "-Ywarn-all"
+      //"-Xfatal-warnings",
+      "-Xlint:_",
+      //"-Xstrict-inference",
+      "-Yclosure-elim",
+      "-Yconst-opt",
+      "-Ydead-code",
+      "-Yinline",
+      "-Yinline-handlers",
+      "-Yinline-warnings"
     ),
 
 /*
@@ -333,13 +352,9 @@ SBT-Eclipse plugin configuration.
 
 /*
 Required scala standard libraries.
-
-Scala 2.11 introduced a more modular library structure. This section allows
-dependencies to be specified by supported Scala version.
 */
 
-    libraryDependencies := {
-      CrossVersion.partialVersion (scalaVersion.value) match {
+    libraryDependencies ++= Seq (
 
 /*
 Scala 2.11+ dependencies.
@@ -348,27 +363,13 @@ The scala-xml package is currently only required by Scalatest, hence the "test"
 scope.
 */
 
-        case Some ((2, scalaMajor)) if scalaMajor >= 11 =>
-        libraryDependencies.value :+ "org.scala-lang.modules" %%
-        "scala-reflect" % scalaVersion.value
-        libraryDependencies.value :+ "org.scala-lang.modules" %% "scala-xml" %
-        "1.0.2" % "test"
-
-/*
-Scala 2.10 dependencies.
-*/
-
-        case _ =>
-        libraryDependencies.value :+ "org.scala-lang" % "scala-reflect" %
-        scalaVersion.value
-      }
-    },
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+      "org.scala-lang.modules" %% "scala-xml" % "1.0.2" % "test",
 
 /*
 Other base library dependencies.
 */
 
-    libraryDependencies ++= Seq (
       "org.scalatest" %% "scalatest" % "2.2.1" % "test"
     )
   )
@@ -457,7 +458,7 @@ version - which seems wrong, right now).
       OS, BSD and Unix on the Java virtual machine.
     """,
     homepage := projectHomepage,
-    startYear := Some (projectStartDate.getYear ()),
+    startYear := Some (projectStartDate.getYear),
     organizationName := "Michael J. Allen",
     organizationHomepage := projectHomepage,
     licenses := Seq (
@@ -476,33 +477,32 @@ version - which seems wrong, right now).
     pomIncludeRepository := {
       _ => false
     },
-    pomExtra := (
-      <developers>
-        <developer>
-          <id>mja</id>
-          <name>Michael J Allen</name>
-          <email>mike.allen@facsim.org</email>
-          <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
-          <organization>Hindsight Consulting, Inc.</organization>
-          <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
-          <roles>
-            <role>Project Lead</role>
-            <role>Architect</role>
-            <role>Developer</role>
-          </roles>
-          <timezone>US/Eastern</timezone>
-        </developer>
-      </developers>
-      <contributors>
-      </contributors>
-      <prerequisites>
-        <maven>3.0</maven>
-      </prerequisites>
-      <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/Facsimile/facsimile/issues</url>
-      </issueManagement>
-    ),
+    pomExtra :=
+    <developers>
+      <developer>
+        <id>mja</id>
+        <name>Michael J Allen</name>
+        <email>mike.allen@facsim.org</email>
+        <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
+        <organization>Hindsight Consulting, Inc.</organization>
+        <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
+        <roles>
+          <role>Project Lead</role>
+          <role>Architect</role>
+          <role>Developer</role>
+        </roles>
+        <timezone>US/Eastern</timezone>
+      </developer>
+    </developers>
+    <contributors>
+    </contributors>
+    <prerequisites>
+      <maven>3.0</maven>
+    </prerequisites>
+    <issueManagement>
+      <system>GitHub Issues</system>
+      <url>https://github.com/Facsimile/facsimile/issues</url>
+    </issueManagement>,
 
 /*
 Disable aggregation of the "doc" command, so that we do not attempt to generate
@@ -522,8 +522,9 @@ sub-classes.
     scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq (
       "-diagrams",
       "-doc-footer",
-      "Copyright © " + projectStartDate.getYear () + "-" +
-      projectBuildDate.getYear () + ", Michael J Allen. All rights reserved.",
+      "Copyright © " + projectStartDate.getYear + "-" +
+      projectBuildDate.getYear + ", " + organizationName.value +
+      ". All rights reserved.",
       "-doc-format:html",
       "-doc-title",
       projectName + " API Documentation",
@@ -531,8 +532,9 @@ sub-classes.
       version.value,
       "-groups",
       "-implicits",
-      //"-Xfatal-warnings",
-      "-Ymacro-no-expand"
+      "-no-link-warnings", // <- Temporarily disable warnings of bad links
+      "-Xfatal-warnings",
+      "-Ymacro-expand:none"
     ),
     autoAPIMappings := true,
     apiMappings += (

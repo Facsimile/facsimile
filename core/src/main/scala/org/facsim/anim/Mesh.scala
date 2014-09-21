@@ -38,6 +38,7 @@ Scala source file from the org.facsim.anim package.
 
 package org.facsim.anim
 
+import org.facsim.assertNonNull
 import org.facsim.measure.Angle
 import scala.annotation.tailrec
 import scalafx.scene.shape.TriangleMesh
@@ -53,8 +54,7 @@ contain one or more triangular faces.
 */
 //=============================================================================
 
-private [anim] final class Mesh (private val faces: List [Face])
-extends NotNull {
+private [anim] final class Mesh (private val faces: List [Face]) {
 
 //-----------------------------------------------------------------------------
 /**
@@ -67,8 +67,10 @@ list of faces.
 */
 //-----------------------------------------------------------------------------
 
-  def + (newFaces: List [Face]) = //scalastyle:ignore
-  new Mesh (faces ::: newFaces)
+  def + (newFaces: List [Face]) = { //scalastyle:ignore
+    assertNonNull (newFaces)
+    new Mesh (faces ::: newFaces)
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -81,8 +83,10 @@ mesh's list of faces.
 */
 //-----------------------------------------------------------------------------
 
-  def + (newMesh: Mesh) = //scalastyle:ignore
-  new Mesh (faces ::: newMesh.faces)
+  def + (newMesh: Mesh) = { //scalastyle:ignore
+    assertNonNull (newMesh)
+    new Mesh (faces ::: newMesh.faces)
+  }
 
 //-----------------------------------------------------------------------------
 /**

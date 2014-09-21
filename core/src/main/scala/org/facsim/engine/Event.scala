@@ -38,16 +38,17 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 
 package org.facsim.engine
 
+import org.facsim.{assertNonNull, requireNonNull}
 import org.facsim.measure.Time
 import scala.math.Ordered
 
 //=============================================================================
 /**
-Class representing all $facsimile simulation events.
+Class representing all ''Facsimile'' simulation events.
 
 Events are constructed and scheduled for dispatch via the
-[[org.facsim.facsimile.engine.Simulation.schedule schedule]] function; events
-cannot be constructed by user code.
+[[org.facsim.engine.Simulation.schedule(Action,Time.Measure,Int]] function;
+events cannot be constructed by user code.
 
 When an event is dispatched, its associated actions are executed, changing the
 state of the simulation.
@@ -74,8 +75,14 @@ scheduled.
 
 final class Event private [engine] (private val action: Action,
 delay: Time.Measure, private val priority: Int)
-extends Ordered [Event]
-with NotNull {
+extends Ordered [Event] {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (action)
+  assertNonNull (delay)
 
 /**
 Scheduled absolute dispatch time of this event.
@@ -111,11 +118,19 @@ event should be dispatched after the other event.  A value of 0, indicating
 that the two events should be dispatched at the same time, should only occur if
 an event is compared to itself.
 
+@throws java.lang.NullPointerException if `that` is `null`.
+
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  final override def compare (that: Event): Int = {
+  override def compare (that: Event): Int = {
+
+/*
+Sanity checks.
+*/
+
+    requireNonNull (that)
 
 /*
 Compare the due times of the two events.  If there's a difference, return it.
@@ -163,7 +178,7 @@ Describe the event.
 */
 //-----------------------------------------------------------------------------
 
-  final def description = action.description;
+  def description = action.description
 
 //-----------------------------------------------------------------------------
 /**
@@ -175,5 +190,5 @@ When the event is dispatched, its actions are to be executed.
 */
 //-----------------------------------------------------------------------------
 
-  private [engine] final def dispatch (): Unit = action.execute ();
+  private [engine] def dispatch (): Unit = action ()
 }

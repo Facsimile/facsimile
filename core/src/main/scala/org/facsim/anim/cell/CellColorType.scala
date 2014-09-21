@@ -44,8 +44,6 @@ Cell color type enumeration.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
-
-@since 0.0
 */
 //=============================================================================
 

@@ -38,8 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.requireFinite
-import org.facsim.requireValid
+import org.facsim.{requireFinite, requireValid}
 
 //=============================================================================
 /**
@@ -59,7 +58,7 @@ scaling '''factor'''.
 and cannot be zero or one. A value of zero causes divide-by-zero exceptions
 when exporting values and implies that the magnitude of all measurement values
 is 0. A value of one implies that the units are already ''SI'' units, since no
-scaling is performed, in which case the [[org.facsim.measure.SIConverter$]]
+scaling is performed, in which case the [[org.facsim.measure.SIConverter]]
 object should be preferred.
 
 @throws IllegalArgumentException if '''factor''' is NaN, infinite, zero or one.
@@ -67,8 +66,7 @@ object should be preferred.
 //=============================================================================
 
 private [measure] class LinearScaleConverter (factor: Double)
-extends Converter
-{
+extends Converter {
 
 /*
 Sanity checks. Factor values must be finite, cannot ever be 0.0 (nonsensical),

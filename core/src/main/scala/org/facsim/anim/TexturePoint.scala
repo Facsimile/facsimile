@@ -67,8 +67,7 @@ the range [0, 1].
 */
 //=============================================================================
 
-private [anim] final case class TexturePoint (u: Float, v: Float)
-extends NotNull {
+private [anim] final case class TexturePoint (u: Float, v: Float) {
 
 /*
 Sanity checks. Both co-ordinates must be in the range [0, 1].

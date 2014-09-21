@@ -38,8 +38,6 @@ Scala source file from the org.facsim package.
 
 package org.facsim
 
-import org.facsim.cli.CliApp
-import org.facsim.gui.GuiApp
 import org.facsim.util.Manifest
 import scala.collection.mutable.ListBuffer
 
@@ -52,16 +50,16 @@ Provide common information and functionality for applications built with the
 
 In order to compile, client applications '''must''' mix-in an
 [[org.facsim.AppInformation]]-implementation instance when creating an
-application ''object'' as well as either [[CliApp]] or
-[[GuiApp]] (or a trait/class derived from either).
+application ''object'' as well as either [[org.facsim.cli.CliApp]] or
+[[org.facsim.gui.GuiApp]] (or a trait/class derived from either).
 
 The application may utilize a graphical user interface, or be driven from the
-command line, or both, depending upon whether [[CliApp]] or
-[[GuiApp]] was utilized.
+command line, or both, depending upon whether [[org.facsim.cli.CliApp]] or
+[[org.facsim.gui.GuiApp]] was utilized.
 */
 //=============================================================================
 
-private [facsim] trait App
+trait App
 extends DelayedInit {
   self: AppInformation =>
 

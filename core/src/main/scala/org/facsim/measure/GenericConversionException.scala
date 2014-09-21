@@ -38,7 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -64,6 +64,8 @@ extends RuntimeException {
 Verify that the measurement is incompatible with the target family.
 */
 
+  assertNonNull (measure)
+  assertNonNull (targetFamily)
   assert (measure.family != targetFamily)
 
 //-----------------------------------------------------------------------------
@@ -72,7 +74,7 @@ Verify that the measurement is incompatible with the target family.
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage =
+  override def getMessage =
   LibResource ("measure.GenericConversion", measure.family.toString,
   measure.toString, targetFamily.toString)
 }

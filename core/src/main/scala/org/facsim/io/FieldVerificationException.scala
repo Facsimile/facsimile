@@ -38,7 +38,7 @@ Scala source file from the org.facsim.io package.
 
 package org.facsim.io
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 
 //=============================================================================
 /**
@@ -61,7 +61,14 @@ throwing such exceptions must implement ''failure atomicity''.
 //=============================================================================
 
 final class FieldVerificationException private [io] (row: Int, column: Int,
-field: String) extends FieldException (row, column, field) {
+field: String)
+extends FieldException (row, column, field) {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (field)
 
 //-----------------------------------------------------------------------------
 /*
@@ -69,6 +76,6 @@ field: String) extends FieldException (row, column, field) {
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage () = LibResource ("io.FieldVerification", row,
-  column, field)
+  override def getMessage = LibResource ("io.FieldVerification", row, column,
+  field)
 }

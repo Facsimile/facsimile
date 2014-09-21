@@ -38,8 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.requireFinite
-import org.facsim.requireValid
+import org.facsim.{requireFinite, requireValid}
 
 //=============================================================================
 /**
@@ -57,7 +56,7 @@ unit values) by adding the specified constant value; they are ''exported''
 cannot be zero (in which case, [[org.facsim.measure.SIConverter]] is a better
 option).
 
-@throws IllegalArgumentException if '''constant''' is NaN, infinite, or zero.
+@throws IllegalArgumentException if ``constant`` is `NaN`, infinite, or zero.
 */
 //=============================================================================
 

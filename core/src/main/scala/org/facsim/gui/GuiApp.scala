@@ -40,7 +40,7 @@ package org.facsim.gui
 
 import javafx.application.{Platform, Application => JApplication}
 import javafx.stage.Stage
-import org.facsim.{App, AppInformation}
+import org.facsim.{assertNonNull, App, AppInformation}
 
 //=============================================================================
 /**
@@ -215,6 +215,12 @@ Initialize this ''JavaFX'' application.
 //.............................................................................
 
     override def start (stage: Stage): Unit = {
+
+/*
+Sanity checks.
+*/
+
+      assertNonNull (stage)
 
 /*
 Store a reference to this app in the outer class.

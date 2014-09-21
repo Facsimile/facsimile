@@ -62,17 +62,16 @@ Text]] for further information.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
 */
 //=============================================================================
 
-private [cell] final class ScreenText (scene: CellScene,
-parent: Option [Set])
+private [cell] final class ScreenText (scene: CellScene, parent: Option [Set])
 extends Text (scene, parent, Text.Screen)

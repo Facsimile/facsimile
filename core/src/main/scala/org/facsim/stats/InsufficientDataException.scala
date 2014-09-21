@@ -72,6 +72,6 @@ extends RuntimeException {
 */
 //-----------------------------------------------------------------------------
 
-  final override def getMessage () = LibResource ("stats.InsufficientData",
+  override def getMessage = LibResource ("stats.InsufficientData",
   statisticName, minimumObservations, observations)
 }

@@ -82,7 +82,7 @@ Name of this physical quantity.
 Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Millimetre
 millimeters]]''.
 
-@see [[http://en.wikipedia.org/wiki/Millimetre Millimeters]]'' on
+@see ''[[http://en.wikipedia.org/wiki/Millimetre Millimeters]]'' on
 ''Wikipedia''.
 
 @since 0.0
@@ -160,7 +160,7 @@ Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Inch inches]]''.
 
 /**
 Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Foot_(unit)
-feet''.
+feet]]''.
 
 @see [[http://en.wikipedia.org/wiki/Foot_(unit) Feet]] on ''Wikipedia''.
 
@@ -229,9 +229,9 @@ Instances of this class represent ''length'' measurements.
 measurement value.
 
 @param measure ''Length'' measurement expressed in
-''[[org.facsim.measure.Length$.meters]]''. This value must be finite.
+''[[org.facsim.measure.Length.meters]]''. This value must be finite.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite.
+@throws java.lang.IllegalArgumentException if `measure` is not finite.
 
 @since 0.0
 */

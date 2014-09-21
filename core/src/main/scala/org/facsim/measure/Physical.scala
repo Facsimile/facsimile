@@ -38,7 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.requireFinite
+import org.facsim.{requireNonNull, requireFinite}
 
 //=============================================================================
 /**
@@ -47,12 +47,12 @@ Abstract base class for all ''Facsimile
 elements.
 
 Physical quantity types include specific types (such as
-''[[org.facsim.measure.Time$]]'', ''[[org.facsim.measure.Length$]]'',
-''[[org.facsim.measure.Angle$]]'', ''[[org.facsim.measure.Temperature$]]'',
-''[[org.facsim.measure.Mass$]]'', ''[[org.facsim.measure.Velocity$]]'',
-''[[org.facsim.measure.AngularAcceleration$]]'',
-''[[org.facsim.measure.Area$]]'', ''[[org.facsim.measure.Volume$]]'', etc.), as
-well as a ''[[org.facsim.measure.Generic$]]'' convenience type for the result
+''[[org.facsim.measure.Time]]'', ''[[org.facsim.measure.Length]]'',
+''[[org.facsim.measure.Angle]]'', ''[[org.facsim.measure.Temperature]]'',
+''[[org.facsim.measure.Mass]]'', ''[[org.facsim.measure.Velocity]]'',
+''[[org.facsim.measure.AngularAcceleration]]'',
+''[[org.facsim.measure.Area]]'', ''[[org.facsim.measure.Volume]]'', etc.), as
+well as a ''[[org.facsim.measure.Generic]]'' convenience type for the result
 of multiplication and division between the specific types. Each of these types
 has measurement values and units in which those measurements are expressed.
 
@@ -138,7 +138,7 @@ family.
 ''[[http://en.wikipedia.org/wiki/SI SI]]'' units. This value must be finite,
 but sub-classes may impose additional restrictions.
 
-@throws [[java.lang.IllegalArgumentException!]] if `value` is not finite or is
+@throws java.lang.IllegalArgumentException if `value` is not finite or is
 invalid for these units.
 
 @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
@@ -148,8 +148,7 @@ invalid for these units.
 
   abstract class PhysicalMeasure protected [measure]
   (protected [measure] final val value: Double)
-  extends Equals
-  with NotNull {
+  extends Equals {
 
 /*
 Ensure that value is a finite number, and is not infinite or not-a-number
@@ -195,8 +194,8 @@ measurement.
 
 @return Measurement in the same physical quantity family as this measurement.
 
-@throws [[java.lang.IllegalArgumentException!]] if `newMeasure` is not finite
-or is invalid for these units.
+@throws java.lang.IllegalArgumentException if `newMeasure` is not finite or is
+invalid for these units.
 */
 //.............................................................................
 
@@ -211,8 +210,8 @@ when this operation is invoked on a valid value.
 
 @return Measurement value having a sign opposite that of this value.
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
-is invalid for these units.
+@throws java.lang.IllegalArgumentException if the result is not finite or is
+invalid for these units.
 
 @since 0.0
 */
@@ -230,15 +229,19 @@ measurement.
 @return Sum of this measurement plus `addend`. The result is of the same
 physical quantity family as this measurement.
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+@throws java.lang.NullPointerException if `addend` is `null`.
+
+@throws java.lang.IllegalArgumentException if the result is not finite or
 is invalid for these units.
 
 @since 0.0
 */
 //.............................................................................
 
-    final def + (addend: Measure) = // scalastyle:ignore
-    createNew (value + addend.value)
+    final def + (addend: Measure) = { // scalastyle:ignore
+      requireNonNull (addend)
+      createNew (value + addend.value)
+    }
 
 //.............................................................................
 /**
@@ -250,15 +253,19 @@ measurement.
 @return Difference of this measurement minus `subtrahend`. The result is of the
 same physical quantity family as this measurement.
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+@throws java.lang.NullPointerException if `subtrahend` is `null`.
+
+@throws java.lang.IllegalArgumentException if the result is not finite or
 is invalid for these units.
 
 @since 0.0
 */
 //.............................................................................
 
-    final def - (subtrahend: Measure) = // scalastyle:ignore
-    createNew (value - subtrahend.value)
+    final def - (subtrahend: Measure) = { // scalastyle:ignore
+      requireNonNull (subtrahend)
+      createNew (value - subtrahend.value)
+    }
 
 //.............................................................................
 /**
@@ -269,7 +276,7 @@ Multiply this measurement by specified factor.
 @return Product of this measurement multiplied by `factor`. The result is of
 the same physical quantity family as this measurement.
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+@throws java.lang.IllegalArgumentException if the result is not finite or
 is invalid for these units.
 
 @since 0.0
@@ -290,15 +297,19 @@ measurement in a different physical quantity family to this measurement (unless
 `factor` is a ''unitless'' generic measurement, in which case it will have the
 same family as this measurement, although in generic form).
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+@throws java.lang.NullPointerException if `factor` is `null`.
+
+@throws java.lang.IllegalArgumentException if the result is not finite or
 is invalid for these units.
 
 @since 0.0
 */
 //.............................................................................
 
-    final def * (factor: PhysicalMeasure) = // scalastyle:ignore
-    Generic (value * factor.value, family * factor.family)
+    final def * (factor: PhysicalMeasure) = { // scalastyle:ignore
+      requireNonNull (factor)
+      Generic (value * factor.value, family * factor.family)
+    }
 
 //.............................................................................
 /**
@@ -309,7 +320,7 @@ Divide this measurement by specified divisor.
 @return Quotient of this measurement divided by `divisor`. The result is of the
 same physical quantity family as this measurement.
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+@throws java.lang.IllegalArgumentException if the result is not finite or
 is invalid for these units. For example, an infinite result will occur if
 `divisor` is zero, which will cause this exception to be thrown.
 
@@ -330,7 +341,9 @@ family.
 @return Ratio of this measurement to the other measurement. The result is a
 scalar value that has no associated measurement type.
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+@throws java.lang.NullPointerException if `divisor` is `null`.
+
+@throws java.lang.IllegalArgumentException if the result is not finite or
 is invalid for these units. For example, an infinite result will occur if
 `divisor` is zero, which will cause this exception to be thrown.
 
@@ -338,8 +351,10 @@ is invalid for these units. For example, an infinite result will occur if
 */
 //.............................................................................
 
-    final def / (divisor: Measure) = // scalastyle:ignore
-    value / divisor.value
+    final def / (divisor: Measure) = { // scalastyle:ignore
+      requireNonNull (divisor)
+      value / divisor.value
+    }
 
 //.............................................................................
 /**
@@ -352,7 +367,9 @@ measurement in a different physical quantity family to this measurement (unless
 `divisor` is a ''unitless'' generic measurement, in which case it will have the
 same family as this measurement, although in generic form).
 
-@throws [[java.lang.IllegalArgumentException!]] if the result is not finite or
+@throws java.lang.NullPointerException if `divisor` is `null`.
+
+@throws java.lang.IllegalArgumentException if the result is not finite or
 is invalid for these units. For example, an infinite result will occur if
 `divisor` is zero, which will cause this exception to be thrown.
 
@@ -360,8 +377,10 @@ is invalid for these units. For example, an infinite result will occur if
 */
 //.............................................................................
 
-    final def / (divisor: PhysicalMeasure) = // scalastyle:ignore
-    Generic (value / divisor.value, family / divisor.family)
+    final def / (divisor: PhysicalMeasure) = { // scalastyle:ignore
+      requireNonNull (divisor)
+      Generic (value / divisor.value, family / divisor.family)
+    }
 
 //.............................................................................
 /**
@@ -502,7 +521,7 @@ Abstract base class for all physical quantity measurement units.
 
 Each concrete subclass represents a single ''physical quantity unit family''.
 For example, time units are represented by the
-[[org.facsim.measure.Time$.TimeUnit!]] `PhysicalUnits` subclass.
+[[org.facsim.measure.Time.TimeUnits]] `PhysicalUnits` subclass.
 
 Each unit family supports one or more ''units of measure''. For example, time
 quantities may be measured in ''seconds'', ''minutes'', ''hours'', etc. These
@@ -513,7 +532,7 @@ Units]]''&mdash;commonly abbreviated to ''SI Units''.
 
 These standard units are used by ''Facsimile'' internally to store measurement
 quantities (as immutable instances of
-[[org.facsim.measure.PhysicalQuantity$.PhysicalMeasure!]] subclasses, with each
+[[org.facsim.measure.Physical.PhysicalMeasure]] subclasses, with each
 subclass corresponding to each measurement type.)  For example, the ''SI''
 standard unit of measure for ''time'' is the ''second''; consequently,
 ''Facsimile'' stores and calculates all time quantities, internally, in
@@ -526,10 +545,10 @@ problems.)
 
 However, it is unreasonable to expect that ''Facsimile'' users would be
 comfortable entering and reviewing data solely in these units. For instance,
-the ''SI'' standard unit of measure for ''angles'' is the ''radian''$mdash;and
+the ''SI'' standard unit of measure for ''angles'' is the ''radian''&mdash;and
 there are few people who don't find the ''degree'' a far more intuitive
 alternative. Similarly, users in the United States&mdash;or their
-customers$mdash;might prefer ''feet'' & ''inches'', ''pounds'', ''Fahrenheit'',
+customers&mdash;might prefer ''feet'' & ''inches'', ''pounds'', ''Fahrenheit'',
 etc. to their metric equivalents. Consequently, ''Facsimile'' allows users to
 work with whichever units they prefer. ''Facsimile'' converts values to the
 standard ''SI'' units on input and converts them to the required units on
@@ -545,8 +564,7 @@ output.
 //-----------------------------------------------------------------------------
 
   abstract class PhysicalUnits protected [measure]
-  extends Converter
-  with NotNull {
+  extends Converter {
 
 //.............................................................................
 /**

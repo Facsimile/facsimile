@@ -207,10 +207,10 @@ Instances of this class represent ''mass'' measurements.
 measurement value.
 
 @param measure ''Mass'' measurement expressed in
-''[[org.facsim.measure.Mass$.kilograms]]''. This value must be finite and
+''[[org.facsim.measure.Mass.Kilograms]]''. This value must be finite and
 greater than or equal to zero.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+@throws java.lang.IllegalArgumentException if `measure` is not finite or
 is negative.
 
 @since 0.0

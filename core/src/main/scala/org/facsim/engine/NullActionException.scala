@@ -32,43 +32,29 @@ rejected. For further information, please visit the coding standards at:
 
   http://facsim.org/Documentation/CodingStandards/
 ===============================================================================
-Scala source file from the org.facsim.io package.
+Scala source file belonging to the org.facsim.facsimile.engine package.
 */
 //=============================================================================
 
-package org.facsim.io
+package org.facsim.engine
 
-import org.facsim.{assertNonNull, LibResource}
+import org.facsim.LibResource
 
 //=============================================================================
 /**
-Exception indicating that a field read from a [[org.facsim.io.TextReader!]]
-could not be converted from a string to its required data type.
+Thrown if an attempt is made to execute a null action.
 
-Field conversion exceptions must be recoverable.  Furthermore, all functions
-throwing such exceptions must implement ''failure atomicity''.
+In general, this should be regarded as abnormal termination of a simulation
+run and treated accordingly.
 
-@constructor Construct new field conversion exception.
-
-@param row Row in data stream at which the associated field started.
-
-@param column Column in data stream at which the associated field started.
-
-@param field Value of the associated field as a string.
+@constructor Create new null action exception.
 
 @since 0.0
 */
 //=============================================================================
 
-final class FieldConversionException private [io] (row: Int, column: Int,
-field: String)
-extends FieldException (row, column, field) {
-
-/*
-Sanity checks.
-*/
-
-  assertNonNull (field)
+final class NullActionException private [facsim]
+extends RuntimeException {
 
 //-----------------------------------------------------------------------------
 /*
@@ -76,6 +62,5 @@ Sanity checks.
 */
 //-----------------------------------------------------------------------------
 
-  override def getMessage = LibResource ("io.FieldConversion", row,  column,
-  field)
+  override def getMessage =  LibResource ("engine.NullAction")
 }

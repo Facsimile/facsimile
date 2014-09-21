@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim package.
 
 package org.facsim.anim
 
-import org.facsim.requireValid
+import org.facsim.{requireNonNull, requireValid}
 import scala.annotation.tailrec
 
 //=============================================================================
@@ -79,18 +79,21 @@ animation space as well as associated texture map coordinate.
 belongs to no smoothing groups; otherwise, the face belongs to the smoothing
 group corresponding to each bit set.
 
-@since 0.0
+@throws java.lang.NullPointerException if `vertices` is `null`.
+
+@throws java.lang.IllegalArgumentException if `vertices` has fewer than 3
+points defined.
 */
 //=============================================================================
 
 private [anim] final class Face (vertices: List [RichPoint],
-val smoothingGroup: Int = 0)
-extends NotNull {
+val smoothingGroup: Int = 0) {
 
 /*
 Sanity checks.
 */
 
+  requireNonNull (vertices)
   requireValid (vertices, vertices.size > 2)
 
 //-----------------------------------------------------------------------------
@@ -106,6 +109,11 @@ least three vertices are required, with an additional contiguous face being
 defined for each additional vertex. Each vertex includes a point in 3D
 animation space only; a suitable, neutral texture coordinate point will be
 mapped to each point as appropriate.
+
+@throws java.lang.NullPointerException if `vertices` is `null`.
+
+@throws java.lang.IllegalArgumentException if `vertices` has fewer than 3
+points defined.
 */
 //-----------------------------------------------------------------------------
 
@@ -167,7 +175,7 @@ least one face.
 */
 
     extractFace (vertices.tail, Nil)
-  } ensuring (!_.isEmpty)
+  } ensuring (_.nonEmpty)
 
 //-----------------------------------------------------------------------------
 /**
@@ -264,10 +272,18 @@ mapping coordinates.
 
 @return List of rich points with neutral texture mapping coordinates mapped to
 each 3D point in `vertices`.
+
+@throws java.lang.NullPointerException if vertices is `null`.
 */
 //-----------------------------------------------------------------------------
 
   def neutralize (vertices: List [Point3D]): List [RichPoint] = {
+
+/*
+Argument verification.
+*/
+
+    requireNonNull (vertices)
 
 /*
 For now, simply map each 3D to a rich point using the origin for a texture

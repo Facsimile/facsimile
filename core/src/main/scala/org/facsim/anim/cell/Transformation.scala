@@ -59,14 +59,11 @@ instance from the ''cell'' data stream.
 `false` indicates that the transformation is specified in regular format.
 
 @todo Implement support for reading the transformation in matrix form.
-
-@since 0.0
 */
 //=============================================================================
 
 private [cell] final class Transformation (scene: CellScene,
-inMatrixForm: Boolean)
-extends NotNull {
+inMatrixForm: Boolean) {
 
 /*
 Matrix form not implemented yet. See Issue #10 for further information.
@@ -98,8 +95,6 @@ Read the scaling data from the stream.
 Report this transformation for use by the associated cell.
 
 @return A sequence of transformations to be applied to the cell.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 

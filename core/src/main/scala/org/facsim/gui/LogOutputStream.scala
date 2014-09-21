@@ -40,6 +40,7 @@ package org.facsim.gui
 
 import java.io.OutputStream
 import javafx.scene.control.TextArea
+import org.facsim.assertNonNull
 
 //=============================================================================
 /**
@@ -56,7 +57,7 @@ extends OutputStream {
 Sanity check.
 */
 
-  assert (textArea ne null)
+  assertNonNull (textArea)
 
 //-----------------------------------------------------------------------------
 /**

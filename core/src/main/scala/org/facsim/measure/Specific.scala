@@ -38,7 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.LibResource
+import org.facsim.{requireNonNull, LibResource}
 import scala.language.implicitConversions
 
 //=============================================================================
@@ -116,7 +116,9 @@ result.
 
 @return Specific measurement equivalent to the specified generic `measure`.
 
-@throws [[org.facsim.measure.GenericConversionException!]] if `measure` is
+@throws java.lang.NullPointerException if `measure` is `null`.
+
+@throws org.facsim.measure.GenericConversionException if `measure` is
 associated with different family to the target specific family.
 
 @since 0.0
@@ -124,6 +126,7 @@ associated with different family to the target specific family.
 //-----------------------------------------------------------------------------
 
   implicit final def fromGeneric (measure: Generic.Measure): Measure = {
+    requireNonNull (measure)
     if (measure.family == family) apply (measure.value)
     else throw new GenericConversionException (measure, family)
   }
@@ -140,7 +143,9 @@ quantity.
 
 @return Corresponding measurement value.
 
-@throws [[java.lang.IllegalArgumentException!]] If `value` in the specified
+@throws java.lang.NullPointerException if `units` are `null`.
+
+@throws java.lang.IllegalArgumentException if `value` in the specified
 `units` is not finite or is outside of the defined domain for the associated
 physical quantity.
 
@@ -148,8 +153,10 @@ physical quantity.
 */
 //-----------------------------------------------------------------------------
 
-  final def apply (value: Double, units: Units): Measure =
-  apply (units.importValue (value))
+  final def apply (value: Double, units: Units): Measure = {
+    requireNonNull (units)
+    apply (units.importValue (value))
+  }
 
 //-----------------------------------------------------------------------------
 /**
@@ -158,16 +165,16 @@ Factory method to create a new measurement value in
 
 @note This function is not public because it introduces the potential for unit
 confusion. Measurements can only be manipulated by users as
-[[org.facsim.measure.PhysicalQuantity$.PhysicalMeasure!]] subclass instances,
-not as raw values. Allowing access to raw values encourages by-passing of the
-unit protection logic provided by these measurement classes.
+[[org.facsim.measure.Physical.PhysicalMeasure]] subclass instances, not as raw
+values. Allowing access to raw values encourages by-passing of the unit
+protection logic provided by these measurement classes.
 
 @param measure Measurement's value in ''SI'' units. This value must be finite
 and must lie within the defined range for the associated physical quantity.
 
 @return Corresponding measurement value.
 
-@throws [[java.lang.IllegalArgumentException!]] If `measure` in ''SI'' units is
+@throws java.lang.IllegalArgumentException If `measure` in ''SI'' units is
 not finite or is outside of the defined range for the associate physical
 quantity.
 */
@@ -192,7 +199,7 @@ family.
 ''[[http://en.wikipedia.org/wiki/SI SI]]'' units. This value must be finite,
 but subclasses may impose additional restrictions.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+@throws java.lang.IllegalArgumentException if `measure` is not finite or
 is invalid for these units.
 
 @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
@@ -233,11 +240,16 @@ Compare this measurement with another measurement of the same type.
 this measurement equals `that`'s value, or a positive value if this measurement
 is greater than `that`'s value.
 
+@throws java.lang.NullPointerException if `that` is `null`.
+
 @since 0.0
 */
 //.............................................................................
 
-    final override def compare (that: Measure) = value.compare (that.value)
+    final override def compare (that: Measure) = {
+      requireNonNull (that)
+      value.compare (that.value)
+    }
   }
 
 //-----------------------------------------------------------------------------
@@ -287,8 +299,10 @@ Output using localized string formatting for these units.
 */
 //.............................................................................
 
-    private [measure] final override def format (value: Measure) =
-    LibResource ("measure.Physical.Units.format",
-    value.inUnits (this.asInstanceOf [Units]), symbol) // scalastyle:ignore
+    private [measure] final override def format (value: Measure) = {
+      requireNonNull (value)
+      LibResource ("measure.Physical.Units.format",
+      value.inUnits (this.asInstanceOf [Units]), symbol) // scalastyle:ignore
+    }
   }
 }

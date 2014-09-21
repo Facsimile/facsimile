@@ -49,8 +49,6 @@ to the corresponding line styles.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
 Line Styles]]
-
-@since 0.0
 */
 //=============================================================================
 
@@ -106,8 +104,6 @@ Verify a line style code.
 @param lineStyleCode Code for the line style to be verified.
 
 @return `true` if the code maps to a valid line style, `false` otherwise.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -122,16 +118,14 @@ Read line style from ''cell'' data stream.
 
 @return Line style read, if valid.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
 Line Styles]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 

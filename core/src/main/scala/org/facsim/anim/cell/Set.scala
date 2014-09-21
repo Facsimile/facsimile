@@ -55,16 +55,14 @@ information.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
 Sets]]
-
-@since 0.0
 */
 //=============================================================================
 
@@ -72,17 +70,16 @@ private [cell] abstract class Set (scene: CellScene, parent: Option [Set])
 extends Cell (scene, parent) {
 
 //-----------------------------------------------------------------------------
-/*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
+/**
+@inheritdoc
 
-Note that sets are not rendered in a particular line style, neither do they use
-material (except for inheritance by children), employ a display style or
-anything else. They're actually pretty basic.
+@note Note that sets are not rendered in a particular line style, neither do
+they use material (except for inheritance by children), employ a display style
+or anything else. They're actually pretty basic.
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] final override def toNode =
-  new Group {
+  private [cell] final override def toNode = new Group {
 
 /*
 If this cell has a name, then use it as an ID.
@@ -108,8 +105,6 @@ Add the child cells (if any) to the group as nodes.
 Retrieve the set's children.
 
 @return A list of this set's child ''cells''.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 

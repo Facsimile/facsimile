@@ -41,8 +41,6 @@ package org.facsim.anim.cell
 //=============================================================================
 /**
 Trait defining the attribute access functions of a cell.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -56,8 +54,6 @@ Face color.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -76,8 +72,6 @@ using it to render cell's if the cell employs ''wireframe'' rendering.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -91,8 +85,6 @@ Line style.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
 Line Styles]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -106,8 +98,6 @@ Line width, in pixels.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
 Line Width]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -122,9 +112,7 @@ Display style.
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
 Display Styles]]
-
-@since 0.0
- */
+*/
 //-----------------------------------------------------------------------------
 
   private [cell] def displayStyle: DisplayStyle.Value
@@ -137,8 +125,6 @@ Name.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Name.html Cell
 Names]]
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 

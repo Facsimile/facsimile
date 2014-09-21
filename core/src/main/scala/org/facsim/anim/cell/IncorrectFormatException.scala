@@ -38,6 +38,8 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
+import org.facsim.assertNonNull
+
 //=============================================================================
 /**
 Thrown if a file supplied to an ''AutoMod® cell'' file loader is not a valid
@@ -54,4 +56,12 @@ Thrown if a file supplied to an ''AutoMod® cell'' file loader is not a valid
 //=============================================================================
 
 final class IncorrectFormatException private [cell] (msg: String, e: Throwable)
-extends RuntimeException (msg, e)
+extends RuntimeException (msg, e) {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (msg)
+  assertNonNull (e)
+}

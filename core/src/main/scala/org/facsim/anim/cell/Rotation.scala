@@ -38,15 +38,13 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scalafx.geometry.Point3D
 import scalafx.scene.transform.Rotate
 
 //=============================================================================
 /**
 Rotation object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -61,11 +59,11 @@ Read rotation data from ''cell'' data stream.
 @return A sequence of rotation transformations to be applied to the associated
 node.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
@@ -73,6 +71,12 @@ Rotation Order & Rotations]]
 //-----------------------------------------------------------------------------
 
   private [cell] def read (scene: CellScene) = {
+
+/*
+Sanity checks.
+*/
+
+  assertNonNull (scene)
 
 /*
 Helper function to read an axis rotation and change it into a rotation

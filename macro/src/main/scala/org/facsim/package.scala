@@ -38,7 +38,8 @@ Scala source file defining the org.facsim package.
 
 package org
 
-import scala.reflect.macros.Context
+import scala.annotation.elidable
+import scala.reflect.macros.whitebox.Context
 
 //=============================================================================
 /**
@@ -68,6 +69,12 @@ Regular expression to match class argument name.
   private val classArgRE = """[0-9A-Za-z_]+\.this\.([0-9A-Za-z_]+)""".r
 
 /**
+Key for assertNonNull string resource.
+*/
+
+  private [facsim] val AssertNonNullKey = "assertNonNull"
+
+  /**
 Key for requireNonNull string resource.
 */
 
@@ -85,13 +92,33 @@ Key for requireFinite string resource.
 
   private [facsim] val RequireFiniteKey = "requireFinite"
 
+//-----------------------------------------------------------------------------
+/**
+Assertion that a value is not null.
+
+Code using this assertion is only generated if the `-Xelide-below` Scala
+compiler option is at least ASSERTION.
+
+@note Assertions should only be used to verify internal state; they must
+'''never''' be used to verify external state (use the require methods to verify
+external state instead).
+
+@param arg Argument whose value is to be compared to `null`.
+
+@throws java.lang.AssertionError if `arg` is `null`
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  @elidable (elidable.ASSERTION)
+  def assertNonNull (arg: AnyRef): Unit = macro assertNonNullImpl
 
 //-----------------------------------------------------------------------------
 /**
 Require that argument value is non-`null`.
 
-Throw a [[java.lang.NullPointerException]] if supplied argument value is
-`null`.
+Throw a [[scala.NullPointerException]] if supplied argument value is `null`.
 
 Normally, a `NullPointerException` will be thrown by the ''Java'' virtual
 machine (''JVM'') if an attempt is made to dereference a `null` pointer.
@@ -108,7 +135,7 @@ automatically.
 
 @param arg Argument whose value is to be compared to `null`.
 
-@throws java.lang.NullPointerException if `arg` is `null`.
+@throws scala.NullPointerException if `arg` is `null`.
 
 @since 0.0
 */
@@ -120,10 +147,10 @@ automatically.
 /**
 Require that argument value is valid.
 
-Throw a [[java.lang.IllegalArgumentException]] if supplied parameter value is
+Throw a [[scala.IllegalArgumentException]] if supplied parameter value is
 invalid.
 
-@note This function supersedes the [[scala.Predef$]] `require` methods.
+@note This function supersedes the [[scala.Predef]] `require` methods.
 
 @note Tests for non-`null` argument values should be verified by the
 `requireNonNull` function.
@@ -134,7 +161,7 @@ invalid.
 validity of `arg`. If `true`, function merely returns; if `false` an
 `IllegalArgumentException` is raised.
 
-@throws java.lang.IllegalArgumentException if `isValid` is `false`.
+@throws scala.IllegalArgumentException if `isValid` is `false`.
 
 @since 0.0
 */
@@ -147,11 +174,11 @@ validity of `arg`. If `true`, function merely returns; if `false` an
 Require a finite double value.
 
 Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will
-result in a [[java.lang.IllegalArgumentException]] being thrown.
+result in a [[scala.IllegalArgumentException]] being thrown.
 
 @param arg Argument whose value is being validated.
 
-@throws java.lang.IllegalArgumentException if `arg` does not have a finite
+@throws scala.IllegalArgumentException if `arg` does not have a finite
 value.
 
 @since 0.0
@@ -213,12 +240,52 @@ Convert an expression into a string expression.
 
 //-----------------------------------------------------------------------------
 /**
+Provides implementation of the [[org.facsim.assertNonNull]] macro.
+
+@param c Abstract syntax tree (AST) context for this macro definition.
+
+@param arg Argument whose value is to be tested. If this argument evaluates to
+`null`, then a [[java.lang.AssertionError]] is thrown by the macro
+implementation, together with the name of the failed argument.
+
+@return Implementation of this instance of the `assertNonNull` macro.
+
+@since 0.0
+*/
+//-----------------------------------------------------------------------------
+
+  def assertNonNullImpl (c: Context)(arg: c.Expr [AnyRef]): c.Expr [Unit] = {
+
+/*
+Convert the argument into a string that represents the expression that was
+passed to the requireNonNull macro - we'll output that as part of the
+exception.
+*/
+
+    import c.universe._
+    val argString = exprAsString (c)(arg)
+
+/*
+Generate the AST to be substituted for the macro reference.
+
+If the argument evaluates to be null, throw an AssertionError with some useful
+information.
+*/
+
+    reify {
+      if (arg.splice eq null) throw new AssertionError (LibResource
+      (AssertNonNullKey, cleanArgName (argString.splice)), null)
+    }
+  }
+
+//-----------------------------------------------------------------------------
+/**
 Provides implementation of the [[org.facsim.requireNonNull]] macro.
 
 @param c Abstract syntax tree (AST) context for this macro definition.
 
 @param arg Argument whose value is to be tested. If this argument evaluates to
-`null`, then a [[java.lang.NullPointerException]] is thrown by the macro
+`null`, then a [[scala.NullPointerException]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
 @return Implementation of this instance of the `requireNonNull` macro.
@@ -258,7 +325,7 @@ Provides implementation of the [[org.facsim.requireValid]] macro.
 @param c Abstract syntax tree (AST) context for this macro definition.
 
 @param arg Argument whose value is to be tested. If `isValid` is evaluated to
-`false`, then a [[java.lang.IllegalArgumentException]] is thrown by the macro
+`false`, then a [[scala.IllegalArgumentException]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
 @return Implementation of this instance of the `requireValid` macro.
@@ -297,7 +364,7 @@ Provides implementation of the [[org.facsim.requireFinite]] macro.
 @param c Abstract syntax tree (AST) context for this macro definition.
 
 @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or
-`-∞`, then a [[java.lang.IllegalArgumentException]] is thrown by the macro
+`-∞`, then a [[scala.IllegalArgumentException]] is thrown by the macro
 implementation, together with the name of the failed argument.
 
 @return Implementation of this instance of the `requireFinite` macro.

@@ -49,9 +49,9 @@ The role of this class is to allow general multiplication and division of pairs
 of measurements from different physical quantity families, such that the result
 belongs to a different family to either of the operands.
 
-For example, when a [[org.facsim.measure.Length$]] measurement is divided by a
-[[org.facsim.measure.Time$]] measurement, the result is a
-[[org.facsim.measure.Velocity$]] measurement. However creating tables that
+For example, when a [[org.facsim.measure.Length]] measurement is divided by a
+[[org.facsim.measure.Time]] measurement, the result is a
+[[org.facsim.measure.Velocity]] measurement. However creating tables that
 define the result of each pair of operands for each operation would be
 time-consuming, error prone and non-exhaustive.
 
@@ -113,7 +113,7 @@ zero).
 
 @return The unitless value of `measure` as a Double.
 
-@throws [[org.facsim.measure.GenericConversionException!]] if `measure` is not
+@throws org.facsim.measure.GenericConversionException if `measure` is not
 ''unitless''.
 
 @since 0.0
@@ -137,7 +137,7 @@ range for the associated family. This needs to be added for consistency.
 
 @param family Physical quantity family to which `measure` belongs.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite.
+@throws java.lang.IllegalArgumentException if `measure` is not finite.
 */
 //-----------------------------------------------------------------------------
 
@@ -154,14 +154,14 @@ result, or potentially result, in a measurement from a different physical
 quantity family.
 
 However, generic measurements may also be ''unitless'', in which case they are
-equivalent to ordinary [[scala.Double!]] values.
+equivalent to ordinary [[scala.Double]] values.
 
 Generic measurements can be converted to an equivalent specific
 measurement&mdash;one that belongs to the same physical quantity
 family&mdash;when a specific equivalent exists. For example, if a
-[[org.facsim.measure.Length$]] is divided by a [[org.facsim.measure.Time$]],
+[[org.facsim.measure.Length]] is divided by a [[org.facsim.measure.Time]],
 then the result is a ''generic velocity'', which can be converted to a
-[[org.facsim.measure.Velocity$]]. However a ''time'' multiplied by a ''time'',
+[[org.facsim.measure.Velocity]]. However a ''time'' multiplied by a ''time'',
 results in a generic ''time-squared'' measurement has no equivalent specific
 class and can be expressed only in generic form.
 
@@ -183,7 +183,7 @@ belongs.
 
 @param family Physical quantity family to which `measure` belongs.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+@throws java.lang.IllegalArgumentException if `measure` is not finite or
 is invalid for the associated `family`.
 
 @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on

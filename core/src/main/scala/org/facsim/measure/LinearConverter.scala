@@ -38,8 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.requireFinite
-import org.facsim.requireValid
+import org.facsim.{requireFinite, requireValid}
 
 //=============================================================================
 /**
@@ -60,15 +59,15 @@ same factor.
 and cannot be zero or one. A value of zero causes divide-by-zero exceptions
 when exporting values and implies that the magnitude of all measurement values
 is 0. A value of one implies that the units are already ''SI'' units, since no
-scaling is performed, in which case the [[org.facsim.measure.SIConverter$]]
+scaling is performed, in which case the [[org.facsim.measure.SIConverter]]
 object should be preferred.
 
 @param constant Constant value to be employed. This value must be finite and
 cannot be zero (in which case, [[org.facsim.measure.SIConverter]] is a better
 option).
 
-@throws IllegalArgumentException if '''factor''' is NaN, infinite, zero or one
-or if ''constant is NaN, infinite or zero.
+@throws IllegalArgumentException if `factor` is `NaN`, infinite, zero or one or
+if constant` is `NaN``, infinite or zero.
 */
 //=============================================================================
 

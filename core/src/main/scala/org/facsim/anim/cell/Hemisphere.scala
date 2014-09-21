@@ -39,10 +39,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import org.facsim.anim.Mesh
-import org.facsim.anim.Point3D
-import org.facsim.measure.Angle
-import scala.annotation.tailrec
+import org.facsim.anim.{Mesh, Point3D}
 
 //=============================================================================
 /**
@@ -60,17 +57,15 @@ Hemispheres]] for further information.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Hemispheres.html
 Hemispheres]] for further information.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -87,26 +82,21 @@ This value must be >= 0.
   ("anim.cell.Hemisphere.read"))
 
 //-----------------------------------------------------------------------------
-/*
-Create a hemisphere mesh to represent this cell and return it.
+/**
+@inheritdoc
 
-The origin of the cell is at the center of its base.
+@note The origin of the hemisphere is at the center of its base.
 
-@return Mesh representing the cell.
-
-@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
 //-----------------------------------------------------------------------------
 
   protected [cell] override def cellMesh: Mesh =
-  Mesh.hemisphere (Point3D.Origin, radius, Hemisphere.divisions)
+  Mesh.hemisphere (Point3D.Origin, radius, Hemisphere.Divisions)
 }
 
 //=============================================================================
 /**
 Hemisphere companion object.
-
-@since 0.0
 */
 //=============================================================================
 
@@ -123,52 +113,5 @@ Note that these divisions apply around the circumference of the base of the
 hemipshere, and each band above it.
 */
 
-  val divisions = 16
-
-/**
-Number of bands of faces per hemisphere.
-
-There are only three bands of faces making up the hemisphere (AutoMod's was a
-pretty low-resolution 3D system).
-*/
-
-  val bands = 3
-
-/**
-Increase in latitude at each band.
-
-Each band is 90°/Hemisphere.bands higher "latitude" than the band before it
-(the first band is also for the base). The height and radius of each band vary
-accordingly.
-*/
-
-  val bandAngle = 90.0 / bands
-
-/**
-Vertex points per band.
-
-Number of vertex points per band (including the base of the band only).
-*/
-
-  val bandPoints = divisions + 1
-
-/**
-Pole vertex index.
-
-Index of the vertex corresponding to the pole. We don't need to add 1, since
-point numbering starts at 0.
-*/
-
-  val poleIndex = bands * bandPoints
-
-/**
-Total number of faces making up a hemisphere.
-
-There are 2 * divisions faces for each band, bar the last, divisions faces for
-the last band, plus another set of divisions faces for base.
-
-So, there are 2 * divisions * bands faces in total.
-*/
-
-  val totalFaces = divisions * bands * 2
+  private val Divisions = 16
 }

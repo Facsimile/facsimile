@@ -43,7 +43,6 @@ import java.net.URL
 import org.facsim.requireNonNull
 import org.facsim.io.TextReader
 import scalafx.scene.Node
-import scalafx.scene.paint.Color
 
 //=============================================================================
 /**
@@ -121,7 +120,7 @@ URL and return it as a ''ScalaFX 3D Parent'' node.
 @note If a base URL is specified, then any files referenced by the cell data
 will be searched for relative to that URL; otherwise, files should be present
 at the same location as the named file. Refer to
-[[org.facsim.anim.cell.CellLoader$]] for further information.
+[[org.facsim.anim.cell.CellLoader]] for further information.
 
 @param url URL of file from which cell data is to be read.
 
@@ -137,23 +136,23 @@ value cannot be `null`.
 elements in the scene that inherit their edge color from the root node. This
 value cannot be `null`.
 
-@return ''ScalaFX'' [[scalafx.scene.Node!]] containing the ''cell'''s contents.
+@return ''ScalaFX'' [[scalafx.scene.Node!]] containing the ''cell's'' contents.
 
-@throws [[java.lang.NullPointerException!]] if `url`, `faceColor` or
-`edgeColor` are `null`.
+@throws java.lang.NullPointerException if `url`, `faceColor` or `edgeColor` are
+`null`.
 
-@throws [[java.lang.SecurityException!]] if `url` is protected from reading by
+@throws java.lang.SecurityException if `url` is protected from reading by
 Java's security mechanism.
 
-@throws [[java.io.FileNotFoundException!]] if `url` could not be found, or if
-it could not be opened due to file access restrictions (such as the current
-user having insufficient privileges to read the file, etc.).
+@throws java.io.FileNotFoundException if `url` could not be found, or if it
+could not be opened due to file access restrictions (such as the current user
+having insufficient privileges to read the file, etc.).
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @since 0.0
 */
@@ -178,7 +177,7 @@ identify the base URL if one is not defined.
 */
 
     def getSearchLocation = {
-      val urlString = url.toString ()
+      val urlString = url.toString
       new URL (urlString.take (urlString.lastIndexOf ('/')))
     }
 

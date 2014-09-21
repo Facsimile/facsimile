@@ -41,11 +41,10 @@ package org.facsim.anim.cell
 import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 import java.net.URL
-import org.facsim.LibResource
-import org.facsim.io.FieldConversionException
-import org.facsim.io.FieldVerificationException
-import org.facsim.io.TextReader
-import scala.collection.mutable.Map
+import org.facsim.{assertNonNull, LibResource}
+import org.facsim.io.{FieldConversionException, FieldVerificationException,
+TextReader}
+import scala.collection.mutable.{Map => MutableMap}
 
 //=============================================================================
 /**
@@ -69,26 +68,25 @@ scene that inherit their face color from the root node. This value cannot be
 scene that inherit their edge color from the root node. This value cannot be
 `null`.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //=============================================================================
 
 private [cell] final class CellScene (reader: TextReader, baseUrl: URL,
-faceColor: CellColor.Value, edgeColor: CellColor.Value)
-extends NotNull {
+faceColor: CellColor.Value, edgeColor: CellColor.Value) {
 
 /*
 Sanity checks.
 */
 
-  assert (reader.isInstanceOf [NotNull]) // scalastyle:ignore
-  assert (baseUrl ne null)
-  assert (faceColor ne null)
-  assert (edgeColor ne null)
+  assertNonNull (reader)
+  assertNonNull (baseUrl)
+  assertNonNull (faceColor)
+  assertNonNull (edgeColor)
 
 /**
 Flag indicating whether we have finished constructing the scene.
@@ -102,7 +100,7 @@ Flag indicating whether we have finished constructing the scene.
 ''Cell'' definitions, indexed by name and initially empty.
 */
 
-  private val definitions: Map [String, Cell] = Map ()
+  private val definitions = MutableMap [String, Cell] ()
 
 /**
 Process the cell data.
@@ -183,11 +181,12 @@ cells belonging to this scene as its contents.
   Boolean = false) = {
 
 /*
-Sanity check.
+Sanity checks.
 
 If this is a definition, then the parent must be undefined.
 */
 
+    assertNonNull (parent)
     assert (!isDefinition || parent == None)
 
 /*
@@ -269,15 +268,35 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readText (description: => String) = {
+
+/*
+Sanity checks.
+
+NOTE: description is a function returning a String. Neither the function, nor
+the value returned can be null. However, verifying the latter is fraught since
+the function may have dangerous side-effects. The  test below verifies that the
+pointer to the function is not null - but does not call the function. If the
+function returns null, then we'll get an error in the translate reader
+exception call below (but only if an error occurs when reading the field, which
+is not ideal).
+*/
+
+    assertNonNull (description)
+
+/*
+Retrieve the remaining text on the current line of the file, throwing an
+appropriate exception if necessary.
+*/
+
     val value = try {
       reader.readToEOL ()
     }
@@ -305,15 +324,35 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readString (description: => String) = {
+
+/*
+Sanity checks.
+
+NOTE: description is a function returning a String. Neither the function, nor
+the value returned can be null. However, verifying the latter is fraught since
+the function may have dangerous side-effects. The  test below verifies that the
+pointer to the function is not null - but does not call the function. If the
+function returns null, then we'll get an error in the translate reader
+exception call below (but only if an error occurs when reading the field, which
+is not ideal).
+*/
+
+    assertNonNull (description)
+
+/*
+Retrieve the text field and return it, throwing an appropriate exception if
+necessary.
+*/
+
     val value = try {
       reader.readString ()
     }
@@ -335,16 +374,37 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readString (verifier: TextReader.Verifier [String],
   description: => String) = {
+
+/*
+Sanity checks.
+
+NOTE: both verifier and description are functions. Neither function pointer can
+be null, nor can description return a null string when called. However,
+verifying the latter is fraught since the description function may have
+dangerous side-effects. The  tests below verify that the pointers to both
+functions are not null - but do not call either function. If description
+returns null, then we'll get an error in the translate reader exception call
+below (but only if an error occurs when reading the field, which is not ideal).
+*/
+
+    assertNonNull (verifier)
+    assertNonNull (description)
+
+/*
+Retrieve the text field, verify and return it, throwing an appropriate
+exception if necessary.
+*/
+
     val value = try {
       reader.readString (verifier)
     }
@@ -363,15 +423,35 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readBool (description: => String) = {
+
+/*
+Sanity checks.
+
+NOTE: description is a function returning a String. Neither the function, nor
+the value returned can be null. However, verifying the latter is fraught since
+the function may have dangerous side-effects. The  test below verifies that the
+pointer to the function is not null - but does not call the function. If the
+function returns null, then we'll get an error in the translate reader
+exception call below (but only if an error occurs when reading the field, which
+is not ideal).
+*/
+
+    assertNonNull (description)
+
+/*
+Retrieve the Boolean field and return it, throwing an appropriate exception if
+necessary.
+*/
+
     val value = try {
       reader.readInt (value => value == 0 || value == 1)
     }
@@ -393,16 +473,37 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readBool (verifier: Int => Boolean, description: =>
   String) = {
+
+/*
+Sanity checks.
+
+NOTE: both verifier and description are functions. Neither function pointer can
+be null, nor can description return a null string when called. However,
+verifying the latter is fraught since the description function may have
+dangerous side-effects. The  tests below verify that the pointers to both
+functions are not null - but do not call either function. If description
+returns null, then we'll get an error in the translate reader exception call
+below (but only if an error occurs when reading the field, which is not ideal).
+*/
+
+    assertNonNull (verifier)
+    assertNonNull (description)
+
+/*
+Retrieve the Boolean field, verify and return it, throwing an appropriate
+exception if necessary.
+*/
+
     val value = try {
       reader.readInt (value => (value == 0 || value == 1) && verifier (value))
     }
@@ -421,15 +522,35 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readInt (description: => String) = {
+
+/*
+Sanity checks.
+
+NOTE: description is a function returning a String. Neither the function, nor
+the value returned can be null. However, verifying the latter is fraught since
+the function may have dangerous side-effects. The  test below verifies that the
+pointer to the function is not null - but does not call the function. If the
+function returns null, then we'll get an error in the translate reader
+exception call below (but only if an error occurs when reading the field, which
+is not ideal).
+*/
+
+    assertNonNull (description)
+
+/*
+Retrieve the integer field and return it, throwing an appropriate exception if
+necessary.
+*/
+
     val value = try {
       reader.readInt ()
     }
@@ -451,16 +572,37 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readInt (verifier: TextReader.Verifier [Int], description:
   => String) = {
+
+/*
+Sanity checks.
+
+NOTE: both verifier and description are functions. Neither function pointer can
+be null, nor can description return a null string when called. However,
+verifying the latter is fraught since the description function may have
+dangerous side-effects. The  tests below verify that the pointers to both
+functions are not null - but do not call either function. If description
+returns null, then we'll get an error in the translate reader exception call
+below (but only if an error occurs when reading the field, which is not ideal).
+*/
+
+    assertNonNull (verifier)
+    assertNonNull (description)
+
+/*
+Retrieve the interger field, verify and return it, throwing an appropriate
+exception if necessary.
+*/
+
     val value = try {
       reader.readInt (verifier)
     }
@@ -479,15 +621,35 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readDouble (description: => String) = {
+
+/*
+Sanity checks.
+
+NOTE: description is a function returning a String. Neither the function, nor
+the value returned can be null. However, verifying the latter is fraught since
+the function may have dangerous side-effects. The  test below verifies that the
+pointer to the function is not null - but does not call the function. If the
+function returns null, then we'll get an error in the translate reader
+exception call below (but only if an error occurs when reading the field, which
+is not ideal).
+*/
+
+    assertNonNull (description)
+
+/*
+Retrieve the double field and return it, throwing an appropriate exception if
+necessary.
+*/
+
     val value = try {
       reader.readDouble ()
     }
@@ -509,16 +671,37 @@ to the user in the event that an exception occurs.
 
 @return Value read, if no exceptions arise.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private [cell] def readDouble (verifier: TextReader.Verifier [Double],
   description: => String) = {
+
+/*
+Sanity checks.
+
+NOTE: both verifier and description are functions. Neither function pointer can
+be null, nor can description return a null string when called. However,
+verifying the latter is fraught since the description function may have
+dangerous side-effects. The  tests below verify that the pointers to both
+functions are not null - but do not call either function. If description
+returns null, then we'll get an error in the translate reader exception call
+below (but only if an error occurs when reading the field, which is not ideal).
+*/
+
+    assertNonNull (verifier)
+    assertNonNull (description)
+
+/*
+Retrieve the double field, verify and return it, throwing an appropriate
+exception if necessary.
+*/
+
     val value = try {
       reader.readDouble (verifier)
     }
@@ -539,8 +722,10 @@ if the definition has not yet been seen.
 */
 //-----------------------------------------------------------------------------
 
-  private [cell] final def getDefinition (definitionName: String) =
-  definitions.get (definitionName)
+  private [cell] def getDefinition (definitionName: String) = {
+    assertNonNull (definitionName)
+    definitions.get (definitionName)
+  }
 }
 
 //=============================================================================
@@ -604,7 +789,7 @@ a human (the resulting map itself is not ordered by cell code). Please maintain
 this order when modifying the list.
 */
 
-    val classMap = Map [Int, CellClass] (
+    val classMap = MutableMap [Int, CellClass] (
       100 -> classOf [Triad],
       115 -> classOf [VectorList],
       125 -> classOf [Polyhedron],
@@ -669,7 +854,7 @@ containing definition cell classes.
 Now construct, and return, the map relating definition state to class map.
 */
 
-    Map [Boolean, Map [Int, CellClass]] (
+    MutableMap [Boolean, MutableMap [Int, CellClass]] (
       true -> definitionClassMap,
       false -> regularClassMap
     )
@@ -773,11 +958,11 @@ string to explain what might have just happened.
 
 @return This function does not return and always throws an exception.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
@@ -785,7 +970,14 @@ encountered during parsing of the file.
   description: String): Nothing = {
 
 /*
-Retrieve the error message, mixing in the description.
+Sanity checks.
+*/
+
+    assertNonNull (exception)
+    assertNonNull (description)
+
+/*
+Retrieve the error message, mixing in the description provided.
 */
 
     val msg = LibResource ("anim.cell.CellScene.readValue", description)

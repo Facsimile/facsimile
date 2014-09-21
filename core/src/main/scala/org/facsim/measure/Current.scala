@@ -138,10 +138,10 @@ Instances of this class represent ''electric current'' measurements.
 electric current]]'' measurement value.
 
 @param measure ''Electric current'' measurement expressed in
-''[[org.facsim.measure.Current$.amperes]]''. This value must be finite and
+''[[org.facsim.measure.Current.Amperes]]''. This value must be finite and
 greater than or equal to zero.
 
-@throws [[java.lang.IllegalArgumentException!]] if `measure` is not finite or
+@throws java.lang.IllegalArgumentException if `measure` is not finite or
 is negative.
 
 @since 0.0

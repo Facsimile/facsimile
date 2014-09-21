@@ -38,8 +38,8 @@ Scala source file from the org.facsim.io package.
 
 package org.facsim.io
 
-import org.facsim.requireNonNull
-import org.facsim.requireValid
+import org.facsim.{requireNonNull, requireValid}
+import scala.annotation.tailrec
 
 //=============================================================================
 /**
@@ -67,7 +67,7 @@ characters as delimiters.  Such delimiters must set '''mergeConsecutive''' to
 @param delimiters Set of characters to be treated as delimiters.  Note that the
 ''line feed'' ('\n') character is not automatically added to the set and must
 be explicitly included if required.  Note also that the ''line feed'' character
-matches all line termination sequences$mdash;refer to
+matches all line termination sequences&mdash;refer to
 [[org.facsim.io.TextReader!]] for further information.  The ''null'' ('\0') and
 ''carriage return'' ('\r') characters cannot be used as delimiters and will
 result in an exception being thrown if included in the delimiter set.  If the
@@ -90,8 +90,7 @@ delimiter characters.
 */
 //=============================================================================
 
-class Delimiter (delimiters: Set [Int], mergeConsecutive: Boolean)
-extends NotNull {
+class Delimiter (delimiters: Set [Int], mergeConsecutive: Boolean) {
 
 /*
 Preconditions: forbid the use of null and carriage return characters as
@@ -120,8 +119,6 @@ otherwise.
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
@@ -133,6 +130,7 @@ required.  The result argument keeps track of whether a delimiter was found,
 and is initialized to false.
 */
 
+    @tailrec
     def peek (result: Boolean): Boolean = {
 
 /*
@@ -159,8 +157,8 @@ that we have found a delimiter.  Otherwise, we have already identified the end
 of the delimiter.
 */
 
-        if (mergeConsecutive) peek (true)
-        else true
+        if (!mergeConsecutive) true
+        else peek (true)
       }
     }
 

@@ -38,10 +38,10 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 
 package org.facsim.engine
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, requireNonNull, LibResource}
 import org.facsim.measure.Time
 import scala.annotation.tailrec
-import scala.collection.mutable.PriorityQueue
+import scala.collection.mutable.{PriorityQueue => MutableQueue}
 
 //=============================================================================
 /**
@@ -57,20 +57,20 @@ object Simulation {
 Event queue.
 
 Events are queued up and dispatched in order (see
-[[org.facsim.facsimile.Event.compare(Event)]] for further information).  Events
-are removed, and dispatched one-at-a-time - with the event being dispatched
-right now termed the ''current event''.  The current event does not belong to
-the eventQueue.
+[[org.facsim.engine.Event.compare(Event)]] for further information). Events are
+removed, and dispatched one-at-a-time - with the event being dispatched right
+now termed the ''current event''. The current event does not belong to the
+eventQueue.
 */
 
-  private val eventQueue = PriorityQueue [Event] ()
+  private val eventQueue = MutableQueue [Event] ()
 
 /**
 Current event.
 */
 
   private var currentEvent: Event = // scalastyle:ignore
-  schedule (new NullAction, Time.Zero, 0)
+  schedule (NullAction, Time.Zero, 0)
 
 /**
 Absolute time at which the simulation's statistics were last reset.
@@ -98,23 +98,42 @@ Schedule the simple actions for execution.
 
 @param action to be scheduled for execution.
 
-@param dueIn Time to elapse before action is executed.  If this value is 0.0,
+@param dueIn Time to elapse before action is executed. If this value is 0.0,
 then the action will be executed at the current simulation time, but not until
 after the current event, and any other current event with a higher priority
 scheduled at the current simulation time, has completed.
 
 @param priority Priority of the action; the higher the value, the higher the
-priority.  Actions scheduled to execute at the same time will be dispatched in
+priority. Actions scheduled to execute at the same time will be dispatched in
 order of their priority; actions scheduled at the same time with the same
 priority are dispatched in the order that they are scheduled.
+
+@return The event scheduled to perform the specified action.
+
+@throws java.lang.NullPointerException if `action` or `dueIn` are `null`.
 
 @since 0.0
 */
 //-----------------------------------------------------------------------------
 
   final def schedule (action: Action, dueIn: Time.Measure, priority: Int = 0) =
-  synchronized {
-    scheduleEvent (new Event (action, dueIn, priority))
+  {
+
+/*
+Sanity checks.
+*/
+
+    requireNonNull (action)
+    requireNonNull (dueIn)
+
+/*
+Synchronize access to the event queue and schedule the new event.
+*/
+    synchronized {
+      val event = new Event (action, dueIn, priority)
+      scheduleEvent (event)
+      event
+    }
   }
 
 //-----------------------------------------------------------------------------
@@ -122,14 +141,12 @@ priority are dispatched in the order that they are scheduled.
 Schedule event.
 
 @param event Event to be scheduled for dispatch.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private [engine] def scheduleEvent (event: Event) = synchronized {
+  private def scheduleEvent (event: Event): Unit = synchronized {
+    assertNonNull (event)
     (eventQueue += event)
-    event
   }
 
 //-----------------------------------------------------------------------------
@@ -152,7 +169,7 @@ If there are no more events left, then throw the out-of-events exception.  This
 should generally be treated as a sign that event propagation has failed.
 */
 
-    if (eventQueue.isEmpty) throw new OutOfEventsException ()
+    if (eventQueue.isEmpty) throw new OutOfEventsException
 
 /*
 Update the current event (and, hence, the current simulation time) to the event
@@ -160,7 +177,7 @@ at the head of the event queue, removing that event in the process.
 */
 
     currentEvent = eventQueue.dequeue ()
-    assert (currentEvent ne null)
+    assertNonNull (currentEvent)
 
 /*
 Now dispatch this event - have it execute its actions.
@@ -172,7 +189,7 @@ Now dispatch this event - have it execute its actions.
 Use tail recursion to perform the next event.
 */
 
-    run ();
+    run ()
   }
 
 //-----------------------------------------------------------------------------
@@ -197,17 +214,15 @@ Null action class.
 Represents actions that should never be executed in practice.  The initial
 current event is such an action, it provides the initial simulation time, but
 is never actually executed.
-
-@since 0.0
 */
 //-----------------------------------------------------------------------------
 
-  private final class NullAction
+  private object NullAction
   extends Action {
 
 //-----------------------------------------------------------------------------
-/*
-Provide a description for the null actions.
+/**
+@inheritdoc
 */
 //-----------------------------------------------------------------------------
 
@@ -215,15 +230,14 @@ Provide a description for the null actions.
     LibResource ("engine.Simulation.NullAction.description")
 
 //-----------------------------------------------------------------------------
-/*
-Provide null actions.
+/**
+@inheritdoc
 
-Null actions should never actually be executed; if this exception is thrown, an
-error is issued.
+@note Null actions should never actually be executed; doing so will result in
+an exception.
 */
 //-----------------------------------------------------------------------------
 
-    override def execute = sys.error (LibResource
-    ("engine.Simulation.NullAction.execute"))
+    override def apply () = throw new NullActionException
   }
 }

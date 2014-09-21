@@ -43,15 +43,17 @@ package org.facsim.engine
 EventId object.
 
 @note This object could have been called "Event" and could have been a
-companion object to the [[Event]] class.  However, classes and their companion
-objects can access each other's private members - meaning that it would be
-possible for the [[Event]] class to access the [[id]] member directly,
-by-passing the synchronized access provided by the [[nextId]] method.  By,
+companion object to the [[org.facsim.engine.Event]] class. However, classes and
+their companion objects can access each other's private members - meaning that
+it would be possible for the [[org.facsim.engine.Event]] class to access the
+[[org.facsim.engine.EventId.id]] member directly, by-passing the synchronized
+access provided by the [[org.facsim.engine.EventId.nextId]] method. By,
 instead, choosing to make it a separate, package-private object, we restrict
-the visibility of the object generally, while also ensuring that the [[id]]
-member is solely access through the [[nextId]] method.  Furthermore, it's
-possible that we may not even need this object in future $FACSIMILE releases,
-so hiding it as much as possible makes even more sense.
+the visibility of the object generally, while also ensuring that the
+[[org.facsim.engine.EventId.id]] member is solely access through the
+[[org.facsim.engine.EventId.nextId]] method. Furthermore, it's possible that we
+may not even need this object in future ''Facsimile'' releases, so hiding it as
+much as possible makes even more sense.
 */
 //=============================================================================
 

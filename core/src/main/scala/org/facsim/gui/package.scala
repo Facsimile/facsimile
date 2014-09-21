@@ -44,6 +44,8 @@ package org.facsim
 
 @note Facsimile utilizes the ''[http://docs.oracle.com/javafx JavaFX]]'' rich
 client library to provide user interface facilities, as well as 3D animation.
+
+@since 0.0
 */
 //=============================================================================
 

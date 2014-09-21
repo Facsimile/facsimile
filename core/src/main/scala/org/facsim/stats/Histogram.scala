@@ -122,17 +122,10 @@ range: [0, [[org.facsim.stats.Histogram!.length]]).
 
 //-----------------------------------------------------------------------------
 /**
-Retrieve number of bins, including underflow and overflow bin.
+Retrieve number of bins, including underflow and overflow bins.
 
-@param bin Number of bin for which frequency sought.  Bin number 0 is the
-underflow bin, bin number ([[org.facsim.stats.Histogram!.length]] - 1) is the
-overflow bin.  If an invalid bin number is passed, then an exception will be
-thrown.
-
-@return Frequency of observations recorded for specified '''bin''' so far.
-
-@throws java.lang.ArrayIndexOutOfBoundsException if '''bin''' is outside of the
-range: [0, [[org.facsim.stats.Histogram!.length]]).
+@return Number of bins in the histogram including the underflow and overflow
+bins.
 
 @since 0.0
 */

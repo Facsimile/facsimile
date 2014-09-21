@@ -40,7 +40,7 @@ package org.facsim
 
 import java.time.ZonedDateTime
 import javafx.scene.image.Image
-import org.facsim.util.{Version, toDate}
+import org.facsim.util.{toDate, Version}
 
 //=============================================================================
 /**

@@ -39,8 +39,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
-import org.facsim.anim.Mesh
-import org.facsim.anim.Point3D
+import org.facsim.anim.{Mesh, Point3D}
 
 //=============================================================================
 /**
@@ -57,11 +56,11 @@ Cylinders]] for further information.
 @param parent Parent set of this cell primitive. If this value is `None`, then
 this cell is the scene's root cell.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Cylinders.html
 Cylinders]] for further information.
@@ -103,21 +102,16 @@ Cylinder top Y-axis offset.
   private val yOffset = scene.readDouble (LibResource
   (Cylinder.ReadOffsetKey, 1))
 
-
 //-----------------------------------------------------------------------------
-/*
-Create a cylinder mesh to represent this cell and return it.
+/**
+@inheritdoc
 
-The origin of the cell is at the center of its base.
-
-@return Mesh representing the cell.
-
-@see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
+@note The origin of the cylinder is at the center of its base.
 */
 //-----------------------------------------------------------------------------
 
   protected [cell] override def cellMesh: Mesh = Mesh.cylinder (Point3D.Origin,
-  radius, Point3D (xOffset, yOffset, height), Cylinder.divisions)
+  radius, Point3D (xOffset, yOffset, height), Cylinder.Divisions)
 }
 
 //=============================================================================
@@ -148,5 +142,5 @@ cylinder it's 8. For simplicity, we'll convert all cylinders to have 16
 divisions.
 */
 
-  val divisions = 16
+  val Divisions = 16
 }

@@ -57,7 +57,7 @@ The window is always available, and can be closed and/or opened at any time.
 
 @param app ''GUI'' application to which the log window belongs.
 
-@throws java.lang.NullPointerException if either `app` or `style` is `null`.
+@throws java.lang.NullPointerException if `app` is `null`.
 */
 //=============================================================================
 

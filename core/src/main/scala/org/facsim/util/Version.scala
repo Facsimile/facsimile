@@ -52,7 +52,7 @@ etc.  For now, we just report back whatever string we're assigned.
 
 @constructor Construct new version from raw version string.  This will change
 shortly.  The recommended way to create version instances is via
-[[org.facsim.util.Version$.apply(String)*]].
+[[org.facsim.util.Version.apply(String)*]].
 
 @param version Version string storing version information.
 
@@ -60,8 +60,7 @@ shortly.  The recommended way to create version instances is via
 */
 //=============================================================================
 
-final class Version private [facsim] (version: String)
-extends NotNull {
+final class Version private [facsim] (version: String) {
 
 //-----------------------------------------------------------------------------
 /*
@@ -69,7 +68,7 @@ extends NotNull {
 */
 //-----------------------------------------------------------------------------
 
-  final override def toString () = version
+  override def toString = version
 }
 
 //=============================================================================

@@ -38,7 +38,7 @@ Scala source file from the org.facsim.anim.cell package.
 
 package org.facsim.anim.cell
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scala.annotation.tailrec
 import scalafx.scene.Group
 
@@ -59,11 +59,11 @@ this cell is the scene's root cell.
 
 @param textType Type of text represented by this instance.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
 Test Lists]] for further information.
@@ -75,6 +75,12 @@ textType: Text.Value)
 extends Cell (scene, parent) {
 
 /*
+Sanity checks.
+*/
+
+  assertNonNull (textType)
+
+/*
 Read the text lists.
 
 Each text list is prefixed by a set of translation co-ordinates.
@@ -83,11 +89,11 @@ Each text list is prefixed by a set of translation co-ordinates.
   private val textList = TextList.read (scene, textType)
 
 //-----------------------------------------------------------------------------
-/*
-@see [[org.facsim.anim.cell.Cell!.toNode]]
+/**
+@inheritdoc
 
-Note: We currently render World and Unrotate text list types as World text
-lists, and do not render Screen text lists.
+@note We currently render ''World'' and ''Unrotate'' text types as World text,
+and do not render ''Screen'' text.
 */
 //-----------------------------------------------------------------------------
 
@@ -146,17 +152,24 @@ Read text list data from the stream.
 
 @return Text list read.
 
-@throws [[org.facsim.anim.cell.IncorrectFormatException!]] if the file supplied
-is not an ''AutoMod® cell'' file.
+@throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
+not an ''AutoMod® cell'' file.
 
-@throws [[org.facsim.anim.cell.ParsingErrorException!]] if errors are
-encountered during parsing of the file.
+@throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
+during parsing of the file.
 */
 //-----------------------------------------------------------------------------
 
   private def read (scene: CellScene, textType: Text.Value) = {
 
-/**
+/*
+Sanity checks.
+*/
+
+    assertNonNull (scene)
+    assertNonNull (textType)
+
+/*
 Helper function to read the next text point from the data stream.
 
 Note that, due to the need for tail recursion, the list is built in reverse.
