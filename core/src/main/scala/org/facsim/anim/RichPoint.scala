@@ -55,5 +55,5 @@ associated texture point.
 */
 //=============================================================================
 
-private [anim] final case class RichPoint (val point: Point3D,
-val texturePoint: TexturePoint)
+private [anim] final case class RichPoint (point: Point3D,
+texturePoint: TexturePoint)
