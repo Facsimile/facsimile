@@ -80,7 +80,7 @@ coordinate second, and ''z'' coordinate third.
 */
 //-----------------------------------------------------------------------------
 
-  def toList = List (x, y, z)
+  private [anim] def toList = List (x, y, z)
 
 //-----------------------------------------------------------------------------
 /**
@@ -92,7 +92,7 @@ third.
 */
 //-----------------------------------------------------------------------------
 
-  def toFloatList = List (x.toFloat, y.toFloat, z.toFloat)
+  private [anim] def toFloatList = List (x.toFloat, y.toFloat, z.toFloat)
 
 //-----------------------------------------------------------------------------
 /**
@@ -102,7 +102,7 @@ Convert this point to a ''ScalaFX'' translation.
 */
 //-----------------------------------------------------------------------------
 
-  def toTranslate = new Translate (x, y, z)
+  private [anim] def toTranslate = new Translate (x, y, z)
 }
 
 //=============================================================================
@@ -117,5 +117,5 @@ private [anim] object Point3D {
 Origin.
 */
 
-  val Origin = Point3D (0.0, 0.0, 0.0)
+  private [anim] val Origin = Point3D (0.0, 0.0, 0.0)
 }
