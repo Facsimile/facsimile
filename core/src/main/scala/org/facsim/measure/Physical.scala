@@ -203,6 +203,28 @@ invalid for these units.
 
 //.............................................................................
 /**
+Calculate the absolute value of the measurement.
+
+@note The absolute value is based upon the measurement in ''SI'' units. For
+measurement unit families that do not have a common origin (such as
+[[org.facsim.measure.Temperature]]), this can result in unintuitive results.
+For example, the absolute value of -5°C is -5°C, not 5°C.
+
+@return The absolute value of the measurement, based upon it's ''SI'' units.
+
+@throws java.lang.IllegalArgumentException if the result is invalid for these
+units.
+
+@since 0.0
+*/
+//.............................................................................
+
+    final def abs =
+    if (value < 0.0) createNew (-value)
+    else this
+
+//.............................................................................
+/**
 Change the sign of a measurement value.
 
 @note All measurements that do not permit negative values will throw exceptions
