@@ -87,7 +87,7 @@ The starting angle for this arc. This may be any valid double value.
 */
 
   private val startAngle = Angle (scene.readDouble (LibResource
-  (Arc.ReadAngleKey, 0)), Angle.Degrees).normalize ()
+  (Arc.ReadAngleKey, 0)), Angle.Degrees).normalize
 
 /**
 Arc end angle.
@@ -96,7 +96,7 @@ This is the end angle for this arc. This may be any valid double value.
 */
 
   private val endAngle = Angle (scene.readDouble (LibResource
-  (Arc.ReadAngleKey, 1)), Angle.Degrees).normalize ()
+  (Arc.ReadAngleKey, 1)), Angle.Degrees).normalize
 
 /**
 Flag indicating whether this is a circle or a sector/arc.
@@ -120,7 +120,7 @@ part.
       Angle.τ
     }
     else {
-      (endAngle - startAngle).normalize ()
+      (endAngle - startAngle).normalize
     }
     Mesh.arc (Point3D.Origin, radius, startAngle, drawAngle, Arc.Divisions)
   }

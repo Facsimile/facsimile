@@ -518,23 +518,6 @@ convert either to the other.
 */
 
     final override def hashCode = value.hashCode ^ family.hashCode
-
-//.............................................................................
-/**
-Convert this measurement value to a string, expressed in the user's preferred
-units.
-
-@return A string containing the value of the measurement and the units in which
-the measurement is expressed, in the user's preferred locale.
-
-@see [[scala.Any!.toString()*]]
-
-@since 0.0
-*/
-//.............................................................................
-
-    final override def toString =
-    preferredUnits.format (this.asInstanceOf [Measure]) // scalastyle:ignore
   }
 
 //-----------------------------------------------------------------------------
@@ -586,20 +569,5 @@ output.
 //-----------------------------------------------------------------------------
 
   abstract class PhysicalUnits protected [measure]
-  extends Converter {
-
-//.............................................................................
-/**
-Format a value in these units for output.
-
-@param measure Measurement value to be output, preferably expressed in the
-user's preferred units. If a ''unitless'' generic measurement value, the value
-is output ''as is'' without any specified units.
-
-@return Formatted string, containing the value and the units (if any).
-*/
-//.............................................................................
-
-    private [measure] def format (measure: Measure): String
-  }
+  extends Converter
 }

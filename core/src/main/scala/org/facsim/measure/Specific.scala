@@ -232,6 +232,22 @@ Create a new measurement belonging to the same class as this measurement.
 
 //.............................................................................
 /**
+Convert this measurement value to a string, expressed in the user's preferred
+units.
+
+@return A string containing the value of the measurement and the units in which
+the measurement is expressed, in the user's preferred locale.
+
+@see [[scala.Any!.toString()*]]
+
+@since 0.0
+*/
+//.............................................................................
+
+    final override def toString = preferredUnits.format (value)
+
+//.............................................................................
+/**
 Compare this measurement with another measurement of the same type.
 
 @param that Measurement that this measurement is to be compared to.
@@ -294,15 +310,18 @@ Employ the converter to handle exporting of values.
     converter.exportValue (value)
 
 //.............................................................................
-/*
-Output using localized string formatting for these units.
+/**
+Format a value in these units for output.
+
+@param value Measurement value, expressed in ''SI'' units, to be output.
+
+@return Formatted string, containing the value and the units (if any).
 */
 //.............................................................................
 
-    private [measure] final override def format (value: Measure) = {
-      requireNonNull (value)
-      LibResource ("measure.Physical.Units.format",
-      value.inUnits (this.asInstanceOf [Units]), symbol) // scalastyle:ignore
+    private [measure] final def format (value: Double) = {
+      LibResource ("measure.Physical.Units.format", exportValue (value),
+      symbol)
     }
   }
 }

@@ -38,7 +38,7 @@ Scala source file belonging to the org.facsim.measure package.
 
 package org.facsim.measure
 
-import org.facsim.LibResource
+import org.facsim.{assertNonNull, LibResource}
 import scala.language.implicitConversions
 
 //=============================================================================
@@ -198,6 +198,22 @@ is invalid for the associated `family`.
   extends PhysicalMeasure (measure) {
 
 //.............................................................................
+/**
+Convert this measurement value to a string, expressed in the user's preferred
+units.
+
+@return A string containing the value of the measurement and the units in which
+the measurement is expressed, in the user's preferred locale.
+
+@see [[scala.Any!.toString()*]]
+
+@since 0.0
+*/
+//.............................................................................
+
+    override def toString = GenericUnits.format (this)
+
+//.............................................................................
 /*
 Create a new instance via the Generic factory method.
 */
@@ -254,8 +270,10 @@ Format generic values for output.
 */
 //.............................................................................
 
-    private [measure] override def format (measure: Measure): String =
-    LibResource ("measure.Generic.Units.format", measure.inUnits (self),
-    measure.family.baseSymbol)
+    private [measure] def format (value: Measure): String = {
+      assertNonNull (value)
+      LibResource ("measure.Generic.Units.format", value.inUnits (self),
+      value.family.baseSymbol)
+    }
   }
 }

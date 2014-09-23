@@ -324,7 +324,7 @@ Instances of this class represent ''plane angle'' measurements.
 measurement value.
 
 @param measure ''Plane angle'' measurement expressed in
-''[[org.facsim.measure.Angle.radians]]''. This value must be finite.
+''[[org.facsim.measure.Angle.Radians]]''. This value must be finite.
 
 @throws java.lang.IllegalArgumentException if `measure` is not finite.
 
@@ -396,7 +396,7 @@ Normalize the angle to a value in the range [0, ''τ'') ''radians'' ([0, 360)
 */
 //.............................................................................
 
-    def normalize () = {
+    def normalize = {
 
 /*
 Note: I originally tried this as value % τ - but, alas, that yields a value in
