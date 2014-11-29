@@ -44,7 +44,7 @@ same version of Scala that is used to build Facsimile (specified here).
 //=============================================================================
 
 import sbt._
-import Keys._
+import sbt.Keys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
@@ -199,10 +199,10 @@ right now, is to disable -Xfatal-warnings. This is a known Scala compiler issue
 documented at https://issues.scala-lang.org/browse/SI-6723.
 
 -Xfatal-warnings is also disabled since there were some deliberate decisions
-taken (such as using the deprecated DelayedInit trait in org.facsim.App) that
-cannot currently be suppressed. (The Scala team have been deprecating a lot of
-features as of 2.11, but there are no alternatives to many of the deprecated
-classes, which is becoming a nuisance.)
+taken (such as using the deprecated DelayedInit trait in org.facsim.App)
+resulting in warnings that cannot currently be suppressed. (The Scala team have
+been deprecating a lot of features as of 2.11, but there are no alternatives to
+many of the deprecated classes, which is becoming a nuisance.)
 
 As Xfatal-warnings is not in use, it's possible to have builds that generate
 tons of warnings, but which do not fail a build. This is unacceptable.
@@ -234,6 +234,12 @@ further details.
       "-Yinline-handlers",
       "-Yinline-warnings"
     ),
+
+/*
+Fork the tests, so that they run in a separate process.
+*/
+
+    fork in Test := true,
 
 /*
 Make sure that tests execute in sequence (we may change this in future, but,
@@ -413,6 +419,13 @@ Unidoc plugin to take care of that for us.
 */
 
     aggregate in doc := false,
+
+/*
+Disable aggregation of the "release" command, so that we do not attempt to
+release the "macros" and "core" subprojects individually.
+*/
+
+    //aggregate in releaseSignedConfiguration := false,
 
 /*
 Scaladoc configuration.
