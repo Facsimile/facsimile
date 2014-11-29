@@ -60,7 +60,7 @@ import xerial.sbt.Sonatype._
 Facsimile SBT Build object.
 
 @since 0.0
- */
+*/
 //=============================================================================
 
 object FacsimileBuild
@@ -162,8 +162,7 @@ These settings are common to all sub-projects that contain Scala sources. In
 particular, note that the Macro sub-project has very few dependencies.
 */
 
-  lazy val baseSourceSettings = defaultSettings ++ ScalastylePlugin.Settings ++
-  Seq (
+  lazy val baseSourceSettings = defaultSettings ++ Seq (
 
 /*
 Ensure that we only publish/package the root project and source subprojects.
