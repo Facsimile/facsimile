@@ -39,6 +39,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 import org.facsim.assertNonNull
+import scalafx.Includes._
 import scalafx.scene.Node
 import scalafx.scene.paint.Color
 
