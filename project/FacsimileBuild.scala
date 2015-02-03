@@ -296,7 +296,7 @@ Additional library dependencies.
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
-      "org.scalafx" %% "scalafx" % "8.0.5-R6-SNAPSHOT"
+      "org.scalafx" %% "scalafx" % "8.0.31-R7"
     )
   )
 
