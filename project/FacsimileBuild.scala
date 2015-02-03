@@ -270,7 +270,7 @@ scope.
 */
 
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.2" % "test",
+      "org.scala-lang.modules" %% "scala-xml" % "1.0.3" % "test",
 
 /*
 Other base library dependencies.
