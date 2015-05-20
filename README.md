@@ -13,7 +13,14 @@ the _[GNU General Public License]
 (http://www.gnu.org/licenses/lgpl-3.0-standalone.html GNU General Public)_
 (GPLv3).
 
-[![Build Status](https://travis-ci.org/Facsimile/facsimile.svg?branch=master)](https://travis-ci.org/Facsimile/facsimile) [![Coverage Status](https://coveralls.io/repos/Facsimile/facsimile/badge.svg)](https://coveralls.io/r/Facsimile/facsimile)
+Current status of official master _Facsimile_ branch:
+
+[![Build Status](https://travis-ci.org/Facsimile/facsimile.svg?branch=master)]
+(https://travis-ci.org/Facsimile/facsimile)
+[![Coverage Status](https://coveralls.io/repos/Facsimile/facsimile/badge.svg)]
+(https://coveralls.io/r/Facsimile/facsimile)
+
+# How to Use
 
 Instructions for working with _Facsimile_, and for working on _Facsimile_
-development, are to follow shortly...
+development, are to follow...
