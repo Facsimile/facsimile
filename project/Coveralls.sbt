@@ -32,7 +32,9 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //=============================================================================
-// SBT file to include Scalastyle plugin.
+// SBT file to include scoverage unit-test coverage analysis.
+//
+// This plugin is required by the coveralls.io site.
 //=============================================================================
 
-addSbtPlugin ("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.7.0")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.1.0")
