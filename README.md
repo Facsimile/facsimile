@@ -14,6 +14,7 @@ the _[GNU General Public License]
 (GPLv3).
 
 Current status of official master Facsimile branch:
+
 [![Build Status](https://travis-ci.org/Facsimile/facsimile.svg?branch=master)]
 (https://travis-ci.org/Facsimile/facsimile)
 [![Coverage Status](https://coveralls.io/repos/Facsimile/facsimile/badge.svg)]
