@@ -35,4 +35,4 @@
 // SBT file to include Scalastyle plugin.
 //=============================================================================
 
-addSbtPlugin ("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.6.0")
+addSbtPlugin ("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.7.0")
