@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2014, Michael J Allen.
+Copyright © 2004-2015, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -44,7 +44,7 @@ same version of Scala that is used to build Facsimile (specified here).
 //=============================================================================
 
 import sbt._
-import Keys._
+import sbt.Keys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
@@ -60,7 +60,7 @@ import xerial.sbt.Sonatype._
 Facsimile SBT Build object.
 
 @since 0.0
- */
+*/
 //=============================================================================
 
 object FacsimileBuild
@@ -144,7 +144,7 @@ that default settings are automatically provided.
 Scala cross compiling.
 */
 
-    crossScalaVersions := Seq ("2.11.2"),
+    crossScalaVersions := Seq ("2.11.6"),
 
 /*
 Scala configuration.
@@ -162,8 +162,7 @@ These settings are common to all sub-projects that contain Scala sources. In
 particular, note that the Macro sub-project has very few dependencies.
 */
 
-  lazy val baseSourceSettings = defaultSettings ++ ScalastylePlugin.Settings ++
-  Seq (
+  lazy val baseSourceSettings = defaultSettings ++ Seq (
 
 /*
 Ensure that we only publish/package the root project and source subprojects.
@@ -199,10 +198,10 @@ right now, is to disable -Xfatal-warnings. This is a known Scala compiler issue
 documented at https://issues.scala-lang.org/browse/SI-6723.
 
 -Xfatal-warnings is also disabled since there were some deliberate decisions
-taken (such as using the deprecated DelayedInit trait in org.facsim.App) that
-cannot currently be suppressed. (The Scala team have been deprecating a lot of
-features as of 2.11, but there are no alternatives to many of the deprecated
-classes, which is becoming a nuisance.)
+taken (such as using the deprecated DelayedInit trait in org.facsim.App)
+resulting in warnings that cannot currently be suppressed. (The Scala team have
+been deprecating a lot of features as of 2.11, but there are no alternatives to
+many of the deprecated classes, which is becoming a nuisance.)
 
 As Xfatal-warnings is not in use, it's possible to have builds that generate
 tons of warnings, but which do not fail a build. This is unacceptable.
@@ -236,6 +235,12 @@ further details.
     ),
 
 /*
+Fork the tests, so that they run in a separate process.
+*/
+
+    fork in Test := true,
+
+/*
 Make sure that tests execute in sequence (we may change this in future, but,
 for now, it's a lot easier to understand test output if tests execute
 sequentially.
@@ -265,7 +270,7 @@ scope.
 */
 
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.2" % "test",
+      "org.scala-lang.modules" %% "scala-xml" % "1.0.3" % "test",
 
 /*
 Other base library dependencies.
@@ -291,7 +296,7 @@ Additional library dependencies.
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
-      "org.scalafx" %% "scalafx" % "8.0.5-R6-SNAPSHOT"
+      "org.scalafx" %% "scalafx" % "8.0.31-R7"
     )
   )
 
@@ -413,6 +418,13 @@ Unidoc plugin to take care of that for us.
 */
 
     aggregate in doc := false,
+
+/*
+Disable aggregation of the "release" command, so that we do not attempt to
+release the "macros" and "core" subprojects individually.
+*/
+
+    //aggregate in releaseSignedConfiguration := false,
 
 /*
 Scaladoc configuration.

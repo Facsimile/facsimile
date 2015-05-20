@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2014, Michael J Allen.
+Copyright © 2004-2015, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -200,6 +200,28 @@ invalid for these units.
 //.............................................................................
 
     protected [measure] def createNew (newMeasure: Double): Measure
+
+//.............................................................................
+/**
+Calculate the absolute value of the measurement.
+
+@note The absolute value is based upon the measurement in ''SI'' units. For
+measurement unit families that do not have a common origin (such as
+[[org.facsim.measure.Temperature]]), this can result in unintuitive results.
+For example, the absolute value of -5°C is -5°C, not 5°C.
+
+@return The absolute value of the measurement, based upon it's ''SI'' units.
+
+@throws java.lang.IllegalArgumentException if the result is invalid for these
+units.
+
+@since 0.0
+*/
+//.............................................................................
+
+    final def abs =
+    if (value < 0.0) createNew (-value)
+    else this
 
 //.............................................................................
 /**
@@ -496,23 +518,6 @@ convert either to the other.
 */
 
     final override def hashCode = value.hashCode ^ family.hashCode
-
-//.............................................................................
-/**
-Convert this measurement value to a string, expressed in the user's preferred
-units.
-
-@return A string containing the value of the measurement and the units in which
-the measurement is expressed, in the user's preferred locale.
-
-@see [[scala.Any!.toString()*]]
-
-@since 0.0
-*/
-//.............................................................................
-
-    final override def toString =
-    preferredUnits.format (this.asInstanceOf [Measure]) // scalastyle:ignore
   }
 
 //-----------------------------------------------------------------------------
@@ -564,20 +569,5 @@ output.
 //-----------------------------------------------------------------------------
 
   abstract class PhysicalUnits protected [measure]
-  extends Converter {
-
-//.............................................................................
-/**
-Format a value in these units for output.
-
-@param measure Measurement value to be output, preferably expressed in the
-user's preferred units. If a ''unitless'' generic measurement value, the value
-is output ''as is'' without any specified units.
-
-@return Formatted string, containing the value and the units (if any).
-*/
-//.............................................................................
-
-    private [measure] def format (measure: Measure): String
-  }
+  extends Converter
 }

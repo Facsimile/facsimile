@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2014, Michael J Allen.
+Copyright © 2004-2015, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -55,5 +55,5 @@ associated texture point.
 */
 //=============================================================================
 
-private [anim] final case class RichPoint (val point: Point3D,
-val texturePoint: TexturePoint)
+private [anim] final case class RichPoint (point: Point3D,
+texturePoint: TexturePoint)

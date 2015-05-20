@@ -32,9 +32,9 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //=============================================================================
-// SBT file to include support for the IntelliJ IDEA IDE.
+// SBT file to include scoverage unit-test coverage analysis.
 //
-// This plugin allows SBT to configure projects for use with IDEA.
+// This plugin is required by the coveralls.io site.
 //=============================================================================
 
-addSbtPlugin ("com.github.mpeltonen" % "sbt-idea" % "1.6.0")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.1.0")

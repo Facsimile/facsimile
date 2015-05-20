@@ -1,5 +1,5 @@
 // Facsimile -- A Discrete-Event Simulation Library
-// Copyright © 2004-2014, Michael J Allen.
+// Copyright © 2004-2015, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,4 +37,4 @@
 // This plugin allows SBT to configure projects for use with eclipse.
 //=============================================================================
 
-addSbtPlugin ("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
+addSbtPlugin ("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "3.0.0")

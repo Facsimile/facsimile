@@ -1,6 +1,6 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2014, Michael J Allen.
+Copyright © 2004-2015, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -53,7 +53,7 @@ import org.scalatest.FunSpec
 
 //=============================================================================
 /**
-Test suite for the [[org.facsim.measure.Angle$]] object.
+Test suite for the [[org.facsim.measure.Angle]] object.
 */
 //=============================================================================
 
@@ -150,7 +150,7 @@ All of these values should have the value 0 radians (0 degrees).
 */
 
       List (
-        Angle.τ,
+        τ,
 //        Angle (360.0, Angle.Degrees),
 //        Angle (400.0, Angle.Gradians),
         Angle (1.0, Angle.Turns)
@@ -334,7 +334,7 @@ Test that the constant π has the correct value.
 
     describe (".π") {
       it ("must equal the value of physical constant π") {
-        assert (Angle.π === Angle (Math.PI, Angle.Radians))
+        assert (π === Angle (Math.PI, Angle.Radians))
       }
     }
 
@@ -344,7 +344,7 @@ Test that the constant τ has the correct value.
 
     describe (".τ") {
       it ("must equal the value of physical constant τ (=2π)") {
-        assert (Angle.τ === Angle (2.0 * Math.PI, Angle.Radians))
+        assert (τ === Angle (2.0 * Math.PI, Angle.Radians))
       }
     }
 
