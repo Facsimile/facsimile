@@ -32,9 +32,7 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //=============================================================================
-// SBT file to include scoverage unit-test coverage analysis.
-//
-// This plugin is required by the coveralls.io site.
+// SBT file to include support for the coveralls.io site.
 //=============================================================================
 
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.1.0")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.0.0")

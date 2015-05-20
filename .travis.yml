@@ -77,23 +77,19 @@ jdk:
 # This firstly prints the java version used. Next, it executes SBT to perform
 # scalastyle checking, coverage analysis and then execute the test suite.
 # Subsequent to that, since Facsimile is a multi-module project, we must
-# generate a report aggregated for all modules. (This must be done as a
-# SBT command.)
+# generate a report aggregated for all modules. The notify Coveralls of the
+# test coverage results. (Note that both of these latter tasks must be
+# performed as separate SBT commands.)
 #
 # The find commands are described as "tricks to avoid unnecessary cache
 # updates". They can probably be removed if they prove troublesome.
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION scalastyle coverage test &&
-    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
+    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate &&
+    sbt ++$TRAVIS_SCALA_VERSION coveralls
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
-
-# If the build succeeded, notify Coveralls so that it can publish test coverage
-# analysis.
-
-after_success:
-  - sbt ++$TRAVIS_SCALA_VERSION coveralls
 
 # For now, we'll only test the master branch.
 
