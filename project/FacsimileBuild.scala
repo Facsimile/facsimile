@@ -275,7 +275,7 @@ scope.
 Other base library dependencies.
 */
 
-      "org.scalatest" %% "scalatest" % "2.2.1" % "test"
+      "org.scalatest" %% "scalatest" % "2.2.4" % "test"
     )
   )
 
