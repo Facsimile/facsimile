@@ -225,7 +225,6 @@ further details.
       "-Xcheckinit",
       //"-Xfatal-warnings",
       "-Xlint:_",
-      //"-Xstrict-inference",
       "-Yclosure-elim",
       "-Yconst-opt",
       "-Ydead-code",
