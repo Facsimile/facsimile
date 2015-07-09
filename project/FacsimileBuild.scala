@@ -144,7 +144,7 @@ that default settings are automatically provided.
 Scala cross compiling.
 */
 
-    crossScalaVersions := Seq ("2.11.6"),
+    crossScalaVersions := Seq ("2.11.7"),
 
 /*
 Scala configuration.
