@@ -35,4 +35,4 @@
 // SBT file to simplify publication to the Sonatype OSS repository.
 //=============================================================================
 
-addSbtPlugin ("org.xerial.sbt" % "sbt-sonatype" % "0.2.1")
+addSbtPlugin ("org.xerial.sbt" % "sbt-sonatype" % "0.5.0")
