@@ -220,7 +220,7 @@ further details.
       "-feature",
       "-g:vars",
       "-optimize",
-      "-target:jvm-1.7",
+      "-target:jvm-1.8",
       "-unchecked",
       "-Xcheckinit",
       //"-Xfatal-warnings",
