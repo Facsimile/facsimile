@@ -75,6 +75,15 @@ before_install:
 jdk:
   - oraclejdk8
 
+# Require the latest version of this JDK (since JavaFX, in particular, is
+# sensitive to different builds - some features in the current version of
+# ScalaFX require the latest release).
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
 # Now perform the build.
 #
 # This firstly prints the java version used. Next, it executes SBT to perform
