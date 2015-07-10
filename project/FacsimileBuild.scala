@@ -142,6 +142,9 @@ that default settings are automatically provided.
 
 /*
 Scala cross compiling.
+
+These values should be synchronized with the Travis CI .travis.yml file in the
+project's root directory.
 */
 
     crossScalaVersions := Seq ("2.11.7"),

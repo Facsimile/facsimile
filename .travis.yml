@@ -45,10 +45,13 @@
 sudo: false
 
 # Specify project language and supported versions.
+#
+# These values should be synchronized with the values in the custom SBT build
+# definition file,  project/FacsimileBuild.scala
 
 language: scala
 scala:
-  - 2.11.6
+  - 2.11.7
 
 # Cache the IVY & SBT directories at the end of the build.
 
