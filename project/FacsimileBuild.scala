@@ -50,8 +50,8 @@ import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import org.scalastyle.sbt.ScalastylePlugin
 import sbtrelease.ReleaseStateTransformations._
-import sbtrelease.{releaseTask, ReleaseStep, Version}
-import sbtrelease.ReleasePlugin.{releaseSettings, ReleaseKeys}
+import sbtrelease.Version
+import sbtrelease.ReleasePlugin.autoImport._
 import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
 import xerial.sbt.Sonatype._
 
@@ -144,7 +144,7 @@ that default settings are automatically provided.
 Scala cross compiling.
 */
 
-    crossScalaVersions := Seq ("2.11.6"),
+    crossScalaVersions := Seq ("2.11.7"),
 
 /*
 Scala configuration.
@@ -220,12 +220,11 @@ further details.
       "-feature",
       "-g:vars",
       "-optimize",
-      "-target:jvm-1.7",
+      "-target:jvm-1.8",
       "-unchecked",
       "-Xcheckinit",
       //"-Xfatal-warnings",
       "-Xlint:_",
-      //"-Xstrict-inference",
       "-Yclosure-elim",
       "-Yconst-opt",
       "-Ydead-code",
@@ -253,8 +252,7 @@ SBT-Eclipse plugin configuration.
 */
 
     EclipseKeys.useProjectId := false,
-    EclipseKeys.createSrc := EclipseCreateSrc.Default +
-    EclipseCreateSrc.Resource,
+    EclipseKeys.createSrc := EclipseCreateSrc.Default,
 
 /*
 Required scala standard libraries.
@@ -276,7 +274,7 @@ scope.
 Other base library dependencies.
 */
 
-      "org.scalatest" %% "scalatest" % "2.2.1" % "test"
+      "org.scalatest" %% "scalatest" % "2.2.4" % "test"
     )
   )
 
@@ -296,7 +294,7 @@ Additional library dependencies.
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
-      "org.scalafx" %% "scalafx" % "8.0.31-R7"
+      "org.scalafx" %% "scalafx" % "8.0.40-R8"
     )
   )
 
@@ -322,8 +320,7 @@ Unidoc.
 */
 
   lazy val facsimile = Project (projectArtifactId, file ("."), settings =
-  defaultSettings ++ releaseSettings ++ sonatypeSettings ++
-  customUnidocSettings ++ Seq (
+  defaultSettings ++ sonatypeSettings ++ customUnidocSettings ++ Seq (
 
 /*
 Maven POM (project object model) metadata.
@@ -517,7 +514,7 @@ This differs from the standard sbt-release process in that:
     care of signing published artifacts.
 */
 
-    ReleaseKeys.releaseProcess := Seq [ReleaseStep] (
+    releaseProcess := Seq [ReleaseStep] (
 
 /*
 Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
@@ -548,7 +545,7 @@ Run scalastyle to ensure that sources are correctly formatted and contain no
 static errors.
 */
 
-      //releaseTask (testScalastyle),
+      ReleaseStep (action = Command.process ("testScalastyle", _)),
 
 /*
 Update the "Version.sbt" file so that it contains the release version number.
@@ -564,12 +561,10 @@ Commit and tag the release version.
       tagRelease,
 
 /*
-Publish the released version to the Sonatype OSS repository.
-
-This will also take care of signing the release.
+Sign the current version.
 */
 
-      releaseTask (SonatypeKeys.sonatypeReleaseAll),
+      ReleaseStep (action = Command.process ("publishSigned", _)),
 
 /*
 Update the "Version.sbt" file so that it contains the new development version
@@ -580,12 +575,21 @@ number.
 
 /*
 Commit the updated working directory, so that the new development version takes
-effect, and push all local commits to the "upstream" repository.
-
-Note: This will fail if an "upstream" repository has not been configured.
+effect.
 */
 
       commitNextVersion,
+
+/*
+Publish the released version to the Sonatype OSS repository.
+*/
+
+      ReleaseStep (action = Command.process ("sonatypeReleaseAll", _)),
+
+/*
+Push all commits to the upstream respository (typically "origin").
+*/
+
       pushChanges
     ),
 
@@ -594,7 +598,7 @@ By default, we'll bump the bug-fix/release number of the version following a
 release.
 */
 
-    ReleaseKeys.versionBump := Version.Bump.Bugfix,
+    releaseVersionBump := Version.Bump.Bugfix,
 
 /*
 Have the release plugin write current version information into Version.sbt, in
@@ -604,7 +608,7 @@ NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained
 under version control.
 */
 
-    ReleaseKeys.versionFile := file ("Version.sbt")
+    releaseVersionFile := file ("Version.sbt")
   )).aggregate (core, macros)
 
 /**
