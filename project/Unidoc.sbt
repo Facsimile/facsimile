@@ -36,4 +36,4 @@
 // sbt sub-projects.
 //=============================================================================
 
-addSbtPlugin ("com.eed3si9n" % "sbt-unidoc" % "0.3.1")
+addSbtPlugin ("com.eed3si9n" % "sbt-unidoc" % "0.3.2")

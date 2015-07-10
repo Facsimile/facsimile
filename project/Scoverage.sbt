@@ -37,4 +37,4 @@
 // This plugin is required by the coveralls.io site.
 //=============================================================================
 
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.1.0")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.0.4")
