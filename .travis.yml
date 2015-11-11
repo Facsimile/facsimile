@@ -105,7 +105,8 @@ addons:
 #    sbt ++$TRAVIS_SCALA_VERSION coveralls
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test doc &&
+  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test &&
+    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate &&
     sbt ++$TRAVIS_SCALA_VERSION coveralls
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
