@@ -53,6 +53,7 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
+import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype._
 
 //=============================================================================
@@ -258,6 +259,13 @@ SBT-Eclipse plugin configuration.
     EclipseKeys.createSrc := EclipseCreateSrc.Default,
 
 /*
+Code test coverage settings.
+*/
+
+    ScoverageKeys.coverageEnabled := true,
+    ScoverageKeys.coverageHighlighting := true,
+
+/*
 Required scala standard libraries.
 */
 
@@ -410,6 +418,15 @@ version - which seems wrong, right now).
       <system>GitHub Issues</system>
       <url>https://github.com/Facsimile/facsimile/issues</url>
     </issueManagement>,
+
+/*
+Aggregate the code test coverage results, so that overall code test coverage statistics are available.
+Ensure that builds fail unless the specific code test coverage percentage is attained.
+*/
+
+    aggregate in ScoverageKeys.coverageAggregate := true,
+    ScoverageKeys.coverageFailOnMinimum := true,
+    ScoverageKeys.coverageMinimum := 50,
 
 /*
 Disable aggregation of the "doc" command, so that we do not attempt to generate

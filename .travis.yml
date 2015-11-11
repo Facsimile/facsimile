@@ -100,13 +100,13 @@ addons:
 # out temporarily since it does not appear to work with multi-module SBT
 # projects. The first three lines of the script should look like this:
 #
-#  - sbt ++$TRAVIS_SCALA_VERSION scalastyle coverage test &&
+#  - sbt ++$TRAVIS_SCALA_VERSION scalastyle coverage test doc &&
 #    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate &&
 #    sbt ++$TRAVIS_SCALA_VERSION coveralls
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION scalastyle coverage test &&
-    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
+  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test doc &&
+    sbt ++$TRAVIS_SCALA_VERSION coveralls
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 
