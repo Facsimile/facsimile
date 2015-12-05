@@ -53,6 +53,7 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
+import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype._
 
 //=============================================================================
@@ -256,6 +257,15 @@ SBT-Eclipse plugin configuration.
 
     EclipseKeys.useProjectId := false,
     EclipseKeys.createSrc := EclipseCreateSrc.Default,
+
+/*
+Code test coverage settings. Target coverage is 100%.
+*/
+
+    ScoverageKeys.coverageEnabled := true,
+    ScoverageKeys.coverageHighlighting := true,
+    ScoverageKeys.coverageFailOnMinimum := true,
+    ScoverageKeys.coverageMinimum := 50,
 
 /*
 Required scala standard libraries.
