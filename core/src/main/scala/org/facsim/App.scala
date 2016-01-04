@@ -4,44 +4,40 @@ Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim
 
 import org.facsim.util.Manifest
 import scala.collection.mutable.ListBuffer
 
-//=============================================================================
+//======================================================================================================================
 /**
 Basic application trait.
 
@@ -57,7 +53,7 @@ The application may utilize a graphical user interface, or be driven from the
 command line, or both, depending upon whether [[org.facsim.cli.CliApp]] or
 [[org.facsim.gui.GuiApp]] was utilized.
 */
-//=============================================================================
+//======================================================================================================================
 
 trait App
 extends DelayedInit {
@@ -102,7 +98,7 @@ alternative to `DelayedInit`, but it is (for this use case) less elegant
 
   private final val subClassCtors = new ListBuffer [() => Unit]
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Buffer subclass construction code.
 
@@ -116,7 +112,7 @@ compiler; it must '''never''' be called directly from user code.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final override def delayedInit (ctor: => Unit): Unit = {
     synchronized {
@@ -125,7 +121,7 @@ compiler; it must '''never''' be called directly from user code.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Execute buffered subclass construction code.
 
@@ -137,7 +133,7 @@ on the ''JavaFX Application Thread'' after the primary stage has been created.
 Consequently, subclass constructor code can populate the primary stage and its
 contents without any problems.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   protected [facsim] final def init (): Unit = {
     synchronized {
@@ -147,7 +143,7 @@ contents without any problems.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Main function.
 
@@ -163,7 +159,7 @@ it must '''never''' be called directly from user code.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def main (args: Array [String]): Unit = {
     assert (!initialized)
@@ -171,7 +167,7 @@ it must '''never''' be called directly from user code.
     createApp ()
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve the command line arguments.
 
@@ -179,25 +175,25 @@ Retrieve the command line arguments.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def args = arguments
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Create and initialize the application.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   protected [facsim] def createApp (): Unit
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve the ''Facsimile'' JAR file manifest.
 
 @return Manifest read from the ''Facsimile'' JAR file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [facsim] final def facsimileManifest = Manifest (classOf [App])
 }

@@ -4,37 +4,33 @@ Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim.util package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.util
 
@@ -42,7 +38,7 @@ import java.time.ZonedDateTime
 import java.util.jar.{Manifest => JManifest}
 import org.facsim.{LibResource, requireNonNull}
 
-//=============================================================================
+//======================================================================================================================
 /**
 Provide ''manifest'' information for a library or application.
 
@@ -64,7 +60,7 @@ attributes will be extracted.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 final class Manifest private (private val manifest: JManifest) {
 
@@ -83,7 +79,7 @@ Entries defined in the manifest.
 
   private val entries = manifest.getMainAttributes
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve specified manifest attribute as a string.
 
@@ -98,7 +94,7 @@ name.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def getAttribute (name: String) = {
 
@@ -115,7 +111,7 @@ Look-up and return the element name.
     getAttr (name)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve specified manifest attribute as a string.
 
@@ -127,7 +123,7 @@ Retrieve specified manifest attribute as a string.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def getAttr (name: String) = {
 
@@ -155,7 +151,7 @@ Return the attribute.
     attribute
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve the inception timestamp of this manifest.
 
@@ -178,12 +174,12 @@ could not be parsed correctly.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def inceptionTimestamp =
   ZonedDateTime.parse (getAttr ("Inception-Timestamp"))
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve the build timestamp of this manifest.
 
@@ -206,11 +202,11 @@ not be parsed correctly.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def buildTimestamp = ZonedDateTime.parse (getAttr ("Build-Timestamp"))
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Title of this application or library.
 
@@ -221,11 +217,11 @@ title field.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def title = getAttr ("Implementation-Title")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Vendor publishing this application or library.
 
@@ -237,11 +233,11 @@ This may be an individual or an organization, depending upon circumstances.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def vendor = getAttr ("Implementation-Vendor")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Version of this release of this application or library.
 
@@ -251,11 +247,11 @@ Version of this release of this application or library.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def version = new Version (getAttr ("Implementation-Version"))
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Title of the specification to which this application or library conforms.
 
@@ -266,11 +262,11 @@ field is undefined.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def specTitle = getAttr ("Specification-Title")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Vendor that produced the specification to which this application or library
 conforms.
@@ -284,11 +280,11 @@ vendor field.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def specVendor = getAttr ("Specification-Vendor")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Version of the specification to which this release of the application or
 library conforms.
@@ -300,23 +296,23 @@ version field.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def specVersion = new Version (getAttr ("Specification-Version"))
 }
 
-//=============================================================================
+//======================================================================================================================
 /**
 Manifest companion object.
 
 Object defining factory methods for obtaining [[org.facsim.util.Manifest]]
 instances.
 */
-//=============================================================================
+//======================================================================================================================
 
 object Manifest {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Element type manifest factory method.
 
@@ -336,7 +332,7 @@ a ''jar'' file, or if a manifest could not be obtained from its ''jar'' file.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def apply (elementType: Class [_]) = {
 

@@ -4,44 +4,40 @@ Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file belonging to the org.facsim.measure package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.measure
 
 import org.facsim.{assertNonNull, LibResource}
 import scala.language.implicitConversions
 
-//=============================================================================
+//======================================================================================================================
 /**
 Class representing a measurement from any physical quantity family.
 
@@ -68,7 +64,7 @@ attempt to convert it to a ''temperature'', an exception will result.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 object Generic
 extends Physical {
@@ -100,7 +96,7 @@ Generic measurement units.
 
   override val siUnits = Basic
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Implicit conversion from a generic measurement value to a Double value.
 
@@ -118,14 +114,14 @@ zero).
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   implicit def toDouble (measure: Measure): Double = {
     if (measure.family.isUnitless) measure.value
     else throw new GenericConversionException (measure, Family.unitless)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Create a new generic measurement.
 
@@ -139,12 +135,12 @@ range for the associated family. This needs to be added for consistency.
 
 @throws java.lang.IllegalArgumentException if `measure` is not finite.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [measure] def apply (measure: Double, family: Family) =
   new GenericMeasure (measure, family)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Generic ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical
 quantity]]'' measurement class.
@@ -191,7 +187,7 @@ is invalid for the associated `family`.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final class GenericMeasure private [measure] (measure: Double, override val
   family: Family)
@@ -223,7 +219,7 @@ Create a new instance via the Generic factory method.
     apply (newMeasure, family)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Generic unit class for all generic physical quantity measurement units.
 
@@ -237,7 +233,7 @@ definition.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   object GenericUnits
   extends PhysicalUnits {

@@ -4,43 +4,39 @@ Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file belonging to the org.facsim.measure package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.measure
 
 import org.facsim.{requireNonNull, requireFinite}
 
-//=============================================================================
+//======================================================================================================================
 /**
 Abstract base class for all ''Facsimile
 [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
@@ -70,7 +66,7 @@ the viewpoint of a subclass, might change dramatically during Facsimile's
 existence. Since there are no user-serviceable parts inside, it has been deemed
 that the best approach is simply to keep a tight lid on things.
 */
-//=============================================================================
+//======================================================================================================================
 
 abstract class Physical protected [measure] {
 
@@ -102,7 +98,7 @@ quantity.
 
   val siUnits: Units
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 User's preferred units for this physical quantity, or the associated
 ''[[http://en.wikipedia.org/wiki/SI SI]] units'' if no preference has been
@@ -117,11 +113,11 @@ units is currently not implemented.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def preferredUnits: Units = siUnits
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Abstract base class for all ''Facsimile
 [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
@@ -144,7 +140,7 @@ invalid for these units.
 @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on
 [[http://en.wikipedia.org/ Wikipedia]].
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   abstract class PhysicalMeasure protected [measure]
   (protected [measure] final val value: Double)
@@ -520,7 +516,7 @@ convert either to the other.
     final override def hashCode = value.hashCode ^ family.hashCode
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Abstract base class for all physical quantity measurement units.
 
@@ -566,7 +562,7 @@ output.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   abstract class PhysicalUnits protected [measure]
   extends Converter

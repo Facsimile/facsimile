@@ -4,44 +4,40 @@ Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file belonging to the org.facsim.measure package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.measure
 
 import org.facsim.{requireNonNull, LibResource}
 import scala.language.implicitConversions
 
-//=============================================================================
+//======================================================================================================================
 /**
 Abstract base class for all physical quantity types associated with specific
 physical quantity families.
@@ -57,7 +53,7 @@ the viewpoint of a subclass, might change dramatically during Facsimile's
 existence. Since there are no user-serviceable parts inside, it has been deemed
 that the best approach is simply to keep a tight lid on things.
 */
-//=============================================================================
+//======================================================================================================================
 
 abstract class Specific protected [measure]
 extends Physical  {
@@ -104,7 +100,7 @@ Name of this physical quantity.
 
   val name: String
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Generic measurement to specific measurement conversion function.
 
@@ -123,7 +119,7 @@ associated with different family to the target specific family.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   implicit final def fromGeneric (measure: Generic.Measure): Measure = {
     requireNonNull (measure)
@@ -131,7 +127,7 @@ associated with different family to the target specific family.
     else throw new GenericConversionException (measure, family)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Factory method to create a new measurement value in the specified units.
 
@@ -151,14 +147,14 @@ physical quantity.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def apply (value: Double, units: Units): Measure = {
     requireNonNull (units)
     apply (units.importValue (value))
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Factory method to create a new measurement value in
 ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
@@ -178,11 +174,11 @@ and must lie within the defined range for the associated physical quantity.
 not finite or is outside of the defined range for the associate physical
 quantity.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [measure] def apply (measure: Double): Measure
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Abstract base class for all specific ''Facsimile
 [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
@@ -207,7 +203,7 @@ is invalid for these units.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   abstract class SpecificMeasure protected [measure] (measure: Double)
   extends PhysicalMeasure (measure)
@@ -268,7 +264,7 @@ is greater than `that`'s value.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Abstract base class for all specific physical quantity measurement units.
 
@@ -285,7 +281,7 @@ these units.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   abstract class SpecificUnits protected [measure] (converter: Converter,
   protected [measure] val symbol: String)

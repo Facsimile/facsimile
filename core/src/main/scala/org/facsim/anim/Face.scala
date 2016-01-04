@@ -4,44 +4,40 @@ Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim.anim package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.anim
 
 import org.facsim.{requireNonNull, requireValid}
 import scala.annotation.tailrec
 
-//=============================================================================
+//======================================================================================================================
 /**
 Class representing a 3D face.
 
@@ -84,7 +80,7 @@ group corresponding to each bit set.
 @throws java.lang.IllegalArgumentException if `vertices` has fewer than 3
 points defined.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [anim] final class Face (vertices: List [RichPoint],
 val smoothingGroup: Int = 0) {
@@ -96,7 +92,7 @@ Sanity checks.
   requireNonNull (vertices)
   requireValid (vertices, vertices.size > 2)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a neutral texture-mapped face from a list of regular points in 3D
 space.
@@ -115,11 +111,11 @@ mapped to each point as appropriate.
 @throws java.lang.IllegalArgumentException if `vertices` has fewer than 3
 points defined.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def this (vertices: List [Point3D]) = this (Face.neutralize (vertices), 0)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Create a list of individual, triangular faces from this face.
 
@@ -130,7 +126,7 @@ faces for each subsequent pair of indices.
 
 @return A list of triangular faces.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def toList: List [Face] = {
 
@@ -177,27 +173,27 @@ least one face.
     extractFace (vertices.tail, Nil)
   } ensuring (_.nonEmpty)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Return list of 3D animation points defining this face.
 
 @return List of 3D animation points defining this face.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def points = vertices.map (_.point)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Return list of 3D animation points defining this face.
 
 @return List of 3D animation points defining this face.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def texturePoints = vertices.map (_.texturePoint)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert the face's 3D animation points and texture map points into a single
 list of zipped index values.
@@ -217,7 +213,7 @@ value. This map '''must''' contain all of the texture belonging to this face.
 
 @return list of zipped 3D animation point and texture map point indices.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def indices (pointIdxMap: Map [Point3D, Int],
   texturePointIdxMap: Map [TexturePoint, Int]) = {
@@ -255,15 +251,15 @@ Build the list from the two lists.
   }
 }
 
-//=============================================================================
+//======================================================================================================================
 /**
 Face companion object.
 */
-//=============================================================================
+//======================================================================================================================
 
 private object Face {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert a list of points in 3D space into rich points with neutral texture
 mapping coordinates.
@@ -275,7 +271,7 @@ each 3D point in `vertices`.
 
 @throws java.lang.NullPointerException if vertices is `null`.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def neutralize (vertices: List [Point3D]): List [RichPoint] = {
 
