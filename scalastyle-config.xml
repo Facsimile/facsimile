@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Facsimile - A Discrete-Event Simulation Library
+Copyright © 2004-2016, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
+see http://www.gnu.org/licenses/.
+
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
+
+  http://www.facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
+
+  http://www.facsim.org/Documentation/CodingStandards/
+========================================================================================================================
+XML configuration file for Scalastyle.
+
+NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other Facsimile
+projects, termed client projects. It must only be modified in the "skeleton" project, with changes being merged into
+client projects. Refer to the skeleton project for further details:
+
+  https://github.com/Facsimile/skeleton
+========================================================================================================================
+-->
+<scalastyle>
+ <name>Facsimile project standard Scalastyle configuration</name>
+
+<!--
+Horizontal tab characters are completely forbidden in source files.
+
+Rationale: tabs are rendered inconsistently in source file editors. If used, this results in improperly indented sources
+when switching to a different editor, or when a different user employs the same editor with a different tab
+configuration. The only means of avoiding "tab hell" is to completely forbid the use of tabs, and insist on spaces
+instead.
+-->
+
+  <check class="org.scalastyle.file.FileTabChecker" enabled="true" level="error" />
+
+<!--
+Trailing whitespace is forbidden at the end of each source line.
+
+Rationale: Trailing whitespace is untidy and can lead to version control issues - particularly during merges.
+-->
+
+  <check class="org.scalastyle.file.WhitespaceEndOfLineChecker" enabled="true" level="error" />
+
+<!--
+Source line lengths cannot exceed 79 characters.
+
+Rationale: Source lines that are longer than 79 characters will either wrap or truncate on the majority of command
+prompt windows, terminals and printers. If viewing or editing on a phone or tablet, restricting source line length also
+makes sense. Overall, source readability is maintained if the maximum line length is not allowed to exceed this value.
+However, Scala source files typically benefit from longer source line length, and modern PC & tablet screens readily
+accommodate such files. A common convention is to allow 120 character line lengths, and this has been adopted by
+Facsimile.
+-->
+
+  <check class="org.scalastyle.file.FileLineLengthChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="maxLineLength"><![CDATA[120]]></parameter>
+      <parameter name="tabSize"><![CDATA[8]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Each source file must commence with a standard header.
+
+Rationale: The header is required to ensure that all sources have a correct copyright and distribution notice, which
+must be up-to-date and valid for all sources.
+-->
+
+  <check class="org.scalastyle.file.HeaderMatchesChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="header"><![CDATA[/*
+Facsimile -- A Discrete-Event Simulation Library
+Copyright © 2004-2016, Michael J Allen.
+
+This file is part of Facsimile.
+
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
+
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
+
+  http://facsim.org/
+
+Thank you for your interest in the Facsimile project!
+
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
+
+  http://facsim.org/Documentation/CodingStandards/
+========================================================================================================================]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Package object names are lowercase alphanumeric, with occasional underscores. The first character must be a lowercase
+character.
+
+Rationale: This is a common Scala convention that should not be violated without a very good reason.
+-->
+
+  <check class="org.scalastyle.scalariform.PackageObjectNamesChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[a-z][0-9a-z_]*$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Object names are alphanumeric, starting with an uppercase character.
+
+Although it cannot be enforced by Scalastyle, the convention is that object names are also in camel case.
+
+Rationale: This is a common Scala convention that should not be violated without a very good reason.
+-->
+
+  <check class="org.scalastyle.scalariform.ObjectNamesChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[A-Z][0-9A-Za-z]*$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Class names are alphanumeric, starting with an uppercase character.
+
+Although it cannot be enforced by Scalastyle, the convention is that class names are also in camel case.
+
+Rationale: This is a common Scala convention that should not be violated without a very good reason.
+-->
+
+  <check class="org.scalastyle.scalariform.ClassNamesChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[A-Z][0-9A-Za-z]*$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Class/trait(/object?) definitions that are empty should not have braces.
+
+Rationale: Braces for such classes are redundant and need not be specified.
+-->
+
+  <check class="org.scalastyle.scalariform.EmptyClassChecker" enabled="true" level="error" />
+
+<!--
+Enforce use of a single uppercase character for the name of class/trait type parameters.
+
+Rationale: This is a common Scala convention.
+-->
+
+  <check class="org.scalastyle.scalariform.ClassTypeParameterChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[A-Z]$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Forbid the use of var fields.
+
+Rationale: In strict functional programming, "var"s are not required and often lead to mutable state. Use of "var" is
+occasionally necessary, in which case this check should be explicitly disabled.
+-->
+
+  <check class="org.scalastyle.scalariform.VarFieldChecker" enabled="true" level="error" />
+
+<!--
+Ensure that all classes defining a custom "equals" method also define a custom "hashCode" method, and vice versa.
+
+Rationale: Class instances that are determined to be equal should have identical hash codes also. Consequently, classes
+that have custom "equals" methods should generally have custom "hashCode" methods also.
+-->
+
+  <check class="org.scalastyle.scalariform.EqualsHashCodeChecker" enabled="true" level="error" />
+
+<!--
+Ensure that all classes defining a custom "equals" method override "equals(java.lang.Object)".
+
+Rationale: The Scala "==" equality operator utilizes the left operand class's "equals(java.lang.Object)" method, which
+should be redefined if any custom "equals" method is required.
+-->
+
+  <check class="org.scalastyle.scalariform.CovariantEqualsChecker" enabled="true" level="error" />
+
+<!--
+Ensure that no class defines a "clone" method.
+
+Rationale: There is no point to cloning immutable objects, and cloning stateful objects should be a rare exception.
+-->
+
+  <check class="org.scalastyle.scalariform.NoCloneChecker" enabled="true" level="error" />
+
+<!--
+Ensure that no class defines a "finalize" method.
+
+Rationale: Finalize methods are unusual and rarely required in practice, so any use of such functions is most likely a
+mistake.
+-->
+
+  <check class="org.scalastyle.scalariform.NoFinalizeChecker" enabled="true" level="error" />
+
+<!--
+Ensure that Java-style "procedure"-style function declarations are not used.
+
+For example,
+
+  def soSomething {
+    //...
+  }
+
+should be avoided, with one of the following preferred:
+
+  def doSomething: Unit = {
+    // ...
+  }
+
+or (which should still be avoided, since it includes the possibility that a non-Unit value will be returned):
+
+  def doSomething = {
+    // ...
+  }
+
+Rationale: Martin Odersky has hinted that the procedure declaration syntax may be deprecated in a future Scala release,
+as it is problematical and prevents the Scala compiler from trapping certain compile-time errors. It would also reduce
+the confusion of new Scala developers. In the meantime, this Scalastyle warning is useful as it forbids procedure
+syntax.
+
+Refer to https://issues.scala-lang.org/browse/SI-7605 for further information.
+-->
+
+  <check class="org.scalastyle.scalariform.ProcedureDeclarationChecker" enabled="true" level="error"/>
+
+<!--
+Method names are typically alphanumeric, starting with a lowercase characters.
+
+Although it cannot be enforced by Scalastyle, the convention is that method names are also in camel case.
+
+Rationale: This is a common Scala convention that should not be violated without a very good reason. However, other
+characters are occasionally used (say, for setter methods, operator methods, etc.).
+-->
+
+  <check class="org.scalastyle.scalariform.MethodNamesChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[a-z][0-9A-Za-z]*$]]></parameter>
+      <parameter name="ignoreRegex"><![CDATA[[0-9A-Za-z]*_\=$]]></parameter>
+      <parameter name="ignoreOverride"><![CDATA[false]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Enforce use of braces in if-else statements longer than one line.
+
+Rationale: If the statement follows the if, or else, statement on the same line, then it is permitted not to require
+braces. However, multiline if or else statements must have braces. This is because it can be hard to determine visually
+whether a statement is conditional upon an if or else condition. For example:
+
+if (found) println ("Search complete")
+
+is OK, since it is clear that the println statement is dependent upon the if condition being true. However:
+
+if (found)
+  println ("Search complete")
+  println (s"Item found was: $itemFound")
+
+Is visually misleading, since only the first println statement is dependent upon the if condition being true. This check
+would fail such a statement and would require it to be rewritten as:
+
+if (found) {
+  println ("Search complete")
+  println (s"Item found was: $itemFound")
+}
+
+or as:
+
+if (found) {
+  println ("Search complete")
+}
+println (s"Item found was: $itemFound")
+
+as appropriate.
+-->
+
+  <check class="org.scalastyle.scalariform.IfBraceChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="singleLineAllowed"><![CDATA[true]]></parameter>
+      <parameter name="doubleLineAllowed"><![CDATA[true]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Warn against redundant if-else blocks.
+
+For example, expressions such as:
+
+if (cond) true else false
+
+Should be replaced by simply:
+
+cond
+
+Rationale: Redundancy makes code more opaque and difficult to read.
+-->
+
+  <check class="org.scalastyle.scalariform.RedundantIfChecker" enabled="true" level="error" />
+
+<!--
+Enforce the use of braces over parentheses in for comprehensions.
+
+That is, enforce:
+
+for {
+  p <-people
+  if (p.isRetired)
+} yield p
+
+over
+
+for (
+  p <- people;
+  if (p.isRetired)
+) yield p
+
+Rationale: The brace style is cleaner and does not require semicolons at the all but the last statement. Braces also
+look more correct for multi-line code.
+-->
+
+  <check class="org.scalastyle.scalariform.ForBraceChecker" enabled="true" level="error" />
+
+<!--
+Flag complex Boolean expressions.
+
+Rationale: Code that is overly complex and that can be simplified should be.
+-->
+
+  <check class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" enabled="true" level="error" />
+
+<!--
+Ensure that all long constants are denoted using an uppercase L.
+
+Rationale: Lowercase Ls can appear indistinguisable from 1s in some fonts. By enforcing uppercase Ls, clarity reigns.
+-->
+
+  <check class="org.scalastyle.scalariform.UppercaseLChecker" enabled="true" level="error" />
+
+<!--
+Require named constants instead of "magic numbers" in the code.
+
+Rationale: Named constants are far more readable and self-documenting than mere numbers. (Numbers explicitly ignored
+below are not treated as magic.)
+-->
+
+  <check class="org.scalastyle.scalariform.MagicNumberChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="ignore"><![CDATA[0,1,2]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Prevent string literals from appearing multiple times.
+
+Rationale: String literals that appear multiple times is a maintenance chore; such strings should be stored in a value
+instead.
+-->
+
+  <check class="org.scalastyle.scalariform.MultipleStringLiteralsChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="allowed"><![CDATA[1]]></parameter>
+      <parameter name="ignoreRegex"><![CDATA[^""$]]></parameter>
+    </parameters>
+  </check>
+
+<!--
+Reject code that contains "???" values (not implemented statement).
+
+Rationale: Leaving unimplemented code in commits is not good practice and will cause code rejection. However, the use of
+"???" is strongly encouraged to document unimplemented features during development.
+-->
+
+  <check class="org.scalastyle.scalariform.NotImplementedErrorUsage" enabled="true" level="error" />
+
+<!--
+Forbid the use of "return" statements in Scala.
+
+Rationale: It is common Scala practice to strongly discourage use of the "return" statement (which begs the question,
+"why does Scala even have a return statement?"). This check enforces the practice.
+-->
+
+  <check class="org.scalastyle.scalariform.ReturnChecker" enabled="true" level="error" />
+
+<!--
+Enforce use of Scala @deprecated annotation over Java equivalent.
+-->
+
+  <check class="org.scalastyle.scalariform.DeprecatedJavaChecker" enabled="true" level="error" />
+
+<!--
+Guard against forbidden tokens, in this case use of asInstanceOf and isInstanceOf.
+
+Rationale: Scala always has a better alternative for these methods, so they are forbidden.
+-->
+
+  <check class="org.scalastyle.scalariform.TokenChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[^[ai]sInstanceOf$]]></parameter>
+    </parameters>
+    <customMessage>Casting methods are forbidden.</customMessage>
+  </check>
+
+<!--
+Ensure that left brackets ([) are not followed by whitespace.
+
+Rationale: This is simply an adopted Facsimile code style convention.
+-->
+
+  <check class="org.scalastyle.scalariform.NoWhitespaceAfterLeftBracketChecker" enabled="true" level="error" />
+
+<!--
+The following checks are not currently utilized by the Facsimile project.
+-->
+
+  <check class="org.scalastyle.file.FileLengthChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="maxFileLength"><![CDATA[800]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.SpacesAfterPlusChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.SpacesBeforePlusChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.UnderscoreImportChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.ImportGroupingChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.IllegalImportsChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="illegalImports"><![CDATA[sun._,java.awt._]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.ParameterNumberChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="maxParameters"><![CDATA[8]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.NoWhitespaceBeforeLeftBracketChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.NullChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.StructuralTypeChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.file.RegexChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="regex"><![CDATA[println]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.NumberOfTypesChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="maxTypes"><![CDATA[30]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.CyclomaticComplexityChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="maximum"><![CDATA[10]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.LowercasePatternMatchChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.MethodLengthChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="maxLength"><![CDATA[50]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.NumberOfMethodsInTypeChecker" enabled="false" level="error">
+    <parameters>
+      <parameter name="maxMethods"><![CDATA[30]]></parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.PublicMethodsHaveTypeChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.VarLocalChecker"  enabled="false" level="error" />
+  <check class="org.scalastyle.scalariform.WhileChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.file.NewLineAtEofChecker" enabled="false" level="error" />
+  <check class="org.scalastyle.file.NoNewLineAtEofChecker" enabled="false" level="error" />
+</scalastyle>

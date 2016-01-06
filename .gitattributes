@@ -1,0 +1,156 @@
+# Facsimile -- A Discrete-Event Simulation Library
+# Copyright © 2004-2016, Michael J Allen.
+#
+# This file is part of Facsimile.
+#
+# Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+# warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+# http://www.gnu.org/licenses/.
+#
+# The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+# project home page at:
+#
+#   http://www.facsim.org/
+#
+# Thank you for your interest in the Facsimile project!
+#
+# IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+# as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+# fails to comply with the standard, then your patches will be rejected. For further information, please visit the
+# coding standards at:
+#
+#   http://www.facsim.org/Documentation/CodingStandards/
+#=======================================================================================================================
+# git .gitattributes file.
+#
+# Determine how git will treat line endings in files belonging to Facsimile. It will override any defined
+# 'core.autocrlf' git configuration.
+#
+# NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
+# Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
+# merged into client projects. Refer to the skeleton project for further details:
+#
+#   https://github.com/Facsimile/skeleton
+#=======================================================================================================================
+
+# Set default behaviour text behavior. This is equivalent to the git config 'core.autocrlf' flag.
+
+* text=auto
+
+# Typically, all text files (Scala sources, Maven POM files, XML files, Eclipse preference/configuration/project files,
+# etc.) should be normalized and converted to native line endings on checkout.
+#
+# TODO: For now, we're specifying that platform-specific scripts (such as Windows batch and command scripts, bash shell
+# scripts) should be treated as all other source files, even if they should have platform-specific line endings in
+# platform-specific distributions.
+#
+# Note: Some file types (.dxf, .wrl, and others) have binary as well as text formats. We should only ever use text
+# versions of these files.
+
+COPYING text
+COPYING.LESSER text
+.classpath text
+.fbprefs text
+.gitattributes text
+.gitignore text
+.jvmopts text
+.project text
+.sbtopts text
+*.apt text
+*.bat text
+*.c text
+*.cel text
+*.cell text
+*.cmd text
+*.conf text
+*.cpp text
+*.css text
+*.csv text
+*.dic text
+*.dxf text
+*.h text
+*.hpp text
+*.html text
+*.igs text
+*.iges text
+*.java text
+*.js text
+*.m text
+*.md text
+*.pl text
+*.pm text
+*.pom text
+*.prefs text
+*.properties text
+*.sbt text
+*.sc text
+*.scala text
+*.sft text
+*.sh text
+*.sql text
+*.svg text
+*.tab text
+*.txt text
+*.wrl text
+*.xml text
+*.yml text
+
+# Binary files, including images, should always be treated as such.
+
+*.avi binary
+*.blend binary
+*.doc binary
+*.docm binary
+*.docx binary
+*.dot binary
+*.dotm binary
+*.dotx binary
+*.dwg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.jpeg binary
+*.jpg binary
+*.max binary
+*.mdb binary
+*.mov binary
+*.mp3 binary
+*.mpeg binary
+*.mpg binary
+*.odb binary
+*.odf binary
+*.odg binary
+*.odm binary
+*.odp binary
+*.ods binary
+*.odt binary
+*.ogg binary
+*.otg binary
+*.otp binary
+*.ots binary
+*.ott binary
+*.pdf binary
+*.png binary
+*.pot binary
+*.potm binary
+*.potx binary
+*.pps binary
+*.ppsm binary
+*.ppsx binary
+*.ppt binary
+*.pptm binary
+*.pptx binary
+*.wmv binary
+*.xls binary
+*.xlsm binary
+*.xlsx binary
+*.xlt binary
+*.xltm binary
+*.xltx binary
