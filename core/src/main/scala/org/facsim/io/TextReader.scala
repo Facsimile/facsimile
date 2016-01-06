@@ -1,40 +1,36 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.io
 
@@ -43,7 +39,7 @@ import java.lang.StringBuilder
 import org.facsim.{assertNonNull, requireNonNull, LibResource}
 import scala.annotation.tailrec
 
-//=============================================================================
+//======================================================================================================================
 /**
 A reader for text data streams.
 
@@ -81,7 +77,7 @@ WhitespaceDelimiter.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 class TextReader (textReader: Reader,
 defaultDelimiter: Delimiter = WhitespaceDelimiter) {
@@ -113,7 +109,7 @@ Current state of this text reader.
 
   private final val state = new State ()
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Class representing current state of reader.
 
@@ -144,7 +140,7 @@ termination sequence has been read&mdash;the same point at which the line
 number is incremented.  Column numbering is not to be updated until a character
 has been read (rather than being peeked).
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private final class State private [this] (private var lastChar: Int, private
   var peekedChar: Option [Int], private var row: Int, private var column: Int)
@@ -450,7 +446,7 @@ read beyond the end-of-file (see top of this function).
     } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as the specified type.
 
@@ -485,7 +481,7 @@ not be converted to '''T''' by the '''convertField''' function.
 @throws org.facsim.io.FieldVerificationException if the field's value could not
 be verified by the '''verify''' function.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private final def readField [T] (delimiter: Delimiter,
   verify: TextReader.Verifier [T])(convertField: (String) => T): T = {
@@ -566,7 +562,7 @@ FieldVerificationException.
     else fieldValue
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read from the current file pointer to the next line termination sequence and
 return it as a string.
@@ -587,13 +583,13 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readToEOL (verify: TextReader.Verifier [String] =
   TextReader.defaultStringVerifier): String =
   readString (verify)(LineDelimiter)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a string.
 
@@ -617,7 +613,7 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readString (verify: TextReader.Verifier [String] =
   TextReader.defaultStringVerifier)(implicit delimiter: Delimiter =
@@ -626,7 +622,7 @@ be verified by '''verify'''.
     field
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a byte.
 
@@ -653,13 +649,13 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readByte (verify: TextReader.Verifier [Byte] =
   TextReader.defaultByteVerifier)(implicit delimiter: Delimiter =
   defaultDelimiter): Byte = readField [Byte] (delimiter, verify)(_.toByte)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a short integer.
 
@@ -686,13 +682,13 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readShort (verify: TextReader.Verifier [Short] =
   TextReader.defaultShortVerifier)(implicit delimiter: Delimiter =
   defaultDelimiter): Short = readField [Short] (delimiter, verify)(_.toShort)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as an integer.
 
@@ -719,13 +715,13 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readInt (verify: TextReader.Verifier [Int] =
   TextReader.defaultIntVerifier)(implicit delimiter: Delimiter =
   defaultDelimiter): Int = readField [Int] (delimiter, verify)(_.toInt)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a long integer.
 
@@ -752,13 +748,13 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readLong (verify: TextReader.Verifier [Long] =
   TextReader.defaultLongVerifier)(implicit delimiter: Delimiter =
   defaultDelimiter): Long = readField [Long] (delimiter, verify)(_.toLong)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a float.
 
@@ -785,7 +781,7 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readFloat (verify: TextReader.Verifier [Float] =
   TextReader.defaultFloatVerifier)(implicit delimiter: Delimiter =
@@ -803,7 +799,7 @@ throw a NumberFormatException.
     else field.toFloat
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a double.
 
@@ -830,7 +826,7 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def readDouble (verify: TextReader.Verifier [Double] =
   TextReader.defaultDoubleVerifier)(implicit delimiter: Delimiter =
@@ -848,7 +844,7 @@ throw a NumberFormatException.
     else field.toDouble
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Determine if the ''end-of-file'' has been reached.
 
@@ -857,12 +853,12 @@ Determine if the ''end-of-file'' has been reached.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   final def atEOF = state.atEOF
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report row number of next character to be read.
 
@@ -877,12 +873,12 @@ location when this reader was created.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   final def getRow = state.getRow
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report column number of next character to be read.
 
@@ -899,12 +895,12 @@ yet to be encountered.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   final def getColumn = state.getColumn
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Peek at the next character in the stream.
 
@@ -916,12 +912,12 @@ will be returned.
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   private [io] final def peek (): Int = state.peek ()
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next character from the stream.
 
@@ -932,18 +928,18 @@ read operation, then a value of `EOF` (-1) will be returned.
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   private [io] final def read (): Int = state.read ()
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Throw a number format exception for the specified field.
 
 @param field Field that resulted in a number format exception.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   private final def throwNumberFormatException (field: String) = throw new
@@ -951,7 +947,7 @@ Throw a number format exception for the specified field.
   field))
 }
 
-//=============================================================================
+//======================================================================================================================
 /**
 Text reader companion object.
 
@@ -960,7 +956,7 @@ files.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 object TextReader  {
 

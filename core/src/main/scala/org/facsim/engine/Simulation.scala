@@ -1,40 +1,36 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.engine
 
@@ -43,13 +39,13 @@ import org.facsim.measure.Time
 import scala.annotation.tailrec
 import scala.collection.mutable.{PriorityQueue => MutableQueue}
 
-//=============================================================================
+//======================================================================================================================
 /**
 Simulation.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 object Simulation {
 
@@ -78,7 +74,7 @@ Absolute time at which the simulation's statistics were last reset.
 
   private var resetTime = Time.Zero // scalastyle:ignore
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report current simulation time.
 
@@ -86,13 +82,13 @@ Report current simulation time.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def currentTime: Time.Measure = synchronized {
     currentEvent.due
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Schedule the simple actions for execution.
 
@@ -114,7 +110,7 @@ priority are dispatched in the order that they are scheduled.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def schedule (action: Action, dueIn: Time.Measure, priority: Int = 0) =
   {
@@ -136,20 +132,20 @@ Synchronize access to the event queue and schedule the new event.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Schedule event.
 
 @param event Event to be scheduled for dispatch.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def scheduleEvent (event: Event): Unit = synchronized {
     assertNonNull (event)
     (eventQueue += event)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Run simulation.
 
@@ -159,7 +155,7 @@ This function never returns, but might terminate if an exception occurs.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @tailrec
   private [engine] def run (): Nothing = {
@@ -192,7 +188,7 @@ Use tail recursion to perform the next event.
     run ()
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the time at which the simulation was last reset.
 
@@ -201,13 +197,13 @@ reset.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def lastReset = synchronized {
     resetTime
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Null action class.
 
@@ -215,28 +211,28 @@ Represents actions that should never be executed in practice.  The initial
 current event is such an action, it provides the initial simulation time, but
 is never actually executed.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private object NullAction
   extends Action {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
     override def description =
     LibResource ("engine.Simulation.NullAction.description")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note Null actions should never actually be executed; doing so will result in
 an exception.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
     override def apply () = throw new NullActionException
   }

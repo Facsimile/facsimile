@@ -1,40 +1,36 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim.gui package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.gui
 
@@ -42,7 +38,7 @@ import javafx.application.{Platform, Application => JApplication}
 import javafx.stage.Stage
 import org.facsim.{assertNonNull, App, AppInformation}
 
-//=============================================================================
+//======================================================================================================================
 /**
 ''Graphical user interface'' (''GUI'') application trait.
 
@@ -51,7 +47,7 @@ Applications implementing this trait will execute utilizing a
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 trait GuiApp
 extends App {
@@ -65,11 +61,11 @@ The application instance is created by ''JavaFX''.
 
   private final var app: Option [JfxApp] = None // scalastyle:ignore
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   protected [facsim] final override def createApp (): Unit = {
 
@@ -90,7 +86,7 @@ terminated.
     JApplication.launch (classOf [JfxApp], args: _*)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Automatically show application's primary stage.
 
@@ -105,11 +101,11 @@ following construction; `false` otherwise.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   protected def autoShow = true
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the application's primary stage.
 
@@ -123,21 +119,21 @@ to be initialized and started.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def primaryStage = app.get.primaryStage
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Display the application's log window.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def showLog () = app.get.showLog ()
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Perform clean-up on application exit.
 
@@ -150,12 +146,12 @@ clean-up.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def onStop (): Unit = {
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Terminate the application.
 
@@ -168,11 +164,11 @@ last window has been closed.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def terminate () = Platform.exit ()
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 JavaFX application class.
 
@@ -180,7 +176,7 @@ This is a helper class, the sole instance of which is created by the JavaFX
 runtime. All functions invoked on this instance execute on the main JavaFX
 thread.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private final class JfxApp
   extends JApplication {

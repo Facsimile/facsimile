@@ -1,40 +1,36 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim
 
@@ -42,7 +38,7 @@ import java.time.ZonedDateTime
 import javafx.scene.image.Image
 import org.facsim.util.{toDate, Version}
 
-//=============================================================================
+//======================================================================================================================
 /**
 Ensures a common interface for providing application information.
 
@@ -51,11 +47,11 @@ creating instances of [[org.facsim.App]].
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 trait AppInformation {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the executing application's official title.
 
@@ -69,11 +65,11 @@ unavailable.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def title: String
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report name of the organization responsible for developing the executing
 application.
@@ -88,11 +84,11 @@ unavailable.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def organization: String
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report date upon which development of the executing application commenced.
 
@@ -106,11 +102,11 @@ unavailable.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def inceptionDate: ZonedDateTime
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report release date of this version of the executing application.
 
@@ -124,11 +120,11 @@ unavailable.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def releaseDate: ZonedDateTime
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the executing application's copyright message.
 
@@ -147,7 +143,7 @@ properties are unavailable, then an exception will result.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def copyright = {
 
@@ -177,7 +173,7 @@ conversion from the new date & time classes.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report executing application's version.
 
@@ -191,11 +187,11 @@ unavailable.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def version: Version
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Provide a set of icons for the executing application.
 
@@ -228,7 +224,7 @@ required for smaller icon sizes).
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def icons = List {
     new Image ("file:Images/FacsimileIcon_16x16.png")

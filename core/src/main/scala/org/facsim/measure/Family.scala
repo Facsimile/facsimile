@@ -1,47 +1,43 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file belonging to the org.facsim.measure package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.measure
 
 import org.facsim.{assertNonNull, requireNonNull}
 import scala.collection.immutable.HashMap
 
-//=============================================================================
+//======================================================================================================================
 /**
 Class representing a physical quantity family defined in terms of exponents of
 base units.
@@ -59,7 +55,7 @@ create new instances on each call.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 final class Family private (private val exponents: Vector [Int])
 extends Equals {
@@ -78,7 +74,7 @@ check.
 
   assert (exponents.length == 7)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Return physical quantity family that results from multiplying a measurement
 value in this family by a measurement value in the specified family.
@@ -93,7 +89,7 @@ family by the specified `multiplier` family.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def * (multiplier: Family) = { // scalastyle:ignore
     requireNonNull (multiplier)
@@ -101,7 +97,7 @@ family by the specified `multiplier` family.
     p._2))
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Return physical quantity family that results from dividing a measurement value
 in this family by a measurement value in the specified family.
@@ -116,7 +112,7 @@ the specified `divisor` family.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def / (divisor: Family) = { // scalastyle:ignore
     requireNonNull (divisor)
@@ -124,7 +120,7 @@ the specified `divisor` family.
     p._2))
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Determine whether this family is ''unitless''.
 
@@ -133,18 +129,18 @@ otherwise.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def isUnitless = Family.this == Family.unitless
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve the symbol of this family, constructed from the symbols of the
 preferred base units.
 
 @return Symbol for this family.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [measure] def baseSymbol = {
 
@@ -202,13 +198,13 @@ Otherwise, just report the positive content.
     else positive.mkString (Family.Space)
   } ensuring (_ != "")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve the name of this family, constructed from the names of the base units.
 
 @return Name of this family.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def baseName = {
 
@@ -267,14 +263,14 @@ Otherwise, just report the positive content.
     else positive.mkString (Family.Space)
   } ensuring (_ != "")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /*
 Determine whether another object can equal this object.
 
 Refer to Chapter 30 of "Programming in Scala", 2nd Edition, by Odersky, Spoon &
 Venners.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   override def canEqual (that: Any) = that match {
 
@@ -292,7 +288,7 @@ Otherwise, we cannot.
     case _ => false
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /*
 Compare this object to another for equality.
 
@@ -303,7 +299,7 @@ Similarly, if two objects have different hash-codes, then they must not compare
 equal.  However if two objects have the same hash-codes, they may or may not
 compare equal, since hash-codes do not map to unique values.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   override def equals (that: Any): Boolean = that match {
 
@@ -322,7 +318,7 @@ In that is any other type, then the two are not equal.
     case _ => false
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /*
 Return this physical quantity family's hash code.
 
@@ -337,17 +333,17 @@ In this overridden function, we simply use the exponent vector's hash code and
 return that, which fulfills all the requirements of the hash code/equality
 contract.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   override def hashCode = exponents.hashCode ()
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /*
 Convert to a string.
 
 @see Any.toString()
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   override def toString: String = {
     val name = Family.name (this)
@@ -359,11 +355,11 @@ Convert to a string.
   }
 }
 
-//=============================================================================
+//======================================================================================================================
 /**
 Physical quantity family companion object.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [measure] object Family {
 
@@ -412,7 +408,7 @@ only.
 
   private var typeMap = HashMap.empty [Family, Specific] // scalastyle:ignore
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert an exponent value to a string.
 
@@ -421,7 +417,7 @@ zero.
 
 @return String representing the exponent.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def expToString (exp: Int) = {
     assert (exp > 0)
@@ -433,7 +429,7 @@ zero.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Register a specific physical quantity type with a family value.
 
@@ -445,7 +441,7 @@ Registration should be performed once for each concrete
 
 @param specific Class of the associated specific physical quantity type.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [measure] def register (family: Family, specific: Specific): Unit =
   synchronized {
@@ -455,7 +451,7 @@ Registration should be performed once for each concrete
     typeMap += (family -> specific)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Apply method to obtain family corresponding to specified exponent values.
 
@@ -475,7 +471,7 @@ Apply method to obtain family corresponding to specified exponent values.
 
 @return corresponding physical quantity family instance.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [measure] def apply (timeExponent: Int = 0, lengthExponent: Int = 0,
   planeAngleExponent: Int = 0, massExponent: Int = 0, temperatureExponent: Int
@@ -484,7 +480,7 @@ Apply method to obtain family corresponding to specified exponent values.
   massExponent, temperatureExponent, currentExponent,
   luminousIntensityExponent))
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Apply method to obtain family corresponding to specified exponent vector.
 
@@ -493,7 +489,7 @@ This method should only be called from within this file
 
 @return corresponding physical quantity family instance.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 /*
 For now, just create a new instance.  In future, it might be necessary to
@@ -503,7 +499,7 @@ instance.
 
   private def apply (exponents: Vector [Int]) = new Family (exponents)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve symbol associated with specified family.
 
@@ -518,7 +514,7 @@ string will be returned as the symbol.
 
 @return Symbol of the preferred units of the associated physical quantity.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def symbol (family: Family): String = {
 
@@ -555,7 +551,7 @@ an empty string.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve name associated with specified family.
 
@@ -569,7 +565,7 @@ supplied family is unitless, then "Double" will be returned as the name.
 
 @return Name of the the associated physical quantity.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def name (family: Family): String = {
 

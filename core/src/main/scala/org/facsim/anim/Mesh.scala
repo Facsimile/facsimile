@@ -1,40 +1,36 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim.anim package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.anim
 
@@ -43,7 +39,7 @@ import org.facsim.measure.Angle
 import scala.annotation.tailrec
 import scalafx.scene.shape.TriangleMesh
 
-//=============================================================================
+//======================================================================================================================
 /**
 Represents a mesh consisting of one or more faces.
 
@@ -52,11 +48,11 @@ Represents a mesh consisting of one or more faces.
 @param faces List of faces making up the mesh. Note that each face instance can
 contain one or more triangular faces.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [anim] final class Mesh (private val faces: List [Face]) {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Add a list of faces to this mesh, resulting in a new mesh.
 
@@ -65,14 +61,14 @@ Add a list of faces to this mesh, resulting in a new mesh.
 @return New mesh instance containing the current list of faces plus the new
 list of faces.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def + (newFaces: List [Face]) = { //scalastyle:ignore
     assertNonNull (newFaces)
     new Mesh (faces ::: newFaces)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Add another mesh to this mesh, resulting in a new mesh.
 
@@ -81,24 +77,24 @@ Add another mesh to this mesh, resulting in a new mesh.
 @return New mesh instance containing the current list of faces plus the new
 mesh's list of faces.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def + (newMesh: Mesh) = { //scalastyle:ignore
     assertNonNull (newMesh)
     new Mesh (faces ::: newMesh.faces)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Transform the supplied faces into a flattened list of triangular faces.
 
 @return List of triangular faces making up the list.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def fs = faces.map (_.toList).flatten
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Obtain a list of 3D animation points making up the faces in this mesh.
 
@@ -109,11 +105,11 @@ on the list of triangular faces.
 
 @return List of 3D animation points making up the faces.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def pointList = faces.map (_.points).flatten
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Obtain a list of texture map points making up the faces in this mesh.
 
@@ -124,11 +120,11 @@ on the list of triangular faces.
 
 @return List of texture map points making up the faces.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def texturePointList = faces.map (_.texturePoints).flatten
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 For each unique item in a list, create a map associating the item with a unique
 index value and a vector associating the index value with the list item.
@@ -145,7 +141,7 @@ unique integer index value, and a vector, associating each unique index value
 to the associated list element. Index values should be consecutive in range [0,
 n-1], where ''n'' is the number of elements in the resulting map & vector.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def createMapVect [T <: Equals] (list: List [T]) = {
 
@@ -206,13 +202,13 @@ vector.
     buildMapVect (list, Map.empty, Vector.empty)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert mesh to form for rendering by animation system.
 
 @return [[scalafx.scene.shape.TriangleMesh]] representing this mesh instance.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [anim] def triangleMesh = {
 
@@ -273,17 +269,17 @@ Return the resulting mesh.
   }
 }
 
-//=============================================================================
+//======================================================================================================================
 /**
 Mesh companion object.
 
 Utility methods for constructing common types of mesh.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [anim] object Mesh {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a conic mesh.
 
@@ -336,7 +332,7 @@ circumference; if `false`, vertices are listed in counterclockwise order, so
 that the resulting face normal point up the local ''Z''-axis, typically making
 them visible from above the plane of the circumference.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def conicMesh (c: Point3D, r: Double, a: Point3D,
   divisions: Int, topLeft: TexturePoint = TexturePoint.TopLeft,
@@ -492,7 +488,7 @@ Create the mesh from the List of a faces.
     buildMesh (divisions - 1, begin, Nil)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a circular wall mesh.
 
@@ -532,7 +528,7 @@ must be greater than 2.
 
 @param smoothGroup Smoothing group to which all faces will be added.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def circularWallMesh (cb: Point3D, rb: Double, ct: Point3D,
   rt: Double, divisions: Int, topLeft: TexturePoint = TexturePoint.TopLeft,
@@ -669,7 +665,7 @@ Create the mesh from the List of a faces.
     buildMesh (divisions - 1, endBase, endTop, Nil)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct an arc/circle/segment.
 
@@ -693,7 +689,7 @@ be less than three.
 
 @return Mesh representing the resulting arc.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def arc (c: Point3D, r: Double, begin: Angle.Measure, draw: Angle.Measure,
   divisions: Int) = {
@@ -722,7 +718,7 @@ displayed both up and down, rather than just up.
     smoothGroup = 1)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a cone.
 
@@ -742,7 +738,7 @@ This value cannot be less than three.
 
 @return Mesh representing the resulting cone.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def cone (c: Point3D, r: Double, a: Point3D, divisions: Int) = {
 
@@ -780,7 +776,7 @@ Add the two meshes together and return.
     base + walls
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a conic frustum.
 
@@ -801,7 +797,7 @@ resulting conic frustum. This value cannot be less than three.
 
 @return Mesh representing the resulting conic frustum.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def conicFrustum (cb: Point3D, rb: Double, ct: Point3D, rt: Double,
   divisions: Int) = {
@@ -855,7 +851,7 @@ Add the meshes together and return.
     base + walls + top
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a cylinder.
 
@@ -877,7 +873,7 @@ resulting cylinder. This value cannot be less than three.
 
 @return Mesh representing the resulting cylinder.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def cylinder (cb: Point3D, r: Double, ct: Point3D, divisions: Int) = {
 
@@ -928,7 +924,7 @@ Add the meshes together and return.
     base + walls + top
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a hemisphere.
 
@@ -945,7 +941,7 @@ the resulting hemisphere. This value cannot be less than three.
 
 @return Mesh representing the resulting hemisphere.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def hemisphere (c: Point3D, r: Double, divisions: Int) = {
 
@@ -1079,7 +1075,7 @@ exception of the pole).
     walls (0, base)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a quadrilateral plane.
 
@@ -1107,7 +1103,7 @@ counterclockwise vertex winding).
 
 @return Mesh representing the resulting quadrilateral.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def quadrilateral (tl: Point3D, bl: Point3D, br: Point3D, tr: Point3D,
   ttl: TexturePoint, tbr: TexturePoint) = {
@@ -1132,7 +1128,7 @@ Create and return the quadrilateral mesh.
   }
 
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a triangular frustum.
 
@@ -1152,7 +1148,7 @@ equilateral triangle. This value must be greater than or equal to zero.
 
 @return Mesh representing the resulting triangular frustum.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def triangularFrustum (bc: Point3D, bd: Double, tc: Point3D, td: Double) = {
 
@@ -1238,7 +1234,7 @@ Now add all the sides and return the result.
     base + left + front + right + top
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a rectangular frustum.
 
@@ -1263,7 +1259,7 @@ greater than or equal to zero.
 
 @return Mesh representing the resulting rectangular frustum.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def rectangularFrustum (bc: Point3D, bl: Double, bw: Double, tc: Point3D,
   tl: Double, tw: Double) = {

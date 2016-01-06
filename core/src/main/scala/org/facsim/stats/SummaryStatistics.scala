@@ -1,44 +1,40 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file belonging to the org.facsim.stats package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.stats
 
-//=============================================================================
+//======================================================================================================================
 /**
 Maintains summary statistics for a set of observations.
 
@@ -61,7 +57,7 @@ but would be more functional.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 trait SummaryStatistics
 extends Statistic {
@@ -114,7 +110,7 @@ total.
 
   private final var sumValuesSquared = 0.0 // scalastyle:ignore
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Add a new observation to the dataset.
 
@@ -122,7 +118,7 @@ Add a new observation to the dataset.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def addObservation (value: Double): Unit = synchronized {
 
@@ -161,7 +157,7 @@ Perform any required sub-class processing.
     processObservation (value)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Processes an observation that has been added to the dataset.
 
@@ -169,12 +165,12 @@ Processes an observation that has been added to the dataset.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   protected [stats] def processObservation (value: Double): Unit = {
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report number of recorded observations.
 
@@ -182,12 +178,12 @@ Report number of recorded observations.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   final def observations = count ensuring (_ >= 0)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report minimum observed value.
 
@@ -202,7 +198,7 @@ made.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def minimum = synchronized {
     if (count == 0) throw new
@@ -210,7 +206,7 @@ made.
     else minValue
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report maximum observed value.
 
@@ -225,7 +221,7 @@ made.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def maximum = synchronized {
     if (count == 0) throw new
@@ -233,7 +229,7 @@ made.
     else maxValue
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report [[http://en.wikipedia.org/wiki/Arithmetic_mean arithmetic mean]] of
 observed values.
@@ -254,7 +250,7 @@ Wikipedia.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final def mean = synchronized {
     if (count == 0) throw new
@@ -262,7 +258,7 @@ Wikipedia.
     else sumValues / count
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Calculate the sample variance.
 
@@ -273,7 +269,7 @@ of the sample variance.
 actually being reported, in the event that we have insufficient data.  This is
 required because the variance is calculated as part of multiple statistics.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private final def calcVariance (statisticName: => String) =
   synchronized {
@@ -282,7 +278,7 @@ required because the variance is calculated as part of multiple statistics.
     else (sumValuesSquared - count * Math.pow (mean, 2)) / (count - 1)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report sample variance of observed values.
 
@@ -306,12 +302,12 @@ Bessel&apos;s Correction</a>
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   final def variance = calcVariance (Names.SampleVariance.capitalize)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve sample standard deviation on values observed since last statistics
 reset.
@@ -337,7 +333,7 @@ Standard Deviation</a>
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   @inline
   final def stdDeviation = Math.sqrt (calcVariance
