@@ -52,9 +52,10 @@ import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import sbt._
 import sbt.Keys._
+import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
-import sbtunidoc.Plugin.unidocSettings
+import sbtunidoc.Plugin.{ScalaUnidoc, UnidocKeys, unidocSettings}
 import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype.sonatypeSettings
 
@@ -62,7 +63,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 Wrap all contents in a FacsimileSettings object for inclusion in client projects.
 */
 
-object FacsimileSettings {
+object FacsimileBuild{
 
 /*
 ID of this Facsimile project.
