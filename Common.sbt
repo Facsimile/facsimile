@@ -49,6 +49,8 @@
 
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
+import sbtrelease.ReleaseStateTransformations._
+import sbtrelease.Version
 import sbtunidoc.Plugin.unidocSettings
 import xerial.sbt.Sonatype.sonatypeSettings
 
