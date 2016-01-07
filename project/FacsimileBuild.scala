@@ -52,9 +52,10 @@ import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import sbt._
 import sbt.Keys._
+import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
-import sbtunidoc.Plugin.unidocSettings
+import sbtunidoc.Plugin.{ScalaUnidoc, UnidocKeys, unidocSettings}
 import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype.sonatypeSettings
 
