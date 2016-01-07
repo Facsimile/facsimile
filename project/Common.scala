@@ -258,7 +258,7 @@ Most of these issues should go away when Scala 2.12, which sports a new optimize
 
 /*
 Fork all tests, so that they run in a separate process.
-*.
+*/
 
     fork in Test := true,
 
