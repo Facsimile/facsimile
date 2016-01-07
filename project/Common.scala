@@ -51,6 +51,7 @@ client projects. Refer to the skeleton project for further details:
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import sbt._
+import sbt.Keys._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
 import sbtunidoc.Plugin.unidocSettings
