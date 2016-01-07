@@ -49,6 +49,8 @@
 
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
+import sbtunidoc.Plugin.unidocSettings
+import xerial.sbt.Sonatype.sonatypeSettings
 
 // ID of this Facsimile project.
 //
