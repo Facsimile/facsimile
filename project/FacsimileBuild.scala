@@ -62,7 +62,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 Wrap all contents in a FacsimileSettings object for inclusion in client projects.
 */
 
-object FacsimileSettings {
+object FacsimileBuild{
 
 /*
 ID of this Facsimile project.
