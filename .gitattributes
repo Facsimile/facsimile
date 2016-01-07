@@ -63,6 +63,7 @@ COPYING.LESSER text
 *.cel text
 *.cell text
 *.cmd text
+*.conf text
 *.cpp text
 *.css text
 *.csv text

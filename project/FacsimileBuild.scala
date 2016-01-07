@@ -281,6 +281,21 @@ Additional library dependencies.
     libraryDependencies ++= Seq (
 
 /*
+Typesafe configurator, which is used to both configure the library and user simulation models.
+
+This is commented out, because it is a dependency of the Akka actor library. If we add a second dependency on it, things
+could get interesting.
+*/
+
+//      "com.typesafe" % "config" % "1.3.0",
+
+/*
+Akka concurrency libraries.
+*/
+
+      "com.typesafe.akka" %% "akka-actor" % "2.4.1",
+
+/*
 ScalaFX libraries, for user-interface design and 3D animation.
 */
 
