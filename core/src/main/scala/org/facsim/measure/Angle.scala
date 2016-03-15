@@ -1,46 +1,42 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file belonging to the org.facsim.measure package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.measure
 
 import org.facsim.{requireNonNull, requireValid, LibResource}
 
-//=============================================================================
+//======================================================================================================================
 /**
 ''[[http://en.wikipedia.org/wiki/Angle Plane angle]]'' physical quantity type.
 
@@ -55,7 +51,7 @@ unit of measure.
 
 @since 0.0
 */
-//=============================================================================
+//======================================================================================================================
 
 object Angle
 extends Specific {
@@ -213,16 +209,16 @@ Register this family.
 
   Family.register (family, Angle)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Angle measurement factory.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [measure] override def apply (measure: Double) =
   new Measure (measure)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Compute arc sine from sine value
 
@@ -236,14 +232,14 @@ the range [-1, 1].
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def asin (sine: Double) = {
     requireValid (sine, sine >= -1.0 && sine <= 1.0)
     apply (Math.asin (sine))
   } ensuring (!_.value.isNaN)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Compute arc cosine from cosine value.
 
@@ -256,14 +252,14 @@ of the range [-1, 1].
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def acos (cosine: Double) = {
     requireValid (cosine, cosine >= -1.0 && cosine <= 1.0)
     apply (Math.acos (cosine))
   } ensuring (!_.value.isNaN)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Compute arc tangent from tangent value.
 
@@ -280,14 +276,14 @@ degrees).
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def atan (tangent: Double) = {
     requireValid (tangent, !tangent.isNaN)
     apply (Math.atan (tangent))
   } ensuring (!_.value.isNaN)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Returns the angle ''θ'' from the conversion of rectangular coordinates (`x`,
 `y`) to polar coordinates (''r'', ''θ'').
@@ -306,7 +302,7 @@ degrees).
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   def atan2 (y: Length.Measure, x: Length.Measure) = {
     requireNonNull (y)
@@ -314,7 +310,7 @@ degrees).
     apply (Math.atan2 (y.value, x.value))
   } ensuring (!_.value.isNaN)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 ''[[http://en.wikipedia.org/wiki/Angle Plane angle]]'' measurement class.
 
@@ -330,7 +326,7 @@ measurement value.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final class AngleMeasure private [measure] (measure: Double)
   extends SpecificMeasure (measure) {
@@ -408,7 +404,7 @@ answer, even if it is a little more long-winded.
     } ensuring (_.isNormalized)
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 ''[[http://en.wikipedia.org/wiki/Angle Plane angle]]'' unit of measurement
 family class.
@@ -428,7 +424,7 @@ these units.
 
 @since 0.0
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   final class AngleUnits private [measure] (converter: Converter,
   symbol: String)

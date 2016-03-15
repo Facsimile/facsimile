@@ -1,40 +1,36 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -46,7 +42,7 @@ import org.facsim.io.{FieldConversionException, FieldVerificationException,
 TextReader}
 import scala.collection.mutable.{Map => MutableMap}
 
-//=============================================================================
+//======================================================================================================================
 /**
 ''Java3D'' scene retrieved from an ''[[http://www.automod.com/ AutoMod®]]
 cell'' file.
@@ -74,7 +70,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [cell] final class CellScene (reader: TextReader, baseUrl: URL,
 faceColor: CellColor.Value, edgeColor: CellColor.Value) {
@@ -118,50 +114,50 @@ By the time execution reaches this point, we'll have constructed the scene.
 
   sceneRead = true
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the base URL for this scene.
 
 @return Specified base URL.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def getBaseUrl = baseUrl
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the default face color for this scene.
 
 @return Specified face color as an optional value.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def defaultFaceColor = Some (faceColor)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the default edge color for this scene.
 
 @return Specified edge color as an optional value.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def defaultEdgeColor = Some (edgeColor)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Return the scene read as a ''ScalaFX'' 3D scene graph.
 
 @return Cell's contents as a ''ScalaFX'' 3D scene graph.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def toNode = {
     assert (sceneRead)
     rootCell.toNode
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read next cell element from the stream and return it.
 
@@ -175,7 +171,7 @@ the caller. If this flag is `true`, then `parent` must be `None`.
 @return Cell instance read from the file. Note that the root cell contains all
 cells belonging to this scene as its contents.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readNextCell (parent: Option [Set] = None, isDefinition:
   Boolean = false) = {
@@ -254,7 +250,7 @@ Return the cell read.
     cell
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a text value from the stream.
 
@@ -274,7 +270,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readText (description: => String) = {
 
@@ -315,7 +311,7 @@ Replace any tabs in the input with spaces before returning.
     }
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unverified string value from the stream.
 
@@ -330,7 +326,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readString (description: => String) = {
 
@@ -362,7 +358,7 @@ necessary.
     value
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified string value from the stream.
 
@@ -380,7 +376,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readString (verifier: TextReader.Verifier [String],
   description: => String) = {
@@ -414,7 +410,7 @@ exception if necessary.
     value
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unrestricted boolean value from the stream.
 
@@ -429,7 +425,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readBool (description: => String) = {
 
@@ -461,7 +457,7 @@ necessary.
     value == 1
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified boolean value from the stream.
 
@@ -479,7 +475,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readBool (verifier: Int => Boolean, description: =>
   String) = {
@@ -513,7 +509,7 @@ exception if necessary.
     value == 1
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unrestricted integer value from the stream.
 
@@ -528,7 +524,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readInt (description: => String) = {
 
@@ -560,7 +556,7 @@ necessary.
     value
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified integer value from the stream.
 
@@ -578,7 +574,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readInt (verifier: TextReader.Verifier [Int], description:
   => String) = {
@@ -612,7 +608,7 @@ exception if necessary.
     value
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unrestricted double value from the stream.
 
@@ -627,7 +623,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readDouble (description: => String) = {
 
@@ -659,7 +655,7 @@ necessary.
     value
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified double value from the stream.
 
@@ -677,7 +673,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def readDouble (verifier: TextReader.Verifier [Double],
   description: => String) = {
@@ -711,7 +707,7 @@ exception if necessary.
     value
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve definition with specified name.
 
@@ -720,7 +716,7 @@ Retrieve definition with specified name.
 @return `Some` definition, if the definition has already been defined; `None`
 if the definition has not yet been seen.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def getDefinition (definitionName: String) = {
     assertNonNull (definitionName)
@@ -728,11 +724,11 @@ if the definition has not yet been seen.
   }
 }
 
-//=============================================================================
+//======================================================================================================================
 /**
 CellScene companion object.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [cell] object CellScene {
 
@@ -750,7 +746,7 @@ a map linking cell code to cell class.
 
   private [this] val partitionedClassMap = partitionClassMap
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to initialize the relation between definition/regular cell status and
 maps of cell code to cell class.
@@ -774,7 +770,7 @@ regular cell) to a map that relates cell codes to cell classes.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [this] def partitionClassMap = {
 
@@ -860,7 +856,7 @@ Now construct, and return, the map relating definition state to class map.
     )
   }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to verify a cell code.
 
@@ -875,12 +871,12 @@ not a valid expected cell code.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def verifyCellCode (definitionExpected: Boolean)(cellCode: Int) =
   partitionedClassMap (definitionExpected).contains (cellCode)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to report the set of permitted cell codes.
 
@@ -896,12 +892,12 @@ cell; if `false`, the cell code must be for a regular cell.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def permittedCellCodes (definitionExpected: Boolean) =
   partitionedClassMap (definitionExpected).keys.toList.sorted.mkString (", ")
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to lookup the associated cell class for the specified cell code.
 
@@ -915,12 +911,12 @@ cell (`true`) or a regular cell (`false`).
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def getCellClass (definitionExpected: Boolean, cellCode: Int) =
   partitionedClassMap (definitionExpected)(cellCode)
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Translate a reader exception.
 
@@ -964,7 +960,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private def translateReaderException (exception: Throwable,
   description: String): Nothing = {

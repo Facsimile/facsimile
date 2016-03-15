@@ -1,46 +1,42 @@
 /*
 Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2015, Michael J Allen.
+Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any
-later version.
+Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-details.
+Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with Facsimile. If not, see http://www.gnu.org/licenses/lgpl.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
-The developers welcome all comments, suggestions and offers of assistance. For
-further information, please visit the project home page at:
+The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+project home page at:
 
   http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the
-addition of new files) submitted for inclusion as part of the official
-Facsimile code base, must comply with the published Facsimile Coding Standards.
-If your code fails to comply with the standard, then your patches will be
-rejected. For further information, please visit the coding standards at:
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
+fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
+standards at:
 
   http://facsim.org/Documentation/CodingStandards/
-===============================================================================
+========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//=============================================================================
+//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//=============================================================================
+//======================================================================================================================
 /**
 Value class representing a ''cell'' element's flags.
 
@@ -49,12 +45,12 @@ value.
 
 @param flags ''Cell'' element's flags to be parsed.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [cell] final class CellFlags (val flags: Int)
 extends AnyVal {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''attributes present'' flag is set.
 
@@ -65,11 +61,11 @@ assigned.
 @return `true` if attributes are present in the ''cell'' definition; `false` if
 not.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def attributesPresent = (flags & 0x1) != 0
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''joint data present'' flag is set.
 
@@ -79,11 +75,11 @@ data; if clear, no joint data is present.
 @return `true` if joint data is present in the ''cell'' definition; `false` if
 not.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def jointDataPresent = (flags & 0x2) != 0
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''geometry data present'' flag is set.
 
@@ -96,11 +92,11 @@ rotation and scaling data, rather than shape geometry.
 @return `true` if geometry data is present in the ''cell'' definition; `false`
 if not.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def geometryDataPresent = (flags & 0x4) != 0
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''geometry data in matrix form'' flag is set.
 
@@ -117,11 +113,11 @@ rotation and scaling data, rather than shape geometry.
 @return `true` if geometry data is in matrix form in the ''cell'' definition;
 `false` if in non-matrix form.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def geometryDataInMatrixForm = (flags & 0x8) != 0
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''colors inherited'' flag is set.
 
@@ -132,11 +128,11 @@ its parent.
 @return `true` if colors are inherited from the ''cell's'' parent; `false` if
 not.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def colorsInherited = (flags & 0x10) != 0
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''bounding box present'' flag is set.
 
@@ -148,20 +144,20 @@ specification is provided.
 
 @return `true` if ''bounding box data'' is present; `false` if not.
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def boundingBoxPresent = (flags & 0x40) != 0
 }
 
-//=============================================================================
+//======================================================================================================================
 /**
 CellFlags companion object.
 */
-//=============================================================================
+//======================================================================================================================
 
 private [cell] object CellFlags {
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 /**
 Read ''cell'' flags from data stream.
 
@@ -178,7 +174,7 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Flags.html
 Cell Flags]]
 */
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
   private [cell] def read (scene: CellScene) = {
 
