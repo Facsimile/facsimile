@@ -258,7 +258,7 @@ The scala-xml package is currently only required by Scalatest, hence the "test" 
 */
 
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.3" % "test",
+      "org.scala-lang.modules" %% "scala-xml" % "1.0.5" % "test",
 
 /*
 Other base library dependencies.
