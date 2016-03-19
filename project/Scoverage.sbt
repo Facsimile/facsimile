@@ -39,4 +39,4 @@
 //   https://github.com/Facsimile/skeleton
 //======================================================================================================================
 
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.3")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.5")
