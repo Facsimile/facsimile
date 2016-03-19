@@ -63,7 +63,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 Wrap all contents in a FacsimileSettings object for inclusion in client projects.
 */
 
-object FacsimileBuild{
+object FacsimileBuild {
 
 /*
 ID of this Facsimile project.
@@ -195,7 +195,7 @@ Scala cross compiling.
 IMPORTANT: These values should be synchronized with the Travis CI .travis.yml file in the project's root directory.
 */
 
-    crossScalaVersions := Seq ("2.11.7"),
+    crossScalaVersions := Seq ("2.11.8"),
 
 /*
 Scala default version.
