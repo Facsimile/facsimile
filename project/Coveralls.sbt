@@ -37,4 +37,4 @@
 //   https://github.com/Facsimile/skeleton
 //======================================================================================================================
 
-addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.0.0")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.1.0")

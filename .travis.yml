@@ -52,7 +52,7 @@ sudo: false
 
 language: scala
 scala:
-  - 2.11.7
+  - 2.11.8
 
 # Cache the IVY & SBT directories at the end of the build.
 
@@ -90,22 +90,15 @@ addons:
 # then execute the test suite. Subsequent to that, since Facsimile is a multi-module project, we must generate a report
 # aggregated for all modules. The notify Coveralls of the test coverage results. (Note that both of these latter tasks
 # must be performed as separate SBT commands.)
-#
-# The find commands are described as "tricks to avoid unnecessary cache updates". They can probably be removed if they
-# prove troublesome.
-#
-# TEMPORARY MODIFICATION: The SBT "coveralls" command has been commented out temporarily since it does not appear to
-# work with multi-module SBT projects. The first three lines of the script should look like this:
-#
-#  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test doc &&
-#    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate &&
-#    sbt ++$TRAVIS_SCALA_VERSION coveralls
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test doc &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean scalastyle coverage test doc &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+
+# If this script was successful, run the coveralls SBT task.
+
+after_success:
+  - sbt ++$TRAVIS_SCALA_VERSION coveralls
 
 # For now, we'll only test the master branch.
 
