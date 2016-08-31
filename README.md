@@ -18,6 +18,8 @@ Current status of official master _Facsimile_ branch:
 (https://travis-ci.org/Facsimile/facsimile)
 [![Coverage Status](https://coveralls.io/repos/Facsimile/facsimile/badge.svg)]
 (https://coveralls.io/r/Facsimile/facsimile)
+[![Join the chat at https://gitter.im/Facsimile](https://badges.gitter.im/Join%20Chat.svg)]
+(https://gitter.im/Facsimile?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # How to Use
 
