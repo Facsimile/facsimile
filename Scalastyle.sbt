@@ -35,7 +35,7 @@
 // merged into client projects. Refer to the skeleton project for further details:
 //
 //   https://github.com/Facsimile/skeleton
-========================================================================================================================
+//======================================================================================================================
 
 // Configure Scalastyle configuration file location.
 //
