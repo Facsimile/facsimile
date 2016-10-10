@@ -170,12 +170,12 @@ package org\.facsim\.[\p{Lower}_\.]+$
 <!--
 Ensure that ScalaDoc is correctly formed.
 
-Rationale: Incorrectly formed ScalaDoc is a problem.
+Rationale: Incorrectly formed ScalaDoc is a problem. Typically, this rule should only be disabled in test sources.
 
-UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
+To disable this rule locally, use the ID: scaladoc
 -->
 
-  <check class="org.scalastyle.scalariform.ScalaDocChecker" enabled="true" level="error">
+  <check class="org.scalastyle.scalariform.ScalaDocChecker" enabled="true" level="warning">
     <!--
     <parameters>
       <parameter name="ignoreRegex">(.*Spec$)|(.*SpecIT$)</parameter>
