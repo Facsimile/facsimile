@@ -296,7 +296,7 @@ Right now, the only universal dependencies are libraries required by the test ph
 ScalaTest dependency.
 */
 
-      "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
     )
   )
 
