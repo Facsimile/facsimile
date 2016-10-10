@@ -169,7 +169,7 @@ Rationale: Incorrectly formed ScalaDoc is a problem.
 UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
 -->
 
-  <check class="org.scalastyle.scalariform.ScalaDocChecker" enabled="true" level="errpr">
+  <check class="org.scalastyle.scalariform.ScalaDocChecker" enabled="true" level="error">
     <!--
     <parameters>
       <parameter name="ignoreRegex">(.*Spec$)|(.*SpecIT$)</parameter>
