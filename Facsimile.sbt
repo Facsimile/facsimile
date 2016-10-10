@@ -33,6 +33,7 @@
 
 import FacsimileBuild._
 
+//scalastyle:off scaladoc
 // ID of the main Facsimile project.
 //
 // This is the "normalized name" of this project, also known as a Maven/SBT/Ivy artifact name (such as "myfabapp"). This
@@ -66,67 +67,68 @@ facsimileProjHomePage in Global := "http://facsim.org/"
 
 // Facsimile root project.
 
-lazy val root = (project in file (".")).
-settings (commonSettings: _*).
-settings (rootSettings: _*).
-settings (rootProjectUnidocSettings: _*).
-settings (
+lazy val root = project.in(file(".")).
+settings(commonSettings: _*).
+settings(rootSettings: _*).
+settings(rootProjectUnidocSettings: _*).
+settings(
 
-// Ensure that core and macro classes and sources are copied to the corresponding distribution jar files.
+  // Ensure that core and macro classes and sources are copied to the corresponding distribution jar files.
 
-  mappings in (Compile, packageBin) ++= mappings.in (macros, Compile, packageBin).value,
-  mappings in (Compile, packageBin) ++= mappings.in (core, Compile, packageBin).value,
-  mappings in (Compile, packageSrc) ++= mappings.in (macros, Compile, packageSrc).value,
-  mappings in (Compile, packageSrc) ++= mappings.in (core, Compile, packageSrc).value
+  mappings in(Compile, packageBin) ++= mappings.in(macros, Compile, packageBin).value,
+  mappings in(Compile, packageBin) ++= mappings.in(core, Compile, packageBin).value,
+  mappings in(Compile, packageSrc) ++= mappings.in(macros, Compile, packageSrc).value,
+  mappings in(Compile, packageSrc) ++= mappings.in(core, Compile, packageSrc).value
 ).
-aggregate (core, macros)
+aggregate(core, macros)
 
 // Facsimile core sub-project.
 //
 // This sub-project defines the bulk of the Facsimile simulation library.
 
-lazy val core = (project in file ("core")).
-settings (commonSettings: _*).
-settings (baseSourceSettings: _*).
-settings (subProjectSourceSettings: _*).
-settings (
+lazy val core = project.in(file("core")).
+settings(commonSettings: _*).
+settings(baseSourceSettings: _*).
+settings(subProjectSourceSettings: _*).
+settings(
 
-// Define the ID and name of this sub-project.
+  // Define the ID and name of this sub-project.
 
   normalizedName := facsimileProjId.value + "-core",
   name := facsimileProjName.value + " Core",
 
-// Add library dependencies for the core sub-project.
+  // Add library dependencies for the core sub-project.
 
-  libraryDependencies ++= Seq (
+  libraryDependencies ++= Seq(
 
-// ScalaFX libraries, for user-interface design and 3D animation.
-//
-// This library is being phased-out in favor of the Facsimile sfx library.
+    // ScalaFX libraries, for user-interface design and 3D animation.
+    //
+    // This library is being phased-out in favor of the Facsimile sfx library.
 
     "org.scalafx" %% "scalafx" % "8.0.40-R8"
   )
 ).
-dependsOn (macros % "test->test;compile->compile")
+dependsOn(macros % "test->test;compile->compile")
 
 // Facsimile macros sub-project.
 //
 // This sub-project defines macros that are required by the core sub-project.
 
-lazy val macros = (project in file ("macro")).
-settings (commonSettings: _*).
-settings (baseSourceSettings: _*).
-settings (subProjectSourceSettings: _*).
-settings (
+lazy val macros = project.in(file("macro")).
+settings(commonSettings: _*).
+settings(baseSourceSettings: _*).
+settings(subProjectSourceSettings: _*).
+settings(
 
-// Define the ID and name of this sub-project.
+  // Define the ID and name of this sub-project.
 
   normalizedName := facsimileProjId.value + "-macro",
   name := facsimileProjName.value + " Macros",
 
-// Add library dependencies for the macros sub-project.
+  // Add library dependencies for the macros sub-project.
 
-  libraryDependencies ++= Seq (
+  libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value
   )
 )
+//scalastyle:on scaladoc
