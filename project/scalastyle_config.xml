@@ -78,8 +78,8 @@ UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
 
   <check class="org.scalastyle.file.IndentationChecker" enabled="true" level="error">
     <parameters>
-      <parameter name="tabSize">8</parameter>
-      <parameter name="methodParamIndentSize">2</parameter>
+      <parameter name="tabSize">2</parameter>
+      <parameter name="methodParamIndentSize">0</parameter>
     </parameters>
   </check>
 
