@@ -107,7 +107,7 @@ settings (
     "org.scalafx" %% "scalafx" % "8.0.40-R8"
   )
 ).
-dependsOn (macros)
+dependsOn (macros % "test->test;compile->compile")
 
 // Facsimile macros sub-project.
 //
