@@ -398,7 +398,7 @@ UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
   <check class="org.scalastyle.scalariform.IfBraceChecker" enabled="true" level="error">
     <parameters>
       <parameter name="singleLineAllowed">true</parameter>
-      <parameter name="doubleLineAllowed">false</parameter>
+      <parameter name="doubleLineAllowed">true</parameter>
     </parameters>
   </check>
 
@@ -488,7 +488,8 @@ Note: Empty strings ("") are exempt from this rule.
 Rationale: String literals that appear multiple times is a maintenance chore; such strings should be stored in a
 constant value instead.
 
-UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
+This should only be disabled in test code; UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR LIBRARY
+SOURCES. To disable this rule locally (in test sources ONLY), use the ID: multiple.string.literals.
 -->
 
   <check class="org.scalastyle.scalariform.MultipleStringLiteralsChecker" enabled="true" level="error">
