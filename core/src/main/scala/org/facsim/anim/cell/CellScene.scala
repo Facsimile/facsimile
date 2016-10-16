@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -42,7 +41,6 @@ import org.facsim.io.{FieldConversionException, FieldVerificationException,
 TextReader}
 import scala.collection.mutable.{Map => MutableMap}
 
-//======================================================================================================================
 /**
 ''Java3D'' scene retrieved from an ''[[http://www.automod.com/ AutoMod®]]
 cell'' file.
@@ -70,19 +68,18 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] final class CellScene (reader: TextReader, baseUrl: URL,
+private[cell] final class CellScene(reader: TextReader, baseUrl: URL,
 faceColor: CellColor.Value, edgeColor: CellColor.Value) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (reader)
-  assertNonNull (baseUrl)
-  assertNonNull (faceColor)
-  assertNonNull (edgeColor)
+  assertNonNull(reader)
+  assertNonNull(baseUrl)
+  assertNonNull(faceColor)
+  assertNonNull(edgeColor)
 
 /**
 Flag indicating whether we have finished constructing the scene.
@@ -96,7 +93,7 @@ Flag indicating whether we have finished constructing the scene.
 ''Cell'' definitions, indexed by name and initially empty.
 */
 
-  private val definitions = MutableMap [String, Cell] ()
+  private val definitions = MutableMap[String, Cell]()
 
 /**
 Process the cell data.
@@ -106,7 +103,7 @@ or a set primitive that contains all remaining cells making up the scene.
 Consequently, the root cell contains the entire scene itself.
 */
 
-  private val rootCell = readNextCell ()
+  private val rootCell = readNextCell()
 
 /*
 By the time execution reaches this point, we'll have constructed the scene.
@@ -114,50 +111,37 @@ By the time execution reaches this point, we'll have constructed the scene.
 
   sceneRead = true
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the base URL for this scene.
 
 @return Specified base URL.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def getBaseUrl = baseUrl
 
-  private [cell] def getBaseUrl = baseUrl
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the default face color for this scene.
 
 @return Specified face color as an optional value.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def defaultFaceColor = Some(faceColor)
 
-  private [cell] def defaultFaceColor = Some (faceColor)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the default edge color for this scene.
 
 @return Specified edge color as an optional value.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def defaultEdgeColor = Some(edgeColor)
 
-  private [cell] def defaultEdgeColor = Some (edgeColor)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Return the scene read as a ''ScalaFX'' 3D scene graph.
 
 @return Cell's contents as a ''ScalaFX'' 3D scene graph.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def toNode = {
-    assert (sceneRead)
+  private[cell] def toNode = {
+    assert(sceneRead)
     rootCell.toNode
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read next cell element from the stream and return it.
 
@@ -171,9 +155,7 @@ the caller. If this flag is `true`, then `parent` must be `None`.
 @return Cell instance read from the file. Note that the root cell contains all
 cells belonging to this scene as its contents.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readNextCell (parent: Option [Set] = None, isDefinition:
+  private[cell] def readNextCell(parent: Option[Set] = None, isDefinition:
   Boolean = false) = {
 
 /*
@@ -182,22 +164,22 @@ Sanity checks.
 If this is a definition, then the parent must be undefined.
 */
 
-    assertNonNull (parent)
-    assert (!isDefinition || parent == None)
+    assertNonNull(parent)
+    assert(!isDefinition || parent == None)
 
 /*
 Determine the code of the next cell element in the file.
 */
 
-    val cellCode = readInt (CellScene.verifyCellCode (isDefinition),
-    LibResource ("anim.cell.CellScene.readNextCell.cellCodeDesc",
-    if (isDefinition) 1 else 0, CellScene.permittedCellCodes (isDefinition)))
+    val cellCode = readInt(CellScene.verifyCellCode(isDefinition),
+    LibResource("anim.cell.CellScene.readNextCell.cellCodeDesc",
+    if(isDefinition) 1 else 0, CellScene.permittedCellCodes(isDefinition)))
 
 /*
 Retrieve the cell class associated with the indicated cell code.
 */
 
-    val cellClass = CellScene.getCellClass (isDefinition, cellCode)
+    val cellClass = CellScene.getCellClass(isDefinition, cellCode)
 
 /*
 Determine the constructor for this cell, and invoke it with the appropriate
@@ -208,14 +190,14 @@ arguments cannot be found. Needless to say, this shouldn't happen if the
 associated class has been supplied with such a constructor.
 */
 
-    val classCtor = cellClass.getConstructor (getClass, classOf [Option [Set]])
+    val classCtor = cellClass.getConstructor(getClass, classOf[Option[Set]])
 
 /*
 Create the new cell instance and return it, or review the exceptions thrown.
 */
 
     val cell = try {
-      classCtor.newInstance (this, parent)
+      classCtor.newInstance(this, parent)
     }
     catch {
 
@@ -227,7 +209,7 @@ it. All other exceptions are passed back to the caller.
 
       case e: InvocationTargetException => {
         val cause = e.getCause
-        assert (cause != null)
+        assert(cause != null)
         throw cause
       }
     }
@@ -238,9 +220,9 @@ If this is a definition, then add it to the list of definitions.
 Note that if the cell has no name, then this will result in an exception.
 */
 
-    if (isDefinition) {
-      assert (cell.isInstanceOf [Definition]) // scalastyle:ignore
-      definitions += (cell.name.get -> cell)
+    if(isDefinition) {
+      assert(cell.isInstanceOf[Definition]) // scalastyle:ignore
+      definitions +=(cell.name.get -> cell)
     }
 
 /*
@@ -250,7 +232,6 @@ Return the cell read.
     cell
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a text value from the stream.
 
@@ -270,9 +251,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readText (description: => String) = {
+  private[cell] def readText(description: => String) = {
 
 /*
 Sanity checks.
@@ -286,7 +265,7 @@ exception call below (but only if an error occurs when reading the field, which
 is not ideal).
 */
 
-    assertNonNull (description)
+    assertNonNull(description)
 
 /*
 Retrieve the remaining text on the current line of the file, throwing an
@@ -294,10 +273,10 @@ appropriate exception if necessary.
 */
 
     val value = try {
-      reader.readToEOL ()
+      reader.readToEOL()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
 
 /*
@@ -306,12 +285,11 @@ Replace any tabs in the input with spaces before returning.
 
     value.map {
       c =>
-      if (c == '\t') ' '
+      if(c == '\t') ' '
       else c
     }
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unverified string value from the stream.
 
@@ -326,9 +304,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readString (description: => String) = {
+  private[cell] def readString(description: => String) = {
 
 /*
 Sanity checks.
@@ -342,7 +318,7 @@ exception call below (but only if an error occurs when reading the field, which
 is not ideal).
 */
 
-    assertNonNull (description)
+    assertNonNull(description)
 
 /*
 Retrieve the text field and return it, throwing an appropriate exception if
@@ -350,15 +326,14 @@ necessary.
 */
 
     val value = try {
-      reader.readString ()
+      reader.readString()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified string value from the stream.
 
@@ -376,9 +351,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readString (verifier: TextReader.Verifier [String],
+  private[cell] def readString(verifier: TextReader.Verifier[String],
   description: => String) = {
 
 /*
@@ -393,8 +366,8 @@ returns null, then we'll get an error in the translate reader exception call
 below (but only if an error occurs when reading the field, which is not ideal).
 */
 
-    assertNonNull (verifier)
-    assertNonNull (description)
+    assertNonNull(verifier)
+    assertNonNull(description)
 
 /*
 Retrieve the text field, verify and return it, throwing an appropriate
@@ -402,15 +375,14 @@ exception if necessary.
 */
 
     val value = try {
-      reader.readString (verifier)
+      reader.readString(verifier)
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unrestricted boolean value from the stream.
 
@@ -425,9 +397,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readBool (description: => String) = {
+  private[cell] def readBool(description: => String) = {
 
 /*
 Sanity checks.
@@ -441,7 +411,7 @@ exception call below (but only if an error occurs when reading the field, which
 is not ideal).
 */
 
-    assertNonNull (description)
+    assertNonNull(description)
 
 /*
 Retrieve the Boolean field and return it, throwing an appropriate exception if
@@ -449,15 +419,14 @@ necessary.
 */
 
     val value = try {
-      reader.readInt (value => value == 0 || value == 1)
+      reader.readInt(value => value == 0 || value == 1)
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value == 1
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified boolean value from the stream.
 
@@ -475,9 +444,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readBool (verifier: Int => Boolean, description: =>
+  private[cell] def readBool(verifier: Int => Boolean, description: =>
   String) = {
 
 /*
@@ -492,8 +459,8 @@ returns null, then we'll get an error in the translate reader exception call
 below (but only if an error occurs when reading the field, which is not ideal).
 */
 
-    assertNonNull (verifier)
-    assertNonNull (description)
+    assertNonNull(verifier)
+    assertNonNull(description)
 
 /*
 Retrieve the Boolean field, verify and return it, throwing an appropriate
@@ -501,15 +468,14 @@ exception if necessary.
 */
 
     val value = try {
-      reader.readInt (value => (value == 0 || value == 1) && verifier (value))
+      reader.readInt(value =>(value == 0 || value == 1) && verifier(value))
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value == 1
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unrestricted integer value from the stream.
 
@@ -524,9 +490,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readInt (description: => String) = {
+  private[cell] def readInt(description: => String) = {
 
 /*
 Sanity checks.
@@ -540,7 +504,7 @@ exception call below (but only if an error occurs when reading the field, which
 is not ideal).
 */
 
-    assertNonNull (description)
+    assertNonNull(description)
 
 /*
 Retrieve the integer field and return it, throwing an appropriate exception if
@@ -548,15 +512,14 @@ necessary.
 */
 
     val value = try {
-      reader.readInt ()
+      reader.readInt()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified integer value from the stream.
 
@@ -574,9 +537,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readInt (verifier: TextReader.Verifier [Int], description:
+  private[cell] def readInt(verifier: TextReader.Verifier[Int], description:
   => String) = {
 
 /*
@@ -591,8 +552,8 @@ returns null, then we'll get an error in the translate reader exception call
 below (but only if an error occurs when reading the field, which is not ideal).
 */
 
-    assertNonNull (verifier)
-    assertNonNull (description)
+    assertNonNull(verifier)
+    assertNonNull(description)
 
 /*
 Retrieve the interger field, verify and return it, throwing an appropriate
@@ -600,15 +561,14 @@ exception if necessary.
 */
 
     val value = try {
-      reader.readInt (verifier)
+      reader.readInt(verifier)
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read an unrestricted double value from the stream.
 
@@ -623,9 +583,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readDouble (description: => String) = {
+  private[cell] def readDouble(description: => String) = {
 
 /*
 Sanity checks.
@@ -639,7 +597,7 @@ exception call below (but only if an error occurs when reading the field, which
 is not ideal).
 */
 
-    assertNonNull (description)
+    assertNonNull(description)
 
 /*
 Retrieve the double field and return it, throwing an appropriate exception if
@@ -647,15 +605,14 @@ necessary.
 */
 
     val value = try {
-      reader.readDouble ()
+      reader.readDouble()
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Helper function to read a verified double value from the stream.
 
@@ -673,9 +630,7 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readDouble (verifier: TextReader.Verifier [Double],
+  private[cell] def readDouble(verifier: TextReader.Verifier[Double],
   description: => String) = {
 
 /*
@@ -690,8 +645,8 @@ returns null, then we'll get an error in the translate reader exception call
 below (but only if an error occurs when reading the field, which is not ideal).
 */
 
-    assertNonNull (verifier)
-    assertNonNull (description)
+    assertNonNull(verifier)
+    assertNonNull(description)
 
 /*
 Retrieve the double field, verify and return it, throwing an appropriate
@@ -699,15 +654,14 @@ exception if necessary.
 */
 
     val value = try {
-      reader.readDouble (verifier)
+      reader.readDouble(verifier)
     }
     catch {
-      case e: Throwable => CellScene.translateReaderException (e, description)
+      case e: Throwable => CellScene.translateReaderException(e, description)
     }
     value
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve definition with specified name.
 
@@ -716,37 +670,32 @@ Retrieve definition with specified name.
 @return `Some` definition, if the definition has already been defined; `None`
 if the definition has not yet been seen.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def getDefinition (definitionName: String) = {
-    assertNonNull (definitionName)
-    definitions.get (definitionName)
+  private[cell] def getDefinition(definitionName: String) = {
+    assertNonNull(definitionName)
+    definitions.get(definitionName)
   }
 }
 
-//======================================================================================================================
 /**
 CellScene companion object.
 */
-//======================================================================================================================
 
-private [cell] object CellScene {
+private[cell] object CellScene {
 
 /**
 Type representing class information for a sub-class of
 [[org.facsim.anim.cell.Cell!]].
 */
 
-  type CellClass = Class [_ <: Cell]
+  type CellClass = Class[_ <: Cell]
 
 /**
 Map linking definition state (true = definition cell, false = regular cell) to
 a map linking cell code to cell class.
 */
 
-  private [this] val partitionedClassMap = partitionClassMap
+  private[this] val partitionedClassMap = partitionClassMap
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to initialize the relation between definition/regular cell status and
 maps of cell code to cell class.
@@ -770,9 +719,7 @@ regular cell) to a map that relates cell codes to cell classes.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [this] def partitionClassMap = {
+  private[this] def partitionClassMap = {
 
 /*
 Map associating cell type code with corresponding ''regular'' cell class.
@@ -785,41 +732,41 @@ a human (the resulting map itself is not ordered by cell code). Please maintain
 this order when modifying the list.
 */
 
-    val classMap = MutableMap [Int, CellClass] (
-      100 -> classOf [Triad],
-      115 -> classOf [VectorList],
-      125 -> classOf [Polyhedron],
-      130 -> classOf [Arc],                   // Originally, coarse arc
-      131 -> classOf [Arc],                   // Originally, fine arc
-      140 -> classOf [WorldText],
-      141 -> classOf [ScreenText],
-      142 -> classOf [ScreenText],
-      143 -> classOf [UnrotateText],
-      144 -> classOf [UnrotateText],
-      150 -> classOf [WorldTextList],
-      151 -> classOf [ScreenTextList],
-      152 -> classOf [ScreenTextList],
-      153 -> classOf [UnrotateTextList],
-      154 -> classOf [UnrotateTextList],
-      308 -> classOf [BlockDefinition],
-      310 -> classOf [Trapezoid],
-      311 -> classOf [Tetrahedron],
-      315 -> classOf [Rectangle],
-      330 -> classOf [Hemisphere],            // Originally, coarse hemisphere
-      331 -> classOf [Hemisphere],            // Originally, fine hemisphere
-      340 -> classOf [Cone],                  // Originally, coarse cone
-      341 -> classOf [Cone],                  // Originally, fine cone
-      350 -> classOf [Cylinder],              // Originally, coarse cylinder
-      351 -> classOf [Cylinder],              // Originally, fine cylinder
-      360 -> classOf [ConicFrustum],          // Originally, coarse frustum
-      361 -> classOf [ConicFrustum],          // Originally, fine frustum
-      388 -> classOf [FileReference],
-      408 -> classOf [Instance],
-      555 -> classOf [CompiledPicture],
-      599 -> classOf [EmbeddedFile],
-      700 -> classOf [RegularSet],
-      7000 -> classOf [RegularSet],
-      10000 -> classOf [RegularSet]
+    val classMap = MutableMap[Int, CellClass](
+      100 -> classOf[Triad],
+      115 -> classOf[VectorList],
+      125 -> classOf[Polyhedron],
+      130 -> classOf[Arc],                   // Originally, coarse arc
+      131 -> classOf[Arc],                   // Originally, fine arc
+      140 -> classOf[WorldText],
+      141 -> classOf[ScreenText],
+      142 -> classOf[ScreenText],
+      143 -> classOf[UnrotateText],
+      144 -> classOf[UnrotateText],
+      150 -> classOf[WorldTextList],
+      151 -> classOf[ScreenTextList],
+      152 -> classOf[ScreenTextList],
+      153 -> classOf[UnrotateTextList],
+      154 -> classOf[UnrotateTextList],
+      308 -> classOf[BlockDefinition],
+      310 -> classOf[Trapezoid],
+      311 -> classOf[Tetrahedron],
+      315 -> classOf[Rectangle],
+      330 -> classOf[Hemisphere],            // Originally, coarse hemisphere
+      331 -> classOf[Hemisphere],            // Originally, fine hemisphere
+      340 -> classOf[Cone],                  // Originally, coarse cone
+      341 -> classOf[Cone],                  // Originally, fine cone
+      350 -> classOf[Cylinder],              // Originally, coarse cylinder
+      351 -> classOf[Cylinder],              // Originally, fine cylinder
+      360 -> classOf[ConicFrustum],          // Originally, coarse frustum
+      361 -> classOf[ConicFrustum],          // Originally, fine frustum
+      388 -> classOf[FileReference],
+      408 -> classOf[Instance],
+      555 -> classOf[CompiledPicture],
+      599 -> classOf[EmbeddedFile],
+      700 -> classOf[RegularSet],
+      7000 -> classOf[RegularSet],
+      10000 -> classOf[RegularSet]
     )
 
 /*
@@ -829,34 +776,33 @@ All sub-classes of the Definition trait are regarded as special cases: they can
 only be defined as a definition, and not as part of the primary cell scene.
 */
 
-    val definition = classOf [Definition]
+    val definition = classOf[Definition]
 
 /*
 Helper function to determine if a class is a definition sub-class or not.
 */
 
-    def isDefinition (cellClass: CellClass) =
-    definition.isAssignableFrom (cellClass)
+    def isDefinition(cellClass: CellClass) =
+    definition.isAssignableFrom(cellClass)
 
 /*
 Partition the map into two: one containing regular cell classes, and the other
 containing definition cell classes.
 */
 
-    val (definitionClassMap, regularClassMap) = classMap.partition (p =>
-    isDefinition (p._2))
+    val(definitionClassMap, regularClassMap) = classMap.partition(p =>
+    isDefinition(p._2))
 
 /*
 Now construct, and return, the map relating definition state to class map.
 */
 
-    MutableMap [Boolean, MutableMap [Int, CellClass]] (
+    MutableMap[Boolean, MutableMap[Int, CellClass]](
       true -> definitionClassMap,
       false -> regularClassMap
     )
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to verify a cell code.
 
@@ -871,12 +817,9 @@ not a valid expected cell code.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private def verifyCellCode(definitionExpected: Boolean)(cellCode: Int) =
+  partitionedClassMap(definitionExpected).contains(cellCode)
 
-  private def verifyCellCode (definitionExpected: Boolean)(cellCode: Int) =
-  partitionedClassMap (definitionExpected).contains (cellCode)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to report the set of permitted cell codes.
 
@@ -892,12 +835,9 @@ cell; if `false`, the cell code must be for a regular cell.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private def permittedCellCodes(definitionExpected: Boolean) =
+  partitionedClassMap(definitionExpected).keys.toList.sorted.mkString(", ")
 
-  private def permittedCellCodes (definitionExpected: Boolean) =
-  partitionedClassMap (definitionExpected).keys.toList.sorted.mkString (", ")
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to lookup the associated cell class for the specified cell code.
 
@@ -911,12 +851,9 @@ cell (`true`) or a regular cell (`false`).
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Type.html
 AutoMod Cell Type Codes]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private def getCellClass(definitionExpected: Boolean, cellCode: Int) =
+  partitionedClassMap(definitionExpected)(cellCode)
 
-  private def getCellClass (definitionExpected: Boolean, cellCode: Int) =
-  partitionedClassMap (definitionExpected)(cellCode)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Translate a reader exception.
 
@@ -960,23 +897,21 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private def translateReaderException (exception: Throwable,
+  private def translateReaderException(exception: Throwable,
   description: String): Nothing = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (exception)
-    assertNonNull (description)
+    assertNonNull(exception)
+    assertNonNull(description)
 
 /*
 Retrieve the error message, mixing in the description provided.
 */
 
-    val msg = LibResource ("anim.cell.CellScene.readValue", description)
+    val msg = LibResource("anim.cell.CellScene.readValue", description)
 
 /*
 Determine the correct reader exception.
@@ -990,7 +925,7 @@ example) to incorrect format exceptions.
 */
 
       case e: FieldConversionException =>
-      throw new IncorrectFormatException (msg, e)
+      throw new IncorrectFormatException(msg, e)
 
 /*
 Map field verification exceptions (data is correct type, but doesn't have an
@@ -999,14 +934,14 @@ parsing error exceptions.
 */
 
       case e: FieldVerificationException =>
-      throw new ParsingErrorException (msg, e)
+      throw new ParsingErrorException(msg, e)
 
 /*
 Map I/O exceptions (of which there are many different types) to parsing error
 exceptions.
 */
 
-      case e: IOException => throw new ParsingErrorException (msg, e)
+      case e: IOException => throw new ParsingErrorException(msg, e)
 
 /*
 For all other exceptions, re-throw the original exception.

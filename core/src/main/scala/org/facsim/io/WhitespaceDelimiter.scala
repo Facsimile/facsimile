@@ -30,18 +30,15 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
-//======================================================================================================================
 /**
 Delimiter for parsing whitespace-delimited data fields, for use with
 [[org.facsim.io.TextReader!]]-based readers.
 
 @since 0.0
 */
-//======================================================================================================================
 
 object WhitespaceDelimiter
-extends Delimiter (Set (TextReader.SPC, TextReader.HT, TextReader.LF), true)
+extends Delimiter(Set(TextReader.SPC, TextReader.HT, TextReader.LF), true)

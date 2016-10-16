@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell block
 definition'' primitives.
@@ -59,11 +57,10 @@ during parsing of the file.
 http://facsim.org/Documentation/Resources/AutoModCellFile/BlockDefinitions.html
 Block Definitions]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class BlockDefinition (scene: CellScene,
-parent: Option [Set])
-extends SetWithChildren (scene, parent)
+private[cell] final class BlockDefinition(scene: CellScene,
+parent: Option[Set])
+extends SetWithChildren(scene, parent)
 with Definition {
-  assert (parent == None)
+  assert(parent == None)
 }

@@ -33,15 +33,13 @@
  */
 package org.facsim.test
 
-import org.facsim.requireFinite
-import org.facsim.requireNonNull
-import org.facsim.requireValid
+import org.facsim.{requireFinite, requireNonNull, requireValid}
 import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /**
- * Test suite for the[[org.facsim]] package object.
+ * Test suite for the [[org.facsim]] package object.
  */
 class PackageTest
 extends FunSpec

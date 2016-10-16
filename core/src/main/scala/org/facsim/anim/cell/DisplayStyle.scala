@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Display style enumeration.
 
@@ -47,16 +45,15 @@ them to the corresponding display styles.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
 Display Styles]]
 */
-//======================================================================================================================
 
-private [cell] object DisplayStyle
+private[cell] object DisplayStyle
 extends Enumeration {
 
 /**
 Vector mapping the display style ID to an opacity value.
 */
 
-  private val opacity = Vector (
+  private val opacity = Vector(
       1.0,
       1.0,
       15.0 / 16.0,
@@ -80,123 +77,122 @@ Vector mapping the display style ID to an opacity value.
 Wireframe, having the ''cell'' display style 0.
 */
 
-  private [cell] val Wireframe = Value
+  private[cell] val Wireframe = Value
 
 /**
 Solid, having the ''cell'' display style 1.
 */
 
-  private [cell] val Solid = Value
+  private[cell] val Solid = Value
 
 /**
 Transparent 1, having the ''cell'' display style 2. Almost solid.
 */
 
-  private [cell] val Transparent1 = Value
+  private[cell] val Transparent1 = Value
 
 /**
 Transparent 2, having the ''cell'' display style 3.
 */
 
-  private [cell] val Transparent2 = Value
+  private[cell] val Transparent2 = Value
 
 /**
 Transparent 3, having the ''cell'' display style 4.
 */
 
-  private [cell] val Transparent3 = Value
+  private[cell] val Transparent3 = Value
 
 /**
 Transparent 4, having the ''cell'' display style 5.
 */
 
-  private [cell] val Transparent4 = Value
+  private[cell] val Transparent4 = Value
 
 /**
 Transparent 5, having the ''cell'' display style 6.
 */
 
-  private [cell] val Transparent5 = Value
+  private[cell] val Transparent5 = Value
 
 /**
 Transparent 6, having the ''cell'' display style 7.
 */
 
-  private [cell] val Transparent6 = Value
+  private[cell] val Transparent6 = Value
 
 /**
 Transparent 7, having the ''cell'' display style 8.
 */
 
-  private [cell] val Transparent7 = Value
+  private[cell] val Transparent7 = Value
 
 /**
 Transparent 8, having the ''cell'' display style 9.
 */
 
-  private [cell] val Transparent8 = Value
+  private[cell] val Transparent8 = Value
 
 /**
 Transparent 9, having the ''cell'' display style 10.
 */
 
-  private [cell] val Transparent9 = Value
+  private[cell] val Transparent9 = Value
 
 /**
 Transparent 10, having the ''cell'' display style 11.
 */
 
-  private [cell] val Transparent10 = Value
+  private[cell] val Transparent10 = Value
 
 /**
 Transparent 11, having the ''cell'' display style 12.
 */
 
-  private [cell] val Transparent11 = Value
+  private[cell] val Transparent11 = Value
 
 /**
 Transparent 12, having the ''cell'' display style 13.
 */
 
-  private [cell] val Transparent12 = Value
+  private[cell] val Transparent12 = Value
 
 /**
 Transparent 13, having the ''cell'' display style 14.
 */
 
-  private [cell] val Transparent13 = Value
+  private[cell] val Transparent13 = Value
 
 /**
 Transparent 14, having the ''cell'' display style 15.
 */
 
-  private [cell] val Transparent14 = Value
+  private[cell] val Transparent14 = Value
 
 /**
 Transparent 15, having the ''cell'' display style 16. Almost invisible.
 */
 
-  private [cell] val Transparent15 = Value
+  private[cell] val Transparent15 = Value
 
 /**
 Default display style, which is used if an explicit style is not available.
 */
 
-  private [cell] val Default = Solid
+  private[cell] val Default = Solid
 
 /**
 Minimum display style code value.
 */
 
-  private [cell] val minValue = 0
+  private[cell] val minValue = 0
 
 /**
 Maximum display style code value.
 */
 
-  private [cell] val maxValue = maxId - 1
+  private[cell] val maxValue = maxId - 1
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Verify a display style code.
 
@@ -204,12 +200,9 @@ Verify a display style code.
 
 @return `true` if the code maps to a valid display style, `false` otherwise.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def verify (displayStyleCode: Int) =
+  private[cell] def verify(displayStyleCode: Int) =
   displayStyleCode >= minValue && displayStyleCode <= maxValue
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read display style from ''cell'' data stream.
 
@@ -227,31 +220,28 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
 Display Styles]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
+  private[cell] def read(scene: CellScene) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Read the display style code from the data stream.
 */
 
-    val code = scene.readInt (verify, LibResource
-    ("anim.cell.DisplayStyle.read", minValue, maxValue))
+    val code = scene.readInt(verify, LibResource
+   ("anim.cell.DisplayStyle.read", minValue, maxValue))
 
 /*
 Convert to a display style and return.
 */
 
-    DisplayStyle (code)
+    DisplayStyle(code)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report the display style as an opacity value.
 
@@ -261,10 +251,8 @@ Report the display style as an opacity value.
 indicating the opacity of the associated element. Wireframe is mapped as fully
 opaque.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def asOpacity (displayStyle: Value) = {
-    assertNonNull (displayStyle)
-    opacity (displayStyle.id)
+  private[cell] def asOpacity(displayStyle: Value) = {
+    assertNonNull(displayStyle)
+    opacity(displayStyle.id)
   }
 }

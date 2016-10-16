@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 import org.facsim.anim.Point3D
 
-//======================================================================================================================
 /**
 Class representing a basic cell point in 3D space.
 
@@ -53,31 +51,28 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] class Point (scene: CellScene, pointType: Point.Value) {
+private[cell] class Point(scene: CellScene, pointType: Point.Value) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (scene)
-  assertNonNull (pointType)
+  assertNonNull(scene)
+  assertNonNull(pointType)
 
 /**
 Read the 3D point from the cell data stream.
 */
 
-  private [cell] final val point = Point.read (scene, pointType)
+  private[cell] final val point = Point.read(scene, pointType)
 }
 
-//======================================================================================================================
 /**
 Utility enumeration object for processing cell file points.
 */
-//======================================================================================================================
 
-private [cell] object Point
+private[cell] object Point
 extends Enumeration {
 
 /**
@@ -104,7 +99,6 @@ Point read string resource key.
 
   private val ReadKey = "anim.cell.Point.read"
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read a point from the cell scene and return it.
 
@@ -120,39 +114,37 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def read (scene: CellScene, pointType: Value): Point3D = {
+  def read(scene: CellScene, pointType: Value): Point3D = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
-    assertNonNull (pointType)
+    assertNonNull(scene)
+    assertNonNull(pointType)
 
 /**
 Read the point's X coordinate.
 */
 
-    val x = scene.readDouble (LibResource (ReadKey, pointType.id, 0))
+    val x = scene.readDouble(LibResource(ReadKey, pointType.id, 0))
 
 /**
 Read the point's Y coordinate.
 */
 
-    val y = scene.readDouble (LibResource (ReadKey, pointType.id, 1))
+    val y = scene.readDouble(LibResource(ReadKey, pointType.id, 1))
 
 /**
 Read the point's Z coordinate.
 */
 
-    val z = scene.readDouble (LibResource (ReadKey, pointType.id, 2))
+    val z = scene.readDouble(LibResource(ReadKey, pointType.id, 2))
 
 /*
 Return the point read.
 */
 
-    Point3D (x, y, z)
+    Point3D(x, y, z)
   }
 }

@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell conic frustum''
 primitives.
@@ -63,11 +61,10 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/ConicFrustums.html
 Conic Frustums]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class ConicFrustum (scene: CellScene,
-parent: Option [Set])
-extends Mesh3D (scene, parent) {
+private[cell] final class ConicFrustum(scene: CellScene,
+parent: Option[Set])
+extends Mesh3D(scene, parent) {
 
 /**
 Conic frustum base radius.
@@ -75,8 +72,8 @@ Conic frustum base radius.
 Base radius, measured on the X-Y plane.
 */
 
-  private val baseRadius = scene.readDouble (_ >= 0.0, LibResource
-  (ConicFrustum.ReadDimKey, 0))
+  private val baseRadius = scene.readDouble(_ >= 0.0, LibResource
+ (ConicFrustum.ReadDimKey, 0))
 
 /**
 Conic frustum top radius.
@@ -84,8 +81,8 @@ Conic frustum top radius.
 Top radius, measured on the X-Y plane.
 */
 
-  private val topRadius = scene.readDouble (_ >= 0.0, LibResource
-  (ConicFrustum.ReadDimKey, 1))
+  private val topRadius = scene.readDouble(_ >= 0.0, LibResource
+ (ConicFrustum.ReadDimKey, 1))
 
 /**
 ConicFrustum height (Z-dimension).
@@ -93,41 +90,36 @@ ConicFrustum height (Z-dimension).
 Height of the conic frustum measured along the Z-Axis.
 */
 
-  private val height = scene.readDouble (_ >= 0.0, LibResource
-  (ConicFrustum.ReadDimKey, 2))
+  private val height = scene.readDouble(_ >= 0.0, LibResource
+ (ConicFrustum.ReadDimKey, 2))
 
 /**
 ConicFrustum top X-axis offset.
 */
 
-  private val xOffset = scene.readDouble (LibResource
-  (ConicFrustum.ReadOffsetKey, 0))
+  private val xOffset = scene.readDouble(LibResource
+ (ConicFrustum.ReadOffsetKey, 0))
 
 /**
 ConicFrustum top Y-axis offset.
 */
 
-  private val yOffset = scene.readDouble (LibResource
-  (ConicFrustum.ReadOffsetKey, 1))
+  private val yOffset = scene.readDouble(LibResource
+ (ConicFrustum.ReadOffsetKey, 1))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note The origin of the conic frustum is at the center of its base.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh =
-  Mesh.conicFrustum (Point3D.Origin, baseRadius,
-  Point3D (xOffset, yOffset, height), topRadius, ConicFrustum.Divisions)
+  protected[cell] override def cellMesh: Mesh =
+  Mesh.conicFrustum(Point3D.Origin, baseRadius,
+  Point3D(xOffset, yOffset, height), topRadius, ConicFrustum.Divisions)
 }
 
-//======================================================================================================================
 /**
 ConicFrustum companion object.
 */
-//======================================================================================================================
 
 private object ConicFrustum {
 

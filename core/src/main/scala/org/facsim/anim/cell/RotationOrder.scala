@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,7 +37,6 @@ import org.facsim.{assertNonNull, LibResource}
 import scalafx.geometry.Point3D
 import scalafx.scene.transform.Rotate
 
-//======================================================================================================================
 /**
 Cell rotation order enumeration.
 
@@ -48,73 +46,71 @@ them to the appropriate rotations.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
 */
-//======================================================================================================================
 
-private [cell] object RotationOrder
+private[cell] object RotationOrder
 extends Enumeration {
 
 /**
 Vector to a sequence of axes corresponding to each enumeration.
 */
 
-  private val axisSequence = Vector [List [Point3D]] (
-    List (Rotate.XAxis, Rotate.YAxis, Rotate.ZAxis),
-    List (Rotate.XAxis, Rotate.ZAxis, Rotate.YAxis),
-    List (Rotate.YAxis, Rotate.XAxis, Rotate.ZAxis),
-    List (Rotate.YAxis, Rotate.ZAxis, Rotate.XAxis),
-    List (Rotate.ZAxis, Rotate.XAxis, Rotate.YAxis),
-    List (Rotate.ZAxis, Rotate.YAxis, Rotate.XAxis)
+  private val axisSequence = Vector[List[Point3D]](
+    List(Rotate.XAxis, Rotate.YAxis, Rotate.ZAxis),
+    List(Rotate.XAxis, Rotate.ZAxis, Rotate.YAxis),
+    List(Rotate.YAxis, Rotate.XAxis, Rotate.ZAxis),
+    List(Rotate.YAxis, Rotate.ZAxis, Rotate.XAxis),
+    List(Rotate.ZAxis, Rotate.XAxis, Rotate.YAxis),
+    List(Rotate.ZAxis, Rotate.YAxis, Rotate.XAxis)
   )
 
 /**
 X, then Y, then Z, code 0.
 */
 
-  private [cell] val XYZ = Value
+  private[cell] val XYZ = Value
 
 /**
 X, then Z, then Y, code 1.
 */
 
-  private [cell] val XZY = Value
+  private[cell] val XZY = Value
 
 /**
 Y, then X, then Z, code 2.
 */
 
-  private [cell] val YXZ = Value
+  private[cell] val YXZ = Value
 
 /**
 Y, then Z, then X, code 3.
 */
 
-  private [cell] val YZX = Value
+  private[cell] val YZX = Value
 
 /**
 Z, then X, then Y, code 4.
 */
 
-  private [cell] val ZXY = Value
+  private[cell] val ZXY = Value
 
 /**
 Z, then Y, then X, code 5.
 */
 
-  private [cell] val ZYX = Value
+  private[cell] val ZYX = Value
 
 /**
 Minimum rotation order code value.
 */
 
-  private [cell] val minValue = 0
+  private[cell] val minValue = 0
 
 /**
 Maximum rotation order code value.
 */
 
-  private [cell] val maxValue = maxId - 1
+  private[cell] val maxValue = maxId - 1
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Conversion of ''cell'' axis rotation order to a sequence of ''ScalaFX'' axis
 values.
@@ -127,14 +123,11 @@ bury them.
 
 @return Corresponding ''ScalaFX'' axis rotation sequence.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  def toAxisSequence(rotationOrder: RotationOrder.Value) = {
+    assertNonNull(rotationOrder)
+    axisSequence(rotationOrder.id)
+  } ensuring(_.length == 3)
 
-  def toAxisSequence (rotationOrder: RotationOrder.Value) = {
-    assertNonNull (rotationOrder)
-    axisSequence (rotationOrder.id)
-  } ensuring (_.length == 3)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Verify an axis rotation order code.
 
@@ -143,12 +136,9 @@ Verify an axis rotation order code.
 @return `true` if the code maps to a valid axis rotation order, `false`
 otherwise.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def verify (rotationOrderCode: Int) =
+  def verify(rotationOrderCode: Int) =
   rotationOrderCode >= minValue && rotationOrderCode <= maxValue
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read axis rotation order code from ''cell'' data stream.
 
@@ -165,27 +155,25 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def read (scene: CellScene) = {
+  def read(scene: CellScene) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Read the axis rotation code from the data stream.
 */
 
-    val code = scene.readInt (verify, LibResource
-    ("anim.cell.RotationOrder.read", minValue, maxValue))
+    val code = scene.readInt(verify, LibResource
+   ("anim.cell.RotationOrder.read", minValue, maxValue))
 
 /*
 Convert to a sequence of ScalaFX axes and return.
 */
 
-    axisSequence (code)
+    axisSequence(code)
   }
 }

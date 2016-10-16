@@ -46,7 +46,6 @@ client projects. Refer to the skeleton project for further details:
 
   https://github.com/Facsimile/skeleton
 */
-//======================================================================================================================
 
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
@@ -75,7 +74,7 @@ This setting is defined to assist with automatic project configuration; it must 
 project-specific build file.
 */
 
-  lazy val facsimileProjId = settingKey [String] ("Artifact ID/normalized name of this Facsimile project.")
+  lazy val facsimileProjId = settingKey[String]("Artifact ID/normalized name of this Facsimile project.")
 
 /*
 Name of this Facsimile project.
@@ -89,7 +88,7 @@ This setting is defined to assist with automatic project configuration; it must 
 project-specific build file.
 */
 
-  lazy val facsimileProjName = settingKey [String] ("Short description of this Facsimile project.")
+  lazy val facsimileProjName = settingKey[String]("Short description of this Facsimile project.")
 
 /*
 Description of this Facsimile project.
@@ -100,7 +99,7 @@ This setting is defined to assist with automatic project configuration; it must 
 project-specific build file.
 */
 
-  lazy val facsimileProjDesc = settingKey [String] ("Description of this Facsimile project.")
+  lazy val facsimileProjDesc = settingKey[String]("Description of this Facsimile project.")
 
 /*
 Home page for this Facsimile project.
@@ -109,7 +108,7 @@ This setting is defined to assist with automatic project configuration; it must 
 project-specific build file.
 */
 
-  lazy val facsimileProjHomePage = settingKey [String] ("Homepage of this Facsimile project.")
+  lazy val facsimileProjHomePage = settingKey[String]("Homepage of this Facsimile project.")
 
 /*
 Date the facsimile project was started.
@@ -118,7 +117,7 @@ This is the date that the Facsimile project was announced on the Facsimile web-s
 the project was registered on Sourceforge).
 */
 
-  val facsimileProjStartDate = ZonedDateTime.parse ("2004-06-22T18:16:00-04:00[America/New_York]")
+  val facsimileProjStartDate = ZonedDateTime.parse("2004-06-22T18:16:00-04:00[America/New_York]")
 
 /*
 Date this build was made.
@@ -126,7 +125,7 @@ Date this build was made.
 Ideally, this ought to be the date of the current commit, but the current time is probably OK for custom builds too.
 */
 
-  val facsimileProjBuildDate = ZonedDateTime.now ()
+  val facsimileProjBuildDate = ZonedDateTime.now()
 
 /*
 Regular expression for matching release versions.
@@ -151,7 +150,7 @@ value is a string with the year range or value as appropriate.
   private def copyrightRange = {
     val startYear = facsimileProjStartDate.getYear.toString
     val currentYear = facsimileProjBuildDate.getYear.toString
-    if (startYear == currentYear) startYear
+    if(startYear == currentYear) startYear
     else startYear + "-" + currentYear
   }
 
@@ -162,10 +161,10 @@ Retrieve base version number.
 number or a SNAPSHOT tail.
 */
 
-  private def baseVersion (ver: String): String = ver match {
-    case ReleaseVersion (maj, min, rel) => maj + "." + min
-    case SnapshotVersion (maj, min, rel) => maj + "." + min
-    case _ => "Invalid (\"" + ver + "\")"
+  private def baseVersion(ver: String): String = ver match {
+    case ReleaseVersion(maj, min, rel) => maj + "." + min
+    case SnapshotVersion(maj, min, rel) => maj + "." + min
+    case _ => "Invalid(\"" + ver + "\")"
   }
 
 /*
@@ -177,7 +176,7 @@ Note that we implement release versioning for artifacts through the Release plug
 project-specific Version.sbt file.
 */
 
-  lazy val commonSettings = Seq (
+  lazy val commonSettings = Seq(
 
 /*
 Owning organization.
@@ -195,7 +194,7 @@ Scala cross compiling.
 IMPORTANT: These values should be synchronized with the Travis CI .travis.yml file in the project's root directory.
 */
 
-    crossScalaVersions := Seq ("2.11.8"),
+    crossScalaVersions := Seq("2.11.8"),
 
 /*
 Scala default version.
@@ -213,7 +212,7 @@ These settings are common to all SBT root- and sub-projects that contain Scala s
 be universal.
 */
 
-  lazy val baseSourceSettings = Seq (
+  lazy val baseSourceSettings = Seq(
 
 /*
 Scala compiler options.
@@ -238,7 +237,7 @@ Also note that the Akka team recommend that "-optimize" is not used for code use
 Most of these issues should go away when Scala 2.12, which sports a new optimizer, is released.
 */
 
-    scalacOptions := Seq (
+    scalacOptions := Seq(
       "-deprecation",
       "-encoding",
       "UTF-8",
@@ -290,7 +289,7 @@ required by Facsimile project dependencies) should not be explicitly included, a
 Right now, the only universal dependencies are libraries required by the test phase.
 */
 
-    libraryDependencies ++= Seq (
+    libraryDependencies ++= Seq(
 
 /*
 ScalaTest dependency.
@@ -309,8 +308,8 @@ the generated documentation is included in packaging & publishing.
 These settings should be added to SBT root projects that contain sub-projects.
 */
 
-  lazy val rootProjectUnidocSettings = unidocSettings ++ Seq (
-    doc in Compile := (doc in ScalaUnidoc).value,
+  lazy val rootProjectUnidocSettings = unidocSettings ++ Seq(
+    doc in Compile :=(doc in ScalaUnidoc).value,
     target in UnidocKeys.unidoc in ScalaUnidoc := crossTarget.value / "api"
   )
 
@@ -318,7 +317,7 @@ These settings should be added to SBT root projects that contain sub-projects.
 Settings for all SBT sub-projects.
 */
 
-  lazy val subProjectSourceSettings = Seq (
+  lazy val subProjectSourceSettings = Seq(
 
 /*
 Ensure that we only publish/package the root project (which should package up relevant content from its sub-projects).
@@ -338,7 +337,7 @@ Note that the Sonatype plugin's settings are used to ensure that the resulting a
 Sonatype OSS repository, which synchronizes with the Maven Central Repository.
 */
 
-  lazy val rootSettings = sonatypeSettings ++ Seq (
+  lazy val rootSettings = sonatypeSettings ++ Seq(
 
 /*
 Maven POM (project object model) metadata.
@@ -367,19 +366,19 @@ issues.
     normalizedName := facsimileProjId.value,
     name := facsimileProjName.value,
     description := facsimileProjDesc.value,
-    homepage := Some (url (facsimileProjHomePage.value)),
-    startYear := Some (facsimileProjStartDate.getYear),
+    homepage := Some(url(facsimileProjHomePage.value)),
+    startYear := Some(facsimileProjStartDate.getYear),
     organizationName := "Michael J. Allen",
-    organizationHomepage := Some (url ("http://facsim.org/")),
-    licenses := Seq (
-      "GNU Lesser General Public License version 3 (LGPLv3)" ->
-      url ("http://www.gnu.org/licenses/lgpl-3.0-standalone.html")
+    organizationHomepage := Some(url("http://facsim.org/")),
+    licenses := Seq(
+      "GNU Lesser General Public License version 3(LGPLv3)" ->
+      url("http://www.gnu.org/licenses/lgpl-3.0-standalone.html")
     ),
-    scmInfo := Some (
-      ScmInfo (
-        url ("https://github.com/Facsimile/" + facsimileProjId.value),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/Facsimile/" + facsimileProjId.value),
         "scm:git:https://github.com/Facsimile/" + facsimileProjId.value + ".git",
-        Some ("scm:git:https://github.com/Facsimile/" + facsimileProjId.value + ".git")
+        Some("scm:git:https://github.com/Facsimile/" + facsimileProjId.value + ".git")
       )
     ),
     publishMavenStyle := true,
@@ -433,7 +432,7 @@ Scaladoc configuration.
 The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes.
 */
 
-    scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq (
+    scalacOptions in(ScalaUnidoc, UnidocKeys.unidoc) := Seq(
       "-diagrams",
       "-doc-footer",
       "Copyright © " + copyrightRange + ", " + organizationName.value + ". All rights reserved.",
@@ -449,8 +448,8 @@ The -Ymacro-no-expand prevents macro definitions from being expanded in macro su
       "-Ymacro-expand:none"
     ),
     autoAPIMappings := true,
-    apiMappings += (
-      unmanagedBase.value / "jt.jar" -> url ("http://docs.oracle.com/javase/8/docs/api/")
+    apiMappings +=(
+      unmanagedBase.value / "jt.jar" -> url("http://docs.oracle.com/javase/8/docs/api/")
     ),
 
 /*
@@ -461,7 +460,7 @@ Note: This documentation is versioned so that links will always be to the versio
 project.
 */
 
-    apiURL := Some (url (facsimileProjHomePage.value + "/Documentation/API/" + version.value)),
+    apiURL := Some(url(facsimileProjHomePage.value + "/Documentation/API/" + version.value)),
 
 /*
 Manifest additions for the main library jar file.
@@ -470,10 +469,10 @@ The jar file should be sealed so that the packages contained cannot be extended.
 timestamps for information purposes.
 */
 
-    packageOptions in (Compile, packageBin) ++= Seq (
-      Package.ManifestAttributes (Name.SEALED -> "true"),
-      Package.ManifestAttributes ("Inception-Timestamp" -> facsimileProjStartDate.toString),
-      Package.ManifestAttributes ("Build-Timestamp" -> facsimileProjBuildDate.toString)
+    packageOptions in(Compile, packageBin) ++= Seq(
+      Package.ManifestAttributes(Name.SEALED -> "true"),
+      Package.ManifestAttributes("Inception-Timestamp" -> facsimileProjStartDate.toString),
+      Package.ManifestAttributes("Build-Timestamp" -> facsimileProjBuildDate.toString)
     ),
 
 /*
@@ -484,7 +483,7 @@ a) We must perform static source checking (using Scalastyle) before setting the 
 b) We employ the sbt-sonatype plugin to publish the project, which also takes care of signing published artifacts.
 */
 
-    releaseProcess := Seq [ReleaseStep] (
+    releaseProcess := Seq[ReleaseStep](
 
 /*
 Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
@@ -514,7 +513,7 @@ Run the test suite, to verify that all tests pass.
 Run scalastyle to ensure that sources are correctly formatted and contain no static errors.
 */
 
-      ReleaseStep (action = Command.process ("testScalastyle", _)),
+      ReleaseStep(action = Command.process("testScalastyle", _)),
 
 /*
 Update the "Version.sbt" file so that it contains the release version number.
@@ -533,7 +532,7 @@ Commit and tag the release version.
 Sign the current version.
 */
 
-      ReleaseStep (action = Command.process ("publishSigned", _)),
+      ReleaseStep(action = Command.process("publishSigned", _)),
 
 /*
 Update the "Version.sbt" file so that it contains the new development version number.
@@ -551,7 +550,7 @@ Commit the updated working directory, so that the new development version takes 
 Publish the released version to the Sonatype OSS repository.
 */
 
-      ReleaseStep (action = Command.process ("sonatypeReleaseAll", _)),
+      ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
 
 /*
 Push all commits to the upstream respository (typically "origin").
@@ -572,6 +571,6 @@ Have the release plugin write current version information into Version.sbt, in t
 NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
 */
 
-    releaseVersionFile := file ("Version.sbt")
+    releaseVersionFile := file("Version.sbt")
   )
 }

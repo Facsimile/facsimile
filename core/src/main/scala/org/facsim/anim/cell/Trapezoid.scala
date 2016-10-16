@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,7 +37,6 @@ import org.facsim.LibResource
 import org.facsim.anim.Mesh
 import org.facsim.anim.Point3D
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell trapezoid and
 box'' primitives.
@@ -73,10 +71,9 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Trapezoids.html
 Trapezoids & Boxes]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Trapezoid (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+private[cell] final class Trapezoid(scene: CellScene, parent: Option[Set])
+extends Mesh3D(scene, parent) {
 
 /**
 Trapezoid base Y-axis dimension.
@@ -88,8 +85,8 @@ although most people would refer to it as the ''base depth'' or ''base width''.
 Here, we refer to it as the base Y-axis dimension to avoid confusion.
 */
 
-  private val baseYDim = scene.readDouble (_ >= 0.0,
-  LibResource (Trapezoid.ReadDimKey, 1))
+  private val baseYDim = scene.readDouble(_ >= 0.0,
+  LibResource(Trapezoid.ReadDimKey, 1))
 
 /**
 Trapezoid base X-axis dimension.
@@ -101,8 +98,8 @@ although most people would refer to it as the ''base length''. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
-  private val baseXDim = scene.readDouble (_ >= 0.0,
-  LibResource (Trapezoid.ReadDimKey, 0))
+  private val baseXDim = scene.readDouble(_ >= 0.0,
+  LibResource(Trapezoid.ReadDimKey, 0))
 
 /**
 Trapezoid top Y-axis dimension.
@@ -114,8 +111,8 @@ although most people would refer to it as the ''top depth'' or ''top width''.
 Here, we refer to it as the top Y-axis dimension to avoid confusion.
 */
 
-  private val topYDim = scene.readDouble (_ >= 0.0,
-  LibResource (Trapezoid.ReadDimKey, 3)) // scalastyle:ignore
+  private val topYDim = scene.readDouble(_ >= 0.0,
+  LibResource(Trapezoid.ReadDimKey, 3)) // scalastyle:ignore
 
 /**
 Trapezoid top X-axis dimension.
@@ -127,8 +124,8 @@ although most people would refer to it as the ''top length''. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
-  private val topXDim = scene.readDouble (_ >= 0.0,
-  LibResource (Trapezoid.ReadDimKey, 2))
+  private val topXDim = scene.readDouble(_ >= 0.0,
+  LibResource(Trapezoid.ReadDimKey, 2))
 
 /**
 Trapezoid height (Z-dimension).
@@ -136,41 +133,36 @@ Trapezoid height (Z-dimension).
 Height of the trapezoid measured along the Z-Axis.
 */
 
-  private val height = scene.readDouble (_ >= 0.0,
-  LibResource (Trapezoid.ReadDimKey, 4)) // scalastyle:ignore
+  private val height = scene.readDouble(_ >= 0.0,
+  LibResource(Trapezoid.ReadDimKey, 4)) // scalastyle:ignore
 
 /**
 Trapezoid top X-axis offset.
 */
 
-  private val xOffset = scene.readDouble (LibResource
-  (Trapezoid.ReadOffsetKey, 0))
+  private val xOffset = scene.readDouble(LibResource
+ (Trapezoid.ReadOffsetKey, 0))
 
 /**
 Trapezoid top Y-axis offset.
 */
 
-  private val yOffset = scene.readDouble (LibResource
-  (Trapezoid.ReadOffsetKey, 1))
+  private val yOffset = scene.readDouble(LibResource
+ (Trapezoid.ReadOffsetKey, 1))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note The origin of the trapezoid is at the center of its base.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh =
-  Mesh.rectangularFrustum (Point3D.Origin, baseXDim, baseYDim,
-  Point3D (xOffset, yOffset, height), topXDim, topYDim)
+  protected[cell] override def cellMesh: Mesh =
+  Mesh.rectangularFrustum(Point3D.Origin, baseXDim, baseYDim,
+  Point3D(xOffset, yOffset, height), topXDim, topYDim)
 }
 
-//======================================================================================================================
 /**
 Trapezoid companion object.
 */
-//======================================================================================================================
 
 private object Trapezoid {
 

@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim package.
 */
-//======================================================================================================================
 
 package org.facsim.anim
 
 import org.facsim.{requireNonNull, requireValid}
 import scala.annotation.tailrec
 
-//======================================================================================================================
 /**
 Class representing a 3D face.
 
@@ -75,24 +73,21 @@ animation space as well as associated texture map coordinate.
 belongs to no smoothing groups; otherwise, the face belongs to the smoothing
 group corresponding to each bit set.
 
-@throws java.lang.NullPointerException if `vertices` is `null`.
+@throws NullPointerException if `vertices` is `null`.
 
-@throws java.lang.IllegalArgumentException if `vertices` has fewer than 3
-points defined.
+@throws IllegalArgumentException if `vertices` has fewer than 3 points defined.
 */
-//======================================================================================================================
 
-private [anim] final class Face (vertices: List [RichPoint],
+private[anim] final class Face(vertices: List[RichPoint],
 val smoothingGroup: Int = 0) {
 
 /*
 Sanity checks.
 */
 
-  requireNonNull (vertices)
-  requireValid (vertices, vertices.size > 2)
+  requireNonNull(vertices)
+  requireValid(vertices, vertices.size > 2)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Construct a neutral texture-mapped face from a list of regular points in 3D
 space.
@@ -106,16 +101,12 @@ defined for each additional vertex. Each vertex includes a point in 3D
 animation space only; a suitable, neutral texture coordinate point will be
 mapped to each point as appropriate.
 
-@throws java.lang.NullPointerException if `vertices` is `null`.
+@throws NullPointerException if `vertices` is `null`.
 
-@throws java.lang.IllegalArgumentException if `vertices` has fewer than 3
-points defined.
+@throws IllegalArgumentException if `vertices` has fewer than 3 points defined.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  def this(vertices: List[Point3D]) = this(Face.neutralize(vertices), 0)
 
-  def this (vertices: List [Point3D]) = this (Face.neutralize (vertices), 0)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Create a list of individual, triangular faces from this face.
 
@@ -126,9 +117,7 @@ faces for each subsequent pair of indices.
 
 @return A list of triangular faces.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def toList: List [Face] = {
+  def toList: List[Face] = {
 
 /*
 Determine the first vertex. This is used as the first vertex for each resulting
@@ -142,14 +131,14 @@ Helper function to extract the remaining triangular faces.
 */
 
     @tailrec
-    def extractFace (remaining: List [RichPoint], faces: List [Face]):
-    List [Face] = {
+    def extractFace(remaining: List[RichPoint], faces: List[Face]):
+    List[Face] = {
 
 /*
 If there is no tail for the remaining points, then we're done, so return the
 */
 
-      if (remaining.tail.isEmpty) faces
+      if(remaining.tail.isEmpty) faces
 
 /*
 Otherwise, create a new face from the first point, the head of the remaining
@@ -160,8 +149,8 @@ of faces.
       else {
         val second = remaining.head
         val third = remaining.tail.head
-        val face = new Face (first :: second :: third :: Nil, smoothingGroup)
-        extractFace (remaining.tail, face :: faces)
+        val face = new Face(first :: second :: third :: Nil, smoothingGroup)
+        extractFace(remaining.tail, face :: faces)
       }
     }
 
@@ -170,30 +159,23 @@ Start the ball rolling by extracting the first face. We ought to return at
 least one face.
 */
 
-    extractFace (vertices.tail, Nil)
-  } ensuring (_.nonEmpty)
+    extractFace(vertices.tail, Nil)
+  } ensuring(_.nonEmpty)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Return list of 3D animation points defining this face.
 
 @return List of 3D animation points defining this face.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  def points = vertices.map(_.point)
 
-  def points = vertices.map (_.point)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Return list of 3D animation points defining this face.
 
 @return List of 3D animation points defining this face.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  def texturePoints = vertices.map(_.texturePoint)
 
-  def texturePoints = vertices.map (_.texturePoint)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert the face's 3D animation points and texture map points into a single
 list of zipped index values.
@@ -213,24 +195,22 @@ value. This map '''must''' contain all of the texture belonging to this face.
 
 @return list of zipped 3D animation point and texture map point indices.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def indices (pointIdxMap: Map [Point3D, Int],
-  texturePointIdxMap: Map [TexturePoint, Int]) = {
+  def indices(pointIdxMap: Map[Point3D, Int],
+  texturePointIdxMap: Map[TexturePoint, Int]) = {
 
 /*
 Helper function to build the index list.
 */
 
-    def buildIndices (ps: List [Point3D], ts: List [TexturePoint]):
-    List [Int] = {
+    def buildIndices(ps: List[Point3D], ts: List[TexturePoint]):
+    List[Int] = {
 
 /*
 If there are no more points, then, return an empty list.
 */
 
-      if (ps.isEmpty) {
-        assert (ts.isEmpty)
+      if(ps.isEmpty) {
+        assert(ts.isEmpty)
         Nil
       }
 
@@ -239,27 +219,24 @@ Otherwise, prepend the head 3D point index and texture map point index to the
 result of the next iteration.
 */
 
-      else pointIdxMap (ps.head) :: texturePointIdxMap (ts.head) ::
-      buildIndices (ps.tail, ts.tail)
+      else pointIdxMap(ps.head) :: texturePointIdxMap(ts.head) ::
+      buildIndices(ps.tail, ts.tail)
     }
 
 /*
 Build the list from the two lists.
 */
 
-    buildIndices (points, texturePoints)
+    buildIndices(points, texturePoints)
   }
 }
 
-//======================================================================================================================
 /**
 Face companion object.
 */
-//======================================================================================================================
 
 private object Face {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert a list of points in 3D space into rich points with neutral texture
 mapping coordinates.
@@ -269,23 +246,21 @@ mapping coordinates.
 @return List of rich points with neutral texture mapping coordinates mapped to
 each 3D point in `vertices`.
 
-@throws java.lang.NullPointerException if vertices is `null`.
+@throws NullPointerException if vertices is `null`.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def neutralize (vertices: List [Point3D]): List [RichPoint] = {
+  def neutralize(vertices: List[Point3D]): List[RichPoint] = {
 
 /*
 Argument verification.
 */
 
-    requireNonNull (vertices)
+    requireNonNull(vertices)
 
 /*
 For now, simply map each 3D to a rich point using the origin for a texture
 coordinate.
 */
 
-    vertices.map (p => RichPoint (p, TexturePoint.Origin))
+    vertices.map(p => RichPoint(p, TexturePoint.Origin))
   }
 }

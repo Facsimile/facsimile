@@ -33,19 +33,18 @@
  */
 package org.facsim.test
 
-import java.util.GregorianCalendar
-import java.util.Locale
-import java.util.MissingResourceException
+import java.util.{Locale, GregorianCalendar, MissingResourceException}
 import org.facsim.LibResource
+import org.facsim.util.Resource
 import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /**
- * Test harness for the[[org.facsim.LibResource]] object.
+ * Test harness for the [[LibResource]] object.
  *
- * Although `LibResource` is a very basic implementation of[[org.facsim.util.Resource!]], it was producing some very
- * different results, hence this specific test fixture, based upon the `ResourceTest` test fixture.
+ * Although `LibResource` is a very basic implementation of [[Resource]], it was producing some very different results,
+ * hence this specific test fixture, based upon the `ResourceTest` test fixture.
  */
 class LibResourceTest
 extends FunSpec

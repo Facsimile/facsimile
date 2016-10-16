@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
 import org.facsim.{requireNonNull, requireValid}
 import scala.annotation.tailrec
 
-//======================================================================================================================
 /**
 Field delimiters to be used with [[org.facsim.io.TextReader!]]-based readers.
 
@@ -75,7 +73,7 @@ treated as a single delimiter.  If `false`, consecutive delimiter characters
 will be treated as separate delimiters, and will consequently delimit empty
 fields.
 
-@throws java.lang.NullPointerException if '''delimiters''' is `null`.
+@throws NullPointerException if '''delimiters''' is `null`.
 
 @throws java.lang.InvalidArgumentException if '''delimiters''' contains invalid
 delimiter characters.
@@ -84,20 +82,18 @@ delimiter characters.
 
 @since 0.0
 */
-//======================================================================================================================
 
-class Delimiter (delimiters: Set [Int], mergeConsecutive: Boolean) {
+class Delimiter(delimiters: Set[Int], mergeConsecutive: Boolean) {
 
 /*
 Preconditions: forbid the use of null and carriage return characters as
 delimiters.
 */
 
-  requireNonNull (delimiters)
-  requireValid (delimiters, !delimiters.contains (TextReader.NUL) &&
-  !delimiters.contains (TextReader.CR))
+  requireNonNull(delimiters)
+  requireValid(delimiters, !delimiters.contains(TextReader.NUL) &&
+  !delimiters.contains(TextReader.CR))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Determine if reader has reached this delimiter.
 
@@ -116,9 +112,7 @@ otherwise.
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [io] final def reached (reader: TextReader): Boolean = {
+  private[io] final def reached(reader: TextReader): Boolean = {
 
 /*
 Tail-recursive helper function to handle reading of consecutive delimiters, if
@@ -127,15 +121,15 @@ and is initialized to false.
 */
 
     @tailrec
-    def peek (result: Boolean): Boolean = {
+    def peek(result: Boolean): Boolean = {
 
 /*
 If end-of-file comes next, or if the character is not a delimiter, then
 we're done.
 */
 
-      val peekedChar = reader.peek ()
-      if (peekedChar == TextReader.EOF || !delimiters.contains (peekedChar)) {
+      val peekedChar = reader.peek()
+      if(peekedChar == TextReader.EOF || !delimiters.contains(peekedChar)) {
         result
       }
 
@@ -145,7 +139,7 @@ consume it.
 */
 
       else {
-        reader.read ()
+        reader.read()
 
 /*
 If we're merging consecutive delimiters, then go round the loop again, noting
@@ -153,8 +147,8 @@ that we have found a delimiter.  Otherwise, we have already identified the end
 of the delimiter.
 */
 
-        if (!mergeConsecutive) true
-        else peek (true)
+        if(!mergeConsecutive) true
+        else peek(true)
       }
     }
 
@@ -162,6 +156,6 @@ of the delimiter.
 Start the ball rolling, noting that we have yet to find a delimiter character.
 */
 
-    peek (false)
+    peek(false)
   }
 }

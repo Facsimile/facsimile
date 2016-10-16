@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell unrotate fast &
 normal text'' primitives.
@@ -67,8 +65,7 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class UnrotateText (scene: CellScene,
-parent: Option [Set])
-extends Text (scene, parent, Text.Unrotate)
+private[cell] final class UnrotateText(scene: CellScene,
+parent: Option[Set])
+extends Text(scene, parent, Text.Unrotate)

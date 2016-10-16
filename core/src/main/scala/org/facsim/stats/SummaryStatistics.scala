@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.stats package.
 */
-//======================================================================================================================
 
 package org.facsim.stats
 
-//======================================================================================================================
 /**
 Maintains summary statistics for a set of observations.
 
@@ -57,7 +55,6 @@ but would be more functional.
 
 @since 0.0
 */
-//======================================================================================================================
 
 trait SummaryStatistics
 extends Statistic {
@@ -110,7 +107,6 @@ total.
 
   private final var sumValuesSquared = 0.0 // scalastyle:ignore
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Add a new observation to the dataset.
 
@@ -118,15 +114,13 @@ Add a new observation to the dataset.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def addObservation (value: Double): Unit = synchronized {
+  final def addObservation(value: Double): Unit = synchronized {
 
 /*
 Update the observation count.
 */
 
-    assert (count >= 0)
+    assert(count >= 0)
     count += 1
 
 /*
@@ -135,13 +129,13 @@ minimum and maximum values.  Otherwise, check for new minimum/maximum
 observations.
 */
 
-    if (count == 1) {
+    if(count == 1) {
       minValue = value
       maxValue = value
     }
-    else if (value < minValue) minValue = value
-    else if (value > maxValue) maxValue = value
-    assert (minValue <= maxValue)
+    else if(value < minValue) minValue = value
+    else if(value > maxValue) maxValue = value
+    assert(minValue <= maxValue)
 
 /*
 Update the sum of observations, and sum of each observation squared
@@ -154,10 +148,9 @@ Update the sum of observations, and sum of each observation squared
 Perform any required sub-class processing.
 */
 
-    processObservation (value)
+    processObservation(value)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Processes an observation that has been added to the dataset.
 
@@ -165,12 +158,9 @@ Processes an observation that has been added to the dataset.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [stats] def processObservation (value: Double): Unit = {
+  protected[stats] def processObservation(value: Double): Unit = {
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report number of recorded observations.
 
@@ -178,12 +168,9 @@ Report number of recorded observations.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  final def observations = count ensuring (_ >= 0)
+  final def observations = count ensuring(_ >= 0)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report minimum observed value.
 
@@ -198,15 +185,12 @@ made.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   final def minimum = synchronized {
-    if (count == 0) throw new
-    InsufficientDataException (Names.SampleMinimum.capitalize, 1, count)
+    if(count == 0) throw new
+    InsufficientDataException(Names.SampleMinimum.capitalize, 1, count)
     else minValue
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report maximum observed value.
 
@@ -221,15 +205,12 @@ made.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   final def maximum = synchronized {
-    if (count == 0) throw new
-    InsufficientDataException (Names.SampleMaximum.capitalize, 1, count)
+    if(count == 0) throw new
+    InsufficientDataException(Names.SampleMaximum.capitalize, 1, count)
     else maxValue
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report [[http://en.wikipedia.org/wiki/Arithmetic_mean arithmetic mean]] of
 observed values.
@@ -250,15 +231,12 @@ Wikipedia.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   final def mean = synchronized {
-    if (count == 0) throw new
-    InsufficientDataException (Names.SampleMean.capitalize, 1, count)
+    if(count == 0) throw new
+    InsufficientDataException(Names.SampleMean.capitalize, 1, count)
     else sumValues / count
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Calculate the sample variance.
 
@@ -269,16 +247,13 @@ of the sample variance.
 actually being reported, in the event that we have insufficient data.  This is
 required because the variance is calculated as part of multiple statistics.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private final def calcVariance (statisticName: => String) =
+  private final def calcVariance(statisticName: => String) =
   synchronized {
-    if (count < 2) throw new InsufficientDataException (statisticName, 2,
+    if(count < 2) throw new InsufficientDataException(statisticName, 2,
     count)
-    else (sumValuesSquared - count * Math.pow (mean, 2)) / (count - 1)
+    else(sumValuesSquared - count * Math.pow(mean, 2)) /(count - 1)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report sample variance of observed values.
 
@@ -302,12 +277,9 @@ Bessel&apos;s Correction</a>
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  final def variance = calcVariance (Names.SampleVariance.capitalize)
+  final def variance = calcVariance(Names.SampleVariance.capitalize)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve sample standard deviation on values observed since last statistics
 reset.
@@ -333,9 +305,7 @@ Standard Deviation</a>
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  final def stdDeviation = Math.sqrt (calcVariance
-  (Names.SampleStandardDeviation.capitalize))
+  final def stdDeviation = Math.sqrt(calcVariance
+ (Names.SampleStandardDeviation.capitalize))
 }

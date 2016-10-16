@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.stats package.
 */
-//======================================================================================================================
 
 package org.facsim.stats
 
 import org.facsim.LibResource
 
-//======================================================================================================================
 /**
 Exception indicating that a statistic cannot be reported due to insufficient
 observed data.
@@ -54,20 +52,16 @@ requested.
 
 @since 0.0
 */
-//======================================================================================================================
 
-final class InsufficientDataException private [stats]
+final class InsufficientDataException private[stats]
 (private final val statisticName: String,
 private final val minimumObservations: Int,
 private final val observations: Int)
 extends RuntimeException {
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 @see [[java.lang.Throwable!.getMessage()]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  override def getMessage = LibResource ("stats.InsufficientData",
+  override def getMessage = LibResource("stats.InsufficientData",
   statisticName, minimumObservations, observations)
 }

@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
-//======================================================================================================================
 
 package org.facsim.engine
 
 import org.facsim.LibResource
 
-//======================================================================================================================
 /**
 Thrown when the simulation runs of out events.
 
@@ -57,17 +55,13 @@ resulting in a controlled termination of the simulation run.
 
 @since 0.0
 */
-//======================================================================================================================
 
-final class OutOfEventsException private [engine]
+final class OutOfEventsException private[engine]
 extends RuntimeException {
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 @see [[java.lang.Throwable!.getMessage()]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   override def getMessage =
-  LibResource ("engine.OutOfEventsException")
+  LibResource("engine.OutOfEventsException")
 }

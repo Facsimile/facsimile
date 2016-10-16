@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.Group
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell embedded file''
 primitives.
@@ -63,21 +61,17 @@ during parsing of the file.
 http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledEmbedded.html
 Embedded Files]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class EmbeddedFile (scene: CellScene,
-parent: Option [Set])
-extends File (scene, parent) {
-  throw new NotImplementedError (LibResource ("anim.cell.EmbeddedFile"))
+private[cell] final class EmbeddedFile(scene: CellScene,
+parent: Option[Set])
+extends File(scene, parent) {
+  throw new NotImplementedError(LibResource("anim.cell.EmbeddedFile"))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritddoc
 
 @note EmbeddedFile elements currently cannot be rendered. See Issue 7 for
 further details.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] override def toNode = new Group ()
+  private[cell] override def toNode = new Group()
 }

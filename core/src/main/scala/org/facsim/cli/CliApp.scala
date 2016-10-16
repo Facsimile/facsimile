@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.cli package.
 */
-//======================================================================================================================
 
 package org.facsim.cli
 
 import org.facsim.{App, AppInformation}
 
-//======================================================================================================================
 /**
 ''Command line interface'' (''CLI'') application trait.
 
@@ -48,24 +46,20 @@ jobs on a server.
 
 @since 0.0
 */
-//======================================================================================================================
 
 trait CliApp
 extends App  {
   self: AppInformation =>
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [facsim] final override def createApp (): Unit = {
+  protected[facsim] final override def createApp(): Unit = {
 
 /*
 Initialize the application to run as a regular command line application.
 */
 
-    self.init ()
+    self.init()
   }
 }

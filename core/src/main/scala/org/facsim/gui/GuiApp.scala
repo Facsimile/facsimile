@@ -1,6 +1,6 @@
 /*
- * Facsimile -- A Discrete-Event Simulation Library
- * Copyright © 2004-2016, Michael J Allen.
+ * Facsimile -- Edit description.
+ * Copyright © 2010-2016, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -29,36 +29,11 @@
  *
  *   http://facsim.org/Documentation/CodingStandards/
  * =====================================================================================================================
- * Scala source file belonging to the org.facsim.measure package.
+ * Scala source file belonging to the org.facsim.gui package.
  */
-package org.facsim.measure
-
-import org.facsim.{assertNonNull, LibResource}
+package org.facsim.gui
 
 /**
- * Exception thrown if a generic measurement value cannot be converted to a specific measurement value.
- *
- * @constructor Create new generic conversion exception instance.
- *
- * @param measure Generic measurement value that could not be converted.
- *
- * @param targetFamily Physical quantity family to which the value could not be converted.
- *
- * @since 0.0
+ * TODO
  */
-final class GenericConversionException private[measure](measure: Generic.Measure, targetFamily: Family)
-extends RuntimeException {
-
-  /*
-   * Verify that the measurement is incompatible with the target family.
-   */
-  assertNonNull(measure)
-  assertNonNull(targetFamily)
-  assert(measure.family != targetFamily)
-
-  /**
-   * @inheritdoc
-   */
-  override def getMessage =
-  LibResource("measure.GenericConversion", measure.family.toString, measure.toString, targetFamily.toString)
-}
+class GuiApp

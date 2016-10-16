@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.stats package.
 */
-//======================================================================================================================
 
 package org.facsim.stats
 
@@ -38,7 +37,6 @@ import org.facsim.requireValid
 import org.facsim.engine.Simulation
 import org.facsim.measure.Time
 
-//======================================================================================================================
 /**
 ''Work-in-progress'' - also known as ''work-in-process'' - (WIP) statistic.
 
@@ -54,20 +52,19 @@ spent at each WIP level.
 @param initial Initial work-in-progress.  This value must be zero or positive;
 an exception is thrown if this value is negative.
 
-@throws java.lang.IllegalArgumentException if '''initial''' is negative.
+@throws IllegalArgumentException if '''initial''' is negative.
 
 @since 0.0
 */
-//======================================================================================================================
 
-class WIPStatistic (initial: Int = 0)
+class WIPStatistic(initial: Int = 0)
 extends Statistic {
 
 /*
 Argument sanity checks.
 */
 
-  requireValid (initial, initial >= 0)
+  requireValid(initial, initial >= 0)
 
 /**
 Current work-in-progress statistic.
@@ -111,31 +108,28 @@ Absolute simulation time at which this statistic was last updated.
 
   private var updated = startTime // scalastyle:ignore
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Update the count by the indicated amount.
 
 @param delta Change to be applied to the current value.
 
-@throws java.lang.IllegalArgumentException if the current work-in-progress
+@throws IllegalArgumentException if the current work-in-progress
 count becomes negative after applying '''delta'''.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def update (delta: Int): Unit = {
+  final def update(delta: Int): Unit = {
 
 /*
 Sanity checks.
 */
 
-    requireValid (delta, cur + delta >= 0)
+    requireValid(delta, cur + delta >= 0)
 
 /*
 Update the statistics record for the time spent at the current size.
 */
 
     val now = Simulation.currentTime
-    sum += (now - updated) * cur
+    sum +=(now - updated) * cur
 
 /*
 Now update the current value and the time at which we did so.
@@ -148,15 +142,15 @@ Now update the current value and the time at which we did so.
 Check whether we have a new minimum or maximum value.
 */
 
-    if (cur < min) min = cur
-    else if (cur > max) max = cur
+    if(cur < min) min = cur
+    else if(cur > max) max = cur
   }
 
   final def current = cur
   final def maximum = max
   final def mean: Double = {
     val now = Simulation.currentTime
-    if (now > startTime) (sum + (now - updated) * cur) / (now - startTime)
+    if(now > startTime)(sum +(now - updated) * cur) /(now - startTime)
     else 0.0
   }
   final def minimum = min

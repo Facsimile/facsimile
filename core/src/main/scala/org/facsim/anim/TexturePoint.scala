@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim package.
 */
-//======================================================================================================================
 
 package org.facsim.anim
 
 import org.facsim.requireValid
 
-//======================================================================================================================
 /**
 Texture map point.
 
@@ -58,51 +56,45 @@ denoted by ''u''.
 extreme bottom edge. Vertical texture map coordinates are conventionally
 denoted by ''v''.
 
-@throws java.lang.IllegalArgumentException if either `u` or `v` is outside of
+@throws IllegalArgumentException if either `u` or `v` is outside of
 the range [0, 1].
 */
-//======================================================================================================================
 
-private [anim] final case class TexturePoint (u: Float, v: Float) {
+private[anim] final case class TexturePoint(u: Float, v: Float) {
 
 /*
 Sanity checks. Both co-ordinates must be in the range [0, 1].
 */
 
-  requireValid (u, u >= 0.0F && u <= 1.0F)
-  requireValid (v, v >= 0.0F && u <= 1.0F)
+  requireValid(u, u >= 0.0F && u <= 1.0F)
+  requireValid(v, v >= 0.0F && u <= 1.0F)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert the coordinates to a list of floating point values.
 
 @return List of the two texture coordinates, with the horizontal coordinate,
 ''u'', first and the vertical, ''v'', second.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def toList = List (u, v)
+  def toList = List(u, v)
 }
 
-//======================================================================================================================
 /**
 Texture point companion object.
 */
-//======================================================================================================================
 
-private [anim] object TexturePoint {
+private[anim] object TexturePoint {
 
 /**
 Bottom-left-hand corner of the associated texture image.
 */
 
-  val BottomLeft = TexturePoint (0.0f, 1.0f)
+  val BottomLeft = TexturePoint(0.0f, 1.0f)
 
 /**
 Bottom-right-hand corner of the associated texture image.
 */
 
-  val BottomRight = TexturePoint (1.0f, 1.0f)
+  val BottomRight = TexturePoint(1.0f, 1.0f)
 
 /**
 Texture point origin.
@@ -110,7 +102,7 @@ Texture point origin.
 This is mapped to the top-left-hand corner of the associated texture image.
 */
 
-  val Origin = TexturePoint (0.0f, 0.0f)
+  val Origin = TexturePoint(0.0f, 0.0f)
 
 /**
 Top-left-hand corner of the associated texture image.
@@ -122,5 +114,5 @@ Top-left-hand corner of the associated texture image.
 Top-right-hand corner of the associated texture image.
 */
 
-  val TopRight = TexturePoint (1.0f, 0.0f)
+  val TopRight = TexturePoint(1.0f, 0.0f)
 }

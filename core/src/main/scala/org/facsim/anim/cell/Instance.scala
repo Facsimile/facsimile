@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell instance''
 primitives.
@@ -60,10 +58,9 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Instances.html
 Instances]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Instance (scene: CellScene, parent: Option [Set])
-extends Set (scene, parent) {
+private[cell] final class Instance(scene: CellScene, parent: Option[Set])
+extends Set(scene, parent) {
 
 /**
 Obtain definition reference.
@@ -88,17 +85,17 @@ not worth enforcing them since there also seem to be common exceptions to those
 rules. Maybe in the future...
 */
 
-    val defName = scene.readString (!_.trim.isEmpty, LibResource
-    ("anim.cell.Instance.name"))
+    val defName = scene.readString(!_.trim.isEmpty, LibResource
+   ("anim.cell.Instance.name"))
 
 /*
 If we have a definition, then use it, otherwise read it from the cell data
 stream.
 */
 
-    scene.getDefinition (defName).getOrElse {
-      val instDef = scene.readNextCell (None, true)
-      assert (instDef.isInstanceOf [Definition]) // scalastyle:ignore
+    scene.getDefinition(defName).getOrElse {
+      val instDef = scene.readNextCell(None, true)
+      assert(instDef.isInstanceOf[Definition]) // scalastyle:ignore
 
 /*
 If the definition's name doesn't match the name specified in the preceding
@@ -107,22 +104,19 @@ instance, then give an error.
 @see [[https://github.com/Facsimile/facsimile/issues/1 Issue 1]].
 */
 
-      val instDefName = instDef.name.getOrElse ("")
-      if (instDefName != defName) {
-        throw new ParsingErrorException (LibResource
-        ("anim.cell.Definition.name", defName, instDefName), null)
+      val instDefName = instDef.name.getOrElse("")
+      if(instDefName != defName) {
+        throw new ParsingErrorException(LibResource
+       ("anim.cell.Definition.name", defName, instDefName), null)
       }
       instDef
     }
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.Set!.getChildren]]
 
 Report the definition as the children of this cell.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def getChildren = List (definition)
+  protected[cell] override def getChildren = List(definition)
 }

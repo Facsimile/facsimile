@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, requireValid, LibResource}
 
-//======================================================================================================================
 /**
 Class encapsulating ''cell'' line width pixel values.
 
@@ -49,44 +47,40 @@ currently appears (Scala 2.10).
 
 @param lineWidth Line width value in pixels.
 */
-//======================================================================================================================
 
-private [cell] final class LineWidth (private [cell] val lineWidth: Int) {
+private[cell] final class LineWidth(private[cell] val lineWidth: Int) {
 
 /*
 Verify that the value is within the valid range.
 */
 
-  requireValid (lineWidth, LineWidth.verify (lineWidth))
+  requireValid(lineWidth, LineWidth.verify(lineWidth))
 }
 
-//======================================================================================================================
 /**
 Line width companion object.
 */
-//======================================================================================================================
 
-private [cell] object LineWidth {
+private[cell] object LineWidth {
 
 /**
 Minimum line width value in pixels.
 */
 
-  private [cell] val minValue = 1
+  private[cell] val minValue = 1
 
 /**
 Maximum line width value in pixels.
 */
 
-  private [cell] val maxValue = 7
+  private[cell] val maxValue = 7
 
 /**
 Default line width value.
 */
 
-  private [cell] val default = new LineWidth (1)
+  private[cell] val default = new LineWidth(1)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Verify that an integer line width value is valid.
 
@@ -94,12 +88,9 @@ Verify that an integer line width value is valid.
 
 @return `true` if `lineWidth` is a valid value, `false` otherwise.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def verify (lineWidth: Int) = lineWidth >= minValue &&
+  private[cell] def verify(lineWidth: Int) = lineWidth >= minValue &&
   lineWidth <= maxValue
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read line width from ''cell'' data stream.
 
@@ -116,27 +107,25 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
 Line Width]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
+  private[cell] def read(scene: CellScene) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Read the line width value from the data stream.
 */
 
-    val code = scene.readInt (verify, LibResource ("anim.cell.LineWidth.read",
+    val code = scene.readInt(verify, LibResource("anim.cell.LineWidth.read",
     minValue, maxValue))
 
 /*
 Convert to a line width and return.
 */
 
-    new LineWidth (code)
+    new LineWidth(code)
   }
 }

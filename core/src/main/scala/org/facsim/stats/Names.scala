@@ -30,17 +30,14 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.stats package.
 */
-//======================================================================================================================
 
 package org.facsim.stats
 
 import org.facsim.LibResource
 
-//======================================================================================================================
 /**
 Common statistic names.
 */
-//======================================================================================================================
 
 object Names
 extends Nomenclature {
@@ -49,71 +46,71 @@ extends Nomenclature {
 @inheritdoc
 */
 
-  override val PopulationMean = LibResource ("stats.Names.PopulationMean")
+  override val PopulationMean = LibResource("stats.Names.PopulationMean")
 
 /**
 @inheritdoc
 */
 
   override val PopulationMeanEstimate =
-  LibResource ("stats.Names.PopulationMeanEstimate")
+  LibResource("stats.Names.PopulationMeanEstimate")
 
 /**
 @inheritdoc
 */
 
   override val PopulationStandardDeviation =
-  LibResource ("stats.Names.PopulationStandardDeviation")
+  LibResource("stats.Names.PopulationStandardDeviation")
 
 /**
 @inheritdoc
 */
 
   override val PopulationStandardDeviationEstimate =
-  LibResource ("stats.Names.PopulationStandardDeviationEstimate")
+  LibResource("stats.Names.PopulationStandardDeviationEstimate")
 
 /**
 @inheritdoc
 */
 
   override val PopulationVariance =
-  LibResource ("stats.Names.PopulationVariance")
+  LibResource("stats.Names.PopulationVariance")
 
 /**
 @inheritdoc
 */
 
   override val PopulationVarianceEstimate =
-  LibResource ("stats.Names.PopulationVarianceEstimate")
+  LibResource("stats.Names.PopulationVarianceEstimate")
 
 /**
 @inheritdoc
 */
 
-  override val SampleMaximum = LibResource ("stats.Names.SampleMaximum")
+  override val SampleMaximum = LibResource("stats.Names.SampleMaximum")
 
 /**
 @inheritdoc
 */
 
-  override val SampleMean = LibResource ("stats.Names.SampleMean")
+  override val SampleMean = LibResource("stats.Names.SampleMean")
 
 /**
 @inheritdoc
 */
 
-  override val SampleMinimum = LibResource ("stats.Names.SampleMinimum")
+  override val SampleMinimum = LibResource("stats.Names.SampleMinimum")
 
 /**
 @inheritdoc
 */
 
   override val SampleStandardDeviation =
-  LibResource ("stats.Names.SampleStandardDeviation")
+  LibResource("stats.Names.SampleStandardDeviation")
 
 /**
 @inheritdoc
 */
 
-  override val SampleVariance = LibResource ("stats.Names.SampleVariance")
+  override val SampleVariance = LibResource("stats.Names.SampleVariance")
 }

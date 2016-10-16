@@ -30,18 +30,15 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell.test package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell.test
 
 import org.facsim.anim.cell.JointType
 import org.scalatest.FunSpec
 
-//======================================================================================================================
 /**
 Test suite for the [[org.facsim.anim.cell.JointType$]] object.
 */
-//======================================================================================================================
 
 class JointTypeTest extends FunSpec {
 
@@ -51,12 +48,12 @@ Test data.
 
   trait TestData {
     val validCodes = JointType.minValue to JointType.maxValue
-    val validMap = Map [Int, JointType.Value] (
+    val validMap = Map[Int, JointType.Value](
       0 -> JointType.TCFOnly,
       1 -> JointType.Rotational,
       2 -> JointType.Translational
     )
-    val invalidCodes = List (Int.MinValue, JointType.minValue - 1,
+    val invalidCodes = List(Int.MinValue, JointType.minValue - 1,
     JointType.maxValue + 1, Int.MaxValue)
   }
 
@@ -64,28 +61,28 @@ Test data.
 Test fixture description.
 */
 
-  describe (JointType.getClass.getCanonicalName) {
+  describe(JointType.getClass.getCanonicalName) {
 
 /*
 Test the apply function works as expected.
 */
 
-    describe (".apply (Int)") {
+    describe(".apply(Int)") {
       new TestData {
-        it ("must throw a java.util.NoSuchElementException if passed an " +
+        it("must throw a NoSuchElementException if passed an " +
         "invalid joint type code") {
           invalidCodes.foreach {
             code =>
-            intercept [NoSuchElementException] {
-              JointType (code)
+            intercept[NoSuchElementException] {
+              JointType(code)
             }
           }
         }
-        it ("must return the correct joint type if passed a valid joint type "
+        it("must return the correct joint type if passed a valid joint type "
         + "code") {
           validCodes.foreach {
             code =>
-            assert (JointType (code) === validMap (code))
+            assert(JointType(code) === validMap(code))
           }
         }
       }
@@ -95,18 +92,18 @@ Test the apply function works as expected.
 Test the verify function works as expected.
 */
 
-    describe (".verify (Int)") {
+    describe(".verify(Int)") {
       new TestData {
-        it ("must return false if passed an invalid joint type code") {
+        it("must return false if passed an invalid joint type code") {
           invalidCodes.foreach {
             code =>
-            assert (JointType.verify (code) === false)
+            assert(JointType.verify(code) === false)
           }
         }
-        it ("must return true if passed a valid joint type code") {
+        it("must return true if passed a valid joint type code") {
           validCodes.foreach {
             code =>
-            assert (JointType.verify (code) === true)
+            assert(JointType.verify(code) === true)
           }
         }
       }

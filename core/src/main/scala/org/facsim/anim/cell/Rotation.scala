@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,15 +37,12 @@ import org.facsim.{assertNonNull, LibResource}
 import scalafx.geometry.Point3D
 import scalafx.scene.transform.Rotate
 
-//======================================================================================================================
 /**
 Rotation object.
 */
-//======================================================================================================================
 
-private [cell] object Rotation {
+private[cell] object Rotation {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read rotation data from ''cell'' data stream.
 
@@ -64,23 +60,21 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
 Rotation Order & Rotations]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
+  private[cell] def read(scene: CellScene) = {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (scene)
+  assertNonNull(scene)
 
 /*
 Helper function to read an axis rotation and change it into a rotation
 transformation, building a list of such transformations.
 */
 
-    def applyRotation (count: Int, axes: List [Point3D]): List [Rotate] = {
-      if (axes.isEmpty) Nil
+    def applyRotation(count: Int, axes: List[Point3D]): List[Rotate] = {
+      if(axes.isEmpty) Nil
       else {
 
 /*
@@ -90,20 +84,20 @@ NOTE: Angle is measured in degrees - in both the cell file and in ScalaFX, so
 we do not need to worry about conversions.
 */
 
-        val angle = scene.readDouble (LibResource ("anim.cell.Rotation.read",
+        val angle = scene.readDouble(LibResource("anim.cell.Rotation.read",
         count))
 
 /*
 If the angle is zero, then we can ignore it.
 */
 
-        if (angle == 0.0) applyRotation (count + 1, axes.tail)
+        if(angle == 0.0) applyRotation(count + 1, axes.tail)
 
 /*
 Otherwise, create a new rotation transformation and prepend it to the list.
 */
 
-        else new Rotate (angle, axes.head) :: applyRotation (count + 1,
+        else new Rotate(angle, axes.head) :: applyRotation(count + 1,
         axes.tail)
       }
     }
@@ -113,6 +107,6 @@ Create and return the rotation sequence, after reading the rotation order
 sequence from the cell file.
 */
 
-    applyRotation (1, RotationOrder.read (scene))
+    applyRotation(1, RotationOrder.read(scene))
   }
 }

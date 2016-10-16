@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell.test package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell.test
 
@@ -38,11 +37,9 @@ import org.facsim.anim.cell.LineWidth
 import org.facsim.test.CommonTestMethods
 import org.scalatest.FunSpec
 
-//======================================================================================================================
 /**
 Test suite for the [[org.facsim.anim.cell.LineWidth!]] object.
 */
-//======================================================================================================================
 
 class LineWidthTest
 extends FunSpec
@@ -54,7 +51,7 @@ Test data.
 
   trait TestData {
     val validValues = LineWidth.minValue to LineWidth.maxValue
-    val invalidValues = List (Int.MinValue, LineWidth.minValue - 1,
+    val invalidValues = List(Int.MinValue, LineWidth.minValue - 1,
     LineWidth.maxValue + 1, Int.MaxValue)
   }
 
@@ -62,28 +59,28 @@ Test data.
 Test fixture description for class.
 */
 
-  describe (classOf [LineWidth].getCanonicalName) {
+  describe(classOf[LineWidth].getCanonicalName) {
 
 /*
 Test the constructor.
 */
 
-    describe (".this (Int)") {
+    describe(".this(Int)") {
       new TestData {
-        it ("must throw a java.lang.IllegalArgumentException if passed an " +
+        it("must throw a IllegalArgumentException if passed an " +
         "invalid line width value") {
           invalidValues.foreach {
             value =>
-            val e = intercept [IllegalArgumentException] {
-              new LineWidth (value)
+            val e = intercept[IllegalArgumentException] {
+              new LineWidth(value)
             }
-            assertRequireValidMsg (e, "lineWidth", value)
+            assertRequireValidMsg(e, "lineWidth", value)
           }
         }
-        it ("must accept valid line width values") {
+        it("must accept valid line width values") {
           validValues.foreach {
             value =>
-            new LineWidth (value)
+            new LineWidth(value)
           }
         }
       }
@@ -94,15 +91,15 @@ Test the constructor.
 Test fixture description for object.
 */
 
-  describe (LineWidth.getClass.getCanonicalName) {
+  describe(LineWidth.getClass.getCanonicalName) {
 
 /*
 Test that the default line width is reported correctly.
 */
 
-    describe (".default") {
-      it ("must be 1") {
-        assert (LineWidth.default.lineWidth === 1)
+    describe(".default") {
+      it("must be 1") {
+        assert(LineWidth.default.lineWidth === 1)
       }
     }
 
@@ -110,18 +107,18 @@ Test that the default line width is reported correctly.
 Test the verify function works as expected.
 */
 
-    describe (".verify (Int)") {
+    describe(".verify(Int)") {
       new TestData {
-        it ("must return false if passed an invalid line width value") {
+        it("must return false if passed an invalid line width value") {
           invalidValues.foreach {
             value =>
-            assert (LineWidth.verify (value) === false)
+            assert(LineWidth.verify(value) === false)
           }
         }
-        it ("must return true if passed a valid line width value") {
+        it("must return true if passed a valid line width value") {
           validValues.foreach {
             value =>
-            assert (LineWidth.verify (value) === true)
+            assert(LineWidth.verify(value) === true)
           }
         }
       }

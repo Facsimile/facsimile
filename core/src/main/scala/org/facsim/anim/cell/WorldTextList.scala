@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell world text
 list'' primitives.
@@ -61,8 +59,7 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
 Text Lists]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class WorldTextList (scene: CellScene,
-parent: Option [Set])
-extends TextList (scene, parent, Text.World)
+private[cell] final class WorldTextList(scene: CellScene,
+parent: Option[Set])
+extends TextList(scene, parent, Text.World)

@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.transform.Transform
 
-//======================================================================================================================
 /**
 ''[[http://www.automod.com/ AutoMod®]] cell'' transformation.
 
@@ -56,44 +54,40 @@ instance from the ''cell'' data stream.
 
 @todo Implement support for reading the transformation in matrix form.
 */
-//======================================================================================================================
 
-private [cell] final class Transformation (scene: CellScene,
+private[cell] final class Transformation(scene: CellScene,
 inMatrixForm: Boolean) {
 
 /*
 Matrix form not implemented yet. See Issue #10 for further information.
 */
 
-  if (inMatrixForm) throw new NotImplementedError (LibResource
-  ("anim.cell.Transformation.matrixForm"))
+  if(inMatrixForm) throw new NotImplementedError(LibResource
+ ("anim.cell.Transformation.matrixForm"))
 
 /**
 Read the translation data from the stream.
 */
 
-  private val translate = Translation.read (scene)
+  private val translate = Translation.read(scene)
 
 /**
 Read the rotation data from the stream.
 */
 
-  private val rotate = Rotation.read (scene)
+  private val rotate = Rotation.read(scene)
 
 /**
 Read the scaling data from the stream.
 */
 
-  private val scaling = Scaling.read (scene)
+  private val scaling = Scaling.read(scene)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report this transformation for use by the associated cell.
 
 @return A sequence of transformations to be applied to the cell.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def toList: List [Transform] = translate :: (rotate ::: List
-  (scaling))
+  private[cell] def toList: List[Transform] = translate ::(rotate ::: List
+ (scaling))
 }

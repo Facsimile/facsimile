@@ -33,10 +33,8 @@
  */
 package org.facsim.test
 
-import org.facsim.LibResource
-import org.facsim.RequireFiniteKey
-import org.facsim.RequireNonNullKey
-import org.facsim.RequireValidKey
+import org.facsim.{LibResource, requireFinite, RequireFiniteKey, requireNonNull, RequireNonNullKey, requireValid,
+RequireValidKey}
 import org.scalatest.FunSpec
 
 /**
@@ -46,8 +44,8 @@ trait CommonTestMethods {
   this: FunSpec =>
 
   /**
-   * Assert that a NullPointerException's message resulting from a [[org.facsim.requireNonNull(AnyRef)*]] failure
-   * matches the expected value.
+   * Assert that a NullPointerException's message resulting from a [[requireNonNull(AnyRef)*]] failure matches the
+   * expected value.
    *
    * @param e Exception thrown.
    *
@@ -58,8 +56,8 @@ trait CommonTestMethods {
   }
 
   /**
-   * Assert that an IllegalArgumentException's message resulting from a [[org.facsim.requireValid(Any,Boolean)*]]
-   * failure matches the expected value.
+   * Assert that an IllegalArgumentException's message resulting from a [[requireValid(Any,Boolean)*]] failure matches
+   * the expected value.
    *
    * @param e Exception thrown.
    *
@@ -72,8 +70,8 @@ trait CommonTestMethods {
   }
 
   /**
-   * Assert that an IllegalArgumentException's message resulting from a [[org.facsim.requireFinite(Double)*]] failure
-   * matches the expected value.
+   * Assert that an IllegalArgumentException's message resulting from a [[requireFinite(Double)*]] failure matches the
+   * expected value.
    *
    * @param e Exception thrown.
    *

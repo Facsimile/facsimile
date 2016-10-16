@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.Group
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell triad''
 primitives.
@@ -66,10 +64,9 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Triads.html
 Triads]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Triad (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent) {
+private[cell] final class Triad(scene: CellScene, parent: Option[Set])
+extends Cell(scene, parent) {
 
 /*
 Read and disregard the "unknown" triad flag.
@@ -79,15 +76,12 @@ that the triad is invisible; any other value, that it's visible. It's academic
 here as we simply ignore it.)
 */
 
-  scene.readInt (LibResource ("anim.cell.Triad.read"))
+  scene.readInt(LibResource("anim.cell.Triad.read"))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note Triads are not currently rendered.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] override def toNode = new Group ()
+  private[cell] override def toNode = new Group()
 }

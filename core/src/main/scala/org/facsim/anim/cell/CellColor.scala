@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,7 +37,6 @@ import org.facsim.{assertNonNull, LibResource}
 import scalafx.scene.paint.Color
 import scalafx.scene.paint.PhongMaterial
 
-//======================================================================================================================
 /**
 Cell color name enumeration.
 
@@ -48,9 +46,8 @@ the corresponding ''ScalaFX'' colors and materials.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
 */
-//======================================================================================================================
 
-private [cell] object CellColor
+private[cell] object CellColor
 extends Enumeration {
 
 /**
@@ -58,7 +55,7 @@ Vector associating each ''cell'' color with the corresponding ''ScalaFX''
 color.
 */
 
-  private val cellToColor = Vector (
+  private val cellToColor = Vector(
     Color.Black,
     Color.Red,
     Color.Green,
@@ -86,7 +83,7 @@ In each case the ''specular'' color is set to white.
 cell files small.
 */
 
-  private val cellToMaterial: Vector [PhongMaterial] = cellToColor.map {
+  private val cellToMaterial: Vector[PhongMaterial] = cellToColor.map {
     color =>
     new PhongMaterial {
       diffuseColor = color
@@ -203,15 +200,14 @@ Default color, which is used if an explicit color is not specified.
 Minimum color code value.
 */
 
-  private [cell] val minValue = 0
+  private[cell] val minValue = 0
 
 /**
 Maximum color code value.
 */
 
-  private [cell] val maxValue = maxId - 1
+  private[cell] val maxValue = maxId - 1
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Conversion of ''cell'' color to ''ScalaFX'' color.
 
@@ -222,14 +218,11 @@ of ''cell'' colors in regular code, when ideally we want to bury them.
 
 @return Corresponding ''ScalaFX'' color.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def toColor (color: CellColor.Value) = {
-    assertNonNull (color)
-    cellToColor (color.id)
+  private[cell] def toColor(color: CellColor.Value) = {
+    assertNonNull(color)
+    cellToColor(color.id)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Conversion of ''cell'' color to ''ScalaFX'' material.
 
@@ -240,14 +233,11 @@ of ''cell'' colors in regular code, when ideally we want to bury them.
 
 @return Corresponding ''ScalaFX'' material.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def toMaterial (color: CellColor.Value) = {
-    assertNonNull (color)
-    cellToMaterial (color.id)
+  private[cell] def toMaterial(color: CellColor.Value) = {
+    assertNonNull(color)
+    cellToMaterial(color.id)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Verify a color code.
 
@@ -255,12 +245,9 @@ Verify a color code.
 
 @return `true` if the code maps to a valid color, `false` otherwise.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def verify (colorCode: Int) = (colorCode >= minValue &&
+  private[cell] def verify(colorCode: Int) =(colorCode >= minValue &&
   colorCode <= maxValue)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read color from ''cell'' data stream.
 
@@ -279,29 +266,27 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene, colorType: CellColorType.Value) =
+  private[cell] def read(scene: CellScene, colorType: CellColorType.Value) =
   {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
-    assertNonNull (colorType)
+    assertNonNull(scene)
+    assertNonNull(colorType)
 
 /*
 Read the color code from the data stream.
 */
 
-    val code = scene.readInt (verify (_), LibResource
-    ("anim.cell.CellColor.read", colorType.id, minValue, maxValue))
+    val code = scene.readInt(verify(_), LibResource
+   ("anim.cell.CellColor.read", colorType.id, minValue, maxValue))
 
 /*
 Convert to cell color and return.
 */
 
-    CellColor (code)
+    CellColor(code)
   }
 }

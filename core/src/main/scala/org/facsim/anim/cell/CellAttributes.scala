@@ -30,19 +30,15 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Trait defining the attribute access functions of a cell.
 */
-//======================================================================================================================
 
-private [cell] trait CellAttributes {
+private[cell] trait CellAttributes {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Face color.
 
@@ -51,11 +47,8 @@ Face color.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def faceColor: Option[CellColor.Value]
 
-  private [cell] def faceColor: Option [CellColor.Value]
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Edge color.
 
@@ -69,11 +62,8 @@ using it to render cell's if the cell employs ''wireframe'' rendering.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def edgeColor: Option[CellColor.Value]
 
-  private [cell] def edgeColor: Option [CellColor.Value]
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Line style.
 
@@ -82,11 +72,8 @@ Line style.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
 Line Styles]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def lineStyle: LineStyle.Value
 
-  private [cell] def lineStyle: LineStyle.Value
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Line width, in pixels.
 
@@ -95,11 +82,8 @@ Line width, in pixels.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineWidth.html
 Line Width]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def lineWidth: LineWidth
 
-  private [cell] def lineWidth: LineWidth
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Display style.
 
@@ -109,11 +93,8 @@ Display style.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/DisplayStyle.html
 Display Styles]]
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def displayStyle: DisplayStyle.Value
 
-  private [cell] def displayStyle: DisplayStyle.Value
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Name.
 
@@ -122,7 +103,5 @@ Name.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Name.html Cell
 Names]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def name: Option [String]
+  private[cell] def name: Option[String]
 }

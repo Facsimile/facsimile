@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
-//======================================================================================================================
 /**
 Delimiter for parsing the remainder of a text data stream as a single field,
 for use with [[org.facsim.io.TextReader!]]-based readers.
@@ -44,7 +42,6 @@ read operation with this delimiter will return the remainder of the stream.
 
 @since 0.0
 */
-//======================================================================================================================
 
 object EOFDelimiter
-extends Delimiter (Set (), false)
+extends Delimiter(Set(), false)

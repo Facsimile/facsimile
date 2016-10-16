@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim package.
 */
-//======================================================================================================================
 
 package org.facsim.anim
 
-//======================================================================================================================
 /**
 Rich animation point.
 
@@ -49,7 +47,6 @@ associated texture point.
 
 @param texturePoint Texture map point.
 */
-//======================================================================================================================
 
-private [anim] final case class RichPoint (point: Point3D,
+private[anim] final case class RichPoint(point: Point3D,
 texturePoint: TexturePoint)

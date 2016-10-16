@@ -34,16 +34,16 @@
 package org.facsim.util
 
 import java.text.MessageFormat
-import java.util.ResourceBundle
+import java.util.{Locale, MissingResourceException, ResourceBundle}
 import org.facsim.LibResource
 import org.facsim.RequireNonNullKey
 
 /**
  * Provides access to a locale-specific resource bundle belonging to a library or application.
  *
- * Further information on how locale-specific resources are identified is at [[java.util.ResourceBundle]].
+ * Further information on how locale-specific resources are identified is at [[ResourceBundle]].
  *
- * The user's current preferred locale is identified through a call to [[java.util.Locale.getDefault]].
+ * The user's current preferred locale is identified through a call to [[Locale.getDefault]].
  *
  * @todo Add code to retrieve package files, including images, manifests, etc.
  *
@@ -51,13 +51,13 @@ import org.facsim.RequireNonNullKey
  *
  * @param bundleName Identifies the base name of the resource bundle to be loaded.
  *
- * @throws java.lang.NullPointerException if `bundleName` is `null`.
+ * @throws NullPointerException if `bundleName` is `null`.
  *
- * @throws java.util.MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
+ * @throws MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
  *
- * @see [[java.util.ResourceBundle]] for information on Java resource bundles.
+ * @see [[ResourceBundle]] for information on Java resource bundles.
  *
- * @see [[java.util.Locale]] for information on Java locale processing.
+ * @see [[Locale]] for information on Java locale processing.
  *
  * @since 0.0
  */
@@ -101,14 +101,14 @@ class Resource(bundleName: String) {
    *
    * @return Locale-specific, formatted version of the requested string resource.
    *
-   * @throws java.lang.NullPointerException if `key` is `null`.
+   * @throws NullPointerException if `key` is `null`.
    *
-   * @throws java.util.MissingResourceException if there is no string resource indexed by `key`.
+   * @throws MissingResourceException if there is no string resource indexed by `key`.
    *
-   * @throws java.lang.ClassCastException if the resource indexed by `key` is not a string.
+   * @throws ClassCastException if the resource indexed by `key` is not a string.
    *
-   * @throws java.lang.IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are of
-   * the wrong type for the corresponding format elements in the retrieved string.
+   * @throws IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are of the wrong
+   * type for the corresponding format elements in the retrieved string.
    *
    * @since 0.0
    */

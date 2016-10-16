@@ -96,7 +96,7 @@ package object facsim {
   /**
    * Require that argument value is non-`null`.
    *
-   * Throw a [[scala.NullPointerException]] if supplied argument value is `null`.
+   * Throw a [[NullPointerException]] if supplied argument value is `null`.
    *
    * Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
    * to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is not
@@ -109,7 +109,7 @@ package object facsim {
    *
    * @param arg Argument whose value is to be compared to `null`.
    *
-   * @throws scala.NullPointerException if `arg` is `null`.
+   * @throws NullPointerException if `arg` is `null`.
    *
    * @since 0.0
    */
@@ -118,9 +118,9 @@ package object facsim {
   /**
    * Require that argument value is valid.
    *
-   * Throw a [[scala.IllegalArgumentException]] if supplied parameter value is invalid.
+   * Throw a [[IllegalArgumentException]] if supplied parameter value is invalid.
    *
-   * @note This function supersedes the [[scala.Predef]] `require` methods.
+   * @note This function supersedes the [[Predef]] `require` methods.
    *
    * @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
    *
@@ -129,7 +129,7 @@ package object facsim {
    * @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
    * merely returns; if `false` an `IllegalArgumentException` is raised.
    *
-   * @throws scala.IllegalArgumentException if `isValid` is `false`.
+   * @throws IllegalArgumentException if `isValid` is `false`.
    *
    * @since 0.0
    */
@@ -139,11 +139,11 @@ package object facsim {
    * Require a finite double value.
    *
    * Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will result in a
-   * [[scala.IllegalArgumentException]] being thrown.
+   * [[IllegalArgumentException]] being thrown.
    *
    * @param arg Argument whose value is being validated.
    *
-   * @throws scala.IllegalArgumentException if `arg` does not have a finite value.
+   * @throws IllegalArgumentException if `arg` does not have a finite value.
    *
    * @since 0.0
    */
@@ -195,8 +195,8 @@ package object facsim {
    *
    * @param c Abstract syntax tree (AST) context for this macro definition.
    *
-   * @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
-   * [[java.lang.AssertionError]] is thrown by the macro implementation, together with the name of the failed argument.
+   * @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a [[AssertionError]] is
+   * thrown by the macro implementation, together with the name of the failed argument.
    *
    * @return Implementation of this instance of the `assertNonNull` macro.
    *
@@ -231,7 +231,7 @@ package object facsim {
    * @param c Abstract syntax tree (AST) context for this macro definition.
    *
    * @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
-   * [[scala.NullPointerException]] is thrown by the macro implementation, together with the name of the failed
+   * [[NullPointerException]] is thrown by the macro implementation, together with the name of the failed
    * argument.
    *
    * @return Implementation of this instance of the `requireNonNull` macro.
@@ -265,7 +265,7 @@ package object facsim {
    * @param c Abstract syntax tree (AST) context for this macro definition.
    *
    * @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then a
-   * [[scala.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
+   * [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
    * argument.
    *
    * @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
@@ -300,8 +300,7 @@ package object facsim {
    * @param c Abstract syntax tree (AST) context for this macro definition.
    *
    * @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then a
-   * [[scala.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
-   * argument.
+   * [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
    *
    * @return Implementation of this instance of the `requireFinite` macro.
    *

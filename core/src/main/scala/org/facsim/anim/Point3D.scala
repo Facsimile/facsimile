@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim package.
 */
-//======================================================================================================================
 
 package org.facsim.anim
 
 import org.facsim.requireFinite
 import scalafx.scene.transform.Translate
 
-//======================================================================================================================
 /**
 Defines a point in 3D animation space.
 
@@ -52,33 +50,28 @@ to a parent object (with local ''X''-, ''Y''- and ''Z''-axes).
 
 @param z ''Z''-axis coordinate. This value must be finite.
 
-@throws java.lang.IllegalArgumentException if `x`, `y` or `z` has a non-finite
+@throws IllegalArgumentException if `x`, `y` or `z` has a non-finite
 value.
 */
-//======================================================================================================================
 
-private [anim] final case class Point3D (x: Double, y: Double, z: Double) {
+private[anim] final case class Point3D(x: Double, y: Double, z: Double) {
 
 /*
 Sanity checks.
 */
 
-  requireFinite (x)
-  requireFinite (y)
-  requireFinite (z)
+  requireFinite(x)
+  requireFinite(y)
+  requireFinite(z)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert this point into a List of coordinate values.
 
 @return List of coordinate values, with ''x'' coordinate first, ''y''
 coordinate second, and ''z'' coordinate third.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[anim] def toList = List(x, y, z)
 
-  private [anim] def toList = List (x, y, z)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert this point into a List of single-precision coordinate values.
 
@@ -86,32 +79,25 @@ Convert this point into a List of single-precision coordinate values.
 with ''x'' coordinate first, ''y'' coordinate second, and ''z'' coordinate
 third.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[anim] def toFloatList = List(x.toFloat, y.toFloat, z.toFloat)
 
-  private [anim] def toFloatList = List (x.toFloat, y.toFloat, z.toFloat)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert this point to a ''ScalaFX'' translation.
 
 @return Translation along local axes by coordinate values.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [anim] def toTranslate = new Translate (x, y, z)
+  private[anim] def toTranslate = new Translate(x, y, z)
 }
 
-//======================================================================================================================
 /**
 Point3D companion object.
 */
-//======================================================================================================================
 
-private [anim] object Point3D {
+private[anim] object Point3D {
 
 /**
 Origin.
 */
 
-  private [anim] val Origin = Point3D (0.0, 0.0, 0.0)
+  private[anim] val Origin = Point3D(0.0, 0.0, 0.0)
 }

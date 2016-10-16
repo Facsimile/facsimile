@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell.test package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell.test
 
@@ -40,11 +39,9 @@ import org.facsim.anim.cell.CellLoader
 import org.scalatest.FunSpec
 import scala.annotation.tailrec
 
-//======================================================================================================================
 /**
 Test suite for the [[org.facsim.anim.cell.CellLoader]] class.
 */
-//======================================================================================================================
 
 class CellLoaderTest extends FunSpec {
 
@@ -54,42 +51,42 @@ Function to retrieve a test resource file's URL.
 Files should be present in src/test/resources/cellFiles.
 */
 
-  def testRscFile (file: String) = getClass.getResource ("/cellFiles/" + file)
+  def testRscFile(file: String) = getClass.getResource("/cellFiles/" + file)
 
 /**
 Trait populated with cell file URL's to be loaded.
 */
 
   trait CellFiles {
-    val files = List (
-      testRscFile ("ArcCoarse.cell"),
-      testRscFile ("ArcCoarseReverse.cell"),
-      testRscFile ("ArcFine.cell"),
-      testRscFile ("ArcFineReverse.cell"),
-      testRscFile ("CircleCoarseSolid.cell"),
-      testRscFile ("CircleCoarseWire.cell"),
-      testRscFile ("CircleFineSolid.cell"),
-      testRscFile ("CircleFineWire.cell"),
-      testRscFile ("ConeCoarse.cell"),
-      testRscFile ("ConeFine.cell"),
-      testRscFile ("CylinderCoarse.cell"),
-      testRscFile ("CylinderFine.cell"),
-      testRscFile ("FrustumCoarse.cell"),
-      testRscFile ("FrustumFine.cell"),
-      testRscFile ("HemisphereCoarse.cell"),
-      testRscFile ("HemisphereFine.cell"),
-      testRscFile ("ScreenFastText.cell"),
-      testRscFile ("ScreenNormalText.cell"),
-      testRscFile ("SectorCoarse.cell"),
-      testRscFile ("SectorCoarseReverse.cell"),
-      testRscFile ("SectorFine.cell"),
-      testRscFile ("SectorFineReverse.cell"),
-      testRscFile ("Tetrahedron.cell"),
-      testRscFile ("Trapezoid.cell"),
-      testRscFile ("Triad.cell"),
-      testRscFile ("UnrotateFastText.cell"),
-      testRscFile ("UnrotateNormalText.cell"),
-      testRscFile ("WorldText.cell")
+    val files = List(
+      testRscFile("ArcCoarse.cell"),
+      testRscFile("ArcCoarseReverse.cell"),
+      testRscFile("ArcFine.cell"),
+      testRscFile("ArcFineReverse.cell"),
+      testRscFile("CircleCoarseSolid.cell"),
+      testRscFile("CircleCoarseWire.cell"),
+      testRscFile("CircleFineSolid.cell"),
+      testRscFile("CircleFineWire.cell"),
+      testRscFile("ConeCoarse.cell"),
+      testRscFile("ConeFine.cell"),
+      testRscFile("CylinderCoarse.cell"),
+      testRscFile("CylinderFine.cell"),
+      testRscFile("FrustumCoarse.cell"),
+      testRscFile("FrustumFine.cell"),
+      testRscFile("HemisphereCoarse.cell"),
+      testRscFile("HemisphereFine.cell"),
+      testRscFile("ScreenFastText.cell"),
+      testRscFile("ScreenNormalText.cell"),
+      testRscFile("SectorCoarse.cell"),
+      testRscFile("SectorCoarseReverse.cell"),
+      testRscFile("SectorFine.cell"),
+      testRscFile("SectorFineReverse.cell"),
+      testRscFile("Tetrahedron.cell"),
+      testRscFile("Trapezoid.cell"),
+      testRscFile("Triad.cell"),
+      testRscFile("UnrotateFastText.cell"),
+      testRscFile("UnrotateNormalText.cell"),
+      testRscFile("WorldText.cell")
     )
   }
 
@@ -97,24 +94,24 @@ Trait populated with cell file URL's to be loaded.
 Test fixture description.
 */
 
-  describe (CellLoader.getClass.getCanonicalName) {
+  describe(CellLoader.getClass.getCanonicalName) {
 
 /*
 Cell file load tests.
 */
 
-    describe (".load (URL, SafeOption[URL], CellColor.Value, CellColor.Value)")
+    describe(".load(URL, SafeOption[URL], CellColor.Value, CellColor.Value)")
     {
-      it ("must load all files with default arguments") {
+      it("must load all files with default arguments") {
         new CellFiles {
           @tailrec
-          def loadFile (list: List[URL]): Unit = {
-            if (!list.isEmpty) {
-              CellLoader.load (list.head)
-              loadFile (list.tail)
+          def loadFile(list: List[URL]): Unit = {
+            if(!list.isEmpty) {
+              CellLoader.load(list.head)
+              loadFile(list.tail)
             }
           }
-          loadFile (files)
+          loadFile(files)
         }
       }
     }

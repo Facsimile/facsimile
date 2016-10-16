@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -40,7 +39,6 @@ import org.facsim.requireNonNull
 import org.facsim.io.TextReader
 import scalafx.scene.Node
 
-//======================================================================================================================
 /**
 ''[[http://www.automod.com/ AutoMod®]] cell'' file loader object.
 
@@ -104,11 +102,9 @@ encoding (Wikipedia).
 
 @since 0.0
 */
-//======================================================================================================================
 
 object CellLoader {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Load the ''[[http://www.automod.com/ AutoMod®]] cell'' file from the specified
 URL and return it as a ''ScalaFX 3D Parent'' node.
@@ -134,7 +130,7 @@ value cannot be `null`.
 
 @return ''ScalaFX'' [[scalafx.scene.Node!]] containing the ''cell's'' contents.
 
-@throws java.lang.NullPointerException if `url`, `faceColor` or `edgeColor` are
+@throws NullPointerException if `url`, `faceColor` or `edgeColor` are
 `null`.
 
 @throws java.lang.SecurityException if `url` is protected from reading by
@@ -152,9 +148,7 @@ during parsing of the file.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  def load (url: URL, baseUrl: Option [URL] = None,
+  def load(url: URL, baseUrl: Option[URL] = None,
   faceColor: CellColor.Value = CellColor.Default,
   edgeColor: CellColor.Value = CellColor.Default): Node = {
 
@@ -162,10 +156,10 @@ during parsing of the file.
 Verify that certain arguments are not null.
 */
 
-    requireNonNull (url)
-    requireNonNull (baseUrl)
-    requireNonNull (faceColor)
-    requireNonNull (edgeColor)
+    requireNonNull(url)
+    requireNonNull(baseUrl)
+    requireNonNull(faceColor)
+    requireNonNull(edgeColor)
 
 /*
 Helper function to retrieve the absolute path of the file, so that we can
@@ -174,7 +168,7 @@ identify the base URL if one is not defined.
 
     def getSearchLocation = {
       val urlString = url.toString
-      new URL (urlString.take (urlString.lastIndexOf ('/')))
+      new URL(urlString.take(urlString.lastIndexOf('/')))
     }
 
 /*
@@ -187,20 +181,20 @@ not exist, or cannot be read due to access restrictions.
 Note that the cell file's encoding is Windows-1252.
 */
 
-    val reader = new TextReader (new InputStreamReader (url.openStream (),
+    val reader = new TextReader(new InputStreamReader(url.openStream(),
     "windows-1252"))
 
 /*
 Determine where we'll search for files referenced in the cell data.
 */
 
-    val searchLocation = baseUrl.getOrElse (getSearchLocation)
+    val searchLocation = baseUrl.getOrElse(getSearchLocation)
 
 /*
 Create a cell scene instance and populate it from the reader.
 */
 
-    val cellScene = new CellScene (reader, searchLocation, faceColor,
+    val cellScene = new CellScene(reader, searchLocation, faceColor,
     edgeColor)
 
 /*
@@ -208,5 +202,5 @@ Return the cell's contents as a ScalaFX node.
 */
 
     cellScene.toNode
-  } ensuring (_ ne null)
+  } ensuring(_ ne null)
 }

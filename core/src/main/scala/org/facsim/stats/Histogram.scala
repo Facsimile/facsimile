@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.stats package.
 */
-//======================================================================================================================
 
 package org.facsim.stats
 
 import org.facsim.requireValid
 
-//======================================================================================================================
 /**
 Histogram class.
 
@@ -58,14 +56,13 @@ This argument must be a positive integer or an exception will be thrown.
 @param binWidth Width of each regular bin in the histogram.  This value must be
 greater than zero, or an exception will be thrown.
 
-@throws java.lang.IllegalArgumentException if '''bins''' is zero or negative,
+@throws IllegalArgumentException if '''bins''' is zero or negative,
 or if '''binWidth''' is zero or negative.
 
 @since 0.0
 */
-//======================================================================================================================
 
-class Histogram (private final val minimumValue: Double,
+class Histogram(private final val minimumValue: Double,
 private final val bins: Int, private final val binWidth: Double)
 extends SummaryStatistics {
 
@@ -73,8 +70,8 @@ extends SummaryStatistics {
 Argument sanity checks.
 */
 
-  requireValid (bins, bins > 0)
-  requireValid (binWidth, binWidth > 0.0)
+  requireValid(bins, bins > 0)
+  requireValid(binWidth, binWidth > 0.0)
 
 /**
 Frequency of values observed in each bin.
@@ -85,7 +82,7 @@ values less than the specified minimum value.  Similarly, bin (bins + 1) is the
 (minimumValue + bins * binWidth).
 */
 
-  private val frequency: Array [Int] = new Array [Int] (bins + 2)
+  private val frequency: Array[Int] = new Array[Int](bins + 2)
 
 /**
 Overflow bin number.
@@ -93,7 +90,6 @@ Overflow bin number.
 
   private val overflowBin = frequency.length - 1
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve frequency observed in specified bin to date.
 
@@ -109,14 +105,11 @@ range: [0, [[org.facsim.stats.Histogram!.length]]).
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  final def apply (bin: Int) = synchronized {
-    frequency (bin) ensuring (_ >= 0)
+  final def apply(bin: Int) = synchronized {
+    frequency(bin) ensuring(_ >= 0)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve number of bins, including underflow and overflow bins.
 
@@ -125,43 +118,38 @@ bins.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  final def length = frequency.length ensuring (_ >= 3)
+  final def length = frequency.length ensuring(_ >= 3)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [stats] final override def processObservation (value: Double): Unit
+  protected[stats] final override def processObservation(value: Double): Unit
   = {
 
 /*
 Determine which bin to place this observation in.
 */
 
-    val bin = ((value - minimumValue) / binWidth).toInt + 1
+    val bin =((value - minimumValue) / binWidth).toInt + 1
 
 /*
 Is this value in the underflow bin?
 */
 
-    if (bin <= 0) frequency.update (0, frequency (0) + 1)
+    if(bin <= 0) frequency.update(0, frequency(0) + 1)
 
 /*
 Otherwise, is this value in the overflow bin?
 */
 
-    else if (bin >= overflowBin) frequency.update (overflowBin, frequency
-    (overflowBin) + 1)
+    else if(bin >= overflowBin) frequency.update(overflowBin, frequency
+   (overflowBin) + 1)
 
 /*
 Otherwise, add it to the corresponding bin.
 */
 
-    else frequency.update (bin, frequency (bin) + 1)
+    else frequency.update(bin, frequency(bin) + 1)
   }
 }
