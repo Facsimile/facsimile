@@ -52,7 +52,7 @@ sudo: false
 
 language: scala
 scala:
-  - 2.11.8
+  - 2.12.0
 
 # Cache the IVY & SBT directories at the end of the build.
 
