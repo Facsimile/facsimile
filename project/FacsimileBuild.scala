@@ -183,7 +183,7 @@ object FacsimileBuild {
      * IMPORTANT: These values should be synchronized with the Travis CI .travis.yml file in the project's root
      * directory.
      */
-    crossScalaVersions := Seq("2.11.8"),
+    crossScalaVersions := Seq("2.12.0"),
 
     /*
      * Scala default version.
@@ -202,24 +202,16 @@ object FacsimileBuild {
     /*
      * Scala compiler options.
      *
-     * This is a conundrum: -Xfatal-warnings is essential, since it forces all warnings to be addressed. However, when
-     * -optimize is specified, Scala will generate some inline warnings when initializing large maps. Although the
-     * inline warnings themselves will only be issued when -Yinline-warnings is specified, Scala will still emit a
-     * warning that inline warnings occurred, which is then treated as fatal by Xfatal-warnings. It seems that the only
-     * way around this, right now, is to disable -Xfatal-warnings. This is a known Scala compiler issue documented at:
-     *
-     *   https://issues.scala-lang.org/browse/SI-6723.
+     * -Xfatal-warnings is disabled because some deprecated code features are still in use, resulting in warnings that
+     * cannot currently be suppressed. (The Scala team have been deprecating a lot of features as of 2.11, but there are
+     * no alternatives to many of the deprecated classes, which is becoming a nuisance.)
      *
      * As Xfatal-warnings is not in use, it's possible to have builds that generate tons of warnings, but which do not
-     * fail a build. This is unacceptable. Facsimile must build clean, without any errors or warnings, as a basic
+     * fail a build. This is unacceptable. Projects must build clean, without any errors or warnings, as a basic
      * requirement for any release to be performned.
      *
      * -Xstrict-inference is currently disabled as it outputs some erroneous warnings for some generic code. See
      * https://issues.scala-lang.org/browse/SI-7991 for further details.
-     *
-     * Also note that the Akka team recommend that "-optimize" is not used for code used with Akka actors.
-     *
-     * Most of these issues should go away when Scala 2.12, which sports a new optimizer, is released.
      */
     scalacOptions := Seq(
       "-deprecation",
@@ -227,18 +219,25 @@ object FacsimileBuild {
       "UTF-8",
       "-feature",
       "-g:vars",
-      "-optimize",
+      "-opt:l:method",
+      "-opt-warnings:_",
       "-target:jvm-1.8",
       "-unchecked",
       "-Xcheckinit",
       //"-Xfatal-warnings",
       "-Xlint:_",
-      "-Yclosure-elim",
-      "-Yconst-opt",
-      "-Ydead-code",
-      "-Yinline",
-      "-Yinline-handlers",
-      "-Yinline-warnings"
+      //"-Xstrict-inference",
+      "-Ypartial-unification",
+      "-Ywarn-adapted-args",
+      "-Ywarn-dead-code",
+      "-Ywarn-inaccessible",
+      "-Ywarn-infer-any",
+      "-Ywarn-nullary-override",
+      "-Ywarn-nullary-unit",
+      "-Ywarn-numeric-widen",
+      "-Ywarn-unused",
+      "-Ywarn-unused-import",
+      "-Ywarn-value-discard"
     ),
 
     /*
