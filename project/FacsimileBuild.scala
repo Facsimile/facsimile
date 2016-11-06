@@ -201,9 +201,7 @@ IMPORTANT: These values should be synchronized with the Travis CI .travis.yml fi
 Scala default version.
 */
 
-    scalaVersion <<= crossScalaVersions {
-      versions => versions.head
-    }
+    scalaVersion := crossScalaVersions.value.head
   )
 
 /*
