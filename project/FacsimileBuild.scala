@@ -471,7 +471,7 @@ object FacsimileBuild {
     /*
      * Sign releases prior to publication.
      */
-    releasePublishArtifactsAction := PgpKeys.publishSigned.value
+    releasePublishArtifactsAction := PgpKeys.publishSigned.value,
 
     /*
      * Employ the following custom release process.
