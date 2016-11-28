@@ -48,6 +48,7 @@
  *   https://github.com/Facsimile/skeleton
  */
 
+import com.typesafe.sbt.pgp.PgpKeys
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import sbt._
@@ -445,6 +446,32 @@ object FacsimileBuild {
       Package.ManifestAttributes("Inception-Timestamp" -> facsimileProjStartDate.toString),
       Package.ManifestAttributes("Build-Timestamp" -> facsimileProjBuildDate.toString)
     ),
+
+    /*
+     * SBT-GPG plugin configuration.
+     *
+     * For best results, all releases and code release signing should be undertaken on a Linux system via GNU GPG.
+     */
+    PgpKeys.useGpg := true,
+
+    /*
+     * Identify the key to be used to sign release files.
+     *
+     * Facsimile software is published to the Sonatype OSS repository, with artifacts signed as part of the release
+     * process. (Releases are performed using the SBT "release" command.)
+     *
+     * To obtain the hexadecimal key ID, enter the command:
+     *
+     *   gpg --keyid-format LONG -k authenticatoin@facsim.org
+     *
+     * Note that, for security, the private signing key and passcode are not publicly available.
+     */
+    PgpKeys.pgpSigningKey := Some(0xC08B4D86EACCE720L),
+
+    /*
+     * Sign releases prior to publication.
+     */
+    releasePublishArtifactsAction := PgpKeys.publishSigned.value
 
     /*
      * Employ the following custom release process.
