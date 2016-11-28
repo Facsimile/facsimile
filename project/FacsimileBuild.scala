@@ -1,5 +1,5 @@
 /*
-Facsimile - A Discrete-Event Simulation Library
+Facsimile -- A Discrete-Event Simulation Library
 Copyright © 2004-2016, Michael J Allen.
 
 This file is part of Facsimile.
@@ -11,135 +11,193 @@ version.
 Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
 of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
-see http://www.gnu.org/licenses/.
+You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+http://www.gnu.org/licenses/lgpl.
 
 The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
 project home page at:
 
-http://www.facsim.org/
+  http://facsim.org/
 
 Thank you for your interest in the Facsimile project!
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
+IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for  inclusion
 as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
 fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
 standards at:
 
-http://www.facsim.org/Documentation/CodingStandards/
+  http://facsim.org/Documentation/CodingStandards/
 ========================================================================================================================
-Scala source file used as the Simple Build Tool (SBT) build file.
+SBT build configuration that is common to all Facsimile projects.
 
-This file controls how the Facsimile library (and its associated tools) are built and distributed.
+Project-specific build configuration should be placed in a project root-level SBT file named after the project (such as
+Facsimile.sbt, for example).
 
-NOTE: This file is compiled using the version of Scala associated with the SBT version (specified in
-project/build.properties), which is not necessarily the same version of Scala that is used to build Facsimile (specified
- here).
+The word "project" is a little over-used in this file, potentially resulting in some confusion. It can refer to a
+library or tool that has a separate git repository in Facsimile's GitHub organization (such that this file defines the
+build framework for that project). But it can also refer to an SBT project or sub-project - particularly in
+multi-project builds. We'll try to make the context as obvious as possible, but the phrases "Facsimile project", "this
+project" and "project-specific" will typically refer to a library/tool, while "root project", "multi-project", "source
+project", "sub-project" will typically refer to SBT usage. Hope we've cleared that up... ;-)
+
+NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other Facsimile
+projects, termed client projects. It must only be modified in the "skeleton" project, with changes being merged into
+client projects. Refer to the skeleton project for further details:
+
+  https://github.com/Facsimile/skeleton
 */
-//======================================================================================================================
 
-import sbt._
-import sbt.Keys._
-import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
-import org.scalastyle.sbt.ScalastylePlugin
+import sbt._
+import sbt.Keys._
+import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
-import sbtrelease.ReleasePlugin.autoImport._
-import sbtunidoc.Plugin.{unidocSettings, ScalaUnidoc, UnidocKeys}
+import sbtunidoc.Plugin.{ScalaUnidoc, UnidocKeys, unidocSettings}
 import scoverage.ScoverageKeys
-import xerial.sbt.Sonatype._
+import xerial.sbt.Sonatype.sonatypeSettings
 
-/**
-Facsimile SBT Build object.
-
-@since 0.0
+/*
+Wrap all contents in a FacsimileSettings object for inclusion in client projects.
 */
 
-object FacsimileBuild
-extends Build {
+object FacsimileBuild {
 
-/**
-Project artifact ID.
+/*
+ID of this Facsimile project.
 
-@note This is equivalent to the `project/artifactId` Maven POM coordinate, and is employed as such during deployment to
-the Sonatype OSS Nexus repository.
+This is the "normalized name" of this project, also known as a Maven/SBT/Ivy artifact name (such as "myfabapp"). This
+must also match the name of the project on GitHub.
+
+This setting is defined to assist with automatic project configuration; it must be explicitly provided by each
+project-specific build file.
 */
 
-  val projectArtifactId = "facsimile"
+  lazy val facsimileProjId = settingKey[String]("Artifact ID/normalized name of this Facsimile project.")
 
-/**
-Project group ID.
+/*
+Name of this Facsimile project.
 
-@note This is equivalent to the `project/groupId` Maven POM coordinate, and is employed as such during deployment to the
-Sonatype OSS Nexus repository.
+Human-readable phrase that describes (in a shortened form) this project (such as "My Fabulous App").
+
+This is equivalent to the "name" Maven POM information field, and is employed as such during deployment to the Sonatype
+OSS Nexus repository. It is also used by SBT for naming each project and sub-project.
+
+This setting is defined to assist with automatic project configuration; it must be explicitly provided by each
+project-specific build file.
 */
 
-  val projectGroupId = "org.facsim"
+  lazy val facsimileProjName = settingKey[String]("Short description of this Facsimile project.")
 
-/**
+/*
+Description of this Facsimile project.
+
+This is a detailed description for this project.
+
+This setting is defined to assist with automatic project configuration; it must be explicitly provided by each
+project-specific build file.
+*/
+
+  lazy val facsimileProjDesc = settingKey[String]("Description of this Facsimile project.")
+
+/*
+Home page for this Facsimile project.
+
+This setting is defined to assist with automatic project configuration; it must be explicitly provided by each
+project-specific build file.
+*/
+
+  lazy val facsimileProjHomePage = settingKey[String]("Homepage of this Facsimile project.")
+
+/*
 Date the facsimile project was started.
 
-This is the date that the project was announced on the Facsimile web-site (which was actually a few days after the
-project was registered on Sourceforge).
-
-DO NOT CHANGE THIS VALUE.
+This is the date that the Facsimile project was announced on the Facsimile web-site (which was actually a few days after
+the project was registered on Sourceforge).
 */
 
-  val projectStartDate = ZonedDateTime.parse ("2004-06-22T18:16:00-04:00[America/New_York]")
+  val facsimileProjStartDate = ZonedDateTime.parse("2004-06-22T18:16:00-04:00[America/New_York]")
 
-/**
+/*
 Date this build was made.
 
 Ideally, this ought to be the date of the current commit, but the current time is probably OK for custom builds too.
 */
 
-  val projectBuildDate = ZonedDateTime.now ()
+  val facsimileProjBuildDate = ZonedDateTime.now()
 
-/**
-Project name.
-
-Human readable short form of the project's name.
-
-@note This is equivalent to the `project/name` Maven POM information field, and is employed as such during deployment to
-the Sonatype OSS Nexus repository.
+/*
+Regular expression for matching release versions.
 */
 
-  val projectName = "Facsimile Simulation Library"
+  private val ReleaseVersion = """(\d+)\.(\d+)\.(\d+)""".r
 
-/**
-Project homepage.
-
-@note This is equivalent to the `project/url` Maven POM information field, and is employed as such during development to
-the Sonatype OSS Nexus repository.
+/*
+Regular expression for matching snapshot versions.
 */
 
-  val projectHomepage = Some (url ("http://facsim.org/"))
+  private val SnapshotVersion = """(\d+)\.(\d+)\.(\d+)-SNAPSHOT""".r
 
-/**
-Default settings.
+/*
+Function to determine the copyright range.
 
-These settings are common to all projects.
-
-Note that we implement release versioning for artifacts.
-
-NOTE: Previously, it was necessary to inherit from Defaults.defaultSettings, but this has been deprecated in SBT as of
-0.13.2. Since that release, it appears that default settings are automatically provided.
+@return If the year of the start date differs from the year of the build, then the copyright message will have a year
+range (e.g. 2004-2016); otherwise, since both years are the same, it will be a single year value (e.g. 2016). The return
+value is a string with the year range or value as appropriate.
 */
 
-  lazy val defaultSettings = super.settings ++ Seq (
+  private def copyrightRange = {
+    val startYear = facsimileProjStartDate.getYear.toString
+    val currentYear = facsimileProjBuildDate.getYear.toString
+    if(startYear == currentYear) startYear
+    else startYear + "-" + currentYear
+  }
+
+/*
+Retrieve base version number.
+
+@return A base version number made up of just the major and minor version numbers, without a release/revision/build
+number or a SNAPSHOT tail.
+*/
+
+  private def baseVersion(ver: String): String = ver match {
+    case ReleaseVersion(maj, min, rel) => maj + "." + min
+    case SnapshotVersion(maj, min, rel) => maj + "." + min
+    case _ => "Invalid(\"" + ver + "\")"
+  }
+
+/*
+Common project settings.
+
+These settings are common to all SBT root- and sub-projects.
+
+Note that we implement release versioning for artifacts through the Release plugin. The current version is stored in the
+project-specific Version.sbt file.
+*/
+
+  lazy val commonSettings = Seq(
+
+/*
+Owning organization.
+
+This is the Maven/SBT/Ivy group ID and should match the root package name of the Scala sources. It should also be the
+reverse of the web-site name (less the "www" prefix). Thus "http://facsim.org/" yields an organization ID/root package
+name of "org.facsim"
+*/
+
+    organization := "org.facsim",
 
 /*
 Scala cross compiling.
 
-These values should be synchronized with the Travis CI .travis.yml file in the project's root directory.
+IMPORTANT: These values should be synchronized with the Travis CI .travis.yml file in the project's root directory.
 */
 
-    crossScalaVersions := Seq ("2.11.7"),
+    crossScalaVersions := Seq("2.11.8"),
 
 /*
-Scala configuration.
+Scala default version.
 */
 
     scalaVersion <<= crossScalaVersions {
@@ -147,46 +205,25 @@ Scala configuration.
     }
   )
 
-/**
-Base settings for source projects.
-
-These settings are common to all sub-projects that contain Scala sources. In particular, note that the Macro sub-project
-has very few dependencies.
-*/
-
-  lazy val baseSourceSettings = defaultSettings ++ Seq (
-
 /*
-Ensure that we only publish/package the root project and source subprojects. This assumes that all projects implementing
-these settings are subprojects, rather than primary projects.
+Base settings for all SBT source projects.
+
+These settings are common to all SBT root- and sub-projects that contain Scala sources. Dependencies listed here should
+be universal.
 */
 
-    publishArtifact := false,
-
-/*
-Exclude Java source directories (use Scala source directories only).
-
-NOTE: If this is not done, the sbteclipse plug-in creates src/main/java and /src/test/java directories.  If we ever need
-to add Java sources to the project, they'll go here.
-*/
-
-    unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)( _ :: Nil),
-    unmanagedSourceDirectories in Test <<= (scalaSource in Test)( _ :: Nil),
+  lazy val baseSourceSettings = Seq(
 
 /*
 Scala compiler options.
 
 This is a conundrum: -Xfatal-warnings is essential, since it forces all warnings to be addressed. However, when
--optimize is specified, Scala will generate some inline warnings when initializing large maps (such as the cell code to
-cell type map in org.facsim.anim.cell.CellScene). Although the inline warnings themselves will only be issued when
--Yinline-warnings is specified, Scala will still emit a warning that inline warnings occurred, which is then treated as
-fatal by Xfatal-warnings. It seems that the only way around this, right now, is to disable -Xfatal-warnings. This is a
-known Scala compiler issue documented at https://issues.scala-lang.org/browse/SI-6723.
+-optimize is specified, Scala will generate some inline warnings when initializing large maps. Although the inline
+warnings themselves will only be issued when -Yinline-warnings is specified, Scala will still emit a warning that inline
+warnings occurred, which is then treated as fatal by Xfatal-warnings. It seems that the only way around this, right now,
+is to disable -Xfatal-warnings. This is a known Scala compiler issue documented at:
 
--Xfatal-warnings is also disabled since there were some deliberate decisions taken (such as using the deprecated
-DelayedInit trait in org.facsim.App) resulting in warnings that cannot currently be suppressed. (The Scala team have
-been deprecating a lot of features as of 2.11, but there are no alternatives to many of the deprecated classes, which is
-becoming a nuisance.)
+  https://issues.scala-lang.org/browse/SI-6723.
 
 As Xfatal-warnings is not in use, it's possible to have builds that generate tons of warnings, but which do not fail a
 build. This is unacceptable. Facsimile must build clean, without any errors or warnings, as a basic requirement for any
@@ -194,9 +231,13 @@ release to be performned.
 
 -Xstrict-inference is currently disabled as it outputs some erroneous warnings for some generic code. See
 https://issues.scala-lang.org/browse/SI-7991 for further details.
+
+Also note that the Akka team recommend that "-optimize" is not used for code used with Akka actors.
+
+Most of these issues should go away when Scala 2.12, which sports a new optimizer, is released.
 */
 
-    scalacOptions := Seq (
+    scalacOptions := Seq(
       "-deprecation",
       "-encoding",
       "UTF-8",
@@ -217,7 +258,7 @@ https://issues.scala-lang.org/browse/SI-7991 for further details.
     ),
 
 /*
-Fork the tests, so that they run in a separate process.
+Fork all tests, so that they run in a separate process.
 */
 
     fork in Test := true,
@@ -230,13 +271,6 @@ test output if tests execute sequentially.
     parallelExecution in Test := false,
 
 /*
-SBT-Eclipse plugin configuration.
-*/
-
-    EclipseKeys.useProjectId := false,
-    EclipseKeys.createSrc := EclipseCreateSrc.Default,
-
-/*
 Code test coverage settings. Target coverage is 100%.
 */
 
@@ -247,68 +281,63 @@ Code test coverage settings. Target coverage is 100%.
 
 /*
 Required scala standard libraries.
+
+As stated above, these must be universal for all projects. In particular, indirect dependences (dependencies that are
+required by Facsimile project dependencies) should not be explicitly included, as this can lead to versioning problems
+(such as depending upon two or more different versions of the same library dependency).
+
+Right now, the only universal dependencies are libraries required by the test phase.
 */
 
-    libraryDependencies ++= Seq (
+    libraryDependencies ++= Seq(
 
 /*
-Scala 2.11+ dependencies.
-
-The scala-xml package is currently only required by Scalatest, hence the "test" scope.
+ScalaTest dependency.
 */
 
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.3" % "test",
-
-/*
-Other base library dependencies.
-*/
-
-      "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
     )
   )
 
-/**
-Common source settings.
-*/
-
-  lazy val commonSourceSettings = baseSourceSettings ++ Seq (
-
 /*
-Additional library dependencies.
-*/
-
-    libraryDependencies ++= Seq (
-
-/*
-ScalaFX libraries, for user-interface design and 3D animation.
-*/
-
-      "org.scalafx" %% "scalafx" % "8.0.40-R8"
-    )
-  )
-
-/**
-Customize the Unidoc settings.
+SBT root project Unidoc settings.
 
 This ensures that the "doc" command executes "unidoc", and changes the output directory to "/api" from "/unidoc" so that
 the generated documentation is included in packaging & publishing.
+
+These settings should be added to SBT root projects that contain sub-projects.
 */
 
-  lazy val customUnidocSettings = unidocSettings ++ Seq (
-    doc in Compile := (doc in ScalaUnidoc).value,
+  lazy val rootProjectUnidocSettings = unidocSettings ++ Seq(
+    doc in Compile :=(doc in ScalaUnidoc).value,
     target in UnidocKeys.unidoc in ScalaUnidoc := crossTarget.value / "api"
   )
 
-/**
-Primary Facsimile root project.
-
-This "project" contains no sources, but owns - and is dependant upon - the others. It also creates documentation for all
-sub-documents by employing Unidoc.
+/*
+Settings for all SBT sub-projects.
 */
 
-  lazy val facsimile = Project (projectArtifactId, file ("."), settings = defaultSettings ++ sonatypeSettings ++
-  customUnidocSettings ++ Seq (
+  lazy val subProjectSourceSettings = Seq(
+
+/*
+Ensure that we only publish/package the root project (which should package up relevant content from its sub-projects).
+*/
+
+    publishArtifact := false
+  )
+
+/*
+SBT root project settings.
+
+The SBT root project defines the artifacts to be published, and also takes of publishing them. Conseqeuently, there is a
+lot of Maven/SBT/Ivy configuration information here. It also creates documentation for any sub-projects by employing
+Unidoc.
+
+Note that the Sonatype plugin's settings are used to ensure that the resulting artifacts can be published to the
+Sonatype OSS repository, which synchronizes with the Maven Central Repository.
+*/
+
+  lazy val rootSettings = sonatypeSettings ++ Seq(
 
 /*
 Maven POM (project object model) metadata.
@@ -322,38 +351,34 @@ NOTES:
     listed in a project's POM file. If such artifacts are required, then uncomment the "pomIncludeRepository" setting so
     that the repositories from which they're referenced are ignored.
 3.  Maven metadata that is not defined by SBT properties must be defined in the "pomExtra" setting as XML.
-4.  Artifacts must be signed via GPG to be published to the Sonatype OSS Nexus. For security reasons (to prevent signing
-    of unauthorized), this must be configured locally on each release manager's machine. In this case, the software must
-    be signed using the key for "software@facsim.org" - with public key "797D614C". (If your version of Facsimile is
-    signed by a different key, then you do not have the official version.)
+4.  Artifacts must be signed via GPG to be published to the Sonatype OSS Nexus repository. For security reasons (to
+    prevent signing by unauthorized publishers), this must be configured locally on each release manager's machine. In
+    this case, the software must be signed using the key for "software@facsim.org" - with public key "797D614C". (If
+    your version of Facsimile is signed by a different key, then you do not have the official version.)
 
 We publish to the snapshots repository, if this is a snapshot, or to the releases staging repository if this is an
-official release (or a committed version - which seems wrong, right now).
+official release.
+
+TODO: We need to have Facsimile project-specific Issue sites. For now, we just use the main Facsimile project for all
+issues.
 */
 
-    normalizedName := projectArtifactId,
-    organization := projectGroupId,
-    name := projectName,
-    description := """
-      The Facsimile project's goal is to develop and maintain a high-quality, 3D, discrete-event simulation library that
-      can be used for industrial simulation projects in an engineering and/or manufacturing environment.
-
-      Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS, BSD and Unix on the Java virtual
-      machine.
-    """,
-    homepage := projectHomepage,
-    startYear := Some (projectStartDate.getYear),
+    normalizedName := facsimileProjId.value,
+    name := facsimileProjName.value,
+    description := facsimileProjDesc.value,
+    homepage := Some(url(facsimileProjHomePage.value)),
+    startYear := Some(facsimileProjStartDate.getYear),
     organizationName := "Michael J. Allen",
-    organizationHomepage := projectHomepage,
-    licenses := Seq (
-      "GNU Lesser General Public License version 3 (LGPLv3)" ->
-      url ("http://www.gnu.org/licenses/lgpl-3.0-standalone.html")
+    organizationHomepage := Some(url("http://facsim.org/")),
+    licenses := Seq(
+      "GNU Lesser General Public License version 3(LGPLv3)" ->
+      url("http://www.gnu.org/licenses/lgpl-3.0-standalone.html")
     ),
-    scmInfo := Some (
-      ScmInfo (
-        url ("https://github.com/Facsimile/facsimile"),
-        "scm:git:https://github.com/Facsimile/facsimile.git",
-        Some ("scm:git:https://github.com/Facsimile/facsimile.git")
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/Facsimile/" + facsimileProjId.value),
+        "scm:git:https://github.com/Facsimile/" + facsimileProjId.value + ".git",
+        Some("scm:git:https://github.com/Facsimile/" + facsimileProjId.value + ".git")
       )
     ),
     publishMavenStyle := true,
@@ -389,15 +414,14 @@ official release (or a committed version - which seems wrong, right now).
     </issueManagement>,
 
 /*
-Disable aggregation of the "doc" command, so that we do not attempt to generate documentation for "macros" and "core"
+Disable aggregation of the "doc" command, so that we do not attempt to generate documentation for sub-projects
 individually - we just rely on the Unidoc plugin to take care of that for us.
 */
 
     aggregate in doc := false,
 
 /*
-Disable aggregation of the "release" command, so that we do not attempt to release the "macros" and "core" subprojects
-individually.
+Disable aggregation of the "release" command, so that we do not attempt to release sub-projects individually.
 */
 
     //aggregate in releaseSignedConfiguration := false,
@@ -408,14 +432,13 @@ Scaladoc configuration.
 The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes.
 */
 
-    scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq (
+    scalacOptions in(ScalaUnidoc, UnidocKeys.unidoc) := Seq(
       "-diagrams",
       "-doc-footer",
-      "Copyright © " + projectStartDate.getYear + "-" + projectBuildDate.getYear + ", " + organizationName.value +
-      ". All rights reserved.",
+      "Copyright © " + copyrightRange + ", " + organizationName.value + ". All rights reserved.",
       "-doc-format:html",
       "-doc-title",
-      projectName + " API Documentation",
+      facsimileProjName.value + " API Documentation",
       "-doc-version",
       version.value,
       "-groups",
@@ -425,60 +448,42 @@ The -Ymacro-no-expand prevents macro definitions from being expanded in macro su
       "-Ymacro-expand:none"
     ),
     autoAPIMappings := true,
-    apiMappings += (
-      unmanagedBase.value / "jt.jar" -> url ("http://docs.oracle.com/javase/8/docs/api/")
+    apiMappings +=(
+      unmanagedBase.value / "jt.jar" -> url("http://docs.oracle.com/javase/8/docs/api/")
     ),
 
 /*
-Tell any dependent projects where to find published Facsimile API documentation to link to (via autoAPIMappings).
-
-This link will be published in the project's Maven POM file.
+Tell any dependent projects where to find published Facsimile API documentation to link to (via autoAPIMappings). This
+link will be published in the project's Maven POM file.
 
 Note: This documentation is versioned so that links will always be to the version of Facsimile in use by the dependent
 project.
 */
 
-    apiURL := Some (url ("http://facsim.org/Documentation/API/" + version.value)),
+    apiURL := Some(url(facsimileProjHomePage.value + "/Documentation/API/" + version.value)),
 
 /*
 Manifest additions for the main library jar file.
 
-The jar file should be sealed so that the org.facsim packages cannot be extended. We also add inception & build
-timestamps for manifest purposes.
+The jar file should be sealed so that the packages contained cannot be extended. We also add inception & build
+timestamps for information purposes.
 */
 
-    packageOptions in (Compile, packageBin) ++= Seq (
-      Package.ManifestAttributes (Name.SEALED -> "true"),
-      Package.ManifestAttributes ("Inception-Timestamp" -> projectStartDate.toString),
-      Package.ManifestAttributes ("Build-Timestamp" -> projectBuildDate.toString)
+    packageOptions in(Compile, packageBin) ++= Seq(
+      Package.ManifestAttributes(Name.SEALED -> "true"),
+      Package.ManifestAttributes("Inception-Timestamp" -> facsimileProjStartDate.toString),
+      Package.ManifestAttributes("Build-Timestamp" -> facsimileProjBuildDate.toString)
     ),
-
-/*
-Ensure that core and macro classes and sources are copied to the corresponding distribution jar files.
-*/
-
-    mappings in (Compile, packageBin) ++= mappings.in (macros, Compile, packageBin).value,
-    mappings in (Compile, packageBin) ++= mappings.in (core, Compile, packageBin).value,
-    mappings in (Compile, packageSrc) ++= mappings.in (macros, Compile, packageSrc).value,
-    mappings in (Compile, packageSrc) ++= mappings.in (core, Compile, packageSrc).value,
-
-/*
-Ensure that the root project is an Eclipse project too, but without any source directories.
-*/
-
-    EclipseKeys.skipParents in ThisBuild := false,
-    unmanagedSourceDirectories in Compile := Nil,
-    unmanagedSourceDirectories in Test := Nil,
 
 /*
 Employ the following custom release process.
 
 This differs from the standard sbt-release process in that:
- a) We must perform static source checking (using Scalastyle) before setting the release version.
- b) We employ the sbt-sonatype plugin to publish the project, which also takes care of signing published artifacts.
+a) We must perform static source checking (using Scalastyle) before setting the release version.
+b) We employ the sbt-sonatype plugin to publish the project, which also takes care of signing published artifacts.
 */
 
-    releaseProcess := Seq [ReleaseStep] (
+    releaseProcess := Seq[ReleaseStep](
 
 /*
 Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
@@ -508,7 +513,7 @@ Run the test suite, to verify that all tests pass.
 Run scalastyle to ensure that sources are correctly formatted and contain no static errors.
 */
 
-      ReleaseStep (action = Command.process ("testScalastyle", _)),
+      ReleaseStep(action = Command.process("testScalastyle", _)),
 
 /*
 Update the "Version.sbt" file so that it contains the release version number.
@@ -527,7 +532,7 @@ Commit and tag the release version.
 Sign the current version.
 */
 
-      ReleaseStep (action = Command.process ("publishSigned", _)),
+      ReleaseStep(action = Command.process("publishSigned", _)),
 
 /*
 Update the "Version.sbt" file so that it contains the new development version number.
@@ -545,7 +550,7 @@ Commit the updated working directory, so that the new development version takes 
 Publish the released version to the Sonatype OSS repository.
 */
 
-      ReleaseStep (action = Command.process ("sonatypeReleaseAll", _)),
+      ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
 
 /*
 Push all commits to the upstream respository (typically "origin").
@@ -566,44 +571,6 @@ Have the release plugin write current version information into Version.sbt, in t
 NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
 */
 
-    releaseVersionFile := file ("Version.sbt")
-  )).aggregate (core, macros)
-
-/**
-Core project.
-
-This is the sub-project containing the core library.
-
-This library is dependant upon the Macro sub-project.  (Scala currently requires that macro implementation code is
-compiled before code that uses the macro implementation is compiled.)
-*/
-
-  lazy val core = Project (projectArtifactId + "-core", file ("core"), settings = commonSourceSettings ++ Seq (
-
-/*
-Basic package information.
-*/
-
-    normalizedName := projectArtifactId + "-core",
-    organization := projectGroupId,
-    name := projectName + " Core"
-  )).dependsOn (macros % "test->test;compile->compile")
-
-/**
-Macro project.
-
-This is a sub-project that the primary project depends upon. (Scala currently requires that macro implementation code is
-compiled before code that uses the macro implementation is compiled.)
-*/
-
-  lazy val macros = Project (projectArtifactId + "-macro", file ("macro"), settings = baseSourceSettings ++ Seq (
-
-/*
-Basic package information.
-*/
-
-    normalizedName := projectArtifactId + "-macro",
-    organization := projectGroupId,
-    name := projectName + " Macros"
-  ))
+    releaseVersionFile := file("Version.sbt")
+  )
 }

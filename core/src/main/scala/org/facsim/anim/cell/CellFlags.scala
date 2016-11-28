@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Value class representing a ''cell'' element's flags.
 
@@ -45,12 +43,10 @@ value.
 
 @param flags ''Cell'' element's flags to be parsed.
 */
-//======================================================================================================================
 
-private [cell] final class CellFlags (val flags: Int)
+private[cell] final class CellFlags(val flags: Int)
 extends AnyVal {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''attributes present'' flag is set.
 
@@ -61,11 +57,8 @@ assigned.
 @return `true` if attributes are present in the ''cell'' definition; `false` if
 not.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def attributesPresent =(flags & 0x1) != 0
 
-  private [cell] def attributesPresent = (flags & 0x1) != 0
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''joint data present'' flag is set.
 
@@ -75,11 +68,8 @@ data; if clear, no joint data is present.
 @return `true` if joint data is present in the ''cell'' definition; `false` if
 not.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def jointDataPresent =(flags & 0x2) != 0
 
-  private [cell] def jointDataPresent = (flags & 0x2) != 0
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''geometry data present'' flag is set.
 
@@ -92,11 +82,8 @@ rotation and scaling data, rather than shape geometry.
 @return `true` if geometry data is present in the ''cell'' definition; `false`
 if not.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def geometryDataPresent =(flags & 0x4) != 0
 
-  private [cell] def geometryDataPresent = (flags & 0x4) != 0
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''geometry data in matrix form'' flag is set.
 
@@ -113,11 +100,8 @@ rotation and scaling data, rather than shape geometry.
 @return `true` if geometry data is in matrix form in the ''cell'' definition;
 `false` if in non-matrix form.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def geometryDataInMatrixForm =(flags & 0x8) != 0
 
-  private [cell] def geometryDataInMatrixForm = (flags & 0x8) != 0
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''colors inherited'' flag is set.
 
@@ -128,11 +112,8 @@ its parent.
 @return `true` if colors are inherited from the ''cell's'' parent; `false` if
 not.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def colorsInherited =(flags & 0x10) != 0
 
-  private [cell] def colorsInherited = (flags & 0x10) != 0
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether the ''bounding box present'' flag is set.
 
@@ -144,20 +125,15 @@ specification is provided.
 
 @return `true` if ''bounding box data'' is present; `false` if not.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def boundingBoxPresent = (flags & 0x40) != 0
+  private[cell] def boundingBoxPresent =(flags & 0x40) != 0
 }
 
-//======================================================================================================================
 /**
 CellFlags companion object.
 */
-//======================================================================================================================
 
-private [cell] object CellFlags {
+private[cell] object CellFlags {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read ''cell'' flags from data stream.
 
@@ -174,26 +150,24 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Flags.html
 Cell Flags]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
+  private[cell] def read(scene: CellScene) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Read the flags from the data stream.
 */
 
-    val flags = scene.readInt (LibResource ("anim.cell.CellFlags.read"))
+    val flags = scene.readInt(LibResource("anim.cell.CellFlags.read"))
 
 /*
 Convert to a line width and return.
 */
 
-    new CellFlags (flags)
+    new CellFlags(flags)
   }
 }

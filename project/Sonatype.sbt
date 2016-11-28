@@ -29,6 +29,12 @@
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
 // SBT file to simplify publication to the Sonatype OSS repository.
+//
+// NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
+// Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
+// merged into client projects. Refer to the skeleton project for further details:
+//
+//   https://github.com/Facsimile/skeleton
 //======================================================================================================================
 
-addSbtPlugin ("org.xerial.sbt" % "sbt-sonatype" % "0.5.0")
+addSbtPlugin ("org.xerial.sbt" % "sbt-sonatype" % "1.1")

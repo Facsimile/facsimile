@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 import scalafx.scene.text.{Text => SFXText}
 
-//======================================================================================================================
 /**
 Class representing a 3D point with move/draw flag.
 
@@ -56,26 +54,24 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] final class TextListPoint (scene: CellScene,
+private[cell] final class TextListPoint(scene: CellScene,
 textType: Text.Value)
-extends Point (scene, Point.TextList) {
+extends Point(scene, Point.TextList) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (textType)
+  assertNonNull(textType)
 
 /**
 Read the text from the stream.
 */
 
-  private val textValue = scene.readText (LibResource
-  ("anim.cell.TextListPoint.read", textType.id))
+  private val textValue = scene.readText(LibResource
+ ("anim.cell.TextListPoint.read", textType.id))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Convert this text list point to a text node.
 
@@ -83,22 +79,20 @@ Convert this text list point to a text node.
 
 @return A ''ScalaFX'' text node to be added to the ''cell'' scene.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def toTextNode (textList: TextList) = {
+  private[cell] def toTextNode(textList: TextList) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (textList)
+    assertNonNull(textList)
 
 /*
 Create the new text element.
 */
 
     new SFXText {
-      transforms = Seq (point.toTranslate)
+      transforms = Seq(point.toTranslate)
       stroke = textList.cellPaint
       text = textValue
     }

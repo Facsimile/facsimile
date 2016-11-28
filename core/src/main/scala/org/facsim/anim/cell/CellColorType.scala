@@ -30,20 +30,17 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Cell color type enumeration.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
 */
-//======================================================================================================================
 
-private [cell] object CellColorType
+private[cell] object CellColorType
 extends Enumeration {
 
 /**
@@ -52,7 +49,7 @@ Face.
 Associated color is a face color.
 */
 
-  private [cell] val Face = Value
+  private[cell] val Face = Value
 
 /**
 Edge.
@@ -60,5 +57,5 @@ Edge.
 Associated color is an edge color.
 */
 
-  private [cell] val Edge = Value
+  private[cell] val Edge = Value
 }

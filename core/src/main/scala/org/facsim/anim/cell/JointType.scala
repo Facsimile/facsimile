@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Joint type enumeration.
 
@@ -46,9 +44,8 @@ to the corresponding joint types.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/JointType.html
 Joint Type]]
 */
-//======================================================================================================================
 
-private [cell] object JointType
+private[cell] object JointType
 extends Enumeration {
 
 /**
@@ -58,33 +55,32 @@ TCFOnly, having the joint type 0.
 location to which ''AutoMod'' will attach loads and/or vehicles.
 */
 
-  private [cell] val TCFOnly = Value
+  private[cell] val TCFOnly = Value
 
 /**
 Rotational, having the joint type 1.
 */
 
-  private [cell] val Rotational = Value
+  private[cell] val Rotational = Value
 
 /**
 Translational, having the joint type 2.
 */
 
-  private [cell] val Translational = Value
+  private[cell] val Translational = Value
 
 /**
 Minimum joint type code value.
 */
 
-  private [cell] val minValue = 0
+  private[cell] val minValue = 0
 
 /**
 Maximum joint type code vlaue.
 */
 
-  private [cell] val maxValue = maxId - 1
+  private[cell] val maxValue = maxId - 1
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Verify a joint type code.
 
@@ -92,12 +88,9 @@ Verify a joint type code.
 
 @return `true` if the code maps to a valid joint type, `false` otherwise.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def verify (jointTypeCode: Int) = (jointTypeCode >= minValue
+  private[cell] def verify(jointTypeCode: Int) =(jointTypeCode >= minValue
   && jointTypeCode <= maxValue)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read joint type from ''cell'' data stream.
 
@@ -115,31 +108,28 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/JointType.html
 Joint Type]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
+  private[cell] def read(scene: CellScene) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Read the joint type code from the data stream.
 */
 
-    val code = scene.readInt (verify, LibResource ("anim.cell.JointType.read",
+    val code = scene.readInt(verify, LibResource("anim.cell.JointType.read",
     minValue, maxValue))
 
 /*
 Convert to a joint type and return.
 */
 
-    JointType (code)
+    JointType(code)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read joint ''cell'' data stream.
 
@@ -159,24 +149,22 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joint.html Cell
 Joint Data]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def readJoint (scene: CellScene, flags: CellFlags) = {
+  private[cell] def readJoint(scene: CellScene, flags: CellFlags) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Determine the type of joint to be read and create it.
 */
 
-    read (scene) match {
-      case TCFOnly => new NullJoint (scene, flags)
-      case Rotational => new RotationalJoint (scene, flags)
-      case Translational => new TranslationalJoint (scene, flags)
+    read(scene) match {
+      case TCFOnly => new NullJoint(scene, flags)
+      case Rotational => new RotationalJoint(scene, flags)
+      case Translational => new TranslationalJoint(scene, flags)
     }
   }
 }

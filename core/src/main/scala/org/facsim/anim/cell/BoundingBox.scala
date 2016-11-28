@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Bounding Box companion object.
 
@@ -44,9 +42,8 @@ Bounding Box companion object.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/BoundingBox.html
 Cell Bounding Box]]
 */
-//======================================================================================================================
 
-private [cell] object BoundingBox {
+private[cell] object BoundingBox {
 
 /**
 Read minimum value string resource key.
@@ -60,7 +57,6 @@ Read minimum value string resource key.
 
   val ReadMaxKey = "anim.cell.BoundingBox.read.max"
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read in bounding box data and verify it makes sense.
 
@@ -86,38 +82,36 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/BoundingBox.html
 Cell Bounding Box]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def read (scene: CellScene): Unit = {
+  final def read(scene: CellScene): Unit = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Read in the minimum and maximum X coordinate values. The maximum coordinate
 must be greater than the minimum coordinate.
 */
 
-    val minX = scene.readDouble (LibResource (ReadMinKey, 0))
-    scene.readDouble (_ >= minX, LibResource (ReadMaxKey, 0, minX))
+    val minX = scene.readDouble(LibResource(ReadMinKey, 0))
+    scene.readDouble(_ >= minX, LibResource(ReadMaxKey, 0, minX))
 
 /*
 Read in the minimum and maximum Y coordinate values. The maximum coordinate
 must be greater than the minimum coordinate.
 */
 
-    val minY = scene.readDouble (LibResource (ReadMinKey, 1))
-    scene.readDouble (_ >= minY, LibResource (ReadMaxKey, 1, minY))
+    val minY = scene.readDouble(LibResource(ReadMinKey, 1))
+    scene.readDouble(_ >= minY, LibResource(ReadMaxKey, 1, minY))
 
 /*
 Read in the minimum and maximum Z coordinate values. The maximum coordinate
 must be greater than the minimum coordinate.
 */
 
-    val minZ = scene.readDouble (LibResource (ReadMinKey, 2))
-    scene.readDouble (_ >= minZ, LibResource (ReadMaxKey, 2, minZ))
+    val minZ = scene.readDouble(LibResource(ReadMinKey, 2))
+    scene.readDouble(_ >= minZ, LibResource(ReadMaxKey, 2, minZ))
   }
 }

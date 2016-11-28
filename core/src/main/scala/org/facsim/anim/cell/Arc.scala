@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,7 +37,6 @@ import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
 import org.facsim.measure.Angle
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell arc & circle''
 primitives.
@@ -62,10 +60,9 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Arcs.html Arcs
 & Circles]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Arc (scene: CellScene, parent: Option [Set])
-extends Mesh2D (scene, parent) {
+private[cell] final class Arc(scene: CellScene, parent: Option[Set])
+extends Mesh2D(scene, parent) {
 
 /**
 Arc radius.
@@ -73,8 +70,8 @@ Arc radius.
 Arc radius, measured on the X-Y plane.
 */
 
-  private val radius = scene.readDouble (_ >= 0.0,
-  LibResource (Arc.ReadDimKey, 0))
+  private val radius = scene.readDouble(_ >= 0.0,
+  LibResource(Arc.ReadDimKey, 0))
 
 /**
 Arc start angle.
@@ -82,8 +79,8 @@ Arc start angle.
 The starting angle for this arc. This may be any valid double value.
 */
 
-  private val startAngle = Angle (scene.readDouble (LibResource
-  (Arc.ReadAngleKey, 0)), Angle.Degrees).normalize
+  private val startAngle = Angle(scene.readDouble(LibResource
+ (Arc.ReadAngleKey, 0)), Angle.Degrees).normalize
 
 /**
 Arc end angle.
@@ -91,8 +88,8 @@ Arc end angle.
 This is the end angle for this arc. This may be any valid double value.
 */
 
-  private val endAngle = Angle (scene.readDouble (LibResource
-  (Arc.ReadAngleKey, 1)), Angle.Degrees).normalize
+  private val endAngle = Angle(scene.readDouble(LibResource
+ (Arc.ReadAngleKey, 1)), Angle.Degrees).normalize
 
 /**
 Flag indicating whether this is a circle or a sector/arc.
@@ -102,31 +99,26 @@ If both start and end angle are 0 radians, then the.
 
   private val isCircle = startAngle == Angle.Zero && endAngle == Angle.Zero
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note The origin of the arc is the center of as the circle of which it is a
 part.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh = {
-    val drawAngle = if (isCircle) {
+  protected[cell] override def cellMesh: Mesh = {
+    val drawAngle = if(isCircle) {
       Angle.τ
     }
     else {
-      (endAngle - startAngle).normalize
+     (endAngle - startAngle).normalize
     }
-    Mesh.arc (Point3D.Origin, radius, startAngle, drawAngle, Arc.Divisions)
+    Mesh.arc(Point3D.Origin, radius, startAngle, drawAngle, Arc.Divisions)
   }
 }
 
-//======================================================================================================================
 /**
 Arc companion object.
 */
-//======================================================================================================================
 
 private object Arc {
 

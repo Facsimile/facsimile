@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Abstract class for primitives that reference or contain files in other 3D
 formats.
@@ -64,7 +62,6 @@ File References]] & [[
 http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledEmbedded.html
 Embedded Files]] for further information.
 */
-//======================================================================================================================
 
-private [cell] abstract class File (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent)
+private[cell] abstract class File(scene: CellScene, parent: Option[Set])
+extends Cell(scene, parent)

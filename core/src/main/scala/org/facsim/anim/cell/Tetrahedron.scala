@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell tetrahedron''
 primitives.
@@ -71,10 +69,9 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Tetrahedron.html
 Tetrahedra]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Tetrahedron (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+private[cell] final class Tetrahedron(scene: CellScene, parent: Option[Set])
+extends Mesh3D(scene, parent) {
 
 /**
 Tetrahedron base dimension.
@@ -83,8 +80,8 @@ Base side dimension of the equilateral triangle forming the base of the
 tetrahedron, measured on the X-Y plane.
 */
 
-  private val baseDim = scene.readDouble (_ >= 0.0, LibResource
-  (Tetrahedron.ReadDimKey, 0))
+  private val baseDim = scene.readDouble(_ >= 0.0, LibResource
+ (Tetrahedron.ReadDimKey, 0))
 
 /**
 Tetrahedron top dimension.
@@ -93,8 +90,8 @@ Top side dimension of the equilateral triangle forming the top of the
 tetrahedron, measured on the X-Y plane.
 */
 
-  private val topDim = scene.readDouble (_ >= 0.0, LibResource
-  (Tetrahedron.ReadDimKey, 1))
+  private val topDim = scene.readDouble(_ >= 0.0, LibResource
+ (Tetrahedron.ReadDimKey, 1))
 
 /**
 Tetrahedron height (Z-dimension).
@@ -102,41 +99,36 @@ Tetrahedron height (Z-dimension).
 Height of the tetrahedron measured along the Z-Axis.
 */
 
-  private val height = scene.readDouble (_ >= 0.0, LibResource
-  (Tetrahedron.ReadDimKey, 2))
+  private val height = scene.readDouble(_ >= 0.0, LibResource
+ (Tetrahedron.ReadDimKey, 2))
 
 /**
 Tetrahedron top X-axis offset.
 */
 
-  private val xOffset = scene.readDouble (LibResource
-  (Tetrahedron.ReadOffsetKey, 0))
+  private val xOffset = scene.readDouble(LibResource
+ (Tetrahedron.ReadOffsetKey, 0))
 
 /**
 Tetrahedron top Y-axis offset.
 */
 
-  private val yOffset = scene.readDouble (LibResource
-  (Tetrahedron.ReadOffsetKey, 1))
+  private val yOffset = scene.readDouble(LibResource
+ (Tetrahedron.ReadOffsetKey, 1))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note The origin of the tetrahedron is at its center of its base.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh =
-  Mesh.triangularFrustum (Point3D.Origin, baseDim,
-  Point3D (xOffset, yOffset, height), topDim)
+  protected[cell] override def cellMesh: Mesh =
+  Mesh.triangularFrustum(Point3D.Origin, baseDim,
+  Point3D(xOffset, yOffset, height), topDim)
 }
 
-//======================================================================================================================
 /**
 Tetrahedron companion object.
 */
-//======================================================================================================================
 
 private object Tetrahedron {
 

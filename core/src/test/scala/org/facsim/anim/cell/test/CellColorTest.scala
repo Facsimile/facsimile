@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell.test package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell.test
 
@@ -39,11 +38,9 @@ import org.scalatest.FunSpec
 import scalafx.scene.paint.Color
 import scalafx.scene.paint.PhongMaterial
 
-//======================================================================================================================
 /**
 Test suite for the [[org.facsim.anim.cell.CellColor$]] object.
 */
-//======================================================================================================================
 
 class CellColorTest extends FunSpec {
 
@@ -53,7 +50,7 @@ Test data.
 
   trait TestData {
     val validCodes = CellColor.minValue to CellColor.maxValue
-    val validCellColors = Vector [CellColor.Value] (
+    val validCellColors = Vector[CellColor.Value](
       CellColor.Black,
       CellColor.Red,
       CellColor.Green,
@@ -71,7 +68,7 @@ Test data.
       CellColor.LightGreen,
       CellColor.LightYellow
     )
-    val validFXColors = Vector [Color] (
+    val validFXColors = Vector[Color](
       Color.Black,
       Color.Red,
       Color.Green,
@@ -89,7 +86,7 @@ Test data.
       Color.LightGreen,
       Color.LightYellow
     )
-    val invalidCodes = List (Int.MinValue, CellColor.minValue - 1,
+    val invalidCodes = List(Int.MinValue, CellColor.minValue - 1,
     CellColor.maxValue + 1, Int.MaxValue)
   }
 
@@ -97,27 +94,27 @@ Test data.
 Test fixture description.
 */
 
-  describe (CellColor.getClass.getCanonicalName) {
+  describe(CellColor.getClass.getCanonicalName) {
 
 /*
 Test the apply function works as expected.
 */
 
-    describe (".apply (Int)") {
+    describe(".apply(Int)") {
       new TestData {
-        it ("must throw a java.util.NoSuchElementException if passed an " +
+        it("must throw a NoSuchElementException if passed an " +
         "invalid color code") {
           invalidCodes.foreach {
             code =>
-            intercept [NoSuchElementException] {
-              CellColor (code)
+            intercept[NoSuchElementException] {
+              CellColor(code)
             }
           }
         }
-        it ("must return the correct color if passed a valid color code") {
+        it("must return the correct color if passed a valid color code") {
           validCodes.foreach {
             code =>
-            assert (CellColor (code) === validCellColors (code))
+            assert(CellColor(code) === validCellColors(code))
           }
         }
       }
@@ -127,10 +124,10 @@ Test the apply function works as expected.
 Test that the default color is reported correctly.
 */
 
-    describe (".Default") {
-      it ("must be Red") {
+    describe(".Default") {
+      it("must be Red") {
         val defaultColor = CellColor.Default
-        assert (CellColor.Default == CellColor.Red)
+        assert(CellColor.Default == CellColor.Red)
       }
     }
 
@@ -138,18 +135,18 @@ Test that the default color is reported correctly.
 Test the verify function works as expected.
 */
 
-    describe (".verify (Int)") {
+    describe(".verify(Int)") {
       new TestData {
-        it ("must return false if passed an invalid color code") {
+        it("must return false if passed an invalid color code") {
           invalidCodes.foreach {
             code =>
-            assert (CellColor.verify (code) === false)
+            assert(CellColor.verify(code) === false)
           }
         }
-        it ("must return true if passed a valid color code") {
+        it("must return true if passed a valid color code") {
           validCodes.foreach {
             code =>
-            assert (CellColor.verify (code) === true)
+            assert(CellColor.verify(code) === true)
           }
         }
       }
@@ -159,12 +156,12 @@ Test the verify function works as expected.
 Test that the toColor function works as expected.
 */
 
-    describe (".toColor (CellColor.Value)") {
+    describe(".toColor(CellColor.Value)") {
       new TestData {
-        it ("must return correct associated ScalaFX color") {
+        it("must return correct associated ScalaFX color") {
           CellColor.values.foreach {
             color =>
-            assert (CellColor.toColor (color) === validFXColors (color.id))
+            assert(CellColor.toColor(color) === validFXColors(color.id))
           }
         }
       }
@@ -174,17 +171,17 @@ Test that the toColor function works as expected.
 Test that the toMaterial function works as expected.
 */
 
-    describe (".toMaterial (CellColor.Value)") {
+    describe(".toMaterial(CellColor.Value)") {
       new TestData {
-        it ("must return correct associated ScalaFX material") {
+        it("must return correct associated ScalaFX material") {
           CellColor.values.foreach {
             color =>
-            val material = CellColor.toMaterial (color)
+            val material = CellColor.toMaterial(color)
             // This is very fugly - update ScalaFX accordingly?
-            assert (material.diffuseColor.value ===
-            Color.sfxColor2jfx (validFXColors (color.id)))
-            assert (material.specularColor.value ===
-            Color.sfxColor2jfx (Color.White))
+            assert(material.diffuseColor.value ===
+            Color.sfxColor2jfx(validFXColors(color.id)))
+            assert(material.specularColor.value ===
+            Color.sfxColor2jfx(Color.White))
           }
         }
       }

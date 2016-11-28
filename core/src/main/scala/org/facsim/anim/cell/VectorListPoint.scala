@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 
-//======================================================================================================================
 /**
 Class representing a 3D point with move/draw flag.
 
@@ -56,10 +54,9 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] final class VectorListPoint (scene: CellScene, isFirst:Boolean)
-extends Point (scene, Point.VectorList) {
+private[cell] final class VectorListPoint(scene: CellScene, isFirst:Boolean)
+extends Point(scene, Point.VectorList) {
 
 /**
 Read the point's move/draw flag.
@@ -74,6 +71,6 @@ be a move point.
 Nor do we verify whether this point differs from the last point.
 */
 
-  private val isDrawTo = scene.readBool (_ == 0 || !isFirst, LibResource
-  ("anim.cell.VectorListPoint.read"))
+  private val isDrawTo = scene.readBool(_ == 0 || !isFirst, LibResource
+ ("anim.cell.VectorListPoint.read"))
 }

@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
-//======================================================================================================================
 
 package org.facsim.engine
 
 import org.facsim.LibResource
 
-//======================================================================================================================
 /**
 Thrown if an attempt is made to execute a null action.
 
@@ -47,16 +45,12 @@ run and treated accordingly.
 
 @since 0.0
 */
-//======================================================================================================================
 
-final class NullActionException private [facsim]
+final class NullActionException private[facsim]
 extends RuntimeException {
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 @see [[java.lang.Throwable!.getMessage()]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  override def getMessage =  LibResource ("engine.NullAction")
+  override def getMessage =  LibResource("engine.NullAction")
 }

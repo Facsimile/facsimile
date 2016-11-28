@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Class representing attributes belonging to a cell.
 
@@ -55,9 +53,8 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] final class Attributes (scene: CellScene, flags: CellFlags)
+private[cell] final class Attributes(scene: CellScene, flags: CellFlags)
 extends CellAttributes {
 
 /**
@@ -79,13 +76,13 @@ color value.
 @inheritdoc
 */
 
-  private [cell] override val faceColor = readColor (CellColorType.Face)
+  private[cell] override val faceColor = readColor(CellColorType.Face)
 
 /**
 @inheritdoc
 */
 
-  private [cell] override val edgeColor = readColor (CellColorType.Edge)
+  private[cell] override val edgeColor = readColor(CellColorType.Edge)
 
 /**
 @inheritdoc
@@ -93,8 +90,8 @@ color value.
 If attributes are present, read the line type, otherwise use the default.
 */
 
-  private [cell] override val lineStyle =
-  if (attributesPresent) LineStyle.read (scene)
+  private[cell] override val lineStyle =
+  if(attributesPresent) LineStyle.read(scene)
   else LineStyle.Default
 
 /**
@@ -103,8 +100,8 @@ If attributes are present, read the line type, otherwise use the default.
 If attributes are present, read the line width, otherwise use the default.
 */
 
-  private [cell] override val lineWidth =
-  if (attributesPresent) LineWidth.read (scene)
+  private[cell] override val lineWidth =
+  if(attributesPresent) LineWidth.read(scene)
   else LineWidth.default
 
 /**
@@ -113,8 +110,8 @@ If attributes are present, read the line width, otherwise use the default.
 If attributes are present, read the line width, otherwise use the default.
 */
 
-  private [cell] override val displayStyle =
-  if (attributesPresent) DisplayStyle.read (scene)
+  private[cell] override val displayStyle =
+  if(attributesPresent) DisplayStyle.read(scene)
   else DisplayStyle.Default
 
 /**
@@ -123,14 +120,13 @@ If attributes are present, read the line width, otherwise use the default.
 If attributes are present, read the name; otherwise, this cell has no name.
 */
 
-  private [cell] override val name =
-  if (attributesPresent) {
-    Some (scene.readString (value => value != "", LibResource
-    ("anim.cell.Attributes.nameDesc")))
+  private[cell] override val name =
+  if(attributesPresent) {
+    Some(scene.readString(value => value != "", LibResource
+   ("anim.cell.Attributes.nameDesc")))
   }
   else None
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to determine the required color.
 
@@ -154,31 +150,29 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private def readColor (colorType: CellColorType.Value) = {
+  private def readColor(colorType: CellColorType.Value) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (colorType)
+    assertNonNull(colorType)
 
 /*
 If attributes are present, then we must read them from the file - even if we're
 inheriting the color from the parent ''cell''.
 */
 
-    if (attributesPresent) {
-      val color = CellColor.read (scene, colorType)
+    if(attributesPresent) {
+      val color = CellColor.read(scene, colorType)
 
 /*
 If we're inheriting color, then - no matter what color code we just read - the
 color is None. Otherwise, we use the color associated with the color code.
 */
 
-      if (inheritColors) None
-      else Some (color)
+      if(inheritColors) None
+      else Some(color)
     }
 
 /*
@@ -188,8 +182,8 @@ color otherwise.
 */
 
     else {
-      if (inheritColors) None
-      else Some (CellColor.Default)
+      if(inheritColors) None
+      else Some(CellColor.Default)
     }
   }
 }

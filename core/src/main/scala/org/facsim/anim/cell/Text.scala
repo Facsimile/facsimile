@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,7 +37,6 @@ import org.facsim.{assertNonNull, LibResource}
 import scalafx.scene.Group
 import scalafx.scene.text.{Text => SFXText}
 
-//======================================================================================================================
 /**
 Abstract class for all ''cell text'' primitives (except for ''cell text list''
 primitives).
@@ -64,35 +62,31 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
 Text]] for further information.
 */
-//======================================================================================================================
 
-private [cell] abstract class Text (scene: CellScene, parent: Option [Set],
+private[cell] abstract class Text(scene: CellScene, parent: Option[Set],
 textType: Text.Value)
-extends Cell (scene, parent) {
+extends Cell(scene, parent) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (textType)
+  assertNonNull(textType)
 
 /**
 Read the text from the stream.
 */
 
-  private final val textValue = scene.readText (LibResource
-  ("anim.cell.Text.read", textType.id))
+  private final val textValue = scene.readText(LibResource
+ ("anim.cell.Text.read", textType.id))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note We currently render ''World'' and ''Unrotate'' text types as World text,
 and do not render ''Screen'' text.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] final override def toNode = {
+  private[cell] final override def toNode = {
 
 /*
 We render World text correctly, but, due to current limitations in the
@@ -134,15 +128,13 @@ The text to be displayed.
   }
 }
 
-//======================================================================================================================
 /**
 Text companion object and text type enumeration.
 
 This type enumeration is used for [[org.facsim.anim.cell.TestList!]]s as well.
 */
-//======================================================================================================================
 
-private [cell] object Text
+private[cell] object Text
 extends Enumeration {
 
 /**
@@ -151,7 +143,7 @@ Screen text type.
 Screen text is mapped to the viewing screen.
 */
 
-  private [cell] val Screen = Value
+  private[cell] val Screen = Value
 
 /**
 Unrotate text type.
@@ -159,7 +151,7 @@ Unrotate text type.
 Unrotate text is always displayed facing the viewer.
 */
 
-  private [cell] val Unrotate = Value
+  private[cell] val Unrotate = Value
 
 /**
 World text type.
@@ -167,5 +159,5 @@ World text type.
 World text is displayed ''in situ'' as part of the 3D scene.
 */
 
-  private [cell] val World = Value
+  private[cell] val World = Value
 }

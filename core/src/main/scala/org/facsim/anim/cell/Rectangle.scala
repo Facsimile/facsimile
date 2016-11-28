@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -39,7 +38,6 @@ import org.facsim.anim.Mesh
 import org.facsim.anim.Point3D
 import org.facsim.anim.TexturePoint
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell rectangle''
 primitives.
@@ -65,10 +63,9 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rectangles.html
 Rectangles]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Rectangle (scene: CellScene, parent: Option [Set])
-extends Mesh2D (scene, parent) {
+private[cell] final class Rectangle(scene: CellScene, parent: Option[Set])
+extends Mesh2D(scene, parent) {
 
 /**
 Rectangle Y-axis dimension.
@@ -80,8 +77,8 @@ although most people would refer to it as the ''depth'' or ''width''. Here, we
 refer to it as the Y-axis dimension to avoid confusion.
 */
 
-  private val yDim = scene.readDouble (_ >= 0.0, LibResource
-  (Rectangle.ReadDimKey, 1))
+  private val yDim = scene.readDouble(_ >= 0.0, LibResource
+ (Rectangle.ReadDimKey, 1))
 
 /**
 Rectangle X-axis dimension.
@@ -93,22 +90,21 @@ although most people would refer to it as the ''length''. Here, we refer to it
 as the X-axis dimension to avoid confusion.
 */
 
-  private val xDim = scene.readDouble (_ >= 0.0, LibResource
-  (Rectangle.ReadDimKey, 0))
+  private val xDim = scene.readDouble(_ >= 0.0, LibResource
+ (Rectangle.ReadDimKey, 0))
 
 /*
 Read, but discard, the X-axis offset.
 */
 
-  scene.readDouble (LibResource (Rectangle.ReadOffsetKey, 0))
+  scene.readDouble(LibResource(Rectangle.ReadOffsetKey, 0))
 
 /*
 Read, but discard, the Y-axis offset.
 */
 
-  scene.readDouble (LibResource (Rectangle.ReadOffsetKey, 1))
+  scene.readDouble(LibResource(Rectangle.ReadOffsetKey, 1))
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 Create an arc mesh to represent this cell and return it.
 
@@ -118,9 +114,7 @@ The origin of the cell is at its center.
 
 @see [[org.facsim.anim.cell.Mesh3D.cellMesh]].
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh = {
+  protected[cell] override def cellMesh: Mesh = {
 
 /*
 Create the necessary X and Y plane coordinates.
@@ -135,17 +129,15 @@ Create the necessary X and Y plane coordinates.
 Create and return the quadrilateral using these coordinates.
 */
 
-    Mesh.quadrilateral (Point3D (xl, yt, 0.0), Point3D (xl, yb, 0.0),
-    Point3D (xr, yb, 0.0), Point3D (xr, yt, 0.0), TexturePoint.Origin,
+    Mesh.quadrilateral(Point3D(xl, yt, 0.0), Point3D(xl, yb, 0.0),
+    Point3D(xr, yb, 0.0), Point3D(xr, yt, 0.0), TexturePoint.Origin,
     TexturePoint.BottomRight)
   }
 }
 
-//======================================================================================================================
 /**
 Rectangle companion object.
 */
-//======================================================================================================================
 
 private object Rectangle {
 

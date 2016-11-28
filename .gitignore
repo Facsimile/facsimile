@@ -33,6 +33,12 @@
 # Tells git to ignore files matching the listed patterns.
 #
 # Note that files that are already tracked explicitly by git are unaffected by the settings in this file.
+#
+# NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
+# Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
+# merged into client projects. Refer to the skeleton project for further details:
+#
+#   https://github.com/Facsimile/skeleton
 #=======================================================================================================================
 
 # List ignored files alphabetically, if possible.

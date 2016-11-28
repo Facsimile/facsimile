@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scala.annotation.tailrec
 
-//======================================================================================================================
 /**
 Abstract class for primitives that have children.
 
@@ -60,19 +58,17 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
 Sets]]
 */
-//======================================================================================================================
 
-private [cell] abstract class SetWithChildren (scene: CellScene,
-parent: Option [Set])
-extends Set (scene, parent) {
+private[cell] abstract class SetWithChildren(scene: CellScene,
+parent: Option[Set])
+extends Set(scene, parent) {
 
 /**
 Determine the number of children and read them in.
 */
 
-  private val childCells = readChildren ()
+  private val childCells = readChildren()
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read in the children of the set and return them.
 
@@ -88,9 +84,7 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
 Sets]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private final def readChildren () = {
+  private final def readChildren() = {
 
 /**
 Helper function to read the next child from the list.
@@ -99,9 +93,9 @@ NOTE: The list will contain children defined in reserve order.
 */
 
     @tailrec
-    def readChild (count: Int, children: List [Cell]): List [Cell] = {
-      if (count == 0) children
-      else readChild (count - 1, scene.readNextCell (Some (this), false) ::
+    def readChild(count: Int, children: List[Cell]): List[Cell] = {
+      if(count == 0) children
+      else readChild(count - 1, scene.readNextCell(Some(this), false) ::
       children)
     }
 
@@ -110,21 +104,18 @@ Read in the number of children from the data stream. This must be a value that
 is >= 0.
 */
 
-    val numChildren = scene.readInt (_ >= 0, LibResource
-    ("anim.cell.Set.readChildren"))
+    val numChildren = scene.readInt(_ >= 0, LibResource
+   ("anim.cell.Set.readChildren"))
 
 /*
 Build the list of children and return it.
 */
 
-    readChild (numChildren, Nil).reverse
+    readChild(numChildren, Nil).reverse
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.Set!.getChildren]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def getChildren = childCells
+  protected[cell] override def getChildren = childCells
 }

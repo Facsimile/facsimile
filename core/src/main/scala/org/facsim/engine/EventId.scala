@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
-//======================================================================================================================
 
 package org.facsim.engine
 
-//======================================================================================================================
 /**
 EventId object.
 
@@ -51,9 +49,8 @@ the visibility of the object generally, while also ensuring that the
 may not even need this object in future ''Facsimile'' releases, so hiding it as
 much as possible makes even more sense.
 */
-//======================================================================================================================
 
-private [engine] object EventId {
+private[engine] object EventId {
 
 /**
 Identifier of the last event created.
@@ -70,7 +67,7 @@ Retrieve the identifier of the next event created.
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  private [engine] def nextId = synchronized {
+  private[engine] def nextId = synchronized {
 
 /*
 Increment the ID by 1 and return it.

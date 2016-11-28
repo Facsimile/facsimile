@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell cone''
 primitives.
@@ -61,10 +59,9 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Cones.html
 Cones]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Cone (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+private[cell] final class Cone(scene: CellScene, parent: Option[Set])
+extends Mesh3D(scene, parent) {
 
 /**
 Cone radius.
@@ -72,8 +69,8 @@ Cone radius.
 Base side radius, measured on the X-Y plane.
 */
 
-  private val radius = scene.readDouble (_ >= 0.0,
-  LibResource (Cone.ReadDimKey, 0))
+  private val radius = scene.readDouble(_ >= 0.0,
+  LibResource(Cone.ReadDimKey, 0))
 
 /**
 Cone height (Z-dimension).
@@ -81,38 +78,33 @@ Cone height (Z-dimension).
 Height of the cone measured along the Z-Axis.
 */
 
-  private val height = scene.readDouble (_ >= 0.0,
-  LibResource (Cone.ReadDimKey, 1))
+  private val height = scene.readDouble(_ >= 0.0,
+  LibResource(Cone.ReadDimKey, 1))
 
 /**
 Cone top X-axis offset.
 */
 
-  private val xOffset = scene.readDouble (LibResource (Cone.ReadOffsetKey, 0))
+  private val xOffset = scene.readDouble(LibResource(Cone.ReadOffsetKey, 0))
 
 /**
 Cone top Y-axis offset.
 */
 
-  private val yOffset = scene.readDouble (LibResource (Cone.ReadOffsetKey, 1))
+  private val yOffset = scene.readDouble(LibResource(Cone.ReadOffsetKey, 1))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note The origin of the cone is at the center of its base.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh = Mesh.cone (Point3D.Origin,
-  radius, Point3D (xOffset, yOffset, height), Cone.Divisions)
+  protected[cell] override def cellMesh: Mesh = Mesh.cone(Point3D.Origin,
+  radius, Point3D(xOffset, yOffset, height), Cone.Divisions)
 }
 
-//======================================================================================================================
 /**
 Cone companion object.
 */
-//======================================================================================================================
 
 private object Cone {
 

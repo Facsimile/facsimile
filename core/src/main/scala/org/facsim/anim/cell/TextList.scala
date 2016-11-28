@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,7 +37,6 @@ import org.facsim.{assertNonNull, LibResource}
 import scala.annotation.tailrec
 import scalafx.scene.Group
 
-//======================================================================================================================
 /**
 Abstract class for all ''cell text list'' primitives (except for ''cell text''
 primitives).
@@ -64,17 +62,16 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
 Test Lists]] for further information.
 */
-//======================================================================================================================
 
-private [cell] abstract class TextList (scene: CellScene, parent: Option [Set],
+private[cell] abstract class TextList(scene: CellScene, parent: Option[Set],
 textType: Text.Value)
-extends Cell (scene, parent) {
+extends Cell(scene, parent) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (textType)
+  assertNonNull(textType)
 
 /*
 Read the text lists.
@@ -82,18 +79,15 @@ Read the text lists.
 Each text list is prefixed by a set of translation co-ordinates.
 */
 
-  private val textList = TextList.read (scene, textType)
+  private val textList = TextList.read(scene, textType)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note We currently render ''World'' and ''Unrotate'' text types as World text,
 and do not render ''Screen'' text.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] final override def toNode = {
+  private[cell] final override def toNode = {
     val thisTextList = this
 
 /*
@@ -124,21 +118,18 @@ Apply the required transformations to the node.
 Add the text points to the group as nodes.
 */
 
-        children = textList.map (_.toTextNode (thisTextList))
+        children = textList.map(_.toTextNode(thisTextList))
       }
     }
   }
 }
 
-//======================================================================================================================
 /**
 TextList companion object.
 */
-//======================================================================================================================
 
 private object TextList {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read text list data from the stream.
 
@@ -154,16 +145,14 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private def read (scene: CellScene, textType: Text.Value) = {
+  private def read(scene: CellScene, textType: Text.Value) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
-    assertNonNull (textType)
+    assertNonNull(scene)
+    assertNonNull(textType)
 
 /*
 Helper function to read the next text point from the data stream.
@@ -172,12 +161,12 @@ Note that, due to the need for tail recursion, the list is built in reverse.
 */
 
     @tailrec
-    def readPoint (count: Int, points: List [TextListPoint]): List
-    [TextListPoint] = {
-      if (count == 0) points
+    def readPoint(count: Int, points: List[TextListPoint]): List
+   [TextListPoint] = {
+      if(count == 0) points
       else {
-        val point = new TextListPoint (scene, textType)
-        readPoint (count - 1, point :: points)
+        val point = new TextListPoint(scene, textType)
+        readPoint(count - 1, point :: points)
       }
     }
 
@@ -185,14 +174,14 @@ Note that, due to the need for tail recursion, the list is built in reverse.
 Read the number of points from the data stream. This value must be at least 1.
 */
 
-    val numPoints = scene.readInt (_ > 0, LibResource
-    ("anim.cell.TextList.read", textType.id))
+    val numPoints = scene.readInt(_ > 0, LibResource
+   ("anim.cell.TextList.read", textType.id))
 
 /*
 Return the list of points read, reversing the list order so that they are put
 back into the original order.
 */
 
-    readPoint (numPoints, Nil).reverse
+    readPoint(numPoints, Nil).reverse
   }
 }

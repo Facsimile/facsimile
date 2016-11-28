@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -39,7 +38,6 @@ import scalafx.Includes._
 import scalafx.scene.Node
 import scalafx.scene.paint.Color
 
-//======================================================================================================================
 /**
 Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
 primitives.
@@ -63,18 +61,17 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod Cell
 File Format]] for further information.
 */
-//======================================================================================================================
 
-private [cell] abstract class Cell (scene: CellScene,
-private val parent: Option [Set])
+private[cell] abstract class Cell(scene: CellScene,
+private val parent: Option[Set])
 extends CellAttributes {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (scene)
-  assertNonNull (parent)
+  assertNonNull(scene)
+  assertNonNull(parent)
 
 /**
 Cell flags.
@@ -87,7 +84,7 @@ inherited from the cell's parent.
 AutoMod Cell Flags]]
 */
 
-  private final val flags = CellFlags.read (scene)
+  private final val flags = CellFlags.read(scene)
 
 /*
 Process bounding box data, if present.
@@ -95,7 +92,7 @@ Process bounding box data, if present.
 If bounding box date is present, we must read it, but will ignore it.
 */
 
-  if (flags.boundingBoxPresent) BoundingBox.read (scene)
+  if(flags.boundingBoxPresent) BoundingBox.read(scene)
 
 /**
 Cell attributes.
@@ -103,7 +100,7 @@ Cell attributes.
 Determine the cell's attribute values.
 */
 
-  private final val attrs = new Attributes (scene, flags)
+  private final val attrs = new Attributes(scene, flags)
 
 /**
 Cell joint data.
@@ -115,7 +112,7 @@ doesn't matter too much if non-Sets do too.
 */
 
   private final val joint =
-  if (flags.jointDataPresent) Some (JointType.readJoint (scene, flags))
+  if(flags.jointDataPresent) Some(JointType.readJoint(scene, flags))
   else None
 
 /**
@@ -123,7 +120,7 @@ Cell transformation data.
 */
 
   private final val transformation =
-  if (flags.geometryDataPresent) Some (new Transformation (scene,
+  if(flags.geometryDataPresent) Some(new Transformation(scene,
   flags.geometryDataInMatrixForm))
   else None
 
@@ -131,55 +128,48 @@ Cell transformation data.
 @inheritdoc
 */
 
-  private [cell] final override val lineStyle = attrs.lineStyle
+  private[cell] final override val lineStyle = attrs.lineStyle
 
 /**
 @inheritdoc
 */
 
-  private [cell] final override val lineWidth = attrs.lineWidth
+  private[cell] final override val lineWidth = attrs.lineWidth
 
 /**
 @inheritdoc
 */
 
-  private [cell] final override val displayStyle = attrs.displayStyle
+  private[cell] final override val displayStyle = attrs.displayStyle
 
 /**
 @inheritdoc
 */
 
-  private [cell] final override val name = attrs.name
+  private[cell] final override val name = attrs.name
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Face color of the parent.
 
 @return If we have a parent, then return it's face color. Otherwise, we return
 the scene's default face color as an option.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private final def parentFaceColor: Option [CellColor.Value] = parent match {
-    case Some (parentCell) => parentCell.faceColor
+  private final def parentFaceColor: Option[CellColor.Value] = parent match {
+    case Some(parentCell) => parentCell.faceColor
     case None => scene.defaultFaceColor
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Edge color of the parent.
 
 @return If we have a parent, then return it's edge color. Otherwise, we return
 the scene's default edge color as an option.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private final def parentEdgeColor: Option [CellColor.Value] = parent match {
-    case Some (parentCell) => parentCell.edgeColor
+  private final def parentEdgeColor: Option[CellColor.Value] = parent match {
+    case Some(parentCell) => parentCell.edgeColor
     case None => scene.defaultEdgeColor
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
@@ -189,12 +179,9 @@ Face color is determined thus:
     color.
   - Otherwise, use this scene's default face color.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] final override def faceColor =
+  attrs.faceColor.orElse(parentFaceColor)
 
-  private [cell] final override def faceColor =
-  attrs.faceColor.orElse (parentFaceColor)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
@@ -204,25 +191,19 @@ Edge color is determined thus:
     color.
   - Otherwise, use this scene's default edge color.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] final override def edgeColor =
+  attrs.edgeColor.orElse(parentEdgeColor)
 
-  private [cell] final override def edgeColor =
-  attrs.edgeColor.orElse (parentEdgeColor)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report whether this cell is wireframe or not.
 
 @return `true` if the cell is drawn in wireframe mode, `false` if solid (with
 varying degrees of transparency.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  protected [cell] final def isWireframe =
+  protected[cell] final def isWireframe =
   attrs.displayStyle == DisplayStyle.Wireframe
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Color of this cell.
 
@@ -232,13 +213,10 @@ otherwise, with face color.
 @return Cell color with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] final def color =
-  if (isWireframe) edgeColor.get
+  private[cell] final def color =
+  if(isWireframe) edgeColor.get
   else faceColor.get
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Color of this cell, as a ''ScalaFX'' color.
 
@@ -248,11 +226,8 @@ otherwise, with face color.
 @return Cell color with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] final def cellColor = CellColor.toColor(color)
 
-  private [cell] final def cellColor = CellColor.toColor (color)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Color of this cell, as a ''ScalaFX'' material.
 
@@ -264,11 +239,8 @@ otherwise, with face color.
 @return Material with which the cell is to be drawn. A valid color must be
 defined at some point in the chain of face/edge colors.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] final def cellMaterial = CellColor.toMaterial(color)
 
-  private [cell] final def cellMaterial = CellColor.toMaterial (color)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Color of this cell, as a paint.
 
@@ -282,44 +254,33 @@ otherwise, with face color.
 @return Paint with which the cell is to be drawn. A valid color must be defined
 at some point in the chain of face/edge colors.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] final def cellPaint: Color = cellColor.opacity(cellOpacity)
 
-  private [cell] final def cellPaint: Color = cellColor.opacity (cellOpacity)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Opacity of this cell.
 
 @return Opacity of the cell as a value in the range 0 (invisible) through 1
 (fully opaque).
 */
-//----------------------------------------------------------------------------------------------------------------------
+  protected[cell] final def cellOpacity =
+  DisplayStyle.asOpacity(attrs.displayStyle)
 
-  protected [cell] final def cellOpacity =
-  DisplayStyle.asOpacity (attrs.displayStyle)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Transforms for this cell relative to its parent.
 
 @return A sequence of transforms to be applied to the cell relative to its
 parent.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] final def cellTransforms = transformation match {
-    case Some (t) => t.toList
+  protected[cell] final def cellTransforms = transformation match {
+    case Some(t) => t.toList
     case None => Nil
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Function to convert this ''cell'' and its contents (if any) to a ''ScalaFX''
 [[scalafx.scene.Node!]] instance.
 
 @return Cell as a [[scalafx.scene.Node!]].
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def toNode: Node
+  private[cell] def toNode: Node
 }

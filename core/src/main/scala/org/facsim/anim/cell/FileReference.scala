@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.Group
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell file reference''
 primitives.
@@ -62,13 +60,12 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/FileReference.html
 File References]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class FileReference (scene: CellScene,
-parent: Option [Set])
-extends File (scene, parent)
+private[cell] final class FileReference(scene: CellScene,
+parent: Option[Set])
+extends File(scene, parent)
 with Definition {
-  assert (parent == None)
+  assert(parent == None)
 
 /**
 File reference.
@@ -79,17 +76,14 @@ Retrieve the path and name of the 3D file to be referenced.
 cell file format, which uses spaces as field delimiter characters.
 */
 
-  private val file = scene.readString (LibResource
-  ("anim.cell.FileReference.read"))
+  private val file = scene.readString(LibResource
+ ("anim.cell.FileReference.read"))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note File Reference definition elements currently cannot be rendered. See
 Issue 6 for further details.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] override def toNode = new Group ()
+  private[cell] override def toNode = new Group()
 }

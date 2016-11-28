@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 
-//======================================================================================================================
 /**
 Line style enumeration.
 
@@ -46,54 +44,52 @@ to the corresponding line styles.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
 Line Styles]]
 */
-//======================================================================================================================
 
-private [cell] object LineStyle
+private[cell] object LineStyle
 extends Enumeration {
 
 /**
 Solid, having the ''cell'' line style 0.
 */
 
-  private [cell] val Solid = Value
+  private[cell] val Solid = Value
 
 /**
 Dashed, having the ''cell'' line style 1.
 */
 
-  private [cell] val Dashed = Value
+  private[cell] val Dashed = Value
 
 /**
 Dotted, having the ''cell'' line style 2.
 */
 
-  private [cell] val Dotted = Value
+  private[cell] val Dotted = Value
 
 /**
 Halftone, having the ''cell'' line style 3.
 */
 
-  private [cell] val Halftone = Value
+  private[cell] val Halftone = Value
 
 /**
 Default line style, which is used if an explicit style is not available.
 */
 
-  private [cell] val Default = Solid
+  private[cell] val Default = Solid
 
 /**
 Minimum line width value.
 */
 
-  private [cell] val minValue = 0
+  private[cell] val minValue = 0
 
 /**
 Maximum line width value.
 */
 
-  private [cell] val maxValue = maxId - 1
+  private[cell] val maxValue = maxId - 1
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Verify a line style code.
 
@@ -101,12 +97,9 @@ Verify a line style code.
 
 @return `true` if the code maps to a valid line style, `false` otherwise.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  private[cell] def verify(lineStyleCode: Int) =
+ (lineStyleCode >= minValue && lineStyleCode <= maxValue)
 
-  private [cell] def verify (lineStyleCode: Int) =
-  (lineStyleCode >= minValue && lineStyleCode <= maxValue)
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read line style from ''cell'' data stream.
 
@@ -123,21 +116,19 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
 Line Styles]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
+  private[cell] def read(scene: CellScene) = {
 
 /*
 Read the line style code from the data stream.
 */
 
-    val code = scene.readInt (verify (_), LibResource
-    ("anim.cell.LineStyle.read", minValue, maxValue))
+    val code = scene.readInt(verify(_), LibResource
+   ("anim.cell.LineStyle.read", minValue, maxValue))
 
 /*
 Convert to a line style and return.
 */
 
-    LineStyle (code)
+    LineStyle(code)
   }
 }

@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Class representing a ''null joint''.
 
@@ -59,7 +57,6 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
 Joints]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class NullJoint (scene: CellScene, flags: CellFlags)
-extends Joint (scene, flags)
+private[cell] final class NullJoint(scene: CellScene, flags: CellFlags)
+extends Joint(scene, flags)

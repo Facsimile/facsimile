@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
-//======================================================================================================================
 /**
 Delimiter for parsing text data streams in which each field is a line of text,
 for use with [[org.facsim.io.TextReader!]]-based readers.
@@ -44,7 +42,6 @@ field read operation with this delimiter will return the remainder of the line.
 
 @since 0.0
 */
-//======================================================================================================================
 
 object LineDelimiter
-extends Delimiter (Set (TextReader.LF), false)
+extends Delimiter(Set(TextReader.LF), false)

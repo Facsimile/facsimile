@@ -32,6 +32,12 @@
 #
 # Determine how git will treat line endings in files belonging to Facsimile. It will override any defined
 # 'core.autocrlf' git configuration.
+#
+# NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
+# Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
+# merged into client projects. Refer to the skeleton project for further details:
+#
+#   https://github.com/Facsimile/skeleton
 #=======================================================================================================================
 
 # Set default behaviour text behavior. This is equivalent to the git config 'core.autocrlf' flag.
@@ -63,6 +69,7 @@ COPYING.LESSER text
 *.cel text
 *.cell text
 *.cmd text
+*.conf text
 *.cpp text
 *.css text
 *.csv text

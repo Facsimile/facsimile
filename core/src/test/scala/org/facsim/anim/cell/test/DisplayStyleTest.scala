@@ -30,18 +30,15 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell.test package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell.test
 
 import org.facsim.anim.cell.DisplayStyle
 import org.scalatest.FunSpec
 
-//======================================================================================================================
 /**
 Test suite for the [[org.facsim.anim.cell.DisplayStyle$]] object.
 */
-//======================================================================================================================
 
 class DisplayStyleTest extends FunSpec {
 
@@ -51,7 +48,7 @@ Test data.
 
   trait TestData {
     val validCodes = DisplayStyle.minValue to DisplayStyle.maxValue
-    val validMap = Map [Int, DisplayStyle.Value] (
+    val validMap = Map[Int, DisplayStyle.Value](
       0 -> DisplayStyle.Wireframe,
       1 -> DisplayStyle.Solid,
       2 -> DisplayStyle.Transparent1,
@@ -70,7 +67,7 @@ Test data.
       15 -> DisplayStyle.Transparent14,
       16 -> DisplayStyle.Transparent15
     )
-    val invalidCodes = List (Int.MinValue, DisplayStyle.minValue - 1,
+    val invalidCodes = List(Int.MinValue, DisplayStyle.minValue - 1,
     DisplayStyle.maxValue + 1, Int.MaxValue)
   }
 
@@ -78,28 +75,28 @@ Test data.
 Test fixture description.
 */
 
-  describe (DisplayStyle.getClass.getCanonicalName) {
+  describe(DisplayStyle.getClass.getCanonicalName) {
 
 /*
 Test the apply function works as expected.
 */
 
-    describe (".apply (Int)") {
+    describe(".apply(Int)") {
       new TestData {
-        it ("must throw a java.util.NoSuchElementException if passed an " +
+        it("must throw a NoSuchElementException if passed an " +
         "invalid display style code") {
           invalidCodes.foreach {
             code =>
-            intercept [NoSuchElementException] {
-              DisplayStyle (code)
+            intercept[NoSuchElementException] {
+              DisplayStyle(code)
             }
           }
         }
-        it ("must return the correct display style if passed a valid display "
+        it("must return the correct display style if passed a valid display "
         + "style code") {
           validCodes.foreach {
             code =>
-            assert (DisplayStyle (code) === validMap (code))
+            assert(DisplayStyle(code) === validMap(code))
           }
         }
       }
@@ -109,9 +106,9 @@ Test the apply function works as expected.
 Test that the default display style is reported correctly.
 */
 
-    describe (".default") {
-      it ("must be Solid") {
-        assert (DisplayStyle.Default === DisplayStyle.Solid)
+    describe(".default") {
+      it("must be Solid") {
+        assert(DisplayStyle.Default === DisplayStyle.Solid)
       }
     }
 
@@ -119,18 +116,18 @@ Test that the default display style is reported correctly.
 Test the verify function works as expected.
 */
 
-    describe (".verify (Int)") {
+    describe(".verify(Int)") {
       new TestData {
-        it ("must return false if passed an invalid display style code") {
+        it("must return false if passed an invalid display style code") {
           invalidCodes.foreach {
             code =>
-            assert (DisplayStyle.verify (code) === false)
+            assert(DisplayStyle.verify(code) === false)
           }
         }
-        it ("must return true if passed a valid display style code") {
+        it("must return true if passed a valid display style code") {
           validCodes.foreach {
             code =>
-            assert (DisplayStyle.verify (code) === true)
+            assert(DisplayStyle.verify(code) === true)
           }
         }
       }

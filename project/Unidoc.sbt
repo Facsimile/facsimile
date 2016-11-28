@@ -29,6 +29,12 @@
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
 // SBT file to simplify creation of a single documentation project for all sbt sub-projects.
+//
+// NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
+// Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
+// merged into client projects. Refer to the skeleton project for further details:
+//
+//   https://github.com/Facsimile/skeleton
 //======================================================================================================================
 
-addSbtPlugin ("com.eed3si9n" % "sbt-unidoc" % "0.3.2")
+addSbtPlugin ("com.eed3si9n" % "sbt-unidoc" % "0.3.3")

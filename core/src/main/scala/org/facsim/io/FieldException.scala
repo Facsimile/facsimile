@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
-//======================================================================================================================
 /**
 Base exception class signaling an error in a field operation.
 
@@ -51,7 +49,6 @@ exceptions must implement ''failure atomicity''.
 
 @since 0.0
 */
-//======================================================================================================================
 
-private [io] abstract class FieldException (row: Int, column: Int, final val
-field: String) extends DataException (row, column)
+private[io] abstract class FieldException(row: Int, column: Int, final val
+field: String) extends DataException(row, column)

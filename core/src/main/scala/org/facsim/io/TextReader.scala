@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
@@ -39,7 +38,6 @@ import java.lang.StringBuilder
 import org.facsim.{assertNonNull, requireNonNull, LibResource}
 import scala.annotation.tailrec
 
-//======================================================================================================================
 /**
 A reader for text data streams.
 
@@ -73,21 +71,20 @@ delimiting fields, if an appropriate delimiter is not explicitly or implicitly
 specified for a field read operation. If omitted, this argument defaults to the
 WhitespaceDelimiter.
 
-@throws java.lang.NullPointerException if reader is null.
+@throws NullPointerException if reader is null.
 
 @since 0.0
 */
-//======================================================================================================================
 
-class TextReader (textReader: Reader,
+class TextReader(textReader: Reader,
 defaultDelimiter: Delimiter = WhitespaceDelimiter) {
 
 /*
 Sanity checks.
 */
 
-  requireNonNull (textReader)
-  requireNonNull (defaultDelimiter)
+  requireNonNull(textReader)
+  requireNonNull(defaultDelimiter)
 
 /**
 Create a buffered reader, if the specified reader is not already a buffered
@@ -100,16 +97,15 @@ using a regular reader.
 
   private final val reader: BufferedReader = textReader match {
     case r: BufferedReader => r
-    case r: Reader => new BufferedReader (r, TextReader.BufferSize)
+    case r: Reader => new BufferedReader(r, TextReader.BufferSize)
   }
 
 /**
 Current state of this text reader.
 */
 
-  private final val state = new State ()
+  private final val state = new State()
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Class representing current state of reader.
 
@@ -140,10 +136,8 @@ termination sequence has been read&mdash;the same point at which the line
 number is incremented.  Column numbering is not to be updated until a character
 has been read (rather than being peeked).
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private final class State private [this] (private var lastChar: Int, private
-  var peekedChar: Option [Int], private var row: Int, private var column: Int)
+  private final class State private[this](private var lastChar: Int, private
+  var peekedChar: Option[Int], private var row: Int, private var column: Int)
   {
 
 //.............................................................................
@@ -156,7 +150,7 @@ column numbers are initialized to 1.
 */
 //.............................................................................
 
-    private [TextReader] def this () = this (0, None, 1, 1)
+    private[TextReader] def this() = this(0, None, 1, 1)
 
 //.............................................................................
 /**
@@ -169,7 +163,7 @@ operation is performed as part of the state caching operation.
 */
 //.............................................................................
 
-    private [TextReader] def this (other: State) = this (other.lastChar,
+    private[TextReader] def this(other: State) = this(other.lastChar,
     other.peekedChar, other.row, other.column)
 
 //.............................................................................
@@ -179,7 +173,7 @@ operation is performed as part of the state caching operation.
 //.............................................................................
 
     @inline
-    private [TextReader] def atEOF = lastChar == TextReader.EOF
+    private[TextReader] def atEOF = lastChar == TextReader.EOF
 
 //.............................................................................
 /**
@@ -188,7 +182,7 @@ operation is performed as part of the state caching operation.
 //.............................................................................
 
     @inline
-    private [TextReader] def getRow = row ensuring (_ > 0)
+    private[TextReader] def getRow = row ensuring(_ > 0)
 
 //.............................................................................
 /**
@@ -197,7 +191,7 @@ operation is performed as part of the state caching operation.
 //.............................................................................
 
     @inline
-    private [TextReader] def getColumn = column ensuring (_ > 0)
+    private[TextReader] def getColumn = column ensuring(_ > 0)
 
 //.............................................................................
 /**
@@ -215,10 +209,10 @@ mark and reset operations, which enforce use of a fixed size buffer.
 */
 //.............................................................................
 
-    private [TextReader] def cache () = {
-      assert (reader.markSupported ())
-      reader.mark (TextReader.BufferSize)
-      new State (this)
+    private[TextReader] def cache() = {
+      assert(reader.markSupported())
+      reader.mark(TextReader.BufferSize)
+      new State(this)
     }
 
 //.............................................................................
@@ -242,13 +236,13 @@ operation.
 */
 //.............................................................................
 
-    private [TextReader] def reset (other: State): Unit = {
-      assertNonNull (other)
+    private[TextReader] def reset(other: State): Unit = {
+      assertNonNull(other)
       lastChar = other.lastChar
       peekedChar = other.peekedChar
       row = other.row
       column = other.column
-      reader.reset ()
+      reader.reset()
     }
 
 //.............................................................................
@@ -260,7 +254,7 @@ indicated character.
 */
 //.............................................................................
 
-    private def updateRowColumn (char: Int): Unit = char match {
+    private def updateRowColumn(char: Int): Unit = char match {
 
 /*
 If the character just read was is end-of-file marker, then do nothing - we
@@ -291,7 +285,7 @@ Otherwise, update the column number being read from.
 */
 //.............................................................................
 
-    private [TextReader] def peek (): Int =  {
+    private[TextReader] def peek(): Int =  {
       peekedChar match {
 
 /*
@@ -299,17 +293,17 @@ If we have already peeked at the next character, but we have yet to read it,
 then return it.
 */
 
-        case Some (char) => char
+        case Some(char) => char
 
 /*
 Otherwise, we haven't yet peeked at the next character, so read and store it.
 */
 
         case None =>
-        peekedChar = Option (readChar ())
+        peekedChar = Option(readChar())
         peekedChar.get
       }
-    } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
+    } ensuring((c: Int) => c == TextReader.EOF || c >= 0)
 
 //.............................................................................
 /**
@@ -317,21 +311,21 @@ Otherwise, we haven't yet peeked at the next character, so read and store it.
 */
 //.............................................................................
 
-    private [TextReader] def read (): Int = {
+    private[TextReader] def read(): Int = {
 
 /*
 Helper function to determine whether we're reporting a previously peeked
 character, or a fresh character.
 */
 
-      def peekedOrRead () = peekedChar match {
+      def peekedOrRead() = peekedChar match {
 
 /*
 If we have a previously peeked character, then return it and clear the cached
 peeked character.
 */
 
-        case Some (ch) =>
+        case Some(ch) =>
         peekedChar = None
         ch
 
@@ -340,17 +334,17 @@ Otherwise, supply a fresh character from the stream.  We don't need to cache
 anything because we're not peeking at it.
 */
 
-        case None => readChar ()
+        case None => readChar()
       }
 
 /*
 Update the row and column number for the character we're returning.
 */
 
-      val char = peekedOrRead ()
-      updateRowColumn (char)
+      val char = peekedOrRead()
+      updateRowColumn(char)
       char
-    } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
+    } ensuring((c: Int) => c == TextReader.EOF || c >= 0)
 
 //.............................................................................
 /**
@@ -367,13 +361,13 @@ end-of-file condition has been signaled by a previous read operation.
 */
 //.............................................................................
 
-    private def readChar (): Int = {
+    private def readChar(): Int = {
 
 /*
 If the last character read indicated end-of-file, then throw the EOFException.
 */
 
-      if (atEOF) throw new EOFException (LibResource ("io.TextReader.EOF", row,
+      if(atEOF) throw new EOFException(LibResource("io.TextReader.EOF", row,
       column))
 
 /*
@@ -424,13 +418,13 @@ Line feeds should only be encountered in two situations:
 */
 
         case TextReader.LF =>
-        if (lastChar != TextReader.CR) {
+        if(lastChar != TextReader.CR) {
           lastChar = TextReader.LF
           lastChar
         }
         else {
           lastChar = TextReader.LF
-          readChar ()
+          readChar()
         }
 
 /*
@@ -443,10 +437,9 @@ read beyond the end-of-file (see top of this function).
         lastChar = char
         lastChar
       }
-    } ensuring ((c: Int) => c == TextReader.EOF || c >= 0)
+    } ensuring((c: Int) => c == TextReader.EOF || c >= 0)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as the specified type.
 
@@ -481,23 +474,21 @@ not be converted to '''T''' by the '''convertField''' function.
 @throws org.facsim.io.FieldVerificationException if the field's value could not
 be verified by the '''verify''' function.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private final def readField [T] (delimiter: Delimiter,
-  verify: TextReader.Verifier [T])(convertField: (String) => T): T = {
+  private final def readField[T](delimiter: Delimiter,
+  verify: TextReader.Verifier[T])(convertField:(String) => T): T = {
 
 /*
 Tail-recursive helper function to build the field read.
 */
 
     @tailrec
-    def buildField (field: StringBuilder): StringBuilder = {
+    def buildField(field: StringBuilder): StringBuilder = {
 
 /*
 If we've reached a field delimiter, then return what we have.
 */
 
-      if (delimiter.reached (this)) field
+      if(delimiter.reached(this)) field
 
 /*
 If we've reached the end-of-file condition, then read and discard it to ensure
@@ -506,8 +497,8 @@ return what we have.  (If we don't read the EOF marker, we'll just return an
 infinite set of empty fields on subsequent reads.)
 */
 
-      else if (peek () == TextReader.EOF) {
-        read ()
+      else if(peek() == TextReader.EOF) {
+        read()
         field
       }
 
@@ -515,20 +506,20 @@ infinite set of empty fields on subsequent reads.)
 Otherwise, append the next character to the field and return it.
 */
 
-      else buildField (field.appendCodePoint (read ()))
+      else buildField(field.appendCodePoint(read()))
     }
 
 /*
 Cache the current state of the stream in case we need to restore it later.
 */
 
-    val cachedState = state.cache ()
+    val cachedState = state.cache()
 
 /*
 Retrieve the field from the helper function.  This may throw an IOException.
 */
 
-    val field = buildField (new StringBuilder ()).toString
+    val field = buildField(new StringBuilder()).toString
 
 /*
 Convert the field to the required type using the supplied function.
@@ -538,12 +529,12 @@ a FieldConversionException.
 */
 
     val fieldValue = try {
-      convertField (field)
+      convertField(field)
     }
     catch {
       case e: NumberFormatException =>
-      state.reset (cachedState)
-      throw new FieldConversionException (cachedState.getRow,
+      state.reset(cachedState)
+      throw new FieldConversionException(cachedState.getRow,
       cachedState.getColumn, field)
     }
 
@@ -554,15 +545,14 @@ If verification fails, then reset the state and throw a
 FieldVerificationException.
 */
 
-    if (!verify (fieldValue)) {
-      state.reset (cachedState)
-      throw new FieldVerificationException (cachedState.getRow,
+    if(!verify(fieldValue)) {
+      state.reset(cachedState)
+      throw new FieldVerificationException(cachedState.getRow,
       cachedState.getColumn, field)
     }
     else fieldValue
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read from the current file pointer to the next line termination sequence and
 return it as a string.
@@ -583,13 +573,10 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readToEOL (verify: TextReader.Verifier [String] =
+  final def readToEOL(verify: TextReader.Verifier[String] =
   TextReader.defaultStringVerifier): String =
-  readString (verify)(LineDelimiter)
+  readString(verify)(LineDelimiter)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a string.
 
@@ -613,16 +600,13 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readString (verify: TextReader.Verifier [String] =
+  final def readString(verify: TextReader.Verifier[String] =
   TextReader.defaultStringVerifier)(implicit delimiter: Delimiter =
-  defaultDelimiter): String = readField [String] (delimiter, verify) {
+  defaultDelimiter): String = readField[String](delimiter, verify) {
     field =>
     field
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a byte.
 
@@ -649,13 +633,10 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readByte (verify: TextReader.Verifier [Byte] =
+  final def readByte(verify: TextReader.Verifier[Byte] =
   TextReader.defaultByteVerifier)(implicit delimiter: Delimiter =
-  defaultDelimiter): Byte = readField [Byte] (delimiter, verify)(_.toByte)
+  defaultDelimiter): Byte = readField[Byte](delimiter, verify)(_.toByte)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a short integer.
 
@@ -682,13 +663,10 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readShort (verify: TextReader.Verifier [Short] =
+  final def readShort(verify: TextReader.Verifier[Short] =
   TextReader.defaultShortVerifier)(implicit delimiter: Delimiter =
-  defaultDelimiter): Short = readField [Short] (delimiter, verify)(_.toShort)
+  defaultDelimiter): Short = readField[Short](delimiter, verify)(_.toShort)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as an integer.
 
@@ -715,13 +693,10 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readInt (verify: TextReader.Verifier [Int] =
+  final def readInt(verify: TextReader.Verifier[Int] =
   TextReader.defaultIntVerifier)(implicit delimiter: Delimiter =
-  defaultDelimiter): Int = readField [Int] (delimiter, verify)(_.toInt)
+  defaultDelimiter): Int = readField[Int](delimiter, verify)(_.toInt)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a long integer.
 
@@ -748,13 +723,10 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readLong (verify: TextReader.Verifier [Long] =
+  final def readLong(verify: TextReader.Verifier[Long] =
   TextReader.defaultLongVerifier)(implicit delimiter: Delimiter =
-  defaultDelimiter): Long = readField [Long] (delimiter, verify)(_.toLong)
+  defaultDelimiter): Long = readField[Long](delimiter, verify)(_.toLong)
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a float.
 
@@ -781,11 +753,9 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readFloat (verify: TextReader.Verifier [Float] =
+  final def readFloat(verify: TextReader.Verifier[Float] =
   TextReader.defaultFloatVerifier)(implicit delimiter: Delimiter =
-  defaultDelimiter): Float = readField [Float] (delimiter, verify) {
+  defaultDelimiter): Float = readField[Float](delimiter, verify) {
     field =>
 
 /*
@@ -795,11 +765,10 @@ if the trimmed version of the string differs from the string supplied, we'll
 throw a NumberFormatException.
 */
 
-    if (field != field.trim) throwNumberFormatException (field)
+    if(field != field.trim) throwNumberFormatException(field)
     else field.toFloat
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next field from the stream and return it as a double.
 
@@ -826,11 +795,9 @@ be verified by '''verify'''.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def readDouble (verify: TextReader.Verifier [Double] =
+  final def readDouble(verify: TextReader.Verifier[Double] =
   TextReader.defaultDoubleVerifier)(implicit delimiter: Delimiter =
-  defaultDelimiter): Double = readField [Double] (delimiter, verify) {
+  defaultDelimiter): Double = readField[Double](delimiter, verify) {
     field =>
 
 /*
@@ -840,11 +807,10 @@ if the trimmed version of the string differs from the string supplied, we'll
 throw a NumberFormatException.
 */
 
-    if (field != field.trim) throwNumberFormatException (field)
+    if(field != field.trim) throwNumberFormatException(field)
     else field.toDouble
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Determine if the ''end-of-file'' has been reached.
 
@@ -853,12 +819,9 @@ Determine if the ''end-of-file'' has been reached.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
   final def atEOF = state.atEOF
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report row number of next character to be read.
 
@@ -873,12 +836,9 @@ location when this reader was created.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
   final def getRow = state.getRow
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Report column number of next character to be read.
 
@@ -895,12 +855,9 @@ yet to be encountered.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
   final def getColumn = state.getColumn
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Peek at the next character in the stream.
 
@@ -912,12 +869,9 @@ will be returned.
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  private [io] final def peek (): Int = state.peek ()
+  private[io] final def peek(): Int = state.peek()
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read the next character from the stream.
 
@@ -928,26 +882,20 @@ read operation, then a value of `EOF` (-1) will be returned.
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  private [io] final def read (): Int = state.read ()
+  private[io] final def read(): Int = state.read()
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Throw a number format exception for the specified field.
 
 @param field Field that resulted in a number format exception.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   @inline
-  private final def throwNumberFormatException (field: String) = throw new
-  NumberFormatException (LibResource ("io.TextReader.NumberFormatException",
+  private final def throwNumberFormatException(field: String) = throw new
+  NumberFormatException(LibResource("io.TextReader.NumberFormatException",
   field))
 }
 
-//======================================================================================================================
 /**
 Text reader companion object.
 
@@ -956,7 +904,6 @@ files.
 
 @since 0.0
 */
-//======================================================================================================================
 
 object TextReader  {
 
@@ -1008,7 +955,7 @@ streams.
 Verification function.
 */
 
-  type Verifier [T] = T => Boolean
+  type Verifier[T] = T => Boolean
 
 /**
 Default string verification function.
@@ -1016,7 +963,7 @@ Default string verification function.
 This verified verifies every string value.
 */
 
-  val defaultStringVerifier: Verifier [String] = s => true
+  val defaultStringVerifier: Verifier[String] = s => true
 
 /**
 Default byte verification function.
@@ -1024,7 +971,7 @@ Default byte verification function.
 This verified verifies every byte value.
 */
 
-  val defaultByteVerifier: Verifier [Byte] = i => true
+  val defaultByteVerifier: Verifier[Byte] = i => true
 
 /**
 Default short verification function.
@@ -1032,7 +979,7 @@ Default short verification function.
 This verified verifies every short value.
 */
 
-  val defaultShortVerifier: Verifier [Short] = i => true
+  val defaultShortVerifier: Verifier[Short] = i => true
 
 /**
 Default int verification function.
@@ -1040,7 +987,7 @@ Default int verification function.
 This verified verifies every int value.
 */
 
-  val defaultIntVerifier: Verifier [Int] = i => true
+  val defaultIntVerifier: Verifier[Int] = i => true
 
 /**
 Default long verification function.
@@ -1048,7 +995,7 @@ Default long verification function.
 This verified verifies every long value.
 */
 
-  val defaultLongVerifier: Verifier [Long] = i => true
+  val defaultLongVerifier: Verifier[Long] = i => true
 
 /**
 Default float verification function.
@@ -1056,7 +1003,7 @@ Default float verification function.
 This verified verifies every float value.
 */
 
-  val defaultFloatVerifier: Verifier [Float] = x => true
+  val defaultFloatVerifier: Verifier[Float] = x => true
 
 /**
 Default double verification function.
@@ -1064,5 +1011,5 @@ Default double verification function.
 This verified verifies every double value.
 */
 
-  val defaultDoubleVerifier: Verifier [Double] = x => true
+  val defaultDoubleVerifier: Verifier[Double] = x => true
 }

@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell cylinder''
 primitives.
@@ -61,10 +59,9 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Cylinders.html
 Cylinders]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Cylinder (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+private[cell] final class Cylinder(scene: CellScene, parent: Option[Set])
+extends Mesh3D(scene, parent) {
 
 /**
 Cylinder radius.
@@ -72,8 +69,8 @@ Cylinder radius.
 Base & top radius, measured on the X-Y plane.
 */
 
-  private val radius = scene.readDouble (_ >= 0.0, LibResource
-  (Cylinder.ReadDimKey, 0))
+  private val radius = scene.readDouble(_ >= 0.0, LibResource
+ (Cylinder.ReadDimKey, 0))
 
 /**
 Cylinder height (Z-dimension).
@@ -81,40 +78,35 @@ Cylinder height (Z-dimension).
 Height of the cylinder measured along the Z-Axis.
 */
 
-  private val height = scene.readDouble (_ >= 0.0, LibResource
-  (Cylinder.ReadDimKey, 1))
+  private val height = scene.readDouble(_ >= 0.0, LibResource
+ (Cylinder.ReadDimKey, 1))
 
 /**
 Cylinder top X-axis offset.
 */
 
-  private val xOffset = scene.readDouble (LibResource
-  (Cylinder.ReadOffsetKey, 0))
+  private val xOffset = scene.readDouble(LibResource
+ (Cylinder.ReadOffsetKey, 0))
 
 /**
 Cylinder top Y-axis offset.
 */
 
-  private val yOffset = scene.readDouble (LibResource
-  (Cylinder.ReadOffsetKey, 1))
+  private val yOffset = scene.readDouble(LibResource
+ (Cylinder.ReadOffsetKey, 1))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note The origin of the cylinder is at the center of its base.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh = Mesh.cylinder (Point3D.Origin,
-  radius, Point3D (xOffset, yOffset, height), Cylinder.Divisions)
+  protected[cell] override def cellMesh: Mesh = Mesh.cylinder(Point3D.Origin,
+  radius, Point3D(xOffset, yOffset, height), Cylinder.Divisions)
 }
 
-//======================================================================================================================
 /**
 Cylinder companion object.
 */
-//======================================================================================================================
 
 private object Cylinder {
 

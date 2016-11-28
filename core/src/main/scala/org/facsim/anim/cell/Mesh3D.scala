@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -40,7 +39,6 @@ import scalafx.scene.shape.CullFace
 import scalafx.scene.shape.DrawMode
 import scalafx.scene.shape.MeshView
 
-//======================================================================================================================
 /**
 Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
 primitives implemented as 3D meshes.
@@ -58,25 +56,21 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] abstract class Mesh3D (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent) {
+private[cell] abstract class Mesh3D(scene: CellScene, parent: Option[Set])
+extends Cell(scene, parent) {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] final override def toNode = {
+  private[cell] final override def toNode = {
 
 /*
 Have the sub-class create and populate a mesh that we will associate with a
 mesh view.
 */
 
-    new MeshView (cellMesh.triangleMesh) {
+    new MeshView(cellMesh.triangleMesh) {
 
 /*
 If this cell has a name, then use it as an ID.
@@ -110,12 +104,11 @@ Determine how the mesh is to be rendered.
 different in wireframe compared to solid).
 */
 
-      drawMode = if (isWireframe) DrawMode.Line
+      drawMode = if(isWireframe) DrawMode.Line
       else DrawMode.Fill
     }
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Determine the cull face setting for this shape.
 
@@ -125,17 +118,12 @@ should override this method.
 
 @return Cull face setting for this shape.
 */
-//----------------------------------------------------------------------------------------------------------------------
+  protected[cell] def faceCulling: CullFace = CullFace.Back
 
-  protected [cell] def faceCulling: CullFace = CullFace.Back
-
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Create a mesh to represent this cell and return it.
 
 @return Mesh representing the cell.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] def cellMesh: Mesh
+  protected[cell] def cellMesh: Mesh
 }

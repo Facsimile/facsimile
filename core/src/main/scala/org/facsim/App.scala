@@ -1,199 +1,164 @@
 /*
-Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2016, Michael J Allen.
-
-This file is part of Facsimile.
-
-Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
-of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
-http://www.gnu.org/licenses/lgpl.
-
-The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
-project home page at:
-
-  http://facsim.org/
-
-Thank you for your interest in the Facsimile project!
-
-IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
-as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
-fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
-standards at:
-
-  http://facsim.org/Documentation/CodingStandards/
-========================================================================================================================
-Scala source file from the org.facsim package.
-*/
-//======================================================================================================================
-
+ * Facsimile -- A Discrete-Event Simulation Library
+ * Copyright © 2004-2016, Michael J Allen.
+ *
+ * This file is part of Facsimile.
+ *
+ * Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see
+ * http://www.gnu.org/licenses/lgpl.
+ *
+ * The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+ * project home page at:
+ *
+ *   http://facsim.org/
+ *
+ * Thank you for your interest in the Facsimile project!
+ *
+ * IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for
+ * inclusion as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If
+ * your code fails to comply with the standard, then your patches will be rejected. For further information, please
+ * visit the coding standards at:
+ *
+ *   http://facsim.org/Documentation/CodingStandards/
+ * =====================================================================================================================
+ * Scala source file belonging to the org.facsim package.
+ */
 package org.facsim
 
 import org.facsim.util.Manifest
 import scala.collection.mutable.ListBuffer
 
-//======================================================================================================================
 /**
-Basic application trait.
-
-Provide common information and functionality for applications built with the
-''Facsimile'' library.
-
-In order to compile, client applications '''must''' mix-in an
-[[org.facsim.AppInformation]]-implementation instance when creating an
-application ''object'' as well as either [[org.facsim.cli.CliApp]] or
-[[org.facsim.gui.GuiApp]] (or a trait/class derived from either).
-
-The application may utilize a graphical user interface, or be driven from the
-command line, or both, depending upon whether [[org.facsim.cli.CliApp]] or
-[[org.facsim.gui.GuiApp]] was utilized.
-*/
-//======================================================================================================================
-
+ * Basic application trait.
+ *
+ * Provide common information and functionality for applications built with the ''Facsimile'' library.
+ *
+ * In order to compile, client applications '''must''' mix-in an [[AppInformation]]-implementation instance when
+ * creating an application ''object'' as well as either [[org.facsim.cli.CliApp]] or [[org.facsim.gui.GuiApp]] (or a
+ * trait/class derived from either).
+ *
+ * The application may utilize a graphical user interface, or be driven from the command line, or both, depending upon
+ * whether `CliApp` or `GuiApp` was utilized.
+ */
 trait App
 extends DelayedInit {
   self: AppInformation =>
 
-/**
-Flag indicating whether this application has been initialized yet.
-*/
+  /**
+   * Flag indicating whether this application has been initialized yet.
+   */
+  private final var initialized = false //scalastyle:ignore var.field
 
-  private final var initialized = false // scalastyle:ignore
+  /**
+   * Command line arguments supplied.
+   *
+   * These cannot be queried until after the application has initialized.
+   */
+  private final var arguments: Array[String] = _ //scalastyle:ignore var.field
 
-/**
-Command line arguments supplied.
+  /**
+   * Buffered subclass construction code.
+   *
+   * All classes and objects (but not traits) that extend this trait will have their construction code packaged up
+   * automatically by the ''Scala'' compiler and passed to the `delayedInit` function, which then stores such code
+   * within this list buffer. When the `main` function is invoked, all of the buffered code is executed (by invoking the
+   * `init` function), in class hierarchy order (that is, the construction code for a parent class will be executed
+   * before the construction code for its immediate child class, as intuitively expected).
+   *
+   * By contrast, traits that extend this trait will always execute their constructor immediately during construction,
+   * in the normal manner, and this do not have ''delayed initialization''.
+   *
+   * The [[DelayedInit]] trait has special behavior that is not entirely defined by its source code. Refer to the
+   * ''Scala API'' documentation for further details. This is complicated by the fact that, as of ''Scala V2.11'', the
+   * `DelayedInit` trait has been ''deprecated''. There is a replacement
+   * [[https://issues.scala-lang.org/browse/SI-4330 proposal]] to implement an alternative to `DelayedInit`, but it is
+   * (for this use case) less elegant.
+   */
+  private final val subClassCtors = new ListBuffer[() => Unit]
 
-These cannot be queried until after the application has initialized.
-*/
-
-  private final var arguments: Array [String] = _ // scalastyle:ignore
-
-/**
-Buffered subclass construction code.
-
-All classes and objects (but not traits) that extend this trait will have their
-construction code packaged up automatically by the ''Scala'' compiler and
-passed to the `delayedInit` function, which then stores such code within this
-list buffer. When the `main` function is invoked, all of the buffered code is
-executed (by invoking the `init` function), in class hierarchy order (that is,
-the construction code for a parent class will be executed before the
-construction code for its immediate child class, as intuitively expected).
-
-By contrast, traits that extend this trait will always execute their
-constructor immediately during construction, in the normal manner, and this do
-not have ''delayed initialization''.
-
-The [[scala.DelayedInit]] trait has special behavior that is not entirely
-defined by its source code. Refer to the ''Scala API'' documentation for
-further details. This is complicated by the fact that, as of ''Scala V2.11'',
-the `DelayedInit` trait has been ''deprecated''. There is a replacement
-[[https://issues.scala-lang.org/browse/SI-4330 proposal]] to implement an
-alternative to `DelayedInit`, but it is (for this use case) less elegant
-*/
-
-  private final val subClassCtors = new ListBuffer [() => Unit]
-
-//----------------------------------------------------------------------------------------------------------------------
-/**
-Buffer subclass construction code.
-
-Buffered subclass construction code is executed when the `main` function
-executes.
-
-@note This function is automatically invoked by code generated by the ''Scala''
-compiler; it must '''never''' be called directly from user code.
-
-@param ctor Subclass constructor code to be buffered.
-
-@since 0.0
-*/
-//----------------------------------------------------------------------------------------------------------------------
-
-  final override def delayedInit (ctor: => Unit): Unit = {
+  /**
+   * Buffer subclass construction code.
+   *
+   * Buffered subclass construction code is executed when the `main` function executes.
+   *
+   * @note This function is automatically invoked by code generated by the ''Scala'' compiler; it must '''never''' be
+   * called directly from user code.
+   *
+   * @param ctor Subclass constructor code to be buffered.
+   *
+   * @since 0.0
+   */
+  final override def delayedInit(ctor: => Unit): Unit = {
     synchronized {
-      assert (!initialized)
-      subClassCtors += (() => ctor)
+      assert(!initialized)
+      subClassCtors += (() => ctor) //scalastyle:ignore disallow.space.before.token
     }
   }
 
-//----------------------------------------------------------------------------------------------------------------------
-/**
-Execute buffered subclass construction code.
-
-This function should be invoked from the `main` function during application
-initialization only.
-
-@note For ''JavaFX''-based ''GUI'' applications, this funciont will be executed
-on the ''JavaFX Application Thread'' after the primary stage has been created.
-Consequently, subclass constructor code can populate the primary stage and its
-contents without any problems.
-*/
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [facsim] final def init (): Unit = {
+  /**
+   * Execute buffered subclass construction code.
+   *
+   * This function should be invoked from the `main` function during application initialization only.
+   *
+   * @note For ''JavaFX''-based ''GUI'' applications, this funciont will be executed on the ''JavaFX Application
+   * Thread'' after the primary stage has been created. Consequently, subclass constructor code can populate the primary
+   * stage and its contents without any problems.
+   */
+  protected[facsim] final def init(): Unit = {
     synchronized {
-      assert (!initialized)
+      assert(!initialized)
       initialized = true
-      subClassCtors.foreach (_ ())
+      subClassCtors.foreach(_())
     }
   }
 
-//----------------------------------------------------------------------------------------------------------------------
-/**
-Main function.
-
-Application entry point.
-
-This function stores the command line, configures the application's execution
-threads and executes user construction code buffered by the delayedInit method.
-
-@note This function is automatically invoked during application initialization;
-it must '''never''' be called directly from user code.
-
-@param args Command line arguments.
-
-@since 0.0
-*/
-//----------------------------------------------------------------------------------------------------------------------
-
-  final def main (args: Array [String]): Unit = {
-    assert (!initialized)
+  /**
+   * Main function.
+   *
+   * Application entry point.
+   *
+   * This function stores the command line, configures the application's execution threads and executes user
+   * construction code buffered by the delayedInit method.
+   *
+   * @note This function is automatically invoked during application initialization; it must '''never''' be called
+   * directly from user code.
+   *
+   * @param args Command line arguments.
+   *
+   * @since 0.0
+   */
+  final def main(args: Array[String]): Unit = {
+    assert(!initialized)
     arguments = args
-    createApp ()
+    createApp()
   }
 
-//----------------------------------------------------------------------------------------------------------------------
-/**
-Retrieve the command line arguments.
-
-@return Command line arguments passed to this application.
-
-@since 0.0
-*/
-//----------------------------------------------------------------------------------------------------------------------
-
+  /**
+   * Retrieve the command line arguments.
+   *
+   * @return Command line arguments passed to this application.
+   *
+   * @since 0.0
+   */
   final def args = arguments
 
-//----------------------------------------------------------------------------------------------------------------------
-/**
-Create and initialize the application.
-*/
-//----------------------------------------------------------------------------------------------------------------------
+  /**
+   * Create and initialize the application.
+   */
+  protected[facsim] def createApp(): Unit
 
-  protected [facsim] def createApp (): Unit
-
-//----------------------------------------------------------------------------------------------------------------------
-/**
-Retrieve the ''Facsimile'' JAR file manifest.
-
-@return Manifest read from the ''Facsimile'' JAR file.
-*/
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [facsim] final def facsimileManifest = Manifest (classOf [App])
+  /**
+   * Retrieve the ''Facsimile'' JAR file manifest.
+   *
+   * @return Manifest read from the ''Facsimile'' JAR file.
+   */
+  private[facsim] final def facsimileManifest = Manifest(classOf[App])
 }

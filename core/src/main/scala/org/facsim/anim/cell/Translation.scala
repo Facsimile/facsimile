@@ -30,20 +30,17 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.transform.Translate
 
-//======================================================================================================================
 /**
 Translation object.
 */
-//======================================================================================================================
 
-private [cell] object Translation {
+private[cell] object Translation {
 
 /**
 Read dimension string resource key.
@@ -51,7 +48,6 @@ Read dimension string resource key.
 
   val ReadKey = "anim.cell.Translation.read"
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read translation data from ''cell'' data stream.
 
@@ -69,32 +65,30 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Translation.html
 Translation]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] def read (scene: CellScene) = {
+  private[cell] def read(scene: CellScene) = {
 
 /*
 Read the X axis translation from the data stream.
 */
 
-    val x = scene.readDouble (LibResource (ReadKey, 0))
+    val x = scene.readDouble(LibResource(ReadKey, 0))
 
 /*
 Read the Y axis translation from the data stream.
 */
 
-    val y = scene.readDouble (LibResource (ReadKey, 1))
+    val y = scene.readDouble(LibResource(ReadKey, 1))
 
 /*
 Read the Z axis translation from the data stream.
 */
 
-    val z = scene.readDouble (LibResource (ReadKey, 2))
+    val z = scene.readDouble(LibResource(ReadKey, 2))
 
 /*
 Convert to a Translate instance and return.
 */
 
-    new Translate (x, y, z)
+    new Translate(x, y, z)
   }
 }

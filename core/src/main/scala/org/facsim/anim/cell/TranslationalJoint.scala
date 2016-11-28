@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
-//======================================================================================================================
 /**
 Class representing a ''translational joint''.
 
@@ -59,8 +57,7 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
 Joints]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class TranslationalJoint (scene: CellScene,
+private[cell] final class TranslationalJoint(scene: CellScene,
 flags: CellFlags)
-extends Joint (scene, flags)
+extends Joint(scene, flags)

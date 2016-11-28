@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import scalafx.scene.Group
 
-//======================================================================================================================
 /**
 Abstract class for primitives that can themselves store primitives.
 
@@ -60,12 +58,10 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Sets.html
 Sets]]
 */
-//======================================================================================================================
 
-private [cell] abstract class Set (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent) {
+private[cell] abstract class Set(scene: CellScene, parent: Option[Set])
+extends Cell(scene, parent) {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
@@ -73,9 +69,7 @@ extends Cell (scene, parent) {
 they use material (except for inheritance by children), employ a display style
 or anything else. They're actually pretty basic.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] final override def toNode = new Group {
+  private[cell] final override def toNode = new Group {
 
 /*
 If this cell has a name, then use it as an ID.
@@ -93,16 +87,13 @@ Apply the required transformations to the node.
 Add the child cells (if any) to the group as nodes.
 */
 
-    children = getChildren.map (_.toNode)
+    children = getChildren.map(_.toNode)
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Retrieve the set's children.
 
 @return A list of this set's child ''cells''.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] def getChildren: List [Cell]
+  protected[cell] def getChildren: List[Cell]
 }

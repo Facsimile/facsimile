@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Joint data.
 
@@ -53,29 +51,28 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] final class JointData (scene: CellScene) {
+private[cell] final class JointData(scene: CellScene) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (scene)
+  assertNonNull(scene)
 
 /**
 Joint speed.
 */
 
-  private [cell] val speed = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.JointData.speed"))
+  private[cell] val speed = scene.readDouble(_ >= 0.0, LibResource
+ ("anim.cell.JointData.speed"))
 
 /**
 Joint minimum value.
 */
 
-  private [cell] val min = scene.readDouble (LibResource
-  ("anim.cell.JointData.min"))
+  private[cell] val min = scene.readDouble(LibResource
+ ("anim.cell.JointData.min"))
 
 /**
 Joint maximum value.
@@ -83,8 +80,8 @@ Joint maximum value.
 This value must be ≥ the minimum value.
 */
 
-  private [cell] val max = scene.readDouble (_ >= min, LibResource
-  ("anim.cell.JointData.max", min))
+  private[cell] val max = scene.readDouble(_ >= min, LibResource
+ ("anim.cell.JointData.max", min))
 
 /**
 Joint current value.
@@ -92,13 +89,13 @@ Joint current value.
 This value must be in the range [minimum, maxium]
 */
 
-  private [cell] val cur = scene.readDouble (value => value >= min &&
-  value <= max, LibResource ("anim.cell.JointData.cur", min, max))
+  private[cell] val cur = scene.readDouble(value => value >= min &&
+  value <= max, LibResource("anim.cell.JointData.cur", min, max))
 
 /**
 TCF data present?
 */
 
-  private [cell] val tcfPresent = scene.readBool (LibResource
-  ("anim.cell.JointData.tcfPresent"))
+  private[cell] val tcfPresent = scene.readBool(LibResource
+ ("anim.cell.JointData.tcfPresent"))
 }

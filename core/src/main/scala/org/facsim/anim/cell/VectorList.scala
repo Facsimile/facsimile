@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
@@ -38,7 +37,6 @@ import org.facsim.{assertNonNull, LibResource}
 import scala.annotation.tailrec
 import scalafx.scene.Group
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell vector list''
 primitives.
@@ -69,38 +67,31 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/VectorLists.html
 Vector Lists]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class VectorList (scene: CellScene, parent: Option [Set])
-extends Cell (scene, parent) {
+private[cell] final class VectorList(scene: CellScene, parent: Option[Set])
+extends Cell(scene, parent) {
 
 /*
 Read the list of pointer from the cell data stream.
 */
 
-  VectorList.read (scene)
+  VectorList.read(scene)
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 @see [[org.facsim.anim.cell.Cell!.toNode]]
 
 Vector List elements currently cannot be rendered. See Issue 3 for further
 details.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [cell] override def toNode = new Group ()
+  private[cell] override def toNode = new Group()
 }
 
-//======================================================================================================================
 /**
 VectorList companion object.
 */
-//======================================================================================================================
 
 private object VectorList {
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Read vector list data from the stream.
 
@@ -114,15 +105,13 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private def read (scene: CellScene) = {
+  private def read(scene: CellScene) = {
 
 /*
 Sanity checks.
 */
 
-    assertNonNull (scene)
+    assertNonNull(scene)
 
 /*
 Helper function to read the next point from the data stream.
@@ -133,10 +122,10 @@ for how that might be done).
 */
 
     @tailrec
-    def readPoint (count: Int, isFirst: Boolean): Unit = {
-      if (count > 0) {
-        new VectorListPoint (scene, isFirst)
-        readPoint (count - 1, false)
+    def readPoint(count: Int, isFirst: Boolean): Unit = {
+      if(count > 0) {
+        new VectorListPoint(scene, isFirst)
+        readPoint(count - 1, false)
       }
     }
 
@@ -144,13 +133,13 @@ for how that might be done).
 Read the number of points from the data stream. This value must be at least 2.
 */
 
-    val numPoints = scene.readInt (_ > 1, LibResource
-    ("anim.cell.VectorList.read"))
+    val numPoints = scene.readInt(_ > 1, LibResource
+   ("anim.cell.VectorList.read"))
 
 /*
 Read in all of the points. The first point must be a move point.
 */
 
-    readPoint (numPoints, true)
+    readPoint(numPoints, true)
   }
 }

@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Abstract joint class.
 
@@ -78,28 +76,27 @@ during parsing of the file.
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
 Cell Joint Data]]
 */
-//======================================================================================================================
 
-private [cell] abstract class Joint (scene: CellScene, flags: CellFlags) {
+private[cell] abstract class Joint(scene: CellScene, flags: CellFlags) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (scene)
+  assertNonNull(scene)
 
 /**
 Joint data.
 */
 
-  private val jointData = new JointData (scene)
+  private val jointData = new JointData(scene)
 
 /**
 If geometry data is present, then read the joint's geometry.
 */
 
   private val jointGeometry =
-  if (flags.geometryDataPresent) Some (new Transformation (scene,
+  if(flags.geometryDataPresent) Some(new Transformation(scene,
   flags.geometryDataInMatrixForm))
   else None
 
@@ -107,14 +104,14 @@ If geometry data is present, then read the joint's geometry.
 Consume to extra "0" field from the file.
 */
 
-  scene.readInt (_ == 0, LibResource ("anim.cell.Joint.terminator"))
+  scene.readInt(_ == 0, LibResource("anim.cell.Joint.terminator"))
 
 /**
 If TCF data is present, then read the TCF's geometry.
 */
 
   private val tcfGeometry =
-  if (jointData.tcfPresent) Some (new Transformation (scene,
+  if(jointData.tcfPresent) Some(new Transformation(scene,
   flags.geometryDataInMatrixForm))
   else None
 }

@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import scalafx.scene.shape.CullFace
 
-//======================================================================================================================
 /**
 Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
 primitives implemented as 2D meshes.
@@ -54,19 +52,15 @@ not an ''AutoMod® cell'' file.
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
 */
-//======================================================================================================================
 
-private [cell] abstract class Mesh2D (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+private[cell] abstract class Mesh2D(scene: CellScene, parent: Option[Set])
+extends Mesh3D(scene, parent) {
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 2D objects should be visible from both sides, so no face culling should be
 performed.
 
 @see [[org.facsim.anim.cell.Mesh3D.faceCulling]].
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] final override def faceCulling: CullFace = CullFace.None
+  protected[cell] final override def faceCulling: CullFace = CullFace.None
 }

@@ -30,7 +30,6 @@ standards at:
 ========================================================================================================================
 Scala source file belonging to the org.facsim.facsimile.engine package.
 */
-//======================================================================================================================
 
 package org.facsim.engine
 
@@ -38,7 +37,6 @@ import org.facsim.{assertNonNull, requireNonNull}
 import org.facsim.measure.Time
 import scala.math.Ordered
 
-//======================================================================================================================
 /**
 Class representing all ''Facsimile'' simulation events.
 
@@ -55,7 +53,7 @@ dispatched after the specified delay, with the specified priority.
 @param action Action to be executed when this event is dispatched.
 
 @param delay Delay, measured relative to the current time, after which the
-event should be dispatched.  Events will be dispatched in order of their due
+event should be dispatched. 1vents will be dispatched in order of their due
 time.
 
 @param priority Event's relative priority.  The higher this value, the higher
@@ -67,18 +65,17 @@ scheduled.
 
 @since 0.0
 */
-//======================================================================================================================
 
-final class Event private [engine] (private val action: Action,
+final class Event private[engine](private val action: Action,
 delay: Time.Measure, private val priority: Int)
-extends Ordered [Event] {
+extends Ordered[Event] {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (action)
-  assertNonNull (delay)
+  assertNonNull(action)
+  assertNonNull(delay)
 
 /**
 Scheduled absolute dispatch time of this event.
@@ -95,7 +92,6 @@ created.  It is incremented each time a new event is created.
 
   private val id = EventId.nextId
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Compare this to another event.
 
@@ -114,26 +110,24 @@ event should be dispatched after the other event.  A value of 0, indicating
 that the two events should be dispatched at the same time, should only occur if
 an event is compared to itself.
 
-@throws java.lang.NullPointerException if `that` is `null`.
+@throws NullPointerException if `that` is `null`.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  override def compare (that: Event): Int = {
+  override def compare(that: Event): Int = {
 
 /*
 Sanity checks.
 */
 
-    requireNonNull (that)
+    requireNonNull(that)
 
 /*
 Compare the due times of the two events.  If there's a difference, return it.
 */
 
-    val dueCompare = due.compare (that.due)
-    if (dueCompare != 0) dueCompare
+    val dueCompare = due.compare(that.due)
+    if(dueCompare != 0) dueCompare
 
 /*
 Otherwise, the two events have the same due time. Now compare their priorities.
@@ -143,9 +137,9 @@ the other event if it has a lower priority value.
 */
 
     else {
-      assert (due == that.due && dueCompare == 0)
-      val priorityCompare = priority.compare (that.priority)
-      if (priorityCompare != 0) -priorityCompare
+      assert(due == that.due && dueCompare == 0)
+      val priorityCompare = priority.compare(that.priority)
+      if(priorityCompare != 0) -priorityCompare
 
 /*
 Otherwise, the two events have the same due time and the same priority. Return
@@ -157,14 +151,13 @@ the future if it can be done without breaking the ordering rules.
 */
 
       else {
-        assert (priority == that.priority && priorityCompare == 0)
-        assert (id != that.id || (this eq that))
-        id.compare (that.id)
+        assert(priority == that.priority && priorityCompare == 0)
+        assert(id != that.id ||(this eq that))
+        id.compare(that.id)
       }
     }
   }
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Describe the event.
 
@@ -172,11 +165,8 @@ Describe the event.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
   def description = action.description
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 Dispatch the event.
 
@@ -184,7 +174,5 @@ When the event is dispatched, its actions are to be executed.
 
 @since 0.0
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  private [engine] def dispatch (): Unit = action ()
+  private[engine] def dispatch(): Unit = action()
 }

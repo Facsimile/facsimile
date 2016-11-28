@@ -30,14 +30,12 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
 
-//======================================================================================================================
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell hemisphere''
 primitives.
@@ -63,10 +61,9 @@ during parsing of the file.
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Hemispheres.html
 Hemispheres]] for further information.
 */
-//======================================================================================================================
 
-private [cell] final class Hemisphere (scene: CellScene, parent: Option [Set])
-extends Mesh3D (scene, parent) {
+private[cell] final class Hemisphere(scene: CellScene, parent: Option[Set])
+extends Mesh3D(scene, parent) {
 
 /**
 Hemisphere radius.
@@ -74,27 +71,22 @@ Hemisphere radius.
 This value must be >= 0.
 */
 
-  private val radius = scene.readDouble (_ >= 0.0, LibResource
-  ("anim.cell.Hemisphere.read"))
+  private val radius = scene.readDouble(_ >= 0.0, LibResource
+ ("anim.cell.Hemisphere.read"))
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
 @inheritdoc
 
 @note The origin of the hemisphere is at the center of its base.
 
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  protected [cell] override def cellMesh: Mesh =
-  Mesh.hemisphere (Point3D.Origin, radius, Hemisphere.Divisions)
+  protected[cell] override def cellMesh: Mesh =
+  Mesh.hemisphere(Point3D.Origin, radius, Hemisphere.Divisions)
 }
 
-//======================================================================================================================
 /**
 Hemisphere companion object.
 */
-//======================================================================================================================
 
 private object Hemisphere {
 

@@ -30,18 +30,15 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.anim.cell.test package.
 */
-//======================================================================================================================
 
 package org.facsim.anim.cell.test
 
 import org.facsim.anim.cell.LineStyle
 import org.scalatest.FunSpec
 
-//======================================================================================================================
 /**
 Test suite for the [[org.facsim.anim.cell.LineStyle$]] object.
 */
-//======================================================================================================================
 
 class LineStyleTest extends FunSpec {
 
@@ -51,13 +48,13 @@ Test data.
 
   trait TestData {
     val validCodes = LineStyle.minValue to LineStyle.maxValue
-    val validMap = Map [Int, LineStyle.Value] (
+    val validMap = Map[Int, LineStyle.Value](
       0 -> LineStyle.Solid,
       1 -> LineStyle.Dashed,
       2 -> LineStyle.Dotted,
       3 -> LineStyle.Halftone
     )
-    val invalidCodes = List (Int.MinValue, LineStyle.minValue - 1,
+    val invalidCodes = List(Int.MinValue, LineStyle.minValue - 1,
     LineStyle.maxValue + 1, Int.MaxValue)
   }
 
@@ -65,28 +62,28 @@ Test data.
 Test fixture description.
 */
 
-  describe (LineStyle.getClass.getCanonicalName) {
+  describe(LineStyle.getClass.getCanonicalName) {
 
 /*
 Test the apply function works as expected.
 */
 
-    describe (".apply (Int)") {
+    describe(".apply(Int)") {
       new TestData {
-        it ("must throw a java.util.NoSuchElementException if passed an " +
+        it("must throw a NoSuchElementException if passed an " +
         "invalid line style code") {
           invalidCodes.foreach {
             code =>
-            intercept [NoSuchElementException] {
-              LineStyle (code)
+            intercept[NoSuchElementException] {
+              LineStyle(code)
             }
           }
         }
-        it ("must return the correct line style if passed a valid line style "
+        it("must return the correct line style if passed a valid line style "
         + "code") {
           validCodes.foreach {
             code =>
-            assert (LineStyle (code) === validMap (code))
+            assert(LineStyle(code) === validMap(code))
           }
         }
       }
@@ -96,9 +93,9 @@ Test the apply function works as expected.
 Test that the default line style is reported correctly.
 */
 
-    describe (".default") {
-      it ("must be Solid") {
-        assert (LineStyle.Default === LineStyle.Solid)
+    describe(".default") {
+      it("must be Solid") {
+        assert(LineStyle.Default === LineStyle.Solid)
       }
     }
 
@@ -106,18 +103,18 @@ Test that the default line style is reported correctly.
 Test the verify function works as expected.
 */
 
-    describe (".verify (Int)") {
+    describe(".verify(Int)") {
       new TestData {
-        it ("must return false if passed an invalid line style code") {
+        it("must return false if passed an invalid line style code") {
           invalidCodes.foreach {
             code =>
-            assert (LineStyle.verify (code) === false)
+            assert(LineStyle.verify(code) === false)
           }
         }
-        it ("must return true if passed a valid line style code") {
+        it("must return true if passed a valid line style code") {
           validCodes.foreach {
             code =>
-            assert (LineStyle.verify (code) === true)
+            assert(LineStyle.verify(code) === true)
           }
         }
       }

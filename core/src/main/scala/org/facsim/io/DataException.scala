@@ -30,11 +30,9 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
-//======================================================================================================================
 /**
 Base exception class signaling an error in a data operation.
 
@@ -47,8 +45,7 @@ exceptions must implement ''failure atomicity''.
 
 @param column Column in data stream at which the exception was detected.
 */
-//======================================================================================================================
 
-private [io] abstract class DataException (final val row: Int,
+private[io] abstract class DataException(final val row: Int,
 final val column: Int)
 extends Exception

@@ -30,13 +30,11 @@ standards at:
 ========================================================================================================================
 Scala source file from the org.facsim.io package.
 */
-//======================================================================================================================
 
 package org.facsim.io
 
 import org.facsim.{assertNonNull, LibResource}
 
-//======================================================================================================================
 /**
 Exception indicating that a field read from a [[org.facsim.io.TextReader!]]
 could not be converted from a string to its required data type.
@@ -54,24 +52,20 @@ throwing such exceptions must implement ''failure atomicity''.
 
 @since 0.0
 */
-//======================================================================================================================
 
-final class FieldConversionException private [io] (row: Int, column: Int,
+final class FieldConversionException private[io](row: Int, column: Int,
 field: String)
-extends FieldException (row, column, field) {
+extends FieldException(row, column, field) {
 
 /*
 Sanity checks.
 */
 
-  assertNonNull (field)
+  assertNonNull(field)
 
-//----------------------------------------------------------------------------------------------------------------------
 /*
 @see [[java.lang.Throwable!.getMessage()]]
 */
-//----------------------------------------------------------------------------------------------------------------------
-
-  override def getMessage = LibResource ("io.FieldConversion", row,  column,
+  override def getMessage = LibResource("io.FieldConversion", row,  column,
   field)
 }
