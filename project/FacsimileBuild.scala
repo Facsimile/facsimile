@@ -479,7 +479,7 @@ object FacsimileBuild {
       /*
        * Run scalastyle to ensure that sources are correctly formatted and contain no static errors.
        */
-      ReleaseStep(action = Command.process("testScalastyle", _)),
+      ReleaseStep(action = Command.process("scalastyle", _)),
 
       /*
        * Update the "Version.sbt" file so that it contains the release version number.
