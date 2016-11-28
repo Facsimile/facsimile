@@ -1,6 +1,6 @@
 /*
- * Facsimile -- A Discrete-Event Simulation Library
- * Copyright © 2004-2016, Michael J Allen.
+ * Facsimile -- Edit description.
+ * Copyright © 2010-2016, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -29,93 +29,24 @@
  *
  *   http://facsim.org/Documentation/CodingStandards/
  * =====================================================================================================================
- * Scala source file belonging to the org.facsim.stats package.
+ * Scala source file belonging to the org.facsim.measure package.
  */
-package org.facsim.stats
+package org.facsim.measure
 
 /**
- * Trait defining strings for a variety of statistical terms.
+ * Numeric quantity factory class.
  *
- * This trait is employed by objects providing local-specific names and symbols for these terms.
- *
- * @since 0.0
+ * @tparam N Type of number to be created.
  */
-private[stats] trait Nomenclature {
+private[measure] trait NumberFactory[N <: Number[N]] {
 
   /**
-   * Population mean.
+   * Factory method to create a new number instance with specified `value`.
    *
-   * @since 0.0
-   */
-  val PopulationMean: String
-
-  /**
-   * Estimate of population mean.
+   * @param value Value, in whatever units may be most appropriate to the underlying type, of the new [[Number]]
+   * instance.
    *
-   * @since 0.0
+   * @return New [[Number]] instance with the associated value.
    */
-  val PopulationMeanEstimate: String
-
-  /**
-   * Population standard deviation.
-   *
-   * @since 0.0
-   */
-  val PopulationStandardDeviation: String
-
-  /**
-   * Estimate of population standard deviation.
-   *
-   * @since 0.0
-   */
-  val PopulationStandardDeviationEstimate: String
-
-  /**
-   * Population variance.
-   *
-   * @since 0.0
-   */
-  val PopulationVariance: String
-
-  /**
-   * Estimate of population variance.
-   *
-   * @since 0.0
-   */
-  val PopulationVarianceEstimate: String
-
-  /**
-   * Sample minimum.
-   *
-   * @since 0.0
-   */
-  val SampleMinimum: String
-
-  /**
-   * Sample mean.
-   *
-   * @since 0.0
-   */
-  val SampleMean: String
-
-  /**
-   * Sample maximum.
-   *
-   * @since 0.0
-   */
-  val SampleMaximum: String
-
-  /**
-   * Sample standard deviation.
-   *
-   * @since 0.0
-   */
-  val SampleStandardDeviation: String
-
-  /**
-   * Sample variance.
-   *
-   * @since 0.0
-   */
-  val SampleVariance: String
+  private[measure] def apply(value: Double = 0.0): N
 }

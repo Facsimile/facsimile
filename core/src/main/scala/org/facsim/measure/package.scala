@@ -79,4 +79,40 @@ package org.facsim
  *
  * @since 0.0
  */
-package object measure
+package object measure {
+
+  /**
+   * Alias for plane angle measurements.
+   */
+  type Angle = Angle.Measure
+
+  /**
+   * Alias for electrical current measurements.
+   */
+  type Current = Current.Measure
+
+  /**
+   * Alias for length measurements.
+   */
+  type Length = Length.Measure
+
+  /**
+   * Alias for luminous intensity measurements.
+   */
+  type LuminousIntensity = LuminousIntensity.Measure
+
+  /**
+   * Alias for mass measurements.
+   */
+  type Mass = Mass.Measure
+
+  /**
+   * Alias for temperature measurements.
+   */
+  type Temperature = Temperature.Measure
+
+  /**
+   * Alias for time measurements.
+   */
+  type Time = Time.Measure
+}
