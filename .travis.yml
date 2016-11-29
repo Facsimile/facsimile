@@ -92,7 +92,7 @@ addons:
 # must be performed as separate SBT commands.)
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean scalastyle coverage test doc &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean scalastyle coverage test doc coverageReport &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 
 # If this script was successful, run the coveralls SBT task.
