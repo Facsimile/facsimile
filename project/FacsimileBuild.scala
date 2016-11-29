@@ -60,6 +60,8 @@ import sbtunidoc.Plugin.{ScalaUnidoc, UnidocKeys, unidocSettings}
 import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype.sonatypeSettings
 
+// Disable certain Scalastyle features to make this file intelligible in IntelliJ IDEA.
+//scalastyle:off scaladoc
 /*
  * Wrap all contents in a FacsimileSettings object for inclusion in client projects.
  */
@@ -559,3 +561,4 @@ object FacsimileBuild {
     releaseVersionFile := file("Version.sbt")
   )
 }
+//scalastyle:on scaladoc
