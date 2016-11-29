@@ -530,11 +530,6 @@ object FacsimileBuild {
       publishArtifacts,
 
       /*
-       * Publish the released version to the Sonatype OSS repository.
-       */
-      ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
-
-      /*
        * Update the "Version.sbt" file so that it contains the new development version number.
        */
       setNextVersion,
@@ -543,6 +538,11 @@ object FacsimileBuild {
        * Commit the updated working directory, so that the new development version takes effect.
        */
       commitNextVersion,
+
+      /*
+       * Publish the released version to the Sonatype OSS repository.
+       */
+      ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
 
       /*
        * Push all commits to the upstream respository (typically "origin").
