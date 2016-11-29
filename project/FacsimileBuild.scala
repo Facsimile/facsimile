@@ -455,6 +455,7 @@ object FacsimileBuild {
      * For best results, all releases and code release signing should be undertaken on a Linux system via GNU GPG.
      */
     PgpKeys.useGpg := true,
+    PgpKeys.gpgCommand := "/usr/bin/gpg",
 
     /*
      * Identify the key to be used to sign release files.
