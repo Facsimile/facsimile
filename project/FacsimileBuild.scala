@@ -470,7 +470,8 @@ object FacsimileBuild {
      *
      * Note that, for security, the private signing key and passcode are not publicly available.
      */
-    PgpKeys.pgpSigningKey := Some(0xC08B4D86EACCE720L),
+    //PgpKeys.pgpSigningKey := Some(0xC08B4D86EACCE720L),
+    PgpKeys.usePgpKeyHex("c08b4d86eacce720"),
 
     /*
      * Sign releases prior to publication.
