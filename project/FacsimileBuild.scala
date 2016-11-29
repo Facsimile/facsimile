@@ -454,7 +454,7 @@ object FacsimileBuild {
      *
      * For best results, all releases and code release signing should be undertaken on a Linux system via GNU GPG.
      */
-    PgpKeys.useGpg := true,
+    PgpKeys.useGpg in Global := true,
 
     /*
      * Identify the key to be used to sign release files.
@@ -470,8 +470,7 @@ object FacsimileBuild {
      *
      * Note that, for security, the private signing key and passcode are not publicly available.
      */
-    //PgpKeys.pgpSigningKey := Some(0xC08B4D86EACCE720L),
-    PgpKeys.usePgpKeyHex("c08b4d86eacce720"),
+    PgpKeys.pgpSigningKey in Global := Some(0xC08B4D86EACCE720L),
 
     /*
      * Sign releases prior to publication.
