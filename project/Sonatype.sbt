@@ -36,5 +36,4 @@
 //
 //   https://github.com/Facsimile/skeleton
 //======================================================================================================================
-
-addSbtPlugin ("org.xerial.sbt" % "sbt-sonatype" % "1.1")
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")

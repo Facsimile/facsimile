@@ -36,5 +36,4 @@
 //
 //   https://github.com/Facsimile/skeleton
 //======================================================================================================================
-
-addSbtPlugin ("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.8.0")
+addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.8.0")

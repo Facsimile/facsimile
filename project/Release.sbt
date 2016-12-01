@@ -39,5 +39,4 @@
 //
 //   https://github.com/Facsimile/skeleton
 //======================================================================================================================
-
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.2")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")

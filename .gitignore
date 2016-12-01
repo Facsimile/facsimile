@@ -46,7 +46,9 @@
 .cache
 .classpath
 .externalToolBuilders/
-.idea/
+.idea/libraries
+.idea/tasks.xml
+.idea/workspace.xml
 .idea_modules/
 .project
 .scala_dependencies
