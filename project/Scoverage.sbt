@@ -31,11 +31,5 @@
 // SBT file to include scoverage unit-test coverage analysis.
 //
 // This plugin is required by the coveralls.io site.
-//
-// NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
-// Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
-// merged into client projects. Refer to the skeleton project for further details:
-//
-//   https://github.com/Facsimile/skeleton
 //======================================================================================================================
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")

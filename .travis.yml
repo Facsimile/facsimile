@@ -33,12 +33,6 @@
 # For further details on this configuration, refer to:
 #
 #   http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
-#
-# NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
-# Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
-# merged into client projects. Refer to the skeleton project for further details:
-#
-#   https://github.com/Facsimile/skeleton
 #=======================================================================================================================
 
 # Use container-based architecture, which is faster and supports IVY & SBT file caching.
@@ -92,7 +86,7 @@ addons:
 # must be performed as separate SBT commands.)
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean scalastyle coverage test doc coverageReport &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean scalastyle coverage test unidoc coverageReport &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 
 # If this script was successful, run the coveralls SBT task.

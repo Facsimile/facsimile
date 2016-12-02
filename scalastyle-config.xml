@@ -44,12 +44,6 @@ disabled. You should also add comments that explain why it was necessary. Avoid 
 
 UNDER NO CIRCUMSTANCES SHOULD YOU DISABLE A RULE IN THIS FILE IN ORDER TO ALLOW YOUR CODE TO PASS SCALASTYLE
 INSPECTIONS.
-
-NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other Facsimile
-projects, termed client projects. It must only be modified in the "skeleton" project, with changes being merged into
-client projects. Refer to the skeleton project for further details:
-
-  https://github.com/Facsimile/skeleton
 ========================================================================================================================
 -->
 <scalastyle>

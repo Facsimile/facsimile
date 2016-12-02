@@ -29,11 +29,5 @@
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
 // SBT file to include Scalastyle plugin.
-//
-// NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
-// Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
-// merged into client projects. Refer to the skeleton project for further details:
-//
-//   https://github.com/Facsimile/skeleton
 //======================================================================================================================
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.8.0")

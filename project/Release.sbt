@@ -32,11 +32,5 @@
 //
 // This plugin assists with the version numbering of Facsimile releases, and replaces the more cumbersome sbt-git
 // plugin.
-//
-// NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
-// Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
-// merged into client projects. Refer to the skeleton project for further details:
-//
-//   https://github.com/Facsimile/skeleton
 //======================================================================================================================
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")
