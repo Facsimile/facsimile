@@ -97,6 +97,10 @@ lazy val commonSettings = Seq(
   crossScalaVersions := Seq("2.12.0"),
 
   // Scala default version.
+  //
+  // NOTE: While it might appear that these Scala version options should be placed in "sourceProjectSettings", SBT will
+  // use the Scala version to decorate the project's artifact/normalized name. Hence, even if a project does not contain
+  // any sources, it it still necessary to provide the version of Scala that is in use.
   scalaVersion := crossScalaVersions.value.head
 )
 
@@ -230,7 +234,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // recommended.
     runClean,
 
-    // Run the test suite, to verify that all tests pass.
+    // Run the test suite, to verify that all tests pass. (This will also compile all code.)
     runTest,
 
     // Run scalastyle to ensure that sources are correctly formatted and contain no static errors.
@@ -281,7 +285,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 // These settings are common to all projects that contain source files, which must be compiled and tested.
 //
 // Any library dependencies listed here MUST be universal and not nontransitive.
-lazy val sourceSettings = Seq(
+lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
   //
@@ -386,9 +390,7 @@ lazy val unidocProjectSettings = unidocSettings ++ Seq(
   //),
 
   // Have SBT run the "unidoc" command when given the "doc" command.
-  //
-  // Currently disabled, as this seems to create problems. Run the unidoc command instead.
-  //doc in Compile := (doc in ScalaUnidoc).value,
+  doc in Compile := (doc in ScalaUnidoc).value,
 
   // Have unidoc write output to the "api" directory, instead of the "unidoc" directory.
   target in (ScalaUnidoc, UnidocKeys.unidoc) := crossTarget.value / "api"
@@ -469,7 +471,7 @@ settings(
 lazy val facsimileUtilCore = project.in(file("facsimile-util/core")).
 dependsOn(facsimileUtilMacro % "test->test;compile->compile").
 settings(commonSettings: _*).
-settings(sourceSettings: _*).
+settings(sourceProjectSettings: _*).
 settings(unpublishedProjectSettings: _*).
 settings(
 
@@ -491,7 +493,7 @@ settings(
 // Artifacts from this project are merged into Facsimile-Util's artifacts and should not be published.
 lazy val facsimileUtilMacro = project.in(file("facsimile-util/macro")).
 settings(commonSettings: _*).
-settings(sourceSettings: _*).
+settings(sourceProjectSettings: _*).
 settings(unpublishedProjectSettings: _*).
 settings(
 
