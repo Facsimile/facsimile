@@ -65,6 +65,12 @@ val copyrightRange = {
   else s"$startYear-$currentYear"
 }
 
+// Git URL.
+val gitURL = "https://github.com/Facsimile/facsimile"
+
+// Git SCM record
+val gitSCM = s"scm:git:$gitURL.git"
+
 // Common project settings.
 //
 // These settings are common to all SBT root- and sub-projects.
@@ -137,11 +143,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 
   // Facsimile utilitizes git for version control, hosted by GitHub.
   scmInfo := Some(
-    ScmInfo(
-      url("https://github.com/Facsimile/facsimile"),
-      "scm:git:https://github.com/Facsimile/facsimile.git",
-      Some("scm:git:https://github.com/Facsimile/facsimile.git")
-    )
+    ScmInfo(url(gitURL), gitSCM, Some(gitSCM))
   ),
 
   // Test artifacts should not be published.
@@ -186,7 +188,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   //
   // The jar file should be sealed so that the packages contained cannot be extended. We also add inception & build
   // timestamps for information purposes.
-  packageOptions in (Compile, packageBin) ++= Seq(
+  packageOptions in (Compile, packageBin) ++= Seq( //scalastyle:ignore disallow.space.before.token
     Package.ManifestAttributes(Name.SEALED -> "true"),
     Package.ManifestAttributes("Inception-Timestamp" -> facsimileStartDate.toString),
     Package.ManifestAttributes("Build-Timestamp" -> facsimileBuildDate.toString)
@@ -210,7 +212,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   // Look for the key ID in the line beginning with "sec".
   //
   // Note that, for security, the private signing key and passcode are not publicly available.
-  PgpKeys.pgpSigningKey in Global := Some(0xC08B4D86EACCE720L),
+  PgpKeys.pgpSigningKey in Global := Some(0xC08B4D86EACCE720L), //scalastyle:ignore magic.number
 
   // Sign releases prior to publication.
   releasePublishArtifactsAction := PgpKeys.publishSigned.value,
@@ -368,9 +370,9 @@ lazy val unidocProjectSettings = unidocSettings ++ Seq(
   //
   // The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes (Unidoc is currently
   // unable to accommodate macros, so this is necessary).
-  scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq(  
+  scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq( //scalastyle:ignore disallow.space.before.token
     "-diagrams",
-    "-doc-footer", s"Copyright © ${copyrightRange}, ${organizationName.value}. All rights reserved.",
+    "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
     "-doc-format:html",
     "-doc-title", "Facsimile API Documentation",
     "-doc-version", version.value,
@@ -384,16 +386,17 @@ lazy val unidocProjectSettings = unidocSettings ++ Seq(
   // Scaladoc configuration.
   //
   // Allow Scaladoc to link to the Scala documentation for third-party libraries (through the apiURL setting).
-  autoAPIMappings in (ScalaUnidoc, UnidocKeys.unidoc) := true,
+  autoAPIMappings in (ScalaUnidoc, UnidocKeys.unidoc) := true, //scalastyle:ignore disallow.space.before.token
   //apiMappings in (ScalaUnidoc, UnidocKeys.unidoc) += (
   //  unmanagedBase.value / "jt.jar" -> url("http://docs.oracle.com/javase/8/docs/api/")
   //),
 
   // Have SBT run the "unidoc" command when given the "doc" command.
-  doc in Compile := (doc in ScalaUnidoc).value,
+  doc in Compile := (doc in ScalaUnidoc).value, //scalastyle:ignore disallow.space.before.token
 
   // Have unidoc write output to the "api" directory, instead of the "unidoc" directory.
-  target in (ScalaUnidoc, UnidocKeys.unidoc) := crossTarget.value / "api"
+  target in (ScalaUnidoc, UnidocKeys.unidoc) := //scalastyle:ignore disallow.space.before.token
+  crossTarget.value / "api"
 )
 
 // Settings for all projects that should not publish artifacts to the Sonatype OSS repository.
@@ -429,6 +432,9 @@ settings(
   aggregate in doc := false
 )
 
+// Name of the facsimile-util project.
+val facsimileUtilName = "facsimile-util"
+
 // Facsimile-Util project.
 //
 // The Facsimile-Util project contains common utility code that is utilized by other Facsimile projects, as well as
@@ -441,7 +447,7 @@ settings(
 //
 // Actions are aggregated to these sub-projects, with the results being merged into a single library that is published
 // to the Sonatype OSS repository.
-lazy val facsimileUtil = project.in(file("facsimile-util")).
+lazy val facsimileUtil = project.in(file(facsimileUtilName)).
 aggregate(facsimileUtilMacro, facsimileUtilCore).
 settings(commonSettings: _*).
 settings(publishedProjectSettings: _*).
@@ -450,7 +456,7 @@ settings(
 
   // Name and description of this project.
   name := "Facsimile Utility Library",
-  normalizedName := "facsimile-util",
+  normalizedName := facsimileUtilName,
   description := """
     The Facsimile Utility library provides a number of utilities required by other Facsimile libraries as well as
     third-party libraries.

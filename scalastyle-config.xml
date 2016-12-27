@@ -623,10 +623,10 @@ Ensure that there are no spaces prior to colons, commas or parentheses.
 
 Rationale: This is simply an adopted Facsimile code style convention. It is enforced to ensure code consistency.
 
-UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
+To disable this rule locally, use the ID: disallow.space.before.token
 -->
 
-  <check class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" enabled="true" level="error">
+  <check class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" enabled="true" level="warning">
     <parameters>
       <parameter name="tokens">COLON, COMMA, LPAREN, RPAREN</parameter>
     </parameters>
