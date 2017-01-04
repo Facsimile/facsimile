@@ -71,6 +71,13 @@ val gitURL = "https://github.com/Facsimile/facsimile"
 // Git SCM record
 val gitSCM = s"scm:git:$gitURL.git"
 
+// Common Scala compilation options (for compiling sources and generating documentation).
+lazy val commonScalaCSettings = Seq(
+  "-deprecation",
+  "-encoding", "UTF-8"
+  //"-Xfatal-warnings",
+)
+
 // Common project settings.
 //
 // These settings are common to all SBT root- and sub-projects.
@@ -297,15 +304,13 @@ lazy val sourceProjectSettings = Seq(
   //
   // As Xfatal-warnings is not in use, it's possible to have builds that generate tons of warnings, but which do not
   // fail a build. This is unacceptable: projects must build clean, without any errors or warnings, as a basic
-  // requirement for any release to be performned.
+  // requirement for any release to be performed.
   //
   // -Xstrict-inference is currently disabled as it outputs erroneous warnings for some generic code. See
   // https://issues.scala-lang.org/browse/SI-7991 for further details.
-  scalacOptions in Compile := Seq(
+  scalacOptions in Compile := commonScalaCSettings ++ Seq(
 
     // Code compilation options.
-    "-deprecation",
-    "-encoding", "UTF-8",
     "-feature",
     "-g:vars",
     "-opt:l:method",
@@ -313,7 +318,6 @@ lazy val sourceProjectSettings = Seq(
     "-target:jvm-1.8",
     "-unchecked",
     "-Xcheckinit",
-    //"-Xfatal-warnings",
     "-Xlint:_",
     //"-Xstrict-inference",
     "-Ypartial-unification",
@@ -347,10 +351,9 @@ lazy val sourceProjectSettings = Seq(
 
   // Required scala standard libraries.
   //
-  // As stated above, these must be universal and nontrasnsitive for all projects. In particular, indirect dependences
-  // (dependencies that are required by projects upon which all Facsimile projects are dependent) should not be
-  // explicitly included, as this can lead to versioning problems (such as depending upon two or more different versions
-  // of the same library).
+  // As stated above, these must be universal and non-transitive for all projects. In particular, indirect dependencies
+  // (dependencies that are required by direct dependencies) should not be explicitly included, as this can lead to
+  // versioning problems (such as depending upon two or more different versions of the same library).
   //
   // Right now, the only universal dependencies are libraries required by the test phase.
   libraryDependencies ++= Seq(
@@ -370,7 +373,8 @@ lazy val unidocProjectSettings = unidocSettings ++ Seq(
   //
   // The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes (Unidoc is currently
   // unable to accommodate macros, so this is necessary).
-  scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := Seq( //scalastyle:ignore disallow.space.before.token
+  scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := //scalastyle:ignore disallow.space.before.token
+  commonScalaCSettings ++ Seq(
     "-diagrams",
     "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
     "-doc-format:html",
@@ -378,8 +382,7 @@ lazy val unidocProjectSettings = unidocSettings ++ Seq(
     "-doc-version", version.value,
     "-groups",
     "-implicits",
-    "-no-link-warnings",
-    "-Xfatal-warnings",
+    "-no-prefixes",
     "-Ymacro-expand:none"
   ),
 
