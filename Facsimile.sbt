@@ -414,7 +414,6 @@ lazy val unpublishedProjectSettings = Seq(
 // The Facsimile root project simply aggregates actions across all Facsimile projects. However, it is responsible for
 // merging the documentation from those projects and publishing it on the Facsimile web-site.
 lazy val facsimile = project.in(file(".")).
-aggregate(facsimileUtil).
 settings(commonSettings: _*).
 settings(unidocProjectSettings: _*).
 settings(
@@ -433,7 +432,31 @@ settings(
   // Disable aggregation of the "doc" command, so that we do not attempt to generate documentation for the core and
   // macro sub-projects individually - we will rely on the Unidoc plugin to take care of that for us.
   aggregate in doc := false
-)
+).
+aggregate(facsimileUtil, facsimileMeasure)
+
+// Name of the facsimile-util project.
+val facsimileMeasureName = "facsimile-measure"
+
+// Facsimile-Measure project.
+//
+// The Facsimile-Measure project supports physics calculations specified in a variety of physical measurement value
+// classes, in a variety of supported units.
+lazy val facsimileMeasure = project.in(file(facsimileMeasureName)).
+settings(commonSettings: _*).
+settings(unidocProjectSettings: _*).
+settings(publishedProjectSettings: _*).
+settings(
+
+  // Name and description of this project.
+  name := "Facsimile Physical Measurement Library",
+  normalizedName := facsimileMeasureName,
+  description := """
+    The Facsimile Measurement library supports physics calculations specified in a variety of physical measurement value
+    classes, in a variety of supported units.
+  """
+).
+dependsOn(facsimileUtil % "test->test;compile->compile")
 
 // Name of the facsimile-util project.
 val facsimileUtilName = "facsimile-util"
@@ -451,10 +474,10 @@ val facsimileUtilName = "facsimile-util"
 // Actions are aggregated to these sub-projects, with the results being merged into a single library that is published
 // to the Sonatype OSS repository.
 lazy val facsimileUtil = project.in(file(facsimileUtilName)).
-aggregate(facsimileUtilMacro, facsimileUtilCore).
 settings(commonSettings: _*).
-settings(publishedProjectSettings: _*).
+settings(sourceProjectSettings: _*).
 settings(unidocProjectSettings: _*).
+settings(publishedProjectSettings: _*).
 settings(
 
   // Name and description of this project.
@@ -465,12 +488,16 @@ settings(
     third-party libraries.
   """,
 
+  // Ensure that JAR files are exported.
+  exportJars := true,
+
   // Ensure that core and macro classes and sources are copied to the corresponding distribution jar files.
   mappings in(Compile, packageBin) ++= mappings.in(facsimileUtilMacro, Compile, packageBin).value,
   mappings in(Compile, packageBin) ++= mappings.in(facsimileUtilCore, Compile, packageBin).value,
   mappings in(Compile, packageSrc) ++= mappings.in(facsimileUtilMacro, Compile, packageSrc).value,
   mappings in(Compile, packageSrc) ++= mappings.in(facsimileUtilCore, Compile, packageSrc).value
-)
+).
+aggregate(facsimileUtilMacro, facsimileUtilCore)
 
 // Facsimile-Util-Core project.
 //
@@ -478,7 +505,6 @@ settings(
 //
 // Artifacts from this project are merged into Facsimile-Util's artifacts and should not be published.
 lazy val facsimileUtilCore = project.in(file("facsimile-util/core")).
-dependsOn(facsimileUtilMacro % "test->test;compile->compile").
 settings(commonSettings: _*).
 settings(sourceProjectSettings: _*).
 settings(unpublishedProjectSettings: _*).
@@ -493,7 +519,8 @@ settings(
 
   // Help the test code find the test JAR files that we use to verify JAR file manifests.
   unmanagedBase in Test := baseDirectory.value / "src/test/lib"
-)
+).
+dependsOn(facsimileUtilMacro % "test->test;compile->compile")
 
 // Facsimile-Util-Macro project.
 //

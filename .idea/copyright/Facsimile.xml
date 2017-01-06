@@ -1,0 +1,7 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="keyword" value="^Copyright © (\d{4}\-)?\d{4}\, Michael J Allen\.$" />
+    <option name="myName" value="Facsimile" />
+    <option name="notice" value="Copyright © 2004-&amp;#36;today.year, Michael J Allen." />
+  </copyright>
+</component>
