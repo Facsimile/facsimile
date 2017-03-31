@@ -39,31 +39,26 @@ import org.facsim.measure.Angle.{π, τ}
 import org.facsim.util.test.EqualsFixture
 import org.scalatest.FunSpec
 
-/**
- * Test suite for the [[Angle]] object.
- */
+/** Test suite for the [[Angle]] object.
+  */
 class AngleTest
 extends FunSpec
 with SpecificBehaviors[Angle.type] {
 
-  /**
-   * Fixture for testing that angle measurements fulfill the "equals contract".
-   */
+  /** Fixture for testing that angle measurements fulfill the "equals contract".
+    */
   trait AngleEqualsFixture
   extends EqualsFixture[Angle.Measure] {
 
-    /**
-     * Specify a list for equality testing.
-     *
-     * Each list within this list should contain values that compare equal and that have the same hashCode. The first
-     * member of each list should NOT compare equal to the first member of any other list.
-     */
+    /** Specify a list for equality testing.
+      *
+      * Each list within this list should contain values that compare equal and that have the same hashCode. The first
+      * member of each list should NOT compare equal to the first member of any other list.
+      */
     override def equalListSample = List(
 
-      /*
-       * All of these values should have a value of -τ radians (-360 degrees), which should normalize to 0 radians (0
-       * degrees).
-       */
+      // All of these values should have a value of -τ radians (-360 degrees), which should normalize to 0 radians (0
+      // degrees).
       List(
         -τ,
         Angle(-360.0, Angle.Degrees),
@@ -71,9 +66,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(-1.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of -τ/2 radians (-180 degrees).
-       */
+      // All of these values should have a value of -τ/2 radians (-180 degrees).
       List(
         -τ / 2.0,
         Angle(-180.0, Angle.Degrees),
@@ -81,9 +74,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(-1.0 / 2.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of -τ/4 radians (-90 degrees).
-       */
+      // All of these values should have a value of -τ/4 radians (-90 degrees).
       List(
         -τ / 4.0,
         Angle(-90.0, Angle.Degrees),
@@ -91,9 +82,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(-1.0 / 4.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of -τ/6 radians (-60 degrees).
-       */
+      // All of these values should have a value of -τ/6 radians (-60 degrees).
       List(
         -τ / 6.0,
         Angle(-60.0, Angle.Degrees),
@@ -101,9 +90,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(-1.0 / 6.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of -τ/8 radians (-45 degrees).
-       */
+      // All of these values should have a value of -τ/8 radians (-45 degrees).
       List(
         -τ / 8.0,
         Angle(-45.0, Angle.Degrees),
@@ -111,9 +98,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(-1.0 / 8.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of -τ/12 radians (-30 degrees).
-       */
+      // All of these values should have a value of -τ/12 radians (-30 degrees).
       List(
         -τ / 12.0,
         Angle(-30.0, Angle.Degrees),
@@ -121,9 +106,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(-1.0 / 12.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have the value 0 radians (0 degrees).
-       */
+      // All of these values should have the value 0 radians (0 degrees).
       List(
         Angle.Zero,
         Angle(0.0, Angle.Degrees),
@@ -131,9 +114,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(0.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of τ/12 radians (30 degrees).
-       */
+      // All of these values should have a value of τ/12 radians (30 degrees).
       List(
         τ / 12.0,
         Angle(30.0, Angle.Degrees),
@@ -141,9 +122,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(1.0 / 12.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of τ/8 radians (45 degrees).
-       */
+      // All of these values should have a value of τ/8 radians (45 degrees).
       List(
         τ / 8.0,
         Angle(45.0, Angle.Degrees),
@@ -151,9 +130,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(1.0 / 8.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of τ/6 radians (60 degrees).
-       */
+      // All of these values should have a value of τ/6 radians (60 degrees).
       List(
         τ / 6.0,
         Angle(60.0, Angle.Degrees),
@@ -161,9 +138,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(1.0 / 6.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of τ/4 radians (90 degrees).
-       */
+      // All of these values should have a value of τ/4 radians (90 degrees).
       List(
         τ / 4.0,
         Angle(90.0, Angle.Degrees),
@@ -171,9 +146,7 @@ with SpecificBehaviors[Angle.type] {
         Angle(1.0 / 4.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of τ/2 radians (180 degrees).
-       */
+      // All of these values should have a value of τ/2 radians (180 degrees).
       List(
         τ / 2.0,
         Angle(180.0, Angle.Degrees),
@@ -181,10 +154,8 @@ with SpecificBehaviors[Angle.type] {
         Angle(1.0 / 2.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of τ radians (360 degrees), which should normalize to 0 radians (0
-       * degrees).
-       */
+      // All of these values should have a value of τ radians (360 degrees), which should normalize to 0 radians (0
+      // degrees).
       List(
         τ,
         Angle(360.0, Angle.Degrees),
@@ -192,10 +163,8 @@ with SpecificBehaviors[Angle.type] {
         Angle(1.0, Angle.Turns)
       ),
 
-      /*
-       * All of these values should have a value of 2τ radians (720 degrees), which should normalize to 0 radians (0
-       * degrees).
-       */
+      // All of these values should have a value of 2τ radians (720 degrees), which should normalize to 0 radians (0
+      // degrees).
       List(
         τ * 2.0,
         Angle(720.0, Angle.Degrees),
@@ -204,10 +173,9 @@ with SpecificBehaviors[Angle.type] {
       )
     )
 
-    /**
-     * Specify a list of values (null is tested separately and does not need to be included) that are of a different
-     * type to [[Angle.Measure]] and so should not compare equal and should fail canEqual also.
-     */
+    /** Specify a list of values (null is tested separately and does not need to be included) that are of a different
+      * type to [[Angle.Measure]] and so should not compare equal and should fail canEqual also.
+      */
     override def nonValueSample = List(
       0,
       1.0,
@@ -222,42 +190,35 @@ with SpecificBehaviors[Angle.type] {
     )
   }
 
-  /**
-   * Test fixture for angles.
-   */
+  /** Test fixture for angles.
+    */
   trait AngleFixture
   extends SpecificFixture[Angle.type] {
 
-    /**
-     * Specify the Angle instance.
-     */
+    /** Specify the Angle instance.
+      */
     override val instance = Angle
 
-    /**
-     * Specify the expected SI units for Angles.
-     */
+    /** Specify the expected SI units for Angles.
+      */
     override val expectedSIUnits = Angle.Radians
 
-    /**
-     * Create a test fixture for testing "equals contract" fulfillment.
-     */
+    /** Create a test fixture for testing "equals contract" fulfillment.
+      */
     override val equalsFixture = new AngleEqualsFixture {}
 
-    /**
-     * Specify the physical quantity family that angle measurements should belong to.
-     */
+    /** Specify the physical quantity family that angle measurements should belong to.
+      */
     override val expectedFamily = Family.Unitless
 
-    /**
-     * Specify list of invalid SI unit measurement values that should fail construction.
-     *
-     * This list is empty - there are no invalid finite measurement values for angles.
-     */
+    /** Specify list of invalid SI unit measurement values that should fail construction.
+      *
+      * This list is empty - there are no invalid finite measurement values for angles.
+      */
     override val invalidValues = Nil
 
-    /**
-     * Specify list of valid SI unit measurement values that should lead to successful creation.
-     */
+    /** Specify list of valid SI unit measurement values that should lead to successful creation.
+      */
     override val validValues = List(
       Double.MinValue,
       -Double.MinPositiveValue,
@@ -267,33 +228,25 @@ with SpecificBehaviors[Angle.type] {
     )
   }
 
-  /*
-   * Test fixture description.
-   */
+  // Test fixture description.
   describe(Angle.getClass.getCanonicalName) {
 
-    /*
-     * Test that the constant π has the correct value.
-     */
+    // Test that the constant π has the correct value.
     describe(".π") {
       it("must equal the value of physical constant π") {
         assert(π === Angle(Math.PI, Angle.Radians))
       }
     }
 
-    /*
-     * Test that the constant τ has the correct value.
-     */
+    // Test that the constant τ has the correct value.
     describe(".τ") {
       it("must equal the value of physical constant τ (=2π)") {
         assert(τ === Angle(2.0 * Math.PI, Angle.Radians))
       }
     }
 
-    /*
-     * Test basic specific measure behavior(creation, equality, addition, etc.). This should come after the constant
-     * testing above, but before the higher-level stuff below.
-     */
+    // Test basic specific measure behavior(creation, equality, addition, etc.). This should come after the constant
+    // testing above, but before the higher-level stuff below.
     it must behave like specificBehavior(new AngleFixture {})
   }
 }

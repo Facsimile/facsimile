@@ -40,19 +40,16 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/**
- * Test suite for the [[LinearScaleConverter]] class.
- */
+/** Test suite for the [[LinearScaleConverter]] class.
+  */
 class LinearScaleConverterTest
 extends FunSpec
-with CommonTestMethods
-{
+with CommonTestMethods {
 
-  /**
-   * Construction test data.
-   *
-   * Note: The values 0.0 and 1.0 are illegal factor values, and so are not included here.
-   */
+  /** Construction test data.
+    *
+    * Note: The values 0.0 and 1.0 are illegal factor values, and so are not included here.
+    */
   trait ConstructorTestData {
     new LinearScaleConverter(Double.MinValue)
     new LinearScaleConverter(-1.0)
@@ -61,9 +58,8 @@ with CommonTestMethods
     new LinearScaleConverter(Double.MaxValue)
   }
 
-  /**
-   * Import/export test data.
-   */
+  /** Import/export test data.
+    */
   trait ImportExportTestData {
     val tolerance = 1.0e-12
     val factorTen = new LinearScaleConverter(10.0)
@@ -76,19 +72,13 @@ with CommonTestMethods
     val e2_2 = 100.0
   }
 
-  /*
-   * Test fixture description.
-   */
+  // Test fixture description.
   describe(classOf[LinearScaleConverter].getCanonicalName) {
 
-    /*
-     * Constructor tests.
-     */
+    // Constructor tests.
     describe(".this(Double)") {
 
-      /*
-       * Verify that it should reject illegal factor values.
-       */
+      // Verify that it should reject illegal factor values.
       def doFiniteFailure(badFactor: Double) = {
         val e = intercept[IllegalArgumentException] {
           new LinearScaleConverter(badFactor)
@@ -117,35 +107,25 @@ with CommonTestMethods
         doValidFailure(1.0)
       }
 
-      /*
-       * Verify that it accepts just about any other value (not all of which make sense).
-       */
+      // Verify that it accepts just about any other value (not all of which make sense).
       it("must accept valid factor values") {
         new ConstructorTestData {}
       }
     }
 
-    /*
-     * Importing tests.
-     */
+    // Importing tests.
     describe(".importValue(Double)") {
 
-      /*
-       * Check that we get the right imported value.
-       */
+      // Check that we get the right imported value.
       it("must import values correctly") {
         new ImportExportTestData {
 
-          /*
-           * Helper function to perform comparisons.
-           */
+          // Helper function to perform comparisons.
           def checkReturn(factor: LinearScaleConverter, importVal: Double, exportVal: Double): Unit = {
             assert(factor.importValue(importVal) === exportVal)
           }
 
-          /*
-           * The return value must exactly match the value passed. There can be no rounding errors.
-           */
+          // The return value must exactly match the value passed. There can be no rounding errors.
           checkReturn(factorTen, 0.0, 0.0)
           checkReturn(factorTen, i1, e1_1)
           checkReturn(factorTen, i2, e2_1)
@@ -156,27 +136,19 @@ with CommonTestMethods
       }
     }
 
-    /*
-     * Exporting tests
-     */
+    // Exporting tests
     describe(".exportValue(Double)") {
 
-      /*
-       * Check that we get the right imported value.
-       */
+      // Check that we get the right imported value.
       it("must export values correctly") {
         new ImportExportTestData {
 
-          /*
-           * Helper function to perform comparisons.
-           */
+          // Helper function to perform comparisons.
           def checkReturn(factor: LinearScaleConverter, importVal: Double, exportVal: Double): Unit = {
             assert(factor.exportValue(exportVal) == importVal)
           }
 
-          /*
-           * The return value must exactly match the value passed. There can be no rounding errors.
-           */
+          // The return value must exactly match the value passed. There can be no rounding errors.
           checkReturn(factorTen, 0.0, 0.0)
           checkReturn(factorTen, i1, e1_1)
           checkReturn(factorTen, i2, e2_1)

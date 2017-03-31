@@ -40,16 +40,14 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/**
- * Test suite for the [[Point]] class and companion object.
- */
+/** Test suite for the [[Point]] class and companion object.
+  */
 class PointTest
 extends FunSpec
 with CommonTestMethods {
 
-  /**
-   * Test data.
-   */
+  /** Test data.
+    */
   trait TestData {
     val one = Length(1.0)
     val two = Length(2.0)
@@ -70,19 +68,13 @@ with CommonTestMethods {
     val d270 = Angle.τ * 3.0 / 4.0
   }
 
-  /*
-   * Class test fixture description.
-   */
+  // Class test fixture description.
   describe(classOf[Point].getCanonicalName) {
 
-    /*
-     * Construction must succeed OK.
-     */
+    // Construction must succeed OK.
     describe(".this(Length.Measure, Length.Measure, Length.Measure)") {
 
-      /*
-       * Check that passing null values will cause a failure.
-       */
+      // Check that passing null values will cause a failure.
       it("must throw NullPointerException if passed null x co-ordinate") {
         val e = intercept[NullPointerException] {
           Point(null, Length.Zero, Length.Zero) //scalastyle:ignore null
@@ -102,9 +94,7 @@ with CommonTestMethods {
         assertRequireNonNullMsg(e, "z")
       }
 
-      /*
-       * Check that regular construction passes without error.
-       */
+      // Check that regular construction passes without error.
       it("must construct points from valid arguments without error") {
         new TestData {
           Point(one, one, one)
@@ -113,9 +103,7 @@ with CommonTestMethods {
       }
     }
 
-    /*
-     * Test it reports its arguments OK.
-     */
+    // Test it reports its arguments OK.
     describe(".x") {
       it("must report the correct x value") {
         new TestData {
@@ -156,9 +144,7 @@ with CommonTestMethods {
       }
     }
 
-    /*
-     * Test that straight-line distances to other points are reported correctly.
-     */
+    // Test that straight-line distances to other points are reported correctly.
     describe(".distanceTo(Point)") {
       it("must throw a NullPointerException if passed a null point") {
         val e = intercept[NullPointerException] {
@@ -215,9 +201,7 @@ with CommonTestMethods {
       }
     }
 
-    /*
-     * Test that X-Y distances to other points are reported correctly.
-     */
+    // Test that X-Y distances to other points are reported correctly.
     describe(".distanceToXY(Point)") {
       it("must throw a NullPointerException if passed a null point") {
         val e = intercept[NullPointerException] {
@@ -250,9 +234,7 @@ with CommonTestMethods {
       }
     }
 
-    /*
-     * Test that X-Y angles to points are reported correctly.
-     */
+    // Test that X-Y angles to points are reported correctly.
     describe(".angleToXY(Point)") {
       it("must throw a NullPointerException if passed a null point") {
         val e = intercept[NullPointerException] {
@@ -286,14 +268,10 @@ with CommonTestMethods {
     }
   }
 
-  /*
-   * Companion object test fixture description.
-   */
+  // Companion object test fixture description.
   describe(Point.getClass.getCanonicalName) {
 
-    /*
-     * Verify that the Origin is defined correctly.
-     */
+    // Verify that the Origin is defined correctly.
     describe(".Origin") {
       it("must be defined at the world origin") {
         assert(Point.Origin.x === Length.Zero)

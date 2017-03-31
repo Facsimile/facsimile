@@ -39,46 +39,38 @@ import org.facsim.util.test.{CommonTestMethods, EqualsBehaviors}
 import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
-/**
- * Test behaviors for [[Physical]] subclasses.
- *
- * @tparam Q Physical subclass to be tested.
- */
+/** Test behaviors for [[Physical]] subclasses.
+  *
+  * @tparam Q Physical subclass to be tested.
+  */
 trait PhysicalBehaviors[Q <: Physical]
 extends EqualsBehaviors[Q#Measure]
 with CommonTestMethods {
   this: FunSpec =>
 
-  /**
-   * Verify a [[org.facsim.measure.Physical]] subclass implementation.
-   *
-   * @param fixture Test fixture providing information to be used by the tests.
-   */
+  /** Verify a [[org.facsim.measure.Physical]] subclass implementation.
+    *
+    * @param fixture Test fixture providing information to be used by the tests.
+    */
   final def physicalBehavior(fixture: PhysicalFixture[Q]): Unit = {
 
-    /*
-     * Test the physical quantity's SI units are reported correctly.
-     */
+    // Test the physical quantity's SI units are reported correctly.
     describe(".siUnits") {
       it("must report correct SI units for this type") {
         assert(fixture.instance.siUnits === fixture.expectedSIUnits)
       }
     }
 
-    /*
-     * Test that the units for this physical quantity preferred by the user are being reported correctly.
-     *
-     * TODO: Right now, this is simply the same as the SI units, but that will change in time.
-     */
+    // Test that the units for this physical quantity preferred by the user are being reported correctly.
+    //
+    // TODO: Right now, this is simply the same as the SI units, but that will change in time.
     describe(".preferredUnits") {
       it("must report user's preferred units for this type") {
         assert(fixture.instance.preferredUnits === fixture.expectedSIUnits)
       }
     }
 
-    /*
-     * Test that measurements of this physical quantity fulfill the "equals contract".
-     */
+    // Test that measurements of this physical quantity fulfill the "equals contract".
     describe(".Measure") {
       it must behave like equalsBehavior(fixture.equalsFixture)
     }

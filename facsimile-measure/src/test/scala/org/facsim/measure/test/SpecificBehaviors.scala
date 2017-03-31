@@ -39,30 +39,24 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/**
- * Test behaviors for [[Specific]] subclasses.
- *
- * @tparam Q The `Specific` subclass being tested.
- */
+/** Test behaviors for [[Specific]] subclasses.
+  *
+  * @tparam Q The `Specific` subclass being tested.
+  */
 trait SpecificBehaviors[Q <: Specific]
 extends PhysicalBehaviors[Q] {
   this: FunSpec =>
 
-  /**
-   * Verify a [[Specific]] subclass implementation.
-   *
-   * @param fixture Test fixture providing information to be used by the tests.
-   */
+  /** Verify a [[Specific]] subclass implementation.
+    *
+    * @param fixture Test fixture providing information to be used by the tests.
+    */
   final def specificBehavior(fixture: SpecificFixture[Q]): Unit = {
 
-    /*
-     * Firstly, verify the physical quantity type behavior.
-     */
+    // Firstly, verify the physical quantity type behavior.
     it must behave like physicalBehavior(fixture)
 
-    /*
-     * Test that Zero is zero.
-     */
+    // Test that Zero is zero.
     describe(".Zero") {
       it("must equal to the value of 0.0 in SI units") {
         assert(fixture.instance.Zero === fixture.instance(0.0,
@@ -70,23 +64,17 @@ extends PhysicalBehaviors[Q] {
       }
     }
 
-    /*
-     * Verify that the family reported for this specific physical quantity matches requirements.
-     */
+    // Verify that the family reported for this specific physical quantity matches requirements.
     describe(".family") {
       it("must report the correct family") {
         assert(fixture.instance.family === fixture.expectedFamily)
       }
     }
 
-    /*
-     * Now verify the apply(Double) method.
-     */
+    // Now verify the apply(Double) method.
     describe(".apply(Double)") {
 
-      /*
-       * Verify that non-finite values are rejected.
-       */
+      // Verify that non-finite values are rejected.
       it("must throw an IllegalArgumentException if passed a non-finite value") {
         fixture.nonFiniteValues.foreach {
           value =>
@@ -97,9 +85,7 @@ extends PhysicalBehaviors[Q] {
         }
       }
 
-      /*
-       * Verify that applying bad values will be rejected with the appropriate exception.
-       */
+      // Verify that applying bad values will be rejected with the appropriate exception.
       it("must throw an IllegalArgumentException if passed a bad value") {
         fixture.invalidValues.foreach {
           value =>
@@ -110,9 +96,7 @@ extends PhysicalBehaviors[Q] {
         }
       }
 
-      /*
-       * Verify that applying good values will be accepted without any exceptions being thrown.
-       */
+      // Verify that applying good values will be accepted without any exceptions being thrown.
       it("must not throw an exception when passed a valid value") {
         fixture.validValues.foreach {
           value =>

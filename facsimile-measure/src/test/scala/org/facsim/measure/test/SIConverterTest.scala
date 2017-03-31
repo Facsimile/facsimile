@@ -39,30 +39,21 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/**
- * Test suite for the [[SIConverter]] object.
- */
+/** Test suite for the [[SIConverter]] object.
+  */
 class SIConverterTest
 extends FunSpec {
 
-  /*
-   * Test fixture description.
-   */
+  // Test fixture description.
   describe(SIConverter.getClass.getCanonicalName) {
 
-    /*
-     * Importing should report the value passed.
-     */
+    // Importing should report the value passed.
     describe(".importValue(Double)") {
 
-      /*
-       * Check that we always get the result of the argument passed.
-       */
+      // Check that we always get the result of the argument passed.
       it("must return the argument passed") {
 
-        /*
-         * The return value must exactly match the value passed. There can be no rounding errors.
-         */
+        // The return value must exactly match the value passed. There can be no rounding errors.
         def checkReturn(value: Double): Unit = {
           assert(SIConverter.importValue(value) === value)
         }
@@ -76,19 +67,13 @@ extends FunSpec {
       }
     }
 
-    /*
-     * Exporting should report the value passed.
-     */
+    // Exporting should report the value passed.
     describe(".exportValue(Double)") {
 
-      /*
-       * Check that we always get the result of the argument passed.
-       */
+      // Check that we always get the result of the argument passed.
       it("must return the argument passed") {
 
-        /*
-         * The return value must exactly match the value passed. There can be no rounding errors.
-         */
+        // The return value must exactly match the value passed. There can be no rounding errors.
         def checkReturn(value: Double): Unit = {
           assert(SIConverter.exportValue(value) === value)
         }
