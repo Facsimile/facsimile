@@ -34,47 +34,44 @@
 //======================================================================================================================
 package org.facsim.measure
 
-/**
- * Physical quantity unit converter trait.
- *
- * Converter subclasses support the conversion of physical quantity measurement values between different units belonging
- * to the same family.
- *
- * More specifically, each converter instance has the capability to convert a physical quantity measurement value from a
- * specific unit of measure to the standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the associated unit
- * family.
- *
- * For example, a converter instance would be used to convert ''time''s expressed in ''hours'' to or from times
- * expressed in ''seconds''&mdash;the standard ''SI'' unit of time measurement.
- *
- * The process of converting a value to ''SI'' units is termed ''importing''; the process of converting an ''SI'' value
- * to the associated unit is termed ''exporting''.
- *
- * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
- */
+/** Physical quantity unit converter trait.
+  *
+  * Converter subclasses support the conversion of physical quantity measurement values between different units
+  * belonging to the same family.
+  *
+  * More specifically, each converter instance has the capability to convert a physical quantity measurement value from
+  * a specific unit of measure to the standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the associated unit
+  * family.
+  *
+  * For example, a converter instance would be used to convert ''time''s expressed in ''hours'' to or from times
+  * expressed in ''seconds''&mdash;the standard ''SI'' unit of time measurement.
+  *
+  * The process of converting a value to ''SI'' units is termed ''importing''; the process of converting an ''SI'' value
+  * to the associated unit is termed ''exporting''.
+  *
+  * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
+  */
 private[measure] trait Converter {
 
-  /**
-   * Convert value to ''SI'' units.
-   *
-   * Convert a physical quantity's `value`, expressed in the associated units to the corresponding value in the ''SI''
-   * units for this unit family.
-   *
-   * @param value Value, expressed in associated units, to be converted to ''SI'' units.
-   *
-   * @return `value` as expressed in ''SI'' units.
-   */
+  /** Convert value to ''SI'' units.
+    *
+    * Convert a physical quantity's `value`, expressed in the associated units to the corresponding value in the ''SI''
+    * units for this unit family.
+    *
+    * @param value Value, expressed in associated units, to be converted to ''SI'' units.
+    *
+    * @return `value` as expressed in ''SI'' units.
+    */
   private[measure] def importValue(value: Double): Double
 
-  /**
-   * Convert value from ''SI'' units.
-   *
-   * Convert a physical quantity's `value`, expressed in the standard ''SI'' units for this unit family, to the
-   * corresponding value in the associated units.
-   *
-   * @param value Value, expressed in ''SI'' units, to be converted to associated units.
-   *
-   * @return `value` as expressed in associated units.
-   */
+  /** Convert value from ''SI'' units.
+    *
+    * Convert a physical quantity's `value`, expressed in the standard ''SI'' units for this unit family, to the
+    * corresponding value in the associated units.
+    *
+    * @param value Value, expressed in ''SI'' units, to be converted to associated units.
+    *
+    * @return `value` as expressed in associated units.
+    */
   private[measure] def exportValue(value: Double): Double
 }

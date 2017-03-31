@@ -73,7 +73,7 @@ extends NonNegative {
    *
    * @since 0.0
    */
-  val Celsius = new Units(new ConstantConverter(-273.15), LibResource("Temperature.Celsius.sym"))
+  val Celsius = new Units(new OffsetConverter(-273.15), LibResource("Temperature.Celsius.sym"))
 
   /**
    * Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Fahrenheit degrees Fahrenheit]]''.
