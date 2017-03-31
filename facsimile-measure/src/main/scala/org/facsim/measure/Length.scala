@@ -33,8 +33,6 @@
  */
 package org.facsim.measure
 
-import org.facsim.LibResource
-
 /**
  * ''[[http://en.wikipedia.org/wiki/Length Length]]'' physical quantity type.
  *
