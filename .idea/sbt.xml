@@ -12,10 +12,6 @@
             <option value="$PROJECT_DIR$/facsimile-measure" />
             <option value="$PROJECT_DIR$/facsimile-measure/project" />
             <option value="$PROJECT_DIR$/facsimile-util" />
-            <option value="$PROJECT_DIR$/facsimile-util/core" />
-            <option value="$PROJECT_DIR$/facsimile-util/core/project" />
-            <option value="$PROJECT_DIR$/facsimile-util/macro" />
-            <option value="$PROJECT_DIR$/facsimile-util/macro/project" />
             <option value="$PROJECT_DIR$/facsimile-util/project" />
             <option value="$PROJECT_DIR$/project" />
           </set>

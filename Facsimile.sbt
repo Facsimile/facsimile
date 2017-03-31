@@ -1,3 +1,4 @@
+//======================================================================================================================
 // Facsimile -- A Discrete-Event Simulation Library
 // Copyright © 2004-2016, Michael J Allen.
 //
@@ -71,6 +72,9 @@ val gitURL = "https://github.com/Facsimile/facsimile"
 // Git SCM record
 val gitSCM = s"scm:git:$gitURL.git"
 
+// Dependency criteria for both compile and test.
+val dependsOnCompileTest = "test->test;compile->compile"
+
 // Common Scala compilation options (for compiling sources and generating documentation).
 lazy val commonScalaCSettings = Seq(
   "-deprecation",
@@ -117,10 +121,40 @@ lazy val commonSettings = Seq(
   scalaVersion := crossScalaVersions.value.head
 )
 
+// Doc project settings.
+//
+// These settings should be added to projects that generate documentation.
+lazy val docProjectSettings = Seq(
+
+  // Scaladoc generation options.
+  //
+  // The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes (Unidoc is currently
+  // unable to accommodate macros, so this is necessary).
+  scalacOptions in doc := commonScalaCSettings ++ Seq(
+    "-diagrams",
+    "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
+    "-doc-format:html",
+    "-doc-title", "Facsimile API Documentation",
+    "-doc-version", version.value,
+    "-groups",
+    "-implicits",
+    "-no-prefixes",
+    "-Ymacro-expand:none"
+  ),
+
+  // Scaladoc configuration.
+  //
+  // Allow Scaladoc to link to the Scala documentation for third-party libraries (through the apiURL setting).
+  autoAPIMappings := true
+  //apiMappings += (
+  //  unmanagedBase.value / "jt.jar" -> url("http://docs.oracle.com/javase/8/docs/api/")
+  //)
+)
+
 // Published project settings.
 //
 // Published projects must define the artifacts to be published, and take of publishing them to the Sonatype OSS
-// repository. Conseqeuently, there is a lot of Maven/SBT/Ivy configuration information here.
+// repository. Consequently, there is a lot of Maven/SBT/Ivy configuration information here.
 //
 // Note that the Sonatype plugin's settings are used to ensure that the resulting artifacts can be published to the
 // Sonatype OSS repository, which automatically pushes project information to the Maven Central Repository.
@@ -148,7 +182,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     url("http://www.gnu.org/licenses/lgpl-3.0-standalone.html")
   ),
 
-  // Facsimile utilitizes git for version control, hosted by GitHub.
+  // Facsimile utilizes git for version control, hosted by GitHub.
   scmInfo := Some(
     ScmInfo(url(gitURL), gitSCM, Some(gitSCM))
   ),
@@ -273,7 +307,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // do not meet their current specifications.
     ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
 
-    // Push all commits to the upstream respository.
+    // Push all commits to the upstream repository.
     //
     // This is typically determined by including the "-u" argument to a git push command. The upstream repository for a
     // release MUST be the primary Facsimile repository, not a fork.
@@ -293,7 +327,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 //
 // These settings are common to all projects that contain source files, which must be compiled and tested.
 //
-// Any library dependencies listed here MUST be universal and not nontransitive.
+// Any library dependencies listed here MUST be universal and not non-transitive.
 lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
@@ -359,47 +393,11 @@ lazy val sourceProjectSettings = Seq(
   libraryDependencies ++= Seq(
 
     // ScalaTest dependency.
-    "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+
+    // ScalaCheck dependency.
+    "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
   )
-)
-
-// Unidoc project settings.
-//
-// These settings should be added to projects that generate documentation. Documentation for sub-projects will be
-// combined into a single API document.
-lazy val unidocProjectSettings = unidocSettings ++ Seq(
-
-  // Scaladoc generation options.
-  //
-  // The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes (Unidoc is currently
-  // unable to accommodate macros, so this is necessary).
-  scalacOptions in (ScalaUnidoc, UnidocKeys.unidoc) := //scalastyle:ignore disallow.space.before.token
-  commonScalaCSettings ++ Seq(
-    "-diagrams",
-    "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
-    "-doc-format:html",
-    "-doc-title", "Facsimile API Documentation",
-    "-doc-version", version.value,
-    "-groups",
-    "-implicits",
-    "-no-prefixes",
-    "-Ymacro-expand:none"
-  ),
-
-  // Scaladoc configuration.
-  //
-  // Allow Scaladoc to link to the Scala documentation for third-party libraries (through the apiURL setting).
-  autoAPIMappings in (ScalaUnidoc, UnidocKeys.unidoc) := true, //scalastyle:ignore disallow.space.before.token
-  //apiMappings in (ScalaUnidoc, UnidocKeys.unidoc) += (
-  //  unmanagedBase.value / "jt.jar" -> url("http://docs.oracle.com/javase/8/docs/api/")
-  //),
-
-  // Have SBT run the "unidoc" command when given the "doc" command.
-  doc in Compile := (doc in ScalaUnidoc).value, //scalastyle:ignore disallow.space.before.token
-
-  // Have unidoc write output to the "api" directory, instead of the "unidoc" directory.
-  target in (ScalaUnidoc, UnidocKeys.unidoc) := //scalastyle:ignore disallow.space.before.token
-  crossTarget.value / "api"
 )
 
 // Settings for all projects that should not publish artifacts to the Sonatype OSS repository.
@@ -409,13 +407,73 @@ lazy val unpublishedProjectSettings = Seq(
   publishArtifact := false
 )
 
+// Name of the facsimile-util project.
+val facsimileUtilName = "facsimile-util"
+
+// Facsimile-Util project.
+//
+// The Facsimile-Util project contains common utility code that is utilized by other Facsimile projects, as well as
+// third-party projects.
+lazy val facsimileUtil = project.in(file(facsimileUtilName)).
+settings(commonSettings: _*).
+settings(sourceProjectSettings: _*).
+settings(docProjectSettings: _*).
+settings(publishedProjectSettings: _*).
+settings(
+
+  // Name and description of this project.
+  name := "Facsimile Utility Library",
+  normalizedName := facsimileUtilName,
+  description :=
+  """
+    The Facsimile Utility library provides a number of utilities required by other Facsimile libraries as well as
+    third-party libraries.
+  """,
+
+  // Utility library dependencies.
+  libraryDependencies ++= Seq(
+
+    // The Scala reflection library is required for implementing macros.
+    "org.scala-lang" % "scala-reflect" % scalaVersion.value
+  ),
+
+  // Help the test code find the test JAR files that we use to verify JAR file manifests.
+  unmanagedBase in Test := baseDirectory.value / "src/test/lib"
+)
+
+// Name of the facsimile-util project.
+val facsimileMeasureName = "facsimile-measure"
+
+// Facsimile-Measure project.
+//
+// The Facsimile-Measure project supports physics calculations specified in a variety of physical measurement value
+// classes, in a variety of supported units.
+lazy val facsimileMeasure = project.in(file(facsimileMeasureName)).
+dependsOn(facsimileUtil % dependsOnCompileTest).
+settings(commonSettings: _*).
+settings(sourceProjectSettings: _*).
+settings(docProjectSettings: _*).
+settings(publishedProjectSettings: _*).
+settings(
+
+  // Name and description of this project.
+  name := "Facsimile Physical Measurement Library",
+  normalizedName := facsimileMeasureName,
+  description := """
+    The Facsimile Measurement library supports physics calculations specified in a variety of physical measurement value
+    classes, in a variety of supported units.
+  """
+)
+
 // Facsimile root project.
 //
-// The Facsimile root project simply aggregates actions across all Facsimile projects. However, it is responsible for
-// merging the documentation from those projects and publishing it on the Facsimile web-site.
+// The Facsimile root project simply aggregates actions across all Facsimile projects.
+//
+// TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
 lazy val facsimile = project.in(file(".")).
+aggregate(facsimileUtil, facsimileMeasure).
 settings(commonSettings: _*).
-settings(unidocProjectSettings: _*).
+settings(unpublishedProjectSettings: _*).
 settings(
 
   // Name and description of this project.
@@ -427,122 +485,6 @@ settings(
 
     Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS, BSD and Unix on the Java virtual
     machine.
-  """,
-
-  // Disable aggregation of the "doc" command, so that we do not attempt to generate documentation for the core and
-  // macro sub-projects individually - we will rely on the Unidoc plugin to take care of that for us.
-  aggregate in doc := false
-).
-aggregate(facsimileUtil, facsimileMeasure)
-
-// Name of the facsimile-util project.
-val facsimileMeasureName = "facsimile-measure"
-
-// Facsimile-Measure project.
-//
-// The Facsimile-Measure project supports physics calculations specified in a variety of physical measurement value
-// classes, in a variety of supported units.
-lazy val facsimileMeasure = project.in(file(facsimileMeasureName)).
-settings(commonSettings: _*).
-settings(unidocProjectSettings: _*).
-settings(publishedProjectSettings: _*).
-settings(
-
-  // Name and description of this project.
-  name := "Facsimile Physical Measurement Library",
-  normalizedName := facsimileMeasureName,
-  description := """
-    The Facsimile Measurement library supports physics calculations specified in a variety of physical measurement value
-    classes, in a variety of supported units.
   """
-).
-dependsOn(facsimileUtil % "test->test;compile->compile")
-
-// Name of the facsimile-util project.
-val facsimileUtilName = "facsimile-util"
-
-// Facsimile-Util project.
-//
-// The Facsimile-Util project contains common utility code that is utilized by other Facsimile projects, as well as
-// third-party projects.
-//
-// Since it contains macros, it is itself composed of two sub-projects, facsimile-util-core and facsimile-util-macro, to
-// which this project aggregates actions. The sub-projects are necessary because macros must be compiled before they can
-// be utilized, and the utility macros are referenced by the core portion of the library. Consequently, the two
-// sub-projects are built separately then combined into a single project library afterwards.
-//
-// Actions are aggregated to these sub-projects, with the results being merged into a single library that is published
-// to the Sonatype OSS repository.
-lazy val facsimileUtil = project.in(file(facsimileUtilName)).
-settings(commonSettings: _*).
-settings(sourceProjectSettings: _*).
-settings(unidocProjectSettings: _*).
-settings(publishedProjectSettings: _*).
-settings(
-
-  // Name and description of this project.
-  name := "Facsimile Utility Library",
-  normalizedName := facsimileUtilName,
-  description := """
-    The Facsimile Utility library provides a number of utilities required by other Facsimile libraries as well as
-    third-party libraries.
-  """,
-
-  // Ensure that JAR files are exported.
-  exportJars := true,
-
-  // Ensure that core and macro classes and sources are copied to the corresponding distribution jar files.
-  mappings in(Compile, packageBin) ++= mappings.in(facsimileUtilMacro, Compile, packageBin).value,
-  mappings in(Compile, packageBin) ++= mappings.in(facsimileUtilCore, Compile, packageBin).value,
-  mappings in(Compile, packageSrc) ++= mappings.in(facsimileUtilMacro, Compile, packageSrc).value,
-  mappings in(Compile, packageSrc) ++= mappings.in(facsimileUtilCore, Compile, packageSrc).value
-).
-aggregate(facsimileUtilMacro, facsimileUtilCore)
-
-// Facsimile-Util-Core project.
-//
-// This is a sub-project of Facsimile-Util. It contains non-macro code providing common utilities.
-//
-// Artifacts from this project are merged into Facsimile-Util's artifacts and should not be published.
-lazy val facsimileUtilCore = project.in(file("facsimile-util/core")).
-settings(commonSettings: _*).
-settings(sourceProjectSettings: _*).
-settings(unpublishedProjectSettings: _*).
-settings(
-
-  // Name and description of this project.
-  name := "Facsimile Utility Library - Core",
-  normalizedName := "facsimile-util-core",
-  description := """
-    Facsimile Utility Library core code.
-  """,
-
-  // Help the test code find the test JAR files that we use to verify JAR file manifests.
-  unmanagedBase in Test := baseDirectory.value / "src/test/lib"
-).
-dependsOn(facsimileUtilMacro % "test->test;compile->compile")
-
-// Facsimile-Util-Macro project.
-//
-// This is a sub-project of Facsimile-Util. It contains macro code providing common utilities.
-//
-// Artifacts from this project are merged into Facsimile-Util's artifacts and should not be published.
-lazy val facsimileUtilMacro = project.in(file("facsimile-util/macro")).
-settings(commonSettings: _*).
-settings(sourceProjectSettings: _*).
-settings(unpublishedProjectSettings: _*).
-settings(
-
-  // Name and description of this project.
-  name := "Facsimile Utility Library - Macro",
-  normalizedName := "facsimile-util-macro",
-  description := """
-    Facsimile Utility Library macro code.
-  """,
-
-  // Add library dependencies for the macros sub-project.
-  libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value
-  )
 )
 //scalastyle:on scaladoc

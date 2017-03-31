@@ -5,8 +5,23 @@
       <w>dereferenced</w>
       <w>facsim</w>
       <w>gradian</w>
+      <w>keyid</w>
+      <w>lgpl</w>
+      <w>nullary</w>
+      <w>passcode</w>
+      <w>scalacheck</w>
       <w>scalastyle</w>
+      <w>scalatest</w>
+      <w>sonatype</w>
       <w>unitless</w>
+      <w>unmanaged</w>
+      <w>xcheckinit</w>
+      <w>xfatal</w>
+      <w>xlint</w>
+      <w>xstrict</w>
+      <w>ymacro</w>
+      <w>ypartial</w>
+      <w>ywarn</w>
     </words>
   </dictionary>
 </component>
