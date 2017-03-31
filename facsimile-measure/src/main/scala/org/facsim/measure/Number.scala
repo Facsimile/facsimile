@@ -34,110 +34,92 @@
 //======================================================================================================================
 package org.facsim.measure
 
-/**
- * Trait representing the basic characteristics of a number.
- *
- * Numbers support comparisons, as well as addition, subtraction, multiplication and division, etc.
- *
- * @tparam N Final number type.
- *
- * @constructor Create a new number instance, with the specified value.
- *
- * @param value Value, in whatever units are most appropriate, for a number of type `N`
- */
+/** Trait representing the basic characteristics of a number.
+  *
+  * Numbers support comparisons, as well as addition, subtraction, multiplication and division, etc.
+  *
+  * @tparam N Final number type.
+  *
+  * @constructor Create a new number instance, with the specified value.
+  *
+  * @param value Value, in whatever units are most appropriate, for a number of type `N`
+  */
 abstract class Number[N <: Number[N]](protected final val value: Double)
 extends Ordered[N]
 with Equals {
 
-  /**
-   * Factory element for creating new number instances.
-   */
+  /** Factory element for creating new number instances.
+    */
   protected def factory: NumberFactory[N]
 
-  /**
-   * Add another number of the same type to this number.
-   *
-   * @param o Other number to be added to this number.
-   *
-   * @return New number instance containing the result of the addition.
-   */
+  /** Add another number of the same type to this number.
+    *
+    * @param o Other number to be added to this number.
+    *
+    * @return New number instance containing the result of the addition.
+    */
   final def +(o: N) = factory(value + o.value)
 
-  /**
-   * Subtract another number from this number.
-   *
-   * @param o Other number to be added to this number.
-   *
-   * @return New number instance containing the result of the subtraction.
-   */
+  /** Subtract another number from this number.
+    *
+    * @param o Other number to be added to this number.
+    *
+    * @return New number instance containing the result of the subtraction.
+    */
   final def -(o: N) = factory(value - o.value)
 
-  /**
-   * Multiply this number by a constant factor.
-   *
-   * @param f Factor used to multiply this value.
-   *
-   * @return New number instance containing the result of the multiplication.
-   */
+  /** Multiply this number by a constant factor.
+    *
+    * @param f Factor used to multiply this value.
+    *
+    * @return New number instance containing the result of the multiplication.
+    */
   final def *(f: Double) = factory(value * f)
 
-  /**
-   * Divide this number by the specified divisor.
-   *
-   * @param d Divisor of this number.
-   *
-   * @return New number instance containing the result of the division.
-   */
+  /** Divide this number by the specified divisor.
+    *
+    * @param d Divisor of this number.
+    *
+    * @return New number instance containing the result of the division.
+    */
   final def /(d: Double) = factory(value / d)
 
-  /**
-   * Determine whether this number can equal the specified instance.
-   *
-   * @param o Other instance that we're checking for possible equality.
-   *
-   * @return `true` if `o` is comparable with this instance, `false` otherwise. If `o` is `null`, then `false` will be
-   * returned.
-   */
+  /** Determine whether this number can equal the specified instance.
+    *
+    * @param o Other instance that we're checking for possible equality.
+    *
+    * @return `true` if `o` is comparable with this instance, `false` otherwise. If `o` is `null`, then `false` will be
+    * returned.
+    */
   final override def canEqual(o: Any) = o match {
 
-    /*
-     * If the other number is an instance of N, then we can compare for equality.
-     */
+    // If the other number is an instance of N, then we can compare for equality.
     case that: N => true
 
-    /*
-     * Otherwise, we cannot.
-     */
+    // Otherwise, we cannot.
     case _ => false
   }
 
-  /**
-   * Determine whether this number is equal to the specified instance.
-   *
-   * @param o Other instance that we're being compared to for equality.
-   *
-   * @return `true` if this number compares as equal to the `o`, `false` otherwise. If `o` is `null`, then `false` will
-   * be returned.
-   */
+  /** Determine whether this number is equal to the specified instance.
+    *
+    * @param o Other instance that we're being compared to for equality.
+    *
+    * @return `true` if this number compares as equal to the `o`, `false` otherwise. If `o` is `null`, then `false` will
+    * be returned.
+    */
   final override def equals(o: Any) = o match {
 
-    /*
-     * If the other number can equal this number, and their values are the same, then the values are equal; if either of
-     * those considtions fail, then the values are different.
-     */
+    // If the other number can equal this number, and their values are the same, then the values are equal; if either of
+    // those considtions fail, then the values are different.
     case that: N => that.canEqual(this) && value == that.value
 
-    /*
-     * Otherise, if o is some other type, or null, then they cannot be equal.
-     */
+    // Otherwise, if o is some other type, or null, then they cannot be equal.
     case _ => false
   }
 
-  /**
-   * Retrieve a unique hash-code for this number.
-   *
-   * @return
-   */
+  /** Retrieve a unique hash-code for this number.
+    *
+    * @return
+    */
   final override def hashCode = value.hashCode
 }
-

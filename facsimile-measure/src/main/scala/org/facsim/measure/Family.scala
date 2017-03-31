@@ -37,253 +37,209 @@ package org.facsim.measure
 import org.facsim.util.{assertNonNull, requireNonNull}
 import scala.collection.immutable.HashMap
 
-/**
- * Class representing a physical quantity family defined in terms of exponents of the
- * ''[[http://en.wikipedia.org/wiki/SI SI]]'' base units.
- *
- * An instance having only zero base measure exponents has no units; i.e. it is ''unitless''.
- *
- * @constructor Construct a new physical quantity family. This constructor is private and should be called only from the
- * [[org.facsim.measure.Family.apply(Vector[Int])]] function&mdash;the rationale being that we have the possibility to
- * re-use existing instances rather than create new instances on each call.
- *
- * @param exponents Vector of base unit exponents associated with this family.
- *
- * @since 0.0
- */
+/** Class representing a physical quantity family defined in terms of exponents of the
+  * ''[[http://en.wikipedia.org/wiki/SI SI]]'' base units.
+  *
+  * An instance having only zero base measure exponents has no units; i.e. it is ''unitless''.
+  *
+  * @constructor Construct a new physical quantity family. This constructor is private and should be called only from
+  * the [[org.facsim.measure.Family.apply(Vector[Int])]] function&mdash;the rationale being that we have the possibility
+  * to re-use existing instances rather than create new instances on each call.
+  *
+  * @param exponents Vector of base unit exponents associated with this family.
+  *
+  * @since 0.0
+  */
 final class Family private(private val exponents: Vector[Int])
 extends Equals {
 
-  /*
-   * Sanity check. Since construction is tightly controlled, it should be impossible to pass a vector with the wrong
-   * number of members to this constructor. As a result, we just need to assert this condition, rather than use
-   * requireValid.
-   *
-   * Note: Do NOT compare to the size of Family.baseFamilies since that Vector isn't initialized until after a number of
-   * instances of this class have been created. Hardcoding the expected exponents vector length here is adequate for a
-   * sanity check.
-   */
+  // Sanity check. Since construction is tightly controlled, it should be impossible to pass a vector with the wrong
+  // number of members to this constructor. As a result, we just need to assert this condition, rather than use
+  // requireValid.
+  //
+  // Note: Do NOT compare to the size of Family.baseFamilies since that Vector isn't initialized until after a number of
+  // instances of this class have been created. Hardcoding the expected exponents vector length here is adequate for a
+  // sanity check.
   assert(exponents.length == 7)
 
-  /**
-   * Return physical quantity family that results from multiplying a measurement value in this family by a measurement
-   * value in the specified family.
-   *
-   * @param multiplier Physical quantity family instance that is multiplied with this instance.
-   *
-   * @return Physical quantity family resulting from the multiplication of this family by the specified `multiplier`
-   * family.
-   *
-   * @throws NullPointerException if `multiplier` is `null`.
-   *
-   * @since 0.0
-   */
+  /** Return physical quantity family that results from multiplying a measurement value in this family by a measurement
+    * value in the specified family.
+    *
+    * @param multiplier Physical quantity family instance that is multiplied with this instance.
+    *
+    * @return Physical quantity family resulting from the multiplication of this family by the specified `multiplier`
+    * family.
+    *
+    * @throws NullPointerException if `multiplier` is `null`.
+    *
+    * @since 0.0
+    */
   def *(multiplier: Family) = {
     requireNonNull(multiplier)
     Family(exponents.zip(multiplier.exponents).map(p => p._1 + p._2))
   }
 
-  /**
-   * Return physical quantity family that results from dividing a measurement value in this family by a measurement
-   * value in the specified family.
-   *
-   * @param divisor Physical quantity family instance that is dividing this instance.
-   *
-   * @return Physical quantity family resulting from the division of this family by the specified `divisor` family.
-   *
-   * @throws NullPointerException if `multiplier` is `null`.
-   *
-   * @since 0.0
-   */
+  /** Return physical quantity family that results from dividing a measurement value in this family by a measurement
+    * value in the specified family.
+    *
+    * @param divisor Physical quantity family instance that is dividing this instance.
+    *
+    * @return Physical quantity family resulting from the division of this family by the specified `divisor` family.
+    *
+    * @throws NullPointerException if `multiplier` is `null`.
+    *
+    * @since 0.0
+    */
   def /(divisor: Family) = {
     requireNonNull(divisor)
     Family(exponents.zip(divisor.exponents).map(p => p._1 - p._2))
   }
 
-  /**
-   * Determine whether this family is ''unitless''.
-   *
-   * @return `true` if this physical quantity family is unitless, or `false` otherwise.
-   *
-   * @since 0.0
-   */
+  /** Determine whether this family is ''unitless''.
+    *
+    * @return `true` if this physical quantity family is unitless, or `false` otherwise.
+    *
+    * @since 0.0
+    */
   def isUnitless = Family.this == Family.Unitless
 
-  /**
-   * Retrieve the symbol of this family, constructed from the symbols of the preferred base units.
-   *
-   * @return Symbol for this family.
-   */
+  /** Retrieve the symbol of this family, constructed from the symbols of the preferred base units.
+    *
+    * @return Symbol for this family.
+    */
   private[measure] def baseSymbol = {
 
-    /*
-     * Helper function to build the symbol of the units given the index of the family and the exponent power.
-     */
+    // Helper function to build the symbol of the units given the index of the family and the exponent power.
     def buildSymbol(idx: Int, exp: Int): String = {
       assert(exp > 0)
 
-      /*
-       * Retrieve the symbol of this base family and append its exponent. If the exponent is 1, then the suffix is an
-       * empty string; if 2, then it is superscript 2; 3, superscript 3; otherwise it is denoted by a circumflex
-       * followed by the power (e.g. ^5).
-       */
+      // Retrieve the symbol of this base family and append its exponent. If the exponent is 1, then the suffix is an
+      // empty string; if 2, then it is superscript 2; 3, superscript 3; otherwise it is denoted by a circumflex
+      // followed by the power (e.g. ^5).
       val suffix = Family.expToString(exp)
       Family.symbol(Family.baseFamily(idx)) + suffix
     }
 
-    /*
-     * The first part of the name is a list of the components with positive exponents.
-     */
+    // The first part of the name is a list of the components with positive exponents.
     val positive = for {
       i <- exponents.indices
       if exponents(i) > 0
     } yield buildSymbol(i, exponents(i))
 
-    /*
-     * Repeat for the components with negative exponents, changing the sign of the exponent in the process.
-     */
+    // Repeat for the components with negative exponents, changing the sign of the exponent in the process.
     val negative = for {
       i <- exponents.indices
       if exponents(i) < 0
     } yield buildSymbol(i, -exponents(i))
 
-    /*
-     * If we have any negative content, then append it to the positive content (which may be empty) separated by a
-     * slash.
-     */
+    // If we have any negative content, then append it to the positive content (which may be empty) separated by a
+    // slash.
     if(negative.nonEmpty) positive.mkString("") + Family.Slash + negative.mkString("")
 
-    /*
-     * Otherwise, just report the positive content.
-     */
+    // Otherwise, just report the positive content.
     else positive.mkString(Family.Space)
   } ensuring(_ != "")
 
-  /**
-   * Retrieve the name of this family, constructed from the names of the base units.
-   *
-   * @return Name of this family.
-   */
+  /** Retrieve the name of this family, constructed from the names of the base units.
+    *
+    * @return Name of this family.
+    */
   private def baseName = {
 
-    /*
-     * Helper function to build the name of the units given the index of the family and the exponent power.
-     */
+    // Helper function to build the name of the units given the index of the family and the exponent power.
     def buildName(idx: Int, exp: Int): String = {
       assert(exp > 0)
 
-      /*
-       * Retrieve the name of this base family and append its exponent. If the exponent is 1, then the suffix is an
-       * empty string; if 2, then it is superscript 2; 3, superscript 3; otherwise it is denoted by a circumflex
-       * followed by the power (e.g. ^5).
-       */
+      // Retrieve the name of this base family and append its exponent. If the exponent is 1, then the suffix is an
+      // empty string; if 2, then it is superscript 2; 3, superscript 3; otherwise it is denoted by a circumflex
+      // followed by the power (e.g. ^5).
       val suffix = Family.expToString(exp)
       Family.name(Family.baseFamily(idx)) + suffix
     }
 
-    /*
-     * The first part of the name is a list of the components with positive exponents.
-     */
+    // The first part of the name is a list of the components with positive exponents.
     val positive = for {
       i <- exponents.indices
       if exponents(i) > 0
     } yield buildName(i, exponents(i))
 
-    /*
-     * Repeat for the components with negative exponents, changing the sign of the exponent in the process.
-     */
+    // Repeat for the components with negative exponents, changing the sign of the exponent in the process.
     val negative = for {
       i <- exponents.indices
       if exponents(i) < 0
     } yield buildName(i, -exponents(i))
 
-    /*
-     * If we have any negative content, then append it to the positive content (which may be empty) separated by a
-     * slash.
-     */
+    // If we have any negative content, then append it to the positive content (which may be empty) separated by a
+    // slash.
     if(negative.nonEmpty) positive.mkString(Family.Space) + Family.Slash + negative.mkString(Family.Space)
 
-    /*
-     * Otherwise, just report the positive content.
-     */
+    // Otherwise, just report the positive content.
     else positive.mkString(Family.Space)
   } ensuring(_ != "")
 
-  /**
-   * Determine whether another object can equal this object.
-   *
-   * Refer to Chapter 30 of "Programming in Scala", 2nd Edition, by Odersky, Spoon & Venners.
-   *
-   * @param that Object being considered for equality comparison with this object.
-   *
-   * @return `true` if `that` is a [[Family]] instance, or `false` otherwise.
-   */
+  /** Determine whether another object can equal this object.
+    *
+    * Refer to Chapter 30 of "Programming in Scala", 2nd Edition, by Odersky, Spoon & Venners.
+    *
+    * @param that Object being considered for equality comparison with this object.
+    *
+    * @return `true` if `that` is a [[Family]] instance, or `false` otherwise.
+    */
   override def canEqual(that: Any) = that match {
 
-    /*
-     * If the other object is a Family instance, then we can compare them for equality.
-     */
+    // If the other object is a Family instance, then we can compare them for equality.
     case other: Family => true
 
-    /*
-     * Otherwise, we cannot.
-     */
+    // Otherwise, we cannot.
     case _ => false
   }
 
-  /**
-   * Compare this object to another for equality.
-   *
-   * If two objects compare equal, then their hash-codes must compare equal too; similarly, if two objects have
-   * different hash-codes, then they must not compare equal. However if two objects have the same hash-codes, they may
-   * or may not compare equal, since hash-codes do not map to unique values.
-   *
-   * @param that Object being compared to this Family instance for equality.
-   *
-   * @return `true` if `that` is a [[Family]] instance describing the same physical measurement family as this instance,
-   * or `false` otherwise.
-   *
-   * @see [[scala.AnyRef.equals(Any)*]]
-   */
+  /** Compare this object to another for equality.
+    *
+    * If two objects compare equal, then their hash-codes must compare equal too; similarly, if two objects have
+    * different hash-codes, then they must not compare equal. However if two objects have the same hash-codes, they may
+    * or may not compare equal, since hash-codes do not map to unique values.
+    *
+    * @param that Object being compared to this Family instance for equality.
+    *
+    * @return `true` if `that` is a [[Family]] instance describing the same physical measurement family as this
+    * instance, or `false` otherwise.
+    *
+    * @see [[scala.AnyRef.equals(Any)*]]
+    */
   override def equals(that: Any): Boolean = that match {
 
-    /*
-     * If the other object is an PhysicalQuantityFamily instance, and that value can be compared as equal to this value,
-     * and they have the same contents, then that equals this.
-     */
+    // If the other object is an PhysicalQuantityFamily instance, and that value can be compared as equal to this value,
+    // and they have the same contents, then that equals this.
     case other: Family => other.canEqual(this) && exponents == other.exponents
 
-    /*
-     * In that is any other type, then the two are not equal.
-     */
+    // In that is any other type, then the two are not equal.
     case _ => false
   }
 
-  /**
-   * Return this physical quantity family's hash code.
-   *
-   * If two objects compare equal, then their hash-codes must compare equal too; similarly, if two objects have
-   * different hash-codes, then they must not compare equal. However if two objects have the same hash-codes, they may
-   * or may not compare equal, since hash-codes do not necessarily map to unique values.
-   *
-   * In this overridden function, we simply use the exponent vector's hash code and return that, which fulfills all the
-   * requirements of the hash code/equality contract.
-   *
-   * @return hash code for this physical measurement family.
-   *
-   * @see [[scala.AnyRef.hashCode()*]]
-   */
+  /** Return this physical quantity family's hash code.
+    *
+    * If two objects compare equal, then their hash-codes must compare equal too; similarly, if two objects have
+    * different hash-codes, then they must not compare equal. However if two objects have the same hash-codes, they may
+    * or may not compare equal, since hash-codes do not necessarily map to unique values.
+    *
+    * In this overridden function, we simply use the exponent vector's hash code and return that, which fulfills all the
+    * requirements of the hash code/equality contract.
+    *
+    * @return hash code for this physical measurement family.
+    *
+    * @see [[scala.AnyRef.hashCode()*]]
+    */
   override def hashCode = exponents.hashCode()
 
-  /**
-   * Convert physical measurement family instance to a string.
-   *
-   * The physical measurement family will be represented using both a name and SI symbol.
-   *
-   * @return String reprenting this physical measurement family.
-   *
-   * @see [[scala.AnyRef.toString()*]]
-   */
+  /** Convert physical measurement family instance to a string.
+    *
+    * The physical measurement family will be represented using both a name and SI symbol.
+    *
+    * @return String reprenting this physical measurement family.
+    *
+    * @see [[scala.AnyRef.toString()*]]
+    */
   override def toString: String = {
     val name = Family.name(this)
     if(!isUnitless) {
@@ -294,27 +250,23 @@ extends Equals {
   }
 }
 
-/**
- * Physical quantity family companion object.
- */
+/** Physical quantity family companion object.
+  */
 private[measure] object Family {
 
-  /**
-   * Slash string constant.
-   */
+  /** Slash string constant.
+    */
   private val Slash = "/"
 
-  /**
-   * Space string constant.
-   */
+  /** Space string constant.
+    */
   private val Space = " "
 
-  /**
-   * Vector of base families.
-   *
-   * The order in which these families are listed must match the order in which the corresponding exponents are listed
-   * in each Family instance vector.
-   */
+  /** Vector of base families.
+    *
+    * The order in which these families are listed must match the order in which the corresponding exponents are listed
+    * in each Family instance vector.
+    */
   private val baseFamily = Vector(
     apply(timeExponent = 1),
     apply(lengthExponent = 1),
@@ -325,26 +277,23 @@ private[measure] object Family {
     apply(amountExponent = 1)
   )
 
-  /**
-   * Unitless physical quantity.
-   *
-   * Measurements in this family are, in effect, just plain Double values.
-   */
+  /** Unitless physical quantity.
+    *
+    * Measurements in this family are, in effect, just plain Double values.
+    */
   private[measure] val Unitless = apply()
 
-  /**
-   * Map associating families to associated types. Families that do not have entries in this map do not have associated
-   * types and exist as generic values only.
-   */
+  /** Map associating families to associated types. Families that do not have entries in this map do not have associated
+    * types and exist as generic values only.
+    */
   private var typeMap = HashMap.empty[Family, Specific] // scalastyle:ignore var.field
 
-  /**
-   * Convert an exponent value to a string.
-   *
-   * @param exp Exponent value to be converted. This value must be greater than zero.
-   *
-   * @return String representing the exponent.
-   */
+  /** Convert an exponent value to a string.
+    *
+    * @param exp Exponent value to be converted. This value must be greater than zero.
+    *
+    * @return String representing the exponent.
+    */
   private def expToString(exp: Int) = {
     assert(exp > 0)
     exp match {
@@ -355,15 +304,14 @@ private[measure] object Family {
     }
   }
 
-  /**
-   * Register a specific physical quantity type with a family value.
-   *
-   * Registration should be performed once for each concrete [[org.facsim.measure.Specific]] class instance.
-   *
-   * @param family Family value to be registered as associated with the '''specific''' class.
-   *
-   * @param specific Class of the associated specific physical quantity type.
-   */
+  /** Register a specific physical quantity type with a family value.
+    *
+    * Registration should be performed once for each concrete [[org.facsim.measure.Specific]] class instance.
+    *
+    * @param family Family value to be registered as associated with the '''specific''' class.
+    *
+    * @param specific Class of the associated specific physical quantity type.
+    */
   private[measure] def register(family: Family, specific: Specific): Unit = synchronized {
     assertNonNull(family)
     assertNonNull(specific)
@@ -371,119 +319,98 @@ private[measure] object Family {
     typeMap += family -> specific
   }
 
-  /**
-   * Factory function to obtain family corresponding to specified exponent values.
-   *
-   * @param timeExponent Exponent of time base family.
-   *
-   * @param lengthExponent Exponent of length base family.
-   *
-   * @param massExponent Exponent of mass base family.
-   *
-   * @param temperatureExponent Exponent of temperature base family.
-   *
-   * @param currentExponent Exponent of current base family.
-   *
-   * @param luminousIntensityExponent Exponent of luminous intensity base family.
-   *
-   * @param amountExponent Exponent of plane angle base family.
-   *
-   * @return corresponding physical quantity family instance.
-   */
+  /** Factory function to obtain family corresponding to specified exponent values.
+    *
+    * @param timeExponent Exponent of time base family.
+    *
+    * @param lengthExponent Exponent of length base family.
+    *
+    * @param massExponent Exponent of mass base family.
+    *
+    * @param temperatureExponent Exponent of temperature base family.
+    *
+    * @param currentExponent Exponent of current base family.
+    *
+    * @param luminousIntensityExponent Exponent of luminous intensity base family.
+    *
+    * @param amountExponent Exponent of plane angle base family.
+    *
+    * @return corresponding physical quantity family instance.
+    */
   private[measure] def apply(timeExponent: Int = 0, lengthExponent: Int = 0, massExponent: Int = 0,
   temperatureExponent: Int = 0, currentExponent: Int = 0, luminousIntensityExponent: Int = 0, amountExponent: Int = 0):
   Family = apply(Vector(timeExponent, lengthExponent, massExponent, temperatureExponent, currentExponent,
   luminousIntensityExponent, amountExponent))
 
-  /**
-   * Apply method to obtain family corresponding to specified exponent vector.
-   *
-   * @param exponents Base family exponents vector.
-   *
-   * @return corresponding physical quantity family instance.
-   */
-  /*
-   * For now, just create a new instance. In future, it might be necessary to re-use an existing instance for the
-   * requested family, rather than a new instance.
-   */
+  /** Apply method to obtain family corresponding to specified exponent vector.
+    *
+    * @param exponents Base family exponents vector.
+    *
+    * @return corresponding physical quantity family instance.
+    */
+  // For now, just create a new instance. In future, it might be necessary to re-use an existing instance for the
+  // requested family, rather than a new instance.
+  //
   private def apply(exponents: Vector[Int]) = new Family(exponents)
 
-  /**
-   * Retrieve symbol associated with specified family.
-   *
-   * If there is a specific physical quantity registered with the specified `family`, then the symbol for the preferred
-   * units of that class is returned. If there is no registered physical quantity, then the symbols of the base
-   * component physical quantities of this family will be listed instead, with appropriate exponent powers. If the
-   * supplied family is unitless, then an empty string will be returned as the symbol.
-   *
-   * @param family Family for which a symbol is sought.
-   *
-   * @return Symbol of the preferred units of the associated physical quantity.
-   */
+  /** Retrieve symbol associated with specified family.
+    *
+    * If there is a specific physical quantity registered with the specified `family`, then the symbol for the preferred
+    * units of that class is returned. If there is no registered physical quantity, then the symbols of the base
+    * component physical quantities of this family will be listed instead, with appropriate exponent powers. If the
+    * supplied family is unitless, then an empty string will be returned as the symbol.
+    *
+    * @param family Family for which a symbol is sought.
+    *
+    * @return Symbol of the preferred units of the associated physical quantity.
+    */
   private def symbol(family: Family): String = {
 
-    /*
-     * Retrieve the specific physical quantity (if any) associated with this family. Access to typeMap needs to be
-     * synchronized, since it is shared mutable state.
-     */
+    // Retrieve the specific physical quantity (if any) associated with this family. Access to typeMap needs to be
+    // synchronized, since it is shared mutable state.
     val specific = synchronized {
       typeMap.get(family)
     }
 
-    /*
-     * Check what we have.
-     */
+    // Check what we have.
     specific match {
 
-      /*
-       * If there is a registered specific physical quantity for this family, then retrieve and return the symbol of its
-       * preferred units.
-       */
+      // If there is a registered specific physical quantity for this family, then retrieve and return the symbol of its
+      // preferred units.
       case Some(x) => x.preferredUnits.symbol
 
-      /*
-       * Otherwise, this is a generic physical quantity. If it is unitless, then return an empty string.
-       */
+      // Otherwise, this is a generic physical quantity. If it is unitless, then return an empty string.
       case None => if(family == Unitless) "" else family.baseSymbol
     }
   }
 
-  /**
-   * Retrieve name associated with specified family.
-   *
-   * If there is a specific physical quantity registered with the specified `family`, then the name of that quantity is
-   * returned. If there is no registered physical quantity, then the names of the base component physical quantities of
-   * this family will be listed instead, with appropriate exponent powers. If the supplied family is unitless, then
-   * "Double" will be returned as the name.
-   *
-   * @param family Family for which a name is sought.
-   *
-   * @return Name of the the associated physical quantity.
-   */
+  /** Retrieve name associated with specified family.
+    *
+    * If there is a specific physical quantity registered with the specified `family`, then the name of that quantity is
+    * returned. If there is no registered physical quantity, then the names of the base component physical quantities of
+    * this family will be listed instead, with appropriate exponent powers. If the supplied family is unitless, then
+    * "Double" will be returned as the name.
+    *
+    * @param family Family for which a name is sought.
+    *
+    * @return Name of the the associated physical quantity.
+    */
   private def name(family: Family): String = {
 
-    /*
-     * Retrieve the specific physical quantity (if any) associated with this family. Access to typeMap needs to be
-     * synchronized, since it is shared mutable state.
-     */
+    // Retrieve the specific physical quantity (if any) associated with this family. Access to typeMap needs to be
+    // synchronized, since it is shared mutable state.
     val specific = synchronized {
       typeMap.get(family)
     }
 
-    /*
-     * Check what we have.
-     */
+    // Check what we have.
     specific match {
 
-      /*
-       * If there is a registered specific physical quantity for this family, then retrieve and return the symbol of its
-       * preferred units.
-       */
+      // If there is a registered specific physical quantity for this family, then retrieve and return the symbol of its
+      // preferred units.
       case Some(x) => x.name
 
-      /*
-       * Otherwise, this is a generic physical quantity. If it is unitless, then return an empty string.
-       */
+      // Otherwise, this is a generic physical quantity. If it is unitless, then return an empty string.
       case None => if(family == Unitless) "" else family.baseName
     }
   }

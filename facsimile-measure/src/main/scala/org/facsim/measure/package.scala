@@ -34,86 +34,78 @@
 //======================================================================================================================
 package org.facsim
 
-/**
- * ''[[http://facsim.org/ Facsimile]]'' physical quantity measurement elements.
- *
- * The `org.facsim.measure` package contains elements for expressing measurements of a variety of ''physical
- * quantities'', such as ''time'', ''mass'', ''length'', ''angle'', ''thermodynamic temperature'', etc., in whatever
- * units the user believes to be the most appropriate.
- *
- * =Physical Quantity Unit Families=
- *
- * For each physical quantity, there are typically a set of units in which measurements of that physical quantity can be
- * expressed. For instance, ''time'' can be measured in ''seconds'', ''minutes'', or ''hours'', etc. In ''Facsimile'',
- * such a set of units is termed a ''unit family''.
- *
- * Each unit family is encapsulated as a subclass of the `[[org.facsim.measure.Physical]]` abstract base class. For
- * example, time units are encapsulated by the `[[org.facsim.measure.Time.TimeUnits]] Unit` subclass, mass units by the
- * `[[org.facsim.measure.Mass.MassUnits]] Unit` subclass, length units by the
- * `[[org.facsim.measure.Length.LengthUnits]] Unit` subclass, etc.
- *
- * =Physical Quantity Units=
- *
- * ''Facsimile'' allows users to work with whichever units make the most sense for a particular application, while
- * interoperating seamlessly with code written using different units; conversion of values between different units in
- * the same family takes place automatically, eliminating a whole class of conversion errors.
- *
- * Individual physical quantity units are represented by instances of the corresponding unit family class. For example,
- * ''seconds'', ''minutes'' and ''hours'' are represented by instances of the `[[org.facsim.measure.Time.TimeUnits]]`
- * class.
- *
- * =Physical Quantity Measurements=
- *
- * @todo Expand on Facsimile's use of units. Facsimile allows users to use one or more measurement units, as they see
- * fit, rather than being forced to adopt a single unit of measure (say seconds for time, inches for length, etc.).
- * Since all measurements are stored internally in SI units, no matter which units are employed by the user, there are
- * never conversion issues when merging models that use different units.
- *
- * @todo Expand on Facsimile's use of types for each measurement quantity. Instead of using a `[[scala.Double]]`, like
- * other simulation systems, Facsimile uses different types for each measurement quantity. Consequently, it's not
- * possible to confuse a distance with a time, or a linear velocity with an angular velocity, or a mass with a
- * temperature. By employing an appropriate set of operators, mechanics formulae can be accommodated by Facsimile in a
- * very natural way. By ensuring data ranges are valid (no negative times or masses), Facsimile ensures data integrity
- * throughout all runs.
- *
- * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
- *
- * @since 0.0
- */
+/** ''[[http://facsim.org/ Facsimile]]'' physical quantity measurement elements.
+  *
+  * The `org.facsim.measure` package contains elements for expressing measurements of a variety of ''physical
+  * quantities'', such as ''time'', ''mass'', ''length'', ''angle'', ''thermodynamic temperature'', etc., in whatever
+  * units the user believes to be the most appropriate.
+  *
+  * =Physical Quantity Unit Families=
+  *
+  * For each physical quantity, there are typically a set of units in which measurements of that physical quantity can
+  * be expressed. For instance, ''time'' can be measured in ''seconds'', ''minutes'', or ''hours'', etc. In
+  * ''Facsimile'', such a set of units is termed a ''unit family''.
+  *
+  * Each unit family is encapsulated as a subclass of the `[[org.facsim.measure.Physical]]` abstract base class. For
+  * example, time units are encapsulated by the `[[org.facsim.measure.Time.TimeUnits]] Unit` subclass, mass units by the
+  * `[[org.facsim.measure.Mass.MassUnits]] Unit` subclass, length units by the
+  * `[[org.facsim.measure.Length.LengthUnits]] Unit` subclass, etc.
+  *
+  * =Physical Quantity Units=
+  *
+  * ''Facsimile'' allows users to work with whichever units make the most sense for a particular application, while
+  * interoperating seamlessly with code written using different units; conversion of values between different units in
+  * the same family takes place automatically, eliminating a whole class of conversion errors.
+  *
+  * Individual physical quantity units are represented by instances of the corresponding unit family class. For example,
+  * ''seconds'', ''minutes'' and ''hours'' are represented by instances of the `[[org.facsim.measure.Time.TimeUnits]]`
+  * class.
+  *
+  * =Physical Quantity Measurements=
+  *
+  * @todo Expand on Facsimile's use of units. Facsimile allows users to use one or more measurement units, as they see
+  * fit, rather than being forced to adopt a single unit of measure (say seconds for time, inches for length, etc.).
+  * Since all measurements are stored internally in SI units, no matter which units are employed by the user, there are
+  * never conversion issues when merging models that use different units.
+  *
+  * @todo Expand on Facsimile's use of types for each measurement quantity. Instead of using a `[[scala.Double]]`, like
+  * other simulation systems, Facsimile uses different types for each measurement quantity. Consequently, it's not
+  * possible to confuse a distance with a time, or a linear velocity with an angular velocity, or a mass with a
+  * temperature. By employing an appropriate set of operators, mechanics formulae can be accommodated by Facsimile in a
+  * very natural way. By ensuring data ranges are valid (no negative times or masses), Facsimile ensures data integrity
+  * throughout all runs.
+  *
+  * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
+  *
+  * @since 0.0
+  */
 package object measure {
 
-  /**
-   * Alias for plane angle measurements.
-   */
+  /** Alias for plane angle measurements.
+    */
   type Angle = Angle.Measure
 
-  /**
-   * Alias for electrical current measurements.
-   */
+  /** Alias for electrical current measurements.
+    */
   type Current = Current.Measure
 
-  /**
-   * Alias for length measurements.
-   */
+  /** Alias for length measurements.
+    */
   type Length = Length.Measure
 
-  /**
-   * Alias for luminous intensity measurements.
-   */
+  /** Alias for luminous intensity measurements.
+    */
   type LuminousIntensity = LuminousIntensity.Measure
 
-  /**
-   * Alias for mass measurements.
-   */
+  /** Alias for mass measurements.
+    */
   type Mass = Mass.Measure
 
-  /**
-   * Alias for temperature measurements.
-   */
+  /** Alias for temperature measurements.
+    */
   type Temperature = Temperature.Measure
 
-  /**
-   * Alias for time measurements.
-   */
+  /** Alias for time measurements.
+    */
   type Time = Time.Measure
 }

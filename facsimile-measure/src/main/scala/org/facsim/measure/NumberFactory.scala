@@ -34,20 +34,18 @@
 //======================================================================================================================
 package org.facsim.measure
 
-/**
- * Numeric quantity factory class.
- *
- * @tparam N Type of number to be created.
- */
+/** Numeric quantity factory class.
+  *
+  * @tparam N Type of number to be created.
+  */
 private[measure] trait NumberFactory[N <: Number[N]] {
 
-  /**
-   * Factory method to create a new number instance with specified `value`.
-   *
-   * @param value Value, in whatever units may be most appropriate to the underlying type, of the new [[Number]]
-   * instance.
-   *
-   * @return New [[Number]] instance with the associated value.
-   */
+  /** Factory method to create a new number instance with specified `value`.
+    *
+    * @param value Value, in whatever units may be most appropriate to the underlying type, of the new [[Number]]
+    * instance.
+    *
+    * @return New [[Number]] instance with the associated value.
+    */
   private[measure] def apply(value: Double = 0.0): N
 }
