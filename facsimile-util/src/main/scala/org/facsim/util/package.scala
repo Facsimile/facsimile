@@ -87,19 +87,19 @@ package object util {
 
   /** Key for assertNonNull string resource.
     */
-  private[util] val AssertNonNullKey = "assertNonNull"
+  private[facsim] val AssertNonNullKey = "assertNonNull"
 
   /** Key for requireNonNull string resource.
     */
-  private[util] val RequireNonNullKey = "requireNonNull"
+  private[facsim] val RequireNonNullKey = "requireNonNull"
 
   /** Key for requireValid string resource.
     */
-  private[util] val RequireValidKey = "requireValid"
+  private[facsim] val RequireValidKey = "requireValid"
 
   /** Key for requireFinite string resource.
     */
-  private[util] val RequireFiniteKey = "requireFinite"
+  private[facsim] val RequireFiniteKey = "requireFinite"
 
   /** Implicit conversion of a [[ZonedDateTime]] to a [[Date]].
     *
