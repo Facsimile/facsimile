@@ -95,6 +95,7 @@ extends FunSpec {
           assert(!volumeFamily.isUnitless)
         }
       }
+      ()
     }
 
     // Verify that multiplication of units is performed correctly.
@@ -127,6 +128,7 @@ extends FunSpec {
           assert(frequencyFamily * velocityFamily == accelerationFamily)
         }
       }
+      ()
     }
 
     // Verify that division of units is performed correctly.
@@ -160,6 +162,7 @@ extends FunSpec {
           assert(velocityFamily / accelerationFamily == timeFamily)
         }
       }
+      ()
     }
   }
 }
