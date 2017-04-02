@@ -121,7 +121,7 @@ with CommonTestMethods {
         new ImportExportTestData {
 
           // Helper function to perform comparisons.
-          def checkReturn(factor: LinearScaleConverter, importVal: Double, exportVal: Double): Unit = {
+          def checkReturn(factor: LinearScaleConverter, importVal: Double, exportVal: Double) = {
             assert(factor.importValue(importVal) === exportVal)
           }
 
@@ -144,8 +144,8 @@ with CommonTestMethods {
         new ImportExportTestData {
 
           // Helper function to perform comparisons.
-          def checkReturn(factor: LinearScaleConverter, importVal: Double, exportVal: Double): Unit = {
-            assert(factor.exportValue(exportVal) == importVal)
+          def checkReturn(factor: LinearScaleConverter, importVal: Double, exportVal: Double) = {
+            assert(factor.exportValue(exportVal) === importVal)
           }
 
           // The return value must exactly match the value passed. There can be no rounding errors.

@@ -54,7 +54,7 @@ extends FunSpec {
       it("must return the argument passed") {
 
         // The return value must exactly match the value passed. There can be no rounding errors.
-        def checkReturn(value: Double): Unit = {
+        def checkReturn(value: Double) = {
           assert(SIConverter.importValue(value) === value)
         }
         checkReturn(Double.MinValue)
@@ -74,7 +74,7 @@ extends FunSpec {
       it("must return the argument passed") {
 
         // The return value must exactly match the value passed. There can be no rounding errors.
-        def checkReturn(value: Double): Unit = {
+        def checkReturn(value: Double) = {
           assert(SIConverter.exportValue(value) === value)
         }
         checkReturn(Double.MinValue)
