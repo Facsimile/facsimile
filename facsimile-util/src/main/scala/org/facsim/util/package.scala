@@ -408,7 +408,7 @@ package object util {
     // If the argument is deemed invalid, then throw an IllegalArgumentException with some useful information.
     reify {
       if(!isValid.splice) throw new IllegalArgumentException(LibResource(RequireValidKey,
-      cleanArgName(argString.splice), arg.splice.toString))
+      cleanArgName(argString.splice), arg.splice))
     }
   }
 
