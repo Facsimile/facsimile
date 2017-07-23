@@ -465,13 +465,36 @@ settings(
   """
 )
 
+// Name of the facsimile-stat project.
+val facsimileStatName = "facsimile-stat"
+
+// Facsimile-Stat project.
+//
+// The Facsimile-Stat project supports statistical distribution sampling, reporting, analysis and inference testing.
+lazy val facsimileStat = project.in(file(facsimileStatName)).
+dependsOn(facsimileUtil % dependsOnCompileTest).
+settings(commonSettings: _*).
+settings(sourceProjectSettings: _*).
+settings(docProjectSettings: _*).
+settings(publishedProjectSettings: _*).
+settings(
+
+  // Name and description of this project.
+  name := "Facsimile Statistical Library",
+  normalizedName := facsimileStatName,
+  description := """
+    The Facsimile Statistical library supports statistical distribution sampling, reporting, analysis and inference
+    testing.
+  """
+)
+
 // Facsimile root project.
 //
 // The Facsimile root project simply aggregates actions across all Facsimile projects.
 //
 // TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
 lazy val facsimile = project.in(file(".")).
-aggregate(facsimileUtil, facsimileMeasure).
+aggregate(facsimileUtil, facsimileMeasure, facsimileStat).
 settings(commonSettings: _*).
 settings(unpublishedProjectSettings: _*).
 settings(

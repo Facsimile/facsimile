@@ -58,6 +58,13 @@ object Generator {
     */
   val nonNegInt = Gen.choose(0, Integer.MAX_VALUE)
 
+  /** Generate any integer value.
+    */
+  // A range of [Integer.MinValue, Integer.MaxValue] exceeds the capacity of a signed 32-bit integer value (31 bits for
+  // the value, 1 for the sign), so we get around this by having two generators and selecting one or the other at
+  // random).
+  val int = Gen.oneOf(negInt, nonNegInt)
+
   /** ISO-8859-1 characters.
     */
   private val iso8859_1Char = Gen.choose(0.toChar, 255.toChar)
