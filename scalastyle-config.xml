@@ -195,15 +195,16 @@ package org.facsim.\E[\p{Lower}\d_\.]+]]></parameter>
 
   Rationale: Incorrectly formed ScalaDoc is a problem. Typically, this rule should only be disabled in test sources.
 
-  Note: The current ScalaDoc style guidelines recommend the indent style that is labeled "javadoc". For further details,
-  refer to http://docs.scala-lang.org/style/scaladoc.html.
+  Note: The current ScalaDoc style guidelines recommend the indent style that is labeled "javadoc". However, that does
+  not fully support the standard (simple ScalaDoc comments in particular). Fortunately, IndentationChecker validates
+  standard format comments. For further details, refer to http://docs.scala-lang.org/style/scaladoc.html.
 
   To disable this rule locally, use the ID: scaladoc
   -->
   <check class="org.scalastyle.scalariform.ScalaDocChecker" enabled="true" level="warning">
     <parameters>
       <parameter name="ignoreOverride">true</parameter>
-      <parameter name="indentStyle">javadoc</parameter>
+      <parameter name="indentStyle">anydoc</parameter>
     </parameters>
   </check>
 
