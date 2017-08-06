@@ -99,7 +99,7 @@ extends DelayedInit {
   final override def delayedInit(ctor: => Unit): Unit = {
     synchronized {
       assert(!initialized)
-      subClassCtors += (() => ctor) //scalastyle:ignore disallow.space.before.token
+      subClassCtors += (() => ctor)
     }
   }
 

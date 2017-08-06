@@ -273,6 +273,6 @@ extends SummaryStatistics {
    */
   final override def variance = {
     if(size == 1) None
-    else Some((sumSquared - size * Math.pow(mean.get, 2)) / (size - 1)) //scalastyle:ignore disallow.space.before.token
+    else Some((sumSquared - size * Math.pow(mean.get, 2)) / (size - 1))
   }
 }

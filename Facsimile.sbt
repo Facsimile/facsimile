@@ -229,7 +229,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   //
   // The jar file should be sealed so that the packages contained cannot be extended. We also add inception & build
   // timestamps for information purposes.
-  packageOptions in (Compile, packageBin) ++= Seq( //scalastyle:ignore disallow.space.before.token
+  packageOptions in (Compile, packageBin) ++= Seq(
     Package.ManifestAttributes(Name.SEALED -> "true"),
     Package.ManifestAttributes("Inception-Timestamp" -> facsimileStartDate.toString),
     Package.ManifestAttributes("Build-Timestamp" -> facsimileBuildDate.toString)
