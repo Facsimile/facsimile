@@ -38,68 +38,68 @@ import java.text.MessageFormat
 import java.util.ResourceBundle
 
 /** Provides access to a locale-specific resource bundle belonging to a library or application.
-  *
-  * Further information on how locale-specific resources are identified is at [[ResourceBundle]].
-  *
-  * The user's current preferred locale is identified through a call to [[java.util.Locale.getDefault]].
-  *
-  * @todo Add code to retrieve package files, including images, etc.
-  *
-  * @constructor Retrieve the resource bundles with the specified name.
-  *
-  * @param bundleName Identifies the base name of the resource bundle to be loaded.
-  *
-  * @throws NullPointerException if `bundleName` is `null`.
-  *
-  * @throws java.util.MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
-  *
-  * @see [[ResourceBundle]] for information on Java resource bundles.
-  *
-  * @see [[java.util.Locale]] for information on Java locale processing.
-  *
-  * @since 0.0
-  */
+ *
+ *  Further information on how locale-specific resources are identified is at [[ResourceBundle]].
+ *
+ *  The user's current preferred locale is identified through a call to [[java.util.Locale.getDefault]].
+ *
+ *  @todo Add code to retrieve package files, including images, etc.
+ *
+ *  @constructor Retrieve the resource bundles with the specified name.
+ *
+ *  @param bundleName Identifies the base name of the resource bundle to be loaded.
+ *
+ *  @throws NullPointerException if `bundleName` is `null`.
+ *
+ *  @throws java.util.MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
+ *
+ *  @see [[ResourceBundle]] for information on Java resource bundles.
+ *
+ *  @see [[java.util.Locale]] for information on Java locale processing.
+ *
+ *  @since 0.0
+ */
 class Resource(bundleName: String) {
 
   // Verify that we have a bundle name.
   requireNonNullFn(bundleName, "bundleName")
 
   /** Resource bundle.
-    *
-    * The locale of the bundle defaults to the JVM's default locale; if a locale-specific resource bundle matching the
-    * default locale is available, then it will be loaded - otherwise, the "en_US" (United States English) resource
-    * bundle will be loaded.
-    *
-    * If the resource bundle cannot be found, then [[java.util.MissingResourceException]]  will be thrown.
-    */
+   *
+   *  The locale of the bundle defaults to the JVM's default locale; if a locale-specific resource bundle matching the
+   *  default locale is available, then it will be loaded - otherwise, the "en_US" (United States English) resource
+   *  bundle will be loaded.
+   *
+   *  If the resource bundle cannot be found, then [[java.util.MissingResourceException]]  will be thrown.
+   */
   private final val bundle = ResourceBundle.getBundle(bundleName)
   assert(bundle ne null) // scalastyle:ignore null
 
   /** Retrieve and format a locale-specific string resource.
-    *
-    * Retrieves the string resource corresponding to the supplied key from the application resource bundle. Optional
-    * arguments are used to populate the formatted version of the resulting string, which will be in the locale that
-    * best matches the user's preference.
-    *
-    * @param key Key used to identify the string resource to be retrieved.
-    *
-    * @param arguments Arguments to be merged into, and formatted as part of, the resulting string resource. May be
-    * omitted if no arguments are required. Note that any Scala type values (Double, Int, etc.) will be boxed into
-    * equivalent Java type wrappers (java.lang.Double, java.lang.Int, etc.).
-    *
-    * @return Locale-specific, formatted version of the requested string resource.
-    *
-    * @throws NullPointerException if `key` is `null`.
-    *
-    * @throws java.util.MissingResourceException if there is no string resource indexed by `key`.
-    *
-    * @throws ClassCastException if the resource indexed by `key` is not a string.
-    *
-    * @throws IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are of the
-    * wrong type for the corresponding format elements in the retrieved string.
-    *
-    * @since 0.0
-    */
+   *
+   *  Retrieves the string resource corresponding to the supplied key from the application resource bundle. Optional
+   *  arguments are used to populate the formatted version of the resulting string, which will be in the locale that
+   *  best matches the user's preference.
+   *
+   *  @param key Key used to identify the string resource to be retrieved.
+   *
+   *  @param arguments Arguments to be merged into, and formatted as part of, the resulting string resource. May be
+   *  omitted if no arguments are required. Note that any Scala type values (Double, Int, etc.) will be boxed into
+   *  equivalent Java type wrappers (java.lang.Double, java.lang.Int, etc.).
+   *
+   *  @return Locale-specific, formatted version of the requested string resource.
+   *
+   *  @throws NullPointerException if `key` is `null`.
+   *
+   *  @throws java.util.MissingResourceException if there is no string resource indexed by `key`.
+   *
+   *  @throws ClassCastException if the resource indexed by `key` is not a string.
+   *
+   *  @throws IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are of the
+   *  wrong type for the corresponding format elements in the retrieved string.
+   *
+   *  @since 0.0
+   */
   final def apply(key: String, arguments: Any*): String = {
 
     // Verify that we have a key.

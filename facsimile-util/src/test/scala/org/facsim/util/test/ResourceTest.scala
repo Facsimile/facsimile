@@ -40,8 +40,7 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/** Test harness for the [[Resource]] class.
-  */
+/** Test harness for the [[Resource]] class. */
 class ResourceTest
 extends FunSpec
 with CommonTestMethods {

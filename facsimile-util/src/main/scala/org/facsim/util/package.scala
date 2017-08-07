@@ -47,85 +47,74 @@ import scala.language.implicitConversions
 import scala.reflect.macros.blackbox.Context
 
 /** ''[[http://facsim.org/ Facsimile]]'' Simulation Library miscellaneous utilities.
-  *
-  * Package providing miscellaneous utility elements.
-  *
-  * @note ''Facsimile'' is, first and foremost, a simulation library. It is not a collection of miscellaneous, utility
-  * classes and functions with general applicability. Only general utilities are publicly accessible.
-  *
-  * @since 0.0
-  */
+ *
+ *  Package providing miscellaneous utility elements.
+ *
+ *  @note ''Facsimile'' is, first and foremost, a simulation library. It is not a collection of miscellaneous, utility
+ *  classes and functions with general applicability. Only general utilities are publicly accessible.
+ *
+ *  @since 0.0
+ */
 package object util {
 
-  /** Regular expression to match class argument name.
-    */
+  /** Regular expression to match class argument name. */
   private val ClassArgRE = """[0-9A-Za-z_]+\.this\.([0-9A-Za-z_]+)""".r
 
-  /** Regular expression for identifying periods in package path names.
-    */
+  /** Regular expression for identifying periods in package path names. */
   private val PeriodRegEx = """(\.)""".r
 
-  /** Regular expression for extracting a ''jar'' file URI from a URL.
-    */
+  /** Regular expression for extracting a ''jar'' file URI from a URL. */
   private val JarUriRegEx = """^jar\:(.+)\!.+$""".r
 
-  /** Java file separator.
-    */
+  /** Java file separator. */
   private[facsim] val FS = "/"
 
-  /** Comparison return value implying less than.
-    */
+  /** Comparison return value implying less than. */
   private[facsim] val CompareLessThan = -1
 
-  /** Comparison return value implying equality.
-    */
+  /** Comparison return value implying equality. */
   private[facsim] val CompareEqualTo = 0
 
-  /** Comparison return value implying greater than.
-    */
+  /** Comparison return value implying greater than. */
   private[facsim] val CompareGreaterThan = 1
 
-  /** Key for assertNonNull string resource.
-    */
+  /** Key for assertNonNull string resource. */
   private[facsim] val AssertNonNullKey = "assertNonNull"
 
-  /** Key for requireNonNull string resource.
-    */
+  /** Key for requireNonNull string resource. */
   private[facsim] val RequireNonNullKey = "requireNonNull"
 
-  /** Key for requireValid string resource.
-    */
+  /** Key for requireValid string resource. */
   private[facsim] val RequireValidKey = "requireValid"
 
-  /** Key for requireFinite string resource.
-    */
+  /** Key for requireFinite string resource. */
   private[facsim] val RequireFiniteKey = "requireFinite"
 
   /** Implicit conversion of a [[ZonedDateTime]] to a [[Date]].
-    *
-    * Conversion between pre-''Java 1.8'' `java.util` time classes (such as [[Date]], [[GregorianCalendar]], etc.) and
-    * the new post-''Java 1.8'' `java.time` time classes ([[java.time.Instant]], [[ZonedDateTime]], etc) is cumbersome
-    * at best. The former could be dispensed with completely if if wasn't for the fact that [[java.text.MessageFormat]]
-    * currently supports only the [[Date]] class. This function makes working with the new time classes, and text
-    * message formatting, a little more straightforward.
-    *
-    * @param date Date, expressed as a [[ZonedDateTime]] to be converted.
-    *
-    * @return `date` expressed as a [[Date]].
-    *
-    * @throws NullPointerException if `date` is null.
-    *
-    * @throws IllegalArgumentException if `date` is too large to represent as a [[GregorianCalendar]] value.
-    */
+   *
+   *  Conversion between pre-''Java 1.8'' `java.util` time classes (such as [[Date]], [[GregorianCalendar]], etc.) and
+   *  the new post-''Java 1.8'' `java.time` time classes ([[java.time.Instant]], [[ZonedDateTime]], etc) is cumbersome
+   *  at best. The former could be dispensed with completely if if wasn't for the fact that [[java.text.MessageFormat]]
+   *  currently supports only the [[Date]] class. This function makes working with the new time classes, and text
+   *  message formatting, a little more straightforward.
+   *
+   *  @param date Date, expressed as a [[ZonedDateTime]] to be converted.
+   *
+   *  @return `date` expressed as a [[Date]].
+   *
+   *  @throws NullPointerException if `date` is null.
+   *
+   *  @throws IllegalArgumentException if `date` is too large to represent as a [[GregorianCalendar]] value.
+   */
   private[facsim] implicit def toDate(date: ZonedDateTime): Date = GregorianCalendar.from(date).getTime
 
   /** Obtain the resource URL associated with a class's type information.
-    *
-    * @param elementType Element type instance for which a resource ''URL'' will be sought.
-    *
-    * @return Resource ''URL'' associated with `elementType` wrapped in [[Some]], or [[None]] if the element type's
-    * resource URL could not be identified.
-    */
+   *
+   *  @param elementType Element type instance for which a resource ''URL'' will be sought.
+   *
+   *  @return Resource ''URL'' associated with `elementType` wrapped in [[Some]], or [[None]] if the element type's
+   *  resource URL could not be identified.
+   */
   private[util] def resourceUrl(elementType: Class[_]) = {
 
     // (BTW, this is a rather convoluted process. If you know of a better (i.e. simpler or quicker) approach, feel free
@@ -145,12 +134,12 @@ package object util {
   }
 
   /** Obtain the ''JAR'' file associated with the specified element type.
-    *
-    * @param elementType Element type instance for which a resource ''URL'' will be sought.
-    *
-    * @return ''JAR'' file associated with `elementType` wrapped in [[Some]], or [[None]] if `elementType` was not
-    * loaded from a ''JAR'' file.
-    */
+   *
+   *  @param elementType Element type instance for which a resource ''URL'' will be sought.
+   *
+   *  @return ''JAR'' file associated with `elementType` wrapped in [[Some]], or [[None]] if `elementType` was not
+   *  loaded from a ''JAR'' file.
+   */
   private[util] def jarFile(elementType: Class[_]) = resourceUrl(elementType).flatMap {url =>
 
     // If the URL identifies a JAR file, then it will be of the (String) form:
@@ -170,42 +159,42 @@ package object util {
   }
 
   /** Assertion that a value is not null.
-    *
-    * Code using this assertion is only generated if the `-Xelide-below` Scala compiler option is at least ASSERTION.
-    *
-    * @note Assertions should only be used to verify internal state; they must '''never''' be used to verify external
-    * state (use the require methods to verify external state instead).
-    *
-    * @param arg Argument whose value is to be compared to `null`.
-    *
-    * @throws java.lang.AssertionError if `arg` is `null`
-    *
-    * @since 0.0
-    */
+   *
+   *  Code using this assertion is only generated if the `-Xelide-below` Scala compiler option is at least ASSERTION.
+   *
+   *  @note Assertions should only be used to verify internal state; they must '''never''' be used to verify external
+   *  state (use the require methods to verify external state instead).
+   *
+   *  @param arg Argument whose value is to be compared to `null`.
+   *
+   *  @throws java.lang.AssertionError if `arg` is `null`
+   *
+   *  @since 0.0
+   */
   @elidable(elidable.ASSERTION)
   def assertNonNull(arg: AnyRef): Unit = macro assertNonNullImpl
 
   /** Require that argument value is non-`null`.
-    *
-    * Throw a [[NullPointerException]] if supplied argument value is `null`.
-    *
-    * Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
-    * to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
-    * not dereferenced until after the function has returned, then the function must verify that the reference is
-    * non-`null` as one of its preconditions; this function makes such precondition verification simpler.
-    *
-    * Furthermore, even if the ''JVM'' can be relied upon to throw this exception, performing this verification
-    * explicitly is regarded as good practice. One reason is that exceptions thrown by the ''JVM'' provide limited
-    * explanation to the user as to their cause; this function provides an explanation automatically.
-    *
-    * @note This is a non-macro version of [[requireNonNull(AnyRef)]] for use within the facimile-util project.
-    *
-    * @param arg Argument whose value is to be compared to `null`.
-    *
-    * @param name Name of the argument whose value is being tested.
-    *
-    * @throws NullPointerException if `arg` is `null`.
-    */
+   *
+   *  Throw a [[NullPointerException]] if supplied argument value is `null`.
+   *
+   *  Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
+   *  to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
+   *  not dereferenced until after the function has returned, then the function must verify that the reference is
+   *  non-`null` as one of its preconditions; this function makes such precondition verification simpler.
+   *
+   *  Furthermore, even if the ''JVM'' can be relied upon to throw this exception, performing this verification
+   *  explicitly is regarded as good practice. One reason is that exceptions thrown by the ''JVM'' provide limited
+   *  explanation to the user as to their cause; this function provides an explanation automatically.
+   *
+   *  @note This is a non-macro version of [[requireNonNull(AnyRef)]] for use within the facimile-util project.
+   *
+   *  @param arg Argument whose value is to be compared to `null`.
+   *
+   *  @param name Name of the argument whose value is being tested.
+   *
+   *  @throws NullPointerException if `arg` is `null`.
+   */
   @inline
   private[util] def requireNonNullFn(arg: AnyRef, name: => String): Unit = {
     if(arg eq null) { //scalastyle:ignore null
@@ -214,95 +203,97 @@ package object util {
   }
 
   /** Require that argument value is valid.
-    *
-    * Throw a [[IllegalArgumentException]] if supplied parameter value is invalid.
-    *
-    * @note This function supersedes the [[Predef]] `require` methods.
-    *
-    * @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
-    *
-    * @note This is a non-macro version of [[requireValid(Any, Boolean)]] for use within the facimile-util project.
-    *
-    * @param arg Value of the argument being tested.
-    *
-    * @param isValid Predicate determining the validity of `arg`. If `true`, function merely returns; if `false` an
-    * `IllegalArgumentException` is raised.
-    *
-    * @param name Name of the argument being tested.
-    *
-    * @throws IllegalArgumentException if `isValid` is `false`.
-    */
+   *
+   *  Throw a [[IllegalArgumentException]] if supplied parameter value is invalid.
+   *
+   *  @note This function supersedes the [[Predef]] `require` methods.
+   *
+   *  @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
+   *
+   *  @note This is a non-macro version of [[requireValid(Any, Boolean)]] for use within the facimile-util project.
+   *
+   *  @tparam T Type of argument value.
+   *
+   *  @param arg Value of the argument being tested.
+   *
+   *  @param isValid Predicate determining the validity of `arg`. If `true`, function merely returns; if `false` an
+   *  `IllegalArgumentException` is raised.
+   *
+   *  @param name Name of the argument being tested.
+   *
+   *  @throws IllegalArgumentException if `isValid` is `false`.
+   */
   @inline
   private[util] def requireValidFn[T](arg: T, isValid: T => Boolean, name: => String): Unit = {
     if(!isValid(arg)) throw new IllegalArgumentException(LibResource(RequireValidKey, name, arg))
   }
 
   /** Require that argument value is non-`null`.
-    *
-    * Throw a [[NullPointerException]] if supplied argument value is `null`.
-    *
-    * Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
-    * to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
-    * not dereferenced until after the function has returned, then the function must verify that the reference is
-    * non-`null` as one of its preconditions; this function makes such precondition verification simpler.
-    *
-    * Furthermore, even if the ''JVM'' can be relied upon to throw this exception, performing this verification
-    * explicitly is regarded as good practice. One reason is that exceptions thrown by the ''JVM'' provide limited
-    * explanation to the user as to their cause; this function provides an explanation automatically.
-    *
-    * @param arg Argument whose value is to be compared to `null`.
-    *
-    * @throws NullPointerException if `arg` is `null`.
-    *
-    * @since 0.0
-    */
+   *
+   *  Throw a [[NullPointerException]] if supplied argument value is `null`.
+   *
+   *  Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
+   *  to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
+   *  not dereferenced until after the function has returned, then the function must verify that the reference is
+   *  non-`null` as one of its preconditions; this function makes such precondition verification simpler.
+   *
+   *  Furthermore, even if the ''JVM'' can be relied upon to throw this exception, performing this verification
+   *  explicitly is regarded as good practice. One reason is that exceptions thrown by the ''JVM'' provide limited
+   *  explanation to the user as to their cause; this function provides an explanation automatically.
+   *
+   *  @param arg Argument whose value is to be compared to `null`.
+   *
+   *  @throws NullPointerException if `arg` is `null`.
+   *
+   *  @since 0.0
+   */
   def requireNonNull(arg: AnyRef): Unit = macro requireNonNullImpl
 
   /** Require that argument value is valid.
-    *
-    * Throw a [[IllegalArgumentException]] if supplied parameter value is invalid.
-    *
-    * @note This function supersedes the [[Predef]] `require` methods.
-    *
-    * @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
-    *
-    * @param arg Argument being verified.
-    *
-    * @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
-    * merely returns; if `false` an `IllegalArgumentException` is raised.
-    *
-    * @throws IllegalArgumentException if `isValid` is `false`.
-    *
-    * @since 0.0
-    */
+   *
+   *  Throw a [[IllegalArgumentException]] if supplied parameter value is invalid.
+   *
+   *  @note This function supersedes the [[Predef]] `require` methods.
+   *
+   *  @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
+   *
+   *  @param arg Argument being verified.
+   *
+   *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
+   *  merely returns; if `false` an `IllegalArgumentException` is raised.
+   *
+   *  @throws IllegalArgumentException if `isValid` is `false`.
+   *
+   *  @since 0.0
+   */
   def requireValid(arg: Any, isValid: Boolean): Unit = macro requireValidImpl
 
   /** Require a finite double value.
-    *
-    * Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will result in a
-    * [[IllegalArgumentException]] being thrown.
-    *
-    * @param arg Argument whose value is being validated.
-    *
-    * @throws IllegalArgumentException if `arg` does not have a finite value.
-    *
-    * @since 0.0
-    */
+   *
+   *  Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will result in a
+   *  [[IllegalArgumentException]] being thrown.
+   *
+   *  @param arg Argument whose value is being validated.
+   *
+   *  @throws IllegalArgumentException if `arg` does not have a finite value.
+   *
+   *  @since 0.0
+   */
   def requireFinite(arg: Double): Unit = macro requireFiniteImpl
 
   /** Clean argument names.
-    *
-    * Class argument names are prefixed by "{ClassName}.this." (where "{ClassName}" is the name of the class to which
-    * the argument belongs), which creates confusion when identifying failing arguments, and testing that failed
-    * argument messages match expected messages. This function removes class argument prefixes so that the raw argument
-    * name is returned.
-    *
-    * @param arg A class or method argument to be cleaned.
-    *
-    * @return Cleaned argument name, matching the value expected by the user.
-    *
-    * @since 0.0
-    */
+   *
+   *  Class argument names are prefixed by "{ClassName}.this." (where "{ClassName}" is the name of the class to which
+   *  the argument belongs), which creates confusion when identifying failing arguments, and testing that failed
+   *  argument messages match expected messages. This function removes class argument prefixes so that the raw argument
+   *  name is returned.
+   *
+   *  @param arg A class or method argument to be cleaned.
+   *
+   *  @return Cleaned argument name, matching the value expected by the user.
+   *
+   *  @since 0.0
+   */
   def cleanArgName(arg: String): String = arg match {
 
     // If this is a class argument, remove the prefix and return the actual name of the argument.
@@ -313,29 +304,29 @@ package object util {
   }
 
   /** Convert an expression into a string expression.
-    *
-    * @param c AST context for the conversion.
-    *
-    * @param arg Expression to be converted.
-    *
-    * @return String expression capturing contents of original expression.
-    */
+   *
+   *  @param c AST context for the conversion.
+   *
+   *  @param arg Expression to be converted.
+   *
+   *  @return String expression capturing contents of original expression.
+   */
   private def exprAsString(c: Context)(arg: c.Expr[Any]): c.Expr[String] = {
     import c.universe._
     c.Expr[String](Literal(Constant(show(arg.tree))))
   }
 
   /** IndentationCheckerProvides implementation of the [[assertNonNull]] macro.
-    *
-    * @param c Abstract syntax tree (AST) context for this macro definition.
-    *
-    * @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a [[AssertionError]]
-    * is thrown by the macro implementation, together with the name of the failed argument.
-    *
-    * @return Implementation of this instance of the `assertNonNull` macro.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param c Abstract syntax tree (AST) context for this macro definition.
+   *
+   *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a [[AssertionError]]
+   *  is thrown by the macro implementation, together with the name of the failed argument.
+   *
+   *  @return Implementation of this instance of the `assertNonNull` macro.
+   *
+   *  @since 0.0
+   */
   def assertNonNullImpl(c: Context)(arg: c.Expr[AnyRef]): c.Expr[Unit] = {
 
     // Convert the argument into a string that represents the expression that was passed to the requireNonNull macro -
@@ -356,16 +347,16 @@ package object util {
   }
 
   /** Provides implementation of the [[requireNonNull]] macro.
-    *
-    * @param c Abstract syntax tree (AST) context for this macro definition.
-    *
-    * @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
-    * [[NullPointerException]] is thrown by the macro implementation, together with the name of the failed  argument.
-    *
-    * @return Implementation of this instance of the `requireNonNull` macro.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param c Abstract syntax tree (AST) context for this macro definition.
+   *
+   *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
+   *  [[NullPointerException]] is thrown by the macro implementation, together with the name of the failed  argument.
+   *
+   *  @return Implementation of this instance of the `requireNonNull` macro.
+   *
+   *  @since 0.0
+   */
   def requireNonNullImpl(c: Context)(arg: c.Expr[AnyRef]): c.Expr[Unit] = {
 
     // Convert the argument into a string that represents the expression that was passed to the requireNonNull macro -
@@ -384,19 +375,19 @@ package object util {
   }
 
   /** Provides implementation of the [[requireValid]] macro.
-    *
-    * @param c Abstract syntax tree (AST) context for this macro definition.
-    *
-    * @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then a
-    * [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
-    *
-    * @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
-    * merely returns; if `false` an `IllegalArgumentException` is raised.
-    *
-    * @return Implementation of this instance of the `requireValid` macro.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param c Abstract syntax tree (AST) context for this macro definition.
+   *
+   *  @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then a
+   *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
+   *
+   *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
+   *  merely returns; if `false` an `IllegalArgumentException` is raised.
+   *
+   *  @return Implementation of this instance of the `requireValid` macro.
+   *
+   *  @since 0.0
+   */
   def requireValidImpl(c: Context)(arg: c.Expr[Any], isValid: c.Expr[Boolean]): c.Expr[Unit] = {
 
     // Convert the arguments to strings.
@@ -413,16 +404,16 @@ package object util {
   }
 
   /** Provides implementation of the [[requireFinite]] macro.
-    *
-    * @param c Abstract syntax tree (AST) context for this macro definition.
-    *
-    * @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then a
-    * [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
-    *
-    * @return Implementation of this instance of the `requireFinite` macro.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param c Abstract syntax tree (AST) context for this macro definition.
+   *
+   *  @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then a
+   *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
+   *
+   *  @return Implementation of this instance of the `requireFinite` macro.
+   *
+   *  @since 0.0
+   */
   def requireFiniteImpl(c: Context)(arg: c.Expr[Double]): c.Expr[Unit] = {
 
     // Convert the argument to a string.

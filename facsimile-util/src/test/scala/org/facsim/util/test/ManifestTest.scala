@@ -46,62 +46,48 @@ import scala.util.Properties
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/** Test harness for the [[Manifest]] class.
-  */
+/** Test harness for the [[Manifest]] class. */
 class ManifestTest
 extends FunSpec
 with CommonTestMethods {
 
-  /** Dummy class that will not be loaded from a JAR file, and can thus be tested as such.
-    */
+  /** Dummy class that will not be loaded from a JAR file, and can thus be tested as such. */
   class NonJARFileClass
 
-  /** Manifest test data.
-    */
+  /** Manifest test data. */
   trait TestData {
 
-    /** ''Java'' runtime library manifest. Should exist ;-).
-      */
+    /** ''Java'' runtime library manifest. Should exist ;-). */
     lazy val javaManifest = Manifest(classOf[String])
 
-    /** A manifest, having some invalid attributes, loaded from a ''JAR'' file.
-      */
+    /** A manifest, having some invalid attributes, loaded from a ''JAR'' file. */
     lazy val invalidManifest = Manifest(classOf[Invalid])
 
-    /** A null manifest for a JAR file that has no manifest defined.
-      */
+    /** A null manifest for a JAR file that has no manifest defined. */
     lazy val missingManifest = Manifest(classOf[Missing])
 
-    /** A null manifest for a class that has no associated ''JAR'' file.
-      */
+    /** A null manifest for a class that has no associated ''JAR'' file. */
     lazy val noJarManifest = Manifest(classOf[NonJARFileClass])
 
-    /** A manifest, having defined, valid attributes, loaded from a ''JAR'' file.
-      */
+    /** A manifest, having defined, valid attributes, loaded from a ''JAR'' file. */
     lazy val dummyManifest = Manifest(classOf[Dummy])
 
-    /** Non-existent attribute name.
-      */
+    /** Non-existent attribute name. */
     lazy val nonExistentAttr = new Name("UndefinedAttributeName")
 
-    /** Dummy manifest title.
-      */
+    /** Dummy manifest title. */
     lazy val dummyTitle = "Facsimile Dummy Test Jar"
 
-    /** Dummy manifest vendor.
-      */
+    /** Dummy manifest vendor. */
     lazy val dummyVendor = "Michael J. Allen"
 
-    /** Dummy version number.
-      */
+    /** Dummy version number. */
     lazy val dummyVersion = Version(1, 0)
 
-    /** Inception timestamp in the dummy manifest.
-      */
+    /** Inception timestamp in the dummy manifest. */
     lazy val inceptionTime = ZonedDateTime.parse("2004-06-22T18:16-04:00[America/New_York]")
 
-    /** Build timestamp in the dummy manifest.
-      */
+    /** Build timestamp in the dummy manifest. */
     lazy val buildTime = ZonedDateTime.parse("2014-08-14T13:40:00.000-04:00[America/New_York]")
   }
 
@@ -115,7 +101,7 @@ with CommonTestMethods {
       it("must throw a NullPointerException if passed a null name") {
         new TestData {
           val e = intercept[NullPointerException] {
-            Manifest.NullManifest.attribute(null) //Scalastyle:ignore null
+            Manifest.NullManifest.attribute(null) //scalastyle:ignore null
           }
           assertRequireNonNullMsg(e, "name")
         }
@@ -147,7 +133,7 @@ with CommonTestMethods {
       // Check null name values.
       it("must throw a NullPointerException if passed a null name") {
         val e = intercept[NullPointerException] {
-          Manifest.NullManifest.dateAttribute(null) //Scalastyle:ignore null
+          Manifest.NullManifest.dateAttribute(null) //scalastyle:ignore null
         }
         assertRequireNonNullMsg(e, "name")
       }
@@ -302,7 +288,7 @@ with CommonTestMethods {
       // Verify that it retrieves attribute values OK.
       it("must return valid title if attribute defined") {
         new TestData {
-          assert(javaManifest.specTitle == Some(Properties.javaSpecName))
+          assert(javaManifest.specTitle === Some(Properties.javaSpecName))
           assert(dummyManifest.specTitle === Some(dummyTitle))
         }
       }
@@ -362,7 +348,7 @@ with CommonTestMethods {
       // Verify that it handles a null argument/
       it("must throw a NullPointerException if passed a null value") {
         val e = intercept[NullPointerException] {
-           Manifest(null) //scalastyle:ignore null
+          Manifest(null) //scalastyle:ignore null
         }
         assertRequireNonNullMsg(e, "elementType")
       }

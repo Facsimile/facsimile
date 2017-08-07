@@ -35,11 +35,11 @@
 package org.facsim.util
 
 /** Helper object reporting ''Facsimile Util'' library resources.
-  *
-  * @note This element must have global library visibility, otherwise the require... macros cannot access it to output
-  * exception messages.
-  *
-  * @since 0.0
-  */
+ *
+ *  @note This element must have global library visibility, otherwise the require... macros cannot access it to output
+ *  exception messages.
+ *
+ *  @since 0.0
+ */
 private[facsim] object LibResource
 extends Resource("facsimile-util")

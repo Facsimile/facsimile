@@ -37,43 +37,42 @@ package org.facsim.util.test
 import org.facsim.util._
 import org.scalatest.FunSpec
 
-/** Miscellaneous functions for supporting ''Facsimile'' testing.
-  */
+/** Miscellaneous functions for supporting ''Facsimile'' testing. */
 trait CommonTestMethods {this: FunSpec =>
 
   /** Assert that a NullPointerException's message resulting from a [[requireNonNull(AnyRef)*]] failure matches the
-    * expected value.
-    *
-    * @param e Exception thrown.
-    *
-    * @param argName Name of the argument that was found to be `null`.
-    */
+   *  expected value.
+   *
+   *  @param e Exception thrown.
+   *
+   *  @param argName Name of the argument that was found to be `null`.
+   */
   final def assertRequireNonNullMsg(e: NullPointerException, argName: String) = {
     assert(e.getMessage === LibResource(RequireNonNullKey, argName))
   }
 
   /** Assert that an IllegalArgumentException's message resulting from a [[requireValid(Any,Boolean)*]] failure matches
-    * the expected value.
-    *
-    * @param e Exception thrown.
-    *
-    * @param argName Name of the argument that was found to be invalid.
-    *
-    * @param argValue Invalid argument value.
-    */
+   *  the expected value.
+   *
+   *  @param e Exception thrown.
+   *
+   *  @param argName Name of the argument that was found to be invalid.
+   *
+   *  @param argValue Invalid argument value.
+   */
   final def assertRequireValidMsg(e: IllegalArgumentException, argName: String, argValue: Any) = {
     assert(e.getMessage === LibResource(RequireValidKey, argName, argValue))
   }
 
   /** Assert that an IllegalArgumentException's message resulting from a [[requireFinite(Double)*]] failure matches the
-    * expected value.
-    *
-    * @param e Exception thrown.
-    *
-    * @param argName Name of the argument that was found to be not finite.
-    *
-    * @param argValue Invalid argument value.
-    */
+   *  expected value.
+   *
+   *  @param e Exception thrown.
+   *
+   *  @param argName Name of the argument that was found to be not finite.
+   *
+   *  @param argValue Invalid argument value.
+   */
   final def assertRequireFiniteMsg(e: IllegalArgumentException, argName: String, argValue: Double) = {
     assert(e.getMessage === LibResource(RequireFiniteKey, argName, argValue))
   }

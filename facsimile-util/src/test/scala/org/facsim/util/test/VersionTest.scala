@@ -40,23 +40,22 @@ import org.scalatest.prop.PropertyChecks
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/** Test harness for the [[Version]] class and object.
-  */
+/** Test harness for the [[Version]] class and object. */
 class VersionTest
 extends FunSpec
 with PropertyChecks
 with CommonTestMethods {
 
   /** Compare versions and a specific number.
-    *
-    * @param n1 First version number. May be minor, major or bugFix.
-    *
-    * @param n2 Second version number. Should be same type of number as `n1`
-    *
-    * @param v1 First version instance. Should relate to `v2` as `n1` relates to `n2`.
-    *
-    * @param v2 Second version number. Should relate to `v1` as `n2` relates to `n1`.
-    */
+   *
+   *  @param n1 First version number. May be minor, major or bugFix.
+   *
+   *  @param n2 Second version number. Should be same type of number as `n1`
+   *
+   *  @param v1 First version instance. Should relate to `v2` as `n1` relates to `n2`.
+   *
+   *  @param v2 Second version number. Should relate to `v1` as `n2` relates to `n1`.
+   */
   def doCompare(n1: Int, n2: Int, v1: Version, v2: Version) = {
 
     // If n1 is less than n2, the versions should compare similarly.
@@ -315,7 +314,7 @@ with CommonTestMethods {
       // Verify null string behavior.
       it("must throw a NullPointerException when passed a null string") {
         val e = intercept[NullPointerException] {
-          Version(null)
+          Version(null) //scalastyle:ignore null
         }
         assertRequireNonNullMsg(e, "version")
       }

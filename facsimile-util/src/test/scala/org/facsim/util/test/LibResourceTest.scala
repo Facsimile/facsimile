@@ -40,10 +40,10 @@ import org.scalatest.FunSpec
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[LibResource]] object.
-  *
-  * Most behavior can be assumed to be tested by the [[ResourceTest]] test harness. Only specific remaining tests are
-  * included here.
-  */
+ *
+ * Most behavior can be assumed to be tested by the [[ResourceTest]] test harness. Only specific remaining tests are
+ * included here.
+ */
 class LibResourceTest
 extends FunSpec
 with CommonTestMethods {
@@ -60,7 +60,9 @@ with CommonTestMethods {
         assert(LibResource(RequireFiniteKey, "test", Double.NegativeInfinity) ===
         "Argument \"test\" must be finite, but has value \"-∞\".")
         assert(LibResource(RequireNonNullKey, "test") === "Argument \"test\" cannot be null.")
+        //scalastyle:off magic.number
         assert(LibResource(RequireValidKey, "test", -1) === "Argument \"test\" has illegal value: \"-1\".")
+        //scalastyle:on magic.number
       }
     }
   }

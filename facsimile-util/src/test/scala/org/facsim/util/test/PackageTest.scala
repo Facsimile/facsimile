@@ -39,8 +39,7 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/** Test suite for the [[org.facsim]] package object.
-  */
+/** Test suite for the [[org.facsim]] package object. */
 class PackageTest
 extends FunSpec
 with CommonTestMethods {
