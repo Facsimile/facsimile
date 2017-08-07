@@ -280,8 +280,11 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // Run the test suite, to verify that all tests pass. (This will also compile all code.)
     runTest,
 
-    // Run scalastyle to ensure that sources are correctly formatted and contain no static errors.
+    // Run scalastyle on sources to ensure that sources are correctly formatted and contain no static errors.
     ReleaseStep(action = Command.process("scalastyle", _)),
+
+    // Run scalastyle on test sources to ensure that sources are correctly formatted and contain no static errors.
+    ReleaseStep(action = Command.process("test:scalastyle", _)),
 
     // Update the "Version.sbt" file so that it contains the release version number.
     setReleaseVersion,
