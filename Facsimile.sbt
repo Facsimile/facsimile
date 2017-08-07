@@ -142,13 +142,32 @@ lazy val docProjectSettings = Seq(
     "-Ymacro-expand:none"
   ),
 
-  // Scaladoc configuration.
+  // Map to standard external ScalaDoc locations that will not be linked automatically.
   //
   // Allow Scaladoc to link to the Scala documentation for third-party libraries (through the apiURL setting).
-  autoAPIMappings := true
-  //apiMappings += (
-  //  unmanagedBase.value / "jt.jar" -> url("http://docs.oracle.com/javase/8/docs/api/")
-  //)
+  autoAPIMappings := true,
+  apiMappings ++= {
+
+    // Lookup managed JAR files in the classpath by the JAR file library name prefix.
+    def findJar(beginsWith: String): File = {
+
+      // Retrieve the classpath.
+      val classpath = (fullClasspath in Compile).value
+
+      // Find the JAR file whose name begins with the name specified.
+      val jarAttr = classpath.find {attr: Attributed[File] =>
+        (attr.data ** s"$beginsWith*.jar").get.nonEmpty
+      }
+
+      // Retrieve and return the matching JAR file name. This will result in an exception if the file was not found.
+      jarAttr.get.data
+    }
+
+    // Map specified JAR files to online documentation.
+    Map(
+      findJar("scala-library") -> url(s"http://scala-lang.org/api/${scalaVersion.value}/")
+    )
+  }
 )
 
 // Published project settings.
