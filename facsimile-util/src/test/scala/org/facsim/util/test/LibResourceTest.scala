@@ -41,8 +41,8 @@ import org.scalatest.FunSpec
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[LibResource]] object.
  *
- * Most behavior can be assumed to be tested by the [[ResourceTest]] test harness. Only specific remaining tests are
- * included here.
+ *  Most behavior can be assumed to be tested by the [[ResourceTest]] test harness. Only specific remaining tests are
+ *  included here.
  */
 class LibResourceTest
 extends FunSpec
