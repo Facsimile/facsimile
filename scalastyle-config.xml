@@ -272,7 +272,11 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   Field names are alphanumeric, starting with a lowercase character (except for constants, which start with a capital).
 
   Although it cannot be enforced by Scalastyle, the convention is that field names are also in camel case with no
-  underscores permitted.
+  underscores permitted. A further unenforceable convention, is that "constants" (special values that have defined
+  values, that are of particular importance in pattern matching) start with a capital letter.
+
+  Note: Classes and traits use the "regex" regular expression for validation; objects use the "objectFieldRegex" regular
+  expression.
 
   Rationale: This is a common Scala convention that should not be violated without a very good reason.
 
@@ -281,7 +285,7 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   <check class="org.scalastyle.scalariform.FieldNamesChecker" enabled="true" level="warning">
     <parameters>
       <parameter name="regex"><![CDATA[^\p{Alpha}\p{Alnum}*$]]></parameter>
-      <parameter name="objectFieldRegex"><![CDATA[^\p{Upper}\p{Alnum}*$]]></parameter>
+      <parameter name="objectFieldRegex"><![CDATA[^\p{Alpha}\p{Alnum}*$]]></parameter>
     </parameters>
   </check>
 
