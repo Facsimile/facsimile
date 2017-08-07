@@ -111,7 +111,7 @@ lazy val commonSettings = Seq(
   //
   // IMPORTANT: These values MUST be synchronized with the Travis CI .travis.yml file in the project's root directory,
   // or Travis CI Facsimile builds may yield unexpected results.
-  crossScalaVersions := Seq("2.12.1"),
+  crossScalaVersions := Seq("2.12.3"),
 
   // Scala default version.
   //
