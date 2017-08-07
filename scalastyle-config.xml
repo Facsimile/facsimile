@@ -186,7 +186,7 @@ INSPECTIONS.
 //\E={118}\Q
 // Scala source file belonging to the org.facsim.\E[\p{Lower}\d_\.]+\Q package.
 \E//={118}\Q
-package org.facsim.\E[\p{Lower}\d_\.]+]]></parameter>
+package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
     </parameters>
   </check>
 
@@ -280,8 +280,8 @@ package org.facsim.\E[\p{Lower}\d_\.]+]]></parameter>
   -->
   <check class="org.scalastyle.scalariform.FieldNamesChecker" enabled="true" level="warning">
     <parameters>
-      <parameter name="regex"><![CDATA[^\p{Lower}\p{Alnum}*$]]></parameter>
-      <parameter name="objectFieldRegex"><![CDATA[^\p{Alpha}\p{Alnum}*$]]></parameter>
+      <parameter name="regex"><![CDATA[^\p{Alpha}\p{Alnum}*$]]></parameter>
+      <parameter name="objectFieldRegex"><![CDATA[^\p{Upper}\p{Alnum}*$]]></parameter>
     </parameters>
   </check>
 
