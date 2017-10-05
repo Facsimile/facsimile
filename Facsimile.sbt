@@ -41,6 +41,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 
 // Disable certain Scalastyle options, which IntelliJ IDEA insists on applying to SBT sources.
 //scalastyle:off scaladoc
+//scalastyle:off multiple.string.literals
 
 // Date the facsimile project was started.
 //
@@ -142,32 +143,9 @@ lazy val docProjectSettings = Seq(
     "-Ymacro-expand:none"
   ),
 
-  // Map to standard external ScalaDoc locations that will not be linked automatically.
-  //
-  // Allow Scaladoc to link to the Scala documentation for third-party libraries (through the apiURL setting).
-  autoAPIMappings := true,
-  apiMappings ++= {
-
-    // Lookup managed JAR files in the classpath by the JAR file library name prefix.
-    def findJar(beginsWith: String): File = {
-
-      // Retrieve the classpath.
-      val classpath = (fullClasspath in Compile).value
-
-      // Find the JAR file whose name begins with the name specified.
-      val jarAttr = classpath.find {attr: Attributed[File] =>
-        (attr.data ** s"$beginsWith*.jar").get.nonEmpty
-      }
-
-      // Retrieve and return the matching JAR file name. This will result in an exception if the file was not found.
-      jarAttr.get.data
-    }
-
-    // Map specified JAR files to online documentation.
-    Map(
-      findJar("scala-library") -> url(s"http://scala-lang.org/api/${scalaVersion.value}/")
-    )
-  }
+  // Allow Facsimile's Scaladoc to link to the ScalaDoc documentation of dependent libraries that have included an
+  // "apiURL" property in their library's Maven POM configuration.
+  autoAPIMappings := true
 )
 
 // Published project settings.
@@ -300,10 +278,10 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     runTest,
 
     // Run scalastyle on sources to ensure that sources are correctly formatted and contain no static errors.
-    ReleaseStep(action = Command.process("scalastyle", _)),
+    releaseStepInputTask(scalastyle),
 
     // Run scalastyle on test sources to ensure that sources are correctly formatted and contain no static errors.
-    ReleaseStep(action = Command.process("test:scalastyle", _)),
+    releaseStepInputTask(scalastyle in Test),
 
     // Update the "Version.sbt" file so that it contains the release version number.
     setReleaseVersion,
@@ -327,7 +305,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // The "publish-artifacts" step above takes care of publishing the artifacts to Sonatype, so the following command
     // initiates the process of having Sonatype release them, which may fail if Sonatype determines that the artifacts
     // do not meet their current specifications.
-    ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
+    releaseStepCommand("sonatypeReleaseAll"),
 
     // Push all commits to the upstream repository.
     //
@@ -532,4 +510,5 @@ settings(
     machine.
   """
 )
+//scalastyle:on multiple.string.literals
 //scalastyle:on scaladoc
