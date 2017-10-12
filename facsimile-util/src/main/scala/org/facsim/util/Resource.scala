@@ -49,7 +49,7 @@ import java.util.ResourceBundle
  *
  *  @param bundleName Identifies the base name of the resource bundle to be loaded.
  *
- *  @throws NullPointerException if `bundleName` is `null`.
+ *  @throws scala.NullPointerException if `bundleName` is `null`.
  *
  *  @throws java.util.MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
  *
