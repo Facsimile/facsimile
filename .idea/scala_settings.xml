@@ -6,5 +6,6 @@
         <entry key="xml" value="XML" />
       </map>
     </option>
+    <option name="scalaTestDefaultSuperClass" value="org.scalatest.FunSpec" />
   </component>
 </project>

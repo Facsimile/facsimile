@@ -299,7 +299,8 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   <check class="org.scalastyle.scalariform.EmptyClassChecker" enabled="true" level="error" />
 
   <!--
-  Enforce use of a single uppercase character for the name of class/trait type parameters.
+  Enforce use of a single uppercase character, with optional trailing digit, for the name of class/trait type
+  parameters.
 
   Rationale: This is a common Scala convention that should not be violated without a very good reason.
 
@@ -307,7 +308,7 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   -->
   <check class="org.scalastyle.scalariform.ClassTypeParameterChecker" enabled="true" level="warning">
     <parameters>
-      <parameter name="regex"><![CDATA[^\p{Upper}$]]></parameter>
+      <parameter name="regex"><![CDATA[^\p{Upper}\p{Digit}*$]]></parameter>
     </parameters>
   </check>
 

@@ -1,0 +1,190 @@
+//======================================================================================================================
+// Facsimile -- A Discrete-Event Simulation Library
+// Copyright © 2004-2017, Michael J Allen.
+//
+// This file is part of Facsimile.
+//
+// Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+// details.
+//
+// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
+//
+//   http://www.gnu.org/licenses/lgpl.
+//
+// The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+// project home page at:
+//
+//   http://facsim.org/
+//
+// Thank you for your interest in the Facsimile project!
+//
+// IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for
+// inclusion as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If
+// your code fails to comply with the standard, then your patches will be rejected. For further information, please
+// visit the coding standards at:
+//
+//   http://facsim.org/Documentation/CodingStandards/
+//======================================================================================================================
+// Scala source file belonging to the org.facsim.util package.
+//======================================================================================================================
+package org.facsim.util
+
+import scala.collection.mutable.Map
+
+/** Base class for ''pure function memoization'' classes.
+ *
+ *  @tparam A Types of argument values (as ''tuples'', for multiple argument classes) passed to function `f`.
+ *
+ *  @tparam R Type of result returned by `f`.
+ *
+ *  @param f Function to be ''memoized''.
+ */
+sealed abstract class Memoize[A, R] private(f: A => R) {
+
+  /** Map of argument values to results. */
+  private final val results = Map.empty[A, R]
+
+  /** Evaluate the function.
+   *
+   *  @note If the function has not been called previously, then it is executed and the result cached; otherwise, the
+   *  previously cached result is returned instead. Note that if the function has any ''side-effects'', that they will
+   *  only occur for the first evaluation.
+   *
+   *  @param a Argument to be passed to the function.
+   *
+   *  @return Result of `f(a)`.
+   */
+  protected final def eval(a: A): R = synchronized(results.getOrElseUpdate(a, f(a)))
+}
+
+/** Memoization companion. */
+object Memoize {
+
+  /** Single-argument ''pure function memoization'' class.
+   *
+   *  @tparam A Type of argument values passed to function `f`.
+   *
+   *  @tparam R Type of result returned by `f`.
+   *
+   *  @constructor Create new ''memoized'' single-argument ''pure function''.
+   *
+   *  @param f Function to be ''memoized''.
+   */
+  final class Memoize1[A, R] private[Memoize](f: A => R)
+  extends Memoize[A, R](f)
+  with (A => R) {
+
+    /** Evaluate ''memoized'' function.
+     *
+     *  @param a Argument value to be passed to function.
+     *
+     *  @return Result of `f(a)`
+     */
+    override def apply(a: A): R = eval(a)
+  }
+
+  /** Double-argument ''pure function memoization'' class.
+   *
+   *  @tparam A1 Type of first argument's values passed to function `f`.
+   *
+   *  @tparam A2 Type of second argument's values passed to function `f`.
+   *
+   *  @tparam R Type of result returned by `f`.
+   *
+   *  @constructor Create new ''memoized'' double-argument ''pure function''.
+   *
+   *  @param f Function to be ''memoized''.
+   */
+  final class Memoize2[A1, A2, R] private[Memoize](f: (A1, A2) => R)
+  extends Memoize[(A1, A2), R](f.tupled)
+  with ((A1, A2) => R) {
+
+    /** Evaluate ''memoized'' function.
+     *
+     *  @param a1 First argument value to be passed to function.
+     *
+     *  @param a2 Second argument value to be passed to function.
+     *
+     *  @return Result of `f(a1, a2)`
+     */
+    override def apply(a1: A1, a2: A2): R = eval((a1, a2))
+  }
+
+  /** Triple-argument ''pure function memoization'' class.
+   *
+   *  @tparam A1 Type of first argument's values passed to function `f`.
+   *
+   *  @tparam A2 Type of second argument's values passed to function `f`.
+   *
+   *  @tparam A3 Type of third argument's values passed to function `f`.
+   *
+   *  @tparam R Type of result returned by `f`.
+   *
+   *  @constructor Create new ''memoized'' triple-argument ''pure function''.
+   *
+   *  @param f Function to be ''memoized''.
+   */
+  final class Memoize3[A1, A2, A3, R] private[Memoize](f: (A1, A2, A3) => R)
+  extends Memoize[(A1, A2, A3), R](f.tupled)
+  with ((A1, A2, A3) => R) {
+
+    /** Evaluate ''memoized'' function.
+     *
+     *  @param a1 First argument value to be passed to function.
+     *
+     *  @param a2 Second argument value to be passed to function.
+     *
+     *  @param a3 Third argument value to be passed to function.
+     *
+     *  @return Result of `f(a1, a2, a3)`
+     */
+    override def apply(a1: A1, a2: A2, a3: A3): R = eval((a1, a2, a3))
+  }
+
+  /** Memoize a single-argument function.
+   *
+   *  @tparam A Type of argument passed to function `f`.
+   *
+   *  @tparam R Type of result returned by `f`.
+   *
+   *  @param f ''Pure function'' to be ''memoized''.
+   *
+   *  @return Memoized version of `f`
+   */
+  def apply[A, R](f: A => R) = new Memoize1[A, R](f)
+
+  /** Memoize a double-argument function.
+   *
+   *  @tparam A1 Type of first argument passed to function `f`.
+   *
+   *  @tparam A2 Type of second argument passed to function `f`.
+   *
+   *  @tparam R Type of result returned by `f`.
+   *
+   *  @param f ''Pure function'' to be ''memoized''.
+   *
+   *  @return Memoized version of `f`
+   */
+  def apply[A1, A2, R](f: (A1, A2) => R) = new Memoize2[A1, A2, R](f)
+
+  /** Memoize a triple-argument function.
+   *
+   *  @tparam A1 Type of first argument passed to function `f`.
+   *
+   *  @tparam A2 Type of second argument passed to function `f`.
+   *
+   *  @tparam A3 Type of third argument passed to function `f`.
+   *
+   *  @tparam R Type of result returned by `f`.
+   *
+   *  @param f ''Pure function'' to be ''memoized''.
+   *
+   *  @return Memoized version of `f`
+   */
+  def apply[A1, A2, A3, R](f: (A1, A2, A3) => R) = new Memoize3[A1, A2, A3, R](f)
+}
