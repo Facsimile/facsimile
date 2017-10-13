@@ -43,6 +43,8 @@ import scala.collection.mutable.Map
  *  @tparam R Type of result returned by `f`.
  *
  *  @param f Function to be ''memoized''.
+ *
+ *  @since 0.0
  */
 sealed abstract class Memoize[A, R] private(f: A => R) {
 
@@ -62,7 +64,10 @@ sealed abstract class Memoize[A, R] private(f: A => R) {
   protected final def eval(a: A): R = synchronized(results.getOrElseUpdate(a, f(a)))
 }
 
-/** Memoization companion. */
+/** Memoization companion.
+ *
+ *  @since 0.0
+ */
 object Memoize {
 
   /** Single-argument ''pure function memoization'' class.
@@ -74,6 +79,8 @@ object Memoize {
    *  @constructor Create new ''memoized'' single-argument ''pure function''.
    *
    *  @param f Function to be ''memoized''.
+   *
+   *  @since 0.0
    */
   final class Memoize1[A, R] private[Memoize](f: A => R)
   extends Memoize[A, R](f)
@@ -84,6 +91,8 @@ object Memoize {
      *  @param a Argument value to be passed to function.
      *
      *  @return Result of `f(a)`
+     *
+     *  @since 0.0
      */
     override def apply(a: A): R = eval(a)
   }
@@ -99,6 +108,8 @@ object Memoize {
    *  @constructor Create new ''memoized'' double-argument ''pure function''.
    *
    *  @param f Function to be ''memoized''.
+   *
+   *  @since 0.0
    */
   final class Memoize2[A1, A2, R] private[Memoize](f: (A1, A2) => R)
   extends Memoize[(A1, A2), R](f.tupled)
@@ -111,6 +122,8 @@ object Memoize {
      *  @param a2 Second argument value to be passed to function.
      *
      *  @return Result of `f(a1, a2)`
+     *
+     *  @since 0.0
      */
     override def apply(a1: A1, a2: A2): R = eval((a1, a2))
   }
@@ -128,6 +141,8 @@ object Memoize {
    *  @constructor Create new ''memoized'' triple-argument ''pure function''.
    *
    *  @param f Function to be ''memoized''.
+   *
+   *  @since 0.0
    */
   final class Memoize3[A1, A2, A3, R] private[Memoize](f: (A1, A2, A3) => R)
   extends Memoize[(A1, A2, A3), R](f.tupled)
@@ -142,6 +157,8 @@ object Memoize {
      *  @param a3 Third argument value to be passed to function.
      *
      *  @return Result of `f(a1, a2, a3)`
+     *
+     *  @since 0.0
      */
     override def apply(a1: A1, a2: A2, a3: A3): R = eval((a1, a2, a3))
   }
@@ -155,6 +172,8 @@ object Memoize {
    *  @param f ''Pure function'' to be ''memoized''.
    *
    *  @return Memoized version of `f`
+   *
+   *  @since 0.0
    */
   def apply[A, R](f: A => R) = new Memoize1[A, R](f)
 
@@ -169,6 +188,8 @@ object Memoize {
    *  @param f ''Pure function'' to be ''memoized''.
    *
    *  @return Memoized version of `f`
+   *
+   *  @since 0.0
    */
   def apply[A1, A2, R](f: (A1, A2) => R) = new Memoize2[A1, A2, R](f)
 
@@ -185,6 +206,8 @@ object Memoize {
    *  @param f ''Pure function'' to be ''memoized''.
    *
    *  @return Memoized version of `f`
+   *
+   *  @since 0.0
    */
   def apply[A1, A2, A3, R](f: (A1, A2, A3) => R) = new Memoize3[A1, A2, A3, R](f)
 }
