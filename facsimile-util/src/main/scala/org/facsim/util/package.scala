@@ -316,7 +316,7 @@ package object util {
     c.Expr[String](Literal(Constant(show(arg.tree))))
   }
 
-  /** IndentationCheckerProvides implementation of the [[org.facsim.util.assertNonNull]] macro.
+  /** IndentationCheckerProvides implementation of the [[assertNonNull]] macro.
    *
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
