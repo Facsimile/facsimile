@@ -102,9 +102,9 @@ package object util {
    *
    *  @return `date` expressed as a [[Date]].
    *
-   *  @throws NullPointerException if `date` is null.
+   *  @throws scala.NullPointerException if `date` is null.
    *
-   *  @throws IllegalArgumentException if `date` is too large to represent as a [[GregorianCalendar]] value.
+   *  @throws scala.IllegalArgumentException if `date` is too large to represent as a [[GregorianCalendar]] value.
    */
   private[facsim] implicit def toDate(date: ZonedDateTime): Date = GregorianCalendar.from(date).getTime
 
@@ -176,7 +176,7 @@ package object util {
 
   /** Require that argument value is non-`null`.
    *
-   *  Throw a [[NullPointerException]] if supplied argument value is `null`.
+   *  Throw a [[scala.NullPointerException]] if supplied argument value is `null`.
    *
    *  Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
    *  to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
@@ -193,7 +193,7 @@ package object util {
    *
    *  @param name Name of the argument whose value is being tested.
    *
-   *  @throws NullPointerException if `arg` is `null`.
+   *  @throws scala.NullPointerException if `arg` is `null`.
    */
   @inline
   private[util] def requireNonNullFn(arg: AnyRef, name: => String): Unit = {
@@ -204,7 +204,7 @@ package object util {
 
   /** Require that argument value is valid.
    *
-   *  Throw a [[IllegalArgumentException]] if supplied parameter value is invalid.
+   *  Throw a [[scala.IllegalArgumentException]] if supplied parameter value is invalid.
    *
    *  @note This function supersedes the [[Predef]] `require` methods.
    *
@@ -221,7 +221,7 @@ package object util {
    *
    *  @param name Name of the argument being tested.
    *
-   *  @throws IllegalArgumentException if `isValid` is `false`.
+   *  @throws scala.IllegalArgumentException if `isValid` is `false`.
    */
   @inline
   private[util] def requireValidFn[T](arg: T, isValid: T => Boolean, name: => String): Unit = {
@@ -230,7 +230,7 @@ package object util {
 
   /** Require that argument value is non-`null`.
    *
-   *  Throw a [[NullPointerException]] if supplied argument value is `null`.
+   *  Throw a [[scala.NullPointerException]] if supplied argument value is `null`.
    *
    *  Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
    *  to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
@@ -243,7 +243,7 @@ package object util {
    *
    *  @param arg Argument whose value is to be compared to `null`.
    *
-   *  @throws NullPointerException if `arg` is `null`.
+   *  @throws scala.NullPointerException if `arg` is `null`.
    *
    *  @since 0.0
    */
@@ -251,9 +251,9 @@ package object util {
 
   /** Require that argument value is valid.
    *
-   *  Throw a [[IllegalArgumentException]] if supplied parameter value is invalid.
+   *  Throw a [[scala.IllegalArgumentException]] if supplied parameter value is invalid.
    *
-   *  @note This function supersedes the [[Predef]] `require` methods.
+   *  @note This function supersedes the [[scala.Predef]] `require` methods.
    *
    *  @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
    *
@@ -262,7 +262,7 @@ package object util {
    *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
    *  merely returns; if `false` an `IllegalArgumentException` is raised.
    *
-   *  @throws IllegalArgumentException if `isValid` is `false`.
+   *  @throws scala.IllegalArgumentException if `isValid` is `false`.
    *
    *  @since 0.0
    */
@@ -271,11 +271,11 @@ package object util {
   /** Require a finite double value.
    *
    *  Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will result in a
-   *  [[IllegalArgumentException]] being thrown.
+   *  [[scala.IllegalArgumentException]] being thrown.
    *
    *  @param arg Argument whose value is being validated.
    *
-   *  @throws IllegalArgumentException if `arg` does not have a finite value.
+   *  @throws scala.IllegalArgumentException if `arg` does not have a finite value.
    *
    *  @since 0.0
    */
@@ -316,12 +316,12 @@ package object util {
     c.Expr[String](Literal(Constant(show(arg.tree))))
   }
 
-  /** IndentationCheckerProvides implementation of the [[assertNonNull]] macro.
+  /** IndentationCheckerProvides implementation of the [[org.facsim.util.assertNonNull]] macro.
    *
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
-   *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a [[AssertionError]]
-   *  is thrown by the macro implementation, together with the name of the failed argument.
+   *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
+   *  [[java.lang.AssertionError]] is thrown by the macro implementation, together with the name of the failed argument.
    *
    *  @return Implementation of this instance of the `assertNonNull` macro.
    *
@@ -351,7 +351,8 @@ package object util {
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
    *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
-   *  [[NullPointerException]] is thrown by the macro implementation, together with the name of the failed  argument.
+   *  [[scala.NullPointerException]] is thrown by the macro implementation, together with the name of the failed
+   *  argument.
    *
    *  @return Implementation of this instance of the `requireNonNull` macro.
    *
@@ -379,7 +380,8 @@ package object util {
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
    *  @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then a
-   *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
+   *  [[scala.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
+   *  argument.
    *
    *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
    *  merely returns; if `false` an `IllegalArgumentException` is raised.
@@ -408,7 +410,8 @@ package object util {
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
    *  @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then a
-   *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
+   *  [[scala.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
+   *  argument.
    *
    *  @return Implementation of this instance of the `requireFinite` macro.
    *

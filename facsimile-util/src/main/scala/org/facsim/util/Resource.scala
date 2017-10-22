@@ -39,7 +39,7 @@ import java.util.ResourceBundle
 
 /** Provides access to a locale-specific resource bundle belonging to a library or application.
  *
- *  Further information on how locale-specific resources are identified is at [[ResourceBundle]].
+ *  Further information on how locale-specific resources are identified is at [[java.util.ResourceBundle]].
  *
  *  The user's current preferred locale is identified through a call to [[java.util.Locale.getDefault]].
  *
@@ -53,7 +53,7 @@ import java.util.ResourceBundle
  *
  *  @throws java.util.MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
  *
- *  @see [[ResourceBundle]] for information on Java resource bundles.
+ *  @see [[java.util.ResourceBundle]] for information on Java resource bundles.
  *
  *  @see [[java.util.Locale]] for information on Java locale processing.
  *
@@ -81,6 +81,13 @@ class Resource(bundleName: String) {
    *  arguments are used to populate the formatted version of the resulting string, which will be in the locale that
    *  best matches the user's preference.
    *
+   *  @note It is normal ''Facsimile'' policy to avoid throwing exceptions, and to make functions as pure as possible.
+   *  However, this function is frequently employed in a very-specific scenario, when it is expected to provide
+   *  essential, locale-specific user information. In other words, it should ''never'' fail in practical use. As a
+   *  consequence, requiring the caller to process a [[scala.util.Try]] is problematic and cumbersome. Instead, this
+   *  function will just throw exceptions, which indicate a fundamental failing of the caller to configure their
+   *  application or library correctly.
+   *
    *  @param key Key used to identify the string resource to be retrieved.
    *
    *  @param arguments Arguments to be merged into, and formatted as part of, the resulting string resource. May be
@@ -89,14 +96,14 @@ class Resource(bundleName: String) {
    *
    *  @return Locale-specific, formatted version of the requested string resource.
    *
-   *  @throws NullPointerException if `key` is `null`.
+   *  @throws scala.NullPointerException if `key` is `null`.
    *
    *  @throws java.util.MissingResourceException if there is no string resource indexed by `key`.
    *
-   *  @throws ClassCastException if the resource indexed by `key` is not a string.
+   *  @throws scala.ClassCastException if the resource indexed by `key` is not a string.
    *
-   *  @throws IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are of the
-   *  wrong type for the corresponding format elements in the retrieved string.
+   *  @throws scala.IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are of
+   *  the wrong type for the corresponding format elements in the retrieved string.
    *
    *  @since 0.0
    */

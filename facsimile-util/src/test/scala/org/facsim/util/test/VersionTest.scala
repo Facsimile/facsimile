@@ -34,11 +34,13 @@
 //======================================================================================================================
 package org.facsim.util.test
 
-import org.facsim.util.Version
+import org.facsim.util.{Version, VersionParseException}
 import org.scalatest.FunSpec
 import org.scalatest.prop.PropertyChecks
+import scala.util.Failure
 
 //scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Version]] class and object. */
 class VersionTest
@@ -320,7 +322,7 @@ with CommonTestMethods {
       }
 
       // Verify that it doesn't accept strings that do not represent version numbers.
-      it("must throw an IllegalArgumentException if passed invalid version strings") {
+      it("must return a Failure(VersionParseException) if passed invalid version strings") {
 
         // List of as many distinctly different invalid version strings as we can think of.
         val invalid = List(
@@ -381,10 +383,7 @@ with CommonTestMethods {
           "RUBBISH"
         )
         invalid.foreach{v =>
-          val e = intercept[IllegalArgumentException] {
-            Version(v)
-          }
-          assertRequireValidMsg(e, "version", v)
+          assert(Version(v) === Failure(VersionParseException(v, 0)))
         }
       }
 
@@ -398,7 +397,7 @@ with CommonTestMethods {
 
           // Without snapshot.
           val root = s"$maj.$min"
-          val vRel = Version(root)
+          val vRel = Version(root).get
           assert(vRel.major === maj)
           assert(vRel.minor === min)
           assert(vRel.bugFix.isEmpty)
@@ -406,7 +405,7 @@ with CommonTestMethods {
           assert(vRel.toString === root)
 
           val rootSnap = s"$root-SNAPSHOT"
-          val vSnap = Version(rootSnap)
+          val vSnap = Version(rootSnap).get
           assert(vSnap.major === maj)
           assert(vSnap.minor === min)
           assert(vSnap.bugFix.isEmpty)
@@ -419,7 +418,7 @@ with CommonTestMethods {
 
           // Regular style.
           val root = s"$maj.$min.$bf"
-          val vRel = Version(root)
+          val vRel = Version(root).get
           assert(vRel.major === maj)
           assert(vRel.minor === min)
           assert(vRel.bugFix === Some(bf))
@@ -428,7 +427,7 @@ with CommonTestMethods {
 
           // Regular style with SNAPSHOT
           val rootSnap = s"$root-SNAPSHOT"
-          val vSnap = Version(rootSnap)
+          val vSnap = Version(rootSnap).get
           assert(vSnap.major === maj)
           assert(vSnap.minor === min)
           assert(vSnap.bugFix === Some(bf))
@@ -437,7 +436,7 @@ with CommonTestMethods {
 
           // Java style.
           val rootJava = s"$maj.$min.0_$bf"
-          val vJavaRel = Version(rootJava)
+          val vJavaRel = Version(rootJava).get
           assert(vJavaRel.major === maj)
           assert(vJavaRel.minor === min)
           assert(vJavaRel.bugFix === Some(bf))
@@ -449,4 +448,5 @@ with CommonTestMethods {
   }
 }
 //scalastyle:on multiple.string.literals
+//scalastyle:on public.methods.have.type
 //scalastyle:on scaladoc

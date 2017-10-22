@@ -38,6 +38,7 @@ import org.facsim.util.{requireFinite, requireNonNull, requireValid}
 import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
 /** Test suite for the [[org.facsim]] package object. */
 class PackageTest
@@ -112,4 +113,5 @@ with CommonTestMethods {
   }
 }
 //scalastyle:on multiple.string.literals
+//scalastyle:on public.methods.have.type
 //scalastyle:on scaladoc

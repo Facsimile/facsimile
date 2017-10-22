@@ -34,12 +34,35 @@
 //======================================================================================================================
 package org.facsim.util
 
-/** Helper object reporting ''Facsimile Util'' library resources.
+import java.text.ParseException
+
+/** Signaled if a string containing a ''version'' number could not be parsed.
  *
- *  @note This element must have global library visibility, otherwise the require'''XXX''' macros cannot access it to
- *  output exception messages.
+ *  @constructor Create a new ''version parse'' exception.
+ *
+ *  @param version Version string that could not be parsed. This value cannot be `null`.
+ *
+ *  @param offset Position within version at which the parser failed. This value must be within the range [0,
+ *  version.length].
+ *
+ *  @throws scala.NullPointerException if `name` is null.
+ *
+ *  @throws scala.IllegalArgumentException if `offset` does not identify a position within `name`.
  *
  *  @since 0.0
  */
-private[facsim] object LibResource
-extends Resource("facsimile-util")
+final case class VersionParseException(version: String, offset: Int)
+extends ParseException(null, offset) { //scalastyle:ignore null
+
+  // Sanity checks. Clearly, throwing exceptions while creating an exception is likely not desirable, so don't fail!
+  requireNonNullFn(version, "version")
+  requireValidFn[Int](offset, o => o >= 0 && o <= version.length, "offset")
+
+  /** Report cause of this exception.
+   *
+   * @return Localised description of the cause of the exception.
+   *
+   * @since 0.0
+   */
+  override def getMessage: String = LibResource("VersionParse", version, getErrorOffset)
+}

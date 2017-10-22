@@ -175,7 +175,7 @@ object Memoize {
    *
    *  @since 0.0
    */
-  def apply[A, R](f: A => R) = new Memoize1[A, R](f)
+  def apply[A, R](f: A => R): Memoize1[A, R] = new Memoize1[A, R](f)
 
   /** Memoize a double-argument function.
    *
@@ -191,7 +191,7 @@ object Memoize {
    *
    *  @since 0.0
    */
-  def apply[A1, A2, R](f: (A1, A2) => R) = new Memoize2[A1, A2, R](f)
+  def apply[A1, A2, R](f: (A1, A2) => R): Memoize2[A1, A2, R] = new Memoize2[A1, A2, R](f)
 
   /** Memoize a triple-argument function.
    *
@@ -209,5 +209,5 @@ object Memoize {
    *
    *  @since 0.0
    */
-  def apply[A1, A2, A3, R](f: (A1, A2, A3) => R) = new Memoize3[A1, A2, A3, R](f)
+  def apply[A1, A2, A3, R](f: (A1, A2, A3) => R): Memoize3[A1, A2, A3, R] = new Memoize3[A1, A2, A3, R](f)
 }

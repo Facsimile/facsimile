@@ -35,13 +35,15 @@
 package org.facsim.util
 
 import java.time.ZonedDateTime
+import java.time.format.DateTimeParseException
 import java.util.jar.Attributes.Name
 import java.util.jar.{Manifest => JManifest}
+import scala.util.{Failure, Success, Try}
 
 /** Provide ''manifest'' information for a library or application.
  *
  *  The manifest attributes are stored within a file named `MANIFEST.MF` located in the `/META-INF` folder of the
- *  associated ''Java'' archive file (or ''jar file''). If there is no associated jar file, then no manifest information
+ *  associated ''Java archive'' file (or ''jar'' file). If there is no associated jar file, then no manifest information
  *  will be available.
  *
  *  @note ''Facsimile'' manifests, including the manifests of associated programs or simulation models, are expected to
@@ -55,61 +57,74 @@ import java.util.jar.{Manifest => JManifest}
  */
 final class Manifest private(manifest: JManifest) {
 
-  // Sanity checks. Alas, we cannot currently use macros in the compilation unit that they're defined in. :-(
-  assert(manifest ne null) //scalastyle:ignore null
+  // Sanity checks. We're in charge of this, so we should never pass a null manifest reference.
+  assert(manifest ne null, "Manifest reference was null") //scalastyle:ignore null
 
   /** Entries defined in the manifest. */
   private val entries = manifest.getMainAttributes
+  assert(entries ne null, "Manifest has no main attributes") //scalastyle:ignore null
 
-  /** Retrieve specified manifest attribute as a string.
+  /** Try to retrieve specified manifest attribute as a string.
    *
    *  @param name Name of attribute to be retrieved.
    *
-   *  @return Attribute's value as a string wrapped in [[Some]], or [[None]] if undefined.
+   *  @return Attribute's value as a string wrapped in a [[scala.util.Success]] if it is defined; or a
+   *  [scala.util.[Failure]] otherwise. The only possible failure is a [[NoSuchAttributeException]], indicating that
+   *  there is no attribute with the indicated `name`.
    *
-   *  @throws NullPointerException if `name` is `null`.
+   *  @throws scala.NullPointerException if `name` is `null`.
    *
    *  @since 0.0
    */
-  def attribute(name: Name) = {
+  def attribute(name: Name): Try[String] = {
 
     // Sanity checks. Name cannot be null.
     requireNonNullFn(name, "name")
 
-    // Retrieve the specified attribute's value, and wrap it in an option (which maps null values to Option).
-    Option(entries.getValue(name))
+    // Retrieve the specified attribute's value. If it is `null`, return the indicated failure. Otherwise wrap the
+    // attribute value as a success.
+    val value = entries.getValue(name)
+    if(value eq null) Failure(NoSuchAttributeException(name)) //scalastyle:ignore null
+    else util.Success(value)
   }
 
-  /** Retrieve specified manifest attribute as a date/time.
+  /** Try to retrieve specified manifest attribute as a date/time.
    *
-   *  Retrieve a date/time attribute of the form:
+   *  Retrieve a date/time attribute of the following form from the manifest:
    *
    *  `{name}: ''timeformat''`
    *
    *  where `{name}` is the name of the attribute and `''timeformat''` is a string that can be successfully parsed by
-   *  [[ZonedDateTime.parse(CharSequence)]].
+   *  [[java.time.ZonedDateTime.parse(CharSequence)]].
    *
    *  @note If this function is used to retrieve a date string attribute value that cannot be parsed as a
-   *  [[ZonedDateTime]], then an exception will result.
+   *  [[java.time.ZonedDateTime]], then a [[scala.util.Failure]] will result.
    *
    *  @param name Name of the date attribute to be retrieved.
    *
-   *  @return Date & time for this attribute wrapped in [[Some]], or [[None]] if undefined.
+   *  @return Date & time for this attribute wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]]
+   *  containing the reason that the date & time could not be retrieved. Possible failures are
+   *  [[NoSuchAttributeException]] and [[java.time.format.DateTimeParseException]].
    *
-   *  @throws NullPointerException if `name` is `null`.
-   *
-   *  @throws java.time.format.DateTimeParseException if the associated attribute could not be parsed as a date/time.
+   *  @throws scala.NullPointerException if `name` is `null`.
    *
    *  @since 0.0
    */
-  def dateAttribute(name: Name) = attribute(name).map {t =>
+  def dateAttribute(name: Name): Try[ZonedDateTime] = attribute(name).flatMap {dt =>
 
-    // If the attribute value can be parsed, then return the result. If it can't be parsed, a DateTimeException will be
-    // thrown
-    ZonedDateTime.parse(t)
+    // If the attribute value can be parsed, then return the result.
+    try {
+      Success(ZonedDateTime.parse(dt))
+    }
+
+    // Otherwise, if this is the parse exception, report that as a failure. Any other exceptions thrown above will be
+    // passed on and not returned.
+    catch {
+      case pe: DateTimeParseException => Failure(pe)
+    }
   }
 
-  /** Retrieve specified manifest attribute as a version.
+  /** Try to retrieve specified manifest attribute as a version.
    *
    *  Retrieve a version attribute of the form:
    *
@@ -120,110 +135,119 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @param name Name of the version attribute to be retrieved.
    *
-   *  @return Version represented by this attribute wrapped in [[Some]], or [[None]] if undefined.
+   *  @return Version represented by this attribute wrapped in [[scala.util.Success]], or [[scala.util.Failure]]
+   *  containing the reason that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]]
+   *  and [[VersionParseException]].
    *
-   *  @throws NullPointerException if `name` is `null`.
-   *
-   *  @throws IllegalArgumentException if the associated attribute could not be parsed as a version.
+   *  @throws scala.NullPointerException if `name` is `null`.
    *
    *  @since 0.0
    */
-  def versionAttribute(name: Name) = attribute(name).map(Version(_))
+  def versionAttribute(name: Name): Try[Version] = attribute(name).flatMap(Version(_))
 
-  /** Retrieve the inception timestamp of this manifest.
+  /** Try to retrieve the inception timestamp of this manifest.
    *
    *  This is a custom field that will likely be unavailable for many packages. To include it in your ''jar'' files,
    *  ensure that the META-INF/MANIFEST.MF file contains an entry of the following form:
    *
    *  `Inception-Timestamp: ''timeformat''`
    *
-   *  where ''timeformat'' is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]].
+   *  where ''timeformat'' is a string that can be successfully parsed by
+   *  [[java.time.ZonedDateTime.parse(CharSequence)]].
    *
-   *  @return Project inception date & time wrapped in [[Some]], or [[None]] if undefined.
-   *
-   *  @throws java.time.format.DateTimeParseException if the associated attribute could not be parsed as a date/time.
+   *  @return Project inception date & time wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing
+   *  the reason that the inception date & time could not be retrieved. Possible failures are
+   *  [[NoSuchAttributeException]] and [[java.time.format.DateTimeParseException]].
    *
    *  @since 0.0
    */
-  def inceptionTimestamp = dateAttribute(Manifest.InceptionTimestamp)
+  def inceptionTimestamp: Try[ZonedDateTime] = dateAttribute(Manifest.InceptionTimestamp)
 
-  /** Retrieve the build timestamp of this manifest.
+  /** Try to retrieve the build timestamp of this manifest.
    *
    *  This is a custom field that will likely be unavailable for many packages. To include it in your ''jar'' files,
    *  ensure that the META-INF/MANIFEST.MF file contains an entry of the following form:
    *
    *  `Build-Timestamp: ''timeformat''`
    *
-   *  where ''timeformat'' is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]].
+   *  where ''timeformat'' is a string that can be successfully parsed by
+   *  [[java.time.ZonedDateTime.parse(CharSequence)]].
    *
-   *  @return Project build date & time wrapped in [[Some]], or [[None]] if undefined.
-   *
-   *  @throws java.time.format.DateTimeParseException if the associated attribute could not be parsed as a date/time.
+   *  @return Project build date & time wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
+   *  reason that the build date & time could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
+   *  [[java.time.format.DateTimeParseException]].
    *
    *  @since 0.0
    */
-  def buildTimestamp = dateAttribute(Manifest.BuildTimestamp)
+  def buildTimestamp: Try[ZonedDateTime] = dateAttribute(Manifest.BuildTimestamp)
 
-  /** Title of this application or library.
+  /** Try to retrieve the title of this application or library.
    *
-   *  @return Implementation title wrapped in [[Some]], or [[None]] if undefined.
+   *  @return Implementation title wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
+   *  reason that the implementation title could not be retrieved. The only possible failure is
+   *  [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
-  def title = attribute(Name.IMPLEMENTATION_TITLE)
+  def title: Try[String] = attribute(Name.IMPLEMENTATION_TITLE)
 
-  /** Vendor publishing this application or library.
+  /** Try to retrieve name of vendor publishing this application or library.
    *
-   *  This may be an individual or an organization, depending upon circumstances.
+   *  If defined, this may be an individual or an organization, depending upon circumstances.
    *
-   *  @return Implementation vendor name wrapped in [[Some]], or [[None]] if undefined.
+   *  @return Implementation vendor name wrapped in a [[scala.util.Success]], or  a [[scala.util.Failure]] containing
+   *  the reason that the vendor name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
-  def vendor = attribute(Name.IMPLEMENTATION_VENDOR)
+  def vendor: Try[String] = attribute(Name.IMPLEMENTATION_VENDOR)
 
-  /** Version of this release of this application or library.
+  /** Try to retrieve the implementation version of this release of this application or library.
    *
-   *  @return Implementation version wrapped in [[Some]], or [[None]] if undefined.
-   *
-   *  @throws IllegalArgumentException if the associated attribute could not be parsed as a version.
+   *  @return Implementation version wrapped in [[scala.util.Success]], or [[scala.util.Failure]] containing the reason
+   *  that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
+   *  [[VersionParseException]].
    *
    *  @since 0.0
    */
-  def version = versionAttribute(Name.IMPLEMENTATION_VERSION)
+  def version: Try[Version] = versionAttribute(Name.IMPLEMENTATION_VERSION)
 
-  /** Title of the specification to which this application or library conforms.
+  /** Try to retrieve the specification title of this application or library.
    *
-   *  @return Specification title wrapped in [[Some]], or [[None]] if undefined.
+   *  @return Specification title wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the reason
+   *  that the specification title could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
-  def specTitle = attribute(Name.SPECIFICATION_TITLE)
+  def specTitle: Try[String] = attribute(Name.SPECIFICATION_TITLE)
 
-  /** Vendor that produced the specification to which this application or library conforms.
+  /** Try to retrieve name of vendor specifying this application or library.
    *
-   *  This may be an individual or an organization, depending upon circumstances.
+   *  If defined, this may be an individual or an organization, depending upon circumstances.
    *
-   *  @return Specification vendor name wrapped in [[Some]], or [[None]] if undefined.
+   *  @return Specification vendor name wrapped in a [[scala.util.Success]], or  a [[scala.util.Failure]] containing the
+   *  reason that the vendor name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
-  def specVendor = attribute(Name.SPECIFICATION_VENDOR)
+  def specVendor: Try[String] = attribute(Name.SPECIFICATION_VENDOR)
 
-  /** Version of the specification to which this release of the application or library conforms.
+  /** Try to retrieve the specification version of this release of this application or library.
    *
-   *  @return Spectification version wrapped in [[Some]], or [[None]] if undefined.
-   *
-   *  @throws IllegalArgumentException if the associated attribute could not be parsed as a version.
+   *  @return Specification version wrapped in [[scala.util.Success]], or [[scala.util.Failure]] containing the reason
+   *  that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
+   *  [[VersionParseException]].
    *
    *  @since 0.0
    */
-  def specVersion = versionAttribute(Name.SPECIFICATION_VERSION)
+  def specVersion: Try[Version] = versionAttribute(Name.SPECIFICATION_VERSION)
 }
 
 /** Manifest companion object.
  *
  *  Object defining factory methods for obtaining [[Manifest]] instances.
+ *
+ *  @since 0.0
  */
 object Manifest {
 
@@ -235,7 +259,7 @@ object Manifest {
 
   /** Null manifest.
    *
-   *  This manifest is employed for classes that were not loqded from a ''JAR'' file, or which were loaded from ''JAR''
+   *  This manifest is employed for classes that were not loaded from a ''JAR'' file, or which were loaded from ''JAR''
    *  file that has no manifest information.
    */
   private[util] val NullManifest = new Manifest(new JManifest())
@@ -243,17 +267,17 @@ object Manifest {
   /** Element type manifest factory method.
    *
    *  Create and return a new [[Manifest]] instance by retrieving the ''Java'' manifest associated with the specified
-   *  `elementType`. If no manifest is associated with the element type, then an empty (or null) manifest will be
-   *  returned.
+   *  `elementType`. If no manifest is associated with the element type, then an empty manifest (termed a ''null
+   *  manifest'') will be returned.
    *
    *  @param elementType Element type instance for which manifest information will be obtained.
    *
-   *  @return Resource [[Manifest]] information associated with `elementType`, or a null manifest (having no attributes
-   *  defined) if the class has no ''JAR'' file, or if it's ''JAR'' file has no manifest.
+   *  @return Resource [[Manifest]] information associated with `elementType`, or a ''null manifest'' (having no
+   *  attributes defined) if the class has no ''JAR'' file, or if its ''JAR'' file has no manifest.
    *
    *  @since 0.0
    */
-  def apply(elementType: Class[_]) = {
+  def apply(elementType: Class[_]): Manifest = {
 
     // Sanity checks. Name cannot be null.
     requireNonNullFn(elementType, "elementType")
@@ -262,6 +286,6 @@ object Manifest {
     val manifest = jarFile(elementType).flatMap(jar => Option(jar.getManifest))
 
     // If a manifest was obtained, wrap it in a Manifest and return. Otherwise, report the NullManifest.
-    manifest.map(new Manifest(_)).getOrElse(NullManifest)
+    manifest.fold(NullManifest)(new Manifest(_))
   }
 }

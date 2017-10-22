@@ -34,12 +34,29 @@
 //======================================================================================================================
 package org.facsim.util
 
-/** Helper object reporting ''Facsimile Util'' library resources.
+import java.util.jar.Attributes.Name
+
+/** Signaled if the ''manifest'' attribute `name` cannot be identified.
  *
- *  @note This element must have global library visibility, otherwise the require'''XXX''' macros cannot access it to
- *  output exception messages.
+ *  @constructor Create a new ''no such attribute'' exception.
+ *
+ *  @param name Attribute that couldn't be found. This value cannot be `null`.
+ *
+ *  @throws scala.NullPointerException if `name` is null.
  *
  *  @since 0.0
  */
-private[facsim] object LibResource
-extends Resource("facsimile-util")
+final case class NoSuchAttributeException(name: Name)
+extends NoSuchElementException {
+
+  // Sanity checks. Clearly, throwing exceptions while creating an exception is likely not desirable, so don't fail!
+  requireNonNullFn(name, "name")
+
+  /** Report cause of this exception.
+   *
+   *  @return Localised description of the cause of the exception.
+   *
+   *  @since 0.0
+   */
+  override def getMessage: String = LibResource("NoSuchAttribute", name.toString)
+}

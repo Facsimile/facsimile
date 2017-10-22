@@ -429,6 +429,23 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   </check>
 
   <!--
+  Ensure that public methods specify their return value.
+
+  Rationale: Return value types of public methods are a fundamental part of the Facsimile API. It should not be left to
+  the Scala compiler to infer these types, as it is all too easy for them to change or to be defined incorrectly.
+  Consequently, it is essential that return types be specified explicitly.
+
+  TODO: Every public member must have an explicit type. IntelliJ enforces this, Scalastyle only enforces methods.
+
+  UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
+  -->
+  <check class="org.scalastyle.scalariform.PublicMethodsHaveTypeChecker" enabled="true" level="error">
+    <parameters>
+      <parameter name="ignoreOverride">false</parameter>
+    </parameters>
+  </check>
+
+  <!--
   Enforce use of braces in if-else statements longer than one line.
 
   Rationale: If a statement follows the if, or else, statement on the same line, then it is permitted not to require
@@ -711,13 +728,13 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
 
   Rationale: This is simply an adopted Facsimile code style convention. It is enforced to ensure code consistency.
 
-  Currently disabled as we do not enforce spaces before tokens.
+  TODO: Currently disabled as we do not enforce spaces before tokens.
 
   UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
   -->
   <check class="org.scalastyle.scalariform.EnsureSingleSpaceBeforeTokenChecker" enabled="false" level="error">
     <parameters>
-      <parameter name="tokens"></parameter>
+      <parameter name="tokens"/>
     </parameters>
   </check>
 
@@ -789,7 +806,6 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
       <parameter name="maxMethods"><![CDATA[30]]></parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.PublicMethodsHaveTypeChecker" enabled="false" level="error" />
   <check class="org.scalastyle.file.NewLineAtEofChecker" enabled="false" level="error" />
   <check class="org.scalastyle.file.NoNewLineAtEofChecker" enabled="false" level="error" />
   <check class="org.scalastyle.scalariform.ImportOrderChecker" enabled="false" level="error">

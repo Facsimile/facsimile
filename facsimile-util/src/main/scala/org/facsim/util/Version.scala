@@ -34,6 +34,8 @@
 //======================================================================================================================
 package org.facsim.util
 
+import scala.util.{Failure, Success, Try}
+
 /** Encapsulate software version information, providing information about each version's components.
  *
  *  @todo This is a work-in-progress and will change in the near future. Support for alpha, beta, milestone and release
@@ -51,13 +53,13 @@ package org.facsim.util
  *  may share the same version number, so comparing version numbers is an unreliable method for comparing pre-release
  *  snapshots of the same release.
  *
- *  @throws NullPointerException if `bugFix` is `null`.
+ *  @throws scala.NullPointerException if `bugFix` is `null`.
  *
- *  @throws IllegalArgumentException if any argument has an invalid value.
+ *  @throws scala.IllegalArgumentException if any argument has an invalid value.
  *
  *  @since 0.0
  */
-case class Version(major: Int = 1, minor: Int = 0, bugFix: Option[Int] = None, isSnapshot: Boolean = false)
+final case class Version(major: Int = 1, minor: Int = 0, bugFix: Option[Int] = None, isSnapshot: Boolean = false)
 extends Ordered[Version] {
 
   // Sanity checks. Alas, we cannot currently use macros in the compilation unit that they're defined in. :-(
@@ -77,11 +79,11 @@ extends Ordered[Version] {
    *  @return < 0 if this is earlier/less than `that` version; 0 if this is the same as/equal to `that` version; > 0 if
    *  this is later/greater than `that` version.
    *
-   *  @throws NullPointerException if `that` is `null`.
+   *  @throws scala.NullPointerException if `that` is `null`.
    *
    *  @since 0.0
    */
-  override def compare(that: Version) = {
+  override def compare(that: Version): Int = {
 
     // Sanity checks.
     requireNonNullFn(that, "that")
@@ -148,7 +150,7 @@ extends Ordered[Version] {
    *
    *  @since 0.0
    */
-  override def toString = {
+  override def toString: String = {
 
     // If we have a bugfix version, then it will appear prefixed by a period.
     val bf = bugFix.fold("")(b => s".$b") //scalastyle:ignore
@@ -190,21 +192,21 @@ object Version {
    *
    *  @param version Version string to be parsed. This must be of the form ''`M`.`m`[.`b`][-SNAPSHOT]'', where `M` is
    *  the major version number, `m` is the minor version number, and `b` is an optional bug-fix number. If the string
-   *  ends with ''-SNAPSHOT'', then a pre-release ''snapshot'' is indicated. No other version string formats are
-   *  currently supported.
+   *  ends with ''-SNAPSHOT'', then a pre-release ''snapshot'' is indicated. Alternatively, ''Java'' version numbers of
+   *  the form ''`M`.`m`.`0_b`'' are accepted.  No other version string formats are currently supported.
    *
-   *  @return A [[Version]] instance equivalent to the information contained in `version`.
+   *  @return A [[Version]] instance equivalent to the information contained in `version` wrapped in a
+   *  [[scala.util.Success]] if successful, or a [[scala.util.Failure]] containing a [[VersionParseException]].
    *
-   *  @throws NullPointerException if `version` is `null`.
-   *
-   *  @throws IllegalArgumentException if `version` does not encode a supported version string.
+   *  @throws scala.NullPointerException if `version` is `null`.
    *
    *  @since 0.0
    */
-  def apply(version: String): Version = {
+  // TODO: Use parboiled2 to parse version numbers so that we can report failures better and faster.
+  def apply(version: String): Try[Version] = {
 
     // Sanity check.
-    requireNonNullFn(version, "version") //scalastyle:ignore multiple.string.literals
+    requireNonNullFn(version, "version")
 
     // Parse the version string.
     version match {
@@ -213,19 +215,17 @@ object Version {
       //
       // If so, the bug fix number needs to remove the leading period before converting to an integer.
       case VersionRegex(maj, min, bug, snap) => {
-        Version(maj.toInt, min.toInt, Option(bug).map(_.tail.toInt), Option(snap).isDefined)
+        Success(Version(maj.toInt, min.toInt, Option(bug).map(_.tail.toInt), Option(snap).isDefined))
       }
 
       // Does this match supported Java versions, indicated by the Java version regular expression?
       //
       // We should only get matches on Java versions of the form 1.8.0_121 (i.e. having a ".0_" prefix to the bug fix
       // number.
-      case JavaVersionRegex(maj, min, bug) => {
-        Version(maj.toInt, min.toInt, Option(bug.toInt))
-      }
+      case JavaVersionRegex(maj, min, bug) => Success(Version(maj.toInt, min.toInt, Option(bug.toInt)))
 
       // If there was no match, then throw the appropriate exception.
-      case _ => throw new IllegalArgumentException(LibResource(RequireValidKey, "version", version))
+      case _ => Failure(VersionParseException(version, 0))
     }
   }
 }

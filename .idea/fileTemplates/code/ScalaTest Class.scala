@@ -7,8 +7,7 @@ import org.scalatest.prop.PropertyChecks
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.numbers
 
-/** Test harness for the [[???]] class.
- */
+/** Test harness for the [[???]] class. */
 class ${NAME}
 with PropertyChecks
 

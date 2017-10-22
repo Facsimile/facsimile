@@ -41,10 +41,10 @@ import org.scalatest.FunSpec
 import org.scalatest.prop.PropertyChecks
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off magic.numbers
-//scalastyle:off multiple.string.literals
 //scalastyle:off public.methods.have.type
-
+//scalastyle:off multiple.string.literals
+//scalastyle:off magic.numbers
+//scalastyle:off scaladoc
 /** Test harness for the [[Memoize]] classes. */
 class MemoizeTest
 extends FunSpec
@@ -321,6 +321,7 @@ with PropertyChecks {
   }
 }
 // Disable test-problematic Scalastyle checkers.
+//scalastyle:on scaladoc
 //scalastyle:on public.methods.have.type
 //scalastyle:on multiple.string.literals
 //scalastyle:on magic.numbers

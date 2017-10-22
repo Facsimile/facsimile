@@ -40,9 +40,9 @@ import java.util.jar.Attributes.Name
 import org.facsim.dummy.Dummy
 import org.facsim.invalid.Invalid
 import org.facsim.missing.Missing
-import org.facsim.util.{Manifest, Version}
+import org.facsim.util.{Manifest, NoSuchAttributeException, Version, VersionParseException}
 import org.scalatest.FunSpec
-import scala.util.Properties
+import scala.util.{Failure, Properties, Success}
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
@@ -89,6 +89,9 @@ with CommonTestMethods {
 
     /** Build timestamp in the dummy manifest. */
     lazy val buildTime = ZonedDateTime.parse("2014-08-14T13:40:00.000-04:00[America/New_York]")
+
+    /** Invalid version string. */
+    lazy val invalidVersion = "invalid-version"
   }
 
   // Name the class we're testing.
@@ -107,22 +110,21 @@ with CommonTestMethods {
         }
       }
 
-      // It must return None if passed a non-existent attribute name.
-      it("must return None if passed an undefined attribute value") {
+      // It must return a Failure(NoSuchAttributeException) if passed a non-existent attribute name.
+      it("must return Failure(NoSuchAttributeException) if passed an undefined attribute value") {
         new TestData {
-          assert(javaManifest.attribute(nonExistentAttr).isEmpty)
-          assert(invalidManifest.attribute(nonExistentAttr).isEmpty)
-          assert(missingManifest.attribute(nonExistentAttr).isEmpty)
-          assert(noJarManifest.attribute(nonExistentAttr).isEmpty)
-          assert(dummyManifest.attribute(nonExistentAttr).isEmpty)
+          assert(javaManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
+          assert(invalidManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
+          assert(missingManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
+          assert(noJarManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
+          assert(dummyManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
         }
       }
 
       // Verify that the value of a valid attribute is returned.
-      it("must return value of defined attribute value") {
+      it("must return value of defined attribute value wrapped in a Success") {
         new TestData {
-          assert(javaManifest.attribute(Name.IMPLEMENTATION_TITLE).isDefined) // Properties.javaName missing.
-          assert(dummyManifest.attribute(Name.IMPLEMENTATION_TITLE) === Some(dummyTitle))
+          assert(dummyManifest.attribute(Name.IMPLEMENTATION_TITLE) === Success(dummyTitle))
         }
       }
     }
@@ -138,26 +140,60 @@ with CommonTestMethods {
         assertRequireNonNullMsg(e, "name")
       }
 
-      // Verify that we get a DateTimeParseException if attribute has an invalid date/time.
-      it("must throw a DateTimeParseException if asked to retrieve a non-date attribute") {
+      // Verify that we get a Failure(DateTimeParseException) if attribute has an invalid date/time.
+      it("must return Failure(DateTimeParseException) if asked to retrieve a non-date attribute") {
         new TestData {
-
-          // Mo meed to check message, since this is not thrown by Facsimile.
+          val result = invalidManifest.dateAttribute(Manifest.InceptionTimestamp)
+          assert(result.isFailure)
           intercept[DateTimeParseException] {
-            invalidManifest.dateAttribute(Manifest.InceptionTimestamp)
+            result.get
           }
         }
       }
 
-      // Verify that it returns None if the date attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.dateAttribute(Manifest.InceptionTimestamp).isEmpty)
+      // Verify that it returns a Failure(NoSuchAttributeException) if the date attribute is undefined.
+      it("must return Failure(NoSuchAttributeException) if attribute undefined") {
+        assert(Manifest.NullManifest.dateAttribute(Manifest.InceptionTimestamp) ===
+        Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
       }
 
       // Verify that it retrieves date attribute values OK.
-      it("must return valid date if attribute defined") {
+      it("must return defined valid date wrapped in a success") {
         new TestData {
-          assert(dummyManifest.dateAttribute(Manifest.InceptionTimestamp) === Some(inceptionTime))
+          assert(dummyManifest.dateAttribute(Manifest.InceptionTimestamp) === Success(inceptionTime))
+        }
+      }
+    }
+
+    // Test the versionAttribute method.
+    describe(".versionAttribute(Name)") {
+
+      // Check null name values.
+      it("must throw a NullPointerException if passed a null name") {
+        val e = intercept[NullPointerException] {
+          Manifest.NullManifest.versionAttribute(null) //scalastyle:ignore null
+        }
+        assertRequireNonNullMsg(e, "name")
+      }
+
+      // Verify that we get a Failure(VersionParseException) if attribute has an invalid version.
+      it("must return Failure(VersionParseException) if asked to retrieve a non-date attribute") {
+        new TestData {
+          assert(invalidManifest.versionAttribute(Name.IMPLEMENTATION_VERSION) ===
+          Failure(VersionParseException(invalidVersion, 0)))
+        }
+      }
+
+      // Verify that it returns a Failure(NoSuchAttributeException) if the date attribute is undefined.
+      it("must return Failure(NoSuchAttributeException) if attribute undefined") {
+        assert(Manifest.NullManifest.versionAttribute(Name.IMPLEMENTATION_VERSION) ===
+        Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VERSION)))
+      }
+
+      // Verify that it retrieves version attribute values OK.
+      it("must return defined valid date wrapped in a success") {
+        new TestData {
+          assert(dummyManifest.versionAttribute(Name.IMPLEMENTATION_VERSION) === Success(dummyVersion))
         }
       }
     }
@@ -165,26 +201,28 @@ with CommonTestMethods {
     // Verify the inceptionTimestamp function.
     describe(".inceptionTimestamp") {
 
-      // Verify that we get a DateTimeParseException if attribute has an invalid date/time.
-      it("must throw a DateTimeParseException if asked to retrieve a non-date attribute") {
+      // Verify that we get a Failure(DateTimeParseException) if attribute has an invalid date/time.
+      it("must return Failure(DateTimeParseException) if the date is not formatted correctly") {
         new TestData {
 
-          // Mo meed to check message, since this is not thrown by Facsimile.
+          val result = invalidManifest.inceptionTimestamp
+          assert(result.isFailure)
           intercept[DateTimeParseException] {
-            invalidManifest.inceptionTimestamp
+            result.get
           }
         }
       }
 
-      // Verify that it returns None if the date attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.inceptionTimestamp.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the inception date attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.inceptionTimestamp ===
+        Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
       }
 
       // Verify that it retrieves date attribute values OK.
-      it("must return valid date if attribute defined") {
+      it("must return defined valid date wrapped in a success") {
         new TestData {
-          assert(dummyManifest.inceptionTimestamp === Some(inceptionTime))
+          assert(dummyManifest.inceptionTimestamp === Success(inceptionTime))
         }
       }
     }
@@ -192,26 +230,27 @@ with CommonTestMethods {
     // Verify the buildTimestamp function.
     describe(".buildTimestamp") {
 
-      // Verify that we get a DateTimeParseException if attribute has an invalid date/time.
-      it("must throw a DateTimeParseException if asked to retrieve a non-date attribute") {
+      // Verify that we get a Failure(DateTimeParseException) if attribute has an invalid date/time.
+      it("must return Failure(DateTimeParseException) if the date is not formatted correctly") {
         new TestData {
 
-          // Mo meed to check message, since this is not thrown by Facsimile.
+          val result = invalidManifest.buildTimestamp
+          assert(result.isFailure)
           intercept[DateTimeParseException] {
-            invalidManifest.buildTimestamp
+            result.get
           }
         }
       }
 
-      // Verify that it returns None if the date attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.buildTimestamp.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the build date attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.buildTimestamp === Failure(NoSuchAttributeException(Manifest.BuildTimestamp)))
       }
 
       // Verify that it retrieves date attribute values OK.
-      it("must return valid date if attribute defined") {
+      it("must return defined valid date wrapped in a success") {
         new TestData {
-          assert(dummyManifest.buildTimestamp === Some(buildTime))
+          assert(dummyManifest.buildTimestamp === Success(buildTime))
         }
       }
     }
@@ -219,16 +258,15 @@ with CommonTestMethods {
     // Verify the title function.
     describe(".title") {
 
-      // Verify that it returns None if this attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.title.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the title attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.title === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_TITLE)))
       }
 
       // Verify that it retrieves attribute values OK.
-      it("must return valid title if attribute defined") {
+      it("must return define valid title wrapped in a success") {
         new TestData {
-          assert(javaManifest.title.isDefined) // There is no Properties.javaName to compare this to.
-          assert(dummyManifest.title === Some(dummyTitle))
+          assert(dummyManifest.title === Success(dummyTitle))
         }
       }
     }
@@ -236,16 +274,16 @@ with CommonTestMethods {
     // Verify the vendor function.
     describe(".vendor") {
 
-      // Verify that it returns None if this attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.vendor.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the vendor attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.vendor === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VENDOR)))
       }
 
       // Verify that it retrieves attribute values OK.
-      it("must return valid vendor name if attribute defined") {
+      it("must return defined valid vendor name wrapped in a success") {
         new TestData {
-          assert(javaManifest.vendor === Some(Properties.javaVendor))
-          assert(dummyManifest.vendor === Some(dummyVendor))
+          assert(javaManifest.vendor === Success(Properties.javaVendor))
+          assert(dummyManifest.vendor === Success(dummyVendor))
         }
       }
     }
@@ -253,26 +291,22 @@ with CommonTestMethods {
     // Verify the version function.
     describe(".version") {
 
-      // Verify that we get an IllegalArgumentException if attribute has an invalid version.
-      it("must throw an IllegalArgumentException if asked to retrieve a non-version attribute") {
+      // Verify that we get a Failure(VersionParseException) if attribute has an invalid version.
+      it("must return Failure(VersionParseException) if asked to retrieve a non-date attribute") {
         new TestData {
-          val e = intercept[IllegalArgumentException] {
-            invalidManifest.version
-          }
-          assertRequireValidMsg(e, "version", "invalid-version")
+          assert(invalidManifest.version === Failure(VersionParseException(invalidVersion, 0)))
         }
       }
 
-      // Verify that it returns None if this attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.version.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the version attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.version === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VERSION)))
       }
 
       // Verify that it retrieves attribute values OK.
-      it("must return valid version if attribute defined") {
+      it("must return defined valid version wrapped in a success") {
         new TestData {
-          assert(javaManifest.version.isDefined) // Can't compare to Properties.javaVersion because of funky format.
-          assert(dummyManifest.version === Some(dummyVersion))
+          assert(dummyManifest.version === Success(dummyVersion))
         }
       }
     }
@@ -280,16 +314,15 @@ with CommonTestMethods {
     // Verify the specTitle function.
     describe(".specTitle") {
 
-      // Verify that it returns None if this attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.specTitle.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the title attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.specTitle === Failure(NoSuchAttributeException(Name.SPECIFICATION_TITLE)))
       }
 
       // Verify that it retrieves attribute values OK.
-      it("must return valid title if attribute defined") {
+      it("must return define valid title wrapped in a success") {
         new TestData {
-          assert(javaManifest.specTitle === Some(Properties.javaSpecName))
-          assert(dummyManifest.specTitle === Some(dummyTitle))
+          assert(dummyManifest.specTitle === Success(dummyTitle))
         }
       }
     }
@@ -297,16 +330,16 @@ with CommonTestMethods {
     // Verify the specVendor function.
     describe(".specVendor") {
 
-      // Verify that it returns None if this attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.specVendor.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the vendor attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.specVendor === Failure(NoSuchAttributeException(Name.SPECIFICATION_VENDOR)))
       }
 
       // Verify that it retrieves attribute values OK.
-      it("must return valid vendor name if attribute defined") {
+      it("must return defined valid vendor name wrapped in a success") {
         new TestData {
-          assert(javaManifest.specVendor === Some(Properties.javaVendor))
-          assert(dummyManifest.specVendor === Some(dummyVendor))
+          assert(javaManifest.specVendor === Success(Properties.javaVendor))
+          assert(dummyManifest.specVendor === Success(dummyVendor))
         }
       }
     }
@@ -314,26 +347,22 @@ with CommonTestMethods {
     // Verify the specVersion function.
     describe(".specVersion") {
 
-      // Verify that we get an IllegalArgumentException if attribute has an invalid version.
-      it("must throw an IllegalArgumentException if asked to retrieve a non-version attribute") {
+      // Verify that we get a Failure(VersionParseException) if attribute has an invalid version.
+      it("must return Failure(VersionParseException) if asked to retrieve a non-date attribute") {
         new TestData {
-          val e = intercept[IllegalArgumentException] {
-            invalidManifest.specVersion
-          }
-          assertRequireValidMsg(e, "version", "invalid-version")
+          assert(invalidManifest.specVersion === Failure(VersionParseException(invalidVersion, 0)))
         }
       }
 
-      // Verify that it returns None if this attribute is undefined.
-      it("must return None if attribute undefined") {
-        assert(Manifest.NullManifest.specVersion.isEmpty)
+      // Verify that it returns Failure(NoSuchAttributeException) if the specification version attribute is undefined.
+      it("must return Failure(NoSuchAttribute) if attribute undefined") {
+        assert(Manifest.NullManifest.specVersion === Failure(NoSuchAttributeException(Name.SPECIFICATION_VERSION)))
       }
 
       // Verify that it retrieves attribute values OK.
-      it("must return valid version if attribute defined") {
+      it("must return defined valid version wrapped in a success") {
         new TestData {
-          assert(javaManifest.specVersion === Some(Version(Properties.javaSpecVersion)))
-          assert(dummyManifest.specVersion === Some(dummyVersion))
+          assert(dummyManifest.specVersion === Success(dummyVersion))
         }
       }
     }
