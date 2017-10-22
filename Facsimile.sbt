@@ -36,6 +36,7 @@ import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
+import scala.util.matching.Regex.Match
 import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype.sonatypeSettings
 
@@ -79,9 +80,50 @@ val dependsOnCompileTest = "test->test;compile->compile"
 // Common Scala compilation options (for compiling sources and generating documentation).
 lazy val commonScalaCSettings = Seq(
   "-deprecation",
-  "-encoding", "UTF-8"
+  "-encoding", "UTF-8",
   //"-Xfatal-warnings",
 )
+
+// ScalaDoc to JavaDoc linking.
+//
+// ScalaDoc currently does not provide support for linking to JavaDoc documentation. However, this is possible.
+//
+// The following code is based upon the solution outlined by Jacek Laskowski and Andrew Bate in their answers to a
+// question about this issue that was posed on Stack Overflow:
+//
+//   https://stackoverflow.com/questions/16934488/how-to-link-classes-from-jdk-into-scaladoc-generated-doc/
+
+// Map of Java JAR file names to the corresponding JavaDoc API URL. Add other libraries with JavaDoc here.
+val javaDocMap = Map(
+  "rt" -> "http://docs.oracle.com/javase/8/docs/api/index.html",
+)
+
+// All JavaDoc sites.
+val javaDocLinks = javaDocMap.values
+
+// A map of URL to Regex expressions that will match that URL. The first matched group is the URL, the second is the
+// element reference.
+val javaDocLinkRegex = javaDocLinks.map{url =>
+  url -> ("""\"(\Q""" + url + """\E)#([^"]*)\"""").r
+}.toMap
+
+// Determine if a particular file has a JavaDoc link.
+def hasJavaDocLink(f: File) = javaDocLinks.exists {url =>
+  javaDocLinkRegex(url).findFirstIn(IO.read(f)).nonEmpty
+}
+
+// Function to convert links to JavaDoc documentation into a form expected by JavaDoc sites. Matches result from a
+// comparison to the URL map defined above.
+def fixJavaDocLinks = (m: Match) => s"${m.group(1)}?${m.group(2).replace(".", "/")}.html"
+
+// The Java runtime library JAR file is located in the path identified by the sun.boot.class.path system property.
+//
+// Note that this must be added manually to the classpath when searching for JAR files in the docProjectSettings.
+val rtJar: String = System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).collectFirst {
+  case str: String if str.endsWith(java.io.File.separator + "rt.jar") => str
+}.get // fail hard if not found
+
+// End of ScalaDoc to JavaDoc linking. See also the docProjectSettings for how this information is used.
 
 // Common project settings.
 //
@@ -119,7 +161,7 @@ lazy val commonSettings = Seq(
   // NOTE: While it might appear that these Scala version options should be placed in "sourceProjectSettings", SBT will
   // use the Scala version to decorate the project's artifact/normalized name. Hence, even if a project does not contain
   // any sources, it it still necessary to provide the version of Scala that is in use.
-  scalaVersion := crossScalaVersions.value.head
+  scalaVersion := crossScalaVersions.value.head,
 )
 
 // Doc project settings.
@@ -127,10 +169,13 @@ lazy val commonSettings = Seq(
 // These settings should be added to projects that generate documentation.
 lazy val docProjectSettings = Seq(
 
-  // Scaladoc generation options.
+  // ScalaDoc generation options.
   //
   // The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes (Unidoc is currently
   // unable to accommodate macros, so this is necessary).
+  //
+  // Note that diagram generation requires that GraphViz be installed on the build machine. However, at the time of
+  // writing, ScalaDoc's use of GraphViz is broken and does not work correctly.
   scalacOptions in doc := commonScalaCSettings ++ Seq(
     "-diagrams",
     "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
@@ -140,12 +185,54 @@ lazy val docProjectSettings = Seq(
     "-groups",
     "-implicits",
     "-no-prefixes",
-    "-Ymacro-expand:none"
+    "-Ymacro-expand:none",
   ),
 
-  // Allow Facsimile's Scaladoc to link to the ScalaDoc documentation of dependent libraries that have included an
+  // Allow Facsimile's ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
   // "apiURL" property in their library's Maven POM configuration.
-  autoAPIMappings := true
+  autoAPIMappings := true,
+
+  // Mappings for ScalaDoc libraries that do not use the autoAPIMappings feature.
+  //
+  // The following code is based upon the solution outlined by Jacek Laskowski and Andrew Bate in their answers to a
+  // question about this issue that was posed on Stack Overflow:
+  //
+  //   https://stackoverflow.com/questions/16934488/how-to-link-classes-from-jdk-into-scaladoc-generated-doc/
+  apiMappings ++= {
+
+    // Retrieve the classpath for looking up JAR files. We must manually add the Java runtime JAR file to this.
+    val classpath = (fullClasspath in Compile).value ++ Seq(Attributed.blank(file(rtJar)))
+
+    // Function to retrieve jar files from the classpath.
+    def findJar(name: String): File = {
+
+      // Get the JAR file. There is a hard fail if it cannot be found.
+      classpath.find {attr =>
+        (attr.data ** s"$name*.jar").get.nonEmpty
+      }.get.data
+    }
+
+    // Define external documentation paths
+    javaDocMap.map {
+      case (jarName, docUrl) => findJar(jarName) -> url(docUrl)
+    }
+  },
+
+  // Override the doc task to fix JavaDoc links.
+  // The following code is based upon the solution outlined by Jacek Laskowski and Andrew Bate in their answers to a
+  // question about this issue that was posed on Stack Overflow:
+  //
+  //   https://stackoverflow.com/questions/16934488/how-to-link-classes-from-jdk-into-scaladoc-generated-doc/
+  doc in Compile := {
+    val target = (doc in Compile).value
+    (target ** "*.html").get.filter(hasJavaDocLink).foreach {f =>
+      val newContent = javaDocLinks.foldLeft(IO.read(f)) {
+        case (oldContent, docURL) => javaDocLinkRegex(docURL).replaceAllIn(oldContent, fixJavaDocLinks)
+      }
+      IO.write(f, newContent)
+    }
+    target
+  },
 )
 
 // Published project settings.
@@ -320,7 +407,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   // Have the release plugin write current version information into Version.sbt, in the project's root directory.
   //
   // NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
-  releaseVersionFile := file("Version.sbt")
+  releaseVersionFile := file("Version.sbt"),
 )
 
 // Source project settings.
@@ -397,14 +484,14 @@ lazy val sourceProjectSettings = Seq(
 
     // ScalaCheck dependency.
     "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
-  )
+  ),
 )
 
 // Settings for all projects that should not publish artifacts to the Sonatype OSS repository.
 lazy val unpublishedProjectSettings = Seq(
 
   // Ensure that the current project does not publish any of its artifacts.
-  publishArtifact := false
+  publishArtifact := false,
 )
 
 // Name of the facsimile-util project.
@@ -424,8 +511,7 @@ settings(
   // Name and description of this project.
   name := "Facsimile Utility Library",
   normalizedName := facsimileUtilName,
-  description :=
-  """
+  description := """
     The Facsimile Utility library provides a number of utilities required by other Facsimile libraries as well as
     third-party libraries.
   """,
@@ -438,7 +524,7 @@ settings(
   ),
 
   // Help the test code find the test JAR files that we use to verify JAR file manifests.
-  unmanagedBase in Test := baseDirectory.value / "src/test/lib"
+  unmanagedBase in Test := baseDirectory.value / "src/test/lib",
 )
 
 // Name of the facsimile-util project.
@@ -462,7 +548,7 @@ settings(
   description := """
     The Facsimile Measurement library supports physics calculations specified in a variety of physical measurement value
     classes, in a variety of supported units.
-  """
+  """,
 )
 
 // Name of the facsimile-stat project.
@@ -485,7 +571,7 @@ settings(
   description := """
     The Facsimile Statistical library supports statistical distribution sampling, reporting, analysis and inference
     testing.
-  """
+  """,
 )
 
 // Facsimile root project.
@@ -508,7 +594,7 @@ settings(
 
     Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS, BSD and Unix on the Java virtual
     machine.
-  """
+  """,
 )
 //scalastyle:on multiple.string.literals
 //scalastyle:on scaladoc
