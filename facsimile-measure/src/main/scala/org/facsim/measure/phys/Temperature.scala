@@ -59,7 +59,7 @@ extends NonNegative {
   override type Units = TemperatureUnits
 
   /** @inheritdoc */
-  override val name: String = "temperature"
+  override val name: String = LibResource("phys.Temperature.name")
 
   /** ''Absolute zero'' (0K) in °C.
    *

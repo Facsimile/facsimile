@@ -59,7 +59,7 @@ extends Specific {
   override type Units = LengthUnits
 
   /** @inheritdoc */
-  override val name: String = "length"
+  override val name: String = LibResource("phys.Length.name")
 
   /** Number of meters exactly equivalent to one millimeter. */
   private val MetersPerMM = 1.0 / 1000.0

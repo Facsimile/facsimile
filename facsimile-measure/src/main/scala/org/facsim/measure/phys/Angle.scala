@@ -60,7 +60,7 @@ extends Specific {
   override type Units = AngleUnits
 
   /** @inheritdoc */
-  override val name = "plane angle"
+  override val name: String = LibResource("phys.Angle.name")
 
   /** The mathematical constant ''[[http://en.wikipedia.org/wiki/Pi π]]'' in the form of an angle value.
    *

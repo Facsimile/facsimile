@@ -59,7 +59,7 @@ extends NonNegative {
   override type Units = TimeUnits
 
   /** @inheritdoc */
-  override val name: String = "time"
+  override val name: String = LibResource("phys.Time.name")
 
   /** Number of seconds exactly equivalent to one millisecond. */
   private val SecondsPerMS = 1.0 / 1000.0

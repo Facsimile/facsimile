@@ -59,7 +59,7 @@ extends NonNegative {
   override type Units = MassUnits
 
   /** @inheritdoc */
-  override val name: String = "mass"
+  override val name: String = LibResource("phys.Mass.name")
 
   /** Number of kilograms exactly equivalent to one gram. */
   private val KilogramsPerG = 1.0 / 1000.0

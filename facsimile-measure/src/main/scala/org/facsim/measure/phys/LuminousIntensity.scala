@@ -59,7 +59,7 @@ extends NonNegative {
   override type Units = LuminousIntensityUnits
 
   /** @inheritdoc */
-  override val name: String = "luminous intensity"
+  override val name: String = LibResource("phys.LuminousIntensity.name")
 
   /** Units for luminous intensity measured in ''[[http://en.wikipedia.org/wiki/Candela candelas]]''.
    *

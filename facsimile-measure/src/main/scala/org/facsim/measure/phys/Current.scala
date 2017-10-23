@@ -59,7 +59,7 @@ extends NonNegative {
   override type Units = CurrentUnits
 
   // Name of this physical quantity.
-  override val name = "electric current"
+  override val name: String = LibResource("phys.Current.name")
 
   /** Units for current measured in ''[[http://en.wikipedia.org/wiki/Ampere amperes]]''.
    *
