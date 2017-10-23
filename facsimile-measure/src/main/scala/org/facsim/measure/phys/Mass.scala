@@ -37,162 +37,153 @@ package org.facsim.measure.phys
 import org.facsim.measure.LibResource
 
 /** ''[[http://en.wikipedia.org/wiki/Mass Mass]]'' physical quantity type.
-  *
-  * All mass values are stored internally in ''[[http://en.wikipedia.org/wiki/Kilogram kilograms]]'', which is the
-  * ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
-  *
-  * @see [[http://en.wikipedia.org/wiki/Mass Mass]] on ''Wikipedia''.
-  *
-  * @see [[http://en.wikipedia.org/wiki/Kilogram Kilograms]] on ''Wikipedia''.
-  *
-  * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
-  *
-  * @since 0.0
-  */
+ *
+ *  All mass values are stored internally in ''[[http://en.wikipedia.org/wiki/Kilogram kilograms]]'', which is the
+ *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/Mass Mass]] on ''Wikipedia''.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/Kilogram Kilograms]] on ''Wikipedia''.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *
+ *  @since 0.0
+ */
 object Mass
 extends NonNegative {
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Measure = MassMeasure
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Units = MassUnits
 
-  /** @inheritdoc
-    */
-  override val name = "mass"
+  /** @inheritdoc */
+  override val name: String = "mass"
 
-  /** Number of kilograms exactly equivalent to one gram.
-    */
+  /** Number of kilograms exactly equivalent to one gram. */
   private val KilogramsPerG = 1.0 / 1000.0
 
   /** Units for masses measured in ''[[http://en.wikipedia.org/wiki/Gram grams]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Gram grams]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Grams = new Units(new LinearScaleConverter(KilogramsPerG), LibResource("phys.Mass.Gram.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Gram grams]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Grams: Units = new Units(new LinearScaleConverter(KilogramsPerG), LibResource("phys.Mass.Gram.sym"))
 
-  /** Number of kilograms exactly equivalent to one milligram.
-    */
+  /** Number of kilograms exactly equivalent to one milligram. */
   private val KilogramsPerMG = KilogramsPerG / 1000.0
 
   /** Units for masses measured in ''[[http://en.wikipedia.org/wiki/Milligram#SI_multiples milligrams]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Milligram#SI_multiples Milligrams]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Milligrams = new Units(new LinearScaleConverter(KilogramsPerMG), LibResource("phys.Mass.Milligram.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Milligram#SI_multiples Milligrams]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Milligrams: Units = new Units(new LinearScaleConverter(KilogramsPerMG), LibResource("phys.Mass.Milligram.sym"))
 
   /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Kilogram kilograms]]''.
-    *
-    * @note ''Kilograms'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for mass measurement, and
-    * the units that are used to store such measurements internally in ''Facsimile''.
-    *
-    * In ''Facsimile'', a ''kilogram'' is defined in accordance with ''SI'' standards.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Kilogram Kilograms]] on ''Wikipedia''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Kilograms = new Units(SIConverter, LibResource("phys.Mass.Kilogram.sym"))
+   *
+   *  @note ''Kilograms'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for mass measurement, and
+   *  the units that are used to store such measurements internally in ''Facsimile''.
+   *
+   *  In ''Facsimile'', a ''kilogram'' is defined in accordance with ''SI'' standards.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Kilogram Kilograms]] on ''Wikipedia''.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Kilograms: Units = new Units(SIConverter, LibResource("phys.Mass.Kilogram.sym"))
 
-  /** Number of kilograms exactly equivalent to one metric tonne.
-    */
+  /** Number of kilograms exactly equivalent to one metric tonne. */
   private val KilogramsPerTonne = 1000.0
 
   /** Units for masses measured in ''[[http://en.wikipedia.org/wiki/Tonne metric tonnes]]'' (also known as
-    * ''megagrams'').
-    *
-    * @see [[http://en.wikipedia.org/wiki/Tonne Tonnes]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Tonnes = new Units(new LinearScaleConverter(KilogramsPerTonne), LibResource("phys.Mass.Tonne.sym"))
+   *  ''megagrams'').
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Tonne Tonnes]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Tonnes: Units = new Units(new LinearScaleConverter(KilogramsPerTonne), LibResource("phys.Mass.Tonne.sym"))
 
   /** Number of kilograms equivalent to one avoirdupois pound.
-    *
-    * @note This value is the internationally accepted rate for converting between kilograms and pounds and is used
-    * internally to convert between metric and Imperial/English mass units. This value '''must not''' be modified!
-    *
-    * @see [[http://en.wikipedia.org/wiki/Kilogram Kilogram]] on ''Wikipedia''.
-    */
+   *
+   *  @note This value is the internationally accepted rate for converting between kilograms and pounds and is used
+   *  internally to convert between metric and Imperial/English mass units. This value '''must not''' be modified!
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Kilogram Kilogram]] on ''Wikipedia''.
+   */
   private val KilogramsPerPound = 0.45359237
 
   /** Units for masses measured in ''[[http://en.wikipedia.org/wiki/Pound_(mass) avoirdupois pounds]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Pound_(mass) Pounds]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Pounds = new Units(new LinearScaleConverter(KilogramsPerPound), LibResource("phys.Mass.Pound.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Pound_(mass) Pounds]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Pounds: Units = new Units(new LinearScaleConverter(KilogramsPerPound), LibResource("phys.Mass.Pound.sym"))
 
-  /** Number of kilograms exactly equivalent to one ounce.
-    */
+  /** Number of kilograms exactly equivalent to one ounce. */
   private val KilogramsPerOunce = KilogramsPerPound / 16.0
 
   /** Units for masses measured in ''[[http://en.wikipedia.org/wiki/Ounce ounces]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Ounce Ounces]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Ounces = new Units(new LinearScaleConverter(KilogramsPerOunce), LibResource("phys.Mass.Ounce.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Ounce Ounces]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Ounces: Units = new Units(new LinearScaleConverter(KilogramsPerOunce), LibResource("phys.Mass.Ounce.sym"))
 
-  /** Physical quantity family for mass measurements.
-    */
+  /** Physical quantity family for mass measurements. */
   protected[phys] override val family = Family(massExponent = 1)
 
-  /** @inheritdoc
-    */
-  override val siUnits = Kilograms
+  /** @inheritdoc */
+  override val siUnits: Units = Kilograms
 
   // Register this family.
   Family.register(family, Mass)
 
   /** Mass measurement factory function.
-    *
-    * @param measure Measurement, in kilograms, to be converted into a new measure.
-    *
-    * @return `measure` in the form of a Mass measurement.
-    */
+   *
+   *  @param measure Measurement, in kilograms, to be converted into a new measure.
+   *
+   *  @return `measure` in the form of a Mass measurement.
+   */
   private[phys] override def apply(measure: Double) = new Measure(measure)
 
   /** ''[[http://en.wikipedia.org/wiki/Mass Mass]]'' measurement class.
-    *
-    * Instances of this class represent ''mass'' measurements.
-    *
-    * @constructor Create new ''[[http://en.wikipedia.org/wiki/Mass mass]]'' measurement value.
-    *
-    * @param measure ''Mass'' measurement expressed in ''[[Kilograms]]''. This value must be finite and greater than or
-    * equal to zero.
-    *
-    * @throws IllegalArgumentException if `measure` is not finite or is negative.
-    *
-    * @since 0.0
-    */
+   *
+   *  Instances of this class represent ''mass'' measurements.
+   *
+   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Mass mass]]'' measurement value.
+   *
+   *  @param measure ''Mass'' measurement expressed in ''[[Kilograms]]''. This value must be finite and greater than or
+   *  equal to zero.
+   *
+   *  @throws IllegalArgumentException if `measure` is not finite or is negative.
+   *
+   *  @since 0.0
+   */
   final class MassMeasure private[phys](measure: Double)
   extends NonNegativeMeasure[MassMeasure](measure)
 
   /** ''[[http://en.wikipedia.org/wiki/Mass Mass]]'' unit of measurement family class.
-    *
-    * Instances of this class represent units for expressing ''mass'' measurements.
-    *
-    * @constructor Create new ''[[http://en.wikipedia.org/wiki/Mass mass]]'' unit of measurement.
-    *
-    * @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''mass
-    * [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''kilograms''.
-    *
-    * @param symbol Symbol to be used when outputting measurement values expressed in these units.
-    *
-    * @since 0.0
-    */
+   *
+   *  Instances of this class represent units for expressing ''mass'' measurements.
+   *
+   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Mass mass]]'' unit of measurement.
+   *
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''mass
+   *  [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''kilograms''.
+   *
+   *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
+   *
+   *  @since 0.0
+   */
   final class MassUnits private[phys](converter: Converter, symbol: String)
   extends NonNegativeUnits(converter, symbol)
 }

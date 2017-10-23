@@ -38,13 +38,13 @@ import org.facsim.util.requireValid
 import scala.reflect.ClassTag
 
 /** Abstract base class for all physical quantity types that cannot have negative measurement values in the associated
-  * ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
-  *
-  * Subclasses are forbidden from having negative measurement values, which is appropriate for a number of unit
-  * families, including [[Time]], [[Temperature]], [[Mass]], etc.
-  *
-  * @since 0.0
-  */
+ *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+ *
+ *  Subclasses are forbidden from having negative measurement values, which is appropriate for a number of unit
+ *  families, including [[Time]], [[Temperature]], [[Mass]], etc.
+ *
+ *  @since 0.0
+ */
 // Developer notes:
 //
 // This is an abstract class, rather than a trait, to prevent it from being used as a base class. The rationale is that
@@ -54,25 +54,23 @@ import scala.reflect.ClassTag
 abstract class NonNegative protected[phys]
 extends Specific {
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Measure <: NonNegativeMeasure[Measure]
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Units <: NonNegativeUnits
 
   /** Abstract base class for physical quantity measurements that cannot be negative.
-    *
-    * @constructor Construct new non-negative measurement value.
-    *
-    * @param measure Value of the measurement type in the associated ''SI'' units. This value must be finite and
-    * non-negative. Sub-classes may impose additional restrictions.
-    *
-    * @throws IllegalArgumentException If the result is not finite or is negative.
-    *
-    * @since 0.0
-    */
+   *
+   *  @constructor Construct new non-negative measurement value.
+   *
+   *  @param measure Value of the measurement type in the associated ''SI'' units. This value must be finite and
+   *  non-negative. Sub-classes may impose additional restrictions.
+   *
+   *  @throws IllegalArgumentException If the result is not finite or is negative.
+   *
+   *  @since 0.0
+   */
   abstract class NonNegativeMeasure[F <: NonNegativeMeasure[F] : ClassTag] protected[phys](measure: Double)
   extends SpecificMeasure[F](measure) {
 
@@ -81,17 +79,17 @@ extends Specific {
   }
 
   /** Abstract base class for all specific physical quantity measurement units, that do not support negative SI unit
-    * measurement values.
-    *
-    * @constructor Construct new non-negative measurement units.
-    *
-    * @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''SI''
-    * units for this unit family.
-    *
-    * @param symbol Symbol to be used when outputting measurement values expressed in these units.
-    *
-    * @since 0.0
-    */
+   *  measurement values.
+   *
+   *  @constructor Construct new non-negative measurement units.
+   *
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''SI''
+   *  units for this unit family.
+   *
+   *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
+   *
+   *  @since 0.0
+   */
   abstract class NonNegativeUnits protected[phys](converter: Converter, symbol: String)
   extends SpecificUnits(converter, symbol)
 }

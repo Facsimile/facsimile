@@ -37,96 +37,92 @@ package org.facsim.measure.phys
 import org.facsim.measure.LibResource
 
 /** ''[[http://en.wikipedia.org/wiki/Electric_current Electric current]]'' physical quantity type.
-  *
-  * All electrical current values are stored internally in ''[[http://en.wikipedia.org/wiki/Ampere amperes]]'', which is
-  * the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
-  *
-  * @see [[http://en.wikipedia.org/wiki/Electric_current Electric current]] on ''Wikipedia''.
-  *
-  * @see [[http://en.wikipedia.org/wiki/Ampere Amperes]] on ''Wikipedia''.
-  *
-  * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
-  *
-  * @since 0.0
-  */
+ *
+ *  All electrical current values are stored internally in ''[[http://en.wikipedia.org/wiki/Ampere amperes]]'', which is
+ *  the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/Electric_current Electric current]] on ''Wikipedia''.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/Ampere Amperes]] on ''Wikipedia''.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *
+ *  @since 0.0
+ */
 object Current
 extends NonNegative {
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Measure = CurrentMeasure
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Units = CurrentUnits
 
   // Name of this physical quantity.
   override val name = "electric current"
 
   /** Units for current measured in ''[[http://en.wikipedia.org/wiki/Ampere amperes]]''.
-    *
-    * @note ''Amperes'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for electric current
-    * measurement, and the units that are used to store such measurements internally in ''Facsimile''.
-    *
-    * In ''Facsimile'', an ''ampere'' is defined in accordance with ''SI'' standards.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Ampere Ampere]] on ''Wikipedia''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
+   *
+   *  @note ''Amperes'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for electric current
+   *  measurement, and the units that are used to store such measurements internally in ''Facsimile''.
+   *
+   *  In ''Facsimile'', an ''ampere'' is defined in accordance with ''SI'' standards.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Ampere Ampere]] on ''Wikipedia''.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
   val Amperes = new Units(SIConverter, LibResource("phys.Current.Ampere.sym"))
 
-  /** Physical quantity family for current measurements.
-    */
-  protected[phys] override val family = Family(currentExponent = 1)
+  /** Physical quantity family for current measurements. */
+  protected[phys] override val family: Family = Family(currentExponent = 1)
 
-  /** @inheritdoc
-    */
-  override val siUnits = Amperes
+  /** @inheritdoc */
+  override val siUnits: Units = Amperes
 
   // Register this family.
   Family.register(family, Current)
 
   /** Electrical current measurement factory function.
-    *
-    * @param measure Measurement, in amperes, to be converted into a new measure.
-    *
-    * @return `measure` in the form of a Current measurement.
-    */
+   *
+   *  @param measure Measurement, in amperes, to be converted into a new measure.
+   *
+   *  @return `measure` in the form of a Current measurement.
+   */
   private[phys] override def apply(measure: Double) = new Measure(measure)
 
   /** ''[[http://en.wikipedia.org/wiki/Electric_current Electric current]]'' measurement class.
-    *
-    * Instances of this class represent ''electric current'' measurements.
-    *
-    * @constructor Create new ''[[http://en.wikipedia.org/wiki/Electric_current electric current]]'' measurement value.
-    *
-    * @param measure ''Electric current'' measurement expressed in ''[[Amperes]]''. This value must be finite and
-    * greater than or equal to zero.
-    *
-    * @throws IllegalArgumentException if `measure` is not finite or is negative.
-    *
-    * @since 0.0
-    */
+   *
+   *  Instances of this class represent ''electric current'' measurements.
+   *
+   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Electric_current electric current]]'' measurement value.
+   *
+   *  @param measure ''Electric current'' measurement expressed in ''[[Amperes]]''. This value must be finite and
+   *  greater than or equal to zero.
+   *
+   *  @throws IllegalArgumentException if `measure` is not finite or is negative.
+   *
+   *  @since 0.0
+   */
   final class CurrentMeasure private[phys](measure: Double)
   extends NonNegativeMeasure[CurrentMeasure](measure)
 
   /** ''[[http://en.wikipedia.org/wiki/Electric_current Electric current]]'' unit of measurement family class.
-    *
-    * Instances of this class represent units for expressing ''electric current'' measurements.
-    *
-    * @constructor Create new ''[[http://en.wikipedia.org/wiki/Electric_current Electric current]]'' unit of
-    * measurement.
-    *
-    * @param converter Rules to be applied to convert a quantity measured in these units to and from the standard
-    * ''electric current [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''amperes''.
-    *
-    * @param symbol Symbol to be used when outputting measurement values expressed in these units.
-    *
-    * @since 0.0
-    */
+   *
+   *  Instances of this class represent units for expressing ''electric current'' measurements.
+   *
+   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Electric_current Electric current]]'' unit of
+   *  measurement.
+   *
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard
+   *  ''electric current [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''amperes''.
+   *
+   *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
+   *
+   *  @since 0.0
+   */
   final class CurrentUnits private[phys](converter: Converter, symbol: String)
   extends NonNegativeUnits(converter, symbol)
 }

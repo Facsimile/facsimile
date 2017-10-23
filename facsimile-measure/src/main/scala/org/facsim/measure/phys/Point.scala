@@ -37,19 +37,19 @@ package org.facsim.measure.phys
 import org.facsim.util.requireNonNull
 
 /** Represents a point in world space.
-  *
-  * @constructor Create a new point in ''3D world space''.
-  *
-  * @param x World ''X'' co-ordinate of this point, measured from the origin along the world ''X''-axis.
-  *
-  * @param y World ''Y'' co-ordinate of this point, measured from the origin along the world ''Y''-axis.
-  *
-  * @param z World ''Z'' co-ordinate of this point, measured from the origin along the world ''Z''-axis.
-  *
-  * @throws NullPointerException if `x`, `y` or `z` is `null`.
-  *
-  * @since 0.0
-  */
+ *
+ *  @constructor Create a new point in ''3D world space''.
+ *
+ *  @param x World ''X'' co-ordinate of this point, measured from the origin along the world ''X''-axis.
+ *
+ *  @param y World ''Y'' co-ordinate of this point, measured from the origin along the world ''Y''-axis.
+ *
+ *  @param z World ''Z'' co-ordinate of this point, measured from the origin along the world ''Z''-axis.
+ *
+ *  @throws NullPointerException if `x`, `y` or `z` is `null`.
+ *
+ *  @since 0.0
+ */
 final case class Point(x: Length, y: Length, z: Length) {
 
   // Sanity checks.
@@ -58,17 +58,17 @@ final case class Point(x: Length, y: Length, z: Length) {
   requireNonNull(z)
 
   /** Calculate straight-line distance from this point to `other` point.
-    *
-    * @note The calculated distance will always be a positive value.
-    *
-    * @param other Point to which a straight-line distance measurement is required.
-    *
-    * @return Straight-line distance from this point to `other` point.
-    *
-    * @throws NullPointerException if `other` is null.
-    *
-    * @since 0.0
-    */
+   *
+   *  @note The calculated distance will always be a positive value.
+   *
+   *  @param other Point to which a straight-line distance measurement is required.
+   *
+   *  @return Straight-line distance from this point to `other` point.
+   *
+   *  @throws NullPointerException if `other` is null.
+   *
+   *  @since 0.0
+   */
   def distanceTo(other: Point): Length = {
     requireNonNull(other)
     Length(
@@ -81,18 +81,18 @@ final case class Point(x: Length, y: Length, z: Length) {
   }
 
   /** Calculate distance from this point to `other` point measured on the ''X-Y'' plane.
-    *
-    * @note The calculated distance will always be a positive value.
-    *
-    * @param other Point to which an ''X-Y'' plane distance measurement is required.
-    *
-    * @return ''X-Y'' plane distance from this point to `other` point.
-    *
-    * @throws NullPointerException if `other` is null.
-    *
-    * @since 0.0
-    */
-  def distanceToXY(other: Point): Length.Measure = {
+   *
+   *  @note The calculated distance will always be a positive value.
+   *
+   *  @param other Point to which an ''X-Y'' plane distance measurement is required.
+   *
+   *  @return ''X-Y'' plane distance from this point to `other` point.
+   *
+   *  @throws NullPointerException if `other` is null.
+   *
+   *  @since 0.0
+   */
+  def distanceToXY(other: Point): Length = {
     requireNonNull(other)
     Length(
       Math.sqrt(
@@ -103,37 +103,37 @@ final case class Point(x: Length, y: Length, z: Length) {
   }
 
   /** Calculate angle from this point, on ''X-Y'' to `other` point.
-    *
-    * The angle is measured on the world ''X-Y'' plane, and is relative to the world ''X''-axis. This angle can be
-    * viewed as the direction of travel required to reach `other` from this point.
-    *
-    * @note If this point and `other` are identical, or if `other` lies directly above or below this point, then this
-    * function will return an angle value of zero.
-    *
-    * @param other Point to which an ''X-Y'' plane angle is required.
-    *
-    * @return ''X-Y'' plane angle from this point to `other` point, in the range [0, ''τ'') ''radians'' ([0, 360)
-    * ''degrees'').
-    *
-    * @throws NullPointerException if `other` is null.
-    *
-    * @since 0.0
-    */
-  def angleToXY(other: Point): Angle.Measure = {
+   *
+   *  The angle is measured on the world ''X-Y'' plane, and is relative to the world ''X''-axis. This angle can be
+   *  viewed as the direction of travel required to reach `other` from this point.
+   *
+   *  @note If this point and `other` are identical, or if `other` lies directly above or below this point, then this
+   *  function will return an angle value of zero.
+   *
+   *  @param other Point to which an ''X-Y'' plane angle is required.
+   *
+   *  @return ''X-Y'' plane angle from this point to `other` point, in the range [0, ''τ'') ''radians'' ([0, 360)
+   *  ''degrees'').
+   *
+   *  @throws NullPointerException if `other` is null.
+   *
+   *  @since 0.0
+   */
+  def angleToXY(other: Point): Angle = {
     requireNonNull(other)
     Angle.atan2(other.y - y, other.x - x).normalize
   }
 }
 
 /** Point companion object.
-  *
-  * @since 0.0
-  */
+ *
+ * @since 0.0
+ */
 object Point {
 
   /** World origin.
-    *
-    * @since 0.0
-    */
-  val Origin = Point(Length.Zero, Length.Zero, Length.Zero)
+   *
+   * @since 0.0
+   */
+  val Origin: Point = Point(Length.Zero, Length.Zero, Length.Zero)
 }

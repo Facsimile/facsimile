@@ -37,26 +37,26 @@ package org.facsim.measure.phys
 import org.facsim.util.{requireFinite, requireValid}
 
 /** Linear converter.
-  *
-  * Converts physical quantity measurement units of an associated, but unspecified, unit to and from the corresponding
-  * standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the unit family. Values are ''imported'' (converted to
-  * ''SI'' unit values) by multiplying by the specified linear scaling `factor` after subtracting a constant `offset`
-  * value; they are ''exported'' (converted from ''SI'' unit values) by dividing the value by the same `factor`, then
-  * adding the same `offset` value.
-  *
-  * @constructor Create new linear converter from the specified `factor` and `offset`.
-  *
-  * @param factor Linear scaling factor to be employed. This value must be finite and cannot be 0 or 1. A value of 0
-  * causes ''divide-by-zero'' exceptions when exporting values and implies that the magnitude of all measurement values
-  * is 0. A value of 1 implies that the units are already ''SI'' units, since no scaling is performed, in which case
-  * [[OffsetConverter]] should be preferred.
-  *
-  * @param offset Constant offset value to be subtracted prior to application of the scaling `factor` on import, and
-  * added after applying the inverse scaling factor on export. This value must be finite and cannot be 0 (in which case,
-  * [[LinearScaleConverter]] is a better option).
-  *
-  * @throws IllegalArgumentException if `factor` is `NaN`, infinite, 0 or 1, or if `offset`` is `NaN`, infinite or 0.
-  * */
+ *
+ *  Converts physical quantity measurement units of an associated, but unspecified, unit to and from the corresponding
+ *  standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the unit family. Values are ''imported'' (converted to
+ *  ''SI'' unit values) by multiplying by the specified linear scaling `factor` after subtracting a constant `offset`
+ *  value; they are ''exported'' (converted from ''SI'' unit values) by dividing the value by the same `factor`, then
+ *  adding the same `offset` value.
+ *
+ *  @constructor Create new linear converter from the specified `factor` and `offset`.
+ *
+ *  @param factor Linear scaling factor to be employed. This value must be finite and cannot be 0 or 1. A value of 0
+ *  causes ''divide-by-zero'' exceptions when exporting values and implies that the magnitude of all measurement values
+ *  is 0. A value of 1 implies that the units are already ''SI'' units, since no scaling is performed, in which case
+ *  [[OffsetConverter]] should be preferred.
+ *
+ *  @param offset Constant offset value to be subtracted prior to application of the scaling `factor` on import, and
+ *  added after applying the inverse scaling factor on export. This value must be finite and cannot be 0 (in which case,
+ *  [[LinearScaleConverter]] is a better option).
+ *
+ *  @throws IllegalArgumentException if `factor` is `NaN`, infinite, 0 or 1, or if `offset` is `NaN`, infinite or 0.
+ */
 private[phys] final class LinearConverter(factor: Double, offset: Double)
 extends LinearScaleConverter(factor) {
 
@@ -64,11 +64,9 @@ extends LinearScaleConverter(factor) {
   requireFinite(offset)
   requireValid(offset, offset != 0.0)
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def importValue(value: Double): Double = super.importValue(value - offset)
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def exportValue(value: Double): Double = super.exportValue(value) + offset
 }

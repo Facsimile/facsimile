@@ -37,73 +37,73 @@ package org.facsim.measure
 import scala.reflect.ClassTag
 
 /** Abstract base class for objects that can be compared for equivalence.
-  *
-  * Implementing objects can be compared for equality and inequality.
-  *
-  * @note At present, this must be an ''abstract class'', rather than a ''trait'', because the latter do not currently
-  * support class bounds (such as [[ClassTag]]). Implementing types must ensure that [[hashCode]] values for equivalent
-  * objects are identical too.
-  *
-  * @tparam T Type of object implementing equivalence operations, which must implement this base class.
-  *
-  * @since 0.0
-  */
+ *
+ *  Implementing objects can be compared for equality and inequality.
+ *
+ *  @note At present, this must be an ''abstract class'', rather than a ''trait'', because the latter do not currently
+ *  support class bounds (such as [[ClassTag]]). Implementing types must ensure that [[hashCode]] values for equivalent
+ *  objects are identical too.
+ *
+ *  @tparam T Type of object implementing equivalence operations, which must implement this base class.
+ *
+ *  @since 0.0
+ */
 abstract class Equivalent[T <: Equivalent[T] : ClassTag]
 extends Equals {
 
   /** Equivalence operator.
-    *
-    * @param other Object that this object is being compared to; this value cannot be `null`.
-    *
-    * @note If this function returns `true`, then the [[hashCode]] values of both objects must be equal.
-    *
-    * @return `true` is this object and `that` object are equivalent; `false` if they differ.
-    *
-    * @throws NullPointerException if `that` is `null`.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param other Object that this object is being compared to; this value cannot be `null`.
+   *
+   *  @note If this function returns `true`, then the [[hashCode]] values of both objects must be equal.
+   *
+   *  @return `true` is this object and `that` object are equivalent; `false` if they differ.
+   *
+   *  @throws scala.NullPointerException if `that` is `null`.
+   *
+   *  @since 0.0
+   */
   def ===(other: T): Boolean
 
   /** Non-equivalence operator.
-    *
-    * @param other Object that this object is being compared to; this value cannot be `null`.
-    *
-    * @note If this function returns `false`, then the [[hashCode]] values of both objects must be equal.
-    *
-    * @return `true` is this object and `that` object are not equivalent; `false` if they are equivalent.
-    *
-    * @throws NullPointerException if `that` is `null`.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param other Object that this object is being compared to; this value cannot be `null`.
+   *
+   *  @note If this function returns `false`, then the [[hashCode]] values of both objects must be equal.
+   *
+   *  @return `true` is this object and `that` object are not equivalent; `false` if they are equivalent.
+   *
+   *  @throws NullPointerException if `that` is `null`.
+   *
+   *  @since 0.0
+   */
   final def =!=(other: T) = !(this === other)
 
   /** Determine whether another object can be compared for equality to this object.
-    *
-    * @param other Object that this object is being compared to.
-    *
-    * @return `true` is this object and `that` object can be compared for equality (i.e. they have the same type);
-    * `false` if the values cannot be compared for equality, including if `other` is `null`.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param other Object that this object is being compared to.
+   *
+   *  @return `true` is this object and `that` object can be compared for equality (i.e. they have the same type);
+   *  `false` if the values cannot be compared for equality, including if `other` is `null`.
+   *
+   *  @since 0.0
+   */
   override def canEqual(other: Any) = other match {
     case _: T => true
     case _ => false
   }
 
   /** Equality operator.
-    *
-    * @param other Object that this object is being compared to. If `null`, the function will return `false`.
-    *
-    * @note If this function returns `true`, then the [[hashCode]] values of both objects must be equal.
-    *
-    * @return `true` is this object and `that` object are equal; `false` if they differ, including the case in which
-    * `other` is `null`.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param other Object that this object is being compared to. If `null`, the function will return `false`.
+   *
+   *  @note If this function returns `true`, then the [[hashCode]] values of both objects must be equal.
+   *
+   *  @return `true` is this object and `that` object are equal; `false` if they differ, including the case in which
+   *  `other` is `null`.
+   *
+   *  @since 0.0
+   */
   final override def equals(other: Any) = other match {
     case that: T => that.canEqual(this) && this === that
     case _ => false

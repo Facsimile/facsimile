@@ -37,8 +37,8 @@ package org.facsim.measure
 import org.facsim.util.Resource
 
 /** Helper object reporting ''Facsimile Util'' library resources.
-  *
-  * @since 0.0
-  */
+ *
+ * @since 0.0
+ */
 private[measure] object LibResource
 extends Resource("facsimile-measure")

@@ -35,32 +35,32 @@
 package org.facsim.measure
 
 /** Trait supporting the addition and subtraction of subclass instances.
-  *
-  * @tparam T Type of value being added and subtracted.
-  *
-  * @since 0.0
-  */
+ *
+ *  @tparam T Type of value being added and subtracted. This must be a ''subclass'' of `Additive[T]`.
+ *
+ *  @since 0.0
+ */
 trait Additive[T <: Additive[T]] {
 
   /** Addition operator.
-    *
-    * @note When overriding this function, if the result differs from the original value, then the result should be a
-    * new instance, rather than modifying the state of this object.
-    *
-    * @param other Value to be added to this value.
-    *
-    * @return New additive instance
-    */
+   *
+   *  @note When overriding this function, if the result differs from the original value, then the result should be a
+   *  new instance, rather than modifying the state of this object.
+   *
+   *  @param other Value to be added to this value.
+   *
+   *  @return Result of `this` + `other` as a new `Additive` instance.
+   */
   def +(other: T): T
 
   /** Subtraction operator.
-    *
-    * @note When overriding this function, if the result differs from the original value, then the result should be a
-    * new instance, rather than modifying the state of this object.
-    *
-    * @param other Value to be added to this value.
-    *
-    * @return New additive instance
-    */
+   *
+   *  @note When overriding this function, if the result differs from the original value, then the result should be a
+   *  new instance, rather than modifying the state of this object.
+   *
+   *  @param other Value to be subtracted from this value.
+   *
+   *  @return Result of `this` - `other` as a new `Additive` instance.
+   */
   def -(other: T): T
 }

@@ -37,20 +37,20 @@ package org.facsim.measure.phys
 import org.facsim.util.{requireFinite, requireValid}
 
 /** Offset converter.
-  *
-  * Converts physical quantity measurement units of an associated, but unspecified, unit to and from the corresponding
-  * standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the unit family. Values are ''imported'' (converted to
-  * ''SI'' unit values) by subtracting the specified constant `offset` value; they are ''exported'' (converted from
-  * ''SI'' unit values) by adding the same constant `offset`.
-  *
-  * @constructor Create new offset converter from the specified `offset`.
-  *
-  * @param offset Constant value that, when subtracted from specific measurements in the corresponding non-''SI'' units,
-  * converts those measurements to ''SI'' units. `offset` must be finite and cannot be zero (in which case,
-  * [[SIConverter]] is a better option).
-  *
-  * @throws IllegalArgumentException if `offset` is `NaN`, infinite, or zero.
-  */
+ *
+ *  Converts physical quantity measurement units of an associated, but unspecified, unit to and from the corresponding
+ *  standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the unit family. Values are ''imported'' (converted to
+ *  ''SI'' unit values) by subtracting the specified constant `offset` value; they are ''exported'' (converted from
+ *  ''SI'' unit values) by adding the same constant `offset`.
+ *
+ *  @constructor Create new offset converter from the specified `offset`.
+ *
+ *  @param offset Constant value that, when subtracted from specific measurements in the corresponding non-''SI'' units,
+ *  converts those measurements to ''SI'' units. `offset` must be finite and cannot be zero (in which case,
+ *  [[SIConverter]] is a better option).
+ *
+ *  @throws IllegalArgumentException if `offset` is `NaN`, infinite, or zero.
+ */
 private[phys] final class OffsetConverter(offset: Double)
 extends Converter {
 
@@ -58,11 +58,9 @@ extends Converter {
   requireFinite(offset)
   requireValid(offset, offset != 0.0)
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def importValue(value: Double): Double = value - offset
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def exportValue(value: Double): Double = value + offset
 }

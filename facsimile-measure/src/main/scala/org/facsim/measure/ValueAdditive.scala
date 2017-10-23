@@ -38,26 +38,24 @@ package org.facsim.measure
 import org.facsim.util.requireNonNull
 
 /** Trait for an additive value type.
-  *
-  * @tparam F Final type of the additive value type.
-  *
-  * @since 0.0
-  */
+ *
+ *  @tparam F Final type of the additive value type.
+ *
+ *  @since 0.0
+ */
 trait ValueAdditive[F <: Value[F] with Additive[F]]
 extends Additive[F] {
 
   // Self reference, as a value.
   self: Value[F] =>
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   final override def +(other: F) = {
     requireNonNull(other)
     createNew(value + other.value)
   }
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   final override def -(other: F) = {
     requireNonNull(other)
     createNew(value - other.value)

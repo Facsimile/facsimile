@@ -35,22 +35,20 @@
 package org.facsim.measure
 
 /** Trait for a scalable value type.
-  *
-  * @tparam F Final type of the scalable value type.
-  *
-  * @since 0.0
-  */
+ *
+ *  @tparam F Final type of the scalable value type.
+ *
+ *  @since 0.0
+ */
 trait ValueScalable[F <: Value[F] with Scalable[F]]
 extends Scalable[F] {
 
   // Self reference, as a value.
   self: Value[F] =>
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   final override def *(factor: Double) = createNew(value * factor)
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   final override def /(divisor: Double) = createNew(value / divisor)
 }

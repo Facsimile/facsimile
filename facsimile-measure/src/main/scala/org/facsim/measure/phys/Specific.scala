@@ -40,9 +40,9 @@ import scala.language.implicitConversions
 import scala.reflect.ClassTag
 
 /** Abstract base class for all physical quantity types associated with specific physical quantity families.
-  *
-  * @since 0.0
-  */
+ *
+ * @since 0.0
+ */
 // Developer notes:
 //
 // This is an abstract class, rather than a trait, to prevent it from being used as a base class. The rationale is that
@@ -52,45 +52,42 @@ import scala.reflect.ClassTag
 abstract class Specific protected[phys]
 extends Physical  {specific =>
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Measure <: SpecificMeasure[Measure]
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Units <: SpecificUnits
 
-  /** Physical quantity family represented by this specific type.
-    */
+  /** Physical quantity family represented by this specific type. */
   protected[phys] val family: Family
 
   /** Value representing a zero measurement in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
-    *
-    * @since 0.0
-    */
-  final lazy val Zero = apply(0.0)
+   *
+   *  @since 0.0
+   */
+  final lazy val Zero: Measure = apply(0.0)
 
   /** Name of this physical quantity.
-    *
-    * @since 0.0
-    */
+   *
+   *  @since 0.0
+   */
   val name: String
 
   /** Generic measurement to specific measurement conversion function.
-    *
-    * If an attempt is made to convert a generic measurement associated with a different family to that of the target
-    * type, then a run-time exception will result.
-    *
-    * @param measure Generic measure to be converted.
-    *
-    * @return Specific measurement equivalent to the specified generic `measure`.
-    *
-    * @throws NullPointerException if `measure` is `null`.
-    *
-    * @throws GenericConversionException if `measure` is associated with different family to the target specific family.
-    *
-    * @since 0.0
-    */
+   *
+   *  If an attempt is made to convert a generic measurement associated with a different family to that of the target
+   *  type, then a run-time exception will result.
+   *
+   *  @param measure Generic measure to be converted.
+   *
+   *  @return Specific measurement equivalent to the specified generic `measure`.
+   *
+   *  @throws NullPointerException if `measure` is `null`.
+   *
+   *  @throws GenericConversionException if `measure` is associated with different family to the target specific family.
+   *
+   *  @since 0.0
+   */
   implicit final def fromGeneric(measure: Generic.Measure): Measure = {
     requireNonNull(measure)
     if(measure.family === family) apply(measure.value)
@@ -98,117 +95,117 @@ extends Physical  {specific =>
   }
 
   /** Factory method to create a new measurement value in the specified units.
-    *
-    * @param value Measurement's value in specified `units`. This value must be finite and must lie within the defined
-    * range for the associated physical quantity.
-    *
-    * @param units Units in which the measurement's `value` is expressed.
-    *
-    * @return Corresponding measurement value.
-    *
-    * @throws NullPointerException if `units` are `null`.
-    *
-    * @throws IllegalArgumentException if `value` in the specified `units` is not finite or is outside of the defined
-    * domain for the associated physical quantity.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param value Measurement's value in specified `units`. This value must be finite and must lie within the defined
+   *  range for the associated physical quantity.
+   *
+   *  @param units Units in which the measurement's `value` is expressed.
+   *
+   *  @return Corresponding measurement value.
+   *
+   *  @throws NullPointerException if `units` are `null`.
+   *
+   *  @throws IllegalArgumentException if `value` in the specified `units` is not finite or is outside of the defined
+   *  domain for the associated physical quantity.
+   *
+   *  @since 0.0
+   */
   final def apply(value: Double, units: Units): Measure = {
     requireNonNull(units)
     apply(units.importValue(value))
   }
 
   /** Factory method to create a new measurement value in ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
-    *
-    * @note This function is not public because it introduces the potential for unit confusion. Measurements can only be
-    * manipulated by users as [[Physical.PhysicalMeasure]] subclass instances, not as raw values. Allowing access to raw
-    * values encourages by-passing of the unit protection logic provided by these measurement classes.
-    *
-    * @param measure Measurement's value in ''SI'' units. This value must be finite and must lie within the defined
-    * range for the associated physical quantity.
-    *
-    * @return Corresponding measurement value.
-    *
-    * @throws IllegalArgumentException if `measure` in ''SI'' units is not finite or is outside of the defined range for
-    * the associate physical quantity.
-    */
+   *
+   *  @note This function is not public because it introduces the potential for unit confusion. Measurements can only be
+   *  manipulated by users as [[Physical.PhysicalMeasure]] subclass instances, not as raw values. Allowing access to raw
+   *  values encourages by-passing of the unit protection logic provided by these measurement classes.
+   *
+   *  @param measure Measurement's value in ''SI'' units. This value must be finite and must lie within the defined
+   *  range for the associated physical quantity.
+   *
+   *  @return Corresponding measurement value.
+   *
+   *  @throws IllegalArgumentException if `measure` in ''SI'' units is not finite or is outside of the defined range for
+   *  the associate physical quantity.
+   */
   private[phys] def apply(measure: Double): Measure
 
   /** Abstract base class for all specific ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical
-    * quantity]]'' measurement classes.
-    *
-    * Measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for this
-    * physical quantity family.
-    *
-    * @constructor Create new measurement for this ''[[http://en.wikipedia.org/wiki/Physical_quantity physical
-    * quantity]]''.
-    *
-    * @param measure Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
-    * units. This value must be finite, but subclasses may impose additional restrictions.
-    *
-    * @throws IllegalArgumentException if `measure` is not finite or is invalid for these units.
-    *
-    * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
-    *
-    * @since 0.0
-    */
+   *  quantity]]'' measurement classes.
+   *
+   *  Measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for this
+   *  physical quantity family.
+   *
+   *  @tparam F Final measurement type.
+   *
+   *  @constructor Create new measurement for this ''[[http://en.wikipedia.org/wiki/Physical_quantity physical
+   *  quantity]]''.
+   *
+   *  @param measure Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
+   *  units. This value must be finite, but subclasses may impose additional restrictions.
+   *
+   *  @throws IllegalArgumentException if `measure` is not finite or is invalid for these units.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
+   *
+   *  @since 0.0
+   */
   abstract class SpecificMeasure[F <: SpecificMeasure[F] : ClassTag] protected[phys](measure: Double)
   extends PhysicalMeasure[F](measure) {
 
-    /** @inheritdoc
-      */
-    protected[phys] final override def family = specific.family
+    /** @inheritdoc */
+    protected[phys] final override def family: Family = specific.family
 
-    /** @inheritdoc
-      */
+    /** @inheritdoc */
     protected final override def createNew(newMeasure: Double): F = apply(newMeasure).asInstanceOf[F]
 
     /** Convert this measurement value to a string, expressed in the user's preferred units.
-      *
-      * @return A string containing the value of the measurement and the units in which the measurement is expressed,
-      * in the user's preferred locale.
-      *
-      * @see [[AnyRef.toString]]
-      *
-      * @since 0.0
-      */
-    final override def toString = preferredUnits.format(value)
+     *
+     *  @return A string containing the value of the measurement and the units in which the measurement is expressed,
+     *  in the user's preferred locale.
+     *
+     *  @see [[AnyRef.toString]]
+     *
+     *  @since 0.0
+     */
+    final override def toString: String = preferredUnits.format(value)
   }
 
   /** Abstract base class for all specific physical quantity measurement units.
-    *
-    * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/]].
-    *
-    * @constructor Create new instance of a specific physical quantity unit.
-    *
-    * @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''SI''
-    * units for this unit family.
-    *
-    * @param symbol Symbol to be used when outputting measurement values expressed in these units.
-    *
-    * @since 0.0
-    */
+   *
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/]].
+   *
+   *  @constructor Create new instance of a specific physical quantity unit.
+   *
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''SI''
+   *  units for this unit family.
+   *
+   *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
+   *
+   *  @since 0.0
+   */
   abstract class SpecificUnits protected[phys](converter: Converter, protected[phys] final val symbol: String)
   extends PhysicalUnits {
 
     /** Employ the converter to handle importing of values.
-      *
-      * @inheritdoc
-      */
+     *
+     *  @inheritdoc
+     */
     private[phys] final override def importValue(value: Double) = converter.importValue(value)
 
     /** Employ the converter to handle exporting of values.
-      *
-      * @inheritdoc
-      */
+     *
+     *  @inheritdoc
+     */
     private[phys] final override def exportValue(value: Double) = converter.exportValue(value)
 
     /** Format a value in these units for output.
-      *
-      * @param value Measurement value, expressed in ''SI'' units, to be output.
-      *
-      * @return Formatted string, containing the value and the units (if any).
-      */
+     *
+     *  @param value Measurement value, expressed in ''SI'' units, to be output.
+     *
+     *  @return Formatted string, containing the value and the units (if any).
+     */
     private[phys] final def format(value: Double) = {
       LibResource("phys.Physical.Units.format", exportValue(value), symbol)
     }

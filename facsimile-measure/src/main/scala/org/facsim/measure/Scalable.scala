@@ -35,35 +35,35 @@
 package org.facsim.measure
 
 /** Trait supporting the scaling of value classes by constant factors.
-  *
-  * @tparam T Type of value being factored.
-  *
-  * @since 0.0
-  */
+ *
+ *  @tparam T Type of value being factored.
+ *
+ *  @since 0.0
+ */
 trait Scalable[T <: Scalable[T]] {
 
   /** Scale this value by specified factor.
-    *
-    * @param factor Factor used to scale this value.
-    *
-    * @return Product of this value multiplied by `factor`. The result is a value of the same type as this value.
-    *
-    * @throws IllegalArgumentException if the result is not finite or is invalid for these units.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param factor Factor used to scale this value.
+   *
+   *  @return Product of this value multiplied by `factor`. The result is a value of the same type as this value.
+   *
+   *  @throws IllegalArgumentException if the result is not finite or is invalid for these units.
+   *
+   *  @since 0.0
+   */
   def *(factor: Double): T
 
   /** Divide this value by specified divisor.
-    *
-    * @param divisor Divisor to be applied to this value.
-    *
-    * @return Quotient of this value divided by `divisor`. The result is a value of the same type as this value.
-    *
-    * @throws IllegalArgumentException if the result is not finite or invalid for the associated type. For example, an
-    * infinite result will occur if `divisor` is zero, which will cause this exception to be thrown.
-    *
-    * @since 0.0
-    */
+   *
+   *  @param divisor Divisor to be applied to this value.
+   *
+   *  @return Quotient of this value divided by `divisor`. The result is a value of the same type as this value.
+   *
+   *  @throws IllegalArgumentException if the result is not finite or invalid for the associated type. For example, an
+   *  infinite result will occur if `divisor` is zero, which will cause this exception to be thrown.
+   *
+   *  @since 0.0
+   */
   def /(divisor: Double): T
 }

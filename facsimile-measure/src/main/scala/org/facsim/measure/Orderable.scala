@@ -37,22 +37,21 @@ package org.facsim.measure
 import scala.reflect.ClassTag
 
 /** Abstract base class for objects that can be compared for equality, and sorted in order.
-  *
-  * Implementing objects can be ordered as well as compared for equality and inequality.
-  *
-  * @note At present, this must be an ''abstract class'', rather than a ''trait'', because the latter do not currently
-  * support class bounds (such as [[ClassTag]]). Implementing types must ensure that [[compare()]] returns 0 for classes
-  * that are equivalent, and non-zero for classes that are not equivalent. Furthermore, [[hashCode]] values for
-  * equivalent objects must be identical too.
-  *
-  * @tparam T Type of object implementing ordering operations, which must implement this base class.
-  *
-  * @since 0.0
-  */
+ *
+ *  Implementing objects can be ordered as well as compared for equality and inequality.
+ *
+ *  @note At present, this must be an ''abstract class'', rather than a ''trait'', because the latter do not currently
+ *  support class bounds (such as [[ClassTag]]). Implementing types must ensure that [[compare()]] returns 0 for classes
+ *  that are equivalent, and non-zero for classes that are not equivalent. Furthermore, [[hashCode]] values for
+ *  equivalent objects must be identical too.
+ *
+ *  @tparam T Type of object implementing ordering operations, which must implement this base class.
+ *
+ *  @since 0.0
+ */
 abstract class Orderable[T <: Orderable[T] : ClassTag]
 extends Equivalent[T] with Ordered[T] {
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   final override def ===(other: T) = compare(other) == 0
 }

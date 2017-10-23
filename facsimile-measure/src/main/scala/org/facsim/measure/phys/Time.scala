@@ -37,160 +37,150 @@ package org.facsim.measure.phys
 import org.facsim.measure.LibResource
 
 /** ''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' physical quantity type.
-  *
-  * All time values are stored internally in ''[[http://en.wikipedia.org/wiki/Second seconds]]'', which is the
-  * ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
-  *
-  * @see [[http://en.wikipedia.org/wiki/Time_in_physics Time]] on ''Wikipedia''.
-  *
-  * @see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
-  *
-  * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
-  *
-  * @since 0.0
-  */
+ *
+ *  All time values are stored internally in ''[[http://en.wikipedia.org/wiki/Second seconds]]'', which is the
+ *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of measure.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/Time_in_physics Time]] on ''Wikipedia''.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
+ *
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *
+ *  @since 0.0
+ */
 object Time
 extends NonNegative {
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Measure = TimeMeasure
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   override type Units = TimeUnits
 
-  /** @inheritdoc
-    */
-  override val name = "time"
+  /** @inheritdoc */
+  override val name: String = "time"
 
-  /** Number of seconds exactly equivalent to one millisecond.
-    */
+  /** Number of seconds exactly equivalent to one millisecond. */
   private val SecondsPerMS = 1.0 / 1000.0
 
   /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Millisecond milliseconds]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Millisecond Milliseconds]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Milliseconds = new Units(new LinearScaleConverter(SecondsPerMS), LibResource("phys.Time.Millisecond.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Millisecond Milliseconds]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Milliseconds: Units = new Units(new LinearScaleConverter(SecondsPerMS), LibResource("phys.Time.Millisecond.sym"))
 
   /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Second seconds]]''.
-    *
-    * @note ''Seconds'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for time measurement, and the
-    * units that are used to store such measurements internally in ''Facsimile''.
-    *
-    * In ''Facsimile'', a ''second'' is defined in accordance with ''SI'' standards.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Seconds = new Units(SIConverter, LibResource("phys.Time.Second.sym"))
+   *
+   *  @note ''Seconds'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for time measurement, and the
+   *  units that are used to store such measurements internally in ''Facsimile''.
+   *
+   *  In ''Facsimile'', a ''second'' is defined in accordance with ''SI'' standards.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Seconds: Units = new Units(SIConverter, LibResource("phys.Time.Second.sym"))
 
-  /** Number of seconds exactly equivalent to one minute.
-    */
+  /** Number of seconds exactly equivalent to one minute. */
   private val SecondsPerMin = 60.0
 
   /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Minute minutes]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Minute Minutes]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Minutes = new Units(new LinearScaleConverter(SecondsPerMin), LibResource("phys.Time.Minute.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Minute Minutes]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Minutes: Units = new Units(new LinearScaleConverter(SecondsPerMin), LibResource("phys.Time.Minute.sym"))
 
-  /** Number of seconds exactly equivalent to one hour.
-    */
+  /** Number of seconds exactly equivalent to one hour. */
   private val SecondsPerHour = SecondsPerMin * 60.0
 
   /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Hour hours]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Hour Hours]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Hours = new Units(new LinearScaleConverter(SecondsPerHour), LibResource("phys.Time.Hour.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Hour Hours]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Hours: Units = new Units(new LinearScaleConverter(SecondsPerHour), LibResource("phys.Time.Hour.sym"))
 
-  /** Number of seconds exactly equivalent to one day.
-    */
+  /** Number of seconds exactly equivalent to one day. */
   private val SecondsPerDay = SecondsPerHour * 24.0
 
   /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Day days]]''.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Day Days]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Days = new Units(new LinearScaleConverter(SecondsPerDay), LibResource("phys.Time.Day.sym"))
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Day Days]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Days: Units = new Units(new LinearScaleConverter(SecondsPerDay), LibResource("phys.Time.Day.sym"))
 
-  /** Number of seconds exactly equivalent to one week.
-    */
+  /** Number of seconds exactly equivalent to one week. */
   private val SecondsPerWeek = SecondsPerDay * 7.0
 
   /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Week weeks]]''.
-    *
-    * @note This is the largest unit of time currently supported by ''Facsimile''. Note that months, years, decades,
-    * centuries, millenia, etc. vary in duration depending upon a number of factors: leap seconds, leap years, days per
-    * month, etc. Consequently, there is no simple ''standard'' definition for higher units of time.
-    *
-    * @see [[http://en.wikipedia.org/wiki/Week Weeks]] on ''Wikipedia''.
-    *
-    * @since 0.0
-    */
-  val Weeks = new Units(new LinearScaleConverter(SecondsPerWeek), LibResource("phys.Time.Week.sym"))
+   *
+   *  @note This is the largest unit of time currently supported by ''Facsimile''. Note that months, years, decades,
+   *  centuries, millenia, etc. vary in duration depending upon a number of factors: leap seconds, leap years, days per
+   *  month, etc. Consequently, there is no simple ''standard'' definition for higher units of time.
+   *
+   *  @see [[http://en.wikipedia.org/wiki/Week Weeks]] on ''Wikipedia''.
+   *
+   *  @since 0.0
+   */
+  val Weeks: Units = new Units(new LinearScaleConverter(SecondsPerWeek), LibResource("phys.Time.Week.sym"))
 
-  /** Physical quantity family for time measurements.
-    */
-  protected[phys] override val family = Family(timeExponent = 1)
+  /** Physical quantity family for time measurements. */
+  protected[phys] override val family: Family = Family(timeExponent = 1)
 
-  /** @inheritdoc
-    */
-  override val siUnits = Seconds
+  /** @inheritdoc */
+  override val siUnits: Units = Seconds
 
   // Register this family.
   Family.register(family, Time)
 
   /** Time measurement factory function.
-    *
-    * @param measure Measurement, in seconds, to be converted into a new measure.
-    *
-    * @return `measure` in the form of a Time measurement.
-    */
+   *
+   *  @param measure Measurement, in seconds, to be converted into a new measure.
+   *
+   *  @return `measure` in the form of a Time measurement.
+   */
   private[phys] override def apply(measure: Double) = new Measure(measure)
 
   /** ''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' measurement class.
-    *
-    * Instances of this class represent ''time'' measurements.
-    *
-    * @constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics time]]'' measurement value.
-    *
-    * @param measure ''Time'' measurement expressed in ''[[Seconds]]''. This value must be finite and greater than or
-    * equal to zero.
-    *
-    * @throws IllegalArgumentException if `measure` is not finite or is negative.
-    *
-    * @since 0.0
-    */
+   *
+   *  Instances of this class represent ''time'' measurements.
+   *
+   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics time]]'' measurement value.
+   *
+   *  @param measure ''Time'' measurement expressed in ''[[Seconds]]''. This value must be finite and greater than or
+   *  equal to zero.
+   *
+   *  @throws IllegalArgumentException if `measure` is not finite or is negative.
+   *
+   *  @since 0.0
+   */
   final class TimeMeasure private[phys](measure: Double)
   extends NonNegativeMeasure[TimeMeasure](measure)
 
   /** ''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' unit of measurement family class.
-    *
-    * Instances of this class represent units for expressing ''time'' measurements.
-    *
-    * @constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics time]]'' unit of measurement.
-    *
-    * @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''time
-    * [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''seconds''.
-    *
-    * @param symbol Symbol to be used when outputting measurement values expressed in these units.
-    *
-    * @since 0.0
-    */
+   *
+   *  Instances of this class represent units for expressing ''time'' measurements.
+   *
+   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics time]]'' unit of measurement.
+   *
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''time
+   *  [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''seconds''.
+   *
+   *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
+   *
+   *  @since 0.0
+   */
   final class TimeUnits private[phys](converter: Converter, symbol: String)
   extends NonNegativeUnits(converter, symbol)
 }

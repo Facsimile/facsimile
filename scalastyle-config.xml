@@ -328,9 +328,9 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   Rationale: Class instances that are determined to be equal should have identical hash codes also. Consequently,
   classes that have custom "equals" methods must have custom "hashCode" methods also.
 
-  UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
+  To disable this rule locally, use the ID: equals.hash.code
   -->
-  <check class="org.scalastyle.scalariform.EqualsHashCodeChecker" enabled="true" level="error" />
+  <check class="org.scalastyle.scalariform.EqualsHashCodeChecker" enabled="true" level="warning" />
 
   <!--
   Ensure that all classes defining a custom "equals" method override "equals(java.lang.Object)".
@@ -702,9 +702,9 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   is often required for readability. A more sophisticated rule is required to check for spaces prior to left
   parentheses, and so LPAREN is excluded from this list.
 
-  UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
+  To disable this rule locally, use the ID: disallow.space.before.token
   -->
-  <check class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" enabled="true" level="error">
+  <check class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" enabled="true" level="warning">
     <parameters>
       <parameter name="tokens">COLON, COMMA, LBRACKET, RBRACKET, RPAREN</parameter>
     </parameters>

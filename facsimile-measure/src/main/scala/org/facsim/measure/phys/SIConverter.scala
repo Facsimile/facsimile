@@ -35,18 +35,16 @@
 package org.facsim.measure.phys
 
 /** Converter to be used for ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
-  *
-  * Converter to be used for ''SI'' units, which preserves the original values without modification. For example, this
-  * converter should be used for converting ''seconds'' to ''seconds'', ''kilograms'' to ''kilograms'', etc.
-  */
+ *
+ * Converter to be used for ''SI'' units, which preserves the original values without modification. For example, this
+ * converter should be used for converting ''seconds'' to ''seconds'', ''kilograms'' to ''kilograms'', etc.
+ */
 private[phys] object SIConverter
 extends Converter {
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def importValue(value: Double): Double = value
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def exportValue(value: Double): Double = value
 }

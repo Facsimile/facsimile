@@ -37,21 +37,21 @@ package org.facsim.measure.phys
 import org.facsim.util.{requireFinite, requireValid}
 
 /** Linear scale converter.
-  *
-  * Converts physical quantity measurement units of an associated, but unspecified, unit to and from the corresponding
-  * standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the unit family. Values are ''imported'' (converted to
-  * ''SI'' unit values) by multiplying by the specified linear scaling `factor` and are ''exported'' (converted from
-  * ''SI'' unit values) by dividing by the same `factor`.
-  *
-  * @constructor Create new linear scale converter from the specified linear scaling `factor`.
-  *
-  * @param factor Linear scaling factor to be employed. This value must be finite and cannot be 0 or 1. A value of 0
-  * causes ''divide-by-zero'' exceptions when exporting values and implies that the magnitude of all measurement values
-  * is 0. A value of 1 implies that the units are already ''SI'' units, since no scaling is performed, in which case
-  * [[SIConverter]] should be preferred.
-  *
-  * @throws IllegalArgumentException if '''factor''' is NaN, infinite, 0 or 1.
-  */
+ *
+ *  Converts physical quantity measurement units of an associated, but unspecified, unit to and from the corresponding
+ *  standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the unit family. Values are ''imported'' (converted to
+ *  ''SI'' unit values) by multiplying by the specified linear scaling `factor` and are ''exported'' (converted from
+ *  ''SI'' unit values) by dividing by the same `factor`.
+ *
+ *  @constructor Create new linear scale converter from the specified linear scaling `factor`.
+ *
+ *  @param factor Linear scaling factor to be employed. This value must be finite and cannot be 0 or 1. A value of 0
+ *  causes ''divide-by-zero'' exceptions when exporting values and implies that the magnitude of all measurement values
+ *  is 0. A value of 1 implies that the units are already ''SI'' units, since no scaling is performed, in which case
+ *  [[SIConverter]] should be preferred.
+ *
+ *  @throws IllegalArgumentException if '''factor''' is NaN, infinite, 0 or 1.
+ */
 private[phys] class LinearScaleConverter(factor: Double)
 extends Converter {
 
@@ -60,11 +60,9 @@ extends Converter {
   requireFinite(factor)
   requireValid(factor, factor != 0.0 && factor != 1.0)
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def importValue(value: Double): Double = value * factor
 
-  /** @inheritdoc
-    */
+  /** @inheritdoc */
   private[phys] override def exportValue(value: Double): Double = value / factor
 }
