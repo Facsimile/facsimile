@@ -320,7 +320,7 @@ with PropertyChecks {
     }
   }
 }
-// Disable test-problematic Scalastyle checkers.
+// Re-enable test-problematic Scalastyle checkers.
 //scalastyle:on scaladoc
 //scalastyle:on public.methods.have.type
 //scalastyle:on multiple.string.literals

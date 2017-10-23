@@ -41,26 +41,25 @@ import scala.annotation.tailrec
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Test behaviors for [[Equals]] trait-implementing classes.
-  *
-  * This trait can be used as part of the test suite for a class that must honor the ''equals contract'':
-  *
-  * - ''Reflexive'': `x == x` should be true for various non-`null` `x` of the associated type.
-  * - ''Symmetric'': `x == y` and `y == x` should both give the same, expected answer for various non-`null` `x` & `y`.
-  * - ''Transitive'': `x == y`, `y == z` and `x == z` should all give the same, expected answer for various non-`null`
-  * `x`, `y` & `z`.
-  * - ''Consistent'': `x == y` must always hold `true`, or always hold `false`, if `x` & `y` are not modified
-  * (guaranteed if `x` & `y` are immutable).
-  * - `x != y` if `x` and `y` are not comparable objects, regardless of contents, for various non-`null` `x` & `y`.
-  * - `x != null` for various non-`null` `x`. Should not see [[NullPointerException]] thrown.
-  * - If `x == y`, then verify also that `x.hashMap = y.hashMap`, for various non-`null` `x` & `y`.
-  * - etc.
-  *
-  * @tparam V Type, implementing the [[Equals]] trait, to be tested.
-  */
+ *
+ *  This trait can be used as part of the test suite for a class that must honor the ''equals contract'':
+ *
+ *  - ''Reflexive'': `x == x` should be true for various non-`null` `x` of the associated type.
+ *  - ''Symmetric'': `x == y` and `y == x` should both give the same, expected answer for various non-`null` `x` & `y`.
+ *  - ''Transitive'': `x == y`, `y == z` and `x == z` should all give the same, expected answer for various non-`null`
+ *    `x`, `y` & `z`.
+ *  - ''Consistent'': `x == y` must always hold `true`, or always hold `false`, if `x` & `y` are not modified
+ *    (guaranteed if `x` & `y` are immutable).
+ *  - `x != y` if `x` and `y` are not comparable objects, regardless of contents, for various non-`null` `x` & `y`.
+ *  - `x != null` for various non-`null` `x`. Should not see [[NullPointerException]] thrown.
+ *  - If `x == y`, then verify also that `x.hashMap = y.hashMap`, for various non-`null` `x` & `y`.
+ *  - etc.
+ *
+ *  @tparam V Type, implementing the [[Equals]] trait, to be tested.
+ */
 trait EqualsBehaviors[V <: Equivalent[V]] {this: FunSpec =>
 
-  /** Verify a [[Equals]]-implementing object.
-    */
+  /** Verify a [[Equals]]-implementing object. */
   final def equalsBehavior(equalsFixture: EqualsFixture[V]): Unit = {
 
     // Function to compare a value to every value in a list, verifying the result.

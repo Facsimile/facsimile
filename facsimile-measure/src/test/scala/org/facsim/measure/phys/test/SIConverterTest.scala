@@ -37,10 +37,12 @@ package org.facsim.measure.phys.test
 import org.facsim.measure.phys.SIConverter
 import org.scalatest.FunSpec
 
+// Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
-/** Test suite for the [[SIConverter]] object.
-  */
+//scalastyle:off magic.numbers
+/** Test suite for the [[SIConverter]] object. */
 class SIConverterTest
 extends FunSpec {
 
@@ -88,5 +90,8 @@ extends FunSpec {
     }
   }
 }
-//scalastyle:on multiple.string.literals
+// Re-enable test-problematic Scalastyle checkers.
 //scalastyle:on scaladoc
+//scalastyle:on public.methods.have.type
+//scalastyle:on multiple.string.literals
+//scalastyle:on magic.numbers

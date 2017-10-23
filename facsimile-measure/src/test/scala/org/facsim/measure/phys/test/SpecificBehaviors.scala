@@ -40,17 +40,17 @@ import org.scalatest.FunSpec
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Test behaviors for [[Specific]] subclasses.
-  *
-  * @tparam Q The `Specific` subclass being tested.
-  */
+ *
+ *  @tparam Q The `Specific` subclass being tested.
+ */
 trait SpecificBehaviors[Q <: Specific]
 extends PhysicalBehaviors[Q] {
   this: FunSpec =>
 
   /** Verify a [[Specific]] subclass implementation.
-    *
-    * @param fixture Test fixture providing information to be used by the tests.
-    */
+   *
+   *  @param fixture Test fixture providing information to be used by the tests.
+   */
   final def specificBehavior(fixture: SpecificFixture[Q]): Unit = {
 
     // Firstly, verify the physical quantity type behavior.

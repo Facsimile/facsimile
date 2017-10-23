@@ -38,40 +38,40 @@ import org.facsim.measure.phys.{Family, Specific}
 
 //scalastyle:off scaladoc
 /** Test fixture trait for all [[Specific]] subclasses.
-  *
-  * @tparam Q The `Specific` subclass being tested.
-  */
+ *
+ *  @tparam Q The `Specific` subclass being tested.
+ */
 trait SpecificFixture[Q <: Specific]
 extends PhysicalFixture[Q] {
 
   /** Retrieve the expected family that this specific physical quantity should report.
-    *
-    * @return Expected physical quantity family.
-    */
+   *
+   *  @return Expected physical quantity family.
+   */
   val expectedFamily: Family
 
   /** List of bad measurement values, in associated SI units, that ought to be incapable of valid measurement
-    * construction, and which should result in an exception being thrown.
-    *
-    * @note This function ought to provide values that test the boundaries of acceptable ranges. For example, if valid
-    * measurements are acceptable over the range [0, 1], then both -[[scala.Double.MinPositiveValue]] and 1 +
-    * [[scala.Double.MinPositiveValue]] should be included as invalid values.
-    *
-    * @note This function should not include non-finite values, which are tested separately.
-    *
-    * @return List of bad values. None of the bad values should be capable of valid construction when expressed in SI
-    * units. If there are no bad values, then an empty list should be returned.
-    */
+   *  construction, and which should result in an exception being thrown.
+   *
+   *  @note This function ought to provide values that test the boundaries of acceptable ranges. For example, if valid
+   *  measurements are acceptable over the range [0, 1], then both -[[scala.Double.MinPositiveValue]] and 1 +
+   *  [[scala.Double.MinPositiveValue]] should be included as invalid values.
+   *
+   *  @note This function should not include non-finite values, which are tested separately.
+   *
+   *  @return List of bad values. None of the bad values should be capable of valid construction when expressed in SI
+   *  units. If there are no bad values, then an empty list should be returned.
+   */
   val invalidValues: List[Double]
 
   /** List of good measurement values, in associated SI units, that ought to be capable of valid measurement
-    * construction.
-    *
-    * @note This function ought to provide values that test the boundaries of acceptable ranges. For example, if valid
-    * measurements are acceptable over the range [0, 1], then both 0 and 1 should be included as valid values.
-    *
-    * @return List of values all of which should be capable of valid construction when expressed in SI units.
-    */
+   *  construction.
+   *
+   *  @note This function ought to provide values that test the boundaries of acceptable ranges. For example, if valid
+   *  measurements are acceptable over the range [0, 1], then both 0 and 1 should be included as valid values.
+   *
+   *  @return List of values all of which should be capable of valid construction when expressed in SI units.
+   */
   val validValues: List[Double]
 }
 //scalastyle:on scaladoc

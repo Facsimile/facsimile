@@ -39,29 +39,29 @@ import org.facsim.measure.test.EqualsFixture
 
 //scalastyle:off scaladoc
 /** Test fixture for testing [[Physical]] subclasses.
-  *
-  * @tparam Q The `Physical` subclass being tested.
-  */
+ *
+ *  @tparam Q The `Physical` subclass being tested.
+ */
 trait PhysicalFixture[Q <: Physical] {
 
   /** Retrieve the associated concrete [[Physical]] subclass instance.
-    *
-    * @return Physical quantity instance associated with this fixture.
-    */
+   *
+   *  @return Physical quantity instance associated with this fixture.
+   */
   val instance: Q
 
   /** Retrieve this physical quantities expected SI units.
-    *
-    * @return The expected SI units for this physical quantity.
-    */
+   *
+   *  @return The expected SI units for this physical quantity.
+   */
   val expectedSIUnits: Q#Units
 
   /** List of non-finite measurement values, in associated SI units, that ought to be incapable of valid measurement
-    * construction, and which should result in an exception being thrown.
-    *
-    * @return List of non-finite values none of which should be capable of valid construction when expressed in SI
-    * units.
-    */
+   *  construction, and which should result in an exception being thrown.
+   *
+   *  @return List of non-finite values none of which should be capable of valid construction when expressed in SI
+   *  units.
+   */
   final val nonFiniteValues = List(
     Double.NaN,
     Double.NegativeInfinity,
@@ -69,10 +69,10 @@ trait PhysicalFixture[Q <: Physical] {
   )
 
   /** Retrieve a fixture for testing the equality of different measurements.
-    *
-    * @return Equals test fixture for this physical quantity. The test fixture will be used to verify that this physical
-    * quantity's measurement class correctly implements the ''equality contract''.
-    */
+   *
+   *  @return Equals test fixture for this physical quantity. The test fixture will be used to verify that this physical
+   *  quantity's measurement class correctly implements the ''equality contract''.
+   */
   val equalsFixture: EqualsFixture[Q#Measure]
 }
 //scalastyle:on scaladoc

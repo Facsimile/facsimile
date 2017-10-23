@@ -39,22 +39,25 @@ import org.facsim.measure.phys.Angle.{π, τ}
 import org.facsim.measure.test.EqualsFixture
 import org.scalatest.FunSpec
 
-/** Test suite for the [[Angle]] object.
-  */
+// Disable test-problematic Scalastyle checkers.
+//scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
+//scalastyle:off multiple.string.literals
+//scalastyle:off magic.numbers
+/** Test suite for the [[Angle]] object. */
 class AngleTest
 extends FunSpec
 with SpecificBehaviors[Angle.type] {
 
-  /** Fixture for testing that angle measurements fulfill the "equals contract".
-    */
+  /** Fixture for testing that angle measurements fulfill the "equals contract". */
   trait AngleEqualsFixture
   extends EqualsFixture[Angle.Measure] {
 
     /** Specify a list for equality testing.
-      *
-      * Each list within this list should contain values that compare equal and that have the same hashCode. The first
-      * member of each list should NOT compare equal to the first member of any other list.
-      */
+     *
+     *  Each list within this list should contain values that compare equal and that have the same hashCode. The first
+     *  member of each list should NOT compare equal to the first member of any other list.
+     */
     override def equalListSample = List(
 
       // All of these values should have a value of -τ radians (-360 degrees), which should normalize to 0 radians (0
@@ -174,8 +177,8 @@ with SpecificBehaviors[Angle.type] {
     )
 
     /** Specify a list of values (null is tested separately and does not need to be included) that are of a different
-      * type to [[Angle.Measure]] and so should not compare equal and should fail canEqual also.
-      */
+     *  type to [[Angle.Measure]] and so should not compare equal and should fail canEqual also.
+     */
     override def nonValueSample = List(
       0,
       1.0,
@@ -190,35 +193,29 @@ with SpecificBehaviors[Angle.type] {
     )
   }
 
-  /** Test fixture for angles.
-    */
+  /** Test fixture for angles. */
   trait AngleFixture
   extends SpecificFixture[Angle.type] {
 
-    /** Specify the Angle instance.
-      */
+    /** Specify the Angle instance. */
     override val instance = Angle
 
-    /** Specify the expected SI units for Angles.
-      */
+    /** Specify the expected SI units for Angles. */
     override val expectedSIUnits = Angle.Radians
 
-    /** Create a test fixture for testing "equals contract" fulfillment.
-      */
+    /** Create a test fixture for testing "equals contract" fulfillment. */
     override val equalsFixture = new AngleEqualsFixture {}
 
-    /** Specify the physical quantity family that angle measurements should belong to.
-      */
+    /** Specify the physical quantity family that angle measurements should belong to. */
     override val expectedFamily = Family.Unitless
 
     /** Specify list of invalid SI unit measurement values that should fail construction.
-      *
-      * This list is empty - there are no invalid finite measurement values for angles.
-      */
+     *
+     *  This list is empty - there are no invalid finite measurement values for angles.
+     */
     override val invalidValues = Nil
 
-    /** Specify list of valid SI unit measurement values that should lead to successful creation.
-      */
+    /** Specify list of valid SI unit measurement values that should lead to successful creation. */
     override val validValues = List(
       Double.MinValue,
       -Double.MinPositiveValue,
@@ -250,4 +247,8 @@ with SpecificBehaviors[Angle.type] {
     it must behave like specificBehavior(new AngleFixture {})
   }
 }
+// Re-enable test-problematic Scalastyle checkers.
 //scalastyle:on scaladoc
+//scalastyle:on public.methods.have.type
+//scalastyle:on multiple.string.literals
+//scalastyle:on magic.numbers

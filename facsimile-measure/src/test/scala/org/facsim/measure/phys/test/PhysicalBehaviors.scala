@@ -41,18 +41,18 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 /** Test behaviors for [[Physical]] subclasses.
-  *
-  * @tparam Q Physical subclass to be tested.
-  */
+ *
+ *  @tparam Q Physical subclass to be tested.
+ */
 trait PhysicalBehaviors[Q <: Physical]
 extends EqualsBehaviors[Q#Measure]
 with CommonTestMethods {
   this: FunSpec =>
 
   /** Verify a [[Physical]] subclass implementation.
-    *
-    * @param fixture Test fixture providing information to be used by the tests.
-    */
+   *
+   *  @param fixture Test fixture providing information to be used by the tests.
+   */
   final def physicalBehavior(fixture: PhysicalFixture[Q]): Unit = {
 
     // Test the physical quantity's SI units are reported correctly.

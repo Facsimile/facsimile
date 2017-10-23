@@ -40,14 +40,12 @@ import org.scalatest.FunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
-/** Test suite for the [[Point]] class and companion object.
-  */
+/** Test suite for the [[Point]] class and companion object. */
 class PointTest
 extends FunSpec
 with CommonTestMethods {
 
-  /** Test data.
-    */
+  /** Test data. */
   trait TestData {
     val one = Length(1.0)
     val two = Length(2.0)

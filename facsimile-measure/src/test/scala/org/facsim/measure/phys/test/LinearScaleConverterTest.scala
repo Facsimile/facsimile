@@ -38,18 +38,20 @@ import org.facsim.measure.phys.LinearScaleConverter
 import org.facsim.util.test.CommonTestMethods
 import org.scalatest.FunSpec
 
+// Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
-/** Test suite for the [[LinearScaleConverter]] class.
-  */
+//scalastyle:off magic.numbers
+/** Test suite for the [[LinearScaleConverter]] class. */
 class LinearScaleConverterTest
 extends FunSpec
 with CommonTestMethods {
 
   /** Construction test data.
-    *
-    * Note: The values 0.0 and 1.0 are illegal factor values, and so are not included here.
-    */
+   *
+   *  Note: The values 0.0 and 1.0 are illegal factor values, and so are not included here.
+   */
   trait ConstructorTestData {
     new LinearScaleConverter(Double.MinValue)
     new LinearScaleConverter(-1.0)
@@ -58,8 +60,7 @@ with CommonTestMethods {
     new LinearScaleConverter(Double.MaxValue)
   }
 
-  /** Import/export test data.
-    */
+  /** Import/export test data. */
   trait ImportExportTestData {
     val tolerance = 1.0e-12
     val factorTen = new LinearScaleConverter(10.0)
@@ -160,5 +161,8 @@ with CommonTestMethods {
     }
   }
 }
-//scalastyle:on multiple.string.literals
+// Re-enable test-problematic Scalastyle checkers.
 //scalastyle:on scaladoc
+//scalastyle:on public.methods.have.type
+//scalastyle:on multiple.string.literals
+//scalastyle:on magic.numbers

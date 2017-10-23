@@ -37,14 +37,16 @@ package org.facsim.measure.phys.test
 import org.facsim.measure.phys.Family
 import org.scalatest.FunSpec
 
+// Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
-/** Test suite for the [[Family]] class and companion object.
-  */
+//scalastyle:off public.methods.have.type
+//scalastyle:off multiple.string.literals
+//scalastyle:off magic.numbers
+/** Test suite for the [[Family]] class and companion object. */
 class FamilyTest
 extends FunSpec {
 
-  /** Test data.
-    */
+  /** Test data. */
   //scalastyle:off magic.number
   trait TestData {
     val angleFamily = Family()
@@ -166,4 +168,8 @@ extends FunSpec {
     }
   }
 }
+// Re-enable test-problematic Scalastyle checkers.
 //scalastyle:on scaladoc
+//scalastyle:on public.methods.have.type
+//scalastyle:on multiple.string.literals
+//scalastyle:on magic.numbers

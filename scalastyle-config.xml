@@ -269,7 +269,8 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   </check>
 
   <!--
-  Field names are alphanumeric, starting with a lowercase character (except for constants, which start with a capital).
+  Field names are alphanumeric, starting with a lowercase character (except for constants, which start with a capital),
+  and may also contain underscores.
 
   Although it cannot be enforced by Scalastyle, the convention is that field names are also in camel case with no
   underscores permitted. A further unenforceable convention, is that "constants" (special values that have defined
@@ -284,8 +285,8 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
   -->
   <check class="org.scalastyle.scalariform.FieldNamesChecker" enabled="true" level="warning">
     <parameters>
-      <parameter name="regex"><![CDATA[^\p{Alpha}\p{Alnum}*$]]></parameter>
-      <parameter name="objectFieldRegex"><![CDATA[^\p{Alpha}\p{Alnum}*$]]></parameter>
+      <parameter name="regex"><![CDATA[^\p{Alpha}\w*$]]></parameter>
+      <parameter name="objectFieldRegex"><![CDATA[^\p{Alpha}\w*$]]></parameter>
     </parameters>
   </check>
 
@@ -437,7 +438,8 @@ package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
 
   TODO: Every public member must have an explicit type. IntelliJ enforces this, Scalastyle only enforces methods.
 
-  UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES.
+  UNDER NO CIRCUMSTANCES MAY YOU LOCALLY DISABLE THIS RULE IN YOUR SOURCES. However, it may be necessary to disable it
+  in test sources, in which case it can be disabled with the ID: public.methods.have.type
   -->
   <check class="org.scalastyle.scalariform.PublicMethodsHaveTypeChecker" enabled="true" level="error">
     <parameters>

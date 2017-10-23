@@ -39,9 +39,9 @@ import org.facsim.measure.Equivalent
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Fixture trait for testing if an associated object implements the ''equals contract''.
-  *
-  * @tparam V Type, implementing the [[Equivalent]] class, to be tested.
-  */
+ *
+ *  @tparam V Type, implementing the [[Equivalent]] class, to be tested.
+ */
 trait EqualsFixture[V <: Equivalent[V]] {
 
   // Sanity checks on the reported fixtures.
@@ -50,29 +50,29 @@ trait EqualsFixture[V <: Equivalent[V]] {
   assert(nonValueSample.forall(value => value.getClass != valueSample.head.getClass)) // Checks different value type.
 
   /** Return a list of lists, such that every value in the inner list should compare equal.
-    *
-    * @return List of list of equal values.
-    */
+   *
+   *  @return List of list of equal values.
+   */
   def equalListSample: List[List[V]]
 
   /** Return a sample list of values of a type different to `V`.
-    *
-    * @note None of the values in this list should be of type `V`. However, to improve the thoroughness of the testing,
-    * if possible the contents of these objects should match the contents of some of the objects in
-    * [[EqualsFixture.valueSample]].
-    *
-    * @return List of values of a different type to `V`.
-    */
+   *
+   *  @note None of the values in this list should be of type `V`. However, to improve the thoroughness of the testing,
+   *  if possible the contents of these objects should match the contents of some of the objects in
+   *  [[EqualsFixture.valueSample]].
+   *
+   *  @return List of values of a different type to `V`.
+   */
   def nonValueSample: List[Any]
 
   /** Return a sample list of unique values.
-    *
-    * @note All of the values in this list should be of type `V` (or, to be more explicit, their `canEqual` methods
-    * should return `true` for each value in this list). Duplicate values are not permitted. Further, there must be at
-    * least 2 values in the list.
-    *
-    * @return List of unique values to be tested.
-    */
+   *
+   *  @note All of the values in this list should be of type `V` (or, to be more explicit, their `canEqual` methods
+   *  should return `true` for each value in this list). Duplicate values are not permitted. Further, there must be at
+   *  least 2 values in the list.
+   *
+   *  @return List of unique values to be tested.
+   */
   final def valueSample: List[V] = equalListSample.map(_.head)
 }
 //scalastyle:on multiple.string.literals
