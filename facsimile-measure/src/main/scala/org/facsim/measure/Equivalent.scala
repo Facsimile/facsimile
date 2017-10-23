@@ -48,7 +48,8 @@ import scala.reflect.ClassTag
  *
  *  @since 0.0
  */
-abstract class Equivalent[T <: Equivalent[T] : ClassTag]
+//scalastyle:off equals.hash.code
+abstract class Equivalent[T <: Equivalent[T] : ClassTag] //scalastyle:ignore disallow.space.before.token
 extends Equals {
 
   /** Equivalence operator.
@@ -77,7 +78,7 @@ extends Equals {
    *
    *  @since 0.0
    */
-  final def =!=(other: T) = !(this === other)
+  final def =!=(other: T): Boolean = !(this === other)
 
   /** Determine whether another object can be compared for equality to this object.
    *
@@ -88,7 +89,7 @@ extends Equals {
    *
    *  @since 0.0
    */
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case _: T => true
     case _ => false
   }
@@ -104,8 +105,8 @@ extends Equals {
    *
    *  @since 0.0
    */
-  final override def equals(other: Any) = other match {
+  final override def equals(other: Any): Boolean = other match {
     case that: T => that.canEqual(this) && this === that
     case _ => false
   }
-}
+}//scalastyle:on equals.hash.code

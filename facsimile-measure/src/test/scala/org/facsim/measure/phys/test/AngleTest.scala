@@ -40,6 +40,7 @@ import org.facsim.measure.test.EqualsFixture
 import org.scalatest.FunSpec
 
 // Disable test-problematic Scalastyle checkers.
+//scalastyle:off indentation
 //scalastyle:off scaladoc
 //scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
@@ -252,3 +253,4 @@ with SpecificBehaviors[Angle.type] {
 //scalastyle:on public.methods.have.type
 //scalastyle:on multiple.string.literals
 //scalastyle:on magic.numbers
+//scalastyle:off indentation

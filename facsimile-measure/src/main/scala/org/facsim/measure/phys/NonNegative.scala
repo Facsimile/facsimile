@@ -62,6 +62,8 @@ extends Specific {
 
   /** Abstract base class for physical quantity measurements that cannot be negative.
    *
+   *  @tparam F Final measurement type.
+   *
    *  @constructor Construct new non-negative measurement value.
    *
    *  @param measure Value of the measurement type in the associated ''SI'' units. This value must be finite and
@@ -71,7 +73,9 @@ extends Specific {
    *
    *  @since 0.0
    */
+  //scalastyle:off disallow.space.before.token
   abstract class NonNegativeMeasure[F <: NonNegativeMeasure[F] : ClassTag] protected[phys](measure: Double)
+  //scalastyle:on disallow.space.before.token
   extends SpecificMeasure[F](measure) {
 
     // If the measure is negative, then report an error.

@@ -30,7 +30,6 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-
 // Scala source file belonging to the org.facsim.util package.
 //======================================================================================================================
 package org.facsim.measure
@@ -46,8 +45,10 @@ import scala.reflect.ClassTag
  *
  *  @since 0.0
  */
+//scalastyle:off disallow.space.before.token
 abstract class Value[T <: Value[T] : ClassTag](private[facsim] final val value: Double)
 extends Orderable[T] {
+//scalastyle:on disallow.space.before.token
 
   /** Compare this value to another value.
    *
@@ -60,7 +61,7 @@ extends Orderable[T] {
    *
    *  @since 0.0
    */
-  final override def compare(other : T) = {
+  final override def compare(other: T): Int = {
     requireNonNull(other)
     value.compare(other.value)
   }
@@ -85,9 +86,9 @@ extends Orderable[T] {
    *
    *  @since 0.0
    */
-  final def abs = {
+  final def abs: T = {
     if(value < 0.0) createNew(-value)
-    else this
+    else this.asInstanceOf[T] //scalastyle:ignore token
   }
 
   /** Change the sign of a measurement value.
@@ -101,5 +102,5 @@ extends Orderable[T] {
    *
    *  @since 0.0
    */
-  final def unary_- = createNew(-value)
+  final def unary_- : T = createNew(-value) //scalastyle:ignore disallow.space.before.token
 }

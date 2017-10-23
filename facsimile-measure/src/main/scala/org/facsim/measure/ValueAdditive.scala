@@ -30,7 +30,6 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-
 // Scala source file belonging to the org.facsim.util package.
 //======================================================================================================================
 package org.facsim.measure
@@ -50,13 +49,13 @@ extends Additive[F] {
   self: Value[F] =>
 
   /** @inheritdoc */
-  final override def +(other: F) = {
+  final override def +(other: F): F = {
     requireNonNull(other)
     createNew(value + other.value)
   }
 
   /** @inheritdoc */
-  final override def -(other: F) = {
+  final override def -(other: F): F = {
     requireNonNull(other)
     createNew(value - other.value)
   }

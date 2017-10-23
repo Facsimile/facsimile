@@ -49,9 +49,9 @@ import scala.reflect.ClassTag
  *
  *  @since 0.0
  */
-abstract class Orderable[T <: Orderable[T] : ClassTag]
+abstract class Orderable[T <: Orderable[T] : ClassTag] //scalastyle:ignore disallow.space.before.token
 extends Equivalent[T] with Ordered[T] {
 
   /** @inheritdoc */
-  final override def ===(other: T) = compare(other) == 0
+  final override def ===(other: T): Boolean = compare(other) == 0
 }

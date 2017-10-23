@@ -47,8 +47,8 @@ extends Scalable[F] {
   self: Value[F] =>
 
   /** @inheritdoc */
-  final override def *(factor: Double) = createNew(value * factor)
+  final override def *(factor: Double): F = createNew(value * factor)
 
   /** @inheritdoc */
-  final override def /(divisor: Double) = createNew(value / divisor)
+  final override def /(divisor: Double): F = createNew(value / divisor)
 }
