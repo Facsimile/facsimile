@@ -35,15 +35,14 @@
 package org.facsim.stat.prn
 
 /** Simple ''pseudo-random number'' (''PRN'') generator, using an algorithm that is identical to that of ''Java''.
-  *
-  * @since 0.0
-  */
+ *
+ *  @since 0.0
+ */
 case class SimplePRNG(seed: Long)
-extends PRNG {
+extends PRNG[SimplePRNG] {
 
-  /** @inheritdoc
-    */
-  override def nextInt = {
+  /** @inheritdoc */
+  override def nextInt: (Int, SimplePRNG) = {
     val nextSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
     val nextPRNG = SimplePRNG(nextSeed)
     val u = (nextSeed >>> 16).toInt

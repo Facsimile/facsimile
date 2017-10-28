@@ -37,65 +37,67 @@ package org.facsim.stat.prn
 import org.facsim.util.requireValid
 
 /** Probability value.
-  *
-  * A probability is a value in the range [0, 1], which represents the odds of an event occurring. Probabilities are
-  * real values that range from 0 (impossible) through to 1 (certain).
-  *
-  * @constructor Create a new probability.
-  *
-  * @param prob Probability of some event occurring. Probability values must be in the range [0, 1].
-  *
-  * @throws IllegalArgumentException if `prob` is outside the range [0, 1].
-  *
-  * @since 0.0
-  */
+ *
+ *  A probability is a value in the range [0, 1], which represents the odds of an event occurring. Probabilities are
+ *  real values that range from 0 (impossible) through to 1 (certain).
+ *
+ *  @constructor Create a new probability.
+ *
+ *  @param prob Probability of some event occurring. Probability values must be in the range [0, 1].
+ *
+ *  @throws IllegalArgumentException if `prob` is outside the range [0, 1].
+ *
+ *  @since 0.0
+ */
 final class Probability private(private val prob: Double) {
 
   // Probability values outside the valid range will result in an exception.
   requireValid(prob, prob >= 0.0 && prob <= 1.0)
 
   /** Probability of this event or an event with the other probability occurring.
-    *
-    * @param that Probability of the other event occurring.
-    *
-    * @return Probability of this event or `that` event occurring.
-    *
-    * @throws IllegalArgumentException if the resulting probability is outside the range [0, 1].
-    *
-    * @since 0.0
-    */
-  def or(that: Probability) = Probability(prob + that.prob)
+   *
+   *  @param that Probability of the other event occurring.
+   *
+   *  @return Probability of this event or `that` event occurring.
+   *
+   *  @throws IllegalArgumentException if the resulting probability is outside the range [0, 1].
+   *
+   *  @since 0.0
+   */
+  def or(that: Probability): Probability = Probability(prob + that.prob)
 
   /** Probability of this event and another event occurring.
-    *
-    * @param that Probability of the other event occuring.
-    *
-    * @return Probability of this event and `that` event occuring.
-    *
-    * @since 0.0
-    */
-  def and(that: Probability) = Probability(prob * that.prob)
+   *
+   *  @param that Probability of the other event occuring.
+   *
+   *  @return Probability of this event and `that` event occuring.
+   *
+   *  @since 0.0
+   */
+  def and(that: Probability): Probability = Probability(prob * that.prob)
 
   /** Probability of this event not occurring.
-    *
-    * @return Probability of this event not occurring.
-    *
-    * @since 0.0
-    */
-  def not = Probability(1.0 - prob)
+   *
+   *  @return Probability of this event not occurring.
+   *
+   *  @since 0.0
+   */
+  def not: Probability = Probability(1.0 - prob)
 }
 
 /** Probability companion.
-  */
+ *
+ *  @since 0.0
+ */
 object Probability {
 
   /** Probability factory method.
-    *
-    * @param p Value of the new probability.
-    *
-    * @return New probability instance.
-    *
-    * @since 0.0
-    */
-  def apply(p: Double) = new Probability(p)
+   *
+   *  @param p Value of the new probability.
+   *
+   *  @return New probability instance.
+   *
+   *  @since 0.0
+   */
+  def apply(p: Double): Probability = new Probability(p)
 }
