@@ -480,7 +480,7 @@ lazy val sourceProjectSettings = Seq(
   libraryDependencies ++= Seq(
 
     // ScalaTest dependency.
-    "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+    "org.scalatest" %% "scalatest" % "3.0.4" % "test",
 
     // ScalaCheck dependency.
     "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
