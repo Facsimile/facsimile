@@ -18,7 +18,7 @@
             <option value="$PROJECT_DIR$/project" />
           </set>
         </option>
-        <option name="sbtVersion" value="1.0.2" />
+        <option name="sbtVersion" value="1.0.3" />
         <option name="useAutoImport" value="true" />
         <option name="useOurOwnAutoImport" value="true" />
       </SbtProjectSettings>
