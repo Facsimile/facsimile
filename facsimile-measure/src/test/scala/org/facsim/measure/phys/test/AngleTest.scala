@@ -48,11 +48,11 @@ import org.scalatest.FunSpec
 /** Test suite for the [[Angle]] object. */
 class AngleTest
 extends FunSpec
-with SpecificBehaviors[Angle.type] {
+with SpecificBehaviors[Angle.type, Angle] {
 
   /** Fixture for testing that angle measurements fulfill the "equals contract". */
   trait AngleEqualsFixture
-  extends EqualsFixture[Angle.Measure] {
+  extends EqualsFixture[Angle] {
 
     /** Specify a list for equality testing.
      *
