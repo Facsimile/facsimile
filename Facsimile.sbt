@@ -398,7 +398,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     //
     // This is typically determined by including the "-u" argument to a git push command. The upstream repository for a
     // release MUST be the primary Facsimile repository, not a fork.
-    pushChanges
+    pushChanges,
   ),
 
   // By default, we'll bump the bug-fix/release number of the version following a release.
@@ -451,7 +451,7 @@ lazy val sourceProjectSettings = Seq(
     "-Ywarn-numeric-widen",
     "-Ywarn-unused",
     "-Ywarn-unused-import",
-    "-Ywarn-value-discard"
+    "-Ywarn-value-discard",
   ),
 
   // Fork all tests, so that they run in a separate process.
@@ -483,7 +483,7 @@ lazy val sourceProjectSettings = Seq(
     "org.scalatest" %% "scalatest" % "3.0.4" % "test",
 
     // ScalaCheck dependency.
-    "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
+    "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
   ),
 )
 
@@ -511,16 +511,14 @@ settings(
   // Name and description of this project.
   name := "Facsimile Utility Library",
   normalizedName := facsimileUtilName,
-  description := """
-    The Facsimile Utility library provides a number of utilities required by other Facsimile libraries as well as
-    third-party libraries.
-  """,
+  description := """The Facsimile Utility library provides a number of utilities required by other Facsimile libraries
+  |as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
 
   // Utility library dependencies.
   libraryDependencies ++= Seq(
 
     // The Scala reflection library is required for implementing macros.
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value
+    "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   ),
 
   // Help the test code find the test JAR files that we use to verify JAR file manifests.
@@ -545,10 +543,13 @@ settings(
   // Name and description of this project.
   name := "Facsimile Physical Measurement Library",
   normalizedName := facsimileMeasureName,
-  description := """
-    The Facsimile Measurement library supports physics calculations specified in a variety of physical measurement value
-    classes, in a variety of supported units.
-  """,
+  description := """The Facsimile Measurement library supports physics calculations specified in a variety of physical
+  |measurement value classes, in a variety of supported units.""".stripMargin.replaceAll("\n", " "),
+
+  // Facsimile's physical measurement library utilises the Spire library.
+  libraryDependencies ++= Seq(
+    "org.typelevel" %% "spire" % "0.14.1",
+  )
 )
 
 // Name of the facsimile-stat project.
@@ -568,10 +569,8 @@ settings(
   // Name and description of this project.
   name := "Facsimile Statistical Library",
   normalizedName := facsimileStatName,
-  description := """
-    The Facsimile Statistical library supports statistical distribution sampling, reporting, analysis and inference
-    testing.
-  """,
+  description := """The Facsimile Statistical library supports statistical distribution sampling, reporting, analysis
+  and inference testing.""".stripMargin.replaceAll("\n", " "),
 )
 
 // Facsimile root project.
