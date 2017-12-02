@@ -54,14 +54,15 @@ import scala.reflect.ClassTag
 // This is an abstract class, rather than a trait, to prevent it from being used as a base class. The rationale is that
 // the implementation of this class, from the viewpoint of a subclass, might change dramatically during Facsimile's
 // existence. Since there are no user-serviceable parts inside, it has been deemed that the best approach is simply to
-// keep a tight lid on things.
+// keep a tight lid on things. Currently, Scala does not restrict the instantiation of traits in the same way that
+// instantiation of abstract classes can be controlled.
 abstract class Physical protected[phys] {
 
   /** Type for measurements of this physical quantity.
    *
    *  @since 0.0
    */
-  type Measure <: PhysicalMeasure[Measure]
+  type Measure <: PhysicalMeasure
 
   /** Type for units of this physical quantity.
    *
@@ -90,30 +91,40 @@ abstract class Physical protected[phys] {
    */
   final def preferredUnits: Units = siUnits
 
+  /** Value representing a ''zero'' measurement expression in this physical quantity's
+   *  ''[[http://en.wikipedia.org/wiki/SI SI]] units''.
+   */
+  final val Zero = apply(0.0)
+
+  /** Factory method to create a measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI
+   *  SI]] units''.
+   *
+   *  @param value Value of the measurement expressed in ''SI'' units.
+   *
+   *  @return A measurement with the specified `value` in ''SI'' units.
+   *
+   *  @throws IllegalArgumentException if `value` is not finite or is invalid in ''SI'' units.
+   */
+  def apply(value: Double): Measure
+
   /** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
    *  measurement classes.
    *
    *  Measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for this
    *  physical quantity family.
    *
-   *  @tparam F Final physical measurement class.
-   *
    *  @constructor Create new measurement for the associated ''[[http://en.wikipedia.org/wiki/Physical_quantity physical
    *  quantity]]''.
    *
-   *  @param initValue Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
+   *  @param value Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
    *  units. This value must be finite, but sub-classes may impose additional restrictions.
    *
    *  @throws IllegalArgumentException if `value` is not finite or is invalid for these units.
    *
    *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
    */
-  //scalastyle:off disallow.space.before.token
-  //scalastyle:off equals.hash.code
-  abstract class PhysicalMeasure[F <: PhysicalMeasure[F] : ClassTag] protected[phys](initValue: Double)
-  extends Value[F](initValue)
-  with ValueAdditive[F]
-  with ValueScalable[F] {
+  abstract class PhysicalMeasure protected[phys](protected[phys] val value: Double)
+  extends Equals {
 
     // Ensure that value is a finite number, and is not infinite or not-a-number (NaN).
     requireFinite(value)
@@ -133,7 +144,6 @@ abstract class Physical protected[phys] {
      *
      *  @return Measurement in specified `units`.
      */
-    @inline
     private[phys] final def inUnits(units: Units) = units.exportValue(value)
 
     /** Multiply this measurement by another measurement.
@@ -229,7 +239,6 @@ abstract class Physical protected[phys] {
     // same as Doubles), since we can implicitly convert either to the other.
     final override def hashCode: Int = value.hashCode ^ family.hashCode
   }
-  //scalastyle:on equals.hash.code
   //scalastyle:on disallow.space.before.token
 
   /** Abstract base class for all physical quantity measurement units.

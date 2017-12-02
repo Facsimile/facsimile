@@ -546,7 +546,9 @@ settings(
   description := """The Facsimile Measurement library supports physics calculations specified in a variety of physical
   |measurement value classes, in a variety of supported units.""".stripMargin.replaceAll("\n", " "),
 
-  // Facsimile's physical measurement library utilises the Spire library.
+  // Facsimile's physical measurement library utilises the Typelevel Spire library. In turn, Spire utilizes two other
+  // Typelevel libraries: CATS and Algebra. Rather than list explicit dependencies for the latter projects, we simply
+  // rely upon Spire importing appropriate versions.
   libraryDependencies ++= Seq(
     "org.typelevel" %% "spire" % "0.14.1",
   )
