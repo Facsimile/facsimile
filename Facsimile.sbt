@@ -525,6 +525,31 @@ settings(
   unmanagedBase in Test := baseDirectory.value / "src/test/lib",
 )
 
+// Name of the facsimile-sfx project.
+lazy val facsimileSFXName = "facsimile-sfx"
+
+// Facsimile-SFX project.
+//
+// The Facsimile-SFX project is a lightweight Scala wrapper for JavaFX.
+lazy val facsimileSFX = project.in(file(facsimileSFXName)).
+dependsOn(facsimileUtil % dependsOnCompileTest).
+settings(commonSettings: _*).
+settings(sourceProjectSettings: _*).
+settings(docProjectSettings: _*).
+settings(publishedProjectSettings: _*).
+settings(
+
+  // Name and description of this project.
+  name := "Facsimile SFX Library",
+  normalizedName := facsimileSFXName,
+  description:= """The Facsimile SFX library is a lightweight Scala wrapper for JavaFX.""".stripMargin.
+  replaceAll("\n", " "),
+
+  // Facsimile SFX dependencies.
+  libraryDependencies ++= Seq(
+  )
+)
+
 // Name of the facsimile-util project.
 val facsimileMeasureName = "facsimile-measure"
 
@@ -581,7 +606,7 @@ settings(
 //
 // TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
 lazy val facsimile = project.in(file(".")).
-aggregate(facsimileUtil, facsimileMeasure, facsimileStat).
+aggregate(facsimileUtil, facsimileSFX, facsimileMeasure, facsimileStat).
 settings(commonSettings: _*).
 settings(unpublishedProjectSettings: _*).
 settings(
