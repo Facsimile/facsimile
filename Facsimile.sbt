@@ -519,6 +519,9 @@ settings(
 
     // The Scala reflection library is required for implementing macros.
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+
+    // Parboiled 2 is a parsing library, required for Facimile's file parsing capabilities.
+    "org.parboiled" %% "parboiled" % "2.1.4",
   ),
 
   // Help the test code find the test JAR files that we use to verify JAR file manifests.
