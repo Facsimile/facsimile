@@ -30,27 +30,42 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.measure.algebra package.
+// Scala source file belonging to the org.facsim.measure.properties package.
 //======================================================================================================================
-package org.facsim.measure.algebra
+package org.facsim.measure.properties
 
-/** Trait for a _[[https://en.wikipedia.org/wiki/Monoid monoid]]_.
+/** Marker trait for operators exhibiting the _[[https://en.wikipedia.org/wiki/Commutative_property commutative]]_
+ *  property.
  *
- *  A _monoid_ is a _[[https://en.wikipedia.org/wiki/Semigroup semigroup]]_ with a two-sided _identity_.
+ *  Instances of this trait support ''commutative'' operations. That is, given some operation `op`, `op(a, b)` must
+ *  equal `op(b, a)` for all `a` and `b`.
  *
- *  @tparam A Type representing the set of values to which the monoid is applicable.
+ *  @note This trait is primarily used for _testing_ that subclass operator implementations are indeed commutative; it
+ *  typically plays no role in the implementation itself.
+ *
+ *  @tparam A Type of one argument to the commutative operation.
+ *
+ *  @tparam B Type of the other argument to the commutative operation.
+ *
+ *  @tparam R Type of the result of the commutative operation.
  *
  *  @since 0.0
  */
-trait Monoid[A]
-extends Semigroup[A] {
+trait Commutative[A, B, R] {
 
-  /** Identity value.
+  /** Forward commutative operation. */
+  private[measure] val cOpF: (A, B) => R
+
+  /** Reverse commutative operation. */
+  private[measure] val cOpR: (B, A) => R
+
+  /** Test commutativity for an arbitrary pair of values.
    *
-   *  This value must be chosen such that `combine(a, Identity)` equals `a` and `combine(Identity, a)` equals `a` also,
-   *  for all `a`.
+   *  @param a First argument to be tested.
    *
-   *  @since 0.0
+   *  @param b Second argument to be tested.
+   *
+   *  @return `true` if the result of the operation is the same, regardless of argument order; `false` otherwise.
    */
-  val Identity: A
+  private[measure] final def checkCommutative(a: A, b: B) = cOpF(a, b) == cOpR(b, a)
 }

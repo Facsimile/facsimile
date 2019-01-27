@@ -50,7 +50,7 @@ import scala.reflect.ClassTag
 // existence. Since there are no user-serviceable parts inside, it has been deemed that the best approach is simply to
 // keep a tight lid on things.
 abstract class Specific protected[phys]
-extends Physical  {specific =>
+extends Physical {specific =>
 
   /** @inheritdoc */
   override type Measure <: SpecificMeasure[Measure]
@@ -161,7 +161,7 @@ extends Physical  {specific =>
 
     /** @inheritdoc */
     //scalastyle:off token
-    protected final override def createNew(newMeasure: Double): F = apply(newMeasure).asInstanceOf[F]
+    private[measure] final override def createNew(newMeasure: Double): F = apply(newMeasure).asInstanceOf[F]
     //scalastyle:on token
 
     /** Convert this measurement value to a string, expressed in the user's preferred units.

@@ -34,9 +34,8 @@
 //======================================================================================================================
 package org.facsim.measure.phys
 
-import org.facsim.measure.{Value, ValueAdditive, ValueScalable}
 import org.facsim.util.{requireFinite, requireNonNull}
-import scala.reflect.ClassTag
+import scala.util.Try
 
 /** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
  *  elements.
@@ -56,18 +55,22 @@ import scala.reflect.ClassTag
 // existence. Since there are no user-serviceable parts inside, it has been deemed that the best approach is simply to
 // keep a tight lid on things. Currently, Scala does not restrict the instantiation of traits in the same way that
 // instantiation of abstract classes can be controlled.
-abstract class Physical protected[phys] {
+abstract class Physical {
 
-  /** Type for measurements of this physical quantity.
+  /** Type presenting measurements of this physical quantity.
    *
    *  @since 0.0
    */
+  // Developer notes: This type must typically be overridden, even if just specify additional type constraints, in each
+  // sub-class.
   type Measure <: PhysicalMeasure
 
-  /** Type for units of this physical quantity.
+  /** Type representing units which measurements of this physical quantity may be expressed.
    *
    *  @since 0.0
    */
+  // Developer notes: This type must typically be overridden, even if just specify additional type constraints, in each
+  // sub-class.
   type Units <: PhysicalUnits
 
   /** ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for this physical quantity.
@@ -76,6 +79,8 @@ abstract class Physical protected[phys] {
    *
    *  @since 0.0
    */
+  // Developer notes: This value must be overridden by each final physical measurement, and must identify the SI units
+  // of this element.
   val siUnits: Units
 
   /** User's preferred units for this physical quantity, or the associated ''[[http://en.wikipedia.org/wiki/SI SI]]
@@ -89,47 +94,62 @@ abstract class Physical protected[phys] {
    *
    *  @since 0.0
    */
+  // Developer notes. As per the TODO note, no further work is required right now. However, it is anticipated that this
+  // function will retrieve and validate an application user-configuration property.
   final def preferredUnits: Units = siUnits
-
-  /** Value representing a ''zero'' measurement expression in this physical quantity's
-   *  ''[[http://en.wikipedia.org/wiki/SI SI]] units''.
-   */
-  final val Zero = apply(0.0)
 
   /** Factory method to create a measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI
    *  SI]] units''.
    *
    *  @param value Value of the measurement expressed in ''SI'' units.
    *
-   *  @return A measurement with the specified `value` in ''SI'' units.
-   *
-   *  @throws IllegalArgumentException if `value` is not finite or is invalid in ''SI'' units.
+   *  @return A measurement with the specified `value` in ''SI'' units, wrapped in a [[scala.util.Success]] if
+   *  successful, or a [[scala.util.Failure]] wrapping a failure exception in the event that `value` is invalid.
    */
-  def apply(value: Double): Measure
+  protected[phys] def apply(value: Double): Try[Measure]
+
+  /** Value representing a ''zero'' measurement in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI SI]]
+   *  units''.
+   *
+   *  @since 0.0
+   */
+  // Developer note: This value must NOT throw an exception for any measurement family.
+  final val Zero: Measure = apply(0.0).get
 
   /** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
    *  measurement classes.
    *
-   *  Measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for this
+   *  Measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]] units'' for this
    *  physical quantity family.
    *
    *  @constructor Create new measurement for the associated ''[[http://en.wikipedia.org/wiki/Physical_quantity physical
    *  quantity]]''.
    *
    *  @param value Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
-   *  units. This value must be finite, but sub-classes may impose additional restrictions.
+   *  units. This value must be finite, but sub-classes may impose additional restrictions. It is a core design goal of
+   *  the ''Facsimile Measurement Library'' that these raw values must be unavailable to end user code.
    *
    *  @throws IllegalArgumentException if `value` is not finite or is invalid for these units.
    *
    *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
    */
-  abstract class PhysicalMeasure protected[phys](protected[phys] val value: Double)
+  abstract class PhysicalMeasure protected[phys](protected[measure] val value: Double)
   extends Equals {
 
     // Ensure that value is a finite number, and is not infinite or not-a-number (NaN).
     requireFinite(value)
 
-    /** Physical quantity family to which this value belongs.
+    /** Create new measurement in the same physical quantity family as this measurement.
+     *
+     *  @param newValue New measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI SI]]''
+     *  units.
+     *
+     *  @return Measurement with the specified `value` in ''SI'' units, wrapped in a [[scala.util.Success]] if
+     *  successful, or a [[scala.util.Failure]] wrapping a failure exception in the event that `value` is invalid.
+     */
+    private[measure] final def createNew(newValue: Double) = apply(newValue)
+
+    /** Physical quantity family to which this measurement value belongs.
      *
      *  @return Physical quantity family to which this measurement belongs.
      */
@@ -146,64 +166,6 @@ abstract class Physical protected[phys] {
      */
     private[phys] final def inUnits(units: Units) = units.exportValue(value)
 
-    /** Multiply this measurement by another measurement.
-     *
-     *  @param factor Measurement used to multiply this measurement.
-     *
-     *  @return Product of this measurement multiplied by `factor`. The result is a measurement in a different physical
-     *  quantity family to this measurement (unless `factor` is a ''unitless'' generic measurement, in which case it
-     *  will have the same family as this measurement, although in generic form).
-     *
-     *  @throws NullPointerException if `factor` is `null`.
-     *
-     *  @throws IllegalArgumentException if the result is not finite or is invalid for these units.
-     *
-     *  @since 0.0
-     */
-    final def *(factor: PhysicalMeasure[_]): Generic.GenericMeasure = {
-      requireNonNull(factor)
-      Generic(value * factor.value, family * factor.family)
-    }
-
-    /** Divide this measurement by another measurement of the same physical quantity family.
-     *
-     *  @param divisor Measurement to be applied as a divisor to this measurement.
-     *
-     *  @return Ratio of this measurement to the other measurement. The result is a scalar value that has no associated
-     *  measurement type.
-     *
-     *  @throws NullPointerException if `divisor` is `null`.
-     *
-     *  @throws IllegalArgumentException if the result is not finite or is invalid for these units. For
-     *  example, an infinite result will occur if `divisor` is zero, which will cause this exception to be thrown.
-     *
-     *  @since 0.0
-     */
-    final def /(divisor: F): Double = {
-      requireNonNull(divisor)
-      value / divisor.value
-    }
-
-    /** Divide this measurement by another measurement.
-     *
-     *  @param divisor Measurement to be applied as a divisor to this measurement.
-     *
-     *  @return Quotient of this measurement divided by `divisor`. The result is a measurement in a different physical
-     *  quantity family to this measurement (unless `divisor` is a ''unitless'' generic measurement, in which case it
-     *  will have the same family as this measurement, although in generic form).
-     *
-     *  @throws NullPointerException if `divisor` is `null`.
-     *
-     *  @throws IllegalArgumentException if the result is not finite or is invalid for these units. For
-     *  example, an infinite result will occur if `divisor` is zero, which will cause this exception to be thrown.
-     *
-     *  @since 0.0
-     */
-    final def /(divisor: PhysicalMeasure[_]): Generic.GenericMeasure = {
-      requireNonNull(divisor)
-      Generic(value / divisor.value, family / divisor.family)
-    }
-
     /** @inheritdoc */
     // This method is overridden because physical measurements can be compared for equality if the other value is a
     // physical quantity in the same family.
@@ -212,9 +174,37 @@ abstract class Physical protected[phys] {
       // If "that" is a subclass of PhysicalMeasure, then we can equal the other value provided that "that" is a
       // measurement of the same physical quantity family as this instance. If they are for different families, then we
       // cannot equal the other value.
-      case other: PhysicalMeasure[_] => family === other.family
+      case other: PhysicalMeasure => family === other.family
 
       // The default case, that "that" is not a measure value, means that we cannot compare values as being equal.
+      case _ => false
+    }
+
+    /** Compare this measurement to another object for equality.
+     *
+     *  @note If two objects compare equal, then their hash codes must compare equal too. Similarly, if two objects have
+     *  different hash codes, then they must not compare equal. However, if two objects have the same hash codes, they
+     *  may or may not compare equal, since hash codes do not necessary map to unique values. That is, the balance of
+     *  probability is that if two values are equal if they have the same hash codes, however this is not guaranteed and
+     *  should not be relied upon.
+     *
+     *  @param that Object being tested for equality with this measurement.
+     *
+     *  @return `true` if `that` is a measurement belonging to the same family as this measurement and both have the same
+     *  exact value. `false` is returned if `that` is `null` or is not a measurement value, if `that` is a measurement
+     *  belonging to a different family to this value, or if `that` has a different value to this measurement.
+     *
+     *  @see [[scala.AnyRef.equals(Any)*]]
+     *
+     *  @since 0.0
+     */
+    final override def equals(that: Any): Boolean = that match {
+
+      // If the other object is a PhysicalMeasure subclass, and that value can be compared as equal to this value (they
+      // belong to the same physical quantity family), and they have the same value, then that equals this.
+      case other: PhysicalMeasure => other.canEqual(this) && value == other.value
+
+      // All other values (including null), cannot be equal to this value.
       case _ => false
     }
 

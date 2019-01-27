@@ -30,7 +30,6 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-
 // Scala source file belonging to the org.facsim.measure.algebra package.
 //======================================================================================================================
 package org.facsim.measure.algebra
@@ -42,8 +41,7 @@ package org.facsim.measure.algebra
  *  @since 0.0
  */
 trait Semigroup[A]
-extends Any
-with Serializable {
+extends Serializable {
 
   /** Combine operation.
    *

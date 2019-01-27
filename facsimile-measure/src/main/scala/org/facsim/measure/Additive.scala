@@ -30,7 +30,7 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util package.
+// Scala source file belonging to the org.facsim.measure package.
 //======================================================================================================================
 package org.facsim.measure
 

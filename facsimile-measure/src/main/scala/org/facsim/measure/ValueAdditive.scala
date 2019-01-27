@@ -38,6 +38,9 @@ import org.facsim.util.requireNonNull
 
 /** Trait for an additive value type.
  *
+ *  Measurement values that are added to or subtracted from another measurement value of the same type will result in a
+ *  measurement of the same type. The same is also true of negation and absolute value functions.
+ *
  *  @tparam F Final type of the additive value type.
  *
  *  @since 0.0

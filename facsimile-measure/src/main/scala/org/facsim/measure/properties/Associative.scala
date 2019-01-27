@@ -30,27 +30,52 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.measure.algebra package.
+// Scala source file belonging to the org.facsim.measure.properties package.
 //======================================================================================================================
-package org.facsim.measure.algebra
+package org.facsim.measure.properties
 
-/** Trait for a _[[https://en.wikipedia.org/wiki/Monoid monoid]]_.
+/** Marker trait for operators exhibiting the _[[https://en.wikipedia.org/wiki/Associative_property associative]]_
+ *  property.
  *
- *  A _monoid_ is a _[[https://en.wikipedia.org/wiki/Semigroup semigroup]]_ with a two-sided _identity_.
+ *  Instances of this trait support ''associative'' operations. That is, given some operation `op`, `op(a, op(b, c))`
+ *  must equal `op(op(a, b), c)` for all `a`, `b` and `c`.
  *
- *  @tparam A Type representing the set of values to which the monoid is applicable.
+ *  @note This trait is primarily used for _testing_ that subclass operator implementations are indeed associative; it
+ *  typically plays no role in the implementation itself.
+ *
+ *  @tparam A Type of one argument to the associative operation.
+ *
+ *  @tparam B Type of another argument to the associative operation.
+ *
+ *  @tparam C Type of final argument to the associative operation.
+ *
+ *  @tparam R Type of the result of the associative operation.
  *
  *  @since 0.0
  */
-trait Monoid[A]
-extends Semigroup[A] {
+trait Associative[A, B, C, R] {
 
-  /** Identity value.
+  /** First form of the operation. */
+  private[measure] val aOpAB: (A, B) => R
+
+  /** Second form of the operation. */
+  private[measure] val aOpRC: (R, C) => R
+
+  /** Third form of the operation. */
+  private[measure] val aOpAR: (A, R) => R
+
+  /** Fourth form of the operation */
+  private[measure] val aOpBC: (B, C) => R
+
+  /** Test associativity for an arbitrary set of values.
    *
-   *  This value must be chosen such that `combine(a, Identity)` equals `a` and `combine(Identity, a)` equals `a` also,
-   *  for all `a`.
+   *  @param a First argument to be tested.
    *
-   *  @since 0.0
+   *  @param b Second argument to be tested.
+   *
+   *  @param c Third argument to be tested.
+   *
+   *  @return `true` if the result of the operation is the same, regardless of invocation order; `false` otherwise.
    */
-  val Identity: A
+  private[measure] final def checkAssociative(a: A, b: B, c: C) = aOpRC(aOpAB(a, b), c) == aOpAR(a, aOpBC(b, c))
 }

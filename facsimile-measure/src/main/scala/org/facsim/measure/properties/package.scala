@@ -30,27 +30,12 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.measure.algebra package.
+// Scala source file belonging to the org.facsim.measure.properties package.
 //======================================================================================================================
-package org.facsim.measure.algebra
+package org.facsim.measure
 
-/** Trait for a _[[https://en.wikipedia.org/wiki/Monoid monoid]]_.
- *
- *  A _monoid_ is a _[[https://en.wikipedia.org/wiki/Semigroup semigroup]]_ with a two-sided _identity_.
- *
- *  @tparam A Type representing the set of values to which the monoid is applicable.
+/** Package containing algebraic property definitions.
  *
  *  @since 0.0
  */
-trait Monoid[A]
-extends Semigroup[A] {
-
-  /** Identity value.
-   *
-   *  This value must be chosen such that `combine(a, Identity)` equals `a` and `combine(Identity, a)` equals `a` also,
-   *  for all `a`.
-   *
-   *  @since 0.0
-   */
-  val Identity: A
-}
+package object properties
