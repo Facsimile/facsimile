@@ -119,9 +119,16 @@ def fixJavaDocLinks = (m: Match) => s"${m.group(1)}?${m.group(2).replace(".", "/
 // The Java runtime library JAR file is located in the path identified by the sun.boot.class.path system property.
 //
 // Note that this must be added manually to the classpath when searching for JAR files in the docProjectSettings.
-val rtJar: String = System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).collectFirst {
-  case str: String if str.endsWith(java.io.File.separator + "rt.jar") => str
-}.get // fail hard if not found
+//
+// Update: This approach does not work with JDK 9+, due to the modularization of the Java run-time libraries. The
+// following issue tracks this problem:
+//
+//   https://github.com/scala/bug/issues/10675
+//
+// Commented out in the meantime. :-(
+//val rtJar: String = System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).collectFirst {
+//  case str: String if str.endsWith(java.io.File.separator + "rt.jar") => str
+//}.get // fail hard if not found
 
 // End of ScalaDoc to JavaDoc linking. See also the docProjectSettings for how this information is used.
 
@@ -198,25 +205,32 @@ lazy val docProjectSettings = Seq(
   // question about this issue that was posed on Stack Overflow:
   //
   //   https://stackoverflow.com/questions/16934488/how-to-link-classes-from-jdk-into-scaladoc-generated-doc/
-  apiMappings ++= {
-
-    // Retrieve the classpath for looking up JAR files. We must manually add the Java runtime JAR file to this.
-    val classpath = (fullClasspath in Compile).value ++ Seq(Attributed.blank(file(rtJar)))
-
-    // Function to retrieve jar files from the classpath.
-    def findJar(name: String): File = {
-
-      // Get the JAR file. There is a hard fail if it cannot be found.
-      classpath.find {attr =>
-        (attr.data ** s"$name*.jar").get.nonEmpty
-      }.get.data
-    }
-
-    // Define external documentation paths
-    javaDocMap.map {
-      case (jarName, docUrl) => findJar(jarName) -> url(docUrl)
-    }
-  },
+  //
+  // Update: This approach does not work with JDK 9+, due to the modularization of the Java run-time libraries. The
+  // following issue tracks this problem:
+  //
+  //   https://github.com/scala/bug/issues/10675
+  //
+  // Commented out in the meantime. :-(
+  //apiMappings ++= {
+  //
+  //  // Retrieve the classpath for looking up JAR files. We must manually add the Java runtime JAR file to this.
+  //  val classpath = (fullClasspath in Compile).value ++ Seq(Attributed.blank(file(rtJar)))
+  //
+  //  // Function to retrieve jar files from the classpath.
+  //  def findJar(name: String): File = {
+  //
+  //    // Get the JAR file. There is a hard fail if it cannot be found.
+  //    classpath.find {attr =>
+  //      (attr.data ** s"$name*.jar").get.nonEmpty
+  //    }.get.data
+  //  }
+  //
+  //  // Define external documentation paths
+  //  javaDocMap.map {
+  //    case (jarName, docUrl) => findJar(jarName) -> url(docUrl)
+  //  }
+  //},
 
   // Override the doc task to fix JavaDoc links.
   // The following code is based upon the solution outlined by Jacek Laskowski and Andrew Bate in their answers to a
