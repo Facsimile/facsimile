@@ -34,7 +34,7 @@
 //======================================================================================================================
 package org.facsim.measure.phys
 
-import org.facsim.measure.Equivalent
+import org.facsim.measure.algebra.Equivalent
 import org.facsim.util.{assertNonNull, requireNonNull}
 import scala.collection.immutable.HashMap
 

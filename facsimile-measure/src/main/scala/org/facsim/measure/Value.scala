@@ -34,6 +34,7 @@
 //======================================================================================================================
 package org.facsim.measure
 
+import org.facsim.measure.algebra.Order
 import org.facsim.util.requireNonNull
 import scala.reflect.ClassTag
 
@@ -47,7 +48,7 @@ import scala.reflect.ClassTag
  */
 //scalastyle:off disallow.space.before.token
 abstract class Value[T <: Value[T] : ClassTag](private[facsim] final val value: Double)
-extends Orderable[T] {
+extends Order[T] {
 //scalastyle:on disallow.space.before.token
 
   /** Compare this value to another value.

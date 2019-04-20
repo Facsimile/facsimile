@@ -34,6 +34,7 @@
 //======================================================================================================================
 package org.facsim.measure
 
+import org.facsim.measure.algebra.Addition
 import org.facsim.util.requireNonNull
 
 /** Trait for an additive value type.
@@ -45,8 +46,8 @@ import org.facsim.util.requireNonNull
  *
  *  @since 0.0
  */
-trait ValueAdditive[F <: Value[F] with Additive[F]]
-extends Additive[F] {
+trait ValueAdditive[F <: Value[F] with Addition[F]]
+extends Addition[F] {
 
   // Self reference, as a value.
   self: Value[F] =>

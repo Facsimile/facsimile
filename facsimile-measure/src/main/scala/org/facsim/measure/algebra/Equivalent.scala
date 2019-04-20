@@ -30,28 +30,50 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util package.
+
+// Scala source file belonging to the org.facsim.measure.algebra package.
 //======================================================================================================================
-package org.facsim.measure
+package org.facsim.measure.algebra
 
-import scala.reflect.ClassTag
-
-/** Abstract base class for objects that can be compared for equality, and sorted in order.
+/** Trait for implicit objects allowing the associated type to be compared for equivalence.
  *
- *  Implementing objects can be ordered as well as compared for equality and inequality.
+ *  Associated objects can be compared for equality and inequality implicitly.
  *
- *  @note At present, this must be an ''abstract class'', rather than a ''trait'', because the latter do not currently
- *  support class bounds (such as [[ClassTag]]). Implementing types must ensure that [[compare()]] returns 0 for classes
- *  that are equivalent, and non-zero for classes that are not equivalent. Furthermore, [[hashCode]] values for
- *  equivalent objects must be identical too.
- *
- *  @tparam T Type of object implementing ordering operations, which must implement this base class.
+ *  @tparam A Type of objects to be compared.
  *
  *  @since 0.0
  */
-abstract class Orderable[T <: Orderable[T] : ClassTag] //scalastyle:ignore disallow.space.before.token
-extends Equivalent[T] with Ordered[T] {
+trait Equivalent[A] {
 
-  /** @inheritdoc */
-  final override def ===(other: T): Boolean = compare(other) == 0
+  /** Equivalence function.
+   *
+   *  @param a First value to be compared for equivalence; this value cannot be `null`.
+   *
+   *  @param b Second value to be compared for equivalence; this value cannot be `null`.
+   *
+   *  @note If this function returns `true`, then the [[hashCode]] values of both objects must also be identical.
+   *
+   *  @return `true` if `a` and `b` are equivalent; `false` if they are not equivalent.
+   *
+   *  @throws scala.NullPointerException if `a` is `null` or if `b` is `null`.
+   *
+   *  @since 0.0
+   */
+  def eqv(a: A, b: A): Boolean
+
+  /** Non-equivalence function.
+   *
+   *  @param a First value to be compared for non-equivalence; this value cannot be `null`.
+   *
+   *  @param b Second value to be compared for non-equivalence; this value cannot be `null`.
+   *
+   *  @note If this function returns `false`, then the [[hashCode]] values of both objects must be equal.
+   *
+   *  @return `true` if `a` and `b` are not equivalent; `false` if they are equivalent.
+   *
+   *  @throws scala.NullPointerException if `a` is `null` or if `b` is `null`.
+   *
+   *  @since 0.0
+   */
+  final def neqv(a: A, b: A): Boolean = !eqv(a, b)
 }

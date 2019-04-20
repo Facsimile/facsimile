@@ -34,7 +34,9 @@
 //======================================================================================================================
 package org.facsim
 
+import org.facsim.measure.algebra.{Addition, Equivalent, Order}
 import org.facsim.measure.phys.{Angle, Current, Length, LuminousIntensity, Mass, Physical, Temperature, Time}
+import scala.util.Try
 
 /** ''Facsimile Measurement Library''.
  *
@@ -187,5 +189,243 @@ package object measure {
      *  @since 0.0
      */
     def *[T <: Physical](p: T.Measure): T.Measure = T.apply(p.v)
+  }
+
+  /** Operators for comparing values for equivalence.
+   *
+   *  @tparam A Type of element being compared.
+   *
+   *  @param lhs Element on left-hand side of an operator.
+   *
+   *  @since 0.0
+   */
+  final implicit class EquivalentOperators[A](private val lhs: A)
+  extends AnyVal {
+
+    /** Equivalence operator.
+     *
+     *  @param rhs right-hand side of the equivalence operator.
+     *
+     *  @param eqv Implicit [[Equivalent]] instance that will be used to implement the comparison operations.
+     *
+     *  @return `true` if `lhs` and `rhs` of the relation are equivalent; `false` if they are not equivalent.
+     *
+     *  @since 0.0
+     */
+    def ===(rhs: A)(implicit eqv: Equivalent[A]): Boolean = eqv.eqv(lhs, rhs) //scalastyle:ignore method.name
+
+    /** Non-equivalence operator.
+     *
+     *  @param rhs right-hand side of the equivalence operator.
+     *
+     *  @param eqv Implicit [[Equivalent]] instance that will be used to implement the comparison operations.
+     *
+     *  @return `true` if `lhs` and `rhs` of the relation are equivalent; `false` if they are not equivalent.
+     *
+     *  @since 0.0
+     */
+    def =!=(rhs: A)(implicit eqv: Equivalent[A]): Boolean = eqv.neqv(lhs, rhs) //scalastyle:ignore method.name
+  }
+
+  /** Operators for ranking and ordering values.
+   *
+   *  @tparam A Type of element being compared or ranked.
+   *
+   *  @param lhs Element on left-hand side of an operator.
+   *
+   *  @since 0.0
+   */
+  final implicit class OrderOperators[A](private val lhs: A)
+  extends AnyVal {
+
+    /** ''Less-than'' operator.
+     *
+     *  @param rhs Value on the right-hand-side of the operator.
+     *
+     *  @param order Implicit [[Order]] instance that will be used to implement the comparison and ranking operations.
+     *
+     *  @return `true` if `lhs` is less than `rhs`; `false` otherwise.
+     *
+     *  @since 0.0
+     */
+    def <(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) < 0 //scalastyle:ignore method.name
+
+    /** ''Less-than-or-equal-to'' operator.
+     *
+     *  @param rhs Value on the right-hand-side of the operator.
+     *
+     *  @param order Implicit [[Order]] instance that will be used to implement the comparison and ranking operations.
+     *
+     *  @return `true` if `lhs` is less than or equal to `rhs`; `false` otherwise.
+     *
+     *  @since 0.0
+     */
+    def <=(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) <= 0 //scalastyle:ignore method.name
+
+    /** ''Greater-than'' operator.
+     *
+     *  @param rhs Value on the right-hand-side of the operator.
+     *
+     *  @param order Implicit [[Order]] instance that will be used to implement the comparison and ranking operations.
+     *
+     *  @return `true` if `lhs` is greater than `rhs`; `false` otherwise.
+     *
+     *  @since 0.0
+     */
+    def >(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) > 0 //scalastyle:ignore method.name
+
+    /** ''Greater-than-or-equal-to'' operator.
+     *
+     *  @param rhs Value on the right-hand-side of the operator.
+     *
+     *  @param order Implicit [[Order]] instance that will be used to implement the comparison and ranking operations.
+     *
+     *  @return `true` if `lhs` is greater than or equal to `rhs`; `false` otherwise.
+     *
+     *  @since 0.0
+     */
+    def >=(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) >= 0 //scalastyle:ignore method.name
+  }
+
+  /** Operators for adding and subtracting values.
+   *
+   *  @tparam A Type of element being added and subtracted.
+   *
+   *  @param lhs Element on left-hand side of an operator.
+   *
+   *  @since 0.0
+   */
+  final implicit class AdditionOperators[A](private val lhs: A)
+  extends AnyVal {
+
+    /** Addition operator.
+     *
+     *  @param rhs right-hand side of the addition operator.
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of addition of `rhs` to `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful.
+     *
+     *  @since 0.0
+     */
+    def +(rhs: A)(implicit addition: Addition[A]): Try[A] = addition.add(lhs, rhs)
+
+    /** Addition operator.
+     *
+     *  @param rhs right-hand side of the addition operator, wrapped in a [[scala.util.Try]].
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of addition of `rhs` to `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful. If `rhs` has failed, then its Failure value will
+     *  be preserved.
+     *
+     *  @since 0.0
+     */
+    def +(rhs: Try[A])(implicit addition: Addition[A]): Try[A] = addition.add(lhs, rhs)
+
+    /** Subtraction operator.
+     *
+     *  @param rhs right-hand side of the addition operator.
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of subtraction of `rhs` from `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful.
+     *
+     *  @since 0.0
+     */
+    def -(rhs: A)(implicit addition: Addition[A]): Try[A] = addition.subtract(lhs, rhs)
+
+    /** Subtraction operator.
+     *
+     *  @param rhs right-hand side of the addition operator, wrapped in a [[scala.util.Try]].
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of subtraction of `rhs` from `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful. If `rhs` has failed, then its Failure value will
+     *  be preserved.
+     *
+     *  @since 0.0
+     */
+    def -(rhs: Try[A])(implicit addition: Addition[A]): Try[A] = addition.subtract(lhs, rhs)
+  }
+
+  /** Operators for adding and subtracting values.
+   *
+   *  @tparam A Type of element being added and subtracted.
+   *
+   *  @param lhs Element on left-hand side of an operator, wrapped in a [[scala.util.Try]].
+   *
+   *  @since 0.0
+   */
+  final implicit class AdditionOperatorsT[A](private val lhs: Try[A])
+  extends AnyVal {
+
+    /** Addition operator.
+     *
+     *  @param rhs right-hand side of the addition operator.
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of addition of `rhs` to `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful. If `lhs` has failed, then its Failure value will
+     *  be preserved.
+     *
+     *  @since 0.0
+     */
+    def +(rhs: A)(implicit addition: Addition[A]): Try[A] = addition.add(lhs, rhs)
+
+    /** Addition operator.
+     *
+     *  @param rhs right-hand side of the addition operator, wrapped in a [[scala.util.Try]].
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of addition of `rhs` to `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful. If `lhs` has failed, then its Failure value will
+     *  be preserved; otherwise, if `rhs` has failed, then its Failure value will be preserved.
+     *
+     *  @since 0.0
+     */
+    def +(rhs: Try[A])(implicit addition: Addition[A]): Try[A] = addition.add(lhs, rhs)
+
+    /** Subtraction operator.
+     *
+     *  @param rhs right-hand side of the addition operator.
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of subtraction of `rhs` from `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful. If `lhs` has failed, then its Failure value will
+     *  be preserved.
+     *
+     *  @since 0.0
+     */
+    def -(rhs: A)(implicit addition: Addition[A]): Try[A] = addition.subtract(lhs, rhs)
+
+    /** Subtraction operator.
+     *
+     *  @param rhs right-hand side of the addition operator, wrapped in a [[scala.util.Try]].
+     *
+     *  @param addition Implicit [[org.facsim.measure.algebra.Addition]] instance that will be used to implement the
+     *  addition and subtraction operations.
+     *
+     *  @return Value of subtraction of `rhs` from `lhs`, wrapped in a [[scala.util.Success]] if successful; a
+     *  [[scala.util.Failure]] wrapping an exception if unsuccessful. If `lhs` has failed, then its Failure value will
+     *  be preserved; otherwise, if `rhs` has failed, then its Failure value will be preserved.
+     *
+     *  @since 0.0
+     */
+    def -(rhs: Try[A])(implicit addition: Addition[A]): Try[A] = addition.subtract(lhs, rhs)
   }
 }

@@ -36,11 +36,13 @@ package org.facsim.measure.algebra
 
 /** Trait for a _[[https://en.wikipedia.org/wiki/Semigroup semigroup]]_.
  *
- *  @tparam A Type representing the set of values to which the semigroup is applicable.
+ *  @tparam A Type representing the set of values that may be combined.
+ *
+ *  @tparam R Type representing the result of the combination operation.
  *
  *  @since 0.0
  */
-trait Semigroup[A]
+trait Semigroup[A, R]
 extends Serializable {
 
   /** Combine operation.
@@ -58,5 +60,5 @@ extends Serializable {
    *
    *  @since 0.0
    */
-  def combine(a: A, b: A): A
+  def combine(a: A, b: A): R
 }

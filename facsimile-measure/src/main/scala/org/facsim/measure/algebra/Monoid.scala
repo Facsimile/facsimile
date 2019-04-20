@@ -43,7 +43,7 @@ package org.facsim.measure.algebra
  *  @since 0.0
  */
 trait Monoid[A]
-extends Semigroup[A] {
+extends Semigroup[A, A] {
 
   /** Identity value.
    *

@@ -30,37 +30,38 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.measure package.
-//======================================================================================================================
-package org.facsim.measure
 
-/** Trait supporting the addition and subtraction of subclass instances.
+// Scala source file belonging to the org.facsim.measure.algebra package.
+//======================================================================================================================
+package org.facsim.measure.algebra
+
+/** Trait allowing values of the associated type to be compared for equality, and allowing them to be ranked by order.
  *
- *  @tparam T Type of value being added and subtracted. This must be a ''subclass'' of `Additive[T]`.
+ *  @note [[hashCode]] values for equivalent objects must be identical also.
+ *
+ *  @tparam A Type of object implementing ordering operations.
  *
  *  @since 0.0
  */
-trait Additive[T <: Additive[T]] {
+trait Order[A]
+extends Equivalent[A] {
 
-  /** Addition operator.
-   *
-   *  @note When overriding this function, if the result differs from the original value, then the result should be a
-   *  new instance, rather than modifying the state of this object.
-   *
-   *  @param other Value to be added to this value.
-   *
-   *  @return Result of `this` + `other` as a new `Additive` instance.
-   */
-  def +(other: T): T
+  /** @inheritdoc */
+  final override def eqv(a: A, b: A): Boolean = compare(a, b) == 0
 
-  /** Subtraction operator.
+  /** Compare two values and determine their relative order.
    *
-   *  @note When overriding this function, if the result differs from the original value, then the result should be a
-   *  new instance, rather than modifying the state of this object.
+   *  @param a First value to be compared for ordering; this value cannot be `null`.
    *
-   *  @param other Value to be subtracted from this value.
+   *  @param b Second value to be compared for ordering; this value cannot be `null`.
    *
-   *  @return Result of `this` - `other` as a new `Additive` instance.
+   *  @note If this function returns 0, then the [[hashCode]] values of both arguments must be equal also.
+   *
+   *  @return -1 if `a` is less than `b`; 1 if `a` is greater than `b`; 0 if `a` and `b` are equal.
+   *
+   *  @throws scala.NullPointerException if `a` is `null` or if `b` is `null`.
+   *
+   *  @since 0.0
    */
-  def -(other: T): T
+  def compare(a: A, b: A): Int
 }

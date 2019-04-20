@@ -34,7 +34,7 @@
 //======================================================================================================================
 package org.facsim.measure.test
 
-import org.facsim.measure.Equivalent
+import org.facsim.measure.algebra.Equivalent
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals

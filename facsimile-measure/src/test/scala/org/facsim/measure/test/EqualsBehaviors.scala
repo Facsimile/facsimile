@@ -34,7 +34,7 @@
 //======================================================================================================================
 package org.facsim.measure.test
 
-import org.facsim.measure.Equivalent
+import org.facsim.measure.algebra.Equivalent
 import org.scalatest.FunSpec
 import scala.annotation.tailrec
 
