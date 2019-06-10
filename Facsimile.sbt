@@ -29,7 +29,9 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// SBT build configuration specific for all Facsimile projects.
+
+//======================================================================================================================
+// SBT build configuration Facsimile and its sub-projects.
 //======================================================================================================================
 
 import java.time.ZonedDateTime
@@ -43,6 +45,16 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Disable certain Scalastyle options, which IntelliJ IDEA insists on applying to SBT sources.
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
+
+// Library dependency version information.
+//
+// Keep all compiler and library version numbers here for easy maintenance.
+val CatsVersion = ""
+val LightbendConfigVersion = "1.3.4"
+val ParboiledVersion = "2.1.6"
+val ScalaVersion = "2.12.8"
+val ScalaCheckVersion = "1.14.0"
+val ScalaTestVersion = "3.0.5"
 
 // Date the facsimile project was started.
 //
@@ -161,7 +173,7 @@ lazy val commonSettings = Seq(
   //
   // IMPORTANT: These values MUST be synchronized with the Travis CI .travis.yml file in the project's root directory,
   // or Travis CI Facsimile builds may yield unexpected results.
-  crossScalaVersions := Seq("2.12.8"),
+  crossScalaVersions := Seq(ScalaVersion),
 
   // Scala default version.
   //
@@ -493,18 +505,18 @@ lazy val sourceProjectSettings = Seq(
   // Right now, the only universal dependencies are libraries required by the test phase.
   libraryDependencies ++= Seq(
 
-    // ScalaTest dependency.
-    "org.scalatest" %% "scalatest" % "3.0.4" % Test,
+    // ScalaTest dependencies.
+    "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
 
     // ScalaCheck dependency.
-    "org.scalacheck" %% "scalacheck" % "1.13.5" % Test,
+    "org.scalacheck" %% "scalacheck" % ScalaCheckVersion % Test,
 
     // Lightbend configuration library.
     //
     // This library supports configuration file management, and the Human-Optimized Config Object Notation (HOCON)
     // configuration file format. HOCON can be viewed as a superset of both the Java properties and JavaScript Object
     // Notation (JSON) file formats.
-    "com.typesafe" % "config" % "1.3.4",
+    "com.typesafe" % "config" % LightbendConfigVersion,
   ),
 )
 
@@ -539,10 +551,10 @@ settings(
   libraryDependencies ++= Seq(
 
     // The Scala reflection library is required for implementing macros.
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    "org.scala-lang" % "scala-reflect" % ScalaVersion,
 
-    // Parboiled 2 is a parsing library, required for Facimile's file parsing capabilities.
-    "org.parboiled" %% "parboiled" % "2.1.4",
+    // Parboiled 2 is a parsing library, required for Facsimile's file parsing capabilities.
+    "org.parboiled" %% "parboiled" % ParboiledVersion,
   ),
 
   // Help the test code find the test JAR files that we use to verify JAR file manifests.
