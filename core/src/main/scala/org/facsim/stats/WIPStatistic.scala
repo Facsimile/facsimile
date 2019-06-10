@@ -35,7 +35,7 @@ package org.facsim.stats
 
 import org.facsim.requireValid
 import org.facsim.engine.Simulation
-import org.facsim.measure.Time
+import org.facsim.types.Time
 
 /**
  * ''Work-in-progress'' - also known as ''work-in-process'' - (''WIP'') statistic.

@@ -1,5 +1,4 @@
-Facsimile Simulation Library
-============================
+# Facsimile Simulation Library
 
 The _Facsimile_ project's goal is to develop and maintain a high-quality, 3D, discrete-event simulation library that can
 be used for industrial simulation projects in an engineering and/or manufacturing environment.

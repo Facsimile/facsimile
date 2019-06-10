@@ -34,7 +34,7 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 package org.facsim.engine
 
 import org.facsim.{assertNonNull, requireNonNull, LibResource}
-import org.facsim.measure.Time
+import org.facsim.types.Time
 import scala.annotation.tailrec
 import scala.collection.mutable.{PriorityQueue => MutableQueue}
 

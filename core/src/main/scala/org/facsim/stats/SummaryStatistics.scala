@@ -33,7 +33,7 @@
  */
 package org.facsim.stats
 
-import org.facsim.measure.Number
+import org.facsim.types.Number
 
 /**
  * Trait underlying all summary statistics.

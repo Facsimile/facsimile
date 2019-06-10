@@ -484,7 +484,7 @@ lazy val sourceProjectSettings = Seq(
   ScoverageKeys.coverageFailOnMinimum := true,
   ScoverageKeys.coverageMinimum := 50,
 
-  // Required scala standard libraries.
+  // Required libraries common to all source projects.
   //
   // As stated above, these must be universal and non-transitive for all projects. In particular, indirect dependencies
   // (dependencies that are required by direct dependencies) should not be explicitly included, as this can lead to
@@ -498,6 +498,13 @@ lazy val sourceProjectSettings = Seq(
 
     // ScalaCheck dependency.
     "org.scalacheck" %% "scalacheck" % "1.13.5" % Test,
+
+    // Lightbend configuration library.
+    //
+    // This library supports configuration file management, and the Human-Optimized Config Object Notation (HOCON)
+    // configuration file format. HOCON can be viewed as a superset of both the Java properties and JavaScript Object
+    // Notation (JSON) file formats.
+    "com.typesafe" % "config" % "1.3.4",
   ),
 )
 
@@ -567,14 +574,14 @@ settings(
   )
 )
 
-// Name of the facsimile-util project.
-val facsimileMeasureName = "facsimile-measure"
+// Name of the facsimile-types project.
+val facsimileTypesName = "facsimile-types"
 
-// Facsimile-Measure project.
+// Facsimile-Types project.
 //
-// The Facsimile-Measure project supports physics calculations specified in a variety of physical measurement value
-// classes, in a variety of supported units.
-lazy val facsimileMeasure = project.in(file(facsimileMeasureName)).
+// The Facsimile-Types project supports custom value type classes, which support dimensional analysis, physics
+// calculations, probabilities, etc., in a variety of supported units.
+lazy val facsimileTypes = project.in(file(facsimileTypesName)).
 dependsOn(facsimileUtil % dependsOnCompileTest).
 settings(commonSettings: _*).
 settings(sourceProjectSettings: _*).
@@ -583,17 +590,10 @@ settings(publishedProjectSettings: _*).
 settings(
 
   // Name and description of this project.
-  name := "Facsimile Physical Measurement Library",
-  normalizedName := facsimileMeasureName,
-  description := """The Facsimile Measurement library supports physics calculations specified in a variety of physical
-  |measurement value classes, in a variety of supported units.""".stripMargin.replaceAll("\n", " "),
-
-  // Facsimile's physical measurement library utilises the Typelevel Spire library. In turn, Spire utilizes two other
-  // Typelevel libraries: CATS and Algebra. Rather than list explicit dependencies for the latter projects, we simply
-  // rely upon Spire importing appropriate versions.
-  libraryDependencies ++= Seq(
-    "org.typelevel" %% "spire" % "0.14.1",
-  )
+  name := "Facsimile Types Library",
+  normalizedName := facsimileTypesName,
+  description := """The Facsimile Types library supports dimensional analysis, physics calculations, probabilities,
+  |specified in a variety of value classes, in a variety of supported units.""".stripMargin.replaceAll("\n", " "),
 )
 
 // Name of the facsimile-stat project.
@@ -623,7 +623,7 @@ settings(
 //
 // TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
 lazy val facsimile = project.in(file(".")).
-aggregate(facsimileUtil, facsimileSFX, facsimileMeasure, facsimileStat).
+aggregate(facsimileUtil, facsimileSFX, facsimileTypes, facsimileStat).
 settings(commonSettings: _*).
 settings(unpublishedProjectSettings: _*).
 settings(

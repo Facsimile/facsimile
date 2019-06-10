@@ -35,7 +35,7 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
-import org.facsim.measure.Angle
+import org.facsim.types.Angle
 
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell arc & circle''

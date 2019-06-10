@@ -15,6 +15,7 @@
       <w>scalacheck</w>
       <w>scalastyle</w>
       <w>scalatest</w>
+      <w>semigroup</w>
       <w>sonatype</w>
       <w>unitless</w>
       <w>unmanaged</w>

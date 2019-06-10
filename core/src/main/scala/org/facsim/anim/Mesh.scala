@@ -34,7 +34,7 @@ Scala source file from the org.facsim.anim package.
 package org.facsim.anim
 
 import org.facsim.assertNonNull
-import org.facsim.measure.Angle
+import org.facsim.types.Angle
 import scala.annotation.tailrec
 import scalafx.scene.shape.TriangleMesh
 
