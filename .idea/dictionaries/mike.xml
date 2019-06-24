@@ -10,6 +10,7 @@
       <w>interoperating</w>
       <w>keyid</w>
       <w>lgpl</w>
+      <w>lightbend</w>
       <w>nullary</w>
       <w>passcode</w>
       <w>scalacheck</w>
@@ -17,8 +18,10 @@
       <w>scalatest</w>
       <w>semigroup</w>
       <w>sonatype</w>
+      <w>typelevel</w>
       <w>unitless</w>
       <w>unmanaged</w>
+      <w>versioning</w>
       <w>xcheckinit</w>
       <w>xfatal</w>
       <w>xlint</w>

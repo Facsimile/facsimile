@@ -1,55 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Facsimile - A Discrete-Event Simulation Library
-Copyright © 2004-2019, Michael J Allen.
+<!--====================================================================================================================
+  Facsimile: A Discrete-Event Simulation Library
+  Copyright © 2004-2019, Michael J Allen.
 
-This file is part of Facsimile.
+  This file is part of Facsimile.
 
-Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
-version.
+  Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+  version.
 
-Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
-of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+  Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+  details.
 
-You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
-see http://www.gnu.org/licenses/.
+  You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
 
-The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
-project home page at:
+    http://www.gnu.org/licenses/lgpl.
 
-  http://www.facsim.org/
+  The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+  project home page at:
 
-Thank you for your interest in the Facsimile project!
+    http://facsim.org/
 
-IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
-as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
-fails to comply with the standard, then your patches will be rejected. For further information, please visit the coding
-standards at:
+  Thank you for your interest in the Facsimile project!
 
-  http://www.facsim.org/Documentation/CodingStandards/
-========================================================================================================================
-XML configuration file for Scalastyle.
+  IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for
+  inclusion as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If
+  your code fails to comply with the standard, then your patches will be rejected. For further information, please
+  visit the coding standards at:
 
-The rules defined in this file enforce - to the maximum extent possible - Facsimile coding conventions and styles.
-Whenever feasible, you should modify failing code so that it conforms to these rules.
+    http://facsim.org/Documentation/CodingStandards/
+  ===================================================================================================================-->
 
-However, occasionally there is no option but to disable certain rules. For example, you may need to pass a null value to
-a Java API function. In this case, the rule should be disabled locally in your code via a "//scalastyle" comment.
-Typically, such rules will be categorized here as having a level of "warning" rather than "error"; you should not
-normally locally-disable error category rules.
+<!--====================================================================================================================
+  XML configuration file for Scalastyle.
 
-When locally disabling rules, try to be as specific as possible so that other coders understand which rule is being
-disabled. You should also add comments that explain why it was necessary. Avoid disabling all rules.
+  The rules defined in this file enforce - to the maximum extent possible - Facsimile coding conventions and styles.
+  Whenever feasible, you should modify failing code so that it conforms to these rules.
 
-Rules that accept Scalariform tokens should refer to the following link for a list of supported token names:
+  However, occasionally there is no option but to disable certain rules. For example, you may need to pass a null value
+  to a Java API function. In this case, the rule should be disabled locally in your code via a "//scalastyle" comment.
+  Typically, such rules will be categorized here as having a level of "warning" rather than "error"; you should not
+  normally locally-disable error category rules.
 
-  https://github.com/scala-ide/scalariform/blob/master/scalariform/src/main/scala/scalariform/lexer/Tokens.scala
+  When locally disabling rules, try to be as specific as possible so that other coders understand which rule is being
+  disabled. You should also add comments that explain why it was necessary. Avoid disabling all rules.
 
-UNDER NO CIRCUMSTANCES SHOULD YOU DISABLE A RULE IN THIS FILE IN ORDER TO ALLOW YOUR CODE TO PASS SCALASTYLE
-INSPECTIONS.
-========================================================================================================================
--->
+  Rules that accept Scalariform tokens should refer to the following link for a list of supported token names:
+
+    https://github.com/scala-ide/scalariform/blob/master/scalariform/src/main/scala/scalariform/lexer/Tokens.scala
+
+  UNDER NO CIRCUMSTANCES SHOULD YOU DISABLE A RULE IN THIS FILE IN ORDER TO ALLOW YOUR CODE TO PASS SCALASTYLE
+  INSPECTIONS.
+  ===================================================================================================================-->
 <scalastyle>
  <name>Facsimile project standard Scalastyle configuration</name>
 
@@ -153,7 +156,7 @@ INSPECTIONS.
     <parameters>
       <parameter name="regex">true</parameter>
       <parameter name="header"><![CDATA[^//={118}\Q
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-\E\d{4}\Q, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -184,8 +187,10 @@ INSPECTIONS.
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //\E={118}\Q
+
+//\E={118}\Q
 // Scala source file belonging to the org.facsim.\E[\p{Lower}\d_\.]+\Q package.
-\E//={118}\Q
+//\E={118}\Q
 package org.facsim\E[\p{Lower}\d_\.]*]]></parameter>
     </parameters>
   </check>

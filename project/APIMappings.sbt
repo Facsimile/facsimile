@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -12,9 +12,8 @@
 // warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 // details.
 //
-// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
-//
-//   http://www.gnu.org/licenses/lgpl.
+// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
+// see http://www.gnu.org/licenses/lgpl.
 //
 // The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
 // project home page at:
@@ -30,19 +29,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util.parse package.
+
 //======================================================================================================================
-package org.facsim.util
-
-/** Utilities for parsing streams and files of various formats.
- *
- *  ''Facsimile'' file parsers utilize grammars defined using the ''[[http://parboiled2.org/ Parboiled2]]'' library.
- *  These parsers operate on individual bytes, rather than ''[[https://unicode.org/ Unicode]]'' characters, so parsing
- *  must necessarily depend upon the character encoding used to create these bytes. The utilities provided here are
- *  designed to simplify the chore of parsing, and to eliminate common problems.
- *
- *  @since 0.0
- */
-package object parse {
-
-}
+// SBT file to incorporate API mappings plugin, which support links to external documentation.
+//======================================================================================================================
+addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings" % "3.0.0")

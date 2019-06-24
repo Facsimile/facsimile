@@ -1,5 +1,5 @@
 #=======================================================================================================================
-# Facsimile -- A Discrete-Event Simulation Library
+# Facsimile: A Discrete-Event Simulation Library
 # Copyright © 2004-2019, Michael J Allen.
 #
 # This file is part of Facsimile.
@@ -29,6 +29,8 @@
 #
 #   http://www.facsim.org/Documentation/CodingStandards/
 #=======================================================================================================================
+
+#=======================================================================================================================
 # YAML configuration file for facsimile builds on the Travis CI system.
 #
 # For further details on this configuration, refer to:
@@ -44,7 +46,7 @@ sudo: false
 # These values should be synchronized with the values in the custom SBT build definition file, FacsimileBuild.sbt.
 language: scala
 scala:
-  - 2.12.4
+  - 2.12.8
 
 # Cache the IVY & SBT directories at the end of the build.
 cache:

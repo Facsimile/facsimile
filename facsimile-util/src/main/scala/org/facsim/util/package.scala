@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util package.
 //======================================================================================================================
 package org.facsim
@@ -37,7 +39,7 @@ package org.facsim
 // The Scala "macros" language feature is currently experimental, and needs to be enabled via the import statement
 // below.
 import java.io.File
-import java.net.URI
+import java.net.{URI, URL}
 import java.time.ZonedDateTime
 import java.util.jar.JarFile
 import java.util.{Date, GregorianCalendar}
@@ -46,12 +48,10 @@ import scala.language.experimental.macros
 import scala.language.implicitConversions
 import scala.reflect.macros.blackbox.Context
 
-/** ''[[http://facsim.org/ Facsimile]]'' Simulation Library miscellaneous utilities.
+/** ''[[http://facsim.org/ Facsimile]]'' Simulation Utility Library.
  *
- *  Package providing miscellaneous utility elements.
- *
- *  @note ''Facsimile'' is, first and foremost, a simulation library. It is not a collection of miscellaneous, utility
- *  classes and functions with general applicability. Only general utilities are publicly accessible.
+ *  Package providing miscellaneous utility elements required by the ''Facsimile'' simulation library, made available
+ *  separately in case they are of use for non-simulation activities.
  *
  *  @since 0.0
  */
@@ -90,32 +90,32 @@ package object util {
   /** Key for requireFinite string resource. */
   private[facsim] val RequireFiniteKey = "requireFinite"
 
-  /** Implicit conversion of a [[ZonedDateTime]] to a [[Date]].
+  /** Implicit conversion of a `[[java.time.ZonedDateTime ZonedDateTime]]` to a `[[java.util.Date Date]]`.
    *
-   *  Conversion between pre-''Java 1.8'' `java.util` time classes (such as [[Date]], [[GregorianCalendar]], etc.) and
-   *  the new post-''Java 1.8'' `java.time` time classes ([[java.time.Instant]], [[ZonedDateTime]], etc) is cumbersome
-   *  at best. The former could be dispensed with completely if if wasn't for the fact that [[java.text.MessageFormat]]
-   *  currently supports only the [[Date]] class. This function makes working with the new time classes, and text
-   *  message formatting, a little more straightforward.
+   *  Conversion between pre-''Java 1.8'' `java.util` time classes (such as `Date`, `[[java.util.GregorianCalendar
+   *  GregorianCalendar]]`, etc.) and the new post-''Java 1.8'' `java.time` time classes (`[[java.time.Instant
+   *  Instant]]`, `ZonedDateTime`, etc) is cumbersome at best. The former could be dispensed with completely if it
+   *  wasn't for the fact that `[[java.text.MessageFormat MessageFormat]]` currently supports only the `Date` class.
+   *  This function makes working with the new time classes, and text message formatting, a little more straightforward.
    *
-   *  @param date Date, expressed as a [[ZonedDateTime]] to be converted.
+   *  @param date Date, expressed as a `ZonedDateTime` to be converted.
    *
-   *  @return `date` expressed as a [[Date]].
+   *  @return `date` expressed as a `Date`.
    *
    *  @throws scala.NullPointerException if `date` is null.
    *
-   *  @throws scala.IllegalArgumentException if `date` is too large to represent as a [[GregorianCalendar]] value.
+   *  @throws scala.IllegalArgumentException if `date` is too large to represent as a `GregorianCalendar` value.
    */
   private[facsim] implicit def toDate(date: ZonedDateTime): Date = GregorianCalendar.from(date).getTime
 
-  /** Obtain the resource URL associated with a class's type information.
+  /** Obtain the resource ''URL'' associated with a class's type information.
    *
    *  @param elementType Element type instance for which a resource ''URL'' will be sought.
    *
-   *  @return Resource ''URL'' associated with `elementType` wrapped in [[Some]], or [[None]] if the element type's
-   *  resource URL could not be identified.
+   *  @return Resource ''URL'' associated with `elementType` wrapped in `[[scala.Some Some]]`, or `[[scala.None None]]`
+   *  if the element type's resource URL could not be identified.
    */
-  private[util] def resourceUrl(elementType: Class[_]) = {
+  private[util] def resourceUrl(elementType: Class[_]): Option[URL] = {
 
     // (BTW, this is a rather convoluted process. If you know of a better (i.e. simpler or quicker) approach, feel free
     // to implement it...)
@@ -137,10 +137,10 @@ package object util {
    *
    *  @param elementType Element type instance for which a resource ''URL'' will be sought.
    *
-   *  @return ''JAR'' file associated with `elementType` wrapped in [[Some]], or [[None]] if `elementType` was not
-   *  loaded from a ''JAR'' file.
+   *  @return ''JAR'' file associated with `elementType` wrapped in `[[scala.Some Some]]`, or `[[scala.None None]]` if
+   *  `elementType` was not loaded from a ''JAR'' file.
    */
-  private[util] def jarFile(elementType: Class[_]) = resourceUrl(elementType).flatMap {url =>
+  private[util] def jarFile(elementType: Class[_]): Option[JarFile] = resourceUrl(elementType).flatMap {url =>
 
     // If the URL identifies a JAR file, then it will be of the (String) form:
     //
@@ -176,7 +176,7 @@ package object util {
 
   /** Require that argument value is non-`null`.
    *
-   *  Throw a [[scala.NullPointerException]] if supplied argument value is `null`.
+   *  Throw a `[[scala.NullPointerException NullPointerException]]` if supplied argument value is `null`.
    *
    *  Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
    *  to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
@@ -187,7 +187,8 @@ package object util {
    *  explicitly is regarded as good practice. One reason is that exceptions thrown by the ''JVM'' provide limited
    *  explanation to the user as to their cause; this function provides an explanation automatically.
    *
-   *  @note This is a non-macro version of [[requireNonNull(AnyRef)]] for use within the facimile-util project.
+   *  @note This is a non-macro version of `[[org.facsim.util.requireNonNull(AnyRef)* requireNonNull(AnRef)]]` for use
+   *  within the ''facsimile-util'' project.
    *
    *  @param arg Argument whose value is to be compared to `null`.
    *
@@ -204,13 +205,14 @@ package object util {
 
   /** Require that argument value is valid.
    *
-   *  Throw a [[scala.IllegalArgumentException]] if supplied parameter value is invalid.
+   *  Throw a `[[scala.IllegalArgumentException IllegalArgumentException]]` if supplied parameter value is invalid.
    *
-   *  @note This function supersedes the [[Predef]] `require` methods.
+   *  @note This function supersedes the `[[scala.Predef Predef]]` `require` methods.
    *
    *  @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
    *
-   *  @note This is a non-macro version of [[requireValid(Any, Boolean)]] for use within the facimile-util project.
+   *  @note This is a non-macro version of `[[org.facsim.util.requireValid(Any,Boolean)* requireValid(Any,Boolean)]]`
+   *  for use within the ''facsimile-util'' project.
    *
    *  @tparam T Type of argument value.
    *
@@ -230,7 +232,7 @@ package object util {
 
   /** Require that argument value is non-`null`.
    *
-   *  Throw a [[scala.NullPointerException]] if supplied argument value is `null`.
+   *  Throw a `[[scala.NullPointerException NullPointerException]]` if supplied argument value is `null`.
    *
    *  Normally, a `NullPointerException` will be thrown by the ''Java'' virtual machine (''JVM'') if an attempt is made
    *  to dereference a `null` pointer. However, if a function takes an object reference argument and that argument is
@@ -251,11 +253,12 @@ package object util {
 
   /** Require that argument value is valid.
    *
-   *  Throw a [[scala.IllegalArgumentException]] if supplied parameter value is invalid.
+   *  Throw a `[[scala.IllegalArgumentException IllegalArgumentException]]` if supplied parameter value is invalid.
    *
-   *  @note This function supersedes the [[scala.Predef]] `require` methods.
+   *  @note This function supersedes the `[[scala.Predef Predef]]` `require` methods.
    *
-   *  @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
+   *  @note Tests for non-`null` argument values should be verified by the `[[org.facsim.util.requireNonNull(AnyRef)*
+   *  requireNonNull(AnyRef)]]` function.
    *
    *  @param arg Argument being verified.
    *
@@ -271,7 +274,7 @@ package object util {
   /** Require a finite double value.
    *
    *  Double arguments that equate to `NaN` (''not a number'') or ''infinity'' will result in a
-   *  [[scala.IllegalArgumentException]] being thrown.
+   *  `[[scala.IllegalArgumentException IllegalArgumentException]]` being thrown.
    *
    *  @param arg Argument whose value is being validated.
    *
@@ -316,12 +319,14 @@ package object util {
     c.Expr[String](Literal(Constant(show(arg.tree))))
   }
 
-  /** IndentationCheckerProvides implementation of the [[assertNonNull]] macro.
+  /** IndentationCheckerProvides implementation of the `[[org.facsim.util.assertNonNull(AnyRef)*
+   *  assertNonNull(AnyRef)]]` macro.
    *
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
-   *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
-   *  [[java.lang.AssertionError]] is thrown by the macro implementation, together with the name of the failed argument.
+   *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then an
+   *  `[[java.lang.AssertionError AssertionError]]` is thrown by the macro implementation, together with the name of the
+   *  failed argument.
    *
    *  @return Implementation of this instance of the `assertNonNull` macro.
    *
@@ -346,13 +351,13 @@ package object util {
     }
   }
 
-  /** Provides implementation of the [[requireNonNull]] macro.
+  /** Provides implementation of the `[[org.facsim.util.requireNonNull(AnyRef)* requireNonNull(AnyRef)]]` macro.
    *
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
    *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
-   *  [[scala.NullPointerException]] is thrown by the macro implementation, together with the name of the failed
-   *  argument.
+   *  `[[scala.NullPointerException NullPointerException]]` is thrown by the macro implementation, together with the
+   *  name of the failed argument.
    *
    *  @return Implementation of this instance of the `requireNonNull` macro.
    *
@@ -375,13 +380,13 @@ package object util {
     }
   }
 
-  /** Provides implementation of the [[requireValid]] macro.
+  /** Provides implementation of the `[[org.facsim.util.requireValid(Any,Boolean)* requireValid(Any,Boolean)]]` macro.
    *
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
    *  @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then a
-   *  [[scala.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
-   *  argument.
+   *  `[[scala.IllegalArgumentException IllegalArgumentException]]` is thrown by the macro implementation, together with
+   *  the name of the failed argument.
    *
    *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
    *  merely returns; if `false` an `IllegalArgumentException` is raised.
@@ -405,13 +410,13 @@ package object util {
     }
   }
 
-  /** Provides implementation of the [[requireFinite]] macro.
+  /** Provides implementation of the `[[org.facsim.util.requireFinite(Double)* requireFinite(Double)]]` macro.
    *
    *  @param c Abstract syntax tree (AST) context for this macro definition.
    *
    *  @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then a
-   *  [[scala.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
-   *  argument.
+   *  `[[scala.IllegalArgumentException IllegalArgumentException]]` is thrown by the macro implementation, together with
+   *  the name of the failed argument.
    *
    *  @return Implementation of this instance of the `requireFinite` macro.
    *

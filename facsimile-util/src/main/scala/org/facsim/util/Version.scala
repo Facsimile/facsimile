@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -29,6 +29,8 @@
 // visit the coding standards at:
 //
 //   http://facsim.org/Documentation/CodingStandards/
+//======================================================================================================================
+
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.util package.
 //======================================================================================================================
@@ -183,20 +185,21 @@ object Version {
    *  unsupported.
    *
    *  @note This facility was added to support parsing of version numbers in ''Java'' manifests. It should be noted that
-   *  resulting [[Version]] instances that are converted back to strings will not match the original string passed to
-   *  the parsing function.
+   *  resulting `[[org.facsim.util.Version Version]]` instances that are converted back to strings will not match the
+   *  original string passed to the parsing function.
    */
   private val JavaVersionRegex = """(\d+)\.(\d+)\.0_(\d+)""".r
 
   /** Convert a string into a version instance.
    *
-   *  @param version Version string to be parsed. This must be of the form ''`M`.`m`[.`b`][-SNAPSHOT]'', where `M` is
+   *  @param version Version string to be parsed. This must be of the form ''`M.m[.b][-SNAPSHOT]`'', where `M` is
    *  the major version number, `m` is the minor version number, and `b` is an optional bug-fix number. If the string
-   *  ends with ''-SNAPSHOT'', then a pre-release ''snapshot'' is indicated. Alternatively, ''Java'' version numbers of
-   *  the form ''`M`.`m`.`0_b`'' are accepted.  No other version string formats are currently supported.
+   *  ends with ''`-SNAPSHOT``'', then a pre-release ''snapshot'' is indicated. Alternatively, ''Java'' version numbers
+   *  of the form ''`M.m.0_b`'' are accepted.  No other version string formats are currently supported.
    *
-   *  @return A [[Version]] instance equivalent to the information contained in `version` wrapped in a
-   *  [[scala.util.Success]] if successful, or a [[scala.util.Failure]] containing a [[VersionParseException]].
+   *  @return A `[[org.facsim.util.Version Version]]` instance equivalent to the information contained in `version`
+   *  wrapped in a `[[scala.util.Success Success]]` if successful, or a `[[scala.util.Failure Failure]]` containing a
+   *  `[[org.facsim.util.VersionParseException VersionParseException]]`.
    *
    *  @throws scala.NullPointerException if `version` is `null`.
    *

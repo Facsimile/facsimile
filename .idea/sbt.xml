@@ -2,20 +2,23 @@
 <project version="4">
   <component name="ScalaSbtSettings">
     <option name="customVMEnabled" value="true" />
-    <option name="customVMPath" value="/usr/lib/jvm/java-11-openjdk-amd64" />
+    <option name="customVMPath" value="/usr/lib/jvm/jdk-8" />
     <option name="linkedExternalProjectsSettings">
       <SbtProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/facsimile-measure" />
+            <option value="$PROJECT_DIR$/facsimile-collection" />
+            <option value="$PROJECT_DIR$/facsimile-engine" />
             <option value="$PROJECT_DIR$/facsimile-sfx" />
             <option value="$PROJECT_DIR$/facsimile-stat" />
+            <option value="$PROJECT_DIR$/facsimile-types" />
             <option value="$PROJECT_DIR$/facsimile-util" />
             <option value="$PROJECT_DIR$/project" />
           </set>
         </option>
+        <option name="sbtVersion" value="1.2.8" />
         <option name="useAutoImport" value="true" />
       </SbtProjectSettings>
     </option>

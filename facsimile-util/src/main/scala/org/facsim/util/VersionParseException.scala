@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -29,6 +29,8 @@
 // visit the coding standards at:
 //
 //   http://facsim.org/Documentation/CodingStandards/
+//======================================================================================================================
+
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.util package.
 //======================================================================================================================
@@ -60,9 +62,9 @@ extends ParseException(null, offset) { //scalastyle:ignore null
 
   /** Report cause of this exception.
    *
-   * @return Localised description of the cause of the exception.
+   *  @return Localised description of the cause of the exception.
    *
-   * @since 0.0
+   *  @since 0.0
    */
   override def getMessage: String = LibResource("VersionParse", version, getErrorOffset)
 }

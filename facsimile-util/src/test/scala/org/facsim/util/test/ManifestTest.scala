@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
 package org.facsim.util.test
@@ -47,9 +49,16 @@ import scala.util.{Failure, Properties, Success}
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Manifest]] class. */
-class ManifestTest
+final class ManifestTest
 extends FunSpec
 with CommonTestMethods {
+
+  /** ''Java'' specification vendor.
+   *
+   *  This should be configured to match the value returned as the "specification-vendor" attribute of the ''Java
+   *  run-time'' library.
+   */
+  val JavaSpecVendor = "Oracle Corporation"
 
   /** Dummy class that will not be loaded from a JAR file, and can thus be tested as such. */
   class NonJARFileClass
@@ -282,8 +291,15 @@ with CommonTestMethods {
       // Verify that it retrieves attribute values OK.
       it("must return defined valid vendor name wrapped in a success") {
         new TestData {
-          assert(javaManifest.vendor === Success(Properties.javaVendor))
           assert(dummyManifest.vendor === Success(dummyVendor))
+
+          // For some reason, the Zulu OpenJDK "rt.jar" file reports "N/A" for the "Implementation-Vendor" attribute,
+          // even though Properties.javaVendor reports "Azul Systems, Inc.". In all other cases, these two values should
+          // be the same.
+          Properties.javaVendor match {
+            case "Azul Systems, Inc." => assert(javaManifest.vendor === Success("N/A"))
+            case vendor: String => assert(javaManifest.vendor === Success(vendor))
+          }
         }
       }
     }
@@ -336,9 +352,9 @@ with CommonTestMethods {
       }
 
       // Verify that it retrieves attribute values OK.
-      it("must return defined valid vendor name wrapped in a success") {
+      it(s"must return '${JavaSpecVendor}' wrapped in a success") {
         new TestData {
-          assert(javaManifest.specVendor === Success(Properties.javaVendor))
+          assert(javaManifest.specVendor === Success(JavaSpecVendor))
           assert(dummyManifest.specVendor === Success(dummyVendor))
         }
       }

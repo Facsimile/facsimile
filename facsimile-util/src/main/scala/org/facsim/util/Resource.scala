@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util package.
 //======================================================================================================================
 package org.facsim.util
@@ -39,9 +41,11 @@ import java.util.ResourceBundle
 
 /** Provides access to a locale-specific resource bundle belonging to a library or application.
  *
- *  Further information on how locale-specific resources are identified is at [[java.util.ResourceBundle]].
+ *  Further information on how locale-specific resources are identified is at `[[java.util.ResourceBundle
+ *  ResourceBundle]]`.
  *
- *  The user's current preferred locale is identified through a call to [[java.util.Locale.getDefault]].
+ *  The user's current preferred locale is identified through a call to `[[java.util.Locale.getDefault
+ *  Locale.getDefault]]`.
  *
  *  @todo Add code to retrieve package files, including images, etc.
  *
@@ -52,10 +56,6 @@ import java.util.ResourceBundle
  *  @throws scala.NullPointerException if `bundleName` is `null`.
  *
  *  @throws java.util.MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
- *
- *  @see [[java.util.ResourceBundle]] for information on Java resource bundles.
- *
- *  @see [[java.util.Locale]] for information on Java locale processing.
  *
  *  @since 0.0
  */
@@ -70,7 +70,8 @@ class Resource(bundleName: String) {
    *  default locale is available, then it will be loaded - otherwise, the "en_US" (United States English) resource
    *  bundle will be loaded.
    *
-   *  If the resource bundle cannot be found, then [[java.util.MissingResourceException]]  will be thrown.
+   *  If the resource bundle cannot be found, then `[[java.util.MissingResourceException MissingResourceException]]`
+   *  will be thrown.
    */
   private final val bundle = ResourceBundle.getBundle(bundleName)
   assert(bundle ne null) // scalastyle:ignore null
@@ -84,15 +85,15 @@ class Resource(bundleName: String) {
    *  @note It is normal ''Facsimile'' policy to avoid throwing exceptions, and to make functions as pure as possible.
    *  However, this function is frequently employed in a very-specific scenario, when it is expected to provide
    *  essential, locale-specific user information. In other words, it should ''never'' fail in practical use. As a
-   *  consequence, requiring the caller to process a [[scala.util.Try]] is problematic and cumbersome. Instead, this
-   *  function will just throw exceptions, which indicate a fundamental failing of the caller to configure their
+   *  consequence, requiring the caller to process a `[[scala.util.Try Try]]` is problematic and cumbersome. Instead,
+   *  this function will just throw exceptions, which indicate a fundamental failing of the caller to configure their
    *  application or library correctly.
    *
    *  @param key Key used to identify the string resource to be retrieved.
    *
    *  @param arguments Arguments to be merged into, and formatted as part of, the resulting string resource. May be
-   *  omitted if no arguments are required. Note that any Scala type values (Double, Int, etc.) will be boxed into
-   *  equivalent Java type wrappers (java.lang.Double, java.lang.Int, etc.).
+   *  omitted if no arguments are required. Note that any Scala type values (`Double`, `Int`, etc.) will be boxed into
+   *  equivalent ''Java'' type wrappers (`java.lang.Double`, `java.lang.Integer`, etc.).
    *
    *  @return Locale-specific, formatted version of the requested string resource.
    *

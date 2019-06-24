@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -34,6 +34,7 @@
 // SBT build configuration Facsimile and its sub-projects.
 //======================================================================================================================
 
+import java.io.File
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import sbtrelease.ReleaseStateTransformations._
@@ -49,12 +50,12 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here for easy maintenance.
-val CatsVersion = ""
+val CatsVersion = "1.6.0"
 val LightbendConfigVersion = "1.3.4"
 val ParboiledVersion = "2.1.6"
 val ScalaVersion = "2.12.8"
 val ScalaCheckVersion = "1.14.0"
-val ScalaTestVersion = "3.0.5"
+val ScalaTestVersion = "3.0.8"
 
 // Date the facsimile project was started.
 //
@@ -95,54 +96,6 @@ lazy val commonScalaCSettings = Seq(
   "-encoding", "UTF-8",
   //"-Xfatal-warnings",
 )
-
-// ScalaDoc to JavaDoc linking.
-//
-// ScalaDoc currently does not provide support for linking to JavaDoc documentation. However, this is possible.
-//
-// The following code is based upon the solution outlined by Jacek Laskowski and Andrew Bate in their answers to a
-// question about this issue that was posed on Stack Overflow:
-//
-//   https://stackoverflow.com/questions/16934488/how-to-link-classes-from-jdk-into-scaladoc-generated-doc/
-
-// Map of Java JAR file names to the corresponding JavaDoc API URL. Add other libraries with JavaDoc here.
-val javaDocMap = Map(
-  "rt" -> "http://docs.oracle.com/javase/8/docs/api/index.html",
-)
-
-// All JavaDoc sites.
-val javaDocLinks = javaDocMap.values
-
-// A map of URL to Regex expressions that will match that URL. The first matched group is the URL, the second is the
-// element reference.
-val javaDocLinkRegex = javaDocLinks.map{url =>
-  url -> ("""\"(\Q""" + url + """\E)#([^"]*)\"""").r
-}.toMap
-
-// Determine if a particular file has a JavaDoc link.
-def hasJavaDocLink(f: File) = javaDocLinks.exists {url =>
-  javaDocLinkRegex(url).findFirstIn(IO.read(f)).nonEmpty
-}
-
-// Function to convert links to JavaDoc documentation into a form expected by JavaDoc sites. Matches result from a
-// comparison to the URL map defined above.
-def fixJavaDocLinks = (m: Match) => s"${m.group(1)}?${m.group(2).replace(".", "/")}.html"
-
-// The Java runtime library JAR file is located in the path identified by the sun.boot.class.path system property.
-//
-// Note that this must be added manually to the classpath when searching for JAR files in the docProjectSettings.
-//
-// Update: This approach does not work with JDK 9+, due to the modularization of the Java run-time libraries. The
-// following issue tracks this problem:
-//
-//   https://github.com/scala/bug/issues/10675
-//
-// Commented out in the meantime. :-(
-//val rtJar: String = System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).collectFirst {
-//  case str: String if str.endsWith(java.io.File.separator + "rt.jar") => str
-//}.get // fail hard if not found
-
-// End of ScalaDoc to JavaDoc linking. See also the docProjectSettings for how this information is used.
 
 // Common project settings.
 //
@@ -195,70 +148,23 @@ lazy val docProjectSettings = Seq(
   //
   // Note that diagram generation requires that GraphViz be installed on the build machine. However, at the time of
   // writing, ScalaDoc's use of GraphViz is broken and does not work correctly.
-  scalacOptions in doc := commonScalaCSettings ++ Seq(
+  scalacOptions in (Compile, doc) := commonScalaCSettings ++ Seq(
+    "-author",
     "-diagrams",
+    //"-diagrams-debug", //<-- Uncomment option to debug diagramming errors. Make sure graphviz is installed.
     "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
     "-doc-format:html",
     "-doc-title", "Facsimile API Documentation",
     "-doc-version", version.value,
     "-groups",
-    "-implicits",
-    "-no-prefixes",
+    //"-implicits",
+    //"-no-prefixes",
     "-Ymacro-expand:none",
   ),
 
   // Allow Facsimile's ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
   // "apiURL" property in their library's Maven POM configuration.
   autoAPIMappings := true,
-
-  // Mappings for ScalaDoc libraries that do not use the autoAPIMappings feature.
-  //
-  // The following code is based upon the solution outlined by Jacek Laskowski and Andrew Bate in their answers to a
-  // question about this issue that was posed on Stack Overflow:
-  //
-  //   https://stackoverflow.com/questions/16934488/how-to-link-classes-from-jdk-into-scaladoc-generated-doc/
-  //
-  // Update: This approach does not work with JDK 9+, due to the modularization of the Java run-time libraries. The
-  // following issue tracks this problem:
-  //
-  //   https://github.com/scala/bug/issues/10675
-  //
-  // Commented out in the meantime. :-(
-  //apiMappings ++= {
-  //
-  //  // Retrieve the classpath for looking up JAR files. We must manually add the Java runtime JAR file to this.
-  //  val classpath = (fullClasspath in Compile).value ++ Seq(Attributed.blank(file(rtJar)))
-  //
-  //  // Function to retrieve jar files from the classpath.
-  //  def findJar(name: String): File = {
-  //
-  //    // Get the JAR file. There is a hard fail if it cannot be found.
-  //    classpath.find {attr =>
-  //      (attr.data ** s"$name*.jar").get.nonEmpty
-  //    }.get.data
-  //  }
-  //
-  //  // Define external documentation paths
-  //  javaDocMap.map {
-  //    case (jarName, docUrl) => findJar(jarName) -> url(docUrl)
-  //  }
-  //},
-
-  // Override the doc task to fix JavaDoc links.
-  // The following code is based upon the solution outlined by Jacek Laskowski and Andrew Bate in their answers to a
-  // question about this issue that was posed on Stack Overflow:
-  //
-  //   https://stackoverflow.com/questions/16934488/how-to-link-classes-from-jdk-into-scaladoc-generated-doc/
-  doc in Compile := {
-    val target = (doc in Compile).value
-    (target ** "*.html").get.filter(hasJavaDocLink).foreach {f =>
-      val newContent = javaDocLinks.foldLeft(IO.read(f)) {
-        case (oldContent, docURL) => javaDocLinkRegex(docURL).replaceAllIn(oldContent, fixJavaDocLinks)
-      }
-      IO.write(f, newContent)
-    }
-    target
-  },
 )
 
 // Published project settings.
@@ -457,7 +363,7 @@ lazy val sourceProjectSettings = Seq(
   // https://issues.scala-lang.org/browse/SI-7991 for further details.
   scalacOptions in Compile := commonScalaCSettings ++ Seq(
 
-    // Code compilation options.
+    // Code compilation options. YpartialUnification is required by the Typelevel Cats library.
     "-feature",
     "-g:vars",
     "-opt:l:method",
@@ -528,22 +434,22 @@ lazy val unpublishedProjectSettings = Seq(
 )
 
 // Name of the facsimile-util project.
-val facsimileUtilName = "facsimile-util"
+val FacsimileUtilName = "facsimile-util"
 
 // Facsimile-Util project.
 //
 // The Facsimile-Util project contains common utility code that is utilized by other Facsimile projects, as well as
 // third-party projects.
-lazy val facsimileUtil = project.in(file(facsimileUtilName)).
-settings(commonSettings: _*).
-settings(sourceProjectSettings: _*).
-settings(docProjectSettings: _*).
-settings(publishedProjectSettings: _*).
-settings(
+lazy val facsimileUtil = project.in(file(FacsimileUtilName))
+.settings(commonSettings: _*)
+.settings(sourceProjectSettings: _*)
+.settings(docProjectSettings: _*)
+.settings(publishedProjectSettings: _*)
+.settings(
 
   // Name and description of this project.
   name := "Facsimile Utility Library",
-  normalizedName := facsimileUtilName,
+  normalizedName := FacsimileUtilName,
   description := """The Facsimile Utility library provides a number of utilities required by other Facsimile libraries
   |as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
 
@@ -561,72 +467,117 @@ settings(
   unmanagedBase in Test := baseDirectory.value / "src/test/lib",
 )
 
+// Name of the facsimile-collection project.
+val FacsimileCollectionName = "facsimile-collection"
+
+// Facsimile-Collection project.
+//
+// The Facsimile-Collection project contains custom, immutable collections that are utilized by other Facsimile
+// projects.
+lazy val facsimileCollection = project.in(file(FacsimileCollectionName))
+.dependsOn(facsimileUtil % dependsOnCompileTest)
+.settings(commonSettings: _*)
+.settings(sourceProjectSettings: _*)
+.settings(docProjectSettings: _*)
+.settings(publishedProjectSettings: _*)
+.settings(
+
+  // Name and description of this project.
+  name := "Facsimile Collection Library",
+  normalizedName := FacsimileCollectionName,
+  description := """The Facsimile Collection library provides custom, immutable collections that are required by other
+                   |Facsimile libraries as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
+)
+
 // Name of the facsimile-sfx project.
-lazy val facsimileSFXName = "facsimile-sfx"
+lazy val FacsimileSFXName = "facsimile-sfx"
 
 // Facsimile-SFX project.
 //
 // The Facsimile-SFX project is a lightweight Scala wrapper for JavaFX.
-lazy val facsimileSFX = project.in(file(facsimileSFXName)).
-dependsOn(facsimileUtil % dependsOnCompileTest).
-settings(commonSettings: _*).
-settings(sourceProjectSettings: _*).
-settings(docProjectSettings: _*).
-settings(publishedProjectSettings: _*).
-settings(
+lazy val facsimileSFX = project.in(file(FacsimileSFXName))
+.dependsOn(facsimileUtil % dependsOnCompileTest)
+.settings(commonSettings: _*)
+.settings(sourceProjectSettings: _*)
+.settings(docProjectSettings: _*)
+.settings(publishedProjectSettings: _*)
+.settings(
 
   // Name and description of this project.
   name := "Facsimile SFX Library",
-  normalizedName := facsimileSFXName,
+  normalizedName := FacsimileSFXName,
   description:= """The Facsimile SFX library is a lightweight Scala wrapper for JavaFX.""".stripMargin.
   replaceAll("\n", " "),
-
-  // Facsimile SFX dependencies.
-  libraryDependencies ++= Seq(
-  )
 )
 
 // Name of the facsimile-types project.
-val facsimileTypesName = "facsimile-types"
+val FacsimileTypesName = "facsimile-types"
 
 // Facsimile-Types project.
 //
 // The Facsimile-Types project supports custom value type classes, which support dimensional analysis, physics
 // calculations, probabilities, etc., in a variety of supported units.
-lazy val facsimileTypes = project.in(file(facsimileTypesName)).
-dependsOn(facsimileUtil % dependsOnCompileTest).
-settings(commonSettings: _*).
-settings(sourceProjectSettings: _*).
-settings(docProjectSettings: _*).
-settings(publishedProjectSettings: _*).
-settings(
+lazy val facsimileTypes = project.in(file(FacsimileTypesName))
+.dependsOn(facsimileUtil % dependsOnCompileTest)
+.settings(commonSettings: _*)
+.settings(sourceProjectSettings: _*)
+.settings(docProjectSettings: _*)
+.settings(publishedProjectSettings: _*)
+.settings(
 
   // Name and description of this project.
   name := "Facsimile Types Library",
-  normalizedName := facsimileTypesName,
+  normalizedName := FacsimileTypesName,
   description := """The Facsimile Types library supports dimensional analysis, physics calculations, probabilities,
   |specified in a variety of value classes, in a variety of supported units.""".stripMargin.replaceAll("\n", " "),
 )
 
 // Name of the facsimile-stat project.
-val facsimileStatName = "facsimile-stat"
+val FacsimileStatName = "facsimile-stat"
 
 // Facsimile-Stat project.
 //
 // The Facsimile-Stat project supports statistical distribution sampling, reporting, analysis and inference testing.
-lazy val facsimileStat = project.in(file(facsimileStatName)).
-dependsOn(facsimileUtil % dependsOnCompileTest).
-settings(commonSettings: _*).
-settings(sourceProjectSettings: _*).
-settings(docProjectSettings: _*).
-settings(publishedProjectSettings: _*).
-settings(
+lazy val facsimileStat = project.in(file(FacsimileStatName))
+.dependsOn(facsimileUtil % dependsOnCompileTest, facsimileTypes % dependsOnCompileTest)
+.settings(commonSettings: _*)
+.settings(sourceProjectSettings: _*)
+.settings(docProjectSettings: _*)
+.settings(publishedProjectSettings: _*)
+.settings(
 
   // Name and description of this project.
   name := "Facsimile Statistical Library",
-  normalizedName := facsimileStatName,
+  normalizedName := FacsimileStatName,
   description := """The Facsimile Statistical library supports statistical distribution sampling, reporting, analysis
-  and inference testing.""".stripMargin.replaceAll("\n", " "),
+  |and inference testing.""".stripMargin.replaceAll("\n", " "),
+)
+
+// Name of the facsimile-engine project.
+val FacsimileEngineName = "facsimile-engine"
+
+// Facsimile-Engine project.
+//
+// The Facsimile-Engine project provides a purely functional simulation engine for running simulations.
+lazy val facsimileEngine = project.in(file(FacsimileEngineName))
+.dependsOn(facsimileCollection % dependsOnCompileTest, facsimileSFX % dependsOnCompileTest,
+facsimileStat % dependsOnCompileTest)
+.settings(commonSettings: _*)
+.settings(sourceProjectSettings: _*)
+.settings(docProjectSettings: _*)
+.settings(publishedProjectSettings: _*)
+.settings(
+
+  // Name and description of this project.
+  name := "Facsimile Simulation Engine Library",
+  normalizedName := FacsimileEngineName,
+  description := """The Facsimile Simulation Engine library is a purely functional, discrete-event simulation engine. It
+  |it the beating heart at the center of all Facsimile simulation models.""".stripMargin.replaceAll("\n", " "),
+
+  // Facsimile Engine dependencies.
+  libraryDependencies ++= Seq(
+    "org.typelevel" %% "cats-core" % CatsVersion,
+  )
 )
 
 // Facsimile root project.
@@ -634,22 +585,20 @@ settings(
 // The Facsimile root project simply aggregates actions across all Facsimile projects.
 //
 // TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
-lazy val facsimile = project.in(file(".")).
-aggregate(facsimileUtil, facsimileSFX, facsimileTypes, facsimileStat).
-settings(commonSettings: _*).
-settings(unpublishedProjectSettings: _*).
-settings(
+lazy val facsimile = project.in(file("."))
+.aggregate(facsimileUtil, facsimileCollection, facsimileTypes, facsimileSFX, facsimileStat, facsimileEngine)
+.enablePlugins(ScalaUnidocPlugin)
+.settings(commonSettings: _*)
+.settings(unpublishedProjectSettings: _*)
+.settings(
 
   // Name and description of this project.
   name := "Facsimile",
   normalizedName := "facsimile",
-  description := """
-    The Facsimile project's goal is to develop and maintain a high-quality, 3D, discrete-event simulation library that
-    can be used for industrial simulation projects in an engineering and/or manufacturing environment.
-
-    Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS, BSD and Unix on the Java virtual
-    machine.
-  """,
+  description := """The Facsimile project's goal is to develop and maintain a high-quality, 3D, discrete-event
+  |simulation library that can be used for industrial simulation projects in an engineering and/or manufacturing
+  |environment. Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS, BSD and Unix on the Java
+  |virtual machine.""".stripMargin.replaceAll("\n", " "),
 )
 //scalastyle:on multiple.string.literals
 //scalastyle:on scaladoc

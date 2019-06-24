@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -29,6 +29,8 @@
 // visit the coding standards at:
 //
 //   http://facsim.org/Documentation/CodingStandards/
+//======================================================================================================================
+
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================

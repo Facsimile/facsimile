@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
 package org.facsim.util.test
@@ -44,7 +46,7 @@ import org.scalatest.FunSpec
  *  Most behavior can be assumed to be tested by the [[ResourceTest]] test harness. Only specific remaining tests are
  *  included here.
  */
-class LibResourceTest
+final class LibResourceTest
 extends FunSpec
 with CommonTestMethods {
 

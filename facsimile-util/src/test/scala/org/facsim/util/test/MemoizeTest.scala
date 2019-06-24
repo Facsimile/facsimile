@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
 package org.facsim.util.test
@@ -38,7 +40,7 @@ import org.facsim.util.Memoize
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.FunSpec
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off public.methods.have.type
@@ -46,9 +48,9 @@ import org.scalatest.prop.PropertyChecks
 //scalastyle:off magic.numbers
 //scalastyle:off scaladoc
 /** Test harness for the [[Memoize]] classes. */
-class MemoizeTest
+final class MemoizeTest
 extends FunSpec
-with PropertyChecks {
+with ScalaCheckPropertyChecks {
 
   /** Test data. */
   trait TestData {

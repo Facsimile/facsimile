@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util package.
 //======================================================================================================================
 package org.facsim.util
@@ -43,8 +45,8 @@ import scala.util.{Failure, Success, Try}
 /** Provide ''manifest'' information for a library or application.
  *
  *  The manifest attributes are stored within a file named `MANIFEST.MF` located in the `/META-INF` folder of the
- *  associated ''Java archive'' file (or ''jar'' file). If there is no associated jar file, then no manifest information
- *  will be available.
+ *  associated ''Java archive'' file (or ''JAR'' file). If there is no associated ''JAR'' file, then no manifest
+ *  information will be available.
  *
  *  @note ''Facsimile'' manifests, including the manifests of associated programs or simulation models, are expected to
  *  have a number of custom attributes that will not be present in all ''jar'' files.
@@ -68,11 +70,10 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @param name Name of attribute to be retrieved.
    *
-   *  @return Attribute's value as a string wrapped in a [[scala.util.Success]] if it is defined; or a
-   *  [scala.util.[Failure]] otherwise. The only possible failure is a [[NoSuchAttributeException]], indicating that
-   *  there is no attribute with the indicated `name`.
-   *
-   *  @throws scala.NullPointerException if `name` is `null`.
+   *  @return Attribute's value as a string wrapped in a `[[scala.util.Success Success]]` if it is defined; or a
+   *  `[[scala.util.Failure Failure]]` otherwise. The only possible failure is a
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]`, indicating that there is no attribute
+   *  with the indicated `name`.
    *
    *  @since 0.0
    */
@@ -95,16 +96,17 @@ final class Manifest private(manifest: JManifest) {
    *  `{name}: ''timeformat''`
    *
    *  where `{name}` is the name of the attribute and `''timeformat''` is a string that can be successfully parsed by
-   *  [[java.time.ZonedDateTime.parse(CharSequence)]].
+   *  `[[java.time.ZonedDateTime.parse(CharSequence)* ZonedDateTime.parse(CharSequence)]]`.
    *
    *  @note If this function is used to retrieve a date string attribute value that cannot be parsed as a
-   *  [[java.time.ZonedDateTime]], then a [[scala.util.Failure]] will result.
+   *  `[[java.time.ZonedDateTime ZonedDateTime]]`, then a `[[scala.util.Failure Failure]]` will result.
    *
    *  @param name Name of the date attribute to be retrieved.
    *
-   *  @return Date & time for this attribute wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]]
-   *  containing the reason that the date & time could not be retrieved. Possible failures are
-   *  [[NoSuchAttributeException]] and [[java.time.format.DateTimeParseException]].
+   *  @return Date & time for this attribute wrapped in a `[[scala.util.Success Success]]`, or a `Failure` containing
+   *  the reason that the date & time could not be retrieved. Possible failures are
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]` and
+   *  `[[java.time.format.DateTimeParseException DateTimeParseException]]`.
    *
    *  @throws scala.NullPointerException if `name` is `null`.
    *
@@ -131,13 +133,14 @@ final class Manifest private(manifest: JManifest) {
    *  `{name}: ''version''`
    *
    *  where `{name}` is the name of the attribute and `''version''` is a string that can be successfully parsed by
-   *  [[Version.apply(String)]].
+   *  `[[org.facsim.util.Version.apply(String)* Version.apply(String)]]`.
    *
    *  @param name Name of the version attribute to be retrieved.
    *
-   *  @return Version represented by this attribute wrapped in [[scala.util.Success]], or [[scala.util.Failure]]
-   *  containing the reason that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]]
-   *  and [[VersionParseException]].
+   *  @return Version represented by this attribute wrapped in `[[scala.util.Success Success]]`, or
+   *  `[[scala.util.Failure Failure]]` containing the reason that the version could not be retrieved. Possible failures
+   *  are `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]` and
+   *  `[[org.facsim.util.VersionParseException VersionParseException]]`.
    *
    *  @throws scala.NullPointerException if `name` is `null`.
    *
@@ -147,17 +150,18 @@ final class Manifest private(manifest: JManifest) {
 
   /** Try to retrieve the inception timestamp of this manifest.
    *
-   *  This is a custom field that will likely be unavailable for many packages. To include it in your ''jar'' files,
+   *  This is a custom field that will likely be unavailable for many packages. To include it in your ''JAR'' files,
    *  ensure that the META-INF/MANIFEST.MF file contains an entry of the following form:
    *
    *  `Inception-Timestamp: ''timeformat''`
    *
    *  where ''timeformat'' is a string that can be successfully parsed by
-   *  [[java.time.ZonedDateTime.parse(CharSequence)]].
+   *  `[[java.time.ZonedDateTime.parse(CharSequence)* ZonedDateTime.parse(CharSequence)]]`.
    *
-   *  @return Project inception date & time wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing
-   *  the reason that the inception date & time could not be retrieved. Possible failures are
-   *  [[NoSuchAttributeException]] and [[java.time.format.DateTimeParseException]].
+   *  @return Project inception date & time wrapped in a `[[scala.util.Success Success]]`, or a `[[scala.util.Failure
+   *  Failure]]` containing the reason that the inception date & time could not be retrieved. Possible failures are
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]` and
+   *  `[[java.time.format.DateTimeParseException DateTimeParseException]]`.
    *
    *  @since 0.0
    */
@@ -165,17 +169,18 @@ final class Manifest private(manifest: JManifest) {
 
   /** Try to retrieve the build timestamp of this manifest.
    *
-   *  This is a custom field that will likely be unavailable for many packages. To include it in your ''jar'' files,
+   *  This is a custom field that will likely be unavailable for many packages. To include it in your ''JAR'' files,
    *  ensure that the META-INF/MANIFEST.MF file contains an entry of the following form:
    *
    *  `Build-Timestamp: ''timeformat''`
    *
    *  where ''timeformat'' is a string that can be successfully parsed by
-   *  [[java.time.ZonedDateTime.parse(CharSequence)]].
+   *  `[[java.time.ZonedDateTime.parse(CharSequence)* ZonedDateTime.parse(CharSequence)]]`.
    *
-   *  @return Project build date & time wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
-   *  reason that the build date & time could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
-   *  [[java.time.format.DateTimeParseException]].
+   *  @return Project build date & time wrapped in a `[[scala.util.Success Success]]`, or a `[[scala.util.Failure
+   *  Failure]]` containing the reason that the build date & time could not be retrieved. Possible failures are
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]` and
+   *  `[[java.time.format.DateTimeParseException DateTimeParseException]]`.
    *
    *  @since 0.0
    */
@@ -183,9 +188,9 @@ final class Manifest private(manifest: JManifest) {
 
   /** Try to retrieve the title of this application or library.
    *
-   *  @return Implementation title wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
-   *  reason that the implementation title could not be retrieved. The only possible failure is
-   *  [[NoSuchAttributeException]].
+   *  @return Implementation title wrapped in a `[[scala.util.Success Success]]`, or a `[[scala.util.Failure Failure]]`
+   *  containing the reason that the implementation title could not be retrieved. The only possible failure is
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]`.
    *
    *  @since 0.0
    */
@@ -195,8 +200,9 @@ final class Manifest private(manifest: JManifest) {
    *
    *  If defined, this may be an individual or an organization, depending upon circumstances.
    *
-   *  @return Implementation vendor name wrapped in a [[scala.util.Success]], or  a [[scala.util.Failure]] containing
-   *  the reason that the vendor name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
+   *  @return Implementation vendor name wrapped in a `[[scala.util.Success Success]]`, or  a `[[scala.util.Failure
+   *  Failure]]` containing the reason that the vendor name could not be retrieved. The only possible failure is
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]`.
    *
    *  @since 0.0
    */
@@ -204,9 +210,10 @@ final class Manifest private(manifest: JManifest) {
 
   /** Try to retrieve the implementation version of this release of this application or library.
    *
-   *  @return Implementation version wrapped in [[scala.util.Success]], or [[scala.util.Failure]] containing the reason
-   *  that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
-   *  [[VersionParseException]].
+   *  @return Implementation version wrapped in `[[scala.util.Success Success]]`, or `[[scala.util.Failure Failure]]`
+   *  containing the reason that the version could not be retrieved. Possible failures are
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]` and
+   *  `[[org.facsim.util.VersionParseException VersionParseException]]`.
    *
    *  @since 0.0
    */
@@ -214,8 +221,9 @@ final class Manifest private(manifest: JManifest) {
 
   /** Try to retrieve the specification title of this application or library.
    *
-   *  @return Specification title wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the reason
-   *  that the specification title could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
+   *  @return Specification title wrapped in a `[[scala.util.Success Success]]`, or a `[[scala.util.Failure Failure]]`
+   *  containing the reason that the specification title could not be retrieved. The only possible failure is
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]`.
    *
    *  @since 0.0
    */
@@ -225,8 +233,9 @@ final class Manifest private(manifest: JManifest) {
    *
    *  If defined, this may be an individual or an organization, depending upon circumstances.
    *
-   *  @return Specification vendor name wrapped in a [[scala.util.Success]], or  a [[scala.util.Failure]] containing the
-   *  reason that the vendor name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
+   *  @return Specification vendor name wrapped in a `[[scala.util.Success Success]]`, or a `[[scala.util.Failure
+   *  Failure]]` containing the reason that the vendor name could not be retrieved. The only possible failure is
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]`.
    *
    *  @since 0.0
    */
@@ -234,9 +243,10 @@ final class Manifest private(manifest: JManifest) {
 
   /** Try to retrieve the specification version of this release of this application or library.
    *
-   *  @return Specification version wrapped in [[scala.util.Success]], or [[scala.util.Failure]] containing the reason
-   *  that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
-   *  [[VersionParseException]].
+   *  @return Specification version wrapped in `[[scala.util.Success Success]]`, or `[[scala.util.Failure Failure]]`
+   *  containing the reason that the version could not be retrieved. Possible failures are
+   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]` and
+   *  `[[org.facsim.util.VersionParseException VersionParseException]]`.
    *
    *  @since 0.0
    */
@@ -245,7 +255,7 @@ final class Manifest private(manifest: JManifest) {
 
 /** Manifest companion object.
  *
- *  Object defining factory methods for obtaining [[Manifest]] instances.
+ *  Object defining factory methods for obtaining `[[org.facsim.util.Manifest Manifest]]` instances.
  *
  *  @since 0.0
  */
@@ -266,13 +276,13 @@ object Manifest {
 
   /** Element type manifest factory method.
    *
-   *  Create and return a new [[Manifest]] instance by retrieving the ''Java'' manifest associated with the specified
-   *  `elementType`. If no manifest is associated with the element type, then an empty manifest (termed a ''null
-   *  manifest'') will be returned.
+   *  Create and return a new `[[org.facsim.util.Manifest Manifest]]` instance by retrieving the ''Java'' manifest
+   *  associated with the specified `elementType`. If no manifest is associated with the element type, then an empty
+   *  manifest (termed a ''null manifest'') will be returned.
    *
    *  @param elementType Element type instance for which manifest information will be obtained.
    *
-   *  @return Resource [[Manifest]] information associated with `elementType`, or a ''null manifest'' (having no
+   *  @return Resource `Manifest` information associated with `elementType`, or a ''null manifest'' (having no
    *  attributes defined) if the class has no ''JAR'' file, or if its ''JAR'' file has no manifest.
    *
    *  @since 0.0

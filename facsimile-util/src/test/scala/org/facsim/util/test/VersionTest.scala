@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,22 +30,24 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
 package org.facsim.util.test
 
 import org.facsim.util.{Version, VersionParseException}
 import org.scalatest.FunSpec
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.util.Failure
 
 //scalastyle:off scaladoc
 //scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Version]] class and object. */
-class VersionTest
+final class VersionTest
 extends FunSpec
-with PropertyChecks
+with ScalaCheckPropertyChecks
 with CommonTestMethods {
 
   /** Compare versions and a specific number.

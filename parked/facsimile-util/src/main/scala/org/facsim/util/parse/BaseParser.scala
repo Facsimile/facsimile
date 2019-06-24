@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,13 +30,15 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util.parse package.
 //======================================================================================================================
 package org.facsim.util.parse
 
+import org.facsim.util.types.CharU._
 import org.parboiled2.{CharPredicate, Parser, Rule1}
 import scala.util.Try
-import shapeless.T
 
 /** Enhanced ''[[http://parboiled2.org/ Parboiled2]]'' input parser.
  *
@@ -54,8 +56,8 @@ extends Parser {
    *
    *  @param trueRule Rule function to be evaluated if `condition` is `true`. The result to be wrapped in an Option.
    *
-   *  @return Rule that returns the result of `trueRule` if `condition` is `true`, wrapped in [[scala.Some]];
-   *  [[scala.None]] if `condition` is `false`.
+   *  @return Rule that returns the result of `trueRule` if `condition` is `true`, wrapped in [[scala.Some Some]];
+   *  [[scala.None None]] if `condition` is `false`.
    */
   protected[facsim] def conditional[T](condition: Boolean, trueRule: () => Rule1[T]): Rule1[Option[T]] = rule {
 
@@ -96,13 +98,13 @@ extends Parser {
    *  Override this rule definition to support specific line termination sequences.
    */
   protected[facsim] def eol = rule {
-    (BaseParser.CR ~ optional(BaseParser.LF)) | BaseParser.LF
+    (CR ~ optional(LF)) | LF
   }
 
   /** Whitespace characters.
    *
    *  This default parser rule matches a single common whitespace character. Whitespace characters are those for which
-   *  [[java.lang.Character.isWhitespace(Char)]] returns `true`.
+   *  [[java.lang.Character.isWhitespace(Char)* Character.isWhitespace(Char)]] returns `true`.
    *
    *  Override this rule definition to support different sets of whitespace characters. In particular, note that this
    *  default rule matches line termination sequences.
@@ -142,7 +144,7 @@ extends Parser {
    *  Matches with integer values, pushing the associated value onto the stack.
    */
   protected[facsim] final def intValue = rule {
-    capture(optional(BaseParser.Minus) ~ oneOrMore(digit)) ~> {s =>
+    capture(optional(Minus) ~ oneOrMore(digit)) ~> {s =>
       val i = Try(s.toInt)
       test(i.isSuccess) ~ push(i.get)
     }
@@ -166,7 +168,7 @@ extends Parser {
    *  @note This rule does not accept double precision values in exponent form.
    */
   protected[facsim] final def dblValue = rule {
-    capture(optional(BaseParser.Minus) ~ oneOrMore(digit) ~ optional(BaseParser.Period ~ zeroOrMore(digit))) ~> {s =>
+    capture(optional(Minus) ~ oneOrMore(digit) ~ optional(Period ~ zeroOrMore(digit))) ~> {s =>
       val d = Try(s.toDouble)
       test(d.isSuccess) ~ push(d.get)
     }
@@ -178,119 +180,10 @@ extends Parser {
    *  stack.
    */
   protected[facsim] final def expValue = rule {
-    capture(optional(BaseParser.Minus) ~ oneOrMore(digit) ~ optional(BaseParser.Period ~ zeroOrMore(digit)) ~
-    optional((ch('E') | ch('e')) ~ optional(BaseParser.Minus) ~ oneOrMore(digit))) ~> {s =>
+    capture(optional(Minus) ~ oneOrMore(digit) ~ optional(Period ~ zeroOrMore(digit)) ~
+    optional((ch('E') | ch('e')) ~ optional(Minus) ~ oneOrMore(digit))) ~> {s =>
       val d = Try(s.toDouble)
       test(d.isSuccess) ~ push(d.get)
     }
   }
 }
-
-/** Parser companion class.
- *
- *  Defines common control, escape and delimiter characters that may have special significance when parsing strings and
- *  files.
- *
- *  @since 0.0
- */
-object BaseParser {
-
-  /** Backslash character.
-   *
-   *  @since 0.0
-   */
-  val BS: Char = '\\'
-
-  /** Colon character.
-   *
-   *  @since 0.0
-   */
-  val Colon: Char = ':'
-
-  /** Comma character.
-   *
-   *  @since 0.0
-   */
-  val Comma: Char = ','
-
-  /** Carriage return character.
-   *
-   *  @since 0.0
-   */
-  val CR: Char = '\r'
-
-  /** Double-quote character.
-   *
-   *  @since 0.0
-   */
-  val DQ: Char = '\"'
-
-  /** Formfeed character.
-   *
-   *  @since 0.0
-   */
-  val FF: Char = '\f'
-
-  /** Horizontal tab character.
-   *
-   *  @since 0.0
-   */
-  val HT: Char = '\t'
-
-  /** Linefeed character.
-   *
-   *  @since 0.0
-   */
-  val LF: Char = '\n'
-
-  /** Minus sign.
-   *
-   *  @since 0.0
-   */
-  val Minus: Char = '-'
-
-  /** NUL character.
-   *
-   *  @since 0.0
-   */
-  val NUL: Char = '\0'
-
-  /** Period character.
-   *
-   *  @since 0.0
-   */
-  val Period: Char = '.'
-
-  /** Plus sign.
-   *
-   *  @since 0.0
-   */
-  val Plus: Char = '+'
-
-  /** Semicolon character.
-   *
-   *  @since 0.0
-   */
-  val Semicolon: Char = ';'
-
-  /** Space character.
-   *
-   *  @since 0.0
-   */
-  val SPC: Char = ' '
-
-  /** Single-quote character.
-   *
-   *  @since 0.0
-   */
-  val SQ: Char = '\''
-
-  /** Vertical tab character.
-   *
-   *  @since 0.0
-   */
-  val VT: Char = '\u000B'
-}
-
-
-

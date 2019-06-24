@@ -1,5 +1,5 @@
 //======================================================================================================================
-// Facsimile -- A Discrete-Event Simulation Library
+// Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
 package org.facsim.util.test
@@ -41,7 +43,7 @@ import org.scalatest.FunSpec
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Resource]] class. */
-class ResourceTest
+final class ResourceTest
 extends FunSpec
 with CommonTestMethods {
 
@@ -233,21 +235,21 @@ with CommonTestMethods {
         new testResources {
           val default = Locale.getDefault()
 
-          // Oct 14, 2010 - months are zero-based numbers(!)
-          val date = new GregorianCalendar(2010, 9, 14).getTime //scalastyle:ignore magic.number
+          // Sep 14, 2010 - months are zero-based numbers(!)
+          val date = new GregorianCalendar(2010, 8, 14).getTime //scalastyle:ignore magic.number
           try {
 
             // Check that we get the correct en_US response.
             Locale.setDefault(Locale.US)
-            assert(new Resource(testBundleName).apply(dateResource, date) === "10/14/10")
+            assert(new Resource(testBundleName).apply(dateResource, date) === "9/14/10")
 
-            // Month & day are in different order in the UK
+            // Month & day are in different order in the UK. Also, month has leading zero.
             Locale.setDefault(Locale.UK)
-            assert(new Resource(testBundleName).apply(dateResource, date) === "14/10/10")
+            assert(new Resource(testBundleName).apply(dateResource, date) === "14/09/10")
 
-            // Germans use same order as UK, but different separator...
+            // Germans use same order as UK, but different separator.
             Locale.setDefault(Locale.GERMANY)
-            assert(new Resource(testBundleName).apply(dateResource, date) === "14.10.10")
+            assert(new Resource(testBundleName).apply(dateResource, date) === "14.09.10")
           }
 
           // Restore original default.

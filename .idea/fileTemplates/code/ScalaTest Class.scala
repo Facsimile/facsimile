@@ -1,7 +1,7 @@
 #parse("ScalaHeader.scala")
 #if ((${PACKAGE_NAME} && ${PACKAGE_NAME} != ""))package ${PACKAGE_NAME} #end
 
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -10,8 +10,8 @@ import org.scalatest.prop.PropertyChecks
 //scalastyle:off magic.numbers
 
 /** Test harness for the [[???]] class. */
-class ${NAME}
-with PropertyChecks
+final class ${NAME}
+with ScalaCheckPropertyChecks
 
 // Re-enable test-problematic Scalastyle checkers.
 //scalastyle:on magic.numbers
