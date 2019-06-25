@@ -34,12 +34,10 @@
 // SBT build configuration Facsimile and its sub-projects.
 //======================================================================================================================
 
-import java.io.File
 import java.time.ZonedDateTime
 import java.util.jar.Attributes.Name
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
-import scala.util.matching.Regex.Match
 import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype.sonatypeSettings
 
@@ -56,6 +54,7 @@ val ParboiledVersion = "2.1.6"
 val ScalaVersion = "2.12.8"
 val ScalaCheckVersion = "1.14.0"
 val ScalaTestVersion = "3.0.8"
+val SpireVersion = "0.16.2"
 
 // Date the facsimile project was started.
 //
@@ -530,6 +529,10 @@ lazy val facsimileTypes = project.in(file(FacsimileTypesName))
   normalizedName := FacsimileTypesName,
   description := """The Facsimile Types library supports dimensional analysis, physics calculations, probabilities,
   |specified in a variety of value classes, in a variety of supported units.""".stripMargin.replaceAll("\n", " "),
+
+  libraryDependencies ++= Seq(
+    "org.typelevel" %% "spire" % SpireVersion,
+  ),
 )
 
 // Name of the facsimile-stat project.

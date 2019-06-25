@@ -30,6 +30,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.types.algebra types.
 //======================================================================================================================
 package org.facsim.types.algebra
@@ -40,8 +42,8 @@ package org.facsim.types.algebra
  *  ''typed'' monoid identifies a neutral identity value and type, such that when combined with another value, the
  *  result is that value.
  *
- *  @tparam I Type of the [[TypedMonoid.Identity]] value, such that when the identity value (of this type) is combined
- *  with any other value, it returns that value.
+ *  @tparam I Type of the [[org.facsim.types.algebra.TypedMonoid.Identity Identity]] value, such that when the identity
+ *  value (of this type) is combined with any other value, it returns that value.
  */
 private[algebra] sealed trait TypedMonoid[I] {
 

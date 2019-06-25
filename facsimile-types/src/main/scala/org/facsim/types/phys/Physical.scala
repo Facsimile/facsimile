@@ -30,19 +30,22 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+
+//======================================================================================================================
 // Scala source file belonging to the org.facsim.types.phys types.
 //======================================================================================================================
 package org.facsim.types.phys
 
-import org.facsim.util.{requireFinite, requireNonNull}
+import org.facsim.util.requireFinite
 import scala.util.Try
 
 /** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
  *  elements.
  *
- *  Physical quantity types include specific types (such as ''[[Angle]]'', ''[[Length]]'', ''[[Time]]'', etc.), as well
- *  as a ''[[Generic]]'' convenience type for the result of multiplication and division between the specific types. Each
- *  of these types has measurement values and units in which those measurements are expressed.
+ *  Physical quantity types include specific types (such as `[[org.facsim.types.phys.Angle Angle]]`,
+ *  `[[org.facsim.types.phys.Length Length]]`, `[[org.facsim.types.phys.Time Time]]`, etc.), as well as a
+ *  `[[org.facsim.types.phys.Generic Generic]]` convenience type for the result of multiplication and division between
+ *  the specific types. Each of these types has measurement values and units in which those measurements are expressed.
  *
  *  @see [[http://en.wikipedia.org/wiki/Physical_quantity Physical quantity]] on ''Wikipedia''.
  *
@@ -61,16 +64,16 @@ abstract class Physical {
    *
    *  @since 0.0
    */
-  // Developer notes: This type must typically be overridden, even if just specify additional type constraints, in each
-  // sub-class.
+  // Developer notes: This type must typically be overridden, even if just to specify additional type constraints, in
+  // each sub-class.
   type Measure <: PhysicalMeasure
 
   /** Type representing units which measurements of this physical quantity may be expressed.
    *
    *  @since 0.0
    */
-  // Developer notes: This type must typically be overridden, even if just specify additional type constraints, in each
-  // sub-class.
+  // Developer notes: This type must typically be overridden, even if just to specify additional type constraints, in
+  // each sub-class.
   type Units <: PhysicalUnits
 
   /** ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for this physical quantity.
@@ -102,13 +105,15 @@ abstract class Physical {
    *  SI]] units''.
    *
    *  @note This function is not public because it introduces the potential for unit confusion. Measurements can only be
-   *  manipulated by users as [[Physical.PhysicalMeasure]] subclass instances, not as raw values. Allowing access to raw
-   *  values encourages by-passing of the unit protection logic provided by these measurement classes.
+   *  manipulated by users as `[[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]]` subclass instances,
+   *  not as raw values. Allowing access to raw values encourages by-passing of the unit protection logic provided by
+   *  these measurement classes.
    *
    *  @param value Value of the measurement expressed in ''SI'' units.
    *
-   *  @return A measurement with the specified `value` in ''SI'' units, wrapped in a [[scala.util.Success]] if
-   *  successful, or a [[scala.util.Failure]] wrapping a failure exception in the event that `value` is invalid.
+   *  @return A measurement with the specified `value` in ''SI'' units, wrapped in a `[[scala.util.Success Success]]` if
+   *  successful, or a `[[scala.util.Failure Failure]]` wrapping a failure exception in the event that `value` is
+   *  invalid.
    */
   protected[phys] final def apply(value: Double): Try[Measure] = Try(newMeasure(value))
 
@@ -117,15 +122,15 @@ abstract class Physical {
    *
    *  @note This function is not public for two reasons: firstly, because it is a partial function that is defined only
    *  if `value` is a valid ''SI'' unit measurements; secondly, because it introduces the potential for unit confusion.
-   *  Measurements can only be manipulated by users as [[Physical.PhysicalMeasure]] subclass instances, not as raw
-   *  values. Allowing access to raw values encourages by-passing of the unit protection logic provided by these
-   *  measurement classes.
+   *  Measurements can only be manipulated by users as `[[org.facsim.types.phys.Physical.PhysicalMeasure
+   *  PhysicalMeasure]]` subclass instances, not as raw values. Allowing access to raw values encourages by-passing of
+   *  the unit protection logic provided by these measurement classes.
    *
    *  @param value Value of the measurement expressed in ''SI'' units.
    *
    *  @return A measurement with the specified `value` in ''SI'' units, provided that the measurement is valid.
    *
-   *  @throws Exception if creation of the types value fails due to the value being out of range.
+   *  @throws scala.IllegalArgumentException if creation of the types value fails due to the value being out of range.
    */
   protected[phys] def newMeasure(value: Double): Measure
 
@@ -165,10 +170,22 @@ abstract class Physical {
      *  @param newValue New measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI SI]]''
      *  units.
      *
-     *  @return Measurement with the specified `value` in ''SI'' units, wrapped in a [[scala.util.Success]] if
-     *  successful, or a [[scala.util.Failure]] wrapping a failure exception in the event that `value` is invalid.
+     *  @return Measurement with the specified `value` in ''SI'' units, wrapped in a `[[scala.util.Success Success]]` if
+     *  successful, or a `[[scala.util.Failure Failure]]` wrapping a failure exception in the event that `value` is
+     *  invalid.
      */
     private[types] final def createNew(newValue: Double): Try[Measure] = apply(newValue)
+
+    /** Create new measurement in the same physical quantity family as this measurement.
+     *
+     *  @param newValue New measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI SI]]''
+     *  units.
+     *
+     *  @return Measurement with the specified `value` in ''SI'' units.
+     *
+     *  @throws scala.IllegalArgumentException if creation of the types value fails due to the value being out of range.
+     */
+    private[types] final def createNewMeasure(newValue: Double): Measure = newMeasure(newValue)
 
     /** Physical quantity family to which this measurement value belongs.
      *
@@ -190,159 +207,29 @@ abstract class Physical {
     /** Calculate the absolute value of the measurement.
      *
      *  @note The absolute value is based upon the measurement in ''SI'' units. For measurement unit families that do
-     *  not have a common origin (such as [[org.facsim.types.Temperature]]), this can result in unintuitive results.
-     *  For example, the absolute value of -5°C is -5°C, not 5°C.
+     *  not have a common origin (such as `[[org.facsim.types.Temperature Temperature]]`), this can result in
+     *  unintuitive results. For example, the absolute value of -5°C is -5°C, not 5°C, due to the fact that -5°C is
+     *  268.15K, whose absolute value is unchanged.
      *
      *  @return The absolute value of the measurement, based upon it's ''SI'' units.
      *
      *  @since 0.0
      */
     final def abs: Measure = {
-      if(value < 0.0) createNew(-value)
-      else this
+      if(value < 0.0) createNewMeasure(-value)
+      else this.asInstanceOf[Measure] //scalastyle:ignore token
     }
 
-    /**
-     * Change the sign of a measurement value.
+    /** Change the sign of a measurement value.
      *
-     * @note All measurements that do not permit negative values will throw exceptions when this operation is invoked on
-     * a valid value.
+     *  @note All measurements that do not permit negative values will throw exceptions when this operation is invoked
+     *  on a valid value.
      *
-     * @return Measurement value having a sign opposite that of this value.
+     *  @return Measurement value having a sign opposite that of this value.
      *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units.
-     *
-     * @since 0.0
+     *  @since 0.0
      */
-    final def unary_- = createNew(-value)
-
-    /**
-     * Add a measurement value of the same physical quantity family to this measurement.
-     *
-     * @param addend Measurement to be added to this measurement.
-     *
-     * @return Sum of this measurement plus `addend`. The result is of the same physical quantity family as this
-     * measurement.
-     *
-     * @throws NullPointerException if `addend` is `null`.
-     *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units.
-     *
-     * @since 0.0
-     */
-    final def +(addend: Measure) = {
-      requireNonNull(addend)
-      createNew(value + addend.value)
-    }
-
-    /**
-     * Subtract a measurement of the same physical quantity family from this measurement.
-     *
-     * @param subtrahend Measurement to be subtracted from this measurement.
-     *
-     * @return Difference of this measurement minus `subtrahend`. The result is of the same physical quantity family as
-     * this measurement.
-     *
-     * @throws NullPointerException if `subtrahend` is `null`.
-     *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units.
-     *
-     * @since 0.0
-     */
-    final def -(subtrahend: Measure) = {
-      requireNonNull(subtrahend)
-      createNew(value - subtrahend.value)
-    }
-
-    /**
-     * Multiply this measurement by specified factor.
-     *
-     * @param factor Factor to be multiplied by this measurement.
-     *
-     * @return Product of this measurement multiplied by `factor`. The result is of the same physical quantity family as
-     * this measurement.
-     *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units.
-     *
-     * @since 0.0
-     */
-    final def *(factor: Double) = createNew(value * factor)
-
-    /**
-     * Multiply this measurement by another measurement.
-     *
-     * @param factor Measurement used to multiply this measurement.
-     *
-     * @return Product of this measurement multiplied by `factor`. The result is a measurement in a different physical
-     * quantity family to this measurement (unless `factor` is a ''unitless'' generic measurement, in which case it will
-     * have the same family as this measurement, although in generic form).
-     *
-     * @throws NullPointerException if `factor` is `null`.
-     *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units.
-     *
-     * @since 0.0
-     */
-    final def *(factor: PhysicalMeasure) = {
-      requireNonNull(factor)
-      Generic(value * factor.value, family * factor.family)
-    }
-
-    /**
-     * Divide this measurement by specified divisor.
-     *
-     * @param divisor Divisor to be applied to this measurement.
-     *
-     * @return Quotient of this measurement divided by `divisor`. The result is of the same physical quantity family as
-     * this measurement.
-     *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units. For
-     * example, an infinite result will occur if `divisor` is zero, which will cause this exception to be thrown.
-     *
-     * @since 0.0
-     */
-    final def /(divisor: Double) = createNew(value / divisor)
-
-    /**
-     * Divide this measurement by another measurement of the same physical quantity family.
-     *
-     * @param divisor Measurement to be applied as a divisor to this measurement.
-     *
-     * @return Ratio of this measurement to the other measurement. The result is a scalar value that has no associated
-     * measurement type.
-     *
-     * @throws NullPointerException if `divisor` is `null`.
-     *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units. For
-     * example, an infinite result will occur if `divisor` is zero, which will cause this exception to be thrown.
-     *
-     * @since 0.0
-     */
-    final def /(divisor: Measure) = {
-      requireNonNull(divisor)
-      value / divisor.value
-    }
-
-    /**
-     * Divide this measurement by another measurement.
-     *
-     * @param divisor Measurement to be applied as a divisor to this measurement.
-     *
-     * @return Quotient of this measurement divided by `divisor`. The result is a measurement in a different physical
-     * quantity family to this measurement (unless `divisor` is a ''unitless'' generic measurement, in which case it
-     * will have the same family as this measurement, although in generic form).
-     *
-     * @throws NullPointerException if `divisor` is `null`.
-     *
-     * @throws IllegalArgumentException if the result is not finite or is invalid for these units. For
-     * example, an infinite result will occur if `divisor` is zero, which will cause this exception to be thrown.
-     *
-     * @since 0.0
-     */
-    final def /(divisor: PhysicalMeasure) = {
-      requireNonNull(divisor)
-      Generic(value / divisor.value, family / divisor.family)
-    }
+    final def unary_- : Try[Measure] = createNew(-value) //scalastyle:ignore disallow.space.before.token
 
     /** @inheritdoc */
     // This method is overridden because physical measurements can be compared for equality if the other value is a
@@ -352,7 +239,7 @@ abstract class Physical {
       // If "that" is a subclass of PhysicalMeasure, then we can equal the other value provided that "that" is a
       // measurement of the same physical quantity family as this instance. If they are for different families, then we
       // cannot equal the other value.
-      case other: PhysicalMeasure => family === other.family
+      case other: Measure => family === other.family
 
       // The default case, that "that" is not a types value, means that we cannot compare values as being equal.
       case _ => false
@@ -368,11 +255,10 @@ abstract class Physical {
      *
      *  @param that Object being tested for equality with this measurement.
      *
-     *  @return `true` if `that` is a measurement belonging to the same family as this measurement and both have the same
-     *  exact value. `false` is returned if `that` is `null` or is not a measurement value, if `that` is a measurement
-     *  belonging to a different family to this value, or if `that` has a different value to this measurement.
-     *
-     *  @see [[scala.AnyRef.equals(Any)*]]
+     *  @return `true` if `that` is a measurement belonging to the same family as this measurement and both have the
+     *  same exact value. `false` is returned if `that` is `null` or is not a measurement value, if `that` is a
+     *  measurement belonging to a different family to this value, or if `that` has a different value to this
+     *  measurement.
      *
      *  @since 0.0
      */
@@ -380,7 +266,7 @@ abstract class Physical {
 
       // If the other object is a PhysicalMeasure subclass, and that value can be compared as equal to this value (they
       // belong to the same physical quantity family), and they have the same value, then that equals this.
-      case other: PhysicalMeasure => other.canEqual(this) && value == other.value
+      case other: Measure => other.canEqual(this) && value == other.value
 
       // All other values (including null), cannot be equal to this value.
       case _ => false
@@ -394,7 +280,7 @@ abstract class Physical {
      *  probability is that if two values are equal if they have the same hash codes, however this is not guaranteed and
      *  should not be relied upon.
      *
-     *  @see [[Any!.hashCode]]
+     *  @return Hash code for this measurement value.
      *
      *  @since 0.0
      */
@@ -412,7 +298,7 @@ abstract class Physical {
   /** Abstract base class for all physical quantity measurement units.
    *
    *  Each concrete subclass represents a single ''physical quantity unit family''. For example, time units are
-   *  represented by the [[Time.TimeUnits]] `PhysicalUnits` subclass.
+   *  represented by the `[[org.facsim.types.phys.Time.TimeUnits TimeUnits]]` subclass of `PhysicalUnits`.
    *
    *  Each unit family supports one or more ''units of types''. For example, time quantities may be measured in
    *  ''seconds'', ''minutes'', ''hours'', etc. These units are represented by instances of the concrete `PhysicalUnits`
@@ -420,12 +306,13 @@ abstract class Physical {
    *  ''[[http://en.wikipedia.org/wiki/SI International System of Units]]''&mdash;commonly abbreviated to ''SI Units''.
    *
    *  These standard units are used by ''Facsimile'' internally to store measurement quantities (as immutable instances
-   *  of [[Physical.PhysicalMeasure]] subclasses, with each subclass corresponding to each measurement type.) For
-   *  example, the ''SI'' standard unit of types for ''time'' is the ''second''; consequently, ''Facsimile'' stores
-   *  and calculates all time quantities, internally, in ''seconds''. Adoption of the ''SI'' standard units simplifies
-   *  the implementation of physics calculations within ''Facsimile'' and provides a clearly-defined basis for
-   *  developing simulation models of the real-world. (Many other simulation modeling tools suffer from ''unit of
-   *  types confusion'', both internally and externally, creating a wide variety of problems.)
+   *  of `[[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]]` subclasses, with each subclass
+   *  corresponding to each measurement type.) For example, the ''SI'' standard unit of types for ''time'' is the
+   *  ''second''; consequently, ''Facsimile'' stores and calculates all time quantities, internally, in ''seconds''.
+   *  Adoption of the ''SI'' standard units simplifies the implementation of physics calculations within ''Facsimile''
+   *  and provides a clearly-defined basis for developing simulation models of the real-world. (Many other simulation
+   *  modeling tools suffer from ''unit of types confusion'', both internally and externally, creating a wide variety of
+   *  problems.)
    *
    *  However, it is unreasonable to expect that ''Facsimile'' users would be comfortable entering and reviewing data
    *  solely in these units. For instance, the ''SI'' standard unit of types for ''angles'' is the
