@@ -1,5 +1,5 @@
 #parse("ScalaHeader.scala")
-#if ((${PACKAGE_QUALIFIER} && ${PACKAGE_QUALIFIER} != ""))package ${PACKAGE_QUALIFIER} #end
+#if((${PACKAGE_QUALIFIER} && ${PACKAGE_QUALIFIER} != ""))package ${PACKAGE_QUALIFIER} #end
 
 /** Your comment here
  *
