@@ -48,7 +48,8 @@ package org.facsim.collection.immutable
  *
  *  @since 0.0
  */
-trait Heap[A, H <: Heap[A, H]] {
+trait Heap[A, H <: Heap[A, H]]
+extends Equals {
 
   /** Determine whether this heap is empty, and has no elements.
    *

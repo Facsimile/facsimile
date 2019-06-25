@@ -37,6 +37,7 @@
 package org.facsim.collection.immutable
 
 import scala.annotation.tailrec
+import scala.reflect.ClassTag
 
 /** Immutable ''[[https://en.wikipedia.org/wiki/Binomial_heap binomial heap]]'' container.
  *
@@ -57,7 +58,8 @@ import scala.annotation.tailrec
  *  @see ''[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf Optimal Purely Functional Priority Queues (PDF file)]]''.
  *  @since 0.0
  */
-final class BinomialHeap[A]private(private val rootTree: BinomialTree[A])(implicit private val ordering: Ordering[A])
+final class BinomialHeap[A: ClassTag]private(private val rootTree: BinomialTree[A])
+(implicit private val ordering: Ordering[A])
 extends Heap[A, BinomialHeap[A]] {
 
   /** @inheritdoc
@@ -249,6 +251,60 @@ extends Heap[A, BinomialHeap[A]] {
       Some((min, meld(c.reverse, ttRem)))
     }
   }
+
+  /** Determine whether it makes sense to compare this heap to the specified object.
+   *
+   *  - The other object is a heap of the same type.
+   *  - The contents of the two heaps are identical.
+   *
+   *  @param that Object being compared to this heap for equality.
+   *
+   *  @return `true` if `that` is a heap of the same type as this heap; `false` in all other cases (if `that` is not a
+   *  heap, or if `that` is a heap of a different type).
+   *
+   *  @since 0.0
+   */
+  override def canEqual(that: Any): Boolean = that match {
+
+    // If that is a heap of type H (i.e. the same type as this heap), then we can compare the two for equality.
+    case _: BinomialHeap[A] => true
+
+    // If that is anything else (a different type of heap, or a different object altogether), then we cannot compare for
+    // equality.
+    case _ => false
+  }
+
+  /** Determine whether this object is equal to the other object.
+   *
+   *  This heap equals the other object if, and only if:
+   *  - The other object is a heap of the same type.
+   *  - The contents of the two heaps are identical.
+   *
+   *  @param that Object being compared to this heap for equality.
+   *
+   *  @return `true` if `that` is a heap of the same type as this heap and contains the same elements (the structures of
+   *  the two heaps, however, may differ); `false` in all other cases (if `that` is not a heap, if `that` is a heap  of
+   *  a different type, or if the elements in the two heaps differ).
+   *
+   *  @since 0.0
+   */
+  override def equals(that: Any): Boolean = that match {
+
+    // Is that a heap of the same type?
+    case other: BinomialHeap[A] => other.canEqual(this) && minimumRemove == other.minimumRemove
+
+    // If that is a different type of object, then it cannot be equal to this heap.
+    case _ => false
+  }
+
+  /** Create a hash code based upon the minimum value of this heap and its remainder heap.
+   *
+   *  @note If two heaps compare equal, then their hash codes must be identical too; however, two heaps with identical
+   *  hash codes are not necessarily equal.
+   *
+   *  @return Hash code based upon the contents of this heap.
+   */
+  override def hashCode(): Int = minimumRemove.hashCode()
 }
 
 /** BinomialHeap companion.
@@ -267,7 +323,7 @@ object BinomialHeap {
    *
    *  @since 0.0
    */
-  def empty[A](implicit ordering: Ordering[A]): BinomialHeap[A] = new BinomialHeap[A](Nil)
+  def empty[A: ClassTag](implicit ordering: Ordering[A]): BinomialHeap[A] = new BinomialHeap[A](Nil)
 
   /** Create a new heap containing the specified elements.
    *
@@ -281,5 +337,7 @@ object BinomialHeap {
    *
    *  @since 0.0
    */
-  def apply[A](as: A*)(implicit ordering: Ordering[A]): BinomialHeap[A] = as.foldLeft(empty[A])((h, a) => h + a)
+  def apply[A: ClassTag](as: A*)(implicit ordering: Ordering[A]): BinomialHeap[A] = {
+    as.foldLeft(empty[A])((h, a) => h + a)
+  }
 }

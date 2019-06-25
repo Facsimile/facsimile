@@ -61,9 +61,10 @@ with ScalaCheckPropertyChecks {
     // Verify that the heap gives the correct replies for an empty heap.
     assert(h.isEmpty === true)
     assert(h.nonEmpty === false)
-    assert(h.minimum === None)
-    assert(h.removeMinimum === None)
-    assert(h.minimumRemove === None)
+    assert(h.minimum.isEmpty === true) // Get scalatic exception on h.minimum === None
+    assert(h.removeMinimum.isEmpty === true) // etc.
+    assert(h.minimumRemove.isEmpty === true) // etc.
+    () // Return unit to avoid "discarded non-unit value" compiler warning
   }
 
   /** Check that a heap with a single member responds as such.
@@ -98,11 +99,15 @@ with ScalaCheckPropertyChecks {
    *
    *  The heap must also contain the same number of elements, as well as have them in the same order.
    *
+   *  @tparam A Type of value being stored in the heap.
+   *
    *  @param h A heap to be verified.
    *
    *  @param la Unsorted list of elements stored in the heap.
+   *
+   *  @param ordering Ordering used for sorting values of type `A`.
    */
-  private def verifyMultiMemberHeap[A](h: BinomialHeap[A], la: List[A]): Unit = {
+  private def verifyMultiMemberHeap[A](h: BinomialHeap[A], la: List[A])(implicit ordering: Ordering[A]): Unit = {
 
     // Helper function to check each value in turn.
     @tailrec
@@ -129,7 +134,7 @@ with ScalaCheckPropertyChecks {
 
         // Get and remove the minimum, verifying the result matches the same information from previous sources.
         val pair = rh.minimumRemove
-        assert(pair === Some((min, nextH)))
+        assert(pair === Some((min.get, nextH)))
 
         // Perform the next iteration.
         nextMinimum(nextH, rla.tail)
