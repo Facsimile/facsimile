@@ -32,42 +32,42 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.types.algebra types.
+// Scala source file belonging to the org.facsim.types.ops package.
 //======================================================================================================================
-package org.facsim.types.algebra
+package org.facsim.types
 
-/** Trait for a ''typed [[https://en.wikipedia.org/wiki/Semigroup semigroup]]''.
- *
- *  @note A ''typed'' semigroup has two potentially different types involved in the combination operation, with the
- *  resulting type potentially being different to the input types.
- *
- *  @tparam A Type representing the first set of values that may be combined.
- *
- *  @tparam B Type representing the second set of values that may be combined.
- *
- *  @tparam R Type representing the result of the combination operation.
- *
- *  @since 0.0
- */
-trait TypedSemigroup[A, B, R]
-extends Serializable {
+import org.facsim.types.algebra.AdditiveTypedSemigroup
 
-  /** Combine operation.
+/** Common operations. */
+package object ops {
+
+  /** Provide addition operators for operands supported by an implicit AdditiveTypedSemigroup.
    *
-   *  Takes one value from some set `A` and another value from some set `B` and combines them into a single value from
-   *  some set `R`.
+   *  @tparam A Type of the first addition operand.
    *
-   *  @note The implementation of this operation _must_ be _[[https://en.wikipedia.org/wiki/Associative_property
-   *  associative]]_. That is, the result of `combine(combine(a, b), c)` _must_ equal the result of
-   *  `combine(a, combine(b, c))`, for corresponding types.
+   *  @constructor Create a new addition operator for this class.
    *
-   *  @param a First value being combined.
-   *
-   *  @param b Second value being combined.
-   *
-   *  @return Result of the combination of `a` and `b`
+   *  @param a First addition operand,
    *
    *  @since 0.0
    */
-  def combine(a: A, b: B): R
+  final implicit class AdditionOps[A](val a: A)
+  extends AnyVal {
+
+    /** Addition operator.
+     *
+     *  @tparam B Type of the second addition operand.
+     *
+     *  @tparam R Type of the result of the addition operation.
+     *
+     *  @param b Second addition operand.
+     *
+     *  @param ats Implicit addition semigroup for adding `a` and `b` resulting in a value of type `R`.
+     *
+     *  @return Result of the addition operation.
+     *
+     *  @since 0.0
+     */
+    def +[B, R](b: B)(implicit ats: AdditiveTypedSemigroup[A, B, R]): R = ats.combine(a, b)
+  }
 }

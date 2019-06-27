@@ -1,5 +1,5 @@
 #parse("ScalaHeader.scala")
-#if((${PACKAGE_NAME} && ${PACKAGE_NAME} != ""))package ${PACKAGE_NAME} #end
+#if ((${PACKAGE_NAME} && ${PACKAGE_NAME} != ""))package ${PACKAGE_NAME} #end
 
 /** Your comment here
  *

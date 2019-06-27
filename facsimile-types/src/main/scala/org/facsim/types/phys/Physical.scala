@@ -36,8 +36,10 @@
 //======================================================================================================================
 package org.facsim.types.phys
 
+import org.facsim.types.algebra.AdditiveTypedSemigroup
 import org.facsim.util.requireFinite
 import scala.util.Try
+import spire.algebra.Order
 
 /** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
  *  elements.
@@ -142,6 +144,120 @@ abstract class Physical {
   // Developer note: This must NOT throw an exception for any measurement family.
   final lazy val Zero: Measure = newMeasure(0.0)
 
+  /** Ordering for physical measurements.
+   *
+   *  Supports comparison operators for physical quantity measurements.
+   *
+   *  @since 0.0
+   */
+  final implicit val physicalOrder: Order[Measure] = new Order[Measure] {
+
+    /** Compare two physical measurement values, determining their relative order.
+     *
+     *  @param x
+     *
+     *  @param y
+     *
+     *  @return 0 if `x` and `y` compare as equal, a negative value is `x` compares as ''less than'' `y` or a positive
+     *  value if `x` compares as ''greater than'' `y`.
+     *
+     *  @since 0.0
+     */
+    override def compare(x: Measure, y: Measure): Int = x.value.compareTo(y.value)
+  }
+
+  /** Addition typed semigroup for physical quantity measurements.
+   *
+   *  Supports addition operators for physical quantity measurements.
+   *
+   *  @since 0.0
+   */
+  final implicit val physicalAdditionSemigroup1: AdditiveTypedSemigroup[Measure, Measure, Try[Measure]] = {
+    new AdditiveTypedSemigroup[Measure, Measure, Try[Measure]] {
+
+      /** Add two physical measurement quantities belonging to the same family together.
+       *
+       *  @param a First value being added.
+       *
+       *  @param b Second value being added.
+       *
+       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
+       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       */
+      override def combine(a: Measure, b: Measure): Try[Measure] = apply(a.value + b.value)
+    }
+  }
+
+  /** Addition typed semigroup for physical quantity measurements.
+   *
+   *  Supports addition operators for physical quantity measurements.
+   *
+   *  @since 0.0
+   */
+  final implicit val physicalAdditionSemigroup2: AdditiveTypedSemigroup[Measure, Try[Measure], Try[Measure]] = {
+    new AdditiveTypedSemigroup[Measure, Try[Measure], Try[Measure]] {
+
+      /** Add two physical measurement quantities belonging to the same family together.
+       *
+       *  @param a First value being added.
+       *
+       *  @param bt Second value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *
+       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
+       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       */
+      override def combine(a: Measure, bt: Try[Measure]): Try[Measure] = bt.flatMap(b => apply(a.value + b.value))
+    }
+  }
+
+  /** Addition typed semigroup for physical quantity measurements.
+   *
+   *  Supports addition operators for physical quantity measurements.
+   *
+   *  @since 0.0
+   */
+  final implicit val physicalAdditionSemigroup3: AdditiveTypedSemigroup[Try[Measure], Measure, Try[Measure]] = {
+    new AdditiveTypedSemigroup[Try[Measure], Measure, Try[Measure]] {
+
+      /** Add two physical measurement quantities belonging to the same family together.
+       *
+       *  @param at First value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *
+       *  @param b Second value being added.
+       *
+       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
+       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       */
+      override def combine(at: Try[Measure], b: Measure): Try[Measure] = at.flatMap(a => apply(a.value + b.value))
+    }
+  }
+
+  /** Addition typed semigroup for physical quantity measurements.
+   *
+   *  Supports addition operators for physical quantity measurements.
+   *
+   *  @since 0.0
+   */
+  final implicit val physicalAdditionSemigroup4: AdditiveTypedSemigroup[Try[Measure], Try[Measure], Try[Measure]] = {
+    new AdditiveTypedSemigroup[Try[Measure], Try[Measure], Try[Measure]] {
+
+      /** Add two physical measurement quantities belonging to the same family together.
+       *
+       *  @param at First value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *
+       *  @param bt Second value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *
+       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
+       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       */
+      override def combine(at: Try[Measure], bt: Try[Measure]): Try[Measure] = at.flatMap {a =>
+        bt.flatMap {b =>
+          apply(a.value + b.value)
+        }
+      }
+    }
+  }
+
   /** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
    *  measurement classes.
    *
@@ -155,7 +271,7 @@ abstract class Physical {
    *  units. This value must be finite, but sub-classes may impose additional restrictions. It is a core design goal of
    *  the ''Facsimile Measurement Library'' that these raw values must be unavailable to end user code.
    *
-   *  @throws IllegalArgumentException if `value` is not finite or is invalid for these units.
+   *  @throws scala.IllegalArgumentException if `value` is not finite or is invalid for these units.
    *
    *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
    */

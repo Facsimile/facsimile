@@ -32,14 +32,14 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.types.algebra types.
+// Scala source file belonging to the org.facsim.types.algebra package.
 //======================================================================================================================
 package org.facsim.types.algebra
 
-/** Trait for a ''typed [[https://en.wikipedia.org/wiki/Semigroup semigroup]]''.
+/** Trait for a ''typed [[https://en.wikipedia.org/wiki/Group_(mathematics) group]]''.
  *
- *  @note A ''typed'' semigroup has two potentially different types involved in the combination operation, with the
- *  resulting type potentially being different to the input types.
+ *  @note A ''typed'' group has two potentially different types involved in the combination (and inverse) operation,
+ *  with the resulting type potentially being different to the input types.
  *
  *  @tparam A Type representing the first set of values that may be combined.
  *
@@ -47,27 +47,11 @@ package org.facsim.types.algebra
  *
  *  @tparam R Type representing the result of the combination operation.
  *
+ *  @see [[https://en.wikipedia.org/wiki/TypedSemigroup semigroup]]
+ *
  *  @since 0.0
  */
-trait TypedSemigroup[A, B, R]
-extends Serializable {
+trait TypedGroup[A, B, R] {
 
-  /** Combine operation.
-   *
-   *  Takes one value from some set `A` and another value from some set `B` and combines them into a single value from
-   *  some set `R`.
-   *
-   *  @note The implementation of this operation _must_ be _[[https://en.wikipedia.org/wiki/Associative_property
-   *  associative]]_. That is, the result of `combine(combine(a, b), c)` _must_ equal the result of
-   *  `combine(a, combine(b, c))`, for corresponding types.
-   *
-   *  @param a First value being combined.
-   *
-   *  @param b Second value being combined.
-   *
-   *  @return Result of the combination of `a` and `b`
-   *
-   *  @since 0.0
-   */
-  def combine(a: A, b: B): R
+  def inverse(a: A, r: R): B
 }
