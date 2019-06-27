@@ -596,7 +596,9 @@ lazy val facsimileEngine = project.in(file(FacsimileEngineName))
 //
 // TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
 lazy val facsimile = project.in(file("."))
-.aggregate(facsimileUtil, facsimileCollection, facsimileTypes, facsimileSFX, facsimileStat, facsimileEngine)
+// Temporarily remove dependency on SFX and Stat modules - not ready for launch, right now.
+//.aggregate(facsimileUtil, facsimileCollection, facsimileTypes, facsimileSFX, facsimileStat, facsimileEngine)
+.aggregate(facsimileUtil, facsimileCollection, facsimileEngine)
 .enablePlugins(ScalaUnidocPlugin)
 .settings(commonSettings: _*)
 .settings(unpublishedProjectSettings: _*)
