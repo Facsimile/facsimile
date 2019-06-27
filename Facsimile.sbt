@@ -54,7 +54,7 @@ val ParboiledVersion = "2.1.6"
 val ScalaVersion = "2.12.8"
 val ScalaCheckVersion = "1.14.0"
 val ScalaTestVersion = "3.0.8"
-val SpireVersion = "0.16.2"
+//val SpireVersion = "0.16.2"
 val SquantsVersion = "1.4.0"
 
 // Date the facsimile project was started.
@@ -416,13 +416,6 @@ lazy val sourceProjectSettings = Seq(
 
     // ScalaCheck dependency.
     "org.scalacheck" %% "scalacheck" % ScalaCheckVersion % Test,
-
-    // Lightbend configuration library.
-    //
-    // This library supports configuration file management, and the Human-Optimized Config Object Notation (HOCON)
-    // configuration file format. HOCON can be viewed as a superset of both the Java properties and JavaScript Object
-    // Notation (JSON) file formats.
-    "com.typesafe" % "config" % LightbendConfigVersion,
   ),
 )
 
@@ -458,6 +451,13 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
 
     // The Scala reflection library is required for implementing macros.
     "org.scala-lang" % "scala-reflect" % ScalaVersion,
+
+    // Lightbend configuration library.
+    //
+    // This library supports configuration file management, and the Human-Optimized Config Object Notation (HOCON)
+    // configuration file format. HOCON can be viewed as a superset of both the Java properties and JavaScript Object
+    // Notation (JSON) file formats.
+    "com.typesafe" % "config" % LightbendConfigVersion,
 
     // Parboiled 2 is a parsing library, required for Facsimile's file parsing capabilities.
     "org.parboiled" %% "parboiled" % ParboiledVersion,
