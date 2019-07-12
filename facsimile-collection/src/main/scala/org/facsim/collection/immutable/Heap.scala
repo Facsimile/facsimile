@@ -101,12 +101,13 @@ extends Equals {
    *  @note This is a more efficient operation than calling [[minimum]] then [[removeMinimum]], if both operations are
    *  required simultaneously.
    *
-   *  @return Tuple containing the minimum value, and the new heap with the minimum value removed, wrapped in
-   *  [[scala.Some]]; or [[scala.None]] is this heap is empty.
+   *  @return Tuple whose first member is the minimum value of the heap, as determined by that element's ordering,
+   *  wrapped in [[scala.Some]]; or [[scala.None]] if this heap is empty. The second tuple member is a new heap with the
+   *  minimum value removed (if the first member is defined), or the original empty heap otherwise.
    *
    *  @since 0.0
    */
-  def minimumRemove: Option[(A, H)]
+  def minimumRemove: (Option[A], H)
 
   /** Remove the minimum value from the heap, resulting in a new heap.
    *
@@ -115,5 +116,7 @@ extends Equals {
    *
    *  @since 0..0
    */
-  final def removeMinimum: Option[H] = minimumRemove.map(_._2)
+  final def removeMinimum: Option[H] = minimumRemove match {
+    case(mo, h) => mo.map(_ => h)
+  }
 }

@@ -36,8 +36,9 @@
 //======================================================================================================================
 package org.facsim.engine
 
-import org.facsim.types.Time
 import org.facsim.util.CompareEqualTo
+import squants.Time
+import squants.time.Seconds
 
 /** Encapsulates simulation system state, at an instant in (simulation) time.
  *
@@ -65,7 +66,7 @@ events: PriorityQueue[SystemState.Event]) {
    *
    *  @return Current simulation time.
    */
-  def time: Time = current.fold(Time.Zero)(_.dueAt)
+  private[engine] def time: Time = current.fold(Seconds(0.0))(_.dueAt)
 
   /** Schedule an action to occur.
    *
@@ -79,10 +80,10 @@ events: PriorityQueue[SystemState.Event]) {
    *
    *  @return New simulation system state resulting from scheduling the event.
    */
-  def schedule(delay: Time, priority: Int, actions: Action): SystemState = {
+  private[engine] def schedule(delay: Time, priority: Int, actions: Action): SystemState = {
 
     // Create the event.
-    val event = SystemState.Event(nextEventId, delay + time, priority)
+    val event = SystemState.Event(nextEventId, delay + time, priority, actions)
 
     // Add it to the event queue.
     val newEvents = events + event
@@ -90,8 +91,22 @@ events: PriorityQueue[SystemState.Event]) {
     // Return the new system state.
     copy(nextEventId = Math.incrementExact(nextEventId), events = newEvents)
   }
+
+  /** Identify the next event to be dispatched, and the new associated system state.
+   *
+   *  @return Simulation system state before the next event is dispatched.
+   */
+  private[engine] def updateEventState: SystemState = {
+
+    // Identify the next event, as the event at the head of the event queue. If the next event is None, then the
+    // simulation has terminated. Also update the event queue so that it no longer contains the next event.
+    val (nextEvent, nextEvents) = events.minimumRemove match {
+
+    }
+  }
 }
 
+/** System state companion object. */
 private object SystemState {
 
   /** Event scheduling the dispatch of specified actions at a specified simulation time.

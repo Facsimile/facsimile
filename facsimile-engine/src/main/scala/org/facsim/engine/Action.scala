@@ -49,4 +49,4 @@ package org.facsim.engine
  *
  *  @since 0.0
  */
-class Action(val execute: StateResult[Unit])
+abstract class Action(val execute: StateResult[Unit])

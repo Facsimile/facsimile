@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.engine
 
-=/** Encapsulates the state of a simulation model at in instant in (simulation) time.
+/** Encapsulates the state of a simulation model at in instant in (simulation) time.
  *
  *  @param systemState Simulation system state, tracking current simulation time, scheduled events, etc.
  *

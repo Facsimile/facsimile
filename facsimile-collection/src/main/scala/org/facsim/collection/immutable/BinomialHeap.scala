@@ -37,7 +37,7 @@
 package org.facsim.collection.immutable
 
 import scala.annotation.tailrec
-import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
 
 /** Immutable ''[[https://en.wikipedia.org/wiki/Binomial_heap binomial heap]]'' container.
  *
@@ -53,13 +53,15 @@ import scala.reflect.ClassTag
  *
  *  @param ordering Ordering allowing elements of type `A` to be compared.
  *
+ *  @param typeTag Actual type of `A`.
+ *
  *  @see ''[[https://en.wikipedia.org/wiki/Binomial_heap Binomial heap on Wikipedia]]''.
  *
  *  @see ''[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf Optimal Purely Functional Priority Queues (PDF file)]]''.
  *  @since 0.0
  */
-final class BinomialHeap[A: ClassTag]private(private val rootTree: BinomialTree[A])
-(implicit private val ordering: Ordering[A])
+final class BinomialHeap[A] private(private val rootTree: BinomialTree[A])(implicit private val ordering: Ordering[A],
+implicit private val typeTag: TypeTag[A])
 extends Heap[A, BinomialHeap[A]] {
 
   /** @inheritdoc
@@ -93,8 +95,8 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @note Removal of the minimum element takes ''Θ(''log'' n)'' time.
    */
-  override def minimumRemove: Option[(A, BinomialHeap[A])] = minRemove(rootTree).map {p =>
-    (p._1, new BinomialHeap(p._2))
+  override def minimumRemove: (Option[A], BinomialHeap[A]) = minRemove(rootTree) match {
+    case(mo, h) => mo.fold[(Option[A], BinomialHeap[A])]((None, this))(m => (Some(m), new BinomialHeap(h)))
   }
 
   /** Link two nodes together.
@@ -209,46 +211,45 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @param t Tree for which a minimum value is sought.
    *
-   *  @return Tuple containing the minimum element and a new tree without that element, wrapped in [[scala.Some]];
-   *  [[scala.None]] if `t` is empty.
-   *
-   *  @todo Make this function stack safe.
+   *  @return Tuple whose first member is the minimum element, wrapped in [[scala.Some]], or [[scala.None]] if `t` is
+   *  empty; the second member of the tuple is the new true with the minimum removed (if the first element is defined),
+   *  or the original empty tree otherwise.
    */
-  private def minRemove(t: BinomialTree[A]): Option[(A, BinomialTree[A])] = t match {
+  // TODO: Make this function stack-safe.
+  private def minRemove(t: BinomialTree[A]): (Option[A], BinomialTree[A]) = t match {
 
-    // If the tree is empty, we cannot remove an element it, so return None
-    case Nil => None
+    // If the tree is empty, we cannot remove an element from it, so return None and the empty tree.
+    case Nil => (None, t)
 
     // Otherwise, identify the head node and the tail of this tree.
     case n :: tt => {
 
       // Helper function to identify and remove the minimum node, returning the removed node and replacement tree.
-      def getMin(minN: BinomialTreeNode[A], rem: BinomialTree[A]): (BinomialTreeNode[A], BinomialTree[A]) = {
-        rem match {
+      def getMin(minN: BinomialTreeNode[A], rem: BinomialTree[A]): (BinomialTreeNode[A], BinomialTree[A]) = rem match {
 
-          // If there are no remaining nodes in the tree, the current minimum must be the minimum element. Return an
-          // empty replacement tree.
-          case Nil => (minN, Nil)
+        // If there are no remaining nodes in the tree, the current minimum must be the minimum element. Return the
+        // original empty tree.
+        case Nil => (minN, rem)
 
-          // Otherwise, we have at least one other node to consider.
-          case rn :: rt =>
+        // Otherwise, we have at least one other node to consider.
+        case rn :: rt => {
 
-            // Find the minimum node among the remaining nodes.
-            val (minRem, tailRem) = getMin(rn, rt)
+          // Find the minimum node among the remaining nodes.
+          val (minRem, tailRem) = getMin(rn, rt)
 
-            // If the current minimum is less than the minimum of the remaining nodes, then remove the current minimum
-            // by returning the entire tail as the new tree.
-            if(ordering.lteq(minN.root, minRem.root)) (minN, rem)
+          // If the current minimum is less than the minimum of the remaining nodes, then remove the current minimum
+          // by returning the entire tail as the new tree.
+          if(ordering.lteq(minN.root, minRem.root)) (minN, rem)
 
-            // Otherwise, remove the minimum node from the tail and prepend the previous minimum to the tail's
-            // remainder.
-            else (minRem, minN :: tailRem)
+          // Otherwise, remove the minimum node from the tail and prepend the previous minimum to the tail's
+          // remainder.
+          else (minRem, minN :: tailRem)
         }
       }
 
       // Extract the value and children of the minimum node and meld the latter with the reminder of the returned tree.
       val (BinomialTreeNode(min, _, c), ttRem) = getMin(n, tt)
-      Some((min, meld(c.reverse, ttRem)))
+      (Some(min), meld(c.reverse, ttRem))
     }
   }
 
@@ -267,7 +268,9 @@ extends Heap[A, BinomialHeap[A]] {
   override def canEqual(that: Any): Boolean = that match {
 
     // If that is a heap of type H (i.e. the same type as this heap), then we can compare the two for equality.
-    case _: BinomialHeap[A] => true
+    //
+    // NOTE: This requires a direct comparison of the types of the two heaps, which we obtain through reflection.
+    case other: BinomialHeap[A] => typeTag.tpe =:= other.typeTag.tpe
 
     // If that is anything else (a different type of heap, or a different object altogether), then we cannot compare for
     // equality.
@@ -288,10 +291,35 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @since 0.0
    */
+  @tailrec
   override def equals(that: Any): Boolean = that match {
 
     // Is that a heap of the same type?
-    case other: BinomialHeap[A] => other.canEqual(this) && minimumRemove == other.minimumRemove
+    case other: BinomialHeap[A] => {
+      if(!other.canEqual(this)) false
+      else {
+
+        // Remove the minimums from each heap and compare them.
+        val (tm, tr) = minimumRemove
+        val (om, or) = other.minimumRemove
+        tm match {
+
+          // If this heap is empty, then the other heap should be empty too.
+          case None => om.isEmpty
+
+          // Otherwise, the other heap cannot be empty, the two minimums should compare equal and the two tails should
+          // compare equal as well.
+          case _ => {
+
+            // If the minimums are not equal, including the case that the other heap is empty, then they're not equal.
+            if(tm != om) false
+
+            // Otherwise, compare the heap remainders.
+            else tr.equals(or)
+          }
+        }
+      }
+    }
 
     // If that is a different type of object, then it cannot be equal to this heap.
     case _ => false
@@ -323,7 +351,7 @@ object BinomialHeap {
    *
    *  @since 0.0
    */
-  def empty[A: ClassTag](implicit ordering: Ordering[A]): BinomialHeap[A] = new BinomialHeap[A](Nil)
+  def empty[A: TypeTag](implicit ordering: Ordering[A]): BinomialHeap[A] = new BinomialHeap[A](Nil)
 
   /** Create a new heap containing the specified elements.
    *
@@ -337,7 +365,7 @@ object BinomialHeap {
    *
    *  @since 0.0
    */
-  def apply[A: ClassTag](as: A*)(implicit ordering: Ordering[A]): BinomialHeap[A] = {
+  def apply[A: TypeTag](as: A*)(implicit ordering: Ordering[A]): BinomialHeap[A] = {
     as.foldLeft(empty[A])((h, a) => h + a)
   }
 }

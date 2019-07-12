@@ -54,16 +54,22 @@ with ScalaCheckPropertyChecks {
 
   /** Check that an empty heap responds as such.
    *
+   *  @tparam A Type of element being stored in the heap.
+   *
    *  @param h An empty heap which is to be verified.
    */
-  private def verifyEmptyHeap(h: BinomialHeap[_]): Unit = {
+  private def verifyEmptyHeap[A](h: BinomialHeap[A]): Unit = {
 
     // Verify that the heap gives the correct replies for an empty heap.
     assert(h.isEmpty === true)
     assert(h.nonEmpty === false)
-    assert(h.minimum.isEmpty === true) // Get scalatic exception on h.minimum === None
-    assert(h.removeMinimum.isEmpty === true) // etc.
-    assert(h.minimumRemove.isEmpty === true) // etc.
+    val em: Option[A] = None
+    assert(h.minimum === em)
+    val eh: Option[BinomialHeap[A]] = None
+    assert(h.removeMinimum === eh)
+    val (em2, eh2) = h.minimumRemove
+    assert(em2 === None)
+    assert(eh2.isEmpty)
     () // Return unit to avoid "discarded non-unit value" compiler warning
   }
 
@@ -89,9 +95,8 @@ with ScalaCheckPropertyChecks {
 
     // Finding and removing the minimum should result in a tuple of the specified value and an empty heap.
     val omh = h.minimumRemove
-    assert(omh !== None)
-    val (min, eh) = omh.get
-    assert(min === a)
+    val (min, eh) = omh
+    assert(min === Some(a))
     verifyEmptyHeap(eh)
   }
 
@@ -113,7 +118,7 @@ with ScalaCheckPropertyChecks {
     @tailrec
     def nextMinimum(rh: BinomialHeap[A], rla: List[A]): Unit = {
 
-      // If the heap is empty, then the list must be too.
+      // If the heap is empty, then the list must be too. Verify that the heap is empty.
       if(rh.isEmpty) {
         assert(rla.isEmpty === true)
         verifyEmptyHeap(rh)
@@ -133,8 +138,9 @@ with ScalaCheckPropertyChecks {
         val nextH = rh.removeMinimum.get
 
         // Get and remove the minimum, verifying the result matches the same information from previous sources.
-        val pair = rh.minimumRemove
-        assert(pair === Some((min.get, nextH)))
+        val (min2, nextH2) = rh.minimumRemove
+        assert(min2 === min)
+        assert(nextH2 === nextH)
 
         // Perform the next iteration.
         nextMinimum(nextH, rla.tail)
@@ -181,7 +187,95 @@ with ScalaCheckPropertyChecks {
     }
   }
 
-  // Now for the companion methods.
+  // Now for the class methods.
+  describe(classOf[BinomialHeap[_]].getCanonicalName) {
+
+    // Test the canEqual method.
+    describe(".canEqual(Any)") {
+
+      // Verify that it reports false for different types of object, including heaps of different types.
+      it("must reject objects of a different type") {
+        forAll {li: List[Int] =>
+          val h = BinomialHeap(li: _*)
+          assert(h.canEqual(li) === false, "Fails on List[Int] comparison")
+          forAll {i: Int =>
+            assert(h.canEqual(i) === false, "Fails on Int comparison")
+          }
+          forAll {d: Double =>
+            assert(h.canEqual(d) === false, "Fails on Double comparison")
+          }
+          forAll {s: String =>
+            assert(h.canEqual(s) === false, "Fails on String comparison")
+          }
+          forAll {ld: List[Double] =>
+            val hd = BinomialHeap(ld: _*)
+            assert(h.canEqual(hd) === false, "Fails on BinomialHeap[Double] comparison")
+          }
+        }
+      }
+
+      // Verify that it reports true for heaps of the same type.
+      it("must accept heaps of the same type") {
+        forAll {(l1: List[Int], l2: List[Int]) =>
+          val h1 = BinomialHeap(l1: _*)
+          val h2 = BinomialHeap(l2: _*)
+          assert(h1.canEqual(h2))
+        }
+      }
+
+      // Verify that it accepts itself.
+      it("must accept itself") {
+        forAll {li: List[Int] =>
+          val h = BinomialHeap(li: _*)
+          assert(h.canEqual(h) === true)
+        }
+      }
+    }
+
+    // Test the equals method.
+    describe(".equals(Any)") {
+
+      // Verify that it reports false for different types of object, including heaps of different types.
+      it("must reject objects of a different type") {
+        forAll {li: List[Int] =>
+          val h = BinomialHeap(li: _*)
+          assert(h.equals(li) === false, "Fails on List[Int] comparison")
+          forAll {i: Int =>
+            assert(h.equals(i) === false, "Fails on Int comparison")
+          }
+          forAll {d: Double =>
+            assert(h.equals(d) === false, "Fails on Double comparison")
+          }
+          forAll {s: String =>
+            assert(h.equals(s) === false, "Fails on String comparison")
+          }
+          forAll {ld: List[Double] =>
+            val hd = BinomialHeap(ld: _*)
+            assert(h.equals(hd) === false, "Fails on BinomialHeap[Double] comparison")
+          }
+        }
+      }
+
+      // Verify that it reports the correct result for heaps of the same type.
+      it("must compare heaps of the same type correctly") {
+        forAll {(l1: List[Int], l2: List[Int]) =>
+          val l1s = l1.sorted
+          val l2s = l2.sorted
+          val h1 = BinomialHeap(l1: _*)
+          val h2 = BinomialHeap(l2: _*)
+          assert(h1.equals(h2) === l1s.equals(l2s))
+        }
+      }
+
+      // Verify that it compares equal to itself.
+      it("must equal itself") {
+        forAll {li: List[Int] =>
+          val h = BinomialHeap(li: _*)
+          assert(h.equals(h) === true)
+        }
+      }
+    }
+  }
 }
 
 // Re-enable test-problematic Scalastyle checkers.
