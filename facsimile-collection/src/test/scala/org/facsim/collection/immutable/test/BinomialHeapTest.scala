@@ -275,6 +275,34 @@ with ScalaCheckPropertyChecks {
         }
       }
     }
+
+    // Test the hashcode method.
+    describe(".hashCode") {
+
+      // Verify that it reports the same value for heaps that should compare equal.
+      it("must return the same value for heaps that compare equal") {
+        forAll {li: List[Int] =>
+          val h1 = BinomialHeap(li: _*)
+          val h2 = BinomialHeap(li.reverse: _*)
+          assert(h1 === h2)
+          assert(h1.hashCode === h2.hashCode)
+        }
+      }
+
+      // Verify that it reports reasonably unique values for each heap. This may fail due to pure chance, but it's
+      // highly unlikely if the hash function is any good.
+      it("must return reasonably unique values") {
+        def updateState(hashCodes: Set[Int], count: Int, heap: BinomialHeap[Int]): (Set[Int], Int) = {
+          (hashCodes + heap.hashCode, count + 1)
+        }
+        var state = (Set.empty[Int], 0) //scalastyle:ignore var.local
+        forAll {li: List[Int] =>
+          val h = BinomialHeap(li: _*)
+          state = updateState(state._1, state._2, h)
+        }
+        assert(state._1.size / state._2.toDouble >= 0.9)
+      }
+    }
   }
 }
 

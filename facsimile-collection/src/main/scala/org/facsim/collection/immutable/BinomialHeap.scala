@@ -64,6 +64,15 @@ final class BinomialHeap[A] private(private val rootTree: BinomialTree[A])(impli
 implicit private val typeTag: TypeTag[A])
 extends Heap[A, BinomialHeap[A]] {
 
+  /** Cached minimum value and heap remainder.
+   *
+   *  This value is lazily computed only when both the minimum and the value of the heap after the minimum has been
+   *  removed.
+   */
+  private lazy val cachedMinimumRemove: (Option[A], BinomialHeap[A]) = minRemove(rootTree) match {
+    case(mo, h) => mo.fold[(Option[A], BinomialHeap[A])]((None, this))(m => (Some(m), new BinomialHeap(h)))
+  }
+
   /** @inheritdoc
    */
   override def isEmpty: Boolean = rootTree.isEmpty
@@ -95,9 +104,7 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @note Removal of the minimum element takes ''Θ(''log'' n)'' time.
    */
-  override def minimumRemove: (Option[A], BinomialHeap[A]) = minRemove(rootTree) match {
-    case(mo, h) => mo.fold[(Option[A], BinomialHeap[A])]((None, this))(m => (Some(m), new BinomialHeap(h)))
-  }
+  override def minimumRemove: (Option[A], BinomialHeap[A]) = cachedMinimumRemove
 
   /** Link two nodes together.
    *
@@ -300,8 +307,8 @@ extends Heap[A, BinomialHeap[A]] {
       else {
 
         // Remove the minimums from each heap and compare them.
-        val (tm, tr) = minimumRemove
-        val (om, or) = other.minimumRemove
+        val (tm, tr) = cachedMinimumRemove
+        val (om, or) = other.cachedMinimumRemove
         tm match {
 
           // If this heap is empty, then the other heap should be empty too.
@@ -332,7 +339,17 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @return Hash code based upon the contents of this heap.
    */
-  override def hashCode(): Int = minimumRemove.hashCode()
+  override def hashCode: Int = {
+
+    // If this heap is empty, return the hash code of the value None.
+    if(isEmpty) None.hashCode()
+
+    // Otherwise, take the hash code of the minimum value and XOR it with the hash code of the remaining elements.
+    else {
+      val (min, rem) = cachedMinimumRemove
+      min.hashCode() ^ rem.hashCode
+    }
+  }
 }
 
 /** BinomialHeap companion.
