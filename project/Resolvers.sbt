@@ -31,8 +31,10 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// SBT SuperSafe plugin, which ensures correctness for Scalactic expressions.
+// SBT file to include third-party repositories required by the build.
 //
-// This plugin requires a custom repository resolver to be defined.
+// These resolvers must currently also be specified in "./Facsimile.sbt". Refer to the issue below for further details:
+//
+//   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
 //======================================================================================================================
-addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.7")
+resolvers in ThisBuild += "Artima Maven Repository" at "http://repo.artima.com/releases"
