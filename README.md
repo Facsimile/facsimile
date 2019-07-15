@@ -11,8 +11,8 @@ Facsimile is open-source/free software and is distributed under version 3 of the
 
 Current status of official master _Facsimile_ branch:
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile_2.11/badge.svg)]
-(https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile_2.12/badge.svg)]
+(https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile_2.12)
 [![Build Status](https://travis-ci.org/Facsimile/facsimile.svg?branch=master)]
 (https://travis-ci.org/Facsimile/facsimile)
 [![Coverage Status](https://coveralls.io/repos/Facsimile/facsimile/badge.svg)]

@@ -247,7 +247,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   //
   // Note: This documentation is versioned so that links will always be to the version of Facsimile in use by the
   // dependent project.
-  apiURL := organizationHomepage.value.map(h => url(h.toString + "/Documentation/API/${version.value}")),
+  apiURL := organizationHomepage.value.map(h => url(h.toString + s"/Documentation/API/${version.value}")),
 
   // Manifest additions for the main library jar file.
   //
