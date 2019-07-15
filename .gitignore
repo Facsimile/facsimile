@@ -1,5 +1,6 @@
-# Facsimile -- A Discrete-Event Simulation Library
-# Copyright © 2004-2016, Michael J Allen.
+#=======================================================================================================================
+# Facsimile: A Discrete-Event Simulation Library
+# Copyright © 2004-2019, Michael J Allen.
 #
 # This file is part of Facsimile.
 #
@@ -28,25 +29,29 @@
 #
 #   http://www.facsim.org/Documentation/CodingStandards/
 #=======================================================================================================================
+
+#=======================================================================================================================
 # git .gitignore file.
 #
 # Tells git to ignore files matching the listed patterns.
 #
-# Note that files that are already tracked explicitly by git are unaffected by the settings in this file.
-#
-# NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
-# Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
-# merged into client projects. Refer to the skeleton project for further details:
-#
-#   https://github.com/Facsimile/skeleton
+# Note: files that are already tracked explicitly by git are unaffected by the settings in this file.
 #=======================================================================================================================
 
-# List ignored files alphabetically, if possible.
+# List ignored files alphabetically.
 
 .cache
 .classpath
 .externalToolBuilders/
-.idea/
+.idea/.name
+.idea/copyright/HCI.xml
+.idea/fileTemplates/includes/File Header.java
+.idea/libraries/
+.idea/modules/
+.idea/modules.xml
+.idea/scala_compiler.xml
+.idea/tasks.xml
+.idea/workspace.xml
 .idea_modules/
 .project
 .scala_dependencies

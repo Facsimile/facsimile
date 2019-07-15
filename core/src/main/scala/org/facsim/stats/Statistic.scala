@@ -1,6 +1,6 @@
 /*
- * Facsimile -- A Discrete-Event Simulation Library
- * Copyright © 2004-2016, Michael J Allen.
+ * Facsimile: A Discrete-Event Simulation Library
+ * Copyright © 2004-2019, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -33,7 +33,7 @@
  */
 package org.facsim.stats
 
-import org.facsim.measure.Number
+import org.facsim.types.Number
 
 /**
  * Trait for all simulation statistics classes.

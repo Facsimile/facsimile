@@ -1,6 +1,6 @@
 /*
-Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2016, Michael J Allen.
+Facsimile: A Discrete-Event Simulation Library
+Copyright © 2004-2019, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -34,7 +34,7 @@ Scala source file from the org.facsim.anim package.
 package org.facsim.anim
 
 import org.facsim.assertNonNull
-import org.facsim.measure.Angle
+import org.facsim.types.Angle
 import scala.annotation.tailrec
 import scalafx.scene.shape.TriangleMesh
 

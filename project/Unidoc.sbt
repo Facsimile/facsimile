@@ -1,5 +1,6 @@
-// Facsimile -- A Discrete-Event Simulation Library
-// Copyright © 2004-2016, Michael J Allen.
+//======================================================================================================================
+// Facsimile: A Discrete-Event Simulation Library
+// Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -28,13 +29,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// SBT file to simplify creation of a single documentation project for all sbt sub-projects.
-//
-// NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
-// Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
-// merged into client projects. Refer to the skeleton project for further details:
-//
-//   https://github.com/Facsimile/skeleton
-//======================================================================================================================
 
-addSbtPlugin ("com.eed3si9n" % "sbt-unidoc" % "0.3.3")
+//======================================================================================================================
+// SBT file to simplify creation of a single documentation project for all sbt sub-projects.
+//======================================================================================================================
+addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.4.2")

@@ -1,6 +1,6 @@
 /*
-Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2016, Michael J Allen.
+Facsimile: A Discrete-Event Simulation Library
+Copyright © 2004-2019, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -35,7 +35,7 @@ package org.facsim.anim.cell
 
 import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
-import org.facsim.measure.Angle
+import org.facsim.types.Angle
 
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell arc & circle''

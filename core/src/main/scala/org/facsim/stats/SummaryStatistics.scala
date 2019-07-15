@@ -1,6 +1,6 @@
 /*
- * Facsimile -- A Discrete-Event Simulation Library
- * Copyright © 2004-2016, Michael J Allen.
+ * Facsimile: A Discrete-Event Simulation Library
+ * Copyright © 2004-2019, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -33,7 +33,7 @@
  */
 package org.facsim.stats
 
-import org.facsim.measure.Number
+import org.facsim.types.Number
 
 /**
  * Trait underlying all summary statistics.
@@ -273,6 +273,6 @@ extends SummaryStatistics {
    */
   final override def variance = {
     if(size == 1) None
-    else Some((sumSquared - size * Math.pow(mean.get, 2)) / (size - 1)) //scalastyle:ignore disallow.space.before.token
+    else Some((sumSquared - size * Math.pow(mean.get, 2)) / (size - 1))
   }
 }

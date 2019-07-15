@@ -1,5 +1,6 @@
-// Facsimile -- A Discrete-Event Simulation Library
-// Copyright © 2004-2016, Michael J Allen.
+//======================================================================================================================
+// Facsimile: A Discrete-Event Simulation Library
+// Copyright © 2004-2019, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -28,13 +29,8 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// SBT file to simplify publication to the Sonatype OSS repository.
-//
-// NOTE: This file is maintained as part of the Facsimile "skeleton" project, and is common to a number of other
-// Facsimile projects, termed client projects. It must only be modified in the "skeleton" project, with changes being
-// merged into client projects. Refer to the skeleton project for further details:
-//
-//   https://github.com/Facsimile/skeleton
-//======================================================================================================================
 
-addSbtPlugin ("org.xerial.sbt" % "sbt-sonatype" % "1.1")
+//======================================================================================================================
+// SBT file to simplify publication to the Sonatype OSS repository.
+//======================================================================================================================
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.3")

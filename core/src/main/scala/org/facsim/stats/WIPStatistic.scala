@@ -1,6 +1,6 @@
 /*
- * Facsimile -- A Discrete-Event Simulation Library
- * Copyright © 2004-2016, Michael J Allen.
+ * Facsimile: A Discrete-Event Simulation Library
+ * Copyright © 2004-2019, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -35,7 +35,7 @@ package org.facsim.stats
 
 import org.facsim.requireValid
 import org.facsim.engine.Simulation
-import org.facsim.measure.Time
+import org.facsim.types.Time
 
 /**
  * ''Work-in-progress'' - also known as ''work-in-process'' - (''WIP'') statistic.

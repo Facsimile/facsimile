@@ -1,6 +1,6 @@
 /*
- * Facsimile -- A Discrete-Event Simulation Library
- * Copyright © 2004-2016, Michael J Allen.
+ * Facsimile: A Discrete-Event Simulation Library
+ * Copyright © 2004-2019, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -119,7 +119,7 @@ extends SummaryStatistics[D, Histogram[D]] {
     /*
      * Determine which bin to place this observation in.
      */
-    val bin = ((value - minimumValue) / binWidth).toInt + 1 //scalastyle:ignore disallow.space.before.token
+    val bin = ((value - minimumValue) / binWidth).toInt + 1
 
     /*
      * Is this value in the underflow bin?

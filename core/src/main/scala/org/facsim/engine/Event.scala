@@ -1,6 +1,6 @@
 /*
-Facsimile -- A Discrete-Event Simulation Library
-Copyright © 2004-2016, Michael J Allen.
+Facsimile: A Discrete-Event Simulation Library
+Copyright © 2004-2019, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -34,7 +34,7 @@ Scala source file belonging to the org.facsim.facsimile.engine package.
 package org.facsim.engine
 
 import org.facsim.{assertNonNull, requireNonNull}
-import org.facsim.measure.Time
+import org.facsim.types.Time
 import scala.math.Ordered
 
 /**

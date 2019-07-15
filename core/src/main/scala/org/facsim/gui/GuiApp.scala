@@ -1,5 +1,5 @@
 /*
- * Facsimile -- Edit description.
+ * Facsimile—Edit description.
  * Copyright © 2010-2016, Michael J Allen.
  *
  * This file is part of Facsimile.
