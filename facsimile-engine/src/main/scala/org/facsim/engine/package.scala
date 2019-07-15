@@ -47,12 +47,12 @@ package object engine {
 
   /** Type for simulation state transition results.
    *
-   *  This type is a function that takes a [[org.facsim.engine.SimulationState]] argument, returning an updated
-   *  simulation state and a result.
+   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
+   *  an updated simulation state and a result.
    *
    *  @tparam A Result of the state transition operation.
    */
-  type StateResult[+A] = State[SimulationState, A]
+  type StateResult[A] = State[SimulationState, A]
 
   /** Type representing used to represent an immutable priority queue in the simulation.
    *

@@ -54,13 +54,10 @@ import squants.time.Seconds
  *
  *  @param events Set of simulation events scheduled to occur at a future simulation time.
  *
- *  @todo Replace the mutable priority queue implementation with an immutable variant. (This implementation requires an
- *  immutable priority queue. To avoid sharing mutable state, we have to clone the event queue before adding a new
- *  element. This is expensive. Google "Optimal, Purely Functional Priority Queues" for paper outlining a possible
- *  solution.
+ *  @param runState Current state of the simulation run.
  */
 private[engine] final case class SystemState private(nextEventId: Long, current: Option[SystemState.Event],
-events: PriorityQueue[SystemState.Event]) {
+events: PriorityQueue[SystemState.Event], runState: RunState = Initializing) {
 
   /** Current simulation time.
    *
@@ -98,10 +95,14 @@ events: PriorityQueue[SystemState.Event]) {
    */
   private[engine] def updateEventState: SystemState = {
 
-    // Identify the next event, as the event at the head of the event queue. If the next event is None, then the
-    // simulation has terminated. Also update the event queue so that it no longer contains the next event.
-    val (nextEvent, nextEvents) = events.minimumRemove match {
+    // Identify the next event, as the event at the head of the event queue.
+    events.minimumRemove match {
 
+      // If the next event is None, then the simulation has run out of events and has completed.
+      case (None, _) => copy(runState = Completed)
+
+      // Otherwise, we have a new event to perform and a new set of events.
+      case(newCurrent, newEvents) => copy(current = newCurrent, events = newEvents)
     }
   }
 }
@@ -125,7 +126,7 @@ private object SystemState {
    *
    *  @param action Action to be performed by this event when it is dispatched.
    */
-  private final case class Event private(id: Long, dueAt: Time, priority: Int = 0, action: Action)
+  private[engine] final case class Event private(id: Long, dueAt: Time, priority: Int = 0, action: Action)
   extends Ordered[Event] {
 
     /** Dispatch this event.

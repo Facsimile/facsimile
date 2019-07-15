@@ -36,17 +36,36 @@
 //======================================================================================================================
 package org.facsim.engine
 
-/** An ''action'' is a ''state transition'' that takes the state of the simulation and results in a new simulation
- *  state.
- *
- *  Simulation state changes include:
- *   - Scheduling another action to occur at a future time in the simulation.
- *   - Changing the state of a simulation model element.
- *   - Moving a simulation model entity from one element to another.
- *   - etc.
- *
- *  @param execute Action to modify the simulation's state.
+/** Base trait for all simulation run states.
  *
  *  @since 0.0
  */
-abstract class Action(val execute: StateResult[Unit])
+sealed trait RunState
+
+/** State of the simulation prior to being run for the first time.
+ *
+ *  @since 0.0
+ */
+case object Initializing
+extends RunState
+
+/** State of the simulation while it is executing.
+ *
+ *  @since 0.0
+ */
+case object Executing
+extends RunState
+
+/** State of the simulation while it is paused and not running.
+ *
+ *  @since 0.0
+ */
+case object Paused
+extends RunState
+
+/** State of the simulation when it has finished execution and cannot be run further.
+ *
+ *  @since 0.0
+ */
+case object Completed
+extends RunState
