@@ -38,11 +38,12 @@
 #   https://support.codacy.com/hc/en-us/articles/115002130625-Codacy-Configuration-File
 #=======================================================================================================================
 # Prevent Codacy from examining files that are not currently part of the released product.
+---
 engines:
   exclude_paths:
-    - core/**
-    - facsimile-sfx/**
-    - facsimile-stat/**
-    - facsimile-types/**
-    - macro/**
-    - parked/**
+    - 'core/**'
+    - 'facsimile-sfx/**'
+    - 'facsimile-stat/**'
+    - 'facsimile-types/**'
+    - 'macro/**'
+    - 'parked/**'
