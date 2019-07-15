@@ -37,6 +37,7 @@
 package org.facsim.collection.immutable.test
 
 import org.facsim.collection.immutable.BinomialHeap
+import org.scalacheck.Gen
 import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.annotation.tailrec
@@ -301,6 +302,53 @@ with ScalaCheckPropertyChecks {
           state = updateState(state._1, state._2, h)
         }
         assert(state._1.size / state._2.toDouble >= 0.9)
+      }
+    }
+
+    // Test the member addition operator.
+    describe(".+(A)") {
+
+      // It must add new member to a heap, resulting in a new heap.
+      it("must accept a new member, resulting in a new heap") {
+        forAll {(e: Int, li: List[Int]) =>
+          val h = BinomialHeap(li: _*)
+          val newH = h + e
+          assert(h !== newH)
+          verifyMultiMemberHeap(newH, (e :: li).sorted)
+        }
+      }
+    }
+
+    // Test the heap merge operator.
+    describe(".++(BinomialHeap[A])") {
+
+      // One of the heaps is empty.
+      it("must handle empty heaps correctly") {
+
+        // Use positive numbers, as there is no generator for just numbers, right now.
+        forAll(Gen.nonEmptyListOf(Gen.posNum[Int])) {li =>
+          val h = BinomialHeap(li: _*)
+          val eh = BinomialHeap.empty[Int]
+          val newH1 = h ++ eh
+          assert(newH1 === h)
+          val newH2 = eh ++ h
+          assert(newH2 === h)
+          val newH3 = eh ++ eh
+          assert(newH3 === eh)
+        }
+      }
+
+      // It must create a new heap out of the initial two heaps.
+      it("must create a new heap from the initial two heaps") {
+
+        // Use positive numbers, as there is no generator for just numbers, right now.
+        forAll(Gen.nonEmptyListOf(Gen.posNum[Int]), Gen.nonEmptyListOf(Gen.posNum[Int])) {(l1, l2) =>
+          val h1 = BinomialHeap(l1: _*)
+          val h2 = BinomialHeap(l2: _*)
+          val newH = h1 ++ h2
+          val newL = l1 ::: l2
+          verifyMultiMemberHeap(newH, newL.sorted)
+        }
       }
     }
   }
