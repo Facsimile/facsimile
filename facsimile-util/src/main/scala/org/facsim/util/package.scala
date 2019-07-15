@@ -58,7 +58,7 @@ import scala.reflect.macros.blackbox.Context
 package object util {
 
   /** Regular expression to match class argument name. */
-  private val ClassArgRE = """^\w+\.this\.(\w+)^""".r
+  private val ClassArgRE = """^\w+\.this\.(\w+)$""".r
 
   /** Regular expression for identifying periods in package path names. */
   private val PeriodRegEx = """(\.)""".r
