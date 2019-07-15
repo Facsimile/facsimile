@@ -67,11 +67,13 @@ jdk:
   - oraclejdk8
 
 # Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
-# in the current version of ScalaFX require the latest release).
+# in the current version of ScalaFX require the latest release). Also ensure graphviz is installed, in order to create
+# documentation without errors.
 addons:
   apt:
     packages:
       - oracle-java8-installer
+      - graphviz
 
 # Now perform the build.
 #
