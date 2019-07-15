@@ -37,13 +37,12 @@
 #
 #   http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
 #=======================================================================================================================
-
 # Use container-based architecture, which is faster and supports IVY & SBT file caching.
 sudo: false
 
 # Specify project language and supported versions.
 #
-# These values should be synchronized with the values in the custom SBT build definition file, FacsimileBuild.sbt.
+# These values should be synchronized with the values in the custom SBT build definition file, Facsimile.sbt.
 language: scala
 scala:
   - 2.12.8
@@ -78,7 +77,7 @@ addons:
 #
 # This firstly prints the java version used. Next, it executes SBT to perform scalastyle checking, coverage analysis and
 # then execute the test suite. Subsequent to that, since Facsimile is a multi-module project, we must generate a report
-# aggregated for all modules. The notify Coveralls of the test coverage results. (Note that both of these latter tasks
+# aggregated for all modules. Then notify Coveralls of the test coverage results. (Note that both of these latter tasks
 # must be performed as separate SBT commands.)
 script:
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc coverageReport &&
