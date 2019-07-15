@@ -39,11 +39,10 @@
 #=======================================================================================================================
 # Prevent Codacy from examining files that are not currently part of the released product.
 ---
-engines:
-  exclude_paths:
-    - 'core/**'
-    - 'facsimile-sfx/**'
-    - 'facsimile-stat/**'
-    - 'facsimile-types/**'
-    - 'macro/**'
-    - 'parked/**'
+exclude_paths:
+  - 'core/**'
+  - 'facsimile-sfx/**'
+  - 'facsimile-stat/**'
+  - 'facsimile-types/**'
+  - 'macro/**'
+  - 'parked/**'
