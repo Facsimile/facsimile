@@ -58,6 +58,7 @@ import scala.reflect.runtime.universe._
  *  @see ''[[https://en.wikipedia.org/wiki/Binomial_heap Binomial heap on Wikipedia]]''.
  *
  *  @see ''[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf Optimal Purely Functional Priority Queues (PDF file)]]''.
+ *
  *  @since 0.0
  */
 final class BinomialHeap[A] private(private val rootTree: BinomialTree[A])(implicit private val ordering: Ordering[A],
@@ -79,7 +80,7 @@ extends Heap[A, BinomialHeap[A]] {
 
   /** @inheritdoc
    *
-   * @note Heap insertion has ''amortized'' ''O(1)'' time.
+   *  @note Heap insertion has ''amortized'' ''O(1)'' time.
    */
   override def +(a: A): BinomialHeap[A] = new BinomialHeap(insert(BinomialTreeNode(a, 0, Nil), rootTree))
 
@@ -158,9 +159,8 @@ extends Heap[A, BinomialHeap[A]] {
    *  @param t2 Second tree to be merged.
    *
    *  @return New tree containing merged result.
-   *
-   *  @todo Make this function stack safe.
    */
+  // TODO: Make this function stack safe.
   private def meld(t1: BinomialTree[A], t2: BinomialTree[A]): BinomialTree[A] = (t1, t2) match {
 
     // If the first tree is empty, return the second.
@@ -190,10 +190,9 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @param t Tree for which a minimum value is sought.
    *
-   *  @return Minimum element in the tree, wrapped in [[scala.Some]]; [[scala.None]] if `t` is empty.
-   *
-   *  @todo Make this function stack safe.
+   *  @return Minimum element in the tree, wrapped in `[[scala.Some Some]]`; `[[scala.None None]]` if `t` is empty.
    */
+  // TODO: Make this function stack safe.
   private def findMin(t: BinomialTree[A]): Option[A] = t match {
 
     // If the tree is empty, return None.
@@ -218,9 +217,9 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @param t Tree for which a minimum value is sought.
    *
-   *  @return Tuple whose first member is the minimum element, wrapped in [[scala.Some]], or [[scala.None]] if `t` is
-   *  empty; the second member of the tuple is the new true with the minimum removed (if the first element is defined),
-   *  or the original empty tree otherwise.
+   *  @return Tuple whose first member is the minimum element, wrapped in `[[scala.Some Some]]`, or `[[scala.None
+   *  None]]` if `t` is empty; the second member of the tuple is the new true with the minimum removed (if the first
+   *  element is defined), or the original empty tree otherwise.
    */
   // TODO: Make this function stack-safe.
   private def minRemove(t: BinomialTree[A]): (Option[A], BinomialTree[A]) = t match {
