@@ -45,8 +45,38 @@ package org.facsim.engine
  *   - Moving a simulation model entity from one element to another.
  *   - etc.
  *
+ *  @tparam M Final model state type.
+ *
+ *  @constructor Create a new simulation action.
+ *
  *  @param execute Action to modify the simulation's state.
  *
  *  @since 0.0
  */
-abstract class Action(val execute: StateResult[Unit])
+abstract class Action[M <: ModelState[M]](private val execute: SimulationAction[M]) {
+
+  /** Dispatch these actions.
+   *
+   *  @return Simulation state after dispatching (executing) these actions.
+   */
+  final def dispatch: SimulationAction[M] = for {
+    r <- execute
+  } yield r
+
+  /** Name of this event.
+   *
+   *  Short (and, ideally, unique) description of these actions, to be utilized in the simulation event log, debugging
+   *  operations, etc.
+   *
+   *  @since 0.0
+   */
+  val name: String
+
+  /** Description of these actions.
+   *
+   *  Brief description of these actions, including any additional relevant details.
+   *
+   *  @since 0.0
+   */
+  val description: String
+}

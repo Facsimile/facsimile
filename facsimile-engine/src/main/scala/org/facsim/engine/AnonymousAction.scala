@@ -34,56 +34,24 @@
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.engine package.
 //======================================================================================================================
-package org.facsim
+package org.facsim.engine
 
-import cats.data.State
-import org.facsim.collection.immutable.BinomialHeap
-import scala.util.Try
-
-/** ''Facsimile Simulation Engine'' library root package.
+/** Anonymous action for wrapping bare actions as `[[org.facsim.Action Action]]` instances.
  *
- *  This library contains elements supporting the development of dynamic, discrete-event simulation models.
+ *  @tparam M Final type of the simulation's model state.
+ *
+ *  @constructor Create a new anonymous action.
+ *
+ *  @param actions Simulation state transitions (a.k.a. ''actions'') to be executed at some point in the future.
  *
  *  @since 0.0
  */
-package object engine {
+final class AnonymousAction[M <: ModelState[M]] private[engine](actions: SimulationAction[M])
+extends Action(actions) {
 
-  /** Type representing an event priority.
-   *
-   *  @since 0.0
-   */
-  type Priority = Int
+  /** @inheritdoc */
+  override val name: String = LibResource("AnonymousActionName")
 
-  /** Type representing used to represent an immutable priority queue in the simulation.
-   *
-   *  @tparam A Type of element stored in the priority queue. There must be an implicit ordering available for events.
-   *
-   *  @since 0.0
-   */
-  type PriorityQueue[A] = BinomialHeap[A]
-
-  /** Type for simulation state transition results.
-   *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
-   *  an updated simulation state and a result.
-   *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @tparam A Result of the state transition operation.
-   *
-   *  @since 0.0
-   */
-  type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
-
-  /** Type for simulation state transition actions, which return a status value.
-   *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
-   *  an updated simulation state and a `Unit` value wrapped in `[[scala.util.Success Success]]` if successful, or an
-   *  exception instance wrapped in `[[scala.util.Failure Failure]]` otherwise.
-   *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @since 0.0
-   */
-  type SimulationAction[M <: ModelState[M]] = SimulationTransition[M, Try[Unit]]
+  /** @inheritdoc*/
+  override val description: String = LibResource("AnonymousActionDesc")
 }

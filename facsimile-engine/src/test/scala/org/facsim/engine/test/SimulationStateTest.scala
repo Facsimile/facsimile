@@ -32,58 +32,41 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.engine.tet package.
 //======================================================================================================================
-package org.facsim
+package org.facsim.engine.test
 
 import cats.data.State
-import org.facsim.collection.immutable.BinomialHeap
-import scala.util.Try
+import org.facsim.engine.{Initializing, ModelState, SimulationAction, SimulationState}
+import org.scalatest.FunSpec
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import squants.time.Seconds
 
-/** ''Facsimile Simulation Engine'' library root package.
- *
- *  This library contains elements supporting the development of dynamic, discrete-event simulation models.
- *
- *  @since 0.0
- */
-package object engine {
+// Disable test-problematic Scalastyle checkers.
+//scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
+//scalastyle:off multiple.string.literals
+//scalastyle:off magic.numbers
 
-  /** Type representing an event priority.
-   *
-   *  @since 0.0
-   */
-  type Priority = Int
+/** Test harness for the [[org.facsim.engine.SimulationState]] class. */
+final class SimulationStateTest
+extends FunSpec
+with ScalaCheckPropertyChecks {
 
-  /** Type representing used to represent an immutable priority queue in the simulation.
-   *
-   *  @tparam A Type of element stored in the priority queue. There must be an implicit ordering available for events.
-   *
-   *  @since 0.0
-   */
-  type PriorityQueue[A] = BinomialHeap[A]
+  /** Simulation model test state class. */
+  final class TestModelState
+  extends ModelState[TestModelState]
 
-  /** Type for simulation state transition results.
-   *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
-   *  an updated simulation state and a result.
-   *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @tparam A Result of the state transition operation.
-   *
-   *  @since 0.0
-   */
-  type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
+  /** Test data. */
+  trait TestData
 
-  /** Type for simulation state transition actions, which return a status value.
-   *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
-   *  an updated simulation state and a `Unit` value wrapped in `[[scala.util.Success Success]]` if successful, or an
-   *  exception instance wrapped in `[[scala.util.Failure Failure]]` otherwise.
-   *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @since 0.0
-   */
-  type SimulationAction[M <: ModelState[M]] = SimulationTransition[M, Try[Unit]]
+  // Start with the companion object.
+  describe(SimulationState.getClass.getCanonicalName) {
+  }
 }
+
+// Re-enable test-problematic Scalastyle checkers.
+//scalastyle:on magic.numbers
+//scalastyle:on multiple.string.literals
+//scalastyle:on public.methods.have.type
+//scalastyle:on scaladoc

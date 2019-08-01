@@ -34,56 +34,58 @@
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.engine package.
 //======================================================================================================================
-package org.facsim
+package org.facsim.engine
 
 import cats.data.State
-import org.facsim.collection.immutable.BinomialHeap
-import scala.util.Try
+import scala.util.Success
+import squants.Time
 
-/** ''Facsimile Simulation Engine'' library root package.
+/** Standard simulation actions to perform a reset of the simulation's statistics.
  *
- *  This library contains elements supporting the development of dynamic, discrete-event simulation models.
+ *  @constructor Create a new end warmup action.
  *
- *  @since 0.0
+ *  @tparam M Final type of the simulation's model state.
+ *
+ *  @param snapLength Length of subsequent simulation snaps.
+ *
+ *  @param snapsRemaining Number of simulation snaps to be performed.
  */
-package object engine {
+private[engine] final class EndSnapAction[M <: ModelState[M]](snapLength: Time, snapsRemaining: Int)
+extends Action[M](EndSnapAction.actions(snapLength, snapsRemaining)) {
 
-  /** Type representing an event priority.
-   *
-   *  @since 0.0
-   */
-  type Priority = Int
+  /** @inheritdoc */
+  override val name: String = LibResource("EndSnapActionName")
 
-  /** Type representing used to represent an immutable priority queue in the simulation.
-   *
-   *  @tparam A Type of element stored in the priority queue. There must be an implicit ordering available for events.
-   *
-   *  @since 0.0
-   */
-  type PriorityQueue[A] = BinomialHeap[A]
+  /** @inheritdoc */
+  override val description: String = LibResource("EndSnapActionDesc")
+}
 
-  /** Type for simulation state transition results.
-   *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
-   *  an updated simulation state and a result.
-   *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @tparam A Result of the state transition operation.
-   *
-   *  @since 0.0
-   */
-  type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
+/** End snap action companion. */
+private object EndSnapAction {
 
-  /** Type for simulation state transition actions, which return a status value.
+  /** Actions to be performed when dispatched.
    *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
-   *  an updated simulation state and a `Unit` value wrapped in `[[scala.util.Success Success]]` if successful, or an
-   *  exception instance wrapped in `[[scala.util.Failure Failure]]` otherwise.
+   *  @param snapLength Length of subsequent simulation snaps.
    *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @since 0.0
+   *  @param snapsRemaining Number of simulation snaps to be performed after this snap.
    */
-  type SimulationAction[M <: ModelState[M]] = SimulationTransition[M, Try[Unit]]
+  private def actions[M <: ModelState[M]](snapLength: Time, snapsRemaining: Int): SimulationAction[M] = {
+
+    // Sanity check.
+    assert(snapsRemaining >= 0)
+
+    // Report to all subscribers that the simulation snap has completed. Statistics should be reset and a report
+    // generated accordingly.
+    // TODO
+
+    // If this is the last snap, then change the simulation state to completed.
+    if(snapsRemaining == 0) State {s =>
+      (s.update(newRunState = Completed), Success(()))
+    }
+
+    // Otherwise, schedule the end of the next snap.
+    else for {
+      r <- SimulationState.at[M](snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, snapsRemaining - 1))
+    } yield r
+  }
 }

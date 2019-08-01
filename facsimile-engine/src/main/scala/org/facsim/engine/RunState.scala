@@ -40,32 +40,78 @@ package org.facsim.engine
  *
  *  @since 0.0
  */
-sealed trait RunState
+sealed trait RunState {
+
+  /** Name of this run-state.
+   *
+   *  @since 0.0
+   */
+  val name: String
+
+  /** Flag indicating whether this state supports event iteration.
+   *
+   *  @return If `true`, the simulation's current run state allows event iteration (updating of the simulation state to
+   *  update the current event); if `false`, event iteration is not supported.
+   */
+  private[engine] val canIterate: Boolean = false
+
+  /** Flag indicating whether this state supports event scheduling.
+   *
+   *  @return If `true`, the simulation's current run state allows event scheduling (updating of the simulation state to
+   *  include a newly scheuled event); if `false`, event iteration is not supported.
+   */
+  private[engine] val canSchedule: Boolean = false
+}
 
 /** State of the simulation prior to being run for the first time.
  *
  *  @since 0.0
  */
 case object Initializing
-extends RunState
+extends RunState {
+
+  /** @inheritdoc */
+  override val name: String = LibResource("RunState.Initializing")
+
+  /** @inheritdoc */
+  private[engine] override val canSchedule: Boolean = true
+}
 
 /** State of the simulation while it is executing.
  *
  *  @since 0.0
  */
 case object Executing
-extends RunState
+extends RunState {
 
-/** State of the simulation while it is paused and not running.
- *
- *  @since 0.0
- */
-case object Paused
-extends RunState
+  /** @inheritdoc */
+  override val name: String = LibResource("RunState.Executing")
+
+  /** @inheritdoc */
+  private[engine] override val canIterate: Boolean = true
+
+  /** @inheritdoc */
+  private[engine] override val canSchedule: Boolean = true
+}
 
 /** State of the simulation when it has finished execution and cannot be run further.
  *
  *  @since 0.0
  */
 case object Completed
-extends RunState
+extends RunState {
+
+  /** @inheritdoc */
+  override val name: String = LibResource("RunState.Completed")
+}
+
+/** State indicating that the simulation has terminated due to having exhausted its events.
+ *
+ *  @since 0.0
+ */
+case object Terminated
+extends RunState {
+
+  /** @inheritdoc */
+  override val name: String = LibResource("RunState.Terminated")
+}
