@@ -36,6 +36,7 @@
 //======================================================================================================================
 package org.facsim.engine
 
+import scala.reflect.runtime.universe.TypeTag
 import squants.Time
 
 /** Standard simulation actions to perform a reset of the simulation's statistics.
@@ -48,7 +49,7 @@ import squants.Time
  *
  *  @param numSnaps Number of simulation snaps to be performed.
  */
-private[engine] final class EndWarmUpAction[M <: ModelState[M]](snapLength: Time, numSnaps: Int)
+private[engine] final class EndWarmUpAction[M <: ModelState[M]: TypeTag](snapLength: Time, numSnaps: Int)
 extends Action[M](EndWarmUpAction.actions(snapLength, numSnaps)) {
 
   /** @inheritdoc */
@@ -67,7 +68,7 @@ private object EndWarmUpAction {
    *
    *  @param numSnaps Number of simulation snaps to be performed.
    */
-  private def actions[M <: ModelState[M]](snapLength: Time, numSnaps: Int): SimulationAction[M] = {
+  private def actions[M <: ModelState[M]: TypeTag](snapLength: Time, numSnaps: Int): SimulationAction[M] = {
 
     // Report to all subscribers that the simulation has warmed up. Statistics should be reset accordingly.
     // TODO

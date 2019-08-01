@@ -36,6 +36,8 @@
 //======================================================================================================================
 package org.facsim.engine
 
+import scala.reflect.runtime.universe.TypeTag
+
 /** Base class for model states.
  *
  *  Model state encapsulates the state of a simulation model. It may contain any necessary state information, but each
@@ -45,4 +47,4 @@ package org.facsim.engine
  *
  *  @since 0.0
  */
-abstract class ModelState[M <: ModelState[M]]
+abstract class ModelState[M <: ModelState[M]: TypeTag]

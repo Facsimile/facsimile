@@ -36,11 +36,9 @@
 //======================================================================================================================
 package org.facsim.engine.test
 
-import cats.data.State
 import org.facsim.engine.{Initializing, ModelState, SimulationAction, SimulationState}
 import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import squants.time.Seconds
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc

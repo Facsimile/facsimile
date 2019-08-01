@@ -36,6 +36,8 @@
 //======================================================================================================================
 package org.facsim.engine
 
+import scala.reflect.runtime.universe.TypeTag
+
 /** Anonymous action for wrapping bare actions as `[[org.facsim.Action Action]]` instances.
  *
  *  @tparam M Final type of the simulation's model state.
@@ -46,7 +48,7 @@ package org.facsim.engine
  *
  *  @since 0.0
  */
-final class AnonymousAction[M <: ModelState[M]] private[engine](actions: SimulationAction[M])
+final class AnonymousAction[M <: ModelState[M]: TypeTag] private[engine](actions: SimulationAction[M])
 extends Action(actions) {
 
   /** @inheritdoc */

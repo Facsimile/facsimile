@@ -36,8 +36,7 @@
 //======================================================================================================================
 package org.facsim.engine
 
-import cats.data.State
-import scala.util.Success
+import scala.reflect.runtime.universe.TypeTag
 import squants.Time
 
 /** Standard simulation actions to perform a reset of the simulation's statistics.
@@ -50,7 +49,7 @@ import squants.Time
  *
  *  @param snapsRemaining Number of simulation snaps to be performed.
  */
-private[engine] final class EndSnapAction[M <: ModelState[M]](snapLength: Time, snapsRemaining: Int)
+private[engine] final class EndSnapAction[M <: ModelState[M]: TypeTag](snapLength: Time, snapsRemaining: Int)
 extends Action[M](EndSnapAction.actions(snapLength, snapsRemaining)) {
 
   /** @inheritdoc */
@@ -69,7 +68,7 @@ private object EndSnapAction {
    *
    *  @param snapsRemaining Number of simulation snaps to be performed after this snap.
    */
-  private def actions[M <: ModelState[M]](snapLength: Time, snapsRemaining: Int): SimulationAction[M] = {
+  private def actions[M <: ModelState[M]: TypeTag](snapLength: Time, snapsRemaining: Int): SimulationAction[M] = {
 
     // Sanity check.
     assert(snapsRemaining >= 0)
@@ -79,9 +78,9 @@ private object EndSnapAction {
     // TODO
 
     // If this is the last snap, then change the simulation state to completed.
-    if(snapsRemaining == 0) State {s =>
-      (s.update(newRunState = Completed), Success(()))
-    }
+    if(snapsRemaining == 0) for {
+      r <- SimulationState.updateRunState(Completed)
+    } yield r
 
     // Otherwise, schedule the end of the next snap.
     else for {

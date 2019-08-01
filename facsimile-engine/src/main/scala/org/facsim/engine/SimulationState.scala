@@ -39,8 +39,8 @@ package org.facsim.engine
 import cats.data.State
 import org.facsim.collection.immutable.BinomialHeap
 import org.facsim.util.CompareEqualTo
-import scala.annotation.tailrec
 import scala.language.implicitConversions
+import scala.reflect.runtime.universe.TypeTag
 import scala.util.{Failure, Success, Try}
 import squants.Time
 import squants.time.{Days, Seconds}
@@ -64,9 +64,9 @@ import squants.time.{Days, Seconds}
  *
  *  @since 0.0
  */
-final class SimulationState[M <: ModelState[M]] private(private val modelState: M, private val nextEventId: Long,
-private val current: Option[SimulationState.Event[M]], private val events: PriorityQueue[SimulationState.Event[M]],
-private val runState: RunState) {
+final class SimulationState[M <: ModelState[M]: TypeTag] private(private val modelState: M,
+private val nextEventId: Long, private val current: Option[SimulationState.Event[M]],
+private val events: PriorityQueue[SimulationState.Event[M]], private val runState: RunState) {
 
   /** Copy the existing state to a new state with the indicated new values.
    *
@@ -124,7 +124,7 @@ object SimulationState {
    *
    *  @return `actions` wrapped as an action suitable for dispatching by an event.
    */
-  implicit def createAnonymousAction[M <: ModelState[M]](actions: SimulationAction[M]): AnonymousAction[M] = {
+  implicit def createAnonymousAction[M <: ModelState[M]: TypeTag](actions: SimulationAction[M]): AnonymousAction[M] = {
     new AnonymousAction[M](actions)
   }
 
@@ -136,7 +136,7 @@ object SimulationState {
    *
    *  @since 0.0
    */
-  def time[M <: ModelState[M]]: SimulationTransition[M, Time] = State.inspect(_.simTime)
+  def time[M <: ModelState[M]: TypeTag]: SimulationTransition[M, Time] = State.inspect(_.simTime)
 
   /** Report the current simulation model state.
    *
@@ -146,7 +146,7 @@ object SimulationState {
    *
    *  @since 0.0
    */
-  def modelState[M <: ModelState[M]]: SimulationTransition[M, M] = State.inspect(_.modelState)
+  def modelState[M <: ModelState[M]: TypeTag]: SimulationTransition[M, M] = State.inspect(_.modelState)
 
   /** Schedule actions for later execution.
    *
@@ -168,7 +168,8 @@ object SimulationState {
    *
    *  @since 0.0
    */
-  def at[M <: ModelState[M]](delay: Time, priority: Priority = 0)(actions: Action[M]): SimulationAction[M] = State {s =>
+  def at[M <: ModelState[M]: TypeTag](delay: Time, priority: Priority = 0)(actions: Action[M]):
+  SimulationAction[M] = State {s =>
 
     // If the simulation's run state does not support scheduling of events, then report the current state with a failure
     // describing why.
@@ -212,7 +213,7 @@ object SimulationState {
    *
    *  @since 0.0
    */
-  def takeUntil[M <: ModelState[M], A](ts: Seq[SimulationTransition[M, A]], terminationValue: A)
+  def takeUntil[M <: ModelState[M]: TypeTag, A: TypeTag](ts: Seq[SimulationTransition[M, A]], terminationValue: A)
   (p: ((SimulationState[M], A)) => Boolean): SimulationTransition[M, A] = {
 
     // Helper function to perform the iteration.
@@ -259,11 +260,35 @@ object SimulationState {
    *
    *  @since 0.0
    */
-  def takeUntilFailure[M <: ModelState[M]](ts: Seq[SimulationAction[M]]): SimulationAction[M] = for {
+  def takeUntilFailure[M <: ModelState[M]: TypeTag](ts: Seq[SimulationAction[M]]): SimulationAction[M] = for {
     r <- takeUntil(ts, Success(())) {
       case(_, x) => x.isFailure
     }
   } yield r
+
+  /** Update the simulation run state.
+   *
+   *  @tparam M Final type of the simulation's model state.
+   *
+   *  @param newState Updated simulation run state.
+   *
+   *  @return Updated simulation state, plus a success.
+   */
+  private[engine] def updateRunState[M <: ModelState[M]: TypeTag](newState: RunState): SimulationAction[M] = State {s =>
+    (s.update(newRunState = newState), Success(()))
+  }
+
+  /** Update the simulation model state.
+   *
+   *  @tparam M Final type of the simulation's model state.
+   *
+   *  @param newState Updated simulation model state.
+   *
+   *  @return Updated simulation state, plus a success.
+   */
+  def updateModelState[M <: ModelState[M]: TypeTag](newState: M): SimulationAction[M] = State {s =>
+    (s.update(newModelState = newState), Success(()))
+  }
 
   /** Initial simulation state.
    *
@@ -273,7 +298,7 @@ object SimulationState {
    *
    *  @return Initial simulation state, for use at the start of the simulation.
    */
-  private def initialState[M <: ModelState[M]](initialModelState: M): SimulationState[M] = {
+  private def initialState[M <: ModelState[M]: TypeTag](initialModelState: M): SimulationState[M] = {
     new SimulationState(initialModelState, 0L, None, BinomialHeap.empty[SimulationState.Event[M]], Initializing)
   }
 
@@ -303,13 +328,13 @@ object SimulationState {
    *
    *  @return Initial simulation executing state.
    */
-  private def initialize[M <: ModelState[M]](warmupLength: Time, snapLength: Time, numSnaps: Int,
+  private def initialize[M <: ModelState[M]: TypeTag](warmupLength: Time, snapLength: Time, numSnaps: Int,
   initialization: Action[M]): SimulationAction[M] = for {
 
     // Determine the status of the following actions, and return it as the status of this action, together with the
     // updated simulation state.
     r <- takeUntilFailure {
-      List(
+      List[SimulationAction[M]](
 
         // Schedule the end of the warm-up period. This should have the lowest possible priority, so that all
         // simultaneous events are completed before the reset occurs.
@@ -319,9 +344,7 @@ object SimulationState {
         initialization.dispatch,
 
         // Update the simulation state to be executing.
-        State {s =>
-          (s.update(newRunState = Executing), Success(()))
-        }
+        updateRunState(Executing)
       )
     }
   } yield r
@@ -343,7 +366,7 @@ object SimulationState {
    *  success of the update operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
    *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
    */
-  private def updateCurrentEvent[M <: ModelState[M]]: SimulationAction[M] = State {s =>
+  private def updateCurrentEvent[M <: ModelState[M]: TypeTag]: SimulationAction[M] = State {s =>
 
     // If the simulation's current state does not support event iteration, then report a failure as the result, together
     // with the current state.
@@ -370,7 +393,7 @@ object SimulationState {
    *  success of the dispatch operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
    *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
    */
-  private def dispatchCurrentEvent[M <: ModelState[M]]: SimulationAction[M] = State {s =>
+  private def dispatchCurrentEvent[M <: ModelState[M]: TypeTag]: SimulationAction[M] = State {s =>
 
     // Updating of events can only happen during iterations. Verify that our run-state allows this.
     assert(s.runState.canIterate)
@@ -393,7 +416,7 @@ object SimulationState {
    *  success of the iteration operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
    *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
    */
-  private[engine] def iterate[M <: ModelState[M]]: SimulationAction[M] = for {
+  private def iterate[M <: ModelState[M]: TypeTag]: SimulationAction[M] = for {
     r <- takeUntilFailure {
       List(
 
@@ -405,6 +428,36 @@ object SimulationState {
       )
     }
   } yield r
+
+  /** Execute all remaining events until either an error occurs or the simulation completes.
+   *
+   *  @tparam M Final type of the simulation's model state.
+   *
+   *  An event iteration involves:
+   *   1. Updating the current event to the event at the head of event queue, and removing that event from the event
+   *      queue.
+   *   1. Dispatching the new current event, so that its associated actions take place.
+   *   1. Report the resulting simulation update.
+   *
+   *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
+   *  success of the iteration operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
+   *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
+   */
+  private def remainingEvents[M <: ModelState[M]: TypeTag]: SimulationAction[M] = State {s =>
+
+    // Perform an event iteration and consider the result.
+    val result = iterate[M].run(s).value
+
+    // If the iteration resulted in an error, or if the simulation completed, return the result.
+    if (result._2.isFailure || !result._1.runState.canIterate) result
+
+    // Otherwise, perform another iteration. and report the result.
+    //
+    // Note: It might appear that this code will result in a stack overflow, for any long simulation with large numbers
+    // of events, but it does not: the Cats library state monad utilizes Eval trampolining to overcome this. (If that
+    // make little sense, Google it ;-)
+    else remainingEvents[M].run(result._1).value
+  }
 
   /** Run the simulation, until it completes.
    *
@@ -432,25 +485,24 @@ object SimulationState {
    *  @return Final simulation state as the first element of a tuple that also includes the result of the last
    *  transition, wrapped in a `[[scala.util.Try Try]]`.
    */
-  def run[M <: ModelState[M]](initialModelState: M, warmUpPeriod: Time = Days(7.0), snapLength: Time = Days(7.0),
-  numSnaps: Int = 1)(initialization: Action[M]): (SimulationState[M], Try[Unit]) = {
+  def run[M <: ModelState[M]: TypeTag](initialModelState: M, warmUpPeriod: Time = Days(7.0),
+  snapLength: Time = Days(7.0), numSnaps: Int = 1)(initialization: Action[M]): (SimulationState[M], Try[Unit]) = {
 
-    // Helper function to keep performing events until the simulation has completed.
-    @tailrec
-    def nextEvent(result: (SimulationState[M], Try[Unit])): (SimulationState[M], Try[Unit]) = {
-
-      // If the previous operation failed, or if the simulation cannot perform further iterations, return the result.
-      if(!result._1.runState.canIterate || result._2.isFailure) result
-
-      // Otherwise, perform another iteration.
-      else nextEvent(iterate.run(result._1).value)
-    }
+    // Execute the initialization and all subsequent events.
+    val runToCompletion: SimulationAction[M] = for {
+      r <- takeUntilFailure {
+        List[SimulationAction[M]](
+          initialize(warmUpPeriod, snapLength, numSnaps, initialization),
+          remainingEvents
+        )
+      }
+    } yield r
 
     // Create the initial simulation state.
     val initState = initialState(initialModelState)
 
-    // Now initialize the simulation using the initial state.
-    nextEvent(initialize(warmUpPeriod, snapLength, numSnaps, initialization).run(initState).value)
+    // Now initialize the simulation using the initial state and run it to completion.
+    runToCompletion.run(initState).value
   }
 
   /** Event scheduling the dispatch of specified actions at a specified simulation time.
@@ -471,7 +523,7 @@ object SimulationState {
    *
    *  @param action Action to be performed by this event when it is dispatched.
    */
-  private[engine] final case class Event[M <: ModelState[M]](id: Long, dueAt: Time, priority: Int = 0,
+  private[engine] final case class Event[M <: ModelState[M]: TypeTag](id: Long, dueAt: Time, priority: Int = 0,
   action: Action[M])
   extends Ordered[Event[M]] {
 

@@ -36,6 +36,8 @@
 //======================================================================================================================
 package org.facsim.engine
 
+import scala.reflect.runtime.universe.TypeTag
+
 /** An ''action'' is a ''state transition'' that takes the state of the simulation and results in a new simulation
  *  state.
  *
@@ -53,7 +55,7 @@ package org.facsim.engine
  *
  *  @since 0.0
  */
-abstract class Action[M <: ModelState[M]](private val execute: SimulationAction[M]) {
+abstract class Action[M <: ModelState[M]: TypeTag](private val execute: SimulationAction[M]) {
 
   /** Dispatch these actions.
    *
