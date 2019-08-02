@@ -30,9 +30,9 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.stat.prn package.
+// Scala source file belonging to the org.facsim.stat.prng package.
 //======================================================================================================================
-package org.facsim.stat.prn
+package org.facsim.stat.prng
 
 /** ''Pseudo-random number'' generator trait.
  *
