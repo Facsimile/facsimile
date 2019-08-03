@@ -36,8 +36,11 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-/** Simulation model element.
+/** Base simulation model element.
+ *
+ *  A simulation element tracks the state of an element in the simulation. It has a parent, a position and (optionally)
+ *  motion.
  *
  *  @since 0.0
  */
-class Element
+trait Element
