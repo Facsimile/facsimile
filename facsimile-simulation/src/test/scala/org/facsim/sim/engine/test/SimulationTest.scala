@@ -32,11 +32,10 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine.tet package.
+// Scala source file belonging to the org.facsim.sim.engine.tet package.
 //======================================================================================================================
-package org.facsim.engine.test
+package org.facsim.sim.engine.test
 
-import org.facsim.engine.{Initializing, Simulation, SimulationAction}
 import org.facsim.sim.engine.Simulation
 import org.facsim.sim.model.ModelState
 import org.scalatest.FunSpec
