@@ -32,15 +32,41 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.engine.tet package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.engine.test
 
-import org.facsim.util.Resource
+import org.facsim.engine.{Initializing, Simulation, SimulationAction}
+import org.facsim.sim.engine.Simulation
+import org.facsim.sim.model.ModelState
+import org.scalatest.FunSpec
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
-/** Helper object reporting ''Facsimile Engine'' library resources.
- *
- *  @since 0.0
- */
-private[engine] object LibResource
-extends Resource("facsimile-engine")
+// Disable test-problematic Scalastyle checkers.
+//scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
+//scalastyle:off multiple.string.literals
+//scalastyle:off magic.numbers
+
+/** Test harness for the `[[org.facsim.sim.engine.Simulation Simulation]]` class. */
+final class SimulationTest
+extends FunSpec
+with ScalaCheckPropertyChecks {
+
+  /** Simulation model test state class. */
+  final class TestModelState
+  extends ModelState[TestModelState]
+
+  /** Test data. */
+  trait TestData
+
+  // Start with the companion object.
+  describe(classOf[Simulation[_]].getClass.getCanonicalName) {
+  }
+}
+
+// Re-enable test-problematic Scalastyle checkers.
+//scalastyle:on magic.numbers
+//scalastyle:on multiple.string.literals
+//scalastyle:on public.methods.have.type
+//scalastyle:on scaladoc

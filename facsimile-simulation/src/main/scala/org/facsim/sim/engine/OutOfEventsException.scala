@@ -32,16 +32,18 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.engine package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.engine
 
-/** Exception indicating that an attempt was made to schedule an event when the simulation's current state forbids event
- *  scheduling.
+import org.facsim.sim.LibResource
+
+/** Simulation has run out of events.
  *
- *  @param runState Run state that prohibits event scheduling.
+ *  @note If this condition arises during simulation model execution, then the simulation's run state should change to
+ *  `[[org.facsim.engine.Terminated Terminated]]`
  *
  *  @since 0.0
  */
-final case class EventScheduleStateException(runState: RunState)
-extends IllegalStateException(LibResource("EventScheduleState", runState.name))
+case object OutOfEventsException
+extends RuntimeException(LibResource("engine.OutOfEvents"))

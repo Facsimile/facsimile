@@ -32,9 +32,11 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.engine package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.engine
+
+import org.facsim.sim.LibResource
 
 /** Base trait for all simulation run states.
  *
@@ -71,7 +73,7 @@ case object Initializing
 extends RunState {
 
   /** @inheritdoc */
-  override val name: String = LibResource("RunState.Initializing")
+  override val name: String = LibResource("engine.RunState.Initializing")
 
   /** @inheritdoc */
   private[engine] override val canSchedule: Boolean = true
@@ -85,24 +87,13 @@ case object Executing
 extends RunState {
 
   /** @inheritdoc */
-  override val name: String = LibResource("RunState.Executing")
+  override val name: String = LibResource("engine.RunState.Executing")
 
   /** @inheritdoc */
   private[engine] override val canIterate: Boolean = true
 
   /** @inheritdoc */
   private[engine] override val canSchedule: Boolean = true
-}
-
-/** State of the simulation when it has finished execution and cannot be run further.
- *
- *  @since 0.0
- */
-case object Completed
-extends RunState {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("RunState.Completed")
 }
 
 /** State indicating that the simulation has terminated due to having exhausted its events.
@@ -113,5 +104,16 @@ case object Terminated
 extends RunState {
 
   /** @inheritdoc */
-  override val name: String = LibResource("RunState.Terminated")
+  override val name: String = LibResource("engine.RunState.Terminated")
+}
+
+/** State of the simulation when it has finished execution and cannot be run further.
+ *
+ *  @since 0.0
+ */
+case object Completed
+extends RunState {
+
+  /** @inheritdoc */
+  override val name: String = LibResource("engine.RunState.Completed")
 }

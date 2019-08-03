@@ -32,29 +32,18 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.engine package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.engine
 
-import scala.reflect.runtime.universe.TypeTag
+import org.facsim.sim.LibResource
 
-/** Anonymous action for wrapping bare actions as `[[org.facsim.Action Action]]` instances.
+/** Exception indicating that an attempt was made to schedule an event when the simulation's current state forbids event
+ *  scheduling.
  *
- *  @tparam M Final type of the simulation's model state.
- *
- *  @constructor Create a new anonymous action.
- *
- *  @param actions Simulation state transitions (a.k.a. ''actions'') to be executed at some point in the future.
+ *  @param runState Run state that prohibits event scheduling.
  *
  *  @since 0.0
  */
-final class AnonymousAction[M <: ModelState[M]: TypeTag] private[engine]
-(override protected val actions: SimulationAction[M])
-extends Action[M] {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("AnonymousActionName")
-
-  /** @inheritdoc*/
-  override val description: String = LibResource("AnonymousActionDesc")
-}
+final case class EventScheduleStateException(runState: RunState)
+extends IllegalStateException(LibResource("engine.EventScheduleState", runState.name))

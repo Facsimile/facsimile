@@ -32,53 +32,15 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim
 
-import scala.reflect.runtime.universe.TypeTag
-import squants.Time
+import org.facsim.util.Resource
 
-/** Standard simulation actions to perform a reset of the simulation's statistics.
+/** Helper object reporting ''Facsimile Simulation'' library resources.
  *
- *  @constructor Create a new end warmup action.
- *
- *  @tparam M Final type of the simulation's model state.
- *
- *  @param snapLength Length of subsequent simulation snaps.
- *
- *  @param snapsRemaining Number of simulation snaps to be performed.
- *
- *  @param simulation Reference to the executing simulation.
+ *  @since 0.0
  */
-private[engine] final class EndSnapAction[M <: ModelState[M]: TypeTag](snapLength: Time, snapsRemaining: Int)
-(implicit simulation: Simulation[M])
-extends Action[M] {
-
-  /** @inheritdoc */
-  override protected val actions: SimulationAction[M] = {
-
-    // Sanity check.
-    assert(snapsRemaining >= 0)
-
-    // Report to all subscribers that the simulation snap has completed. Statistics should be reset and a report
-    // generated accordingly.
-    // TODO
-
-    // If this is the last snap, then change the simulation state to completed.
-    if(snapsRemaining == 0) for {
-      r <- simulation.updateRunState(Completed)
-    } yield r
-
-    // Otherwise, schedule the end of the next snap.
-    else for {
-      r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, snapsRemaining - 1))
-    } yield r
-  }
-
-  /** @inheritdoc */
-  override val name: String = LibResource("EndSnapActionName")
-
-  /** @inheritdoc */
-  override val description: String = LibResource("EndSnapActionDesc")
-}
+private[sim] object LibResource
+extends Resource("facsimile-simulation")

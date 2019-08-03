@@ -32,44 +32,18 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.engine package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.engine
 
-import scala.reflect.runtime.universe.TypeTag
-import squants.Time
+import org.facsim.sim.LibResource
 
-/** Standard simulation actions to perform a reset of the simulation's statistics.
+/** Exception indicating that an attempt was made to perform event iteration when the simulation's current state forbids
+ *  event iteration.
  *
- *  @constructor Create a new end warmup action.
+ *  @param runState Run state that prohibits event iteration.
  *
- *  @tparam M Final type of the simulation's model state.
- *
- *  @param snapLength Length of subsequent simulation snaps.
- *
- *  @param numSnaps Number of simulation snaps to be performed.
- *
- *  @param simulation Reference to the executing simulation.
+ *  @since 0.0
  */
-private[engine] final class EndWarmUpAction[M <: ModelState[M]: TypeTag](snapLength: Time, numSnaps: Int)
-(implicit simulation: Simulation[M])
-extends Action[M] {
-
-  /** @inheritdoc */
-  override protected val actions: SimulationAction[M] = {
-
-    // Report to all subscribers that the simulation has warmed up. Statistics should be reset accordingly.
-    // TODO
-
-    // Schedule the first end snap event.
-    for {
-      r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, numSnaps - 1))
-    } yield r
-  }
-
-  /** @inheritdoc */
-  override val name: String = LibResource("EndWarmUpActionName")
-
-  /** @inheritdoc*/
-  override val description: String = LibResource("EndWarmUpActionDesc")
-}
+final case class EventIterationStateException(runState: RunState)
+extends IllegalStateException(LibResource("engine.EventIterationState", runState.name))

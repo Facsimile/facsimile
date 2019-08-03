@@ -32,19 +32,58 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.model package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.model
 
+import org.facsim.sim.SimulationAction
 import scala.reflect.runtime.universe.TypeTag
 
-/** Base class for model states.
+/** An ''action'' is a ''state transition'' that takes the state of the simulation and results in a new simulation
+ *  state.
  *
- *  Model state encapsulates the state of a simulation model. It may contain any necessary state information, but each
- *  instance must be ''immutable''.
+ *  Simulation state changes include:
+ *   - Scheduling another action to occur at a future time in the simulation.
+ *   - Changing the state of a simulation model element.
+ *   - Moving a simulation model entity from one element to another.
+ *   - etc.
  *
- *  @tparam M Final model state class, which must be derived from this class.
+ *  @tparam M Final model state type.
+ *
+ *  @constructor Create a new simulation action.
  *
  *  @since 0.0
  */
-abstract class ModelState[M <: ModelState[M]: TypeTag]
+abstract class Action[M <: ModelState[M]: TypeTag] {
+
+  /** Actions to be performed by this instance.
+   *
+   *  @since 0.0
+   */
+  protected val actions: SimulationAction[M]
+
+  /** Dispatch these actions.
+   *
+   *  @return Simulation state after dispatching (executing) these actions.
+   */
+  final def dispatch: SimulationAction[M] = for {
+    r <- actions
+  } yield r
+
+  /** Name of this event.
+   *
+   *  Short (and, ideally, unique) description of these actions, to be utilized in the simulation event log, debugging
+   *  operations, etc.
+   *
+   *  @since 0.0
+   */
+  val name: String
+
+  /** Description of these actions.
+   *
+   *  Brief description of these actions, including any additional relevant details.
+   *
+   *  @since 0.0
+   */
+  val description: String
+}

@@ -32,16 +32,19 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.model package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.model
 
-/** Exception indicating that an attempt was made to perform event iteration when the simulation's current state forbids
- *  event iteration.
+import scala.reflect.runtime.universe.TypeTag
+
+/** Base class for model states.
  *
- *  @param runState Run state that prohibits event iteration.
+ *  Model state encapsulates the state of a simulation model. It may contain any necessary state information, but each
+ *  instance must be ''immutable''.
+ *
+ *  @tparam M Final model state class, which must be derived from this class.
  *
  *  @since 0.0
  */
-final case class EventIterationStateException(runState: RunState)
-extends IllegalStateException(LibResource("EventIterationState", runState.name))
+abstract class ModelState[M <: ModelState[M]: TypeTag]

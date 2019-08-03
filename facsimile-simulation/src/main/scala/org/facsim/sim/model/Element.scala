@@ -32,39 +32,12 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine.tet package.
+// Scala source file belonging to the org.facsim.sim.model package.
 //======================================================================================================================
-package org.facsim.engine.test
+package org.facsim.sim.model
 
-import org.facsim.engine.{Initializing, ModelState, Simulation, SimulationAction}
-import org.scalatest.FunSpec
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-
-// Disable test-problematic Scalastyle checkers.
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
-
-/** Test harness for the `[[org.facsim.engine.Simulation Simulation]]` class. */
-final class SimulationTest
-extends FunSpec
-with ScalaCheckPropertyChecks {
-
-  /** Simulation model test state class. */
-  final class TestModelState
-  extends ModelState[TestModelState]
-
-  /** Test data. */
-  trait TestData
-
-  // Start with the companion object.
-  describe(classOf[Simulation[_]].getClass.getCanonicalName) {
-  }
-}
-
-// Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on magic.numbers
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+/** Simulation model element.
+ *
+ *  @since 0.0
+ */
+class Element

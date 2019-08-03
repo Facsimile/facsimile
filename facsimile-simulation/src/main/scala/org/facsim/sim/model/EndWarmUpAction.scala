@@ -32,57 +32,46 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.model package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.model
 
+import org.facsim.sim.{LibResource, SimulationAction}
+import org.facsim.sim.engine.Simulation
 import scala.reflect.runtime.universe.TypeTag
+import squants.Time
 
-/** An ''action'' is a ''state transition'' that takes the state of the simulation and results in a new simulation
- *  state.
+/** Standard simulation actions to perform a reset of the simulation's statistics.
  *
- *  Simulation state changes include:
- *   - Scheduling another action to occur at a future time in the simulation.
- *   - Changing the state of a simulation model element.
- *   - Moving a simulation model entity from one element to another.
- *   - etc.
+ *  @constructor Create a new end warmup action.
  *
- *  @tparam M Final model state type.
+ *  @tparam M Final type of the simulation's model state.
  *
- *  @constructor Create a new simulation action.
+ *  @param snapLength Length of subsequent simulation snaps.
  *
- *  @since 0.0
+ *  @param numSnaps Number of simulation snaps to be performed.
+ *
+ *  @param simulation Reference to the executing simulation.
  */
-abstract class Action[M <: ModelState[M]: TypeTag] {
+private[sim] final class EndWarmUpAction[M <: ModelState[M]: TypeTag](snapLength: Time, numSnaps: Int)
+(implicit simulation: Simulation[M])
+extends Action[M] {
 
-  /** Actions to be performed by this instance.
-   *
-   *  @since 0.0
-   */
-  protected val actions: SimulationAction[M]
+  /** @inheritdoc */
+  override protected val actions: SimulationAction[M] = {
 
-  /** Dispatch these actions.
-   *
-   *  @return Simulation state after dispatching (executing) these actions.
-   */
-  final def dispatch: SimulationAction[M] = for {
-    r <- actions
-  } yield r
+    // Report to all subscribers that the simulation has warmed up. Statistics should be reset accordingly.
+    // TODO
 
-  /** Name of this event.
-   *
-   *  Short (and, ideally, unique) description of these actions, to be utilized in the simulation event log, debugging
-   *  operations, etc.
-   *
-   *  @since 0.0
-   */
-  val name: String
+    // Schedule the first end snap event.
+    for {
+      r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, numSnaps - 1))
+    } yield r
+  }
 
-  /** Description of these actions.
-   *
-   *  Brief description of these actions, including any additional relevant details.
-   *
-   *  @since 0.0
-   */
-  val description: String
+  /** @inheritdoc */
+  override val name: String = LibResource("model.EndWarmUpActionName")
+
+  /** @inheritdoc */
+  override val description: String = LibResource("model.EndWarmUpActionDesc")
 }

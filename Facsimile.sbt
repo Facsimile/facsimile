@@ -568,13 +568,13 @@ lazy val facsimileCollection = project.in(file(FacsimileCollectionName))
 //  |and inference testing.""".stripMargin.replaceAll("\n", " "),
 //)
 
-// Name of the facsimile-engine project.
-val FacsimileEngineName = "facsimile-engine"
+// Name of the facsimile-simulation project.
+val FacsimileSimulationName = "facsimile-simulation"
 
-// Facsimile-Engine project.
+// Facsimile-Simulation project.
 //
-// The Facsimile-Engine project provides a purely functional simulation engine for running simulations.
-lazy val facsimileEngine = project.in(file(FacsimileEngineName))
+// The Facsimile-Simulation project provides a purely functional simulation engine for running simulations.
+lazy val facsimileSimulation = project.in(file(FacsimileSimulationName))
 // Temporarily remove dependency on SFX and Stat modules - not ready for launch, right now.
 //.dependsOn(facsimileCollection % dependsOnCompileTest, facsimileSFX % dependsOnCompileTest,
 //facsimileStat % dependsOnCompileTest)
@@ -586,10 +586,10 @@ lazy val facsimileEngine = project.in(file(FacsimileEngineName))
 .settings(
 
   // Name and description of this project.
-  name := "Facsimile Simulation Engine Library",
-  normalizedName := FacsimileEngineName,
-  description := """The Facsimile Simulation Engine library is a purely functional, discrete-event simulation engine. It
-  |it the beating heart at the center of all Facsimile simulation models.""".stripMargin.replaceAll("\n", " "),
+  name := "Facsimile Simulation Library",
+  normalizedName := FacsimileSimulationName,
+  description := """The Facsimile Simulation library is a purely functional, discrete-event simulation engine. It is the
+  |beating heart at the center of all Facsimile simulation models.""".stripMargin.replaceAll("\n", " "),
 
   // Facsimile Engine dependencies.
   libraryDependencies ++= Seq(
@@ -605,8 +605,8 @@ lazy val facsimileEngine = project.in(file(FacsimileEngineName))
 // TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
 lazy val facsimile = project.in(file("."))
 // Temporarily remove dependency on SFX and Stat modules - not ready for launch, right now.
-//.aggregate(facsimileUtil, facsimileCollection, facsimileTypes, facsimileSFX, facsimileStat, facsimileEngine)
-.aggregate(facsimileUtil, facsimileCollection, facsimileEngine)
+//.aggregate(facsimileUtil, facsimileCollection, facsimileTypes, facsimileSFX, facsimileStat, facsimileSimulation)
+.aggregate(facsimileUtil, facsimileCollection, facsimileSimulation)
 .enablePlugins(ScalaUnidocPlugin)
 .settings(commonSettings: _*)
 .settings(unpublishedProjectSettings: _*)

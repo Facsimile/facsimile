@@ -32,12 +32,14 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.engine package.
+// Scala source file belonging to the org.facsim.sim.engine package.
 //======================================================================================================================
-package org.facsim.engine
+package org.facsim.sim.engine
 
 import cats.data.State
 import org.facsim.collection.immutable.BinomialHeap
+import org.facsim.sim.{Priority, PriorityQueue, SimulationAction, SimulationTransition}
+import org.facsim.sim.model.{Action, AnonymousAction, EndWarmUpAction, ModelState}
 import org.facsim.util.CompareEqualTo
 import scala.language.implicitConversions
 import scala.reflect.runtime.universe.TypeTag
@@ -51,7 +53,7 @@ import squants.time.{Days, Seconds}
  *
  *  @since 0.0
  */
-final class Simulation[M <: ModelState[M]: TypeTag] {sim =>
+final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
 
   /** Implicit reference to the simulation. */
   implicit val SimulationRef: Simulation[M] = this
@@ -189,7 +191,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {sim =>
    *
    *  @return Updated simulation state, plus a success.
    */
-  private[engine] def updateRunState(newState: RunState): SimulationAction[M] = State {s =>
+  private[sim] def updateRunState(newState: RunState): SimulationAction[M] = State {s =>
     (s.update(newRunState = newState), Success(()))
   }
 
@@ -444,7 +446,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {sim =>
      *
      *  @return Updated simulation state.
      */
-    private[engine] def update(newModelState: M = modelState, newNextEventId: Long = nextEventId,
+    private[Simulation] def update(newModelState: M = modelState, newNextEventId: Long = nextEventId,
     newCurrent: Option[Simulation[M]#Event] = current, newEvents: PriorityQueue[Simulation[M]#Event] = events,
     newRunState: RunState = runState): SimulationState = {
       new SimulationState(newModelState, newNextEventId, newCurrent, newEvents, newRunState)
@@ -454,19 +456,19 @@ final class Simulation[M <: ModelState[M]: TypeTag] {sim =>
      *
      *  @return Current simulation time.
      */
-    private[engine] def simTime: Time = current.fold(Seconds(0.0))(_.dueAt)
+    private[Simulation] def simTime: Time = current.fold(Seconds(0.0))(_.dueAt)
 
     /** Report the model's current state.
      *
      *  @return State of the model associated with this simulation.
      */
-    private[engine] def state: ModelState[M] = modelState
+    private[Simulation] def state: ModelState[M] = modelState
 
     /** Report the model's current execution state.
      *
      *  @return Current execution state of the model.
      */
-    private[engine] def execState = runState
+    private[Simulation] def execState = runState
 
     /** Report the simulation to which this state belongs.
      *
@@ -474,7 +476,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {sim =>
      *
      *  @since 0.0
      */
-    def simulation: Simulation[M] = sim
+    def simulation: Simulation[M] = thisSim
   }
 
   /** Event scheduling the dispatch of specified actions at a specified simulation time.
@@ -493,8 +495,16 @@ final class Simulation[M <: ModelState[M]: TypeTag] {sim =>
    *
    *  @param action Action to be performed by this event when it is dispatched.
    */
-  private[engine] final case class Event(id: Long, dueAt: Time, priority: Int = 0, action: Action[M])
+  private[Simulation] final case class Event(id: Long, dueAt: Time, priority: Int = 0, action: Action[M])
   extends Ordered[Simulation[M]#Event] {
+
+    /** Report the simulation to which this state belongs.
+     *
+     *  @return Simulation instance to which this state belongs.
+     *
+     *  @since 0.0
+     */
+    def simulation: Simulation[M] = thisSim
 
     /** Compare this event to another event.
      *
@@ -542,11 +552,12 @@ final class Simulation[M <: ModelState[M]: TypeTag] {sim =>
 /** Simulation companion object. */
 object Simulation {
 
-  /** Implicit conversion of simulation transitions (''actions'') to an `[[org.facsim.engine.Action Action]]` instance.
+  /** Implicit conversion of simulation transitions (''actions'') to an `[[org.facsim.sim.model.Action Action]]`
+   *  instance.
    *
    *  @tparam M Final type of the simulation's model state.
    *
-   *  @param actions Raw actions to be converted into an `[[org.facsim.engine.AnonymousAction AnonymousAction]]`
+   *  @param actions Raw actions to be converted into an `[[org.facsim.sim.model.AnonymousAction AnonymousAction]]`
    *  instance.
    *
    *  @return `actions` wrapped as an action suitable for dispatching by an event.
