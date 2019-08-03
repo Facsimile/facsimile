@@ -48,34 +48,28 @@ import squants.Time
  *  @param snapLength Length of subsequent simulation snaps.
  *
  *  @param numSnaps Number of simulation snaps to be performed.
+ *
+ *  @param simulation Reference to the executing simulation.
  */
 private[engine] final class EndWarmUpAction[M <: ModelState[M]: TypeTag](snapLength: Time, numSnaps: Int)
-extends Action[M](EndWarmUpAction.actions(snapLength, numSnaps)) {
+(implicit simulation: Simulation[M])
+extends Action[M] {
 
   /** @inheritdoc */
-  override val name: String = LibResource("EndWarmUpActionName")
-
-  /** @inheritdoc*/
-  override val description: String = LibResource("EndWarmUpActionDesc")
-}
-
-/** End warm-up action companion. */
-private object EndWarmUpAction {
-
-  /** Actions to be performed when dispatched.
-   *
-   *  @param snapLength Length of subsequent simulation snaps.
-   *
-   *  @param numSnaps Number of simulation snaps to be performed.
-   */
-  private def actions[M <: ModelState[M]: TypeTag](snapLength: Time, numSnaps: Int): SimulationAction[M] = {
+  override protected val actions: SimulationAction[M] = {
 
     // Report to all subscribers that the simulation has warmed up. Statistics should be reset accordingly.
     // TODO
 
     // Schedule the first end snap event.
     for {
-      r <- SimulationState.at[M](snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, numSnaps - 1))
+      r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, numSnaps - 1))
     } yield r
   }
+
+  /** @inheritdoc */
+  override val name: String = LibResource("EndWarmUpActionName")
+
+  /** @inheritdoc*/
+  override val description: String = LibResource("EndWarmUpActionDesc")
 }

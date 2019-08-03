@@ -48,27 +48,15 @@ import squants.Time
  *  @param snapLength Length of subsequent simulation snaps.
  *
  *  @param snapsRemaining Number of simulation snaps to be performed.
+ *
+ *  @param simulation Reference to the executing simulation.
  */
 private[engine] final class EndSnapAction[M <: ModelState[M]: TypeTag](snapLength: Time, snapsRemaining: Int)
-extends Action[M](EndSnapAction.actions(snapLength, snapsRemaining)) {
+(implicit simulation: Simulation[M])
+extends Action[M] {
 
   /** @inheritdoc */
-  override val name: String = LibResource("EndSnapActionName")
-
-  /** @inheritdoc */
-  override val description: String = LibResource("EndSnapActionDesc")
-}
-
-/** End snap action companion. */
-private object EndSnapAction {
-
-  /** Actions to be performed when dispatched.
-   *
-   *  @param snapLength Length of subsequent simulation snaps.
-   *
-   *  @param snapsRemaining Number of simulation snaps to be performed after this snap.
-   */
-  private def actions[M <: ModelState[M]: TypeTag](snapLength: Time, snapsRemaining: Int): SimulationAction[M] = {
+  override protected val actions: SimulationAction[M] = {
 
     // Sanity check.
     assert(snapsRemaining >= 0)
@@ -79,12 +67,18 @@ private object EndSnapAction {
 
     // If this is the last snap, then change the simulation state to completed.
     if(snapsRemaining == 0) for {
-      r <- SimulationState.updateRunState(Completed)
+      r <- simulation.updateRunState(Completed)
     } yield r
 
     // Otherwise, schedule the end of the next snap.
     else for {
-      r <- SimulationState.at[M](snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, snapsRemaining - 1))
+      r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, snapsRemaining - 1))
     } yield r
   }
+
+  /** @inheritdoc */
+  override val name: String = LibResource("EndSnapActionName")
+
+  /** @inheritdoc */
+  override val description: String = LibResource("EndSnapActionDesc")
 }

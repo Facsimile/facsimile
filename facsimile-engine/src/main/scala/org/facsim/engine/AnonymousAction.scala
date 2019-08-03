@@ -48,8 +48,9 @@ import scala.reflect.runtime.universe.TypeTag
  *
  *  @since 0.0
  */
-final class AnonymousAction[M <: ModelState[M]: TypeTag] private[engine](actions: SimulationAction[M])
-extends Action(actions) {
+final class AnonymousAction[M <: ModelState[M]: TypeTag] private[engine]
+(override protected val actions: SimulationAction[M])
+extends Action[M] {
 
   /** @inheritdoc */
   override val name: String = LibResource("AnonymousActionName")

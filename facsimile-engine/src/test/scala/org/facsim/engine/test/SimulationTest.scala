@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.engine.test
 
-import org.facsim.engine.{Initializing, ModelState, SimulationAction, SimulationState}
+import org.facsim.engine.{Initializing, ModelState, Simulation, SimulationAction}
 import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
@@ -46,8 +46,8 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.numbers
 
-/** Test harness for the [[org.facsim.engine.SimulationState]] class. */
-final class SimulationStateTest
+/** Test harness for the `[[org.facsim.engine.Simulation Simulation]]` class. */
+final class SimulationTest
 extends FunSpec
 with ScalaCheckPropertyChecks {
 
@@ -59,7 +59,7 @@ with ScalaCheckPropertyChecks {
   trait TestData
 
   // Start with the companion object.
-  describe(SimulationState.getClass.getCanonicalName) {
+  describe(classOf[Simulation[_]].getClass.getCanonicalName) {
   }
 }
 

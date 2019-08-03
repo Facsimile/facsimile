@@ -73,7 +73,7 @@ package object engine {
    *
    *  @since 0.0
    */
-  type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
+  type SimulationTransition[M <: ModelState[M], A] = State[Simulation[M]#SimulationState, A]
 
   /** Type for simulation state transition actions, which return a status value.
    *

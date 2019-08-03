@@ -51,18 +51,22 @@ import scala.reflect.runtime.universe.TypeTag
  *
  *  @constructor Create a new simulation action.
  *
- *  @param execute Action to modify the simulation's state.
- *
  *  @since 0.0
  */
-abstract class Action[M <: ModelState[M]: TypeTag](private val execute: SimulationAction[M]) {
+abstract class Action[M <: ModelState[M]: TypeTag] {
+
+  /** Actions to be performed by this instance.
+   *
+   *  @since 0.0
+   */
+  protected val actions: SimulationAction[M]
 
   /** Dispatch these actions.
    *
    *  @return Simulation state after dispatching (executing) these actions.
    */
   final def dispatch: SimulationAction[M] = for {
-    r <- execute
+    r <- actions
   } yield r
 
   /** Name of this event.
