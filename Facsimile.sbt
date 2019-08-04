@@ -98,6 +98,11 @@ val gitSCM = s"scm:git:$gitURL.git"
 // Dependency criteria for both compile and test.
 val dependsOnCompileTest = "test->test;compile->compile"
 
+// Publish artifacts to the Sonatype OSS repository.
+//
+// It appears that this needs to be set globally.
+publishTo in ThisBuild := sonatypePublishTo.value,
+
 // Common Scala compilation options (for compiling sources and generating documentation).
 lazy val commonScalaCSettings = Seq(
   "-deprecation",
@@ -258,9 +263,6 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     Package.ManifestAttributes("Inception-Timestamp" -> facsimileStartDate.toString),
     Package.ManifestAttributes("Build-Timestamp" -> facsimileBuildDate.toString)
   ),
-
-  // Publish artifacts to the Sonatype OSS repository.
-  publishTo := sonatypePublishTo.value,
 
   // SBT-GPG plugin configuration.
   //
