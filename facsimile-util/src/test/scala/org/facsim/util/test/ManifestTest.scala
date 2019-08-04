@@ -44,7 +44,7 @@ import org.facsim.invalid.Invalid
 import org.facsim.missing.Missing
 import org.facsim.util.{Manifest, NoSuchAttributeException, Version, VersionParseException}
 import org.scalatest.FunSpec
-import scala.util.{Failure, Properties, Success}
+import scala.util.{Failure, Success}
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
