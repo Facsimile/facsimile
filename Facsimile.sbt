@@ -131,6 +131,9 @@ lazy val commonSettings = Seq(
   // Web-site of the owning organization.
   organizationHomepage := Some(url("http://facsim.org/")),
 
+  // Homepage of the associated project.
+  homepage := Some(url("http://facsim.org/")),
+
   // Scala cross compiling.
   //
   // Right now, the complexities of supporting multiple Scala versions has been deferred in favor of supporting a single
