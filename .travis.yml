@@ -37,6 +37,18 @@
 #
 #   http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
 #=======================================================================================================================
+
+# Use Xenial Ubuntu for builds.
+dist: xenial
+
+# Set up XVFB (X Windows virtual frame buffer) so that we can run JavaFX/ScalaFX code in headless mode.
+#
+# For further details, refer to:
+# - https://benlimmer.com/2019/01/14/travis-ci-xvfb/
+# - https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-services-xvfb
+services:
+  - xvfb
+
 # Use container-based architecture, which is faster and supports IVY & SBT file caching.
 sudo: false
 
@@ -53,12 +65,6 @@ cache:
     - $HOME/.ivy2/cache
     - $HOME/.sbt/boot
 
-# Before installing the necessary software, set up XVFB (X Windows virtual frame buffer) so that we can run
-# JavaFX/ScalaFX code in headless mode.
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-
 # We need Java 8 to build facsimile.
 #
 # Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
@@ -73,7 +79,6 @@ addons:
   apt:
     packages:
       - graphviz
-      - xvfb
 
 # Now perform the build.
 #
