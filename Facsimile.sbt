@@ -101,7 +101,7 @@ val dependsOnCompileTest = "test->test;compile->compile"
 // Publish artifacts to the Sonatype OSS repository.
 //
 // It appears that this needs to be set globally.
-publishTo in ThisBuild := sonatypePublishTo.value,
+publishTo in ThisBuild := sonatypePublishTo.value
 
 // Common Scala compilation options (for compiling sources and generating documentation).
 lazy val commonScalaCSettings = Seq(
