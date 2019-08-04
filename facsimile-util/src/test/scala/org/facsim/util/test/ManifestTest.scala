@@ -294,10 +294,12 @@ with CommonTestMethods {
           assert(dummyManifest.vendor === Success(dummyVendor))
 
           // For some reason, the Zulu OpenJDK "rt.jar" file reports "N/A" for the "Implementation-Vendor" attribute,
-          // even though Properties.javaVendor reports "Azul Systems, Inc.". In all other cases, these two values should
-          // be the same.
+          // even though Properties.javaVendor reports "Azul Systems, Inc.". The OpenJDK 8 "rt.jar" file reports "N/A"
+          // for the Java vendor, but identifies "Oracle" as the specification vendor. In all other cases, these two
+          // values should be the same.
           Properties.javaVendor match {
             case "Azul Systems, Inc." => assert(javaManifest.vendor === Success("N/A"))
+            case "N/A" => assert(javaManifest.vendor === Success(JavaSpecVendor))
             case vendor: String => assert(javaManifest.vendor === Success(vendor))
           }
         }
