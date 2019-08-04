@@ -73,6 +73,7 @@ addons:
   apt:
     packages:
       - graphviz
+      - xvfb
 
 # Now perform the build.
 #
