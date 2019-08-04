@@ -64,7 +64,7 @@ before_install:
 # Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
 # here.
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 # Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
 # in the current version of ScalaFX require the latest release). Also ensure graphviz is installed, in order to create
@@ -72,7 +72,6 @@ jdk:
 addons:
   apt:
     packages:
-      - oracle-java8-installer
       - graphviz
 
 # Now perform the build.

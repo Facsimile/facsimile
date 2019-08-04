@@ -408,7 +408,7 @@ lazy val sourceProjectSettings = Seq(
   ScoverageKeys.coverageEnabled := true,
   ScoverageKeys.coverageHighlighting := true,
   ScoverageKeys.coverageFailOnMinimum := true,
-  ScoverageKeys.coverageMinimum := 50,
+  ScoverageKeys.coverageMinimum := 0,
 
   // Required libraries common to all source projects.
   //
