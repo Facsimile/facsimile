@@ -32,9 +32,9 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.sim.motion package.
+// Scala source file belonging to the org.facsim.sim.model package.
 //======================================================================================================================
-package org.facsim.sim.motion
+package org.facsim.sim.model
 
 import squants.{Acceleration, Length, Time, Velocity}
 import squants.motion._

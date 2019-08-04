@@ -36,88 +36,61 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-/** Common root for all simulation model elements.
- *
- *  A simulation element tracks the state of an element in the simulation. It has a parent, a position and (optionally)
- *  motion.
- *
- *  @note This is sealed to prevent its use as a base class by user code. User elements can extend
- *  @since 0.0
- */
-sealed trait BaseElement {
+import squants.space.Angle
 
-  /** Name of this element.
-   *
-   *  Element names must be unique in relation to their parent.
-   *
-   *  @since 0.0
-   */
-  val name: String
-
-  /** Child elements, mapped by name.
-   *
-   *  @since 0.0
-   */
-  val children: Map[String, Element]
-
-  /** Origin of this element, relative to its parent.
-   *
-   *  @note Positioning of the element is applied before any rotations.
-   *
-   *  @since 0.0
-   */
-  val origin: Point
-
-  /** Alignment of this element, relative to it's parent.
-   *
-   *  Alignment is defined as a set of rotations that are applied to the local axes of the element, in order,
-   *  resulting in the local axes for the children of this element.
-   *
-   *  If the alignment is empty, then all children have the same alignment as this element.
-   *
-   *  @since 0.0
-   */
-  val alignment: Seq[Rotation]
-}
-
-/** Base simulation model element trait.
+/** Base trait for all rotations.
  *
  *  @since 0.0
  */
-trait Element
-extends BaseElement {
+sealed trait Rotation {
 
-  /** Parent of this element.
+  /** Rotation about the associated axis.
+   *
+   *  Positive values represent counter-clockwise rotation, negative values represent clockwise rotation.
    *
    *  @since 0.0
    */
-  val parent: Element
+  val angle: Angle
 }
 
-/** Class representing the root element of a simulation.
+/** Local X-axis rotation.
  *
- *  @param name Name of the simulation's root element.
+ *  A rotation about the local X-axis.
  *
- *  @param children Children of the simulation's root element.
+ *  @constructor Create a new rotation about the local X-axis.
  *
- *  since 0.0
+ *  @param angle Rotation about the local X-axis, positive values represent counter-clockwise rotation, negative
+ *  values represent clockwise rotation.
+ *
+ *  @since 0.0
  */
-final case class RootElement(override val name: String, children: Map[String, Element])
-extends BaseElement {
+final case class XAxisRotation(override val angle: Angle)
+extends Rotation
 
-  /** @inheritdoc
-   *
-   *  @note The simulation's root is always at the origin.
-   *
-   *  @todo Consider changing this in the future, so that an origin can be tracked to a specific location.
-   */
-  override val origin: Point = Point.Origin
+/** Local Y-axis rotation.
+ *
+ *  A rotation about the local Y-axis.
+ *
+ *  @constructor Create a new rotation about the local Y-axis.
+ *
+ *  @param angle Rotation about the local Y-axis, positive values represent counter-clockwise rotation, negative
+ *  values represent clockwise rotation.
+ *
+ *  @since 0.0
+ */
+final case class YAxisRotation(override val angle: Angle)
+extends Rotation
 
-  /** @inheritdoc
-   *
-   *  @note The simulation's root has it's children aligned with the world axes.
-   *
-   *  @todo Consider changing this in the future, so that the simulation axes can be tracked differently.
-   */
-  override val alignment: Seq[Rotation] = Nil
-}
+/** Local Z-axis rotation.
+ *
+ *  A rotation about the local Z-axis.
+ *
+ *  @constructor Create a new rotation about the local Z-axis.
+ *
+ *  @param angle Rotation about the local Z-axis, positive values represent counter-clockwise rotation, negative
+ *  values represent clockwise rotation.
+ *
+ *  @since 0.0
+ */
+final case class ZAxisRotation(override val angle: Angle)
+extends Rotation
