@@ -259,6 +259,9 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     Package.ManifestAttributes("Build-Timestamp" -> facsimileBuildDate.toString)
   ),
 
+  // Publish artifacts to the Sonatype OSS repository.
+  publishTo := sonatypePublishTo.value,
+
   // SBT-GPG plugin configuration.
   //
   // For best results, all releases and code release signing should be undertaken on a Linux system via GNU GPG.
