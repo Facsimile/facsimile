@@ -10,7 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/facsimile-collection" />
-            <option value="$PROJECT_DIR$/facsimile-engine" />
+            <option value="$PROJECT_DIR$/facsimile-simulation" />
             <option value="$PROJECT_DIR$/facsimile-util" />
             <option value="$PROJECT_DIR$/project" />
           </set>

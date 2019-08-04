@@ -1,0 +1,136 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="OTHER_INDENT_OPTIONS">
+      <value>
+        <option name="INDENT_SIZE" value="2" />
+        <option name="TAB_SIZE" value="8" />
+      </value>
+    </option>
+    <JSON>
+      <option name="KEEP_TRAILING_COMMA" value="true" />
+    </JSON>
+    <Properties>
+      <option name="SPACES_AROUND_KEY_VALUE_DELIMITER" value="true" />
+      <option name="KEEP_BLANK_LINES" value="true" />
+    </Properties>
+    <ScalaCodeStyleSettings>
+      <option name="importLayout">
+        <array>
+          <option value="all other imports" />
+        </array>
+      </option>
+      <option name="sortAsScalastyle" value="true" />
+      <option name="WRAP_BEFORE_WITH_KEYWORD" value="true" />
+      <option name="METHOD_BRACE_FORCE" value="1" />
+      <option name="FINALLY_BRACE_FORCE" value="1" />
+      <option name="TRY_BRACE_FORCE" value="1" />
+      <option name="CLOSURE_BRACE_FORCE" value="1" />
+      <option name="CASE_CLAUSE_BRACE_FORCE" value="1" />
+      <option name="SPACE_INSIDE_CLOSURE_BRACES" value="false" />
+      <option name="PLACE_SELF_TYPE_ON_NEW_LINE" value="false" />
+      <option name="SPACE_INSIDE_SELF_TYPE_BRACES" value="false" />
+      <option name="ALIGN_COMPOSITE_PATTERN" value="false" />
+      <option name="INDENT_BRACED_FUNCTION_ARGS" value="false" />
+      <option name="KEEP_ONE_LINE_LAMBDAS_IN_ARG_LIST" value="true" />
+      <option name="NEWLINE_AFTER_ANNOTATIONS" value="true" />
+      <option name="KEEP_COMMENTS_ON_SAME_LINE" value="false" />
+      <option name="KEEP_XML_FORMATTING" value="true" />
+      <option name="TYPE_ANNOTATION_EXCLUDE_MEMBER_OF_ANONYMOUS_CLASS" value="true" />
+      <option name="TYPE_ANNOTATION_EXCLUDE_MEMBER_OF_PRIVATE_CLASS" value="true" />
+      <option name="TYPE_ANNOTATION_EXCLUDE_CONSTANT" value="false" />
+      <option name="TYPE_ANNOTATION_EXCLUDE_IN_TEST_SOURCES" value="true" />
+      <option name="TYPE_ANNOTATION_EXCLUDE_MEMBER_OF">
+        <set>
+          <option value="junit.framework.TestCase" />
+        </set>
+      </option>
+      <option name="ENABLE_SCALADOC_FORMATTING" value="false" />
+      <option name="SD_ALIGN_OTHER_TAGS_COMMENTS" value="false" />
+      <option name="SD_ALIGN_PARAMETERS_COMMENTS" value="false" />
+      <option name="SD_ALIGN_EXCEPTION_COMMENTS" value="false" />
+      <option name="SD_ALIGN_RETURN_COMMENTS" value="false" />
+      <option name="SD_BLANK_LINE_AFTER_PARAMETERS_COMMENTS" value="true" />
+      <option name="SD_BLANK_LINE_AFTER_RETURN_COMMENTS" value="true" />
+      <option name="SD_BLANK_LINE_BETWEEN_PARAMETERS" value="true" />
+      <option name="SD_BLANK_LINE_BEFORE_PARAMETERS" value="true" />
+      <option name="SD_KEEP_BLANK_LINES_BETWEEN_TAGS" value="true" />
+    </ScalaCodeStyleSettings>
+    <XML>
+      <option name="XML_KEEP_BLANK_LINES" value="1" />
+      <option name="XML_ALIGN_ATTRIBUTES" value="false" />
+      <option name="XML_SPACE_INSIDE_EMPTY_TAG" value="true" />
+      <option name="XML_KEEP_WHITE_SPACES_INSIDE_CDATA" value="true" />
+    </XML>
+    <codeStyleSettings language="Groovy">
+      <option name="SPACE_WITHIN_BRACES" value="false" />
+      <option name="SPACE_BEFORE_IF_PARENTHESES" value="false" />
+      <option name="SPACE_BEFORE_WHILE_PARENTHESES" value="false" />
+      <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false" />
+      <option name="SPACE_BEFORE_CATCH_PARENTHESES" value="false" />
+      <option name="SPACE_BEFORE_SWITCH_PARENTHESES" value="false" />
+      <option name="SPACE_BEFORE_SYNCHRONIZED_PARENTHESES" value="false" />
+      <indentOptions>
+        <option name="INDENT_SIZE" value="2" />
+        <option name="TAB_SIZE" value="8" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="HOCON">
+      <option name="SOFT_MARGINS" value="120" />
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="0" />
+        <option name="TAB_SIZE" value="8" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JSON">
+      <option name="WRAP_LONG_LINES" value="true" />
+      <option name="SOFT_MARGINS" value="120" />
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="0" />
+        <option name="TAB_SIZE" value="8" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="Scala">
+      <option name="KEEP_FIRST_COLUMN_COMMENT" value="true" />
+      <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
+      <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+      <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+      <option name="BRACE_STYLE" value="5" />
+      <option name="CLASS_BRACE_STYLE" value="5" />
+      <option name="METHOD_BRACE_STYLE" value="5" />
+      <option name="ELSE_ON_NEW_LINE" value="true" />
+      <option name="WHILE_ON_NEW_LINE" value="true" />
+      <option name="CATCH_ON_NEW_LINE" value="true" />
+      <option name="FINALLY_ON_NEW_LINE" value="true" />
+      <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+      <option name="ALIGN_MULTILINE_FOR" value="false" />
+      <option name="CALL_PARAMETERS_WRAP" value="1" />
+      <option name="METHOD_PARAMETERS_WRAP" value="1" />
+      <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <option name="EXTENDS_LIST_WRAP" value="2" />
+      <option name="EXTENDS_KEYWORD_WRAP" value="2" />
+      <option name="METHOD_CALL_CHAIN_WRAP" value="1" />
+      <option name="BINARY_OPERATION_WRAP" value="1" />
+      <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+      <option name="FOR_STATEMENT_WRAP" value="1" />
+      <option name="IF_BRACE_FORCE" value="1" />
+      <option name="WHILE_BRACE_FORCE" value="1" />
+      <option name="FOR_BRACE_FORCE" value="1" />
+      <option name="WRAP_LONG_LINES" value="true" />
+      <option name="PARAMETER_ANNOTATION_WRAP" value="1" />
+      <option name="VARIABLE_ANNOTATION_WRAP" value="2" />
+      <option name="SOFT_MARGINS" value="120" />
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="0" />
+        <option name="TAB_SIZE" value="8" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="XML">
+      <option name="SOFT_MARGINS" value="120" />
+      <indentOptions>
+        <option name="INDENT_SIZE" value="2" />
+        <option name="CONTINUATION_INDENT_SIZE" value="0" />
+        <option name="TAB_SIZE" value="8" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>
