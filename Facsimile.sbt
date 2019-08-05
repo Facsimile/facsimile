@@ -315,18 +315,18 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // Commit the updated working directory, so that the new development version takes effect.
     commitNextVersion,
 
+    // Push all commits to the upstream repository.
+    //
+    // This is typically determined by including the "-u" argument to a git push command. The upstream repository for a
+    // release MUST be the primary Facsimile repository, not a fork.
+    pushChanges,
+
     // Publish the released version to the Sonatype OSS repository.
     //
     // The "publish-artifacts" step above takes care of publishing the artifacts to Sonatype, so the following command
     // initiates the process of having Sonatype release them, which may fail if Sonatype determines that the artifacts
     // do not meet their current specifications.
     releaseStepCommand("sonatypeReleaseAll"),
-
-    // Push all commits to the upstream repository.
-    //
-    // This is typically determined by including the "-u" argument to a git push command. The upstream repository for a
-    // release MUST be the primary Facsimile repository, not a fork.
-    pushChanges,
   ),
 )
 
