@@ -195,11 +195,17 @@ lazy val docProjectSettings = Seq(
 // 1.  Test artifacts should NOT be published. This is disabled by the line "publishArtifact in Test := false" below.
 // 2.  Third-party artifacts referenced by Facsimile must be available in the Maven Central Repository.
 // 3.  Maven metadata that is not defined by SBT properties must be defined in the "pomExtra" setting as XML.
-// 4.  Artifacts must be signed via GPG to be published to the Sonatype OSS Nexus repository. For security reasons
-//     (to prevent signing by unauthorized publishers), this must be configured locally on each release manager's
-//     machine. In this case, the software must be signed using the key for "authentication@facsim.org" - with public
-//     key "0xC08B4D86EACCE720". If your version of Facsimile is signed by a different key, then you do not have the
-//     official version.)
+// 4.  Artifacts must be signed via GPG to be published to the Sonatype OSS Nexus repository. In this case, the software
+//     must be signed using the key for "authentication@facsim.org". If your version of Facsimile is signed by a
+//     different key, then you do not have the official version.)
+//
+// The sbt-gpg plugin uses GPG (GNU Privacy Guard) to sign artifacts, and this must be installed on the current
+// machine. The key ID must be specified in a file configured by the Release Manager, typically
+// "~/.sbt/1.0/Credentials.sbt". Finally, the key (including the private key) must be registered in GPG on the local
+// machine.
+//
+// WARNING: THE GPG SECRET KEY AND THE CREDENTIALS FILE MUST NEVER BE MADE PUBLIC AND SHOULD NEVER BE COMMITTED AS PART
+// OF THE FACSIMILE SOURCES.
 //
 // We publish to the snapshots repository, if this is a snapshot, or to the releases staging repository if this is
 // an official release.
@@ -222,26 +228,15 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   // Test artifacts should not be published.
   publishArtifact in Test := false,
 
+  // Developers. Add yourself here if you've contributed code the Facsimile project.
+  //
+  // Developer fields are: ID, name, email & URL.
+  developers := List(
+    Developer("mja", "Michael J Allen", "mike.allen@facsim.org", url("http://facsim.org")),
+  ),
+
   // Maven POM information which is not available elsewhere through SBT settings.
   pomExtra :=
-  <developers>
-    <developer>
-      <id>mja</id>
-      <name>Michael J Allen</name>
-      <email>mike.allen@facsim.org</email>
-      <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
-      <organization>Hindsight Consulting, Inc.</organization>
-      <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
-      <roles>
-        <role>Project Lead</role>
-        <role>Architect</role>
-        <role>Developer</role>
-      </roles>
-      <timezone>US/Eastern</timezone>
-    </developer>
-  </developers>
-  <contributors>
-  </contributors>
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
@@ -266,29 +261,6 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     Package.ManifestAttributes("Inception-Timestamp" -> facsimileStartDate.toString),
     Package.ManifestAttributes("Build-Timestamp" -> facsimileBuildDate.toString)
   ),
-
-  // SBT-GPG plugin configuration.
-  //
-  // For best results, all releases and code release signing should be undertaken on a Linux system via GNU GPG.
-  PgpKeys.useGpg in Global := true,
-
-  // Identify the key to be used to sign release files.
-  //
-  // Facsimile software is published to the Sonatype OSS repository, with artifacts signed as part of the release
-  // process. (Releases are performed using the SBT "release" command; snapshots are published via the "publish-signed"
-  // command, with a version that ends with the string "SNAPSHOT", and which does not utilize this procedure.)
-  //
-  // To obtain the hexadecimal key ID, enter the command:
-  //
-  //   gpg --keyid-format 0xLONG --list-secret-keys authentication@facsim.org
-  //
-  // Look for the key ID in the line beginning with "sec".
-  //
-  // Note that, for security, the private signing key and passcode are not publicly available.
-  PgpKeys.pgpSigningKey in Global := Some(0xC08B4D86EACCE720L), //scalastyle:ignore magic.number
-
-  // Sign releases prior to publication.
-  releasePublishArtifactsAction := PgpKeys.publishSigned.value,
 
   // Employ the following custom release process.
   //

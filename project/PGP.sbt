@@ -31,6 +31,9 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// SBT file to include PGP plugin.
+// SBT file to include GPG plugin.
+//
+// Due to some ongoing issues with the sbt-pgp plugin (note slightly different name), Facsimile has switched to Jakob
+// Odersky's flavor of the plugin, which is simpler, more secure and less buggy.
 //======================================================================================================================
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.1")
+addSbtPlugin("io.crashbox" % "sbt-gpg" % "0.2.0")
