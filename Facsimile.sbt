@@ -262,6 +262,14 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     Package.ManifestAttributes("Build-Timestamp" -> facsimileBuildDate.toString)
   ),
 
+  // By default, we'll bump the bug-fix/release number of the version following a release.
+  releaseVersionBump := Version.Bump.Bugfix,
+
+  // Have the release plugin write current version information into Version.sbt, in the project's root directory.
+  //
+  // NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
+  releaseVersionFile := file("Version.sbt"),
+
   // Employ the following custom release process.
   //
   // This differs from the standard sbt-release process in that:
@@ -320,14 +328,6 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // release MUST be the primary Facsimile repository, not a fork.
     pushChanges,
   ),
-
-  // By default, we'll bump the bug-fix/release number of the version following a release.
-  releaseVersionBump := Version.Bump.Bugfix,
-
-  // Have the release plugin write current version information into Version.sbt, in the project's root directory.
-  //
-  // NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
-  releaseVersionFile := file("Version.sbt"),
 )
 
 // Source project settings.
