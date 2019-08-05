@@ -268,7 +268,12 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   // Have the release plugin write current version information into Version.sbt, in the project's root directory.
   //
   // NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
-  releaseVersionFile := file("Version.sbt"),
+  //
+  // Commented out, as this no longer appears to be working correctly. Also renamed the version file form "Version.sbt"
+  // (my preference) to "version.sbt", so that it works by default. Issue raised:
+  //
+  //    https://github.com/sbt/sbt-release/issues/252
+  //releaseVersionFile := file("Version.sbt"),
 
   // Employ the following custom release process.
   //
