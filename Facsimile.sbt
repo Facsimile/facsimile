@@ -51,10 +51,9 @@ import xerial.sbt.Sonatype.sonatypeSettings
 val CatsVersion = "1.6.0"
 val LightbendConfigVersion = "1.3.4"
 val ParboiledVersion = "2.1.6"
-val ScalaVersion = "2.12.8"
+val ScalaVersion = "2.12.9"
 val ScalaCheckVersion = "1.14.0"
 val ScalaTestVersion = "3.0.8"
-//val SpireVersion = "0.16.2"
 val SquantsVersion = "1.4.0"
 
 // Add external resolvers here (and also in project/Resolvers.sbt).
