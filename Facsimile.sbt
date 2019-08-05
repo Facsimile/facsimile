@@ -185,7 +185,7 @@ lazy val docProjectSettings = Seq(
 
 // Published project settings.
 //
-// Published projects must define the artifacts to be published, and take of publishing them to the Sonatype OSS
+// Published projects must define the artifacts to be published, and take care of publishing them to the Sonatype OSS
 // repository. Consequently, there is a lot of Maven/SBT/Ivy configuration information here.
 //
 // Note that the Sonatype plugin's settings are used to ensure that the resulting artifacts can be published to the
@@ -383,7 +383,7 @@ lazy val sourceProjectSettings = Seq(
   fork in Test := true,
 
   // Make sure that tests execute in sequence (we may change this in future, but, for now, it's a lot easier to
-  // understand test output if tests execute sequentially.
+  // understand test output if tests execute sequentially).
   parallelExecution in Test := false,
 
   // Code test coverage settings.
