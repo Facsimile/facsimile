@@ -390,7 +390,11 @@ lazy val sourceProjectSettings = Seq(
   //
   // Target coverage is 100%. Over time, the test coverage required for a successful build will be raised to this value
   // to ensure code is as fully tested as possible.
-  ScoverageKeys.coverageEnabled := true,
+  //
+  // Note: NEVER set ScoverageKeys.coverageEnabled to true, as it will cause the library to look for the Scoverage
+  // measurement files on the original build machine, and throw a FileNotFoundException when it fails to locate them.
+  // Instead, issuing "coverage" or "coverageOn" commands to SBT will enable coverage (prior to testing on Travis CI,
+  // for example). Also, make sure that "clean" is issued prior to any build operation.
   ScoverageKeys.coverageHighlighting := true,
   ScoverageKeys.coverageFailOnMinimum := true,
   ScoverageKeys.coverageMinimum := 0,
