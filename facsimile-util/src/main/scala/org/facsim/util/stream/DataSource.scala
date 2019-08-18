@@ -1,0 +1,166 @@
+//======================================================================================================================
+// Facsimile: A Discrete-Event Simulation Library
+// Copyright © 2004-2019, Michael J Allen.
+//
+// This file is part of Facsimile.
+//
+// Facsimile is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// Facsimile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+// details.
+//
+// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
+//
+//   http://www.gnu.org/licenses/lgpl.
+//
+// The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
+// project home page at:
+//
+//   http://facsim.org/
+//
+// Thank you for your interest in the Facsimile project!
+//
+// IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for
+// inclusion as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If
+// your code fails to comply with the standard, then your patches will be rejected. For further information, please
+// visit the coding standards at:
+//
+//   http://facsim.org/Documentation/CodingStandards/
+//======================================================================================================================
+
+//======================================================================================================================
+// Scala source file belonging to the org.facsim.util.stream package.
+//======================================================================================================================
+package org.facsim.util.stream
+
+import akka.stream.{Materializer, OverflowStrategy, QueueOfferResult}
+import akka.stream.scaladsl.Source
+import akka.{Done, NotUsed}
+import akka.stream.QueueOfferResult.QueueClosed
+import org.facsim.util.{LibResource, NonPure}
+import scala.concurrent.Future
+import scala.reflect.runtime.universe.TypeTag
+
+/** Create a new ''Akka Streams'' data source, to which data can be sent on demand.
+ *
+ *  @note This class does not provide ''pure'' functions; return values from functions with the same arguments may
+ *  return different values depending upon their internal state. However, since the class is used for sending data to
+ *  data stream consumers, should should not affect program behavior significantly.
+ *
+ *  @tparam A Type of data to be sent to this stream.
+ *
+ *  @constructor Create a new data stream.
+ *
+ *  @param bufferSize Number of unprocessed data elements that can be stored in the buffer before back pressure is
+ *  exerted. This value must be greater than zero and than `[[DataSource.MaxBufferSize MaxBufferSize]]`, or an
+ *  `[[scala.IllegalArgumentException IllegalArgumentException]]` will be thrown.
+ *
+ *  @param materializer Stream materializer to be utilized when creating the stream.
+ *
+ *  @throws IllegalArgumentException if `bufferSize` is less than 1 or greater than `[[DataSource.MaxBufferSize
+ *  MaxBufferSize]]`.
+ *
+ *  @since 0.2
+ */
+final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Materializer) {
+
+  // Sanity check.
+  require(bufferSize > 0 && bufferSize <= DataSource.MaxBufferSize,
+  LibResource("stream.DataSourceInvalidBufferSize", bufferSize, DataSource.MaxBufferSize))
+
+  /** Queue stream and source requested. */
+  private val streamSource = Source.queue[A](bufferSize, OverflowStrategy.backpressure).preMaterialize()
+
+  /** Send data to the stream.
+   *
+   *  @note Data will not flow through the stream unless the stream is materialized and run.
+   *
+   *  @param data Data to be sent to the stream.
+   *
+   *  @return Future containing the result of the data queuing operation. The result can be
+   *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if data was sent successfully,
+   *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the data was dropped due to a buffer failure, or
+   *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was completed successfully or
+   *  unsuccessfully.
+   *
+   *  @since 0.2
+   */
+  @NonPure
+  def send(data: A): Future[QueueOfferResult] = try {
+
+    // If the stream is completed before the data is posted, then the offer function will throw a
+    // StreamDetachedException. Worse yet, if the stream was completed with a failure exception, then the failure
+    // exception will be thrown. In the interests of being a little less chaotic, we'll catch those exceptions and
+    // convert them into QueueClosed future results.
+    streamSource._1.offer(data)
+  }
+  catch {
+    case _: Throwable => Future.successful(QueueClosed)
+  }
+
+  /** Report the source to which flows and sinks can be attached.
+   *
+   *  @return Source for streamed data. This must be connected to a sink, and run, in order to for data to be processed.
+   *
+   *  @since 0.2
+   */
+  def source: Source[A, NotUsed] = streamSource._2
+
+  /** Signal successful completion of the data stream.
+   *
+   *  @note Once the data stream has been completed, no further data can be sent to it.
+   *
+   *  @return Future that completes when the stream has finished this operation.
+   *
+   *  @since 0.2
+   */
+  @NonPure
+  def complete(): Future[Done] = {
+
+    // Stream concerned.
+    val logStream = streamSource._1
+
+    // Successfully complete the stream.
+    logStream.complete()
+
+    // Report a future that can be used to determine when the stream has completed.
+    logStream.watchCompletion()
+  }
+
+  /** Signal a failure, which also results in completion of the data stream.
+   *
+   *  @param e Exception identifying the cause of the data stream failure.
+   *
+   *  @return Future that completes when the stream has finished this operation.
+   *
+   *  @since 0.2
+   */
+  @NonPure
+  def fail(e: Throwable): Future[Done] = {
+
+    // Stream concerned.
+    val logStream = streamSource._1
+
+    // Complete the stream with the indicated failure.
+    logStream.fail(e)
+
+    // Report a future that can be used to determine when the stream has completed.
+    logStream.watchCompletion()
+  }
+}
+
+/** Data source companion object.
+ *
+ *  @since 0.2
+ */
+object DataSource {
+
+  /** Maximum number of unprocessed data items that can be buffered before back-pressure is exerted.
+   *
+   *  @since 0.2
+   */
+  val MaxBufferSize: Int = 4096
+}

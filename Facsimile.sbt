@@ -48,8 +48,8 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here for easy maintenance.
+val AkkaVersion = "2.5.24"
 val CatsVersion = "1.6.0"
-val LightbendConfigVersion = "1.3.4"
 val ParboiledVersion = "2.1.6"
 val ScalaVersion = "2.12.9"
 val ScalaCheckVersion = "1.14.0"
@@ -95,6 +95,11 @@ val gitURL = "https://github.com/Facsimile/facsimile"
 val gitSCM = s"scm:git:$gitURL.git"
 
 // Dependency criteria for both compile and test.
+//
+// NOTE: This appears to prevent Scaladoc from resolving links to library dependency documentation. Refer to the
+// following bug report for further details:
+//
+//   https://github.com/sbt/sbt/issues/4929
 val dependsOnCompileTest = "test->test;compile->compile"
 
 // Publish artifacts to the Sonatype OSS repository.
@@ -448,12 +453,22 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
     // The Scala reflection library is required for implementing macros.
     "org.scala-lang" % "scala-reflect" % ScalaVersion,
 
-    // Lightbend configuration library.
+    // Akka streams library & testkit (the latter scoped for testing only).
     //
-    // This library supports configuration file management, and the Human-Optimized Config Object Notation (HOCON)
-    // configuration file format. HOCON can be viewed as a superset of both the Java properties and JavaScript Object
-    // Notation (JSON) file formats.
-    "com.typesafe" % "config" % LightbendConfigVersion,
+    // This is used for creating streams of data.
+    //
+    // Akka streams additionally includes the following library dependencies:
+    //
+    // "com.typesafe" %% "config"
+    // "com.typesafe" %% "ssl-config-core"
+    // "com.typesafe.akka" %% "akka-core"
+    // "com.typesafe.akka" %% "akka-actor"
+    // "com.typesafe.akka" %% "akka-protobuf"
+    // "org.reactivestreams" %% "reactive-streams"
+    // "org.scala-lang.modules" %% "scala-java8-compat"
+    // "org.scala-lang.modules" %% "scala-parser-combinators"
+    "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
+    "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test,
 
     // Parboiled 2 is a parsing library, required for Facsimile's file parsing capabilities.
     "org.parboiled" %% "parboiled" % ParboiledVersion,
