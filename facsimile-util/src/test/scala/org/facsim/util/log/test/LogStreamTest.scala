@@ -32,17 +32,18 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util.stream.test package.
+// Scala source file belonging to the org.facsim.util.log.test package.
 //======================================================================================================================
-package org.facsim.util.stream.test
+package org.facsim.util.log.test
 
 import akka.stream.scaladsl.{Flow, Keep, Sink}
 import akka.stream.QueueOfferResult.{Enqueued, QueueClosed}
 import akka.stream.StreamDetachedException
-import org.facsim.util.stream.DataSource
-import org.facsim.util.test.{AkkaStreamsTestHarness, Generator}
+import org.facsim.util.log._
+import org.facsim.util.test.AkkaStreamsTestHarness
 import org.facsim.util.test.implicits._
 import org.facsim.util.LibResource
+import org.facsim.util.stream.DataSource
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
@@ -54,8 +55,8 @@ import scala.util.{Failure, Success}
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.numbers
 
-/** Test harness for the [[org.facsim.util.stream.DataSource]] class. */
-final class DataSourceTest
+/** Test harness for the [[org.facsim.util.log.LogStream]] class. */
+final class LogStreamTest
 extends AkkaStreamsTestHarness
 with ScalaCheckPropertyChecks {
 
@@ -73,17 +74,19 @@ with ScalaCheckPropertyChecks {
     s"requirement failed: $errorMsg"
   }
 
-  /** Create a flow for directing a source of strings into a sequence of strings.
+  /** Create a flow for directing a source of log messages into a sequence of log messages.
    *
    *  @note This sink does not run the stream. Typically, the function is used by passing the result of the function to
    *  the .runWith method on a flow.
    *
-   *  @return Sink, into which a source of strings will be consumed and stored as a sequence.
+   *  @return Sink, into which a source of log messages will be consumed and stored as a sequence.
    */
-  def seqSink(): Sink[String, Future[Seq[String]]] = Flow[String].toMat(Sink.seq)(Keep.right)
+  def seqSink(): Sink[LogMessage[String], Future[Seq[LogMessage[String]]]] = {
+    Flow[LogMessage[String]].toMat(Sink.seq)(Keep.right)
+  }
 
-  // Test the DataSource class.
-  describe("org.facsim.util.stream.DataSource[A]]") {
+  // Test the LogStream class.
+  describe("org.facsim.util.log.LogStream[A]]") {
 
     // Verify the constructor fails for invalid buffer sizes.
     describe(".ctor(Int)(ActorMaterializer)") {
@@ -93,11 +96,11 @@ with ScalaCheckPropertyChecks {
         forAll(invalidBufferSizes) {bufferSize =>
           try {
 
-            // Attempt to create the data source with this buffer size: we should get an exception.
-            new DataSource[String](bufferSize)
+            // Attempt to create the log stream with this buffer size: we should get an exception.
+            new LogStream[String](bufferSize)
 
             // If we get this far, we didn't get an exception, so the test failed.
-            fail("Data source with invalid buffer size did not throw an exception")
+            fail("Log stream with invalid buffer size did not throw an exception")
           }
           catch {
 
@@ -114,10 +117,15 @@ with ScalaCheckPropertyChecks {
         }
       }
 
+      // Test default construction.
+      it("must create a valid log stream if using the default buffer size") {
+        new LogStream[String]()
+      }
+
       // Test valid construction.
-      it("must create a valid data source if supplied a valid buffer size") {
+      it("must create a valid log stream if supplied a valid buffer size") {
         forAll(validBufferSizes) {bufferSize =>
-          new DataSource[String](bufferSize)
+          new LogStream[String](bufferSize)
         }
       }
     }
@@ -128,59 +136,59 @@ with ScalaCheckPropertyChecks {
       // Source must be available for sending upon creation.
       it("must report a valid source") {
         forAll(validBufferSizes) {bufferSize =>
-          val ds = new DataSource[String](bufferSize)
+          val ds = new LogStream[String](bufferSize)
           assert(ds.source !== null) //scalastyle:ignore null
         }
       }
     }
 
-    // Test that sent data is received OK.
-    describe(".send(A)") {
+    // Test that logged messages are sent OK.
+    describe(".log(LogMessage[A])") {
 
       // Verify that we can send data, and have it show up in a sink.
       it("must send data to an uncompleted stream") {
-        forAll(validBufferSizes, Generator.unicodeStringListNonEmpty) {(bufferSize, data) =>
+        forAll(validBufferSizes, logListNonEmpty) {(bufferSize, msgs) =>
 
-          // Create the data source.
-          val ds = new DataSource[String](bufferSize)
+          // Create the log stream.
+          val ds = new LogStream[String](bufferSize)
 
           // Get the source and add a sink to a sequence.
           val futureData = ds.source.runWith(seqSink())
 
-          // Send all of the data.
-          val dataFutures = data.map(s => ds.send(s))
+          // Send all of the log messages.
+          val dataFutures = msgs.map(s => ds.log(s))
 
-          // Verify that all of the data is sent.
+          // Verify that all of the log messages are sent.
           dataFutures.foreach {df =>
             assert(Await.result(df, futureTimeout) === Enqueued)
           }
 
-          // Complete the stream.
-          val streamCompleted = ds.complete()
+          // Close the log.
+          val streamCompleted = ds.close()
           Await.ready(streamCompleted, futureTimeout)
 
-          // Verify that the result is the original sequence of data.
-          assert(Await.result(futureData, futureTimeout) === data)
+          // Verify that the result is the original sequence of log messages.
+          assert(Await.result(futureData, futureTimeout) === msgs)
         }
       }
 
       // Verify that data is rejected after the stream has been completed successfully.
       it("must fail to send data to a completed stream") {
-        forAll(validBufferSizes, Generator.unicodeString) {(bufferSize, data) =>
+        forAll(validBufferSizes, logs) {(bufferSize, msg) =>
 
-          // Create the data source.
-          val ds = new DataSource[String](bufferSize)
+          // Create the log stream.
+          val ds = new LogStream[String](bufferSize)
 
           // Get the source and add a sink to a sequence.
           val futureData = ds.source.runWith(seqSink())
 
-          // Complete the stream.
-          val streamCompleted = ds.complete()
+          // Close the stream.
+          val streamCompleted = ds.close()
           Await.ready(streamCompleted, futureTimeout)
 
           // Write the data to the stream. It should return a Success(QueueClosed), or a failure containing a
           // StreamDetachedException.
-          val df = ds.send(data)
+          val df = ds.log(msg)
           Await.ready(df, futureTimeout)
           df.value.get match {
             case Success(r) => assert(r === QueueClosed)
@@ -191,40 +199,15 @@ with ScalaCheckPropertyChecks {
           assert(Await.result(futureData, futureTimeout) === Nil)
         }
       }
-
-      // Verify that data is rejected after the stream has been completed unsuccessfully.
-      it("must fail to send data to a failed stream") {
-        forAll(validBufferSizes, Generator.unicodeString) {(bufferSize, data) =>
-
-          // Create the data source.
-          val ds = new DataSource[String](bufferSize)
-
-          // Get the source and add a sink to a sequence.
-          val futureData = ds.source.runWith(seqSink())
-
-          // Complete the stream, using an exception.
-          val failureException = new RuntimeException("Some test exception")
-          val streamCompleted = ds.fail(failureException)
-          Await.ready(streamCompleted, futureTimeout)
-
-          // Write the data to the stream. It should return a Success(QueueClosed), or a failure containing either the
-          // exception used to close the queue, or a StreamDetachedException.
-          val df = ds.send(data)
-          Await.ready(df, futureTimeout)
-          df.value.get match {
-            case Success(r) => assert(r === QueueClosed)
-            case Failure(e) => if(e != failureException) assert(e.getClass === classOf[StreamDetachedException])
-          }
-
-          // Verify that the source completes with the exception passed as the failure.Util
-          Await.ready(futureData, futureTimeout)
-          assert(futureData.value.get === Failure(failureException))
-        }
-      }
     }
   }
 }
 
+// Re-enable test-problematic Scalastyle checkers.
+//scalastyle:on magic.numbers
+//scalastyle:on multiple.string.literals
+//scalastyle:on public.methods.have.type
+//scalastyle:on scaladoc
 // Re-enable test-problematic Scalastyle checkers.
 //scalastyle:on magic.numbers
 //scalastyle:on multiple.string.literals

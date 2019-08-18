@@ -32,28 +32,55 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util.log package.
+// Scala source file belonging to the org.facsim.util.log.test package.
 //======================================================================================================================
-package org.facsim.util.log
+package org.facsim.util.log.test
 
-/** Base trait for all log scope instances.
- *
- *  Log scopes are used to classify log messages, and are intended to indicate, for example, which module produced each
- *  message.
- *
- *  @since 0.2
- */
-trait Scope {
+import org.scalatest.FunSpec
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
-  /** Name of this log scope.
-   *
-   *  @since 0.2
-   */
-  val name: String
+// Disable test-problematic Scalastyle checkers.
+//scalastyle:off scaladoc
+//scalastyle:off public.methods.have.type
+//scalastyle:off multiple.string.literals
+//scalastyle:off magic.numbers
 
-  /** When converting to a string, use the scope's name.
-   *
-   * @return This severity as a string.
-   */
-  final override def toString: String = name
+/** Test harness for the [[org.facsim.util.log.LogMessage]] class. */
+final class LogMessageTest
+extends FunSpec
+with ScalaCheckPropertyChecks {
+
+  // Class under test.
+  describe("org.facsim.util.log.LogMessage[A]") {
+
+    // Test construction.
+    describe(".ctor(A, String, Scope, Severity)") {
+
+      // Test construction succeeds OK.
+      it("must construct valid log messages") {
+        forAll(logs) {l =>
+
+          // Dummy operation, just to ensure it works.
+          l.toString
+        }
+      }
+    }
+
+    // Test that the resulting string matches expectations
+    describe(".toString") {
+
+      // It must format log messages correctly.
+      it("must format correctly-formatted log messages") {
+        forAll(logs) {l =>
+          assert(l.toString === s"${l.prefix}: ${l.scope}: ${l.severity.abbrName}: ${l.msg}")
+        }
+      }
+    }
+  }
 }
+
+// Re-enable test-problematic Scalastyle checkers.
+//scalastyle:on magic.numbers
+//scalastyle:on multiple.string.literals
+//scalastyle:on public.methods.have.type
+//scalastyle:on scaladoc

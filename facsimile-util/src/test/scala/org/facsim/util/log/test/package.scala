@@ -32,28 +32,44 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util.log package.
+// Scala source file belonging to the org.facsim.util.test.implicits package.
 //======================================================================================================================
 package org.facsim.util.log
 
-/** Base trait for all log scope instances.
- *
- *  Log scopes are used to classify log messages, and are intended to indicate, for example, which module produced each
- *  message.
+import org.facsim.util.test.Generator.unicodeString
+import org.scalacheck.Gen
+
+/** Elements for assisting with testing of the log package.
  *
  *  @since 0.2
  */
-trait Scope {
+package object test {
 
-  /** Name of this log scope.
-   *
-   *  @since 0.2
-   */
-  val name: String
+  /** Generator for log message severities. */
+  val severities = Gen.oneOf(
+    DebugSeverity,
+    InformationSeverity,
+    WarningSeverity,
+    ImportantSeverity,
+    ErrorSeverity,
+    FatalSeverity,
+  )
 
-  /** When converting to a string, use the scope's name.
-   *
-   * @return This severity as a string.
-   */
-  final override def toString: String = name
+  /** Custom scope for generated messages. */
+  object LogTestScope
+  extends Scope {
+
+    /** @inheritdoc */
+    override val name: String = "log stream test"
+  }
+
+  /** Generator for synthetic log messages, with string prefixes. */
+  val logs = for {
+    prefix <- unicodeString
+    msg <- unicodeString
+    severity <- severities
+  } yield LogMessage(prefix, msg, LogTestScope, severity)
+
+  /** Generator for non-empty lists of log messages. */
+  val logListNonEmpty = Gen.nonEmptyListOf(logs)
 }
