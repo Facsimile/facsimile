@@ -46,6 +46,7 @@ import org.facsim.util.LibResource
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
+import scala.util.{Failure, Success}
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -156,7 +157,7 @@ with ScalaCheckPropertyChecks {
 
           // Complete the stream.
           val streamCompleted = ds.complete()
-          Await.result(streamCompleted, futureTimeout)
+          Await.ready(streamCompleted, futureTimeout)
 
           // Verify that the result is the original sequence of data.
           assert(Await.result(futureData, futureTimeout) === data)
@@ -175,16 +176,15 @@ with ScalaCheckPropertyChecks {
 
           // Complete the stream.
           val streamCompleted = ds.complete()
-          Await.result(streamCompleted, futureTimeout)
+          Await.ready(streamCompleted, futureTimeout)
 
-          // Write the data to the stream. It will either throw an exception or it will report that the queue is closed.
-          // It would be nice if it was consistent, eh?
-          try {
-            val df = ds.send(data)
-            assert(Await.result(df, futureTimeout) === QueueClosed)
-          }
-          catch {
-            case e: Throwable => assert(e.getClass === classOf[StreamDetachedException])
+          // Write the data to the stream. It should return a Success(QueueClosed), or a failure containing a
+          // StreamDetachedException.
+          val df = ds.send(data)
+          Await.ready(df, futureTimeout)
+          df.value.get match {
+            case Success(r) => assert(r === QueueClosed)
+            case Failure(e) => assert(e.getClass === classOf[StreamDetachedException])
           }
 
           // Verify that we didn't receive any data.
@@ -207,22 +207,18 @@ with ScalaCheckPropertyChecks {
           val streamCompleted = ds.fail(failureException)
           Await.ready(streamCompleted, futureTimeout)
 
-          // Write the data to the stream. It will either throw an the failure exception used the fail the stream, or it
-          // will throw the StreamDetachedException), or it will report that the queue is closed. It would be nice if it
-          // was consistent, eh?
-          //
-          // ALL of the above options occur during testing!
-          try {
-            val df = ds.send(data)
-            assert(Await.result(df, futureTimeout) === QueueClosed)
+          // Write the data to the stream. It should return a Success(QueueClosed), or a failure containing either the
+          // exception used to close the queue, or a StreamDetachedException.
+          val df = ds.send(data)
+          Await.ready(df, futureTimeout)
+          df.value.get match {
+            case Success(r) => assert(r === QueueClosed)
+            case Failure(e) => if(e != failureException) assert(e.getClass === classOf[StreamDetachedException])
+          }
 
-            // Verify that we didn't receive any data.
-            assert(Await.result(futureData, futureTimeout) === Nil)
-          }
-          catch {
-            case _: StreamDetachedException => ()
-            case e: RuntimeException => assert(e === failureException)
-          }
+          // Verify that the source completes with the exception passed as the failure.Util
+          Await.ready(futureData, futureTimeout)
+          assert(futureData.value.get === Failure(failureException))
         }
       }
     }

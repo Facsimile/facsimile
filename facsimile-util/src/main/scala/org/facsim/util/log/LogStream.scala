@@ -77,14 +77,13 @@ final class LogStream[A: TypeTag](bufferSize: Int = LogStream.defaultBufferSize)
    *
    *  @param message Message to be sent to the stream.
    *
-   *  @return Future containing the result of the data queuing operation. The result can be
-   *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if log message was sent successfully,
-   *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the log message was dropped due to a buffer failure, or
-   *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was closed before the message could be
-   *  delivered.
-   *
-   *  @throws akka.stream.StreamDetachedException if the stream was closed successfully before this function has been
-   *  called.
+   *  @return Future containing the result of the message logging operation. If successful, the result can be
+   *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if data was sent successfully,
+   *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the data was dropped due to a buffer failure, or
+   *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was closed before the data could be
+   *  processed. If the queue was closed before the data was sent, the result is a `[[scala.util.Failure Failure]]`
+   *  wrapping an `[[akka.stream.StreamDetachedException StreamDetachedException]]`. If a failure closed the queue, it
+   *  will respond with a `Failure` wrapping the exception that signaled failure of the queue.
    *
    *  @since 0.2
    */

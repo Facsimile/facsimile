@@ -76,30 +76,22 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
 
   /** Send data to the stream.
    *
-   *  @note Data will not flow through the stream unless the stream is materialized and run.
+   *  Data will not flow through the stream unless the stream is materialized and run.
    *
    *  @param data Data to be sent to the stream.
    *
-   *  @return Future containing the result of the data queuing operation. The result can be
+   *  @return Future containing the result of the data queuing operation. If successful, the result can be
    *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if data was sent successfully,
    *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the data was dropped due to a buffer failure, or
-   *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was completed successfully or
-   *  unsuccessfully.
+   *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was closed before the data could be
+   *  processed. If the queue was closed before the data was sent, the result is a `[[scala.util.Failure Failure]]`
+   *  wrapping an `[[akka.stream.StreamDetachedException StreamDetachedException]]`. If a failure closed the queue, it
+   *  will respond with a `Failure` wrapping the exception that was passed to the `[[fail]]` method.
    *
    *  @since 0.2
    */
   @NonPure
-  def send(data: A): Future[QueueOfferResult] = try {
-
-    // If the stream is completed before the data is posted, then the offer function will throw a
-    // StreamDetachedException. Worse yet, if the stream was completed with a failure exception, then the failure
-    // exception will be thrown. In the interests of being a little less chaotic, we'll catch those exceptions and
-    // convert them into QueueClosed future results.
-    streamSource._1.offer(data)
-  }
-  catch {
-    case _: Throwable => Future.successful(QueueClosed)
-  }
+  def send(data: A): Future[QueueOfferResult] = streamSource._1.offer(data)
 
   /** Report the source to which flows and sinks can be attached.
    *
