@@ -66,8 +66,14 @@ package object util {
   /** Regular expression for extracting a ''jar'' file URI from a URL. */
   private val JarUriRegEx = """^jar\:(.+)\!.+$""".r
 
-  /** Java file separator. */
-  private[facsim] val FS = "/"
+  /** File separator. */
+  private[facsim] val FS = File.separator
+
+  /** Path separator */
+  private[facsim] val PS = File.pathSeparator
+
+  /** Line separtor. */
+  private[facsim] val NL = sys.props("line.separator")
 
   /** Comparison return value implying less than. */
   private[facsim] val CompareLessThan = -1

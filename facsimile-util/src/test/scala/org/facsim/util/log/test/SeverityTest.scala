@@ -37,6 +37,7 @@
 package org.facsim.util.log.test
 
 import org.facsim.util.log._
+import org.facsim.util.test.Generator.unicodeString
 import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
@@ -50,6 +51,68 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 final class SeverityTest
 extends FunSpec
 with ScalaCheckPropertyChecks {
+
+  /** Common test data trait. */
+  trait TestData {
+
+    /** Severities, listed from lowest to highest rank. */
+    lazy val severities: List[Severity] = List(
+      DebugSeverity,
+      InformationSeverity,
+      WarningSeverity,
+      ImportantSeverity,
+      ErrorSeverity,
+      FatalSeverity
+    )
+
+    /** Names of the severities, listed from lowest to highest rank. */
+    lazy val names: List[String] = severities.map(_.name)
+
+    /** Set of all severity names. */
+    lazy val severityNameSet: Set[String] = names.toSet
+
+    /** Tuples of name and severity. */
+    lazy val namedSeverity: List[(String, Option[Severity])] = severities.map(s => (s.name, Some(s)))
+  }
+
+  // Severity companion.
+  describe(Severity.getClass.getCanonicalName) {
+
+    // Check that we get a correctly ordered list of severity names.
+    describe(".severityList") {
+
+      // Check the returned list.
+      it("must return all the severities in order of rank.") {
+        new TestData {
+          assert(Severity.severityList === names)
+        }
+      }
+    }
+
+    // Check that we can look up the correct severity instance by name.
+    describe(".withName(String)") {
+
+      // Look up each name and check we get the expected result.
+      it("must retrieve the correct severity, wrapped in Some, given a valid name") {
+        new TestData {
+          namedSeverity.foreach {
+            case (name, result) => assert(Severity.withName(name) === result)
+          }
+        }
+      }
+
+      // Verify that it fails when given an invalid severity name.
+      it("must report None given an invalid severity name") {
+        new TestData {
+          forAll(unicodeString) {s =>
+            whenever(!severityNameSet.contains(s)) {
+              assert(Severity.withName(s) === None)
+            }
+          }
+        }
+      }
+    }
+  }
 
   // DebugSeverity
   describe(DebugSeverity.getClass.getCanonicalName) {
