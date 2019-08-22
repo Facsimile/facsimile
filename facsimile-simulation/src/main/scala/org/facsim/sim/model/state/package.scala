@@ -1,4 +1,3 @@
-
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
 // Copyright © 2004-2019, Michael J Allen.
@@ -32,3 +31,18 @@
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
 
+//======================================================================================================================
+// Scala source file belonging to the org.facsim.sim.model.state package.
+//======================================================================================================================
+package org.facsim.sim.model
+
+/** ''Facsimile Simulation Library'' model state package.
+ *
+ *  Package containing simulation modeling ''state'' elements.
+ *
+ *  State elements are transient, and are updated with varying degrees of frequency during a simulation run. They
+ *  capture the changing state ofI reallyBut thingsWhatHarrthi
+ *
+ *  @since 0.0
+ */
+package object state

@@ -54,6 +54,7 @@ val ParboiledVersion = "2.1.6"
 val ScalaVersion = "2.12.9"
 val ScalaCheckVersion = "1.14.0"
 val ScalaTestVersion = "3.0.8"
+val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.4.0"
 
 // Add external resolvers here (and also in project/Resolvers.sbt).
@@ -100,7 +101,7 @@ val gitSCM = s"scm:git:$gitURL.git"
 // following bug report for further details:
 //
 //   https://github.com/sbt/sbt/issues/4929
-val dependsOnCompileTest = "test->test;compile->compile"
+val dependsOnCompileTest = "compile;test->test"
 
 // Publish artifacts to the Sonatype OSS repository.
 //
@@ -412,11 +413,11 @@ lazy val sourceProjectSettings = Seq(
   // Right now, the only universal dependencies are libraries required by the test phase.
   libraryDependencies ++= Seq(
 
-    // ScalaTest dependencies.
-    "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
-
-    // ScalaCheck dependency.
+    // ScalaCheck is a property-based testing library, used extensively within Facsimile's test suite.
     "org.scalacheck" %% "scalacheck" % ScalaCheckVersion % Test,
+
+    // ScalaTest is a library providing a framework for unit-testing
+    "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
   ),
 )
 
@@ -596,7 +597,16 @@ lazy val facsimileSimulation = project.in(file(FacsimileSimulationName))
 
   // Facsimile Engine dependencies.
   libraryDependencies ++= Seq(
+
+    // Scopt is a functional command line parsing library.
+    "com.github.scopt" %% "scopt" % ScoptVersion,
+
+    // Cats is a general-purpose library supporting functional programming. Facsimile uses the Cat State monad heavily
+    // for simulation state transitions.
     "org.typelevel" %% "cats-core" % CatsVersion,
+
+    // Squants is a dimensional analysis library, providing support for modeling physical quantities such as Time,
+    // Length, Angle, Velocity, etc.
     "org.typelevel" %% "squants" % SquantsVersion,
   )
 )

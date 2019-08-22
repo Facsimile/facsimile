@@ -32,33 +32,13 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.sim.model package.
+// Scala source file belonging to the org.facsim.sim.motion package.
 //======================================================================================================================
-package org.facsim.sim
+package org.facsim.sim.motion
 
-/** ''Facsimile Simulation Library'' model package.
+/** Base trait for an element's motion behavior.
  *
- *  Package containing simulation modeling elements, their actions and location in 3D space.
- *
- *  =Note on Orientation=
- *
- *  In ''Facsimile'', the ''world'' axes are oriented as follows:
- *
- *   - X-Axis: Positive X-axis points to the ''East'', negative to the ''West''.
- *   - Y-Axis: Positive Y-axis points to the ''North'', negative to the ''South''.
- *   - Z-Axis: Positive Z-axis points ''Up'', negative points ''Down''.
- *
- *  This is the same ''right-handed orientation'' convention adopted by ''3D Studio'', ''AutoCAD'' and ''AutoMod''
- *  among others.
- *
- *  Note that ''JavaFX'' utilizes the following unusual axis orientation:
- *
- *   - X-Axis: Positive X-axis points to the ''East'', negative to the ''West''.
- *   - Y-Axis: Positive Z-axis points ''Up'', negative points ''Down''.
- *   - Z-Axis: Positive Y-axis points to the ''South'', negative to the ''North''.
- *
- *  Transformations must be applied to the 3D model in order to accurately render the same scene in ''JavaFX''.
- *
+ *  Different motion types can be
  *  @since 0.0
  */
-package object model
+trait MotionProfile
