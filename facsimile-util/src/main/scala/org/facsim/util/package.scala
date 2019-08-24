@@ -67,13 +67,19 @@ package object util {
   private val JarUriRegEx = """^jar\:(.+)\!.+$""".r
 
   /** File separator. */
-  private[facsim] val FS = File.separator
+  private[facsim] val FS: String = File.separator
 
   /** Path separator */
-  private[facsim] val PS = File.pathSeparator
+  private[facsim] val PS: String = File.pathSeparator
 
-  /** Line separtor. */
-  private[facsim] val NL = sys.props("line.separator")
+  /** Line separator. */
+  private[facsim] val NL: String = sys.props("line.separator")
+
+  /** Single quote character. */
+  private[facsim] val SQ: String = "'"
+
+  /** Double quote character. */
+  private[facsim] val DQ: String = "\""
 
   /** Comparison return value implying less than. */
   private[facsim] val CompareLessThan = -1
