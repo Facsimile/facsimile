@@ -216,6 +216,9 @@ lazy val docProjectSettings = Seq(
 // an official release.
 lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 
+  // Identifier of the GPG key used to sign artifacts during publication.
+  gpgKey := Some("authentication@facsim.org"),
+
   // Start year of this project.
   startYear := Some(facsimileStartDate.getYear),
 
