@@ -37,4 +37,4 @@
 //
 //   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
 //======================================================================================================================
-resolvers in ThisBuild += "Artima Maven Repository" at "http://repo.artima.com/releases"
+resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"
