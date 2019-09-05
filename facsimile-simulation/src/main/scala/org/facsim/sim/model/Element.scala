@@ -41,7 +41,8 @@ package org.facsim.sim.model
  *  A simulation element tracks the state of an element in the simulation. It has a parent, a position and (optionally)
  *  motion.
  *
- *  @note This is sealed to prevent its use as a base class by user code. User elements can extend
+ *  @note This is sealed to prevent its use as a base class by user code. User elements can extend subclasses only.
+ *
  *  @since 0.0
  */
 sealed trait BaseElement {

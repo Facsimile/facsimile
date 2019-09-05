@@ -43,7 +43,7 @@ import scala.reflect.runtime.universe.TypeTag
  *
  *  @tparam E Type of element whose state is being stored.
  *
- *  @tparam ES Final type of the eleement state sub-class.
+ *  @tparam ES Final type of the element state sub-class.
 
  *  @since 0.0
  */

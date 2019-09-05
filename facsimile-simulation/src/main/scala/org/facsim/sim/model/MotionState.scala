@@ -53,17 +53,17 @@ sealed trait MotionState {
    *
    *  @since 0.0
    */
-  val t0: Time
+  val startTime: Time
 
   /** Elapsed simulation time spent in state by specified time.
    *
-   *  @param tn Current simulation time. This value must be greater than the current simulation time.
+   *  @param currentTime Current simulation time. This value must be greater than or equal to zero.
    *
    *  @return Simulation time spent in this state.
    *
    *  @since 0.0
    */
-  protected final def te(tn: Time): Time = (tn - t0) ensuring(_ >= Seconds(0.0))
+  protected final def elapsedTime(currentTime: Time): Time = (currentTime - startTime) ensuring(_ >= Seconds(0.0))
 }
 
 /** Simulation element translational motion state base trait.
@@ -77,13 +77,13 @@ extends MotionState {
 
   /** Translation from last position at specified time.
    *
-   *  @param tn Current simulation time.
+   *  @param currentTime Current simulation time.
    *
    *  @return Distance traveled from original position, along local X-axis.
    *
    *  @since 0.0
    */
-  def s(tn: Time): Length
+  def distance(currentTime: Time): Length
 }
 
 /** Simulation element stationary translation state.
@@ -92,15 +92,15 @@ extends MotionState {
  *
  *  @constructor Create new stationary translational motion state.
  *
- *  @param t0 Simulation time at which associated element entered this state.
+ *  @param startTime Simulation time at which associated element entered this state.
  *
  *  @since 0.0
  */
-final case class TranslationalStationaryState(override val t0: Time)
+final case class TranslationalStationaryState(override val startTime: Time)
 extends TranslationalMotionState {
 
   /** @inheritdoc */
-  override def s(tn: Time): Length = Meters(0.0)
+  override def distance(currentTime: Time): Length = Meters(0.0)
 }
 
 /** Simulation element accelerating translation state.
@@ -112,27 +112,28 @@ extends TranslationalMotionState {
  *
  *  @constructor Create new acceleration/deceleration translational motion state.
  *
- *  @param t0 Simulation time at which associated element entered this state.
+ *  @param startTime Simulation time at which associated element entered this state.
  *
- *  @param v0 Element's initial velocity when it entered this state.
+ *  @param initialVelocity Element's initial velocity when it entered this state.
  *
- *  @param a Constant acceleration to be applied while the associated element is in this state. This value cannot be
- *  zero.
+ *  @param acceleration Constant acceleration to be applied while the associated element is in this state. This value
+ *  cannot be zero.
  *
  *  @since 0.0
  */
-final case class TranslationalAccelerationState(override val t0: Time, v0: Velocity, a: Acceleration)
+final case class TranslationalAccelerationState(override val startTime: Time, initialVelocity: Velocity,
+acceleration: Acceleration)
 extends TranslationalMotionState {
 
   // Sanity check.
-  assert(a != MetersPerSecondSquared(0.0))
+  assert(acceleration != MetersPerSecondSquared(0.0))
 
   /** @inheritdoc */
-  override def s(tn: Time): Length = {
+  override def distance(currentTime: Time): Length = {
 
     // Distance traveled:
-    val t = te(tn)
-    (v0 * t) + (a * t * t / 2.0)
+    val t = elapsedTime(currentTime)
+    (initialVelocity * t) + (acceleration * t * t / 2.0)
   }
 }
 
@@ -144,24 +145,24 @@ extends TranslationalMotionState {
  *
  *  @constructor Create a new translational cruising motion state.
  *
- *  @param t0 Simulation time at which associated element entered this state.
+ *  @param startTime Simulation time at which associated element entered this state.
  *
- *  @param v Element's velocity when it entered this state. This value cannot be zero.
+ *  @param initialVelocity Element's velocity when it entered this state. This value cannot be zero.
  *
  *  @since 0.0
  */
-final case class TranslationalCruiseState(override val t0: Time, v: Velocity)
+final case class TranslationalCruiseState(override val startTime: Time, initialVelocity: Velocity)
 extends TranslationalMotionState {
 
   // Sanity check.
-  assert(v != MetersPerSecond(0.0))
+  assert(initialVelocity != MetersPerSecond(0.0))
 
   /** @inheritdoc */
-  override def s(tn: Time): Length = {
+  override def distance(currentTime: Time): Length = {
 
     // Determine time spent in this state.
-    val t = te(tn)
-    v * t
+    val t = elapsedTime(currentTime)
+    initialVelocity * t
   }
 }
 
@@ -176,14 +177,14 @@ extends MotionState {
 
   /** Rotation from last position at specified time.
    *
-   *  @param tn Current simulation time.
+   *  @param currentTime Current simulation time.
    *
    *  @return Angle traveled from original position, about local Z-axis. Positive values are counter-clockwise,
    *  negative values are clockwise.
    *
    *  @since 0.0
    */
-  def theta(tn: Time): Angle
+  def theta(currentTime: Time): Angle
 }
 
 /** Simulation element stationary rotational state.
@@ -192,15 +193,15 @@ extends MotionState {
  *
  *  @constructor Create new stationary rotational motion state.
  *
- *  @param t0 Simulation time at which associated element entered this state.
+ *  @param startTime Simulation time at which associated element entered this state.
  *
  *  @since 0.0
  */
-final case class RotationalStationaryState(override val t0: Time)
+final case class RotationalStationaryState(override val startTime: Time)
 extends RotationalMotionState {
 
   /** @inheritdoc */
-  override def theta(tn: Time): Angle = Radians(0.0)
+  override def theta(currentTime: Time): Angle = Radians(0.0)
 }
 
 /** Simulation element accelerating rotational state.
@@ -212,27 +213,28 @@ extends RotationalMotionState {
  *
  *  @constructor Create new angular acceleration/deceleration rotational motion state.
  *
- *  @param t0 Simulation time at which associated element entered this state.
+ *  @param startTime Simulation time at which associated element entered this state.
  *
- *  @param ω0 Element's initial angular velocity when it entered this state.
+ *  @param initialVelocity Element's initial angular velocity when it entered this state.
  *
- *  @param α Constant angular acceleration to be applied while the associated element is in this state. This value
- *  cannot be zero.
+ *  @param acceleration Constant angular acceleration to be applied while the associated element is in this state. This
+ *  value cannot be zero.
  *
  *  @since 0.0
  */
-final case class RotationalAccelerationState(override val t0: Time, ω0: AngularVelocity, α: AngularAcceleration)
+final case class RotationalAccelerationState(override val startTime: Time, initialVelocity: AngularVelocity,
+acceleration: AngularAcceleration)
 extends RotationalMotionState {
 
   // Sanity check.
-  assert(α != RadiansPerSecondSquared(0.0))
+  assert(acceleration != RadiansPerSecondSquared(0.0))
 
   /** @inheritdoc */
-  override def theta(tn: Time): Angle = {
+  override def theta(currentTime: Time): Angle = {
 
     // Angle traveled:
-    val t = te(tn)
-    (ω0 * t) + (α * t * t / 2.0)
+    val t = elapsedTime(currentTime)
+    (initialVelocity * t) + (acceleration * t * t / 2.0)
   }
 }
 
@@ -244,23 +246,23 @@ extends RotationalMotionState {
  *
  *  @constructor Create a new rotational cruising motion state.
  *
- *  @param t0 Simulation time at which associated element entered this state.
+ *  @param startTime Simulation time at which associated element entered this state.
  *
- *  @param ω Element's angular velocity when it entered this state. This value cannot be zero.
+ *  @param initialVelocity Element's angular velocity when it entered this state. This value cannot be zero.
  *
  *  @since 0.0
  */
-final case class RotationalCruiseState(override val t0: Time, ω: AngularVelocity)
+final case class RotationalCruiseState(override val startTime: Time, initialVelocity: AngularVelocity)
 extends RotationalMotionState {
 
   // Sanity check.
-  assert(ω != RadiansPerSecond(0.0))
+  assert(initialVelocity != RadiansPerSecond(0.0))
 
   /** @inheritdoc */
-  override def theta(tn: Time): Angle = {
+  override def theta(currentTime: Time): Angle = {
 
     // Determine time spent in this state.
-    val t = te(tn)
-    ω * t
+    val t = elapsedTime(currentTime)
+    initialVelocity * t
   }
 }

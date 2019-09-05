@@ -59,7 +59,7 @@ extends App {
   /** Manifest for the ultimate instance of this application, retrieved from containing ''JAR'' file.
    *
    *  If this application's type was not loaded from a ''JAR'' file, or if the ''JAR'' file has no manifest, then this
-   *  value will be a ''null manifeat'' with missing information.
+   *  value will be a ''null manifest'' with missing information.
    *
    *  @since 0.2
    */
