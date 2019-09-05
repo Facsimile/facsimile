@@ -39,7 +39,6 @@ package org.facsim.util.stream
 import akka.stream.{Materializer, OverflowStrategy, QueueOfferResult}
 import akka.stream.scaladsl.Source
 import akka.{Done, NotUsed}
-import akka.stream.QueueOfferResult.QueueClosed
 import org.facsim.util.{LibResource, NonPure}
 import scala.concurrent.Future
 import scala.reflect.runtime.universe.TypeTag
