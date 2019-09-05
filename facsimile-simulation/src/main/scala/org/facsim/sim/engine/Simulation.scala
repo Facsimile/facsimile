@@ -495,7 +495,12 @@ final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
    *
    *  @param action Action to be performed by this event when it is dispatched.
    */
-  private[Simulation] final case class Event(id: Long, dueAt: Time, priority: Int = 0, action: Action[M])
+  // Note: This class should be declared as "final", and not as "sealed". If "final" is used, this results in the
+  // compiler warning: "The outer reference in this type test cannot be checked at run time." The use of "sealed" is an
+  // equivalent workaround. Refer to the following bug report for further details:
+  //
+  //    https://github.com/scala/bug/issues/4440
+  private[Simulation] sealed case class Event(id: Long, dueAt: Time, priority: Int = 0, action: Action[M])
   extends Ordered[Simulation[M]#Event] {
 
     /** Report the simulation to which this state belongs.
