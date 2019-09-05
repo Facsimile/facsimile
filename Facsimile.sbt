@@ -120,7 +120,7 @@ lazy val commonScalaCSettings = Seq(
 // These settings are common to all SBT root- and sub-projects.
 //
 // Note that we implement release versioning for artifacts through the Release plugin. The current version is stored in
-// the project-specific Version.sbt file.
+// the "version.sbt" file.
 lazy val commonSettings = Seq(
 
   // Owning organization.
