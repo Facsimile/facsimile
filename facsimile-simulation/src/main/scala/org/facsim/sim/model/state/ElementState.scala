@@ -37,14 +37,45 @@
 package org.facsim.sim.model.state
 
 import org.facsim.sim.model.structure.Element
+import org.facsim.sim.model.{Point, Rotation}
 import scala.reflect.runtime.universe.TypeTag
+
+// TEMPORARY NOTE: Scalastyle/Scalariform parses an error on this file ("next on empty iterator"), so disable Scalastyle
+// for this file; we can re-enable it when Scalastyle is updated.
+//scalastyle:off
 
 /** State of the associated element.
  *
  *  @tparam E Type of element whose state is being stored.
  *
- *  @tparam ES Final type of the element state sub-class.
+ *  @tparam S Final type of the element state sub-class.
 
  *  @since 0.0
  */
-abstract class ElementState[E <: Element[E, ES]: TypeTag, ES <: ElementState[E, ES]: TypeTag]
+abstract class ElementState[E <: Element[E, S]: TypeTag, S <: ElementState[E, S]: TypeTag] {
+
+  /** Child elements, mapped by name.
+   *
+   *  @since 0.0
+   */
+  val children: Map[String, Element[E, S]]
+
+  /** Origin of this element, relative to its parent.
+   *
+   *  @note Positioning of the element is applied before any rotations.
+   *
+   *  @since 0.0
+   */
+  val origin: Point
+
+  /** Alignment of this element, relative to it's parent.
+   *
+   *  Alignment is defined as a set of rotations that are applied to the local axes of the element, in order,
+   *  resulting in the local axes for the children of this element.
+   *
+   *  If the alignment is empty, then all children have the same alignment as this element.
+   *
+   *  @since 0.0
+   */
+  val alignment: Seq[Rotation]
+}

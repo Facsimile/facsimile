@@ -20,6 +20,7 @@
       <w>passcode</w>
       <w>scalacheck</w>
       <w>scaladoc</w>
+      <w>scalariform</w>
       <w>scalastyle</w>
       <w>scalatest</w>
       <w>semigroup</w>

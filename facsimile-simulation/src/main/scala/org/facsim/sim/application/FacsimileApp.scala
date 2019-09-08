@@ -127,9 +127,12 @@ extends App {
     val range = if(inception == build) inception else s"$inception-$build"
 
     // Put it all together in a list of strings.
+    //
+    // TEMPORARY NOTE: Scalastyle/Scalariform cannot parse lists that terminate with a comma, so avoid doing that for
+    // now.
     List(
       LibResource("application.FacsimileApp.Copyright1", appOrganization, range),
-      LibResource("application.FacsimileApp.Copyright2"),
+      LibResource("application.FacsimileApp.Copyright2")
     )
   }
 

@@ -43,8 +43,17 @@ import scala.reflect.runtime.universe.TypeTag
  *
  *  @tparam E Final type of the element sub-class.
  *
- *  @tparam ES Type of element storing the state of this element.
+ *  @tparam S Type of element storing the state of this element.
  *
  *  @since 0.2
  */
-abstract class Element[E <: Element[E, ES]: TypeTag, ES <: ElementState[E, ES]: TypeTag]
+abstract class Element[E <: Element[E, S]: TypeTag, S <: ElementState[E, S]: TypeTag] {
+
+  /** Name of this element.
+   *
+   *  Element names must be unique in relation to their parent.
+   *
+   *  @since 0.0
+   */
+  val name: String
+}
