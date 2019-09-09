@@ -128,8 +128,11 @@ extends App {
 
     // Put it all together in a list of strings.
     //
-    // TEMPORARY NOTE: Scalastyle/Scalariform cannot parse lists that terminate with a comma, so avoid doing that for
-    // now.
+    // TEMPORARY NOTE:
+    //
+    // Scalastyle/Scalariform cannot parse lists that terminate with a comma, so avoid doing that for now.
+    //
+    // #SCALASTYLE_BUG
     List(
       LibResource("application.FacsimileApp.Copyright1", appOrganization, range),
       LibResource("application.FacsimileApp.Copyright2")

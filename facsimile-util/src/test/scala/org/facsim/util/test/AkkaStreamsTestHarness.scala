@@ -49,9 +49,14 @@ trait AkkaStreamsTestHarness
 extends AkkaTestHarness {
 
   /** Generator for invalid buffer size numbers. */
+  // TEMPORARY NOTE:
+  //
+  // Scalastyle/Scalariform cannot parse lists that terminate with a comma, so avoid doing that for now.
+  //
+  // #SCALASTYLE_BUG
   protected final val invalidBufferSizes = Gen.oneOf(
     Generator.nonPosInt,
-    Gen.choose(DataSource.MaxBufferSize + 1, Int.MaxValue),
+    Gen.choose(DataSource.MaxBufferSize + 1, Int.MaxValue)
   )
 
   /** Generator for valid buffer size numbers. */

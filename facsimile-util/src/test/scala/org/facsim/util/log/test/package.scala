@@ -46,13 +46,18 @@ import org.scalacheck.Gen
 package object test {
 
   /** Generator for log message severities. */
+  // TEMPORARY NOTE:
+  //
+  // Scalastyle/Scalariform cannot parse lists that terminate with a comma, so avoid doing that for now.
+  //
+  // #SCALASTYLE_BUG
   val severities = Gen.oneOf(
     DebugSeverity,
     InformationSeverity,
     WarningSeverity,
     ImportantSeverity,
     ErrorSeverity,
-    FatalSeverity,
+    FatalSeverity
   )
 
   /** Custom scope for generated messages. */

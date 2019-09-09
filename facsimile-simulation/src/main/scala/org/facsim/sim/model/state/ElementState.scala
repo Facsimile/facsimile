@@ -40,8 +40,12 @@ import org.facsim.sim.model.structure.Element
 import org.facsim.sim.model.{Point, Rotation}
 import scala.reflect.runtime.universe.TypeTag
 
-// TEMPORARY NOTE: Scalastyle/Scalariform parses an error on this file ("next on empty iterator"), so disable Scalastyle
-// for this file; we can re-enable it when Scalastyle is updated.
+// TEMPORARY NOTE:
+//
+// Scalastyle/Scalariform parses an error on this file ("next on empty iterator"), so disable Scalastyle for this file;
+// we can re-enable it when Scalastyle is updated.
+//
+// #SCALASTYLE_BUG
 //scalastyle:off
 
 /** State of the associated element.
