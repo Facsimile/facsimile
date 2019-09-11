@@ -47,5 +47,5 @@
 //======================================================================================================================
 resolvers in ThisBuild ++= Seq(
   //Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
-  Resolver.url("https://repo.artima.com/releases")
+  Resolver.url("https://repo.artima.com/releases/")
 )
