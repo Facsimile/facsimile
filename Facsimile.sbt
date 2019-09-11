@@ -57,6 +57,20 @@ val ScalaTestVersion = "3.0.8"
 val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.5.0"
 
+// Add external resolvers here (and also in project/Resolvers.sbt).
+//
+// This is currently necessary because SBT does not appear to allow certain resolvers (such as the "Artima Maven
+// Repository") to specify a project-wide resolver in just the "project/Resolves.sbt" file (or equivalent). Refer to the
+// following issues for further details.
+//
+//   https://github.com/sbt/sbt/issues/4103
+//   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
+//   https://github.com/sbt/sbt/issues/5070
+//   https://github.com/scalatest/scalatest/issues/1696
+resolvers in ThisBuild ++= Seq(
+  Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
+)
+
 // Date the facsimile project was started.
 //
 // This is the date that the Facsimile project was announced on the Facsimile web-site (which was actually a few days

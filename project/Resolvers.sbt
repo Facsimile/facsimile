@@ -35,17 +35,20 @@
 //
 // Note: Resolvers of the form:
 //
-//   "some repo" at "https://some.repo.url"
+//   "some repo" at "https://some.repo.url/"
+//   Resolver.url("some repo", url("https://some.repo.url/"))(Resolver.mavenStylePatterns)
 //
 // identify a Maven-formatted repository. If the repository is an Ivy repository, then the following form is required:
 //
-//   Resolver.url("some repo", url("https://some.repo.url"))(Resolver.ivyStylePatterns)
+//   Resolver.url("some repo", url("https://some.repo.url/"))(Resolver.ivyStylePatterns)
 //
 // Other options are available too. Refer to the following link for further information:
 //
 //   https://www.scala-sbt.org/1.x/docs/Resolvers.html
+//
+// NOTE: In some cases, it may be necessary to add the same resolvers to the Facsimile.sbt build file. Refer to the
+// resolver notes in that file for further details.
 //======================================================================================================================
 resolvers in ThisBuild ++= Seq(
-  //Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
-  Resolver.url("https://repo.artima.com/releases/")
+  Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
 )
