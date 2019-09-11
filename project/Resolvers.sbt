@@ -33,8 +33,16 @@
 //======================================================================================================================
 // SBT file to include third-party repositories required by the build.
 //
-// These resolvers must currently also be specified in "./Facsimile.sbt". Refer to the issue below for further details:
+// Note: Resolvers of the form:
 //
-//   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
+//   "some repo" at "https://some.repo.url"
+//
+// identify a Maven-formatted repository. If the repository is an Ivy repository, then the following form is required:
+//
+//   Resolver.url("some repo", url("https://some.repo.url"))
+//
+// Other options are available too. Refer to the following link for further information:
+//
+//   https://www.scala-sbt.org/1.x/docs/Resolvers.html
 //======================================================================================================================
-resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"
+resolvers in ThisBuild += Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))
