@@ -59,14 +59,12 @@ language: scala
 scala:
   - 2.12.9
 
-# Cache the IVY & SBT directories at the end of the build.
-# TEMPORARILY DISABLE CACHING, DUE TO ISSUES SWITCHING TO COURSIER.
-cache: false
-
-#cache:
-#  directories:
-#    - $HOME/.ivy2/cache
-#    - $HOME/.sbt/boot
+# Cache the Coursier, Ivy & SBT directories at the end of the build.
+cache:
+  directories:
+    - $HOME/.cache/coursier
+    - $HOME/.ivy2
+    - $HOME/.sbt
 
 # We need Java 8 to build facsimile.
 #
