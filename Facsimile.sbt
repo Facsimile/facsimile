@@ -49,7 +49,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 //
 // Keep all compiler and library version numbers here for easy maintenance.
 val AkkaVersion = "2.5.24"
-val CatsVersion = "1.6.0"
+val CatsVersion = "1.6.1"
 val ParboiledVersion = "2.1.8"
 val ScalaVersion = "2.12.9"
 val ScalaCheckVersion = "1.14.0"
