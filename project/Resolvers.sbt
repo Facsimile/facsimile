@@ -39,17 +39,12 @@
 //
 // identify a Maven-formatted repository. If the repository is an Ivy repository, then the following form is required:
 //
-//   Resolver.url("some repo", url("https://some.repo.url"))
+//   Resolver.url("some repo", url("https://some.repo.url"))(Resolver.ivyStylePatterns)
 //
 // Other options are available too. Refer to the following link for further information:
 //
 //   https://www.scala-sbt.org/1.x/docs/Resolvers.html
 //======================================================================================================================
-// This version is being ignored on Travis with the message:
-//
-//   [warn] Unrecognized repository Artima Maven Repository, ignoring it
-//
-// but this doesn't happen when running the command from my Bash shell on Linux Mint. Commenting out and trying an
-// alternative.
-//resolvers in ThisBuild += Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))
-resolvers in ThisBuild += Resolver.url("https://repo.artima.com/releases")
+resolvers in ThisBuild ++= Seq(
+  Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.ivyStylePatterns)
+)
