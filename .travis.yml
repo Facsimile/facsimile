@@ -61,7 +61,8 @@ scala:
 
 # Cache the IVY & SBT directories at the end of the build.
 # TEMPORARILY DISABLE CACHING, DUE TO ISSUES SWITCHING TO COURSIER.
-cache: false
+#cache: false
+
 #cache:
 #  directories:
 #    - $HOME/.ivy2/cache
