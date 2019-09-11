@@ -46,5 +46,6 @@
 //   https://www.scala-sbt.org/1.x/docs/Resolvers.html
 //======================================================================================================================
 resolvers in ThisBuild ++= Seq(
-  Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
+  //Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
+  Resolver.url("https://repo.artima.com/releases")
 )
