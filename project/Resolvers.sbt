@@ -49,6 +49,4 @@
 // NOTE: In some cases, it may be necessary to add the same resolvers to the Facsimile.sbt build file. Refer to the
 // resolver notes in that file for further details.
 //======================================================================================================================
-resolvers in ThisBuild ++= Seq(
-  Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
-)
+resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"

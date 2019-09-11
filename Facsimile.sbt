@@ -67,9 +67,7 @@ val SquantsVersion = "1.5.0"
 //   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
 //   https://github.com/sbt/sbt/issues/5070
 //   https://github.com/scalatest/scalatest/issues/1696
-resolvers in ThisBuild ++= Seq(
-  Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))(Resolver.mavenStylePatterns)
-)
+resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"
 
 // Date the facsimile project was started.
 //
