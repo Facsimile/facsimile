@@ -57,14 +57,6 @@ val ScalaTestVersion = "3.0.8"
 val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.4.0"
 
-// Add external resolvers here (and also in project/Resolvers.sbt).
-//
-// This is necessary because Travis CI (and other users) will likely not have the correct resolvers defined in
-// ~/.sbt/1.0/resolvers.sbt (or equivalent). Refer to the issue below for further details:
-//
-//   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
-//resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"
-
 // Date the facsimile project was started.
 //
 // This is the date that the Facsimile project was announced on the Facsimile web-site (which was actually a few days
