@@ -296,7 +296,7 @@ with ScalaCheckPropertyChecks {
         def updateState(hashCodes: Set[Int], count: Int, heap: BinomialHeap[Int]): (Set[Int], Int) = {
           (hashCodes + heap.hashCode, count + 1)
         }
-        var state = (Set.empty[Int], 0) //scalastyle:ignore var.local
+        var state = (Set.empty[Int], 0) //scalastyle:ignore var.field
         forAll {li: List[Int] =>
           val h = BinomialHeap(li: _*)
           state = updateState(state._1, state._2, h)

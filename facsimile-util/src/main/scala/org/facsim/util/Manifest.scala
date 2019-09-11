@@ -261,11 +261,17 @@ final class Manifest private(manifest: JManifest) {
  */
 object Manifest {
 
-  /** Name of the manifest inception timestamp attribute. */
-  private[util] val InceptionTimestamp = new Name("Inception-Timestamp")
+  /** Manifest inception timestamp attribute.
+   *
+   *  @since 0.2
+   */
+  val InceptionTimestamp = new Name("Inception-Timestamp")
 
-  /** Name of the manifest build timestamp attribute. */
-  private[util] val BuildTimestamp = new Name("Build-Timestamp")
+  /** Manifest build timestamp attribute.
+   *
+   *  @since 0.2
+   */
+  val BuildTimestamp = new Name("Build-Timestamp")
 
   /** Null manifest.
    *

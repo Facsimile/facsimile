@@ -48,13 +48,13 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here for easy maintenance.
-val CatsVersion = "1.6.1"
-val LightbendConfigVersion = "1.3.4"
-val ParboiledVersion = "2.1.6"
-val ScalaVersion = "2.12.8"
+val AkkaVersion = "2.5.24"
+val CatsVersion = "1.6.0"
+val ParboiledVersion = "2.1.8"
+val ScalaVersion = "2.12.9"
 val ScalaCheckVersion = "1.14.0"
 val ScalaTestVersion = "3.0.8"
-//val SpireVersion = "0.16.2"
+val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.4.0"
 
 // Add external resolvers here (and also in project/Resolvers.sbt).
@@ -63,7 +63,7 @@ val SquantsVersion = "1.4.0"
 // ~/.sbt/1.0/resolvers.sbt (or equivalent). Refer to the issue below for further details:
 //
 //   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
-resolvers in ThisBuild += "Artima Maven Repository" at "http://repo.artima.com/releases"
+resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"
 
 // Date the facsimile project was started.
 //
@@ -96,7 +96,17 @@ val gitURL = "https://github.com/Facsimile/facsimile"
 val gitSCM = s"scm:git:$gitURL.git"
 
 // Dependency criteria for both compile and test.
-val dependsOnCompileTest = "test->test;compile->compile"
+//
+// NOTE: This appears to prevent Scaladoc from resolving links to library dependency documentation. Refer to the
+// following bug report for further details:
+//
+//   https://github.com/sbt/sbt/issues/4929
+val dependsOnCompileTest = "compile;test->test"
+
+// Publish artifacts to the Sonatype OSS repository.
+//
+// It appears that this needs to be set globally.
+publishTo in ThisBuild := sonatypePublishTo.value
 
 // Common Scala compilation options (for compiling sources and generating documentation).
 lazy val commonScalaCSettings = Seq(
@@ -110,7 +120,7 @@ lazy val commonScalaCSettings = Seq(
 // These settings are common to all SBT root- and sub-projects.
 //
 // Note that we implement release versioning for artifacts through the Release plugin. The current version is stored in
-// the project-specific Version.sbt file.
+// the "version.sbt" file.
 lazy val commonSettings = Seq(
 
   // Owning organization.
@@ -125,6 +135,9 @@ lazy val commonSettings = Seq(
 
   // Web-site of the owning organization.
   organizationHomepage := Some(url("http://facsim.org/")),
+
+  // Homepage of the associated project.
+  homepage := Some(url("http://facsim.org/")),
 
   // Scala cross compiling.
   //
@@ -177,7 +190,7 @@ lazy val docProjectSettings = Seq(
 
 // Published project settings.
 //
-// Published projects must define the artifacts to be published, and take of publishing them to the Sonatype OSS
+// Published projects must define the artifacts to be published, and take care of publishing them to the Sonatype OSS
 // repository. Consequently, there is a lot of Maven/SBT/Ivy configuration information here.
 //
 // Note that the Sonatype plugin's settings are used to ensure that the resulting artifacts can be published to the
@@ -187,15 +200,24 @@ lazy val docProjectSettings = Seq(
 // 1.  Test artifacts should NOT be published. This is disabled by the line "publishArtifact in Test := false" below.
 // 2.  Third-party artifacts referenced by Facsimile must be available in the Maven Central Repository.
 // 3.  Maven metadata that is not defined by SBT properties must be defined in the "pomExtra" setting as XML.
-// 4.  Artifacts must be signed via GPG to be published to the Sonatype OSS Nexus repository. For security reasons
-//     (to prevent signing by unauthorized publishers), this must be configured locally on each release manager's
-//     machine. In this case, the software must be signed using the key for "authentication@facsim.org" - with public
-//     key "0xC08B4D86EACCE720". If your version of Facsimile is signed by a different key, then you do not have the
-//     official version.)
+// 4.  Artifacts must be signed via GPG to be published to the Sonatype OSS Nexus repository. In this case, the software
+//     must be signed using the key for "authentication@facsim.org". If your version of Facsimile is signed by a
+//     different key, then you do not have the official version.)
+//
+// The sbt-gpg plugin uses GPG (GNU Privacy Guard) to sign artifacts, and this must be installed on the current
+// machine. The key ID must be specified in a file configured by the Release Manager, typically
+// "~/.sbt/1.0/Credentials.sbt". Finally, the key (including the private key) must be registered in GPG on the local
+// machine.
+//
+// WARNING: THE GPG SECRET KEY AND THE CREDENTIALS FILE MUST NEVER BE MADE PUBLIC AND SHOULD NEVER BE COMMITTED AS PART
+// OF THE FACSIMILE SOURCES.
 //
 // We publish to the snapshots repository, if this is a snapshot, or to the releases staging repository if this is
 // an official release.
 lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
+
+  // Identifier of the GPG key used to sign artifacts during publication.
+  gpgKey := Some("authentication@facsim.org"),
 
   // Start year of this project.
   startYear := Some(facsimileStartDate.getYear),
@@ -214,26 +236,15 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   // Test artifacts should not be published.
   publishArtifact in Test := false,
 
+  // Developers. Add yourself here if you've contributed code the Facsimile project.
+  //
+  // Developer fields are: ID, name, email & URL.
+  developers := List(
+    Developer("mja", "Michael J Allen", "mike.allen@facsim.org", url("http://facsim.org")),
+  ),
+
   // Maven POM information which is not available elsewhere through SBT settings.
   pomExtra :=
-  <developers>
-    <developer>
-      <id>mja</id>
-      <name>Michael J Allen</name>
-      <email>mike.allen@facsim.org</email>
-      <url>https://hindsight-consulting.com/Blog/MikeAllen</url>
-      <organization>Hindsight Consulting, Inc.</organization>
-      <organizationUrl>http://hindsight-consulting.com/</organizationUrl>
-      <roles>
-        <role>Project Lead</role>
-        <role>Architect</role>
-        <role>Developer</role>
-      </roles>
-      <timezone>US/Eastern</timezone>
-    </developer>
-  </developers>
-  <contributors>
-  </contributors>
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
@@ -259,28 +270,18 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     Package.ManifestAttributes("Build-Timestamp" -> facsimileBuildDate.toString)
   ),
 
-  // SBT-GPG plugin configuration.
-  //
-  // For best results, all releases and code release signing should be undertaken on a Linux system via GNU GPG.
-  PgpKeys.useGpg in Global := true,
+  // By default, we'll bump the bug-fix/release number of the version following a release.
+  releaseVersionBump := Version.Bump.Bugfix,
 
-  // Identify the key to be used to sign release files.
+  // Have the release plugin write current version information into Version.sbt, in the project's root directory.
   //
-  // Facsimile software is published to the Sonatype OSS repository, with artifacts signed as part of the release
-  // process. (Releases are performed using the SBT "release" command; snapshots are published via the "publish-signed"
-  // command, with a version that ends with the string "SNAPSHOT", and which does not utilize this procedure.)
+  // NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
   //
-  // To obtain the hexadecimal key ID, enter the command:
+  // Commented out, as this no longer appears to be working correctly. Also renamed the version file form "Version.sbt"
+  // (my preference) to "version.sbt", so that it works by default. Issue raised:
   //
-  //   gpg --keyid-format 0xLONG --list-secret-keys authentication@facsim.org
-  //
-  // Look for the key ID in the line beginning with "sec".
-  //
-  // Note that, for security, the private signing key and passcode are not publicly available.
-  PgpKeys.pgpSigningKey in Global := Some(0xC08B4D86EACCE720L), //scalastyle:ignore magic.number
-
-  // Sign releases prior to publication.
-  releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+  //    https://github.com/sbt/sbt-release/issues/252
+  //releaseVersionFile := file("Version.sbt"),
 
   // Employ the following custom release process.
   //
@@ -327,27 +328,19 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // Commit the updated working directory, so that the new development version takes effect.
     commitNextVersion,
 
+    // Push all commits to the upstream repository.
+    //
+    // This is typically determined by including the "-u" argument to a git push command. The upstream repository for a
+    // release MUST be the primary Facsimile repository, not a fork.
+    pushChanges,
+
     // Publish the released version to the Sonatype OSS repository.
     //
     // The "publish-artifacts" step above takes care of publishing the artifacts to Sonatype, so the following command
     // initiates the process of having Sonatype release them, which may fail if Sonatype determines that the artifacts
     // do not meet their current specifications.
     releaseStepCommand("sonatypeReleaseAll"),
-
-    // Push all commits to the upstream repository.
-    //
-    // This is typically determined by including the "-u" argument to a git push command. The upstream repository for a
-    // release MUST be the primary Facsimile repository, not a fork.
-    pushChanges,
   ),
-
-  // By default, we'll bump the bug-fix/release number of the version following a release.
-  releaseVersionBump := Version.Bump.Bugfix,
-
-  // Have the release plugin write current version information into Version.sbt, in the project's root directory.
-  //
-  // NOTE: The Version.sbt file MUST NOT be manually edited and must be maintained under version control.
-  releaseVersionFile := file("Version.sbt"),
 )
 
 // Source project settings.
@@ -398,17 +391,21 @@ lazy val sourceProjectSettings = Seq(
   fork in Test := true,
 
   // Make sure that tests execute in sequence (we may change this in future, but, for now, it's a lot easier to
-  // understand test output if tests execute sequentially.
+  // understand test output if tests execute sequentially).
   parallelExecution in Test := false,
 
   // Code test coverage settings.
   //
   // Target coverage is 100%. Over time, the test coverage required for a successful build will be raised to this value
   // to ensure code is as fully tested as possible.
-  ScoverageKeys.coverageEnabled := true,
+  //
+  // Note: NEVER set ScoverageKeys.coverageEnabled to true, as it will cause the library to look for the Scoverage
+  // measurement files on the original build machine, and throw a FileNotFoundException when it fails to locate them.
+  // Instead, issuing "coverage" or "coverageOn" commands to SBT will enable coverage (prior to testing on Travis CI,
+  // for example). Also, make sure that "clean" is issued prior to any build operation.
   ScoverageKeys.coverageHighlighting := true,
   ScoverageKeys.coverageFailOnMinimum := true,
-  ScoverageKeys.coverageMinimum := 50,
+  ScoverageKeys.coverageMinimum := 0,
 
   // Required libraries common to all source projects.
   //
@@ -419,11 +416,11 @@ lazy val sourceProjectSettings = Seq(
   // Right now, the only universal dependencies are libraries required by the test phase.
   libraryDependencies ++= Seq(
 
-    // ScalaTest dependencies.
-    "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
-
-    // ScalaCheck dependency.
+    // ScalaCheck is a property-based testing library, used extensively within Facsimile's test suite.
     "org.scalacheck" %% "scalacheck" % ScalaCheckVersion % Test,
+
+    // ScalaTest is a library providing a framework for unit-testing
+    "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
   ),
 )
 
@@ -460,12 +457,22 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
     // The Scala reflection library is required for implementing macros.
     "org.scala-lang" % "scala-reflect" % ScalaVersion,
 
-    // Lightbend configuration library.
+    // Akka streams library & testkit (the latter scoped for testing only).
     //
-    // This library supports configuration file management, and the Human-Optimized Config Object Notation (HOCON)
-    // configuration file format. HOCON can be viewed as a superset of both the Java properties and JavaScript Object
-    // Notation (JSON) file formats.
-    "com.typesafe" % "config" % LightbendConfigVersion,
+    // This is used for creating streams of data.
+    //
+    // Akka streams additionally includes the following library dependencies:
+    //
+    // "com.typesafe" %% "config"
+    // "com.typesafe" %% "ssl-config-core"
+    // "com.typesafe.akka" %% "akka-core"
+    // "com.typesafe.akka" %% "akka-actor"
+    // "com.typesafe.akka" %% "akka-protobuf"
+    // "org.reactivestreams" %% "reactive-streams"
+    // "org.scala-lang.modules" %% "scala-java8-compat"
+    // "org.scala-lang.modules" %% "scala-parser-combinators"
+    "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
+    "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test,
 
     // Parboiled 2 is a parsing library, required for Facsimile's file parsing capabilities.
     "org.parboiled" %% "parboiled" % ParboiledVersion,
@@ -568,13 +575,13 @@ lazy val facsimileCollection = project.in(file(FacsimileCollectionName))
 //  |and inference testing.""".stripMargin.replaceAll("\n", " "),
 //)
 
-// Name of the facsimile-engine project.
-val FacsimileEngineName = "facsimile-engine"
+// Name of the facsimile-simulation project.
+val FacsimileSimulationName = "facsimile-simulation"
 
-// Facsimile-Engine project.
+// Facsimile-Simulation project.
 //
-// The Facsimile-Engine project provides a purely functional simulation engine for running simulations.
-lazy val facsimileEngine = project.in(file(FacsimileEngineName))
+// The Facsimile-Simulation project provides a purely functional simulation engine for running simulations.
+lazy val facsimileSimulation = project.in(file(FacsimileSimulationName))
 // Temporarily remove dependency on SFX and Stat modules - not ready for launch, right now.
 //.dependsOn(facsimileCollection % dependsOnCompileTest, facsimileSFX % dependsOnCompileTest,
 //facsimileStat % dependsOnCompileTest)
@@ -586,14 +593,23 @@ lazy val facsimileEngine = project.in(file(FacsimileEngineName))
 .settings(
 
   // Name and description of this project.
-  name := "Facsimile Simulation Engine Library",
-  normalizedName := FacsimileEngineName,
-  description := """The Facsimile Simulation Engine library is a purely functional, discrete-event simulation engine. It
-  |it the beating heart at the center of all Facsimile simulation models.""".stripMargin.replaceAll("\n", " "),
+  name := "Facsimile Simulation Library",
+  normalizedName := FacsimileSimulationName,
+  description := """The Facsimile Simulation library is a purely functional, discrete-event simulation engine. It is the
+  |beating heart at the center of all Facsimile simulation models.""".stripMargin.replaceAll("\n", " "),
 
   // Facsimile Engine dependencies.
   libraryDependencies ++= Seq(
+
+    // Scopt is a functional command line parsing library.
+    "com.github.scopt" %% "scopt" % ScoptVersion,
+
+    // Cats is a general-purpose library supporting functional programming. Facsimile uses the Cat State monad heavily
+    // for simulation state transitions.
     "org.typelevel" %% "cats-core" % CatsVersion,
+
+    // Squants is a dimensional analysis library, providing support for modeling physical quantities such as Time,
+    // Length, Angle, Velocity, etc.
     "org.typelevel" %% "squants" % SquantsVersion,
   )
 )
@@ -605,8 +621,8 @@ lazy val facsimileEngine = project.in(file(FacsimileEngineName))
 // TODO: Merge all documentation for sub-projects and publish it ti the Facsimile web-site/elsewhere.
 lazy val facsimile = project.in(file("."))
 // Temporarily remove dependency on SFX and Stat modules - not ready for launch, right now.
-//.aggregate(facsimileUtil, facsimileCollection, facsimileTypes, facsimileSFX, facsimileStat, facsimileEngine)
-.aggregate(facsimileUtil, facsimileCollection, facsimileEngine)
+//.aggregate(facsimileUtil, facsimileCollection, facsimileTypes, facsimileSFX, facsimileStat, facsimileSimulation)
+.aggregate(facsimileUtil, facsimileCollection, facsimileSimulation)
 .enablePlugins(ScalaUnidocPlugin)
 .settings(commonSettings: _*)
 .settings(unpublishedProjectSettings: _*)

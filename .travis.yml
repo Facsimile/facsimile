@@ -37,6 +37,18 @@
 #
 #   http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
 #=======================================================================================================================
+
+# Use Xenial Ubuntu for builds.
+dist: xenial
+
+# Set up XVFB (X Windows virtual frame buffer) so that we can run JavaFX/ScalaFX code in headless mode.
+#
+# For further details, refer to:
+# - https://benlimmer.com/2019/01/14/travis-ci-xvfb/
+# - https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-services-xvfb
+services:
+  - xvfb
+
 # Use container-based architecture, which is faster and supports IVY & SBT file caching.
 sudo: false
 
@@ -45,7 +57,7 @@ sudo: false
 # These values should be synchronized with the values in the custom SBT build definition file, Facsimile.sbt.
 language: scala
 scala:
-  - 2.12.8
+  - 2.12.9
 
 # Cache the IVY & SBT directories at the end of the build.
 cache:
@@ -53,18 +65,12 @@ cache:
     - $HOME/.ivy2/cache
     - $HOME/.sbt/boot
 
-# Before installing the necessary software, set up XVFB (X Windows virtual frame buffer) so that we can run
-# JavaFX/ScalaFX code in headless mode.
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-
 # We need Java 8 to build facsimile.
 #
 # Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
 # here.
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 # Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
 # in the current version of ScalaFX require the latest release). Also ensure graphviz is installed, in order to create
@@ -72,7 +78,6 @@ jdk:
 addons:
   apt:
     packages:
-      - oracle-java8-installer
       - graphviz
 
 # Now perform the build.
@@ -81,8 +86,12 @@ addons:
 # then execute the test suite. Subsequent to that, since Facsimile is a multi-module project, we must generate a report
 # aggregated for all modules. Then notify Coveralls of the test coverage results. (Note that both of these latter tasks
 # must be performed as separate SBT commands.)
+#
+# Note: As of Scoverage 1.6.0, it is no longer necessary to execute the coverageReport task, and in fact speeds up the
+# build if it is omitted: coverageAggregate (which must still be run as a separate sbt pass), now operates on the raw
+# coverage reports.
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc coverageReport &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 
 # If this script was successful, run the coveralls SBT task.

@@ -4,18 +4,23 @@
       <w>candela</w>
       <w>codacy</w>
       <w>codepoint</w>
+      <w>ctor</w>
       <w>dereferenced</w>
       <w>facsim</w>
       <w>gradian</w>
       <w>gradians</w>
+      <w>hocon</w>
+      <w>inheritdoc</w>
       <w>interoperating</w>
       <w>keyid</w>
       <w>lgpl</w>
       <w>lightbend</w>
+      <w>materializer</w>
       <w>nullary</w>
       <w>passcode</w>
       <w>scalacheck</w>
       <w>scaladoc</w>
+      <w>scalariform</w>
       <w>scalastyle</w>
       <w>scalatest</w>
       <w>semigroup</w>
