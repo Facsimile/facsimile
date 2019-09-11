@@ -45,4 +45,11 @@
 //
 //   https://www.scala-sbt.org/1.x/docs/Resolvers.html
 //======================================================================================================================
-resolvers in ThisBuild += Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))
+// This version is being ignored on Travis with the message:
+//
+//   [warn] Unrecognized repository Artima Maven Repository, ignoring it
+//
+// but this doesn't happen when running the command from my Bash shell on Linux Mint. Commenting out and trying an
+// alternative.
+//resolvers in ThisBuild += Resolver.url("Artima Maven Repository", url("https://repo.artima.com/releases"))
+resolvers in ThisBuild += Resolver.url("https://repo.artima.com/releases")

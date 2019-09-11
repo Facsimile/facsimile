@@ -65,7 +65,8 @@ cache: false
 #cache:
 #  directories:
 #    - $HOME/.ivy2/cache
-#    - $HOME/.sbt/boot
+#
+  - - $HOME/.sbt/boot
 
 # We need Java 8 to build facsimile.
 #
