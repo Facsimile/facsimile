@@ -40,7 +40,8 @@ import akka.stream.{Materializer, OverflowStrategy, QueueOfferResult}
 import akka.stream.scaladsl.Source
 import akka.{Done, NotUsed}
 import org.facsim.util.{LibResource, NonPure}
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.Duration
 import scala.reflect.runtime.universe.TypeTag
 
 /** Create a new ''Akka Streams'' data source, to which data can be sent on demand.
@@ -73,6 +74,17 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
   /** Queue stream and source requested. */
   private val streamSource = Source.queue[A](bufferSize, OverflowStrategy.backpressure).preMaterialize()
 
+  /** Future resulting from the previous send operation.
+   *
+   *  @note Each send operation's future must complete before attempting to send further data. In essence, this is how
+   *  backpressure is implemented. It should be noted that when the future completes, the data has not necessarily been
+   *  sent, just that the data has been queued for sending.
+   */
+  private var lastSendFuture: Future[QueueOfferResult] = {  //scalastyle:ignore var.field
+    Future.successful(QueueOfferResult.Enqueued)
+  }
+  assert(lastSendFuture.isCompleted, "Initial last send future has not completed.")
+
   /** Send data to the stream.
    *
    *  Data will not flow through the stream unless the stream is materialized and run.
@@ -90,7 +102,21 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
    *  @since 0.2
    */
   @NonPure
-  def send(data: A): Future[QueueOfferResult] = streamSource._1.offer(data)
+  def send(data: A): Future[QueueOfferResult] = synchronized {
+
+    // If the previous future did not complete, then wait for it to do so. If the future has already completed, then no
+    // time should elapse.
+    //
+    // Note: This can lock the current thread, should nothing be consuming the messages
+    Await.result(lastSendFuture, Duration.Inf)
+    assert(lastSendFuture.isCompleted, "Last data future did not complete.")
+
+    // Send the data, receiving a new future in the process.
+    lastSendFuture = streamSource._1.offer(data)
+
+    // Return the future for the sent data.
+    lastSendFuture
+  }
 
   /** Report the source to which flows and sinks can be attached.
    *
