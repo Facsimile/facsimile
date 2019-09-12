@@ -110,7 +110,7 @@ val dependsOnCompileTest = "compile;test->test"
 // Publish artifacts to the Sonatype OSS repository.
 //
 // It appears that this needs to be set globally.
-publishTo in ThisBuild := sonatypePublishTo.value
+publishTo in ThisBuild := sonatypePublishToBundle.value
 
 // Common Scala compilation options (for compiling sources and generating documentation).
 lazy val commonScalaCSettings = Seq(
@@ -322,9 +322,14 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     commitReleaseVersion,
     tagRelease,
 
-    // Publish associated artifacts (requires "publishTo" and "releasePublishArtifactsAction" settings to be configured
-    // appropriately).
-    publishArtifacts,
+    // Sign, publish and release artifacts to the Sonatype OSS repository.
+    //
+    // This requires publishTo to be defined correctly (see above).
+    //
+    // NOTE: If cross-publishing, use 'releaseStepCommandAndRemaining("+publishSigned")' in place of
+    // 'releaseStepCommand("publishSigned")'.
+    releaseStepCommand("publishSigned"),
+    releaseStepCommand("sonatypeBundleRelease"),
 
     // Update the "Version.sbt" file so that it contains the new development version number.
     setNextVersion,
@@ -337,13 +342,6 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     // This is typically determined by including the "-u" argument to a git push command. The upstream repository for a
     // release MUST be the primary Facsimile repository, not a fork.
     pushChanges,
-
-    // Publish the released version to the Sonatype OSS repository.
-    //
-    // The "publish-artifacts" step above takes care of publishing the artifacts to Sonatype, so the following command
-    // initiates the process of having Sonatype release them, which may fail if Sonatype determines that the artifacts
-    // do not meet their current specifications.
-    releaseStepCommand("sonatypeReleaseAll"),
   ),
 )
 
