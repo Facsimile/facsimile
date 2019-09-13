@@ -55,7 +55,7 @@ import scopt.OptionParser
  *
  *  @param appVersionString Application's version string.
  */
-private[application] final class CLIParser(appName: String, appCopyright: List[String], appVersionString: String) {
+private[application] final class CLIParser(appName: String, appCopyright: Seq[String], appVersionString: String) {
 
   /** Command line parser for this application. */
   private final val parser = new OptionParser[FacsimileConfig](appName) {
@@ -69,21 +69,13 @@ private[application] final class CLIParser(appName: String, appCopyright: List[S
     // Option defining the HOCON configuration file for the simulation.
     //
     // This option is not necessary to run the simulation. Only a single configuration file may be specified.
+    //
+    // Note: The file argument should not be validated until we attempt to open it.
     opt[File]('c', "config-file")
     .valueName("<file>")
     .text(LibResource("application.CLIParser.ConfigFileText"))
     .optional
     .maxOccurs(1)
-    .validate {f =>
-
-      // Check that the configuration file exists and that it can be read from.
-      //
-      // It may well be that when we attempt to open this file later on, it will fail (if the file is changed in any
-      // way between the moment this code executes and the time it is opened). However, we should do as much as we can
-      // up front in order to assist the user as much as possible.
-      if(f.exists && f.canRead) success
-      else failure(LibResource("application.CLIParser.ConfigFileFailure"))
-    }
     .action {(f, c) =>
 
       // Update the configuration.
@@ -111,23 +103,13 @@ private[application] final class CLIParser(appName: String, appCopyright: List[S
     //
     // Note: A warning will be issued if the simulation produces no output of any kind. Unless the simulation is doing
     // something unusual, there's a danger that the simulation will just consume CPU for no purpose.
+    //
+    // Note: The file argument should not be validated until we attempt to open it.
     opt[File]('l', "log-file")
     .valueName(CLIParser.FileValueName)
     .text(LibResource("application.CLIParser.LogFileText"))
     .optional
     .maxOccurs(1)
-    .validate {f =>
-
-      // Check that the report file exists and that it can be written to.
-      //
-      // It may well be that when we attempt to open this file later on, it will fail (if the file is changed in any
-      // way between the moment this code executes and the time it is opened). However, we should do as much as we can
-      // up front in order to assist the user as much as possible.
-      //
-      // TODO: Check if we have permission to create the file if it doesn't exist.
-      if(!f.exists || f.canWrite) success
-      else failure(LibResource("application.CLIParser.LogFileFailure"))
-    }
     .action {(f, c) =>
 
       // Update the configuration.
@@ -140,23 +122,13 @@ private[application] final class CLIParser(appName: String, appCopyright: List[S
     //
     // Note: A warning will be issued if the simulation produces no output of any kind. Unless the simulation is doing
     // something unusual, there's a danger that the simulation will just consume CPU for no purpose.
+    //
+    // Note: The file argument should not be validated until we attempt to open it.
     opt[File]('r', "report-file")
     .valueName(CLIParser.FileValueName)
     .text(LibResource("application.CLIParser.ReportFileText"))
     .optional
     .maxOccurs(1)
-    .validate {f =>
-
-      // Check that the report file exists and that it can be written to.
-      //
-      // It may well be that when we attempt to open this file later on, it will fail (if the file is changed in any
-      // way between the moment this code executes and the time it is opened). However, we should do as much as we can
-      // up front in order to assist the user as much as possible.
-      //
-      // TODO: Check if we have permission to create the file if it doesn't exist.
-      if(!f.exists || f.canWrite) success
-      else failure(LibResource("application.CLIParser.ReportFileFailure"))
-    }
     .action {(f, c) =>
 
       // Update the configuration.
@@ -191,7 +163,7 @@ private[application] final class CLIParser(appName: String, appCopyright: List[S
    *  @return Resulting application configuration wrapped in `[[scala.Some Some]]` if successfully parsed, or
    *  `[[scala.None None]]` if the command line could not be parsed.
    */
-  private[application] def parse(args: Array[String]): Option[FacsimileConfig] = parser.parse(args, FacsimileConfig())
+  private[application] def parse(args: Seq[String]): Option[FacsimileConfig] = parser.parse(args, FacsimileConfig())
 }
 
 /** Command line interpreter parser companion object. */
@@ -199,5 +171,4 @@ private object CLIParser {
 
   /** Value description to output for a command line file parameter or option. */
   private val FileValueName = LibResource("application.CLIParser.FileValueName")
-
 }

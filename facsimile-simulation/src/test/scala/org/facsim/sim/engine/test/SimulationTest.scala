@@ -60,7 +60,7 @@ with ScalaCheckPropertyChecks {
   trait TestData
 
   // Start with the companion object.
-  describe(classOf[Simulation[_]].getClass.getCanonicalName) {
+  describe(classOf[Simulation[_]].getCanonicalName) {
   }
 }
 

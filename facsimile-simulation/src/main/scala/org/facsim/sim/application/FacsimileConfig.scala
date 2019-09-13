@@ -68,8 +68,6 @@ import org.facsim.util.log.{Severity, WarningSeverity}
  *
  *  @param useGUI Flag indicating whether a ''graphical user interface'' (''GUI'') is to be utilized to control and view
  *  the simulation.
- *
- *  @since 0.2
  */
-final case class FacsimileConfig(configFile: Option[File] = None, logFile: Option[File] = None,
+private[application] final case class FacsimileConfig(configFile: Option[File] = None, logFile: Option[File] = None,
 logLevel: Severity = WarningSeverity, reportFile: Option[File] = None, useGUI: Boolean = true)
