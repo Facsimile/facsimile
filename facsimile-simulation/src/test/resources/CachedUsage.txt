@@ -1,0 +1,13 @@
+Usage: TestApp [options]
+
+This program is a Facsimile simulation model, configured to run with the indicated settings.
+
+  -c, --config-file <file>
+                           Simulation HOCON configuration file, used to configure this simulation run. Default: Do not read a configuration file; default configuration settings will be utilized.
+  -H, --headless           Run the simulation in headless mode, without a graphical user interface (GUI) or animation. This option is preferred when running experiments. Default: GUI, animation on.
+  -h, --help               Display this help information and exit immediately, without running the simulation.
+  -l, --log-file <file>    Simulation run log file. Default: do not write a log file.
+  -v, --log-level <level>  Severity level for filtering log messages sent to the log-file (if present) and/or the standard output (if running in headless mode, without an animation). Only log messages with a severity at or above this level will be output. Options are: 'debug, information, warning, important, error, fatal'. Default: {1}.
+  -r, --report-file <file>
+                           Simulation statistics report output file, measuring the performance of the simulation snaps performed. Default: do not write a report file.
+  -V, --version            Report the program version and exit immediately, without running the simulation.

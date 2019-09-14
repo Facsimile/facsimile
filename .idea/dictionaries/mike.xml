@@ -24,6 +24,7 @@
       <w>scalariform</w>
       <w>scalastyle</w>
       <w>scalatest</w>
+      <w>scopt</w>
       <w>semigroup</w>
       <w>sonatype</w>
       <w>typelevel</w>

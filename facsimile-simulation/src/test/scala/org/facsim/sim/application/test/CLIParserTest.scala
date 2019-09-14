@@ -37,10 +37,14 @@
 package org.facsim.sim.application.test
 
 import java.io.File
+import java.util.Locale
 import org.facsim.sim.application.{CLIParser, FacsimileConfig}
+import org.facsim.util.LS
 import org.facsim.util.log._
+import org.facsim.util.test.withLocale
 import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import scala.io.Source
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -48,7 +52,11 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.numbers
 
-/** Test harness for the [[CLIParser]] class. */
+/** Test harness for the [[CLIParser]] class.
+ *
+ *  @todo Some of these tests are dependent upon the en-US locale. In order to support testing under other locale's, it
+ *  will be necessary to expand upon these tests.
+ */
 final class CLIParserTest
 extends FunSpec
 with ScalaCheckPropertyChecks {
@@ -73,7 +81,7 @@ with ScalaCheckPropertyChecks {
 
     /** Undefined short option.
      *
-     *  @note This should be chosen so as not to be a valid command line option.
+     * @note This should be chosen so as not to be a valid command line option.
      */
     lazy val undefinedShortOpt: String = "-X"
 
@@ -98,8 +106,14 @@ with ScalaCheckPropertyChecks {
     /** Configuration file long option. */
     lazy val configFileLongOpt: String = "--config-file"
 
+    /** Help short option. */
+    lazy val helpShortOpt: String = "-h"
+
+    /** Help long option. */
+    lazy val helpLongOpt: String = "--help"
+
     /** Headless short option. */
-    lazy val headlessShortOpt = "-h"
+    lazy val headlessShortOpt = "-H"
 
     /** Headless long option */
     lazy val headlessLongOpt = "--headless"
@@ -109,12 +123,6 @@ with ScalaCheckPropertyChecks {
 
     /** Log file long option. */
     lazy val logFileLongOpt: String = "--log-file"
-
-    /** Report file short option. */
-    lazy val reportFileShortOpt: String = "-r"
-
-    /** Report file long option. */
-    lazy val reportFileLongOpt: String = "--report-file"
 
     /** Log level short option. */
     lazy val logLevelShortOpt: String = "-v"
@@ -135,7 +143,30 @@ with ScalaCheckPropertyChecks {
     /** Invalid log level. */
     lazy val invalidLogLevel: String = "invalid"
 
+    /** Report file short option. */
+    lazy val reportFileShortOpt: String = "-r"
+
+    /** Report file long option. */
+    lazy val reportFileLongOpt: String = "--report-file"
+
+    /** Version header information. */
+    lazy val versionHeader = s"$appName$LS${appCopyright.mkString(LS)}${LS}Version: $appVersion"
+
+    /** Version short option. */
+    lazy val versionShortOpt: String = "-V"
+
+    /** Version long option. */
+    lazy val versionLongOpt: String = "--version"
+
     /** Test a particular file option.
+     *
+     * @param name Type of file.
+     *
+     * @param short Short file option.
+     *
+     * @param long Long file option.
+     *
+     * @param expected Expected resulting configuration.
      */
     protected[test] def testOption(name: String, short: String, long: String, expected: FacsimileConfig): Unit = {
       it(s"must reject invalid $name file specifications") {
@@ -182,6 +213,9 @@ with ScalaCheckPropertyChecks {
             assert(c.logFile === None)
             assert(c.logLevel === WarningSeverity)
             assert(c.reportFile === None)
+            assert(c.runModel === true)
+            assert(c.showUsage === false)
+            assert(c.showVersion === false)
             assert(c.useGUI === true)
           }
         }
@@ -207,8 +241,8 @@ with ScalaCheckPropertyChecks {
         testOption("config", configFileShortOpt, configFileLongOpt, FacsimileConfig(configFile = Some(file)))
       }
 
-      // Verify that is accepts headless mode option.
-      it("must accept headless mode option") {
+      // Verify that it accepts headless mode option.
+      it("must accept headless mode options") {
         new TestData {
           val expectedCfg = FacsimileConfig(useGUI = false)
           assert(parser.parse(Seq(headlessShortOpt)) === Some(expectedCfg))
@@ -216,14 +250,18 @@ with ScalaCheckPropertyChecks {
         }
       }
 
+      // Verify that it accepts the help option correctly.
+      it("must accept help options and exit immediately") {
+        new TestData {
+          val expectedCfg = FacsimileConfig(runModel = false, showUsage = true)
+          assert(parser.parse(Seq(helpShortOpt)) === Some(expectedCfg))
+          assert(parser.parse(Seq(helpLongOpt)) === Some(expectedCfg))
+        }
+      }
+
       // Verify that it accepts log file options.
       new TestData {
         testOption("log", logFileShortOpt, logFileLongOpt, FacsimileConfig(logFile = Some(file)))
-      }
-
-      // Verify that it accepts report file options.
-      new TestData {
-        testOption("report", reportFileShortOpt, reportFileLongOpt, FacsimileConfig(reportFile = Some(file)))
       }
 
       // Verify that accepts log level options.
@@ -242,6 +280,57 @@ with ScalaCheckPropertyChecks {
               val expectedCfg = FacsimileConfig(logLevel = ll)
               assert(parser.parse(Seq(logLevelShortOpt, n)) === Some(expectedCfg))
             }
+          }
+        }
+      }
+
+      // Verify that it accepts report file options.
+      new TestData {
+        testOption("report", reportFileShortOpt, reportFileLongOpt, FacsimileConfig(reportFile = Some(file)))
+      }
+
+      // Verify that it accepts the version option correctly.
+      it("must accept version options and exit immediately") {
+        new TestData {
+          val expectedCfg = FacsimileConfig(runModel = false, showVersion = true)
+          assert(parser.parse(Seq(versionShortOpt)) === Some(expectedCfg))
+          assert(parser.parse(Seq(versionLongOpt)) === Some(expectedCfg))
+        }
+      }
+    }
+
+    // Test the usage function.
+    describe(".usage") {
+
+      // Verify the returned result.
+      it("must contain the correct usage information") {
+
+        // All we can do is to compare the reported value with a cached version of the output.
+        //
+        // NOTE: Any changes to the parser definition may result in this test failing. After manually inspecting the
+        // differences, if the changes are valid, update the target file with the cached usage.
+        new TestData {
+          withLocale(Locale.US) {
+            val cachedFile = getClass.getResource("/CachedUsage.txt").getFile
+            val cachedSource = Source.fromFile(cachedFile)
+            try {
+              val cachedUsage = s"$versionHeader$LS${cachedSource.mkString}"
+              assert(parser.usage === cachedUsage)
+            }
+            finally {
+              cachedSource.close()
+            }
+          }
+        }
+      }
+    }
+
+    // Test the version function.
+    describe(".version") {
+      it("must contain the correct version information") {
+        new TestData {
+          withLocale(Locale.US) {
+            assert(parser.version === versionHeader)
           }
         }
       }

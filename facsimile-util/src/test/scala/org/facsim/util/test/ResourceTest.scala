@@ -180,81 +180,66 @@ with CommonTestMethods {
       }
       it("must retrieve localized string resources OK") {
         new testResources {
-          val default = Locale.getDefault()
-          try {
-
-            // Check that we get the correct en_US response.
-            Locale.setDefault(Locale.US)
+          // Check that we get the correct en_US response.
+          withLocale(Locale.US) {
             assert(new Resource(testBundleName).apply(helloResource) === "Howdy!")
-
-            // Should get a different result for Brits...
-            Locale.setDefault(Locale.UK)
-            assert(new Resource(testBundleName).apply(helloResource) === "Wotcha!")
-
-            // Germans should have a good day...
-            Locale.setDefault(Locale.GERMANY)
-            assert(new Resource(testBundleName).apply(helloResource) === "Guten Tag!")
-
-            // ...and so should the French...
-            Locale.setDefault(Locale.FRANCE)
-            assert(new Resource(testBundleName).apply(helloResource) === "Bonjour!")
-
-            // ...and anyone who speaks Spanish...
-            Locale.setDefault(new Locale("es"))
-            assert(new Resource(testBundleName).apply(helloResource) === "¡Hola!")
           }
 
-          // Restore original default.
-          finally {
-            Locale.setDefault(default)
+          // Should get a different result for Brits...
+          withLocale(Locale.UK) {
+            assert(new Resource(testBundleName).apply(helloResource) === "Wotcha!")
+          }
+
+          // Germans should have a good day...
+          withLocale(Locale.GERMANY) {
+            assert(new Resource(testBundleName).apply(helloResource) === "Guten Tag!")
+          }
+
+          // ...and so should the French...
+          withLocale(Locale.FRANCE) {
+            assert(new Resource(testBundleName).apply(helloResource) === "Bonjour!")
+          }
+
+          // ...and anyone who speaks Spanish...
+          withLocale(new Locale("es")) {
+            assert(new Resource(testBundleName).apply(helloResource) === "¡Hola!")
           }
         }
       }
       it("must retrieve numeric resources OK") {
         new testResources {
-          val default = Locale.getDefault()
           val number = 1234.56
-          try {
 
-            // Check that we get the correct en_US response.
-            Locale.setDefault(Locale.US)
+          // Check that we get the correct en_US response.
+          withLocale(Locale.US) {
             assert(new Resource(testBundleName).apply(realResource, number) === "1,234.56")
-
-            // Germans do things differently...
-            Locale.setDefault(Locale.GERMANY)
-            assert(new Resource(testBundleName).apply(realResource, number) === "1.234,56")
           }
 
-          // Restore original default.
-          finally {
-            Locale.setDefault(default)
+          // Germans do things differently...
+          withLocale(Locale.GERMANY) {
+            assert(new Resource(testBundleName).apply(realResource, number) === "1.234,56")
           }
         }
       }
       it("must retrieve localized date resources OK") {
         new testResources {
-          val default = Locale.getDefault()
 
           // Sep 14, 2010 - months are zero-based numbers(!)
           val date = new GregorianCalendar(2010, 8, 14).getTime //scalastyle:ignore magic.number
-          try {
 
-            // Check that we get the correct en_US response.
-            Locale.setDefault(Locale.US)
+          // Check that we get the correct en_US response.
+          withLocale(Locale.US) {
             assert(new Resource(testBundleName).apply(dateResource, date) === "9/14/10")
-
-            // Month & day are in different order in the UK. Also, month has leading zero.
-            Locale.setDefault(Locale.UK)
-            assert(new Resource(testBundleName).apply(dateResource, date) === "14/09/10")
-
-            // Germans use same order as UK, but different separator.
-            Locale.setDefault(Locale.GERMANY)
-            assert(new Resource(testBundleName).apply(dateResource, date) === "14.09.10")
           }
 
-          // Restore original default.
-          finally {
-            Locale.setDefault(default)
+          // Month & day are in different order in the UK. Also, month has leading zero.
+          withLocale(Locale.UK) {
+            assert(new Resource(testBundleName).apply(dateResource, date) === "14/09/10")
+          }
+
+          // Germans use same order as UK, but different separator.
+          withLocale(Locale.GERMANY) {
+            assert(new Resource(testBundleName).apply(dateResource, date) === "14.09.10")
           }
         }
       }

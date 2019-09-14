@@ -73,7 +73,7 @@ package object util {
   private[facsim] val PS: String = File.pathSeparator
 
   /** Line separator. */
-  private[facsim] val NL: String = sys.props("line.separator")
+  private[facsim] val LS: String = sys.props("line.separator")
 
   /** Single quote character. */
   private[facsim] val SQ: String = "'"

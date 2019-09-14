@@ -39,7 +39,7 @@ package org.facsim.sim.application
 import java.io.File
 import org.facsim.sim.LibResource
 import org.facsim.util.log.Severity
-import org.facsim.util.{NL, SQ}
+import org.facsim.util.{LS, SQ}
 import scopt.OptionParser
 
 /** Define the supported command line syntax and parse command line arguments.
@@ -60,11 +60,18 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
   /** Command line parser for this application. */
   private final val parser = new OptionParser[FacsimileConfig](appName) {
 
+    // Version header information.
+    val versionHeader = LibResource("application.CLIParser.VersionHeader", appVersionString)
+
     // Output header lines.
-    head(s"$appName$NL${appCopyright.mkString(NL)}${NL}Version: ${appVersionString}")
+    head(s"$appName$LS${appCopyright.mkString(LS)}$LS$versionHeader")
 
     // Add a note explaining what this command does.
-    note(LibResource("application.CLIParser.Note"))
+    note(LibResource("application.CLIParser.Note") + LS)
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++ The following define options, which must be sorted by their long name. +++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     // Option defining the HOCON configuration file for the simulation.
     //
@@ -89,12 +96,25 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     // this will speed-up the simulation run significantly, permitting it to run to completion far faster. As a
     // consequence, this option is highly recommended when performing experiments. For similar reasons, it is highly
     // undesirable to use this option when debugging a model.
-    opt[Unit]('h', "headless")
+    opt[Unit]('H', "headless")
     .text(LibResource("application.CLIParser.HeadlessText"))
     .optional
     .maxOccurs(1)
     .action {(_, c) =>
       c.copy(useGUI = false)
+    }
+
+    // Option to provide command line help about the application and immediately exit.
+    //
+    // Note: This is defined as an option, instead of using the built-in Scopt "help" definition, in order to better
+    // handle application termination during testing. (The "help" definition will terminate the application, making
+    // testing challenging.)
+    opt[Unit]('h', "help")
+    .text(LibResource("application.CLIParser.HelpText"))
+    .optional
+    .maxOccurs(1)
+    .action {(_, c) =>
+      c.copy(runModel = false, showUsage = true)
     }
 
     // Option defining the output file for writing simulation log messages.
@@ -116,25 +136,6 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
       c.copy(logFile = Some(f))
     }
 
-    // Option defining the report output file for this simulation run.
-    //
-    // This option is not necessary to run the simulation. Only a single report file may be specified.
-    //
-    // Note: A warning will be issued if the simulation produces no output of any kind. Unless the simulation is doing
-    // something unusual, there's a danger that the simulation will just consume CPU for no purpose.
-    //
-    // Note: The file argument should not be validated until we attempt to open it.
-    opt[File]('r', "report-file")
-    .valueName(CLIParser.FileValueName)
-    .text(LibResource("application.CLIParser.ReportFileText"))
-    .optional
-    .maxOccurs(1)
-    .action {(f, c) =>
-
-      // Update the configuration.
-      c.copy(reportFile = Some(f))
-    }
-
     // Option to specify the log level, or verbosity, for use when writing log messages to the log-file, and to the
     // standard output, if no animation is present.
     opt[String]('v', "log-level")
@@ -154,6 +155,38 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     .action {(sl, c) =>
       c.copy(logLevel = Severity.withName(sl).get)
     }
+
+    // Option defining the report output file for this simulation run.
+    //
+    // This option is not necessary to run the simulation. Only a single report file may be specified.
+    //
+    // Note: A warning will be issued if the simulation produces no output of any kind. Unless the simulation is doing
+    // something unusual, there's a danger that the simulation will just consume CPU for no purpose.
+    //
+    // Note: The file argument should not be validated until we attempt to open it.
+    opt[File]('r', "report-file")
+    .valueName(CLIParser.FileValueName)
+    .text(LibResource("application.CLIParser.ReportFileText"))
+    .optional
+    .maxOccurs(1)
+    .action {(f, c) =>
+
+      // Update the configuration.
+      c.copy(reportFile = Some(f))
+    }
+
+    // Option to provide application version information and immediately exit.
+    //
+    // Note: This is defined as an option, instead of using the built-in Scopt "version" definition, in order to better
+    // handle application termination during testing. (The "version" definition will terminate the application, making
+    // testing challenging.)
+    opt[Unit]('V', "version")
+    .text(LibResource("application.CLIParser.VersionText"))
+    .optional
+    .maxOccurs(1)
+    .action {(_, c) =>
+      c.copy(runModel = false, showVersion = true)
+    }
   }
 
   /** Parse the command line arguments provided.
@@ -164,6 +197,22 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
    *  `[[scala.None None]]` if the command line could not be parsed.
    */
   private[application] def parse(args: Seq[String]): Option[FacsimileConfig] = parser.parse(args, FacsimileConfig())
+
+  /** Report application usage information.
+   *
+   *  Supports the application's "--help" option.
+   *
+   *  @return String containing the application's usage information.
+   */
+  private[application] def usage: String = parser.usage
+
+  /** Report application version information.
+   *
+   *  Supports the application's "--version" option.
+   *
+   *  @return String containing the application's usage information.
+   */
+  private[application] def version: String = parser.header
 }
 
 /** Command line interpreter parser companion object. */

@@ -36,8 +36,10 @@
 //======================================================================================================================
 package org.facsim.util.log.test
 
+import java.util.Locale
 import org.facsim.util.log._
 import org.facsim.util.test.Generator.unicodeString
+import org.facsim.util.test.withLocale
 import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
@@ -118,12 +120,16 @@ with ScalaCheckPropertyChecks {
   describe(DebugSeverity.getClass.getCanonicalName) {
     describe(".abbrName") {
       it("must be 'DBG'") {
-        assert(DebugSeverity.abbrName === "DBG")
+        withLocale(Locale.US) {
+          assert(DebugSeverity.abbrName === "DBG")
+        }
       }
     }
     describe(".name") {
       it("must be 'debug'") {
-        assert(DebugSeverity.name === "debug")
+        withLocale(Locale.US) {
+          assert(DebugSeverity.name === "debug")
+        }
       }
     }
     describe(".compare(MessageSeverity)") {
@@ -140,12 +146,16 @@ with ScalaCheckPropertyChecks {
   describe(InformationSeverity.getClass.getCanonicalName) {
     describe(".abbrName") {
       it("must be 'INF'") {
-        assert(InformationSeverity.abbrName === "INF")
+        withLocale(Locale.US) {
+          assert(InformationSeverity.abbrName === "INF")
+        }
       }
     }
     describe(".name") {
       it("must be 'information'") {
-        assert(InformationSeverity.name === "information")
+        withLocale(Locale.US) {
+          assert(InformationSeverity.name === "information")
+        }
       }
     }
     describe(".compare(MessageSeverity)") {
@@ -165,12 +175,16 @@ with ScalaCheckPropertyChecks {
   describe(WarningSeverity.getClass.getCanonicalName) {
     describe(".abbrName") {
       it("must be 'WRN'") {
-        assert(WarningSeverity.abbrName === "WRN")
+        withLocale(Locale.US) {
+          assert(WarningSeverity.abbrName === "WRN")
+        }
       }
     }
     describe(".name") {
       it("must be 'warning'") {
-        assert(WarningSeverity.name === "warning")
+        withLocale(Locale.US) {
+          assert(WarningSeverity.name === "warning")
+        }
       }
     }
     describe(".compare(MessageSeverity)") {
@@ -190,12 +204,16 @@ with ScalaCheckPropertyChecks {
   describe(ImportantSeverity.getClass.getCanonicalName) {
     describe(".abbrName") {
       it("must be 'IMP'") {
-        assert(ImportantSeverity.abbrName === "IMP")
+        withLocale(Locale.US) {
+          assert(ImportantSeverity.abbrName === "IMP")
+        }
       }
     }
     describe(".name") {
       it("must be 'important'") {
-        assert(ImportantSeverity.name === "important")
+        withLocale(Locale.US) {
+          assert(ImportantSeverity.name === "important")
+        }
       }
     }
     describe(".compare(MessageSeverity)") {
@@ -215,12 +233,16 @@ with ScalaCheckPropertyChecks {
   describe(ErrorSeverity.getClass.getCanonicalName) {
     describe(".abbrName") {
       it("must be 'ERR'") {
-        assert(ErrorSeverity.abbrName === "ERR")
+        withLocale(Locale.US) {
+          assert(ErrorSeverity.abbrName === "ERR")
+        }
       }
     }
     describe(".name") {
       it("must be 'error'") {
-        assert(ErrorSeverity.name === "error")
+        withLocale(Locale.US) {
+          assert(ErrorSeverity.name === "error")
+        }
       }
     }
     describe(".compare(MessageSeverity)") {
@@ -240,12 +262,16 @@ with ScalaCheckPropertyChecks {
   describe(FatalSeverity.getClass.getCanonicalName) {
     describe(".abbrName") {
       it("must be 'FTL'") {
-        assert(FatalSeverity.abbrName === "FTL")
+        withLocale(Locale.US) {
+          assert(FatalSeverity.abbrName === "FTL")
+        }
       }
     }
     describe(".name") {
       it("must be 'fatal'") {
-        assert(FatalSeverity.name === "fatal")
+        withLocale(Locale.US) {
+          assert(FatalSeverity.name === "fatal")
+        }
       }
     }
     describe(".compare(MessageSeverity)") {
