@@ -38,7 +38,7 @@ package org.facsim.sim.application
 
 import java.util.jar.Attributes.Name
 import org.facsim.sim.LibResource
-import org.facsim.util.{Manifest, Version}
+import org.facsim.util.{Manifest, NonPure, Version}
 
 /** Base class for a ''Facsimile'' application.
  *
@@ -69,7 +69,11 @@ extends App {
   private val parser = new CLIParser(appName, appCopyright, appVersionString)
 
   // Parse the command line, running the program only if successful.
-  parser.parse(args).map(runSimulation)
+  //
+  // NOTE: If parsing fails, failure messages will be sent to the standard error output before the parse method returns.
+  // Facsimile must not use the default "help" or "version" options, which will terminate the application without the
+  // parse method returning.
+  parser.parse(args).map(runApp)
 
   /** Report the name of this application.
    *
@@ -139,11 +143,40 @@ extends App {
     )
   }
 
-  /** Function to run the simulation.
+  /** Run the application.
    *
-   *  @param config Simulation configuration this run.
+   *  @param config Configuration for this simulation run.
    */
-  private def runSimulation(config: FacsimileConfig): Unit = {
+  @NonPure
+  private def runApp(config: FacsimileConfig): Unit = {
+
+    // If necessary, output the application version/header information to the standard output.
+    if(config.showVersion) println(parser.version)
+
+    // If necessary, output the application usage information to the standard output.
+    if(config.showUsage) println(parser.usage)
+
+    // If necessary, proceed to the next phase of model execution, determining if there are any further
+    if(config.runModel) {
+      try {
+        runModel(config)
+      }
+
+      // Report any exceptions arising.
+      catch {
+        case e: Throwable => {
+          System.err.println("application.FacsimileApp.UnhandledException", e.getLocalizedMessage)
+          e.getStackTrace.foreach(ste => System.err.println(ste.toString))
+        }
+      }
+    }
+  }
+
+  /** Run the simulation model.
+   *
+   *  @param config Configuration for this simulation run.
+   */
+  private def runModel(config: FacsimileConfig): Unit = {
 
   }
 }

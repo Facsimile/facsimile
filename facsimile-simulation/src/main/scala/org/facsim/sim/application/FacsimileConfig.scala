@@ -36,8 +36,10 @@
 //======================================================================================================================
 package org.facsim.sim.application
 
+import com.typesafe.config.{Config, ConfigFactory}
 import java.io.File
 import org.facsim.util.log.{Severity, WarningSeverity}
+import squants.time.{Seconds, Time}
 
 /** Configuration of the ''Facsimile'' application and simulation run.
  *
@@ -80,4 +82,83 @@ import org.facsim.util.log.{Severity, WarningSeverity}
  */
 private[application] final case class FacsimileConfig(configFile: Option[File] = None, logFile: Option[File] = None,
 logLevel: Severity = WarningSeverity, reportFile: Option[File] = None, runModel: Boolean = true,
-showVersion: Boolean = false, showUsage: Boolean = false, useGUI: Boolean = true)
+showVersion: Boolean = false, showUsage: Boolean = false, useGUI: Boolean = true) {
+
+  /** Retrieve this simulation run's parameters.
+   *
+   *  @note Evaluating the configuration may result in an exception being thrown.
+   */
+  private lazy val params: Config = {
+
+    // Load the default configuration.
+    val default = ConfigFactory.load()
+
+    // Retrieve the custom configuration from the named file, using the default configuration as a fallback.
+    // Alternatively, if a custom configuration file was not specified, just use the default configuration.
+    configFile.fold(default)(cf => ConfigFactory.parseFile(cf).withFallback(default))
+  }
+
+  /** Report the configuration.
+   *
+   *  @return Specified configuration.
+   */
+  def parameters: Config = params
+
+  /** Retrieve a parameter value as a string, converting to a time value.
+   *
+   *  @param path Path defining location of the parameter in the configuration.
+   *
+   *  @return Parameter parsed as a time value.
+   *
+   *  @throws com.typesafe.config.ConfigException if `path` does not identify a parameter, or if it cannot be resolved
+   *  as a string.
+   */
+  private def timeParameter(path: String): Time = {
+
+    // Retrieve the value as a string.
+    val t = params.getString(path)
+
+    // Convert the result to a time and return.
+    Time.parseString(t).get
+  }
+
+  /** Report the configured warm-up duration.
+   *
+   *  @return Configured simulation warm-up duration.
+   *
+   *  @throws com.typesafe.config.ConfigException if corresponding configuration item cannot be identified.
+   */
+  def warmUpDuration: Time = timeParameter(FacsimileConfig.WarmUpDurationName) ensuring(_ > Seconds(0.0))
+
+  /** Report the configured snap duration.
+   *
+   *  @return Configured simulation snap duration.
+   *
+   *  @throws com.typesafe.config.ConfigException if corresponding configuration item cannot be identified.
+   */
+  def snapDuration: Time = timeParameter(FacsimileConfig.SnapDurationName) ensuring(_ > Seconds(0.0))
+
+  /** Report the configured snap count.
+   *
+   *  @return Configured simulation snap count.
+   *
+   *  @throws com.typesafe.config.ConfigException if corresponding configuration item cannot be identified.
+   */
+  def snapCount: Int = params.getInt(FacsimileConfig.SnapCountName) ensuring(_ > 0)
+}
+
+/** Facsimile configuration companion object. */
+private object FacsimileConfig {
+
+  /** Base name for all ''facsimile-simulation'' configuration settings. */
+  private val BaseName = "facsimile.simulation."
+
+  /** Name of the warm-up period duration parameter. */
+  private val WarmUpDurationName = s"${BaseName}warm-up-duration"
+
+  /** Name of the snap duration parameter. */
+  private val SnapDurationName = s"${BaseName}snap-duration"
+
+  /** Name of the snap count parameter. */
+  private val SnapCountName = s"${BaseName}snap-count"
+}
