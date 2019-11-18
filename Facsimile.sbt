@@ -48,11 +48,11 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here for easy maintenance.
-val AkkaVersion = "2.5.25"
+val AkkaVersion = "2.6.0"
 val CatsVersion = "2.0.0"
 val ParboiledVersion = "2.1.8"
 val ScalaVersion = "2.12.10"
-val ScalaCheckVersion = "1.14.0"
+val ScalaCheckVersion = "1.14.2"
 val ScalaTestVersion = "3.0.8"
 val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.5.0"
