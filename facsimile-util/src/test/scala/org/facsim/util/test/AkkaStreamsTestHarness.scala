@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.util.test
 
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.facsim.util.stream.DataSource
 import org.scalacheck.Gen
 
@@ -63,5 +63,5 @@ extends AkkaTestHarness {
   protected final val validBufferSizes = Gen.choose(1, DataSource.MaxBufferSize)
 
   /** Implicit actor materializer for default stream materialization. */
-  protected implicit final val materializer: ActorMaterializer = ActorMaterializer()
+  protected implicit final val materializer: Materializer = Materializer.matFromSystem
 }
