@@ -165,7 +165,7 @@ extends App {
       // Report any exceptions arising.
       catch {
         case e: Throwable => {
-          System.err.println("application.FacsimileApp.UnhandledException", e.getLocalizedMessage)
+          System.err.println(LibResource("application.FacsimileApp.UnhandledException", e.getLocalizedMessage))
           e.getStackTrace.foreach(ste => System.err.println(ste.toString))
         }
       }
