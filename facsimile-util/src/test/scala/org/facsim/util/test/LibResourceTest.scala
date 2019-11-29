@@ -37,7 +37,7 @@
 package org.facsim.util.test
 
 import org.facsim.util.{AssertNonNullKey, LibResource, RequireFiniteKey, RequireNonNullKey, RequireValidKey}
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
@@ -47,7 +47,7 @@ import org.scalatest.FunSpec
  *  included here.
  */
 final class LibResourceTest
-extends FunSpec
+extends AnyFunSpec
 with CommonTestMethods {
 
   // Name the class we're testing.

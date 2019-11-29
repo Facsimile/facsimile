@@ -40,8 +40,8 @@ import java.util.Locale
 import org.facsim.util.log._
 import org.facsim.util.test.Generator.unicodeString
 import org.facsim.util.test.withLocale
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -51,7 +51,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 /** Test harness for the [[Severity]] trait and sub-classes. */
 final class SeverityTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks {
 
   /** Common test data trait. */

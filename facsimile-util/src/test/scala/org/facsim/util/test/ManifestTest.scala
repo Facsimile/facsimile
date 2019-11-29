@@ -43,14 +43,14 @@ import org.facsim.dummy.Dummy
 import org.facsim.invalid.Invalid
 import org.facsim.missing.Missing
 import org.facsim.util.{Manifest, NoSuchAttributeException, Version, VersionParseException}
-import org.scalatest.FunSpec
 import scala.util.{Failure, Success}
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Manifest]] class. */
 final class ManifestTest
-extends FunSpec
+extends AnyFunSpec
 with CommonTestMethods {
 
   /** ''Java'' specification vendor.

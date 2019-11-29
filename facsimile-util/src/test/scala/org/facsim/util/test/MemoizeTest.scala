@@ -39,8 +39,8 @@ package org.facsim.util.test
 import org.facsim.util.Memoize
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off public.methods.have.type
@@ -49,7 +49,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 //scalastyle:off scaladoc
 /** Test harness for the [[Memoize]] classes. */
 final class MemoizeTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks {
 
   /** Test data. */

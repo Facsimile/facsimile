@@ -38,9 +38,9 @@ package org.facsim.collection.immutable.test
 
 import org.facsim.collection.immutable.BinomialHeap
 import org.scalacheck.Gen
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.annotation.tailrec
+import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -50,7 +50,7 @@ import scala.annotation.tailrec
 
 /** Test harness for the [[org.facsim.collection.immutable.BinomialHeap]] class. */
 final class BinomialHeapTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks {
 
   /** Check that an empty heap responds as such.
