@@ -36,4 +36,4 @@
 // Due to some ongoing issues with the sbt-pgp plugin (note slightly different name), Facsimile has switched to Jakob
 // Odersky's flavor of the plugin, which is simpler, more secure and less buggy.
 //======================================================================================================================
-addSbtPlugin("io.crashbox" % "sbt-gpg" % "0.2.0")
+addSbtPlugin("io.crashbox" % "sbt-gpg" % "0.2.1")
