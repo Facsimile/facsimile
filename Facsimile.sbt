@@ -406,6 +406,9 @@ lazy val sourceProjectSettings = Seq(
   //
   // -Xstrict-inference is currently disabled as it outputs erroneous warnings for some generic code. See
   // https://issues.scala-lang.org/browse/SI-7991 for further details.
+  //
+  // -Ywarn-adapted-args was removed in Scala 2.13, but see https://github.com/scala/bug/issues/11110 for further
+  // details.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
 
     // Code compilation options.
@@ -418,7 +421,8 @@ lazy val sourceProjectSettings = Seq(
     "-Xcheckinit",
     "-Xlint:_",
     //"-Xstrict-inference",
-    "-Ywarn-adapted-args",
+    "-Ymacro-annotations",
+    //"-Ywarn-adapted-args",
     "-Ywarn-dead-code",
     "-Ywarn-inaccessible",
     "-Ywarn-infer-any",
