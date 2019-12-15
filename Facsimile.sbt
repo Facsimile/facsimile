@@ -400,6 +400,10 @@ lazy val sourceProjectSettings = Seq(
   //
   // -Ywarn-adapted-args was removed in Scala 2.13, but see https://github.com/scala/bug/issues/11110 for further
   // details.
+  //
+  // Note: Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
+  // -Werror is only specified when compiling code, rather than when generating documentation. When these issues are
+  // resolved, -Werror should be added to commonScalaCSettings.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
 
     // Code compilation options.
