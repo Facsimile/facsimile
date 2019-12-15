@@ -408,7 +408,7 @@ lazy val sourceProjectSettings = Seq(
   // https://issues.scala-lang.org/browse/SI-7991 for further details.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
 
-    // Code compilation options. YpartialUnification is required by the Typelevel Cats library.
+    // Code compilation options.
     "-feature",
     "-g:vars",
     "-opt:l:method",
@@ -418,7 +418,6 @@ lazy val sourceProjectSettings = Seq(
     "-Xcheckinit",
     "-Xlint:_",
     //"-Xstrict-inference",
-    "-Ypartial-unification",
     "-Ywarn-adapted-args",
     "-Ywarn-dead-code",
     "-Ywarn-inaccessible",
