@@ -37,7 +37,6 @@
 package org.facsim.util.test
 
 import org.facsim.util._
-import org.scalatest.FunSpec
 
 //scalastyle:off public.methods.have.type
 /** Miscellaneous functions for supporting ''Facsimile'' testing. */

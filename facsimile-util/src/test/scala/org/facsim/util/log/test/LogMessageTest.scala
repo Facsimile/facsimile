@@ -36,8 +36,8 @@
 //======================================================================================================================
 package org.facsim.util.log.test
 
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -47,7 +47,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 /** Test harness for the [[org.facsim.util.log.LogMessage]] class. */
 final class LogMessageTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks {
 
   // Class under test.

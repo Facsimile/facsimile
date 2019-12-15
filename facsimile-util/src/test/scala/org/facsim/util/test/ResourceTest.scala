@@ -38,13 +38,13 @@ package org.facsim.util.test
 
 import java.util.{GregorianCalendar, Locale, MissingResourceException}
 import org.facsim.util.Resource
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Resource]] class. */
 final class ResourceTest
-extends FunSpec
+extends AnyFunSpec
 with CommonTestMethods {
 
   // Some commonly used strings.

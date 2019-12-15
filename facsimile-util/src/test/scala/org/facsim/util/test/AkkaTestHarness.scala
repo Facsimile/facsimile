@@ -37,15 +37,16 @@
 package org.facsim.util.test
 
 import akka.actor.ActorSystem
-import org.scalatest.{BeforeAndAfterAll, FunSpec}
+import org.scalatest.BeforeAndAfterAll
 import scala.concurrent.ExecutionContext
+import org.scalatest.funspec.AnyFunSpec
 
 /** Test harness trait for ''Akka actors''.
  *
  *  Creates an ''Akka'' actor system, executes the indicated test, then destroys the actor system.
  */
 trait AkkaTestHarness
-extends FunSpec
+extends AnyFunSpec
 with BeforeAndAfterAll {
 
   /** Implicit actor system which can be used for the tests in this harness. */

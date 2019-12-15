@@ -37,16 +37,16 @@
 package org.facsim.util.test
 
 import org.facsim.util.{Version, VersionParseException}
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.util.Failure
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Version]] class and object. */
 final class VersionTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks
 with CommonTestMethods {
 

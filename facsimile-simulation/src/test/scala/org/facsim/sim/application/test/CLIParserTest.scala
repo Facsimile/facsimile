@@ -42,9 +42,9 @@ import org.facsim.sim.application.{CLIParser, FacsimileConfig}
 import org.facsim.util.LS
 import org.facsim.util.log._
 import org.facsim.util.test.withLocale
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.io.Source
+import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -58,7 +58,7 @@ import scala.io.Source
  *  will be necessary to expand upon these tests.
  */
 final class CLIParserTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks {
 
   /** Test data. */
