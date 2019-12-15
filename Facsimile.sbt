@@ -49,10 +49,12 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
+//
+// NOTE: When changing the primary Scala version, remember to update ./.travis.yml to match.
 val AkkaVersion = "2.6.1"
 val CatsVersion = "2.0.0"
 val ParboiledVersion = "2.1.8"
-val ScalaPrimaryVersion = "2.12.10"
+val ScalaPrimaryVersion = "2.13.1"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.1.0"
 val ScoptVersion = "4.0.0-RC2"
@@ -135,25 +137,12 @@ ThisBuild / organizationHomepage := Some(url("http://facsim.org/"))
 // Web-site of the associated project.
 ThisBuild / homepage := Some(url("http://facsim.org/"))
 
-// Scala cross compiling.
-//
-// Right now, the complexities of supporting multiple Scala versions has been deferred in favor of supporting a single
-// version that meets the project's requirements. This decision forces all users to use the same Scala release that
-// was used to build Facsimile and so will be reviewed in future.
-//
-// IMPORTANT: These values MUST be synchronized with the Travis CI .travis.yml file in the project's root directory,
-// or Travis CI Facsimile builds may yield unexpected results.
-//
-// Note: These settings apply to all projects, so ensure that all projects support all of these versions. In particular,
-// all third-party libraries utilized by all Facsimile sub-projects must be compatible with all of these versions.
-ThisBuild / crossScalaVersions := Seq(ScalaPrimaryVersion)
-
-// Scala default version.
+// Scala version.
 //
 // NOTE: While it might appear that these Scala version options should be placed in "sourceProjectSettings", SBT will
 // use the Scala version to decorate the project's artifact/normalized name. Hence, even if a project does not contain
 // any sources, it it still necessary to provide the version of Scala that is in use.
-ThisBuild / scalaVersion := crossScalaVersions.value.head
+ThisBuild / scalaVersion := ScalaPrimaryVersion
 
 // Publish artifacts to the Sonatype OSS repository.
 //
