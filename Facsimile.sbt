@@ -55,6 +55,7 @@ val AkkaVersion = "2.6.1"
 val CatsVersion = "2.0.0"
 val ParboiledVersion = "2.1.8"
 val PrimaryScalaVersion = "2.13.1"
+val ScalaMeterVersion = "0.19"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.1.0"
 val ScoptVersion = "4.0.0-RC2"
@@ -472,9 +473,15 @@ lazy val sourceProjectSettings = Seq(
 
     // ScalaTest plus ScalaCheck, property-based testing library dependencies. This is used by ScalaTest.
     //
-    // Note: This adds ScalaCheck as a test dependency.
+    // Note: This adds ScalaCheck as a test dependency, so it is no longer necessary to add it as a separate dependency.
     "org.scalatestplus" %% "scalatestplus-scalacheck" % ScalaTestPlusScalaCheckVersion % Test,
+
+    // ScalaMeter, micro-benchmarking library dependencies.
+    "com.storm-enroute" %% "scalameter" % ScalaMeterVersion % Test,
   ),
+
+  // Add ScalaMeter as a test framework.
+  testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework"),
 )
 
 // Settings for all projects that should not publish artifacts to the Sonatype OSS repository.
