@@ -52,8 +52,8 @@ import xerial.sbt.Sonatype.sonatypeSettings
 val AkkaVersion = "2.6.1"
 val CatsVersion = "2.0.0"
 val ParboiledVersion = "2.1.8"
-val ScalaVersion = "2.12.10"
-val ScalaCheckVersion = "1.14.3"
+val ScalaPrimaryVersion = "2.12.10"
+val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.1.0"
 val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.6.0"
@@ -146,7 +146,7 @@ ThisBuild / homepage := Some(url("http://facsim.org/"))
 //
 // Note: These settings apply to all projects, so ensure that all projects support all of these versions. In particular,
 // all third-party libraries utilized by all Facsimile sub-projects must be compatible with all of these versions.
-ThisBuild / crossScalaVersions := Seq(ScalaVersion)
+ThisBuild / crossScalaVersions := Seq(ScalaPrimaryVersion)
 
 // Scala default version.
 //
@@ -191,7 +191,7 @@ lazy val docProjectSettings = Seq(
   //
   // Note that diagram generation requires that GraphViz be installed on the build machine. However, at the time of
   // writing, ScalaDoc's use of GraphViz is broken and does not work correctly.
-  (Compile, doc) / scalacOptions := commonScalaCSettings ++ Seq(
+  Compile / doc / scalacOptions := commonScalaCSettings ++ Seq(
     "-author",
     "-diagrams",
     //"-diagrams-debug", //<-- Uncomment option to debug diagramming errors. Make sure graphviz is installed.
@@ -289,7 +289,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   //
   // The jar file should be sealed so that the packages contained cannot be extended. We also add inception & build
   // timestamps for information purposes.
-  (Compile, packageBin) / packageOptions ++= Seq(
+  Compile / packageBin / packageOptions ++= Seq(
 
     // Standard manifest attributes.
     Package.ManifestAttributes(
@@ -480,11 +480,13 @@ lazy val sourceProjectSettings = Seq(
   // Right now, the only universal dependencies are libraries required by the test phase.
   libraryDependencies ++= Seq(
 
-    // ScalaCheck is a property-based testing library, used extensively within Facsimile's test suite.
-    "org.scalacheck" %% "scalacheck" % ScalaCheckVersion % Test,
-
     // ScalaTest is a library providing a framework for unit-testing
     "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
+
+    // ScalaTest plus ScalaCheck, property-based testing library dependencies. This is used by ScalaTest.
+    //
+    // Note: This adds ScalaCheck as a test dependency.
+    "org.scalatestplus" %% "scalatestplus-scalacheck" % ScalaTestPlusScalaCheckVersion % Test,
   ),
 )
 
@@ -518,7 +520,7 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
   libraryDependencies ++= Seq(
 
     // The Scala reflection library is required for implementing macros.
-    "org.scala-lang" % "scala-reflect" % ScalaVersion,
+    "org.scala-lang" % "scala-reflect" % ScalaPrimaryVersion,
 
     // Akka streams library & testkit (the latter scoped for testing only).
     //
