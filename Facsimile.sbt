@@ -163,18 +163,8 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
 
 // Common Scala compilation options (for compiling sources and generating documentation).
-//
-// -Werror is disabled because some deprecated code features are still in use, resulting in warnings that cannot
-// currently be suppressed.
-//
-// As -Werror is not in use, it's possible to have builds that generate tons of warnings, but which do not fail a
-// build. This is unacceptable: projects must build clean, without any errors or warnings, as a basic requirement for
-// any release to be performed.
-//
 lazy val commonScalaCSettings = Seq(
-  "-deprecation",
   "-encoding", "UTF-8",
-  //"-Werror",
 )
 
 // Doc project settings.
@@ -419,15 +409,20 @@ lazy val sourceProjectSettings = Seq(
     "-opt-warnings:_",
     "-target:jvm-1.8",
     "-unchecked",
-    "-Xcheckinit",
-    "-Xlint:_",
-    //"-Xstrict-inference",
-    "-Wunused:_",
+    "-Wdead-code",
+    "-Werror", // Fail compilation if there are any errors.
+    "-Wextra-implicit",
+    "-Wmacros:before",
+    "-Wnumeric-widen",
+    "-Woctal-literal",
+    //"-Wself-implicit",
+    "-Wunused", // Enable all unused warnings.
     "-Wvalue-discard",
+    "-Xcheckinit",
+    "-Xlint", // Enable all Xlint warnings,
+    //"-Xstrict-inference",
     "-Ymacro-annotations",
     //"-Ywarn-adapted-args",
-    "-Ywarn-dead-code",
-    "-Ywarn-numeric-widen",
   ),
 
   // Fork the tests, so that they run in a separate process. This is a requirement for forked benchmarking with
