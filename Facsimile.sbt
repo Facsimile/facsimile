@@ -162,10 +162,18 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
 
 // Common Scala compilation options (for compiling sources and generating documentation).
+//
+// -Werror is disabled because some deprecated code features are still in use, resulting in warnings that cannot
+// currently be suppressed.
+//
+// As -Werror is not in use, it's possible to have builds that generate tons of warnings, but which do not fail a
+// build. This is unacceptable: projects must build clean, without any errors or warnings, as a basic requirement for
+// any release to be performed.
+//
 lazy val commonScalaCSettings = Seq(
   "-deprecation",
   "-encoding", "UTF-8",
-  //"-Xfatal-warnings",
+  //"-Werror",
 )
 
 // Doc project settings.
@@ -396,14 +404,6 @@ lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
   //
-  // -Xfatal-warnings is disabled because some deprecated code features are still in use, resulting in warnings that
-  // cannot currently be suppressed. (The Scala team have been deprecating a lot of features as of 2.11, but there are
-  // no alternatives to many of the deprecated classes, which is becoming a nuisance.)
-  //
-  // As Xfatal-warnings is not in use, it's possible to have builds that generate tons of warnings, but which do not
-  // fail a build. This is unacceptable: projects must build clean, without any errors or warnings, as a basic
-  // requirement for any release to be performed.
-  //
   // -Xstrict-inference is currently disabled as it outputs erroneous warnings for some generic code. See
   // https://issues.scala-lang.org/browse/SI-7991 for further details.
   //
@@ -421,17 +421,12 @@ lazy val sourceProjectSettings = Seq(
     "-Xcheckinit",
     "-Xlint:_",
     //"-Xstrict-inference",
+    "-Wunused:_",
+    "-Wvalue-discard",
     "-Ymacro-annotations",
     //"-Ywarn-adapted-args",
     "-Ywarn-dead-code",
-    "-Ywarn-inaccessible",
-    "-Ywarn-infer-any",
-    "-Ywarn-nullary-override",
-    "-Ywarn-nullary-unit",
     "-Ywarn-numeric-widen",
-    "-Ywarn-unused",
-    "-Ywarn-unused-import",
-    "-Ywarn-value-discard",
   ),
 
   // Fork the tests, so that they run in a separate process. This is a requirement for forked benchmarking with
