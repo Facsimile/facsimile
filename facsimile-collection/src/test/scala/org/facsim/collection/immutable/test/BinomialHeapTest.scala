@@ -40,6 +40,7 @@ import org.facsim.collection.immutable.BinomialHeap
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.annotation.tailrec
+import scala.math.Ordering.Double
 import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
@@ -52,6 +53,9 @@ import org.scalatest.funspec.AnyFunSpec
 final class BinomialHeapTest
 extends AnyFunSpec
 with ScalaCheckPropertyChecks {
+
+  /** Implicit ordering for Double values. */
+  private implicit val doubleOrdering: Ordering[Double] = Double.TotalOrdering
 
   /** Check that an empty heap responds as such.
    *
