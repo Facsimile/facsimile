@@ -128,5 +128,5 @@ object Generator {
    *
    *  @return No shrink value, which should typically be an implicit value, for the specified type, `A`.
    */
-  def noShrink[A]: Shrink[A] = Shrink[A](_ => Stream.empty)
+  def noShrink[A]: Shrink[A] = Shrink.shrinkAny[A]
 }
