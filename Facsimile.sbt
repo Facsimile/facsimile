@@ -50,11 +50,11 @@ import xerial.sbt.Sonatype.sonatypeSettings
 //
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
 //
-// NOTE: When changing the primary Scala version, remember to update ./.travis.yml to match.
+// NOTE: When changing the primary Scala version, remember to update "./.travis.yml" to match.
 val AkkaVersion = "2.6.1"
 val CatsVersion = "2.0.0"
 val ParboiledVersion = "2.1.8"
-val ScalaPrimaryVersion = "2.13.1"
+val PrimaryScalaVersion = "2.13.1"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.1.0"
 val ScoptVersion = "4.0.0-RC2"
@@ -142,7 +142,7 @@ ThisBuild / homepage := Some(url("http://facsim.org/"))
 // NOTE: While it might appear that these Scala version options should be placed in "sourceProjectSettings", SBT will
 // use the Scala version to decorate the project's artifact/normalized name. Hence, even if a project does not contain
 // any sources, it it still necessary to provide the version of Scala that is in use.
-ThisBuild / scalaVersion := ScalaPrimaryVersion
+ThisBuild / scalaVersion := PrimaryScalaVersion
 
 // Publish artifacts to the Sonatype OSS repository.
 //
@@ -507,7 +507,7 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
   libraryDependencies ++= Seq(
 
     // The Scala reflection library is required for implementing macros.
-    "org.scala-lang" % "scala-reflect" % ScalaPrimaryVersion,
+    "org.scala-lang" % "scala-reflect" % PrimaryScalaVersion,
 
     // Akka streams library & testkit (the latter scoped for testing only).
     //
