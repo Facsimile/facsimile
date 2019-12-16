@@ -414,7 +414,7 @@ lazy val sourceProjectSettings = Seq(
     "-target:jvm-1.8",
     "-unchecked",
     "-Wdead-code",
-    "-Werror", // Fail compilation if there are any errors.
+    //"-Werror", // Fail compilation if there are any errors. Cannot use due to SuperSafe-generated warnings.
     "-Wextra-implicit",
     "-Wmacros:before",
     "-Wnumeric-widen",
