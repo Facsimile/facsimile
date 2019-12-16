@@ -405,8 +405,6 @@ lazy val sourceProjectSettings = Seq(
   // -Werror is only specified when compiling code, rather than when generating documentation. When these issues are
   // resolved, -Werror should be added to commonScalaCSettings.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
-
-    // Code compilation options.
     "-feature",
     "-g:vars",
     "-opt:l:method",
