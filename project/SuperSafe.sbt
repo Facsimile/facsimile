@@ -35,4 +35,4 @@
 //
 // This plugin requires a custom repository resolver to be defined.
 //======================================================================================================================
-addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.8")
+addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.9")
