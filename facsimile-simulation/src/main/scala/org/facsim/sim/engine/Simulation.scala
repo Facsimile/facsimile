@@ -38,14 +38,13 @@ package org.facsim.sim.engine
 
 import cats.data.State
 import org.facsim.collection.immutable.BinomialHeap
-import org.facsim.sim.{Priority, PriorityQueue, SimulationAction, SimulationTransition}
+import org.facsim.sim.{Priority, SimulationAction, SimulationTransition}
 import org.facsim.sim.model.{Action, AnonymousAction, EndWarmUpAction, ModelState}
-import org.facsim.util.CompareEqualTo
 import scala.language.implicitConversions
 import scala.reflect.runtime.universe.TypeTag
 import scala.util.{Failure, Success, Try}
 import squants.Time
-import squants.time.{Days, Seconds}
+import squants.time.Days
 
 /** Simulation model class.
  *
@@ -53,7 +52,7 @@ import squants.time.{Days, Seconds}
  *
  *  @since 0.0
  */
-final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
+final class Simulation[M <: ModelState[M]: TypeTag] {
 
   /** Implicit reference to the simulation. */
   implicit val SimulationRef: Simulation[M] = this
@@ -135,10 +134,13 @@ final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
    *  @since 0.0
    */
   def takeUntil[A: TypeTag](ts: Seq[SimulationTransition[M, A]], terminationValue: A)
-  (p: ((Simulation[M]#SimulationState, A)) => Boolean): SimulationTransition[M, A] = {
+  (p: ((SimulationState[M], A)) => Boolean): SimulationTransition[M, A] = {
+
+    // Transition type.
+    type Trn = SimulationTransition[M, A]
 
     // Helper function to perform the iteration.
-    def nextIteration(xs: Seq[SimulationTransition[M, A]]): SimulationTransition[M, A] = {
+    def nextIteration(xs: Seq[Trn]): Trn = {
 
       // Determine how to process the list of transitions.
       xs match {
@@ -159,7 +161,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
           // If the predicate succeeds for the state and result, then return it. Otherwise, return the result of the
           // next iteration.
           r <- {
-            if(p((s, rx))) State.pure[Simulation[M]#SimulationState, A](rx)
+            if(p((s, rx))) State.pure[SimulationState[M], A](rx)
             else nextIteration(xst)
           }
         } yield r
@@ -213,8 +215,8 @@ final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
    *
    *  @return Initial simulation state, for use at the start of the simulation.
    */
-  private def initialState(initialModelState: M): SimulationState = {
-    new SimulationState(initialModelState, 0L, None, BinomialHeap.empty[Simulation[M]#Event], Initializing)
+  private def initialState(initialModelState: M): SimulationState[M] = {
+    new SimulationState(initialModelState, 0L, None, BinomialHeap.empty[Event[M]], Initializing)
   }
 
   /** Initialize the simulation.
@@ -391,7 +393,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
    *  @since 0.0
    */
   def run(initialModelState: M, warmUpPeriod: Time = Days(7.0), snapLength: Time = Days(7.0), numSnaps: Int = 1)
-  (initialization: Action[M]): (Simulation[M]#SimulationState, Try[Unit]) = {
+  (initialization: Action[M]): (SimulationState[M], Try[Unit]) = {
 
     // Execute the initialization and all subsequent events.
     val runToCompletion: SimulationAction[M] = for {
@@ -408,149 +410,6 @@ final class Simulation[M <: ModelState[M]: TypeTag] {thisSim =>
 
     // Now initialize the simulation using the initial state and run it to completion.
     runToCompletion.run(initState).value
-  }
-
-  /** Encapsulates the state of a simulation model at in instant in (simulation) time.
-   *
-   *  @param modelState Simulation model state, tracking changes in the state of the model itself. Instances must be
-   *  immutable.
-   *
-   *  @param nextEventId Identifier of the next simulation event to be created.
-   *
-   *  @param current Event currently being dispatched, wrapped in `[[scala.Some Some]]`; if `[[scala.None None]]`, then
-   *  the simulation has typically not yet started running.
-   *
-   *  @param events Set of simulation events scheduled to occur at a future simulation time.
-   *
-   *  @param runState Current state of the simulation run.
-   *
-   *  @since 0.0
-   */
-  final class SimulationState private[Simulation](private[Simulation] val modelState: M,
-  private[Simulation] val nextEventId: Long, private[Simulation] val current: Option[Simulation[M]#Event],
-  private[Simulation] val events: PriorityQueue[Simulation[M]#Event], private[Simulation] val runState: RunState) {
-
-    /** Copy the existing state to a new state with the indicated new values.
-     *
-     *  @param newModelState New simulation model state, tracking changes in the state of the model itself. Instances
-     *  must be immutable.
-     *
-     *  @param newNextEventId New identifier of the next simulation event to be created.
-     *
-     *  @param newCurrent New event to become the current event being dispatched, wrapped in `[[scala.Some Some]]`; if
-     *  `[[scala.None None]]`, then the simulation has typically not yet started running.
-     *
-     *  @param newEvents New set of simulation events scheduled to occur at a future simulation time.
-     *
-     *  @param newRunState New run state of the simulation run.
-     *
-     *  @return Updated simulation state.
-     */
-    private[Simulation] def update(newModelState: M = modelState, newNextEventId: Long = nextEventId,
-    newCurrent: Option[Simulation[M]#Event] = current, newEvents: PriorityQueue[Simulation[M]#Event] = events,
-    newRunState: RunState = runState): SimulationState = {
-      new SimulationState(newModelState, newNextEventId, newCurrent, newEvents, newRunState)
-    }
-
-    /** Report the current simulation time.
-     *
-     *  @return Current simulation time.
-     */
-    private[Simulation] def simTime: Time = current.fold(Seconds(0.0))(_.dueAt)
-
-    /** Report the model's current state.
-     *
-     *  @return State of the model associated with this simulation.
-     */
-    private[Simulation] def state: ModelState[M] = modelState
-
-    /** Report the model's current execution state.
-     *
-     *  @return Current execution state of the model.
-     */
-    private[Simulation] def execState = runState
-
-    /** Report the simulation to which this state belongs.
-     *
-     *  @return Simulation instance to which this state belongs.
-     *
-     *  @since 0.0
-     */
-    def simulation: Simulation[M] = thisSim
-  }
-
-  /** Event scheduling the dispatch of specified actions at a specified simulation time.
-   *
-   *  @constructor Create an event instance to ensure that an action to change the simulation state is performed at a
-   *  specified time in the future.
-   *
-   *  @param id Unique identifier for this event. As well as uniquely identifying each event, `id` values serve to
-   *  record event creation order, such that when comparing two events, that with the lower `id` value was the first of
-   *  the two be scheduled.
-   *
-   *  @param dueAt Absolute simulation time at which the event's `action` is scheduled to occur.
-   *
-   *  @param priority Relative priority of this event. The lower this value, the higher the priority of the associated
-   *  event. Co-incidental events will be dispatched in order of their priority.
-   *
-   *  @param action Action to be performed by this event when it is dispatched.
-   */
-  // Note: This class should be declared as "final", and not as "sealed". If "final" is used, this results in the
-  // compiler warning: "The outer reference in this type test cannot be checked at run time." The use of "sealed" is an
-  // equivalent workaround. Refer to the following bug report for further details:
-  //
-  //    https://github.com/scala/bug/issues/4440
-  private[Simulation] sealed case class Event(id: Long, dueAt: Time, priority: Int = 0, action: Action[M])
-  extends Ordered[Simulation[M]#Event] {
-
-    /** Report the simulation to which this state belongs.
-     *
-     *  @return Simulation instance to which this state belongs.
-     *
-     *  @since 0.0
-     */
-    def simulation: Simulation[M] = thisSim
-
-    /** Compare this event to another event.
-     *
-     *  When comparing two events that have yet to occur, the event that compares as ''less than'' the other event must
-     *  always be dispatched first.
-     *
-     *  @note It is possible for an event that is occurring, or that has already occurred, to compare as ''greater
-     *  than'' an event that has yet to occur, but only if the latter was scheduled ''after'' the former was dispatched.
-     *  Even so, since time cannot run backwards, the latter cannot be due at an earlier time than the former.
-     *
-     *  @param that Event that this event is being compared to.
-     *
-     *  @return An integer value indicating the result of the comparison. If this value is less than zero, then this
-     *  event compares as ''less than'' `that` event; if this value is greater than zero, then this event compares as
-     *  ''greater than'' `that` event. Two events should ''never'' compare as equal (unless they are the same instance),
-     *  since the event's [[id]] must be unique.
-     */
-    override def compare(that: Simulation[M]#Event): Int = {
-
-      // Compare the two events based upon their due times. If the value is non-zero, then return that result;
-      // otherwise, the events are co-incident (occurring at the same simulation time) and we must look at the two
-      // events' priorities.
-      val dueAtOrder = dueAt.compare(that.dueAt)
-      if(dueAtOrder != CompareEqualTo) dueAtOrder
-      else {
-
-        // Compare the two events based upon their priorities. Because priorities are higher the lower the value, we can
-        // simply numerically compare the two. If the value is non-zero, then return that result; otherwise, the events
-        // are co-incident AND have the same priority and we must look at the two events' identifiers to determine their
-        // ordering.
-        val priorityOrder = priority.compare(that.priority)
-        if(priorityOrder != CompareEqualTo) priorityOrder
-        else {
-
-          // Compare the two events based upon their identifiers. These should not compare equal unless that event is
-          // this event.
-          assert(id != that.id || (this ne that), s"This event '$this' cannot equal event '$that'")
-          id.compare(that.id)
-        }
-      }
-    }
   }
 }
 
