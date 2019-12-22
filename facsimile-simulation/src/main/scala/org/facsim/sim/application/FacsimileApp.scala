@@ -74,7 +74,7 @@ extends App {
   // NOTE: If parsing fails, failure messages will be sent to the standard error output before the parse method returns.
   // Facsimile must not use the default "help" or "version" options, which will terminate the application without the
   // parse method returning.
-  parser.parse(args).map(runApp)
+  parser.parse(args.to(IndexedSeq)).map(runApp)
 
   /** Report the name of this application.
    *
