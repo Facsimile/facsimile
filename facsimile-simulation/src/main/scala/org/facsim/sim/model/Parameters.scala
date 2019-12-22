@@ -37,7 +37,7 @@
 package org.facsim.sim.model
 
 import com.typesafe.config.Config
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import squants.time.Time
 
 /** Simulation model parameters, obtained from configuration files.
