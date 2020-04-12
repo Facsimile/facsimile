@@ -35,6 +35,7 @@
       <option name="NEWLINE_AFTER_ANNOTATIONS" value="true" />
       <option name="KEEP_COMMENTS_ON_SAME_LINE" value="false" />
       <option name="KEEP_XML_FORMATTING" value="true" />
+      <option name="MULTILINE_STRING_CLOSING_QUOTES_ON_NEW_LINE" value="true" />
       <option name="TYPE_ANNOTATION_EXCLUDE_MEMBER_OF_ANONYMOUS_CLASS" value="true" />
       <option name="TYPE_ANNOTATION_EXCLUDE_MEMBER_OF_PRIVATE_CLASS" value="true" />
       <option name="TYPE_ANNOTATION_EXCLUDE_CONSTANT" value="false" />

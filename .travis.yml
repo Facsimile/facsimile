@@ -74,7 +74,7 @@ jdk:
   - openjdk8
 
 # Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
-# in the current version of ScalaFX require the latest release). Also ensure graphviz is installed, in order to create
+# in the current version of ScalaFX require the latest release). Also ensure Graphviz is installed, in order to create
 # documentation without errors.
 addons:
   apt:
