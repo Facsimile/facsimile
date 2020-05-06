@@ -144,7 +144,7 @@ package object util {
     // Note: The Class[T].getSimpleName method crashes for some Scala elements. This is a known bug. Refer to
     // [[https://issues.scala-lang.org/browse/SI-2034 Scala Issue SI-2034]] for further details.
     val name = elementType.getName
-    val path = FS + PeriodRegEx.replaceAllIn(name, Regex.quoteReplacement(JFS)) + ".class"
+    val path = JFS + PeriodRegEx.replaceAllIn(name, Regex.quoteReplacement(JFS)) + ".class"
 
     // Now retrieve the resource URL for this element path and wrap it in an Option
     Option(elementType.getResource(path))
