@@ -47,6 +47,7 @@ import scala.annotation.elidable
 import scala.language.experimental.macros
 import scala.language.implicitConversions
 import scala.reflect.macros.blackbox.Context
+import scala.util.matching.Regex
 
 /** ''[[http://facsim.org/ Facsimile]]'' Simulation Utility Library.
  *
@@ -68,6 +69,9 @@ package object util {
 
   /** File separator. */
   private[facsim] val FS: String = File.separator
+
+  /** ''JAR'' file class file separator. */
+  private[facsim] val JFS: String = "/"
 
   /** Path separator */
   private[facsim] val PS: String = File.pathSeparator
@@ -134,12 +138,13 @@ package object util {
     //
     // Retrieve the name of the class, and convert it into a resource path. To do this, we need to prefix it with a
     // slash, replace all periods with slashes and add a ".class" extension. It appears that we MUST NOT use the system
-    // dependent separator character (a slash '/' for Unix/Linux/etc. or a backslash '\' for Windows).
+    // dependent separator character, since only slashes (not backslashes, as on Windows) are to be used. We quote the
+    // replacement string (the slash) just in case it contains characters that require quoting.
     //
     // Note: The Class[T].getSimpleName method crashes for some Scala elements. This is a known bug. Refer to
     // [[https://issues.scala-lang.org/browse/SI-2034 Scala Issue SI-2034]] for further details.
     val name = elementType.getName
-    val path = FS + PeriodRegEx.replaceAllIn(name, FS) + ".class"
+    val path = FS + PeriodRegEx.replaceAllIn(name, Regex.quoteReplacement(JFS)) + ".class"
 
     // Now retrieve the resource URL for this element path and wrap it in an Option
     Option(elementType.getResource(path))
