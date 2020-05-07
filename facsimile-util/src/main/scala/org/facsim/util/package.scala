@@ -137,9 +137,10 @@ package object util {
     // to implement it...)
     //
     // Retrieve the name of the class, and convert it into a resource path. To do this, we need to prefix it with a
-    // slash, replace all periods with slashes and add a ".class" extension. It appears that we MUST NOT use the system
-    // dependent separator character, since only slashes (not backslashes, as on Windows) are to be used. We quote the
-    // replacement string (the slash) just in case it contains characters that require quoting.
+    // slash, replace all periods with slashes and add a ".class" extension.
+    //
+    // NOTE: DO NOT use the system-dependent separator character, as only slashes (not backslashes, as on Windows) are
+    // acceptaed. We quote the replacement string (the slash) just in case it contains characters that require quoting.
     //
     // Note: The Class[T].getSimpleName method crashes for some Scala elements. This is a known bug. Refer to
     // [[https://issues.scala-lang.org/browse/SI-2034 Scala Issue SI-2034]] for further details.
