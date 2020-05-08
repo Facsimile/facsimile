@@ -396,10 +396,17 @@ lazy val sourceProjectSettings = Seq(
   // Scala compiler options.
   //
   // -Woctal-literal gives false positives in Scala 2.13.2 for any use of 0 as an integer literal. This issue will be
-  // fixed in Scala 2.13.3. See https://github.com/scala/bug/issues/11950 for further details.
+  // fixed in Scala 2.13.3. See https://github.com/scala/bug/issues/11950 for further details. The resulting warnings
+  // currently prevents -Werror from being utilized.
   //
-  // Note: Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
-  // -Werror is only specified when compiling code, rather than when generating documentation. When these issues are
+  // Artima SuperSafe issues a generic warning for "errors" that are not reported by the free, Community Edition. The 8
+  // errors reported in facsimile-collection\src\test\scala\org\facsim\collection\immutable\test\BinomialHeapTest.scala
+  // are false positives, and can be ignored. However, the resulting warning currently prevents -Werror from being
+  // utilized. This issue was reported to Artima: See https://github.com/scalatest/scalatest/issues/1737 for futher
+  // details.
+  //
+  // Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
+  // -Werror can only specified when compiling code, rather than when generating documentation. When these issues are
   // resolved, -Werror should be added to commonScalaCSettings.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
     "-feature",
@@ -409,7 +416,7 @@ lazy val sourceProjectSettings = Seq(
     "-target:jvm-1.8",
     "-unchecked",
     "-Wdead-code",
-    //"-Werror", // Fail compilation if there are any errors. Cannot use due to SuperSafe-generated warnings.
+    //"-Werror", // Fail compilation if there are any errors. See above.
     "-Wextra-implicit",
     "-Wmacros:before",
     "-Wnumeric-widen",
