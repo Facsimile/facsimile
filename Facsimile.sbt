@@ -414,7 +414,7 @@ lazy val sourceProjectSettings = Seq(
     "-Wmacros:before",
     "-Wnumeric-widen",
     "-Woctal-literal",
-    //"-Wself-implicit",
+    "-Wself-implicit",
     "-Wunused", // Enable all unused warnings.
     "-Wvalue-discard",
     "-Xcheckinit",
