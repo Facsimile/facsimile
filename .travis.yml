@@ -57,7 +57,7 @@ sudo: false
 # These values should be synchronized with the values in the custom SBT build definition file, Facsimile.sbt.
 language: scala
 scala:
-  - 2.13.1
+  - 2.13.2
 
 # Cache the Coursier, Ivy & SBT directories at the end of the build.
 cache:
