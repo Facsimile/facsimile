@@ -401,6 +401,9 @@ lazy val sourceProjectSettings = Seq(
   // -Ywarn-adapted-args was removed in Scala 2.13, but see https://github.com/scala/bug/issues/11110 for further
   // details.
   //
+  // -Woctal-literal gives false positives in Scala 2.13.2 for any use of 0 as an integer literal. This issue will be
+  // fixed in Scala 2.13.3. See https://github.com/scala/bug/issues/11950 for further details.
+  //
   // Note: Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
   // -Werror is only specified when compiling code, rather than when generating documentation. When these issues are
   // resolved, -Werror should be added to commonScalaCSettings.
