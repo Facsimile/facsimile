@@ -395,9 +395,6 @@ lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
   //
-  // -Ywarn-adapted-args was removed in Scala 2.13, but see https://github.com/scala/bug/issues/11110 for further
-  // details.
-  //
   // -Woctal-literal gives false positives in Scala 2.13.2 for any use of 0 as an integer literal. This issue will be
   // fixed in Scala 2.13.3. See https://github.com/scala/bug/issues/11950 for further details.
   //
@@ -423,7 +420,6 @@ lazy val sourceProjectSettings = Seq(
     "-Xcheckinit",
     "-Xlint", // Enable all Xlint warnings,
     "-Ymacro-annotations",
-    //"-Ywarn-adapted-args",
   ),
 
   // Fork the tests, so that they run in a separate process. This is a requirement for forked benchmarking with
