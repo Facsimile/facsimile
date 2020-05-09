@@ -412,7 +412,7 @@ lazy val sourceProjectSettings = Seq(
     "-feature",
     "-g:vars",
     "-opt:l:method",
-    "-opt-warnings:_",
+    "-opt-warnings:_", // Enable all optimization warnings.
     "-target:jvm-1.8",
     "-unchecked",
     "-Wdead-code",
@@ -422,10 +422,10 @@ lazy val sourceProjectSettings = Seq(
     "-Wnumeric-widen",
     "-Woctal-literal",
     "-Wself-implicit",
-    "-Wunused", // Enable all unused warnings.
+    "-Wunused:_", // Enable all warnings about unused elements (imports, privates, etc.).
     "-Wvalue-discard",
     "-Xcheckinit",
-    "-Xlint", // Enable all Xlint warnings,
+    "-Xlint:_", // Enable all Xlint warnings.
     "-Ymacro-annotations",
   ),
 
