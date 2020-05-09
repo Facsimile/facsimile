@@ -35,11 +35,11 @@
 #
 # For further details on this configuration, refer to:
 #
-#   http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
+#   https://www.scala-sbt.org/1.x/docs/Travis-CI-with-sbt.html
 #=======================================================================================================================
 
-# Use Xenial Ubuntu for builds.
-dist: xenial
+# Use Bionic Ubuntu (18.04 LTS) for builds.
+dist: bionic
 
 # Set up XVFB (X Windows virtual frame buffer) so that we can run JavaFX/ScalaFX code in headless mode.
 #
