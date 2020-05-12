@@ -38,6 +38,6 @@ package org.facsim.util
 
 /** Common utility types and type utilities.
  *
- *  @since 0.0
+ *  @since 0.2
  */
 package object types
