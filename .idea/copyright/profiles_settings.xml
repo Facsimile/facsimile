@@ -1,5 +1,8 @@
 <component name="CopyrightManager">
   <settings default="Facsimile">
+    <module2copyright>
+      <element module="All" copyright="Facsimile" />
+    </module2copyright>
     <LanguageOptions name="Groovy" />
     <LanguageOptions name="HTML">
       <option name="fileTypeOverride" value="3" />

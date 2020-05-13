@@ -188,8 +188,8 @@ lazy val docProjectSettings = Seq(
     "-doc-title", s"{name.value} API Documentation",
     "-doc-version", baseVersion(version.value),
     "-groups",
-    //"-implicits",
-    //"-no-prefixes",
+    "-implicits",
+    "-no-prefixes",
     "-Ymacro-expand:none",
   ),
 
@@ -413,7 +413,7 @@ lazy val sourceProjectSettings = Seq(
     "-g:vars",
     "-opt:l:method",
     "-opt-warnings:_", // Enable all optimization warnings.
-    "-target:jvm-1.8",
+    "-target:11",
     "-unchecked",
     "-Wdead-code",
     //"-Werror", // Fail compilation if there are any errors. See above.

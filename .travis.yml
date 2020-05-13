@@ -66,12 +66,16 @@ cache:
     - $HOME/.ivy2
     - $HOME/.sbt
 
-# We need Java 8 to build facsimile.
+# We need Java 11 to build Facsimile.
+#
+# Facsimile's policy is to support the most recent, LTS Java release that is compatible with Scala and the project's
+# third-party librarys and plugins. When a new LTS release becomes available, Facsimile will aim to switch to it as soon
+# as it becomes supported.
 #
 # Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
 # here.
 jdk:
-  - openjdk8
+  - openjdk11
 
 # Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
 # in the current version of ScalaFX require the latest release). Also ensure Graphviz is installed, in order to create
