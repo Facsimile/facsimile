@@ -224,7 +224,9 @@ with CommonTestMethods {
       it("must retrieve localized date resources OK") {
         new testResources {
 
-          // Sep 14, 2010 - months are zero-based numbers(!)
+          // Sep 14, 2010 - months are zero-based numbers(!).
+          //
+          // Note that dates are formatted according to the "short" date format.
           val date = new GregorianCalendar(2010, 8, 14).getTime //scalastyle:ignore magic.number
 
           // Check that we get the correct en_US response.
@@ -232,12 +234,12 @@ with CommonTestMethods {
             assert(new Resource(testBundleName).apply(dateResource, date) === "9/14/10")
           }
 
-          // Month & day are in different order in the UK. Also, month has leading zero.
+          // Month & day are in different order in the UK. Also, month has leading zero, and years are 4 digit.
           withLocale(Locale.UK) {
-            assert(new Resource(testBundleName).apply(dateResource, date) === "14/09/10")
+            assert(new Resource(testBundleName).apply(dateResource, date) === "14/09/2010")
           }
 
-          // Germans use same order as UK, but different separator.
+          // Germans use same order as UK, but different separator. Years are 2 digits.
           withLocale(Locale.GERMANY) {
             assert(new Resource(testBundleName).apply(dateResource, date) === "14.09.10")
           }
