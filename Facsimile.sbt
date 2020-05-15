@@ -413,7 +413,7 @@ lazy val sourceProjectSettings = Seq(
     "-g:vars",
     "-opt:l:method",
     "-opt-warnings:_", // Enable all optimization warnings.
-    "-target:11",
+    "-target:8",
     "-unchecked",
     "-Wdead-code",
     //"-Werror", // Fail compilation if there are any errors. See above.
