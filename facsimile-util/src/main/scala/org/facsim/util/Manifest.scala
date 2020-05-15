@@ -298,7 +298,7 @@ extends Manifest {
     Name.IMPLEMENTATION_VERSION -> Success(sysProp("java.version")),
     Name.SPECIFICATION_TITLE -> Success(sysProp("java.specification.name")),
     Name.SPECIFICATION_VENDOR -> Success(sysProp("java.specification.vendor")),
-    Name.SPECIFICATION_VERSION -> Success(sysProp("java.specification.version")),
+    Name.SPECIFICATION_VERSION -> Success(sysProp("java.specification.version"))
   )
 
   /** @inheritdoc
