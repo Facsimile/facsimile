@@ -8,6 +8,7 @@
       <option name="fileTypeOverride" value="3" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
+      <option name="prefixLines" value="false" />
       <option name="lenBefore" value="120" />
       <option name="lenAfter" value="120" />
       <option name="filler" value="=" />
@@ -38,6 +39,7 @@
       <option name="fileTypeOverride" value="3" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
+      <option name="prefixLines" value="false" />
       <option name="lenBefore" value="120" />
       <option name="lenAfter" value="120" />
       <option name="filler" value="=" />
