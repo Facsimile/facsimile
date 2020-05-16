@@ -48,6 +48,9 @@ import scala.collection.compat.immutable.ArraySeq
 //scalastyle:off multiple.string.literals
 //scalastyle:off scaladoc
 
+// Disable Scalastyle for this entire file, as it reports spurious errors with an unknown cause.
+//scalastyle:off
+
 /** Test fixture for `[[UniChar]]`.
  */
 final class UniCharTest
@@ -77,7 +80,7 @@ with CommonTestMethods {
      */
     lazy val genOutOfRangeCodepoints: Gen[Int] = Gen.oneOf(
       Gen.choose(Int.MinValue, Character.MIN_CODE_POINT - 1),
-      Gen.choose(Character.MAX_CODE_POINT + 1, Int.MaxValue),
+      Gen.choose(Character.MAX_CODE_POINT + 1, Int.MaxValue)
     )
 
     /** Generator for defined ''Unicode'' codepoints.
@@ -1380,6 +1383,7 @@ with CommonTestMethods {
 }
 
 // Re-enable disabled Scalastyle checks, just in case.
+//scalastyle:on
 //scalastyle:on scaladoc
 //scalastyle:on multiple.string.literals
 //scalastyle:on magic.numbers
