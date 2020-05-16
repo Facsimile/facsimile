@@ -161,8 +161,8 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 //   https://github.com/sbt/sbt/issues/5070
 //   https://github.com/scalatest/scalatest/issues/1696
 //
-//
-// Note: No third-party resolvers are currently required.
+// Artima repository is required for SuperSafe compiler plugin.
+ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
 
 // Common Scala compilation options (for compiling sources and generating documentation).
 lazy val commonScalaCSettings = Seq(

@@ -49,4 +49,6 @@
 // NOTE: In some cases, it may be necessary to add the same resolvers to the Facsimile.sbt build file. Refer to the
 // resolver notes in that file for further details.
 //======================================================================================================================
-// Note: No third-party resolvers are currently required.
+
+// Artima repository is required for SuperSafe compiler plugin.
+ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
