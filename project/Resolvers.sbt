@@ -49,4 +49,4 @@
 // NOTE: In some cases, it may be necessary to add the same resolvers to the Facsimile.sbt build file. Refer to the
 // resolver notes in that file for further details.
 //======================================================================================================================
-resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"
+// Note: No third-party resolvers are currently required.
