@@ -353,7 +353,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     runTest,
 
     // Run scalastyle on sources to ensure that sources are correctly formatted and contain no static errors.
-    releaseStepTaskAggregated(scalastyle),
+    releaseStepCommand("scalastyle"),
 
     // Run scalastyle on test sources to ensure that sources are correctly formatted and contain no static errors.
     // This is temporarily disabled because of errors in Scalastyle parsing some of the recent test sources. See also
