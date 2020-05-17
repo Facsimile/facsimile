@@ -374,7 +374,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     //
     // NOTE: If cross-publishing, use 'releaseStepCommandAndRemaining("+publishSigned")' in place of
     // 'releaseStepCommand("publishSigned")'.
-    releaseStepCommand("publishSigned"),
+    releaseStepCommand("publish"),
     releaseStepCommand("sonatypeBundleRelease"),
 
     // Update the "Version.sbt" file so that it contains the new development version number.
