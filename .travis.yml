@@ -95,8 +95,12 @@ addons:
 # Note: As of Scoverage 1.6.0, it is no longer necessary to execute the coverageReport task, and in fact speeds up the
 # build if it is omitted: coverageAggregate (which must still be run as a separate sbt pass), now operates on the raw
 # coverage reports.
+#
+# NOTE: Do not use Scalastyle on test sources. It currently fails for the UniCharTest.scala file, even when checking of
+# that file is disabled. This can be re-instated when addressed.
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
+#  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle doc &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 
 # If this script was successful, run the coveralls SBT task.
