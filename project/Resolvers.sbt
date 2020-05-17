@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -33,8 +33,22 @@
 //======================================================================================================================
 // SBT file to include third-party repositories required by the build.
 //
-// These resolvers must currently also be specified in "./Facsimile.sbt". Refer to the issue below for further details:
+// Note: Resolvers of the form:
 //
-//   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
+//   "some repo" at "https://some.repo.url/"
+//   Resolver.url("some repo", url("https://some.repo.url/"))(Resolver.mavenStylePatterns)
+//
+// identify a Maven-formatted repository. If the repository is an Ivy repository, then the following form is required:
+//
+//   Resolver.url("some repo", url("https://some.repo.url/"))(Resolver.ivyStylePatterns)
+//
+// Other options are available too. Refer to the following link for further information:
+//
+//   https://www.scala-sbt.org/1.x/docs/Resolvers.html
+//
+// NOTE: In some cases, it may be necessary to add the same resolvers to the Facsimile.sbt build file. Refer to the
+// resolver notes in that file for further details.
 //======================================================================================================================
-resolvers in ThisBuild += "Artima Maven Repository" at "http://repo.artima.com/releases"
+
+// Artima repository is required for SuperSafe compiler plugin.
+ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"

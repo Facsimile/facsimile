@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -47,6 +47,7 @@ import scala.annotation.elidable
 import scala.language.experimental.macros
 import scala.language.implicitConversions
 import scala.reflect.macros.blackbox.Context
+import scala.util.matching.Regex
 
 /** ''[[http://facsim.org/ Facsimile]]'' Simulation Utility Library.
  *
@@ -63,11 +64,58 @@ package object util {
   /** Regular expression for identifying periods in package path names. */
   private val PeriodRegEx = """(\.)""".r
 
-  /** Regular expression for extracting a ''jar'' file URI from a URL. */
+  /** Regular expression for extracting a ''jar'' file ''URI'' from a ''URL''.
+   *
+   *  ''jar URL''s are typically of the form:
+   *
+   *  `jar:file:/''path/to/jar/file.jar''!/''some/package/classname''.class`.
+   *
+   *  For example, in ''Java'' 8, the URL for the [[String]] class might look like this (on an ''Ubuntu'' system):
+   *
+   *  `jar:file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/lang/String.class`
+   *
+   *  such that `file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar` is the URI for the ''JAR'' file that contains
+   *  this class.
+   *
+   *  @note Such URLs are reported for types packaged as ''JAR'' files; this may not be the case for types packages in
+   *  other formats.
+   */
   private val JarUriRegEx = """^jar\:(.+)\!.+$""".r
 
-  /** Java file separator. */
-  private[facsim] val FS = "/"
+  /** Regular expression for extracting a ''Java module name'' from a ''URL''.
+   *
+   *  ''jrt URL''s are typically of the form:
+   *
+   *  `jrt:/''module-name''/''some/package/classname''.class`.
+   *
+   *  For example, in ''Java'' 11, the URL for the [[String]] class might look like this:
+   *
+   *  `jrt:/java.base/java/lang/String.class`
+   *
+   *  such that `java.base` is the module-bane that contains this class.
+   *
+   *  @note Such URLs are reported for types packaged as ''JIMAGE'' files; this may not be the case for types packaged
+   *  in other formats.
+   */
+  private val JrtModuleNameRegEx = """^jrt\:/(java\.[a-z_]+)/.+$""".r
+
+  /** File separator. */
+  private[facsim] val FS: String = File.separator
+
+  /** ''JAR'' file class file separator. */
+  private[facsim] val JFS: String = "/"
+
+  /** Path separator */
+  private[facsim] val PS: String = File.pathSeparator
+
+  /** Line separator. */
+  private[facsim] val LS: String = sys.props("line.separator")
+
+  /** Single quote character. */
+  private[facsim] val SQ: String = "'"
+
+  /** Double quote character. */
+  private[facsim] val DQ: String = "\""
 
   /** Comparison return value implying less than. */
   private[facsim] val CompareLessThan = -1
@@ -121,40 +169,69 @@ package object util {
     // to implement it...)
     //
     // Retrieve the name of the class, and convert it into a resource path. To do this, we need to prefix it with a
-    // slash, replace all periods with slashes and add a ".class" extension. It appears that we MUST NOT use the system
-    // dependent separator character (a slash '/' for Unix/Linux/etc. or a backslash '\' for Windows).
+    // slash, replace all periods with slashes and add a ".class" extension.
+    //
+    // NOTE: DO NOT use the system-dependent separator character, as only slashes (not backslashes, as on Windows) are
+    // acceptaed. We quote the replacement string (the slash) just in case it contains characters that require quoting.
     //
     // Note: The Class[T].getSimpleName method crashes for some Scala elements. This is a known bug. Refer to
     // [[https://issues.scala-lang.org/browse/SI-2034 Scala Issue SI-2034]] for further details.
     val name = elementType.getName
-    val path = FS + PeriodRegEx.replaceAllIn(name, FS) + ".class"
+    val path = JFS + PeriodRegEx.replaceAllIn(name, Regex.quoteReplacement(JFS)) + ".class"
 
     // Now retrieve the resource URL for this element path and wrap it in an Option
     Option(elementType.getResource(path))
-  }
+  } ensuring(_ ne null) //scalastyle:ignore null
 
-  /** Obtain the ''JAR'' file associated with the specified element type.
+  /** Obtain the manifest associated with the specified element type.
    *
-   *  @param elementType Element type instance for which a resource ''URL'' will be sought.
+   *  @param elementType Element type instance for which a manifest will be sought.
    *
-   *  @return ''JAR'' file associated with `elementType` wrapped in `[[scala.Some Some]]`, or `[[scala.None None]]` if
-   *  `elementType` was not loaded from a ''JAR'' file.
+   *  @return Manifest associated with `elementType`.
    */
-  private[util] def jarFile(elementType: Class[_]): Option[JarFile] = resourceUrl(elementType).flatMap {url =>
+  private[util] def manifestOf(elementType: Class[_]): Manifest = {
 
-    // If the URL identifies a JAR file, then it will be of the (String) form:
-    //
-    // jar:file:/{path-of-jar-file}!{elementPath}
-    //
-    // In order to create a JAR file instance, we need to convert this into a hierarchical URI. We do this using a
-    // regular expression extraction (which removes the "jar:" prefix and the "!{elementPath}" suffix).
-    url.toString match {
+    // If a URL could not be identified, return the null manifest. Otherwise, process the resulting URL.
+    resourceUrl(elementType).fold[Manifest](NullManifest) {url =>
+      url.toString match {
 
-      // What we want is just the file:{path-of-jar-file} portion of the URL.
-      case JarUriRegEx(uri) => Some(new JarFile(new File(new URI(uri))))
+        // If the URL identifies a JAR file, then it will be of the (String) form:
+        //
+        // jar:file:/{path-of-jar-file}!/{element-path}
+        //
+        // The jar file URI (file:/{path-of-jar-file}) is extracted from this URL, in the form of a string, and used to
+        // create a new JAR file instance. The Java manifest is then retrieved, and used to populate the returned
+        // Facsimile Manifest instance.
+        //
+        // Note: As of Java 9, the Java runtime library is no longer packaged in a JAR file, and so URLs for Java
+        // standard runtime classes will not resolve as having JAR file URLs.
+        case JarUriRegEx(uri) => {
 
-      // The supplied URL does not identify a JAR file, so there's nothing to report.
-      case _ => None
+          // Retrieve the manifest for the indicated JAR file.
+          val jManifest = Option(new JarFile(new File(new URI(uri))).getManifest)
+
+          // If the JAR file has no manifest, then use the null manifest, otherwise construct a new JARManifest from the
+          // JAR manifest.
+          jManifest.fold[Manifest](NullManifest)(new JARManifest(_))
+        }
+
+        // If the URL identifies a class belonging to a module in a Java image file (JIMAGE), then the URL will be of
+        // the (String) form:
+        //
+        // jrt:/{module-name}/{element-path}
+        //
+        // For example, the java.lang.String class has the URL (from Java 9 onwards):
+        //
+        // jrt:/java.base/java/lang/String.class
+        //
+        // If the module name begins "java.", then return the JREManifest, which simulates a JAR-type manifest.
+        //
+        // Note: URLs of this form are only returned if using Java 9+ runtimes.
+        case JrtModuleNameRegEx(_) => JREManifest
+
+        // If there's no match on the URL, report a null manifest instead.
+        case _ => NullManifest
+      }
     }
   }
 

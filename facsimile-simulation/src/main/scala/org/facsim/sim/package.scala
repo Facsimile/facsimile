@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,7 +38,7 @@ package org.facsim
 
 import cats.data.State
 import org.facsim.collection.immutable.BinomialHeap
-import org.facsim.sim.engine.Simulation
+import org.facsim.sim.engine.SimulationState
 import org.facsim.sim.model.ModelState
 import scala.util.Try
 
@@ -75,7 +75,7 @@ package object sim {
    *
    *  @since 0.0
    */
-  type SimulationTransition[M <: ModelState[M], A] = State[Simulation[M]#SimulationState, A]
+  type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
 
   /** Type for simulation state transition actions, which return a status value.
    *

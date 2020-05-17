@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,11 +37,11 @@
 package org.facsim.util.test
 
 import org.facsim.util._
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off public.methods.have.type
 /** Miscellaneous functions for supporting ''Facsimile'' testing. */
-trait CommonTestMethods {this: FunSpec =>
+trait CommonTestMethods {this: AnyFunSpec =>
 
   /** Assert that a NullPointerException's message resulting from a [[requireNonNull(AnyRef)*]] failure matches the
    *  expected value.

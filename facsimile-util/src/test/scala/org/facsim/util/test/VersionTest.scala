@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,16 +37,16 @@
 package org.facsim.util.test
 
 import org.facsim.util.{Version, VersionParseException}
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.util.Failure
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
 /** Test harness for the [[Version]] class and object. */
 final class VersionTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks
 with CommonTestMethods {
 

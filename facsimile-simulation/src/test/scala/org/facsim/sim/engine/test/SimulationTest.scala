@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,8 +38,8 @@ package org.facsim.sim.engine.test
 
 import org.facsim.sim.engine.Simulation
 import org.facsim.sim.model.ModelState
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -49,7 +49,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 /** Test harness for the `[[org.facsim.sim.engine.Simulation Simulation]]` class. */
 final class SimulationTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks {
 
   /** Simulation model test state class. */
@@ -60,7 +60,7 @@ with ScalaCheckPropertyChecks {
   trait TestData
 
   // Start with the companion object.
-  describe(classOf[Simulation[_]].getClass.getCanonicalName) {
+  describe(classOf[Simulation[_]].getCanonicalName) {
   }
 }
 

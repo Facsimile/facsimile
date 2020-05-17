@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,7 +37,7 @@
 package org.facsim.util.test
 
 import org.facsim.util.{AssertNonNullKey, LibResource, RequireFiniteKey, RequireNonNullKey, RequireValidKey}
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off multiple.string.literals
@@ -47,7 +47,7 @@ import org.scalatest.FunSpec
  *  included here.
  */
 final class LibResourceTest
-extends FunSpec
+extends AnyFunSpec
 with CommonTestMethods {
 
   // Name the class we're testing.

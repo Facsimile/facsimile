@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -40,54 +40,28 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeParseException
 import java.util.jar.Attributes.Name
 import java.util.jar.{Manifest => JManifest}
+import scala.sys.SystemProperties
 import scala.util.{Failure, Success, Try}
 
-/** Provide ''manifest'' information for a library or application.
+/** Trait encapsulating ''manifest'' information for a library or application.
  *
- *  The manifest attributes are stored within a file named `MANIFEST.MF` located in the `/META-INF` folder of the
- *  associated ''Java archive'' file (or ''JAR'' file). If there is no associated ''JAR'' file, then no manifest
- *  information will be available.
- *
- *  @note ''Facsimile'' manifests, including the manifests of associated programs or simulation models, are expected to
- *  have a number of custom attributes that will not be present in all ''jar'' files.
- *
- *  @constructor Create a new instance from a ''Java'' manifest instance.
- *
- *  @param manifest Manifest from which attributes will be extracted.
+ *  Retrieval of manifest information is dependent upon the packaging used.
  *
  *  @since 0.0
  */
-final class Manifest private(manifest: JManifest) {
-
-  // Sanity checks. We're in charge of this, so we should never pass a null manifest reference.
-  assert(manifest ne null, "Manifest reference was null") //scalastyle:ignore null
-
-  /** Entries defined in the manifest. */
-  private val entries = manifest.getMainAttributes
-  assert(entries ne null, "Manifest has no main attributes") //scalastyle:ignore null
+sealed trait Manifest {
 
   /** Try to retrieve specified manifest attribute as a string.
    *
    *  @param name Name of attribute to be retrieved.
    *
    *  @return Attribute's value as a string wrapped in a `[[scala.util.Success Success]]` if it is defined; or a
-   *  `[[scala.util.Failure Failure]]` otherwise. The only possible failure is a
-   *  `[[org.facsim.util.NoSuchAttributeException NoSuchAttributeException]]`, indicating that there is no attribute
-   *  with the indicated `name`.
+   *  `[[scala.util.Failure Failure]]` otherwise. The only possible failure is a `[[NoSuchAttributeException]]`,
+   *  indicating that there is no attribute with the indicated `name`.
    *
    *  @since 0.0
    */
-  def attribute(name: Name): Try[String] = {
-
-    // Sanity checks. Name cannot be null.
-    requireNonNullFn(name, "name")
-
-    // Retrieve the specified attribute's value. If it is `null`, return the indicated failure. Otherwise wrap the
-    // attribute value as a success.
-    val value = entries.getValue(name)
-    if(value eq null) Failure(NoSuchAttributeException(name)) //scalastyle:ignore null
-    else util.Success(value)
-  }
+  def attribute(name: Name): Try[String]
 
   /** Try to retrieve specified manifest attribute as a date/time.
    *
@@ -112,15 +86,15 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def dateAttribute(name: Name): Try[ZonedDateTime] = attribute(name).flatMap {dt =>
+  final def dateAttribute(name: Name): Try[ZonedDateTime] = attribute(name).flatMap {dt =>
 
     // If the attribute value can be parsed, then return the result.
     try {
       Success(ZonedDateTime.parse(dt))
     }
 
-    // Otherwise, if this is the parse exception, report that as a failure. Any other exceptions thrown above will be
-    // passed on and not returned.
+      // Otherwise, if this is the parse exception, report that as a failure. Any other exceptions thrown above will be
+      // passed on and not returned.
     catch {
       case pe: DateTimeParseException => Failure(pe)
     }
@@ -146,7 +120,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def versionAttribute(name: Name): Try[Version] = attribute(name).flatMap(Version(_))
+  final def versionAttribute(name: Name): Try[Version] = attribute(name).flatMap(Version(_))
 
   /** Try to retrieve the inception timestamp of this manifest.
    *
@@ -165,7 +139,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def inceptionTimestamp: Try[ZonedDateTime] = dateAttribute(Manifest.InceptionTimestamp)
+  final def inceptionTimestamp: Try[ZonedDateTime] = dateAttribute(Manifest.InceptionTimestamp)
 
   /** Try to retrieve the build timestamp of this manifest.
    *
@@ -184,7 +158,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def buildTimestamp: Try[ZonedDateTime] = dateAttribute(Manifest.BuildTimestamp)
+  final def buildTimestamp: Try[ZonedDateTime] = dateAttribute(Manifest.BuildTimestamp)
 
   /** Try to retrieve the title of this application or library.
    *
@@ -194,7 +168,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def title: Try[String] = attribute(Name.IMPLEMENTATION_TITLE)
+  final def title: Try[String] = attribute(Name.IMPLEMENTATION_TITLE)
 
   /** Try to retrieve name of vendor publishing this application or library.
    *
@@ -206,7 +180,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def vendor: Try[String] = attribute(Name.IMPLEMENTATION_VENDOR)
+  final def vendor: Try[String] = attribute(Name.IMPLEMENTATION_VENDOR)
 
   /** Try to retrieve the implementation version of this release of this application or library.
    *
@@ -217,7 +191,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def version: Try[Version] = versionAttribute(Name.IMPLEMENTATION_VERSION)
+  final def version: Try[Version] = versionAttribute(Name.IMPLEMENTATION_VERSION)
 
   /** Try to retrieve the specification title of this application or library.
    *
@@ -227,7 +201,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def specTitle: Try[String] = attribute(Name.SPECIFICATION_TITLE)
+  final def specTitle: Try[String] = attribute(Name.SPECIFICATION_TITLE)
 
   /** Try to retrieve name of vendor specifying this application or library.
    *
@@ -239,7 +213,7 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def specVendor: Try[String] = attribute(Name.SPECIFICATION_VENDOR)
+  final def specVendor: Try[String] = attribute(Name.SPECIFICATION_VENDOR)
 
   /** Try to retrieve the specification version of this release of this application or library.
    *
@@ -250,7 +224,104 @@ final class Manifest private(manifest: JManifest) {
    *
    *  @since 0.0
    */
-  def specVersion: Try[Version] = versionAttribute(Name.SPECIFICATION_VERSION)
+  final def specVersion: Try[Version] = versionAttribute(Name.SPECIFICATION_VERSION)
+}
+
+/** Provide ''manifest'' information for a library or application, packaged as a ''Java archive'' (''JAR'') file.
+ *
+ *  The manifest attributes are stored within a file named `MANIFEST.MF` located in the `/META-INF` folder of the
+ *  associated ''Java archive'' file (or ''JAR'' file).
+ *
+ *  Note that not all ''JAR'' files contain a `META-INF/MANIFEST.MF` file; if this file is not present, then no
+ *  attributes will be available. Furthermore, even if a manifest is present, not all of the required attributes
+ *  (including ''standard'' attributes) will necessarily be present.
+ *
+ *  @note ''Facsimile'' manifests, including the manifests of associated programs or simulation models, are expected to
+ *  have a number of custom attributes that will not be present in all ''JAR'' files.
+ *
+ *  @constructor Create a new instance from a ''Java'' manifest instance.
+ *
+ *  @param manifest Manifest from which attributes will be extracted.
+ *
+ *  @since 0.2
+ */
+final class JARManifest private[util](manifest: JManifest)
+extends Manifest {
+
+  // Sanity checks. We're in charge of this, so we should never pass a null manifest reference.
+  assert(manifest ne null, "Manifest reference was null") //scalastyle:ignore null
+
+  /** Entries defined in the manifest. */
+  private val entries = manifest.getMainAttributes
+  assert(entries ne null, "Manifest has no main attributes") //scalastyle:ignore null
+
+  /** @inheritdoc
+   */
+  // Retrieve named attributes from the supplied manifest.
+  override def attribute(name: Name): Try[String] = {
+
+    // Sanity checks. Name cannot be null.
+    requireNonNullFn(name, "name")
+
+    // Retrieve the specified attribute's value. If it is `null`, return the indicated failure. Otherwise wrap the
+    // attribute value as a success.
+    val value = entries.getValue(name)
+    if(value eq null) Failure(NoSuchAttributeException(name)) //scalastyle:ignore null
+    else util.Success(value)
+  }
+}
+
+/** Provide ''manifest'' information for the ''Java runtime environment'' (''JRE'').
+ *
+ *  As of ''Java'' 9, ''JRE'' releases are packaged as a set of standard modules in a ''Java image'' (''JIMAGE'') file,
+ *  which do not possess manifests of the kind provided by ''Java archive'' (''JAR'') files. (Prior to ''Java'' 9,
+ *  releases were packaged as ''JAR'' files with a manifest.
+ *
+ *  In order to provide the necessary information, it is necessary to simulate the presence of a manifest using system
+ *  properties instead.
+ *
+ *  @since 0.2
+ */
+object JREManifest
+extends Manifest {
+
+  /** System properties to be used to provide the necessary information.
+   */
+  private val sysProp = new SystemProperties
+
+  /** Map of attribute names to corresponding system properties, wrapped in `[[Success]]`.
+   */
+  private val nameMap: Map[Name, Try[String]] = Map(
+    Manifest.BuildTimestamp -> Success(sysProp("java.version.date")),
+    Name.IMPLEMENTATION_TITLE -> Success(sysProp("java.runtime.name")),
+    Name.IMPLEMENTATION_VENDOR -> Success(sysProp("java.vendor")),
+    Name.IMPLEMENTATION_VERSION -> Success(sysProp("java.version")),
+    Name.SPECIFICATION_TITLE -> Success(sysProp("java.specification.name")),
+    Name.SPECIFICATION_VENDOR -> Success(sysProp("java.specification.vendor")),
+    Name.SPECIFICATION_VERSION -> Success(sysProp("java.specification.version"))
+  )
+
+  /** @inheritdoc
+   */
+  // Retrieve named attributes by looking at corresponding system properties instead; if there is no corresponding
+  // property, then report a failure instead.
+  override def attribute(name: Name): Try[String] = nameMap.getOrElse(name, Failure(NoSuchAttributeException(name)))
+}
+
+/** Empty (null) ''manifest'' with no attributes defined.
+ *
+ *  This manifest is employed for classes that were not loaded from a ''JAR'' file, or which were loaded from ''JAR''
+ *  file that has no manifest information, or which come from an unknown packaging scheme.
+ *
+ *  @since 0.2
+ */
+object NullManifest
+extends Manifest {
+
+  /** @inheritdoc
+   */
+  // Simply reject all questions with a failure of NoSuchAttributeException.
+  override def attribute(name: Name): Try[String] = Failure(NoSuchAttributeException(name))
 }
 
 /** Manifest companion object.
@@ -261,18 +332,17 @@ final class Manifest private(manifest: JManifest) {
  */
 object Manifest {
 
-  /** Name of the manifest inception timestamp attribute. */
-  private[util] val InceptionTimestamp = new Name("Inception-Timestamp")
-
-  /** Name of the manifest build timestamp attribute. */
-  private[util] val BuildTimestamp = new Name("Build-Timestamp")
-
-  /** Null manifest.
+  /** Manifest inception timestamp attribute.
    *
-   *  This manifest is employed for classes that were not loaded from a ''JAR'' file, or which were loaded from ''JAR''
-   *  file that has no manifest information.
+   *  @since 0.2
    */
-  private[util] val NullManifest = new Manifest(new JManifest())
+  val InceptionTimestamp = new Name("Inception-Timestamp")
+
+  /** Manifest build timestamp attribute.
+   *
+   *  @since 0.2
+   */
+  val BuildTimestamp = new Name("Build-Timestamp")
 
   /** Element type manifest factory method.
    *
@@ -292,10 +362,7 @@ object Manifest {
     // Sanity checks. Name cannot be null.
     requireNonNullFn(elementType, "elementType")
 
-    // Retrieve the JAR file associated with the specified type.
-    val manifest = jarFile(elementType).flatMap(jar => Option(jar.getManifest))
-
-    // If a manifest was obtained, wrap it in a Manifest and return. Otherwise, report the NullManifest.
-    manifest.fold(NullManifest)(new Manifest(_))
+    // Retrieve and return the manifest associated with the specified type.
+    manifestOf(elementType)
   }
 }

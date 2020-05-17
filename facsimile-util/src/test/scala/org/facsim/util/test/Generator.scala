@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,8 @@
 //======================================================================================================================
 package org.facsim.util.test
 
-import org.scalacheck.Gen
+import org.facsim.util.types.UniChar
+import org.scalacheck.{Gen, Shrink}
 
 /** Custom ''ScalaCheck'' generators.
  *
@@ -60,6 +61,12 @@ object Generator {
    */
   val nonNegInt = Gen.choose(0, Integer.MAX_VALUE)
 
+  /** Non-positive integers.
+   *
+   *  Produce integers across the entire supported range of non-positive integer values, including zero.
+   */
+  val nonPosInt = Gen.choose(Integer.MIN_VALUE, 0)
+
   /** Generate any integer value. */
   // A range of [Integer.MinValue, Integer.MaxValue] exceeds the capacity of a signed 32-bit integer value (31 bits for
   // the value, 1 for the sign), so we get around this by having two generators and selecting one or the other at
@@ -72,35 +79,35 @@ object Generator {
   /** Strings that can be encoded using ISO-8859-1. */
   val iso8859_1String = Gen.listOf(iso8859_1Char).map(_.mkString) //scalastyle:ignore field.name
 
-  /** Function to determine whether a Unicode codepoint is a reserved high or low surrogate value.
-   *
-   *  @param c Codepoint to be examined.
-   *
-   *  @return `true` if the codepoint is a reserved surrogate value (and not a valid ''Unicode'' value), or `false`
-   *  otherwise.
-   */
-  private def isSurrogate(c: Int) = c >= Character.MIN_SURROGATE && c <= Character.MAX_SURROGATE
-
-  /** Function to determine whether a Unicode codepoint is mappable.
-   *
-   *  A codepoint is mappable if there is a defined ''Unicode'' character, and if that character is not a high or low
-   *  surrogate value.
-   *
-   *  @param c Codepoint to be examined.
-   *
-   *  @return `true` if there is a mappable Unicode character with the specified codepoint.
-   */
-  private def isMappable(c: Int) = Character.isDefined(c) && !isSurrogate(c)
-
   /** Set of valid ''[[http://unicode.org/ Unicode]]'' characters.
    *
    *  Java will throw exceptions if attempts are map to create characters from invalid Unicode codepoints.
    */
-  private val unicodeVector = (Character.MIN_CODE_POINT to Character.MAX_CODE_POINT).filter(isMappable)
+  private lazy val unicodeVector = (Character.MIN_CODE_POINT to Character.MAX_CODE_POINT).filter(UniChar.isValid)
 
   /** ''[[http://unicode.org/ Unicode]]'' characters. */
-  private val unicodeChar = Gen.choose(0, unicodeVector.length - 1).map(unicodeVector)
+  private lazy val unicodeChar = Gen.oneOf(unicodeVector)
 
   /** Strings that can be encoded in ''[[http://unicode.org/ Unicode]]''. */
-  val unicodeString = Gen.listOf(unicodeChar).map(_.flatMap(i => Character.toChars(i)).mkString)
+  lazy val unicodeString = Gen.listOf(unicodeChar).map(_.flatMap(i => Character.toChars(i)).mkString)
+
+  /** List of ''[[http://unicode.org/ Unicode]]'' strings, which may be empty. */
+  lazy val unicodeStringList = Gen.listOf(unicodeString)
+
+  /** List of ''[[http://unicode.org/ Unicode]]'' strings, non-empty.*/
+  lazy val unicodeStringListNonEmpty = Gen.nonEmptyListOf(unicodeString)
+
+  /** Utility to prevent _ScalaCheck_ property shrinkage.
+   *
+   *  @note Shrinkage, whereby _ScalaCheck_ attempts to find the simplest case of value that causes a problem, is a
+   *  brilliant concept. Unfortunately, there's a [[https://github.com/rickynils/scalacheck/issues/129 bug]] in which
+   *  shrinked values violate defined constraints, so that the shrinked value fails for a completely different reason to
+   *  the original failing value. To work around this, we use this function that effectively disable shrinking of
+   *  failed values; the idea for this can be found [[https://github.com/scalatest/scalatest/issues/584 here]].
+   *
+   *  @tparam A Type of value for which shrinking is being disabled.
+   *
+   *  @return No shrink value, which should typically be an implicit value, for the specified type, `A`.
+   */
+  def noShrink[A]: Shrink[A] = Shrink.shrinkAny[A]
 }

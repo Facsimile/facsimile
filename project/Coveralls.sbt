@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -33,4 +33,4 @@
 //======================================================================================================================
 // SBT file to include support for the coveralls.io site.
 //======================================================================================================================
-addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.2")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.7")

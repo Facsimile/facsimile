@@ -1,5 +1,8 @@
 <component name="CopyrightManager">
   <settings default="Facsimile">
+    <module2copyright>
+      <element module="All" copyright="Facsimile" />
+    </module2copyright>
     <LanguageOptions name="Groovy" />
     <LanguageOptions name="HTML">
       <option name="fileTypeOverride" value="3" />
@@ -34,13 +37,11 @@
     </LanguageOptions>
     <LanguageOptions name="XML">
       <option name="fileTypeOverride" value="3" />
-      <option name="block" value="false" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
       <option name="prefixLines" value="false" />
       <option name="lenBefore" value="120" />
       <option name="lenAfter" value="120" />
-      <option name="box" value="true" />
       <option name="filler" value="=" />
     </LanguageOptions>
     <LanguageOptions name="__TEMPLATE__">

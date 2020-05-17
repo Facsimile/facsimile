@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,9 +38,10 @@ package org.facsim.collection.immutable.test
 
 import org.facsim.collection.immutable.BinomialHeap
 import org.scalacheck.Gen
-import org.scalatest.FunSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.annotation.tailrec
+import scala.math.Ordering.Double
+import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 //scalastyle:off scaladoc
@@ -50,8 +51,11 @@ import scala.annotation.tailrec
 
 /** Test harness for the [[org.facsim.collection.immutable.BinomialHeap]] class. */
 final class BinomialHeapTest
-extends FunSpec
+extends AnyFunSpec
 with ScalaCheckPropertyChecks {
+
+  /** Implicit ordering for Double values. */
+  private implicit val doubleOrdering: Ordering[Double] = Double.TotalOrdering
 
   /** Check that an empty heap responds as such.
    *
@@ -296,7 +300,7 @@ with ScalaCheckPropertyChecks {
         def updateState(hashCodes: Set[Int], count: Int, heap: BinomialHeap[Int]): (Set[Int], Int) = {
           (hashCodes + heap.hashCode, count + 1)
         }
-        var state = (Set.empty[Int], 0) //scalastyle:ignore var.local
+        var state = (Set.empty[Int], 0) //scalastyle:ignore var.field
         forAll {li: List[Int] =>
           val h = BinomialHeap(li: _*)
           state = updateState(state._1, state._2, h)

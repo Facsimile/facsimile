@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -35,4 +35,4 @@
 //
 // This plugin requires a custom repository resolver to be defined.
 //======================================================================================================================
-addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.7")
+addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.10")

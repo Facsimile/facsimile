@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,14 +37,14 @@
 package org.facsim.util.test
 
 import org.facsim.util.{requireFinite, requireNonNull, requireValid}
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 
 //scalastyle:off scaladoc
 //scalastyle:off public.methods.have.type
 //scalastyle:off multiple.string.literals
 /** Test suite for the [[org.facsim]] package object. */
 final class PackageTest
-extends FunSpec
+extends AnyFunSpec
 with CommonTestMethods {
 
   // Test fixture description.
