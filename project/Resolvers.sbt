@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -49,4 +49,6 @@
 // NOTE: In some cases, it may be necessary to add the same resolvers to the Facsimile.sbt build file. Refer to the
 // resolver notes in that file for further details.
 //======================================================================================================================
-resolvers in ThisBuild += "Artima Maven Repository" at "https://repo.artima.com/releases"
+
+// Artima repository is required for SuperSafe compiler plugin.
+ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"

@@ -1,6 +1,6 @@
 #=======================================================================================================================
 # Facsimile: A Discrete-Event Simulation Library
-# Copyright © 2004-2019, Michael J Allen.
+# Copyright © 2004-2020, Michael J Allen.
 #
 # This file is part of Facsimile.
 #
@@ -22,10 +22,10 @@
 #
 # Thank you for your interest in the Facsimile project!
 #
-# IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
-# as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
-# fails to comply with the standard, then your patches will be rejected. For further information, please visit the
-# coding standards at:
+# IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for
+# inclusion as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If
+# your code fails to comply with the standard, then your patches will be rejected. For further information, please
+# visit the coding standards at:
 #
 #   http://www.facsim.org/Documentation/CodingStandards/
 #=======================================================================================================================
@@ -35,11 +35,11 @@
 #
 # For further details on this configuration, refer to:
 #
-#   http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
+#   https://www.scala-sbt.org/1.x/docs/Travis-CI-with-sbt.html
 #=======================================================================================================================
 
-# Use Xenial Ubuntu for builds.
-dist: xenial
+# Use Bionic Ubuntu (18.04 LTS) for builds.
+dist: bionic
 
 # Set up XVFB (X Windows virtual frame buffer) so that we can run JavaFX/ScalaFX code in headless mode.
 #
@@ -57,7 +57,7 @@ sudo: false
 # These values should be synchronized with the values in the custom SBT build definition file, Facsimile.sbt.
 language: scala
 scala:
-  - 2.13.1
+  - 2.13.2
 
 # Cache the Coursier, Ivy & SBT directories at the end of the build.
 cache:
@@ -66,15 +66,19 @@ cache:
     - $HOME/.ivy2
     - $HOME/.sbt
 
-# We need Java 8 to build facsimile.
+# We need Java 11 to build Facsimile.
+#
+# Facsimile's policy is to support the most recent, LTS Java release that is compatible with Scala and the project's
+# third-party librarys and plugins. When a new LTS release becomes available, Facsimile will aim to switch to it as soon
+# as it becomes supported.
 #
 # Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
 # here.
 jdk:
-  - openjdk8
+  - openjdk11
 
 # Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
-# in the current version of ScalaFX require the latest release). Also ensure graphviz is installed, in order to create
+# in the current version of ScalaFX require the latest release). Also ensure Graphviz is installed, in order to create
 # documentation without errors.
 addons:
   apt:
@@ -91,8 +95,12 @@ addons:
 # Note: As of Scoverage 1.6.0, it is no longer necessary to execute the coverageReport task, and in fact speeds up the
 # build if it is omitted: coverageAggregate (which must still be run as a separate sbt pass), now operates on the raw
 # coverage reports.
+#
+# NOTE: Do not use Scalastyle on test sources. It currently fails for the UniCharTest.scala file, even when checking of
+# that file is disabled. This can be re-instated when addressed. See also the release procedure in Facsimile.sbt.
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
+#  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle doc &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 
 # If this script was successful, run the coveralls SBT task.

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,6 +36,7 @@
 //======================================================================================================================
 package org.facsim.util.test
 
+import org.facsim.util.types.UniChar
 import org.scalacheck.{Gen, Shrink}
 
 /** Custom ''ScalaCheck'' generators.
@@ -78,43 +79,23 @@ object Generator {
   /** Strings that can be encoded using ISO-8859-1. */
   val iso8859_1String = Gen.listOf(iso8859_1Char).map(_.mkString) //scalastyle:ignore field.name
 
-  /** Function to determine whether a Unicode codepoint is a reserved high or low surrogate value.
-   *
-   *  @param c Codepoint to be examined.
-   *
-   *  @return `true` if the codepoint is a reserved surrogate value (and not a valid ''Unicode'' value), or `false`
-   *  otherwise.
-   */
-  private def isSurrogate(c: Int) = c >= Character.MIN_SURROGATE && c <= Character.MAX_SURROGATE
-
-  /** Function to determine whether a Unicode codepoint is mappable.
-   *
-   *  A codepoint is mappable if there is a defined ''Unicode'' character, and if that character is not a high or low
-   *  surrogate value.
-   *
-   *  @param c Codepoint to be examined.
-   *
-   *  @return `true` if there is a mappable Unicode character with the specified codepoint.
-   */
-  private def isMappable(c: Int) = Character.isDefined(c) && !isSurrogate(c)
-
   /** Set of valid ''[[http://unicode.org/ Unicode]]'' characters.
    *
    *  Java will throw exceptions if attempts are map to create characters from invalid Unicode codepoints.
    */
-  private val unicodeVector = (Character.MIN_CODE_POINT to Character.MAX_CODE_POINT).filter(isMappable)
+  private lazy val unicodeVector = (Character.MIN_CODE_POINT to Character.MAX_CODE_POINT).filter(UniChar.isValid)
 
   /** ''[[http://unicode.org/ Unicode]]'' characters. */
-  private val unicodeChar = Gen.choose(0, unicodeVector.length - 1).map(unicodeVector)
+  private lazy val unicodeChar = Gen.oneOf(unicodeVector)
 
   /** Strings that can be encoded in ''[[http://unicode.org/ Unicode]]''. */
-  val unicodeString = Gen.listOf(unicodeChar).map(_.flatMap(i => Character.toChars(i)).mkString)
+  lazy val unicodeString = Gen.listOf(unicodeChar).map(_.flatMap(i => Character.toChars(i)).mkString)
 
   /** List of ''[[http://unicode.org/ Unicode]]'' strings, which may be empty. */
-  val unicodeStringList = Gen.listOf(unicodeString)
+  lazy val unicodeStringList = Gen.listOf(unicodeString)
 
   /** List of ''[[http://unicode.org/ Unicode]]'' strings, non-empty.*/
-  val unicodeStringListNonEmpty = Gen.nonEmptyListOf(unicodeString)
+  lazy val unicodeStringListNonEmpty = Gen.nonEmptyListOf(unicodeString)
 
   /** Utility to prevent _ScalaCheck_ property shrinkage.
    *

@@ -1,6 +1,6 @@
 #=======================================================================================================================
 # Facsimile: A Discrete-Event Simulation Library
-# Copyright © 2004-2019, Michael J Allen.
+# Copyright © 2004-2020, Michael J Allen.
 #
 # This file is part of Facsimile.
 #
@@ -22,10 +22,10 @@
 #
 # Thank you for your interest in the Facsimile project!
 #
-# IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for inclusion
-# as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If your code
-# fails to comply with the standard, then your patches will be rejected. For further information, please visit the
-# coding standards at:
+# IMPORTANT NOTE: All patches (modifications to existing files and/or the addition of new files) submitted for
+# inclusion as part of the official Facsimile code base, must comply with the published Facsimile Coding Standards. If
+# your code fails to comply with the standard, then your patches will be rejected. For further information, please
+# visit the coding standards at:
 #
 #   http://www.facsim.org/Documentation/CodingStandards/
 #=======================================================================================================================
@@ -48,6 +48,7 @@
 .idea/libraries/
 .idea/modules/
 .idea/modules.xml
+.idea/sbt.xml
 .idea/scala_compiler.xml
 .idea/tasks.xml
 .idea/workspace.xml

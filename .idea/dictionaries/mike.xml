@@ -5,11 +5,14 @@
       <w>candela</w>
       <w>codacy</w>
       <w>codepoint</w>
+      <w>codepoints</w>
+      <w>coursier</w>
       <w>ctor</w>
       <w>dereferenced</w>
       <w>facsim</w>
       <w>gradian</w>
       <w>gradians</w>
+      <w>graphviz</w>
       <w>hocon</w>
       <w>inheritdoc</w>
       <w>interoperating</w>
@@ -25,6 +28,7 @@
       <w>scalastyle</w>
       <w>scalatest</w>
       <w>scopt</w>
+      <w>scoverage</w>
       <w>semigroup</w>
       <w>sonatype</w>
       <w>typelevel</w>
@@ -33,6 +37,7 @@
       <w>unmanaged</w>
       <w>versioning</w>
       <w>xcheckinit</w>
+      <w>xenial</w>
       <w>xfatal</w>
       <w>xlint</w>
       <w>xstrict</w>

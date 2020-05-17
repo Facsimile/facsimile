@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -51,13 +51,13 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
 //
 // NOTE: When changing the primary Scala version, remember to update "./.travis.yml" to match.
-val AkkaVersion = "2.6.3"
+val AkkaVersion = "2.6.5"
 val CatsVersion = "2.1.0"
 val ParboiledVersion = "2.2.0"
-val PrimaryScalaVersion = "2.13.1"
+val PrimaryScalaVersion = "2.13.2"
 val ScalaMeterVersion = "0.19"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
-val ScalaTestVersion = "3.1.1"
+val ScalaTestVersion = "3.1.2"
 val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.6.0"
 
@@ -160,6 +160,8 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 //   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
 //   https://github.com/sbt/sbt/issues/5070
 //   https://github.com/scalatest/scalatest/issues/1696
+//
+// Artima repository is required for SuperSafe compiler plugin.
 ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
 
 // Common Scala compilation options (for compiling sources and generating documentation).
@@ -351,10 +353,13 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     runTest,
 
     // Run scalastyle on sources to ensure that sources are correctly formatted and contain no static errors.
-    releaseStepInputTask(scalastyle),
+    releaseStepCommand("scalastyle"),
 
     // Run scalastyle on test sources to ensure that sources are correctly formatted and contain no static errors.
-    releaseStepInputTask(Test / scalastyle),
+    // This is temporarily disabled because of errors in Scalastyle parsing some of the recent test sources. See also
+    // .travis.yml.
+    //
+    //releaseStepInputTask(Test / scalastyle),
 
     // Update the "Version.sbt" file so that it contains the release version number.
     setReleaseVersion,
@@ -369,7 +374,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     //
     // NOTE: If cross-publishing, use 'releaseStepCommandAndRemaining("+publishSigned")' in place of
     // 'releaseStepCommand("publishSigned")'.
-    releaseStepCommand("publishSigned"),
+    releaseStepCommand("publish"),
     releaseStepCommand("sonatypeBundleRelease"),
 
     // Update the "Version.sbt" file so that it contains the new development version number.
@@ -395,36 +400,38 @@ lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
   //
-  // -Xstrict-inference is currently disabled as it outputs erroneous warnings for some generic code. See
-  // https://issues.scala-lang.org/browse/SI-7991 for further details.
+  // -Woctal-literal gives false positives in Scala 2.13.2 for any use of 0 as an integer literal. This issue will be
+  // fixed in Scala 2.13.3. See https://github.com/scala/bug/issues/11950 for further details. The resulting warnings
+  // currently prevents -Werror from being utilized.
   //
-  // -Ywarn-adapted-args was removed in Scala 2.13, but see https://github.com/scala/bug/issues/11110 for further
+  // Artima SuperSafe issues a generic warning for "errors" that are not reported by the free, Community Edition. The 8
+  // errors reported in facsimile-collection\src\test\scala\org\facsim\collection\immutable\test\BinomialHeapTest.scala
+  // are false positives, and can be ignored. However, the resulting warning currently prevents -Werror from being
+  // utilized. This issue was reported to Artima: See https://github.com/scalatest/scalatest/issues/1737 for futher
   // details.
   //
-  // Note: Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
-  // -Werror is only specified when compiling code, rather than when generating documentation. When these issues are
+  // Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
+  // -Werror can only specified when compiling code, rather than when generating documentation. When these issues are
   // resolved, -Werror should be added to commonScalaCSettings.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
     "-feature",
     "-g:vars",
     "-opt:l:method",
-    "-opt-warnings:_",
-    "-target:jvm-1.8",
+    "-opt-warnings:_", // Enable all optimization warnings.
+    "-target:8",
     "-unchecked",
     "-Wdead-code",
-    //"-Werror", // Fail compilation if there are any errors. Cannot use due to SuperSafe-generated warnings.
+    //"-Werror", // Fail compilation if there are any errors. See above.
     "-Wextra-implicit",
     "-Wmacros:before",
     "-Wnumeric-widen",
     "-Woctal-literal",
-    //"-Wself-implicit",
-    "-Wunused", // Enable all unused warnings.
+    "-Wself-implicit",
+    "-Wunused:_", // Enable all warnings about unused elements (imports, privates, etc.).
     "-Wvalue-discard",
     "-Xcheckinit",
-    "-Xlint", // Enable all Xlint warnings,
-    //"-Xstrict-inference",
+    "-Xlint:_", // Enable all Xlint warnings.
     "-Ymacro-annotations",
-    //"-Ywarn-adapted-args",
   ),
 
   // Fork the tests, so that they run in a separate process. This is a requirement for forked benchmarking with

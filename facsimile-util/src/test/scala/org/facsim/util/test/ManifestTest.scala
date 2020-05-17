@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2019, Michael J Allen.
+// Copyright © 2004-2020, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -42,7 +42,7 @@ import java.util.jar.Attributes.Name
 import org.facsim.dummy.Dummy
 import org.facsim.invalid.Invalid
 import org.facsim.missing.Missing
-import org.facsim.util.{Manifest, NoSuchAttributeException, Version, VersionParseException}
+import org.facsim.util.{Manifest, NoSuchAttributeException, NullManifest, Version, VersionParseException}
 import scala.util.{Failure, Success}
 import org.scalatest.funspec.AnyFunSpec
 
@@ -113,7 +113,7 @@ with CommonTestMethods {
       it("must throw a NullPointerException if passed a null name") {
         new TestData {
           val e = intercept[NullPointerException] {
-            Manifest.NullManifest.attribute(null) //scalastyle:ignore null
+            NullManifest.attribute(null) //scalastyle:ignore null
           }
           assertRequireNonNullMsg(e, "name")
         }
@@ -127,6 +127,7 @@ with CommonTestMethods {
           assert(missingManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
           assert(noJarManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
           assert(dummyManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
+          assert(NullManifest.attribute(nonExistentAttr) === Failure(NoSuchAttributeException(nonExistentAttr)))
         }
       }
 
@@ -144,7 +145,7 @@ with CommonTestMethods {
       // Check null name values.
       it("must throw a NullPointerException if passed a null name") {
         val e = intercept[NullPointerException] {
-          Manifest.NullManifest.dateAttribute(null) //scalastyle:ignore null
+          NullManifest.dateAttribute(null) //scalastyle:ignore null
         }
         assertRequireNonNullMsg(e, "name")
       }
@@ -162,8 +163,12 @@ with CommonTestMethods {
 
       // Verify that it returns a Failure(NoSuchAttributeException) if the date attribute is undefined.
       it("must return Failure(NoSuchAttributeException) if attribute undefined") {
-        assert(Manifest.NullManifest.dateAttribute(Manifest.InceptionTimestamp) ===
-        Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
+        new TestData {
+          assert(missingManifest.dateAttribute(Manifest.InceptionTimestamp) ===
+          Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
+          assert(NullManifest.dateAttribute(Manifest.InceptionTimestamp) ===
+          Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
+        }
       }
 
       // Verify that it retrieves date attribute values OK.
@@ -180,7 +185,7 @@ with CommonTestMethods {
       // Check null name values.
       it("must throw a NullPointerException if passed a null name") {
         val e = intercept[NullPointerException] {
-          Manifest.NullManifest.versionAttribute(null) //scalastyle:ignore null
+          NullManifest.versionAttribute(null) //scalastyle:ignore null
         }
         assertRequireNonNullMsg(e, "name")
       }
@@ -195,8 +200,12 @@ with CommonTestMethods {
 
       // Verify that it returns a Failure(NoSuchAttributeException) if the date attribute is undefined.
       it("must return Failure(NoSuchAttributeException) if attribute undefined") {
-        assert(Manifest.NullManifest.versionAttribute(Name.IMPLEMENTATION_VERSION) ===
-        Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VERSION)))
+        new TestData {
+          assert(missingManifest.versionAttribute(Name.IMPLEMENTATION_VERSION) ===
+          Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VERSION)))
+          assert(NullManifest.versionAttribute(Name.IMPLEMENTATION_VERSION) ===
+          Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VERSION)))
+        }
       }
 
       // Verify that it retrieves version attribute values OK.
@@ -213,7 +222,6 @@ with CommonTestMethods {
       // Verify that we get a Failure(DateTimeParseException) if attribute has an invalid date/time.
       it("must return Failure(DateTimeParseException) if the date is not formatted correctly") {
         new TestData {
-
           val result = invalidManifest.inceptionTimestamp
           assert(result.isFailure)
           intercept[DateTimeParseException] {
@@ -224,8 +232,10 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the inception date attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.inceptionTimestamp ===
-        Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
+        new TestData {
+          assert(missingManifest.inceptionTimestamp === Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
+          assert(NullManifest.inceptionTimestamp === Failure(NoSuchAttributeException(Manifest.InceptionTimestamp)))
+        }
       }
 
       // Verify that it retrieves date attribute values OK.
@@ -242,7 +252,6 @@ with CommonTestMethods {
       // Verify that we get a Failure(DateTimeParseException) if attribute has an invalid date/time.
       it("must return Failure(DateTimeParseException) if the date is not formatted correctly") {
         new TestData {
-
           val result = invalidManifest.buildTimestamp
           assert(result.isFailure)
           intercept[DateTimeParseException] {
@@ -253,7 +262,10 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the build date attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.buildTimestamp === Failure(NoSuchAttributeException(Manifest.BuildTimestamp)))
+        new TestData {
+          assert(missingManifest.buildTimestamp === Failure(NoSuchAttributeException(Manifest.BuildTimestamp)))
+          assert(NullManifest.buildTimestamp === Failure(NoSuchAttributeException(Manifest.BuildTimestamp)))
+        }
       }
 
       // Verify that it retrieves date attribute values OK.
@@ -269,7 +281,10 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the title attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.title === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_TITLE)))
+        new TestData {
+          assert(missingManifest.title === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_TITLE)))
+          assert(NullManifest.title === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_TITLE)))
+        }
       }
 
       // Verify that it retrieves attribute values OK.
@@ -285,7 +300,10 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the vendor attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.vendor === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VENDOR)))
+        new TestData {
+          assert(missingManifest.vendor === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VENDOR)))
+          assert(NullManifest.vendor === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VENDOR)))
+        }
       }
 
       // Verify that it retrieves attribute values OK.
@@ -315,7 +333,7 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the version attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.version === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VERSION)))
+        assert(NullManifest.version === Failure(NoSuchAttributeException(Name.IMPLEMENTATION_VERSION)))
       }
 
       // Verify that it retrieves attribute values OK.
@@ -331,7 +349,7 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the title attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.specTitle === Failure(NoSuchAttributeException(Name.SPECIFICATION_TITLE)))
+        assert(NullManifest.specTitle === Failure(NoSuchAttributeException(Name.SPECIFICATION_TITLE)))
       }
 
       // Verify that it retrieves attribute values OK.
@@ -347,7 +365,10 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the vendor attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.specVendor === Failure(NoSuchAttributeException(Name.SPECIFICATION_VENDOR)))
+        new TestData {
+          assert(missingManifest.specVendor === Failure(NoSuchAttributeException(Name.SPECIFICATION_VENDOR)))
+          assert(NullManifest.specVendor === Failure(NoSuchAttributeException(Name.SPECIFICATION_VENDOR)))
+        }
       }
 
       // Verify that it retrieves attribute values OK.
@@ -371,7 +392,10 @@ with CommonTestMethods {
 
       // Verify that it returns Failure(NoSuchAttributeException) if the specification version attribute is undefined.
       it("must return Failure(NoSuchAttribute) if attribute undefined") {
-        assert(Manifest.NullManifest.specVersion === Failure(NoSuchAttributeException(Name.SPECIFICATION_VERSION)))
+        new TestData {
+          assert(missingManifest.specVersion === Failure(NoSuchAttributeException(Name.SPECIFICATION_VERSION)))
+          assert(NullManifest.specVersion === Failure(NoSuchAttributeException(Name.SPECIFICATION_VERSION)))
+        }
       }
 
       // Verify that it retrieves attribute values OK.
@@ -403,7 +427,7 @@ with CommonTestMethods {
       // Primitive types typically have no associated resources, because they are not implemented in library code.
       it("must return a NullManifest if passed a class reference having no associated resource") {
         val dc = classOf[Double]
-        assert(Manifest(dc) eq Manifest.NullManifest)
+        assert(Manifest(dc) eq NullManifest)
       }
 
       // Verify that looking up the manifest for a class that was not loaded from a JAR file fails with a
@@ -413,23 +437,23 @@ with CommonTestMethods {
       // use a reference to a locally-defined class here.
       it("must return a NullManifest if passed a non-JAR file class reference") {
         new TestData {
-          assert(noJarManifest eq Manifest.NullManifest)
+          assert(noJarManifest eq NullManifest)
         }
       }
 
       // Verify it retrieves a NullManifest for a class whose JAR file has no manifest.
       it("must return a NullManifest if passed a JAR file class reference that has no manifest") {
         new TestData {
-          assert(missingManifest eq Manifest.NullManifest)
+          assert(missingManifest eq NullManifest)
         }
       }
 
       // Verify that we can construct our test data objects without a problem.
       it("must retrieve manifest data for valid JAR file class references") {
         new TestData {
-          assert(javaManifest ne Manifest.NullManifest)
-          assert(invalidManifest ne Manifest.NullManifest)
-          assert(dummyManifest ne Manifest.NullManifest)
+          assert(javaManifest ne NullManifest)
+          assert(invalidManifest ne NullManifest)
+          assert(dummyManifest ne NullManifest)
         }
       }
     }
