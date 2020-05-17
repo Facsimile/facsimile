@@ -202,7 +202,7 @@ final class Parameters private[sim](config: Config) {
    *
    *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    *
-   *  @throws x.y.z if the value cannot be parsed as a time value.
+   *  @throws squants.QuantityParseException if a value cannot be parsed as a time value.
    */
   def timeParam(path: String): Time = {
 
@@ -228,7 +228,7 @@ final class Parameters private[sim](config: Config) {
    *
    *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    *
-   *  @throws x.y.z if a value cannot be parsed as a time value.
+   *  @throws squants.QuantityParseException if a value cannot be parsed as a time value.
    */
   def timeListParam(path: String): List[Time] = {
 
