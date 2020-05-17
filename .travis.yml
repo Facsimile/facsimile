@@ -97,7 +97,7 @@ addons:
 # coverage reports.
 #
 # NOTE: Do not use Scalastyle on test sources. It currently fails for the UniCharTest.scala file, even when checking of
-# that file is disabled. This can be re-instated when addressed.
+# that file is disabled. This can be re-instated when addressed. See also the release procedure in Facsimile.sbt.
 script:
 #  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle doc &&

@@ -353,10 +353,13 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     runTest,
 
     // Run scalastyle on sources to ensure that sources are correctly formatted and contain no static errors.
-    releaseStepInputTask(scalastyle),
+    releaseStepTaskAggregated(scalastyle),
 
     // Run scalastyle on test sources to ensure that sources are correctly formatted and contain no static errors.
-    releaseStepInputTask(Test / scalastyle),
+    // This is temporarily disabled because of errors in Scalastyle parsing some of the recent test sources. See also
+    // .travis.yml.
+    //
+    //releaseStepInputTask(Test / scalastyle),
 
     // Update the "Version.sbt" file so that it contains the release version number.
     setReleaseVersion,
@@ -371,7 +374,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     //
     // NOTE: If cross-publishing, use 'releaseStepCommandAndRemaining("+publishSigned")' in place of
     // 'releaseStepCommand("publishSigned")'.
-    releaseStepCommandAndRemaining("publishSigned"),
+    releaseStepCommand("publishSigned"),
     releaseStepCommand("sonatypeBundleRelease"),
 
     // Update the "Version.sbt" file so that it contains the new development version number.
