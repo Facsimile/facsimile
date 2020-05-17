@@ -73,7 +73,7 @@ version := "1.0.0-SNAPSHOT"
 scalaVersion := "2.13.2"
 
 // Version of Facsimile required to build your project.
-libraryDependencies += "org.facsim" %% "facsimile-simulation" % "0.2.0"
+libraryDependencies += "org.facsim" %% "facsimile-simulation" % "0.2.1"
 ```
 
 Use of _[JetBrains' IntelliJ IDEA](https://www.jetbrains.com/idea/)_ is highly recommended for developing both
