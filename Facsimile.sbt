@@ -57,7 +57,7 @@ val ParboiledVersion = "2.2.1"
 val PrimaryScalaVersion = "2.13.2"
 val ScalaMeterVersion = "0.19"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
-val ScalaTestVersion = "3.2.2"
+val ScalaTestVersion = "3.2.3"
 val ScoptVersion = "4.0.0-RC2"
 val SquantsVersion = "1.7.0"
 
