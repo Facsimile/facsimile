@@ -51,14 +51,14 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
 //
 // NOTE: When changing the primary Scala version, remember to update "./.travis.yml" to match.
-val AkkaVersion = "2.6.10"
+val AkkaVersion = "2.6.12"
 val CatsVersion = "2.1.0"
 val ParboiledVersion = "2.2.1"
 val PrimaryScalaVersion = "2.13.2"
-val ScalaMeterVersion = "0.19"
+val ScalaMeterVersion = "0.20"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.2.5"
-val ScoptVersion = "4.0.0-RC2"
+val ScoptVersion = "4.0.0"
 val SquantsVersion = "1.7.0"
 
 // Regular expression for matching release versions.
