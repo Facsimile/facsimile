@@ -54,7 +54,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 val AkkaVersion = "2.6.12"
 val CatsVersion = "2.1.0"
 val ParboiledVersion = "2.2.1"
-val PrimaryScalaVersion = "2.13.2"
+val PrimaryScalaVersion = "2.13.5"
 val ScalaMeterVersion = "0.20"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.2.5"
