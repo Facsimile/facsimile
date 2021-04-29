@@ -59,7 +59,7 @@ val ScalaMeterVersion = "0.21"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.2.7"
 val ScoptVersion = "4.0.1"
-val SquantsVersion = "1.7.4"
+val SquantsVersion = "1.8.0"
 
 // Regular expression for matching release versions.
 val ReleaseVersion = """(\d+)\.(\d+)\.(\d+)""".r
