@@ -53,7 +53,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // NOTE: When changing the primary Scala version, remember to update "./.travis.yml" to match.
 val AkkaVersion = "2.6.14"
 val CatsVersion = "2.1.0"
-val ParboiledVersion = "2.2.1"
+val ParboiledVersion = "2.3.0"
 val PrimaryScalaVersion = "2.13.5"
 val ScalaMeterVersion = "0.21"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
