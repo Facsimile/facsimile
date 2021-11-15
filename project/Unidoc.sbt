@@ -33,4 +33,4 @@
 //======================================================================================================================
 // SBT file to simplify creation of a single documentation project for all SBT sub-projects.
 //======================================================================================================================
-addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.4.3")
+addSbtPlugin("com.github.sbt" % "sbt-unidoc" % "0.5.0")
