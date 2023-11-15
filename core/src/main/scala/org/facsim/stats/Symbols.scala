@@ -1,6 +1,6 @@
 /*
  * Facsimile: A Discrete-Event Simulation Library
- * Copyright © 2004-2020, Michael J Allen.
+ * Copyright © 2004-2023, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
