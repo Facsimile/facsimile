@@ -165,8 +165,13 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
 
 // Common Scala compilation options (for compiling sources and generating documentation).
+//
+// We'll enforce the new braceless style (using significant indentation), and updated language syntax.
 lazy val commonScalaCSettings = Seq(
+  "-deprecation",
   "-encoding", "UTF-8",
+  "-indent",
+  "-new-syntax",
 )
 
 // Doc project settings.
@@ -183,16 +188,12 @@ lazy val docProjectSettings = Seq(
   // writing, ScalaDoc's use of GraphViz is broken and does not work correctly.
   Compile / doc / scalacOptions := commonScalaCSettings ++ Seq(
     "-author",
-    "-diagrams",
-    //"-diagrams-debug", //<-- Uncomment option to debug diagramming errors. Make sure graphviz is installed.
-    "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
-    "-doc-format:html",
-    "-doc-title", s"{name.value} API Documentation",
-    "-doc-version", baseVersion(version.value),
     "-groups",
-    //"-implicits",
-    //"-no-prefixes",
-    "-Ymacro-expand:none",
+    "-project", s"{name.value} API Documentation",
+    "-project-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
+    //"-project-logo", "Path to logo file - TO DO",
+    "-project-url", "https://facsim.org/",
+    "-project-version", baseVersion(version.value),
   ),
 
   // Allow the generated ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
@@ -399,39 +400,18 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
-  //
-  // -Woctal-literal gives false positives in Scala 2.13.2 for any use of 0 as an integer literal. This issue will be
-  // fixed in Scala 2.13.3. See https://github.com/scala/bug/issues/11950 for further details. The resulting warnings
-  // currently prevents -Werror from being utilized.
-  //
-  // Artima SuperSafe issues a generic warning for "errors" that are not reported by the free, Community Edition. The 8
-  // errors reported in facsimile-collection\src\test\scala\org\facsim\collection\immutable\test\BinomialHeapTest.scala
-  // are false positives, and can be ignored. However, the resulting warning currently prevents -Werror from being
-  // utilized. This issue was reported to Artima: See https://github.com/scalatest/scalatest/issues/1737 for futher
-  // details.
-  //
-  // Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
-  // -Werror can only specified when compiling code, rather than when generating documentation. When these issues are
-  // resolved, -Werror should be added to commonScalaCSettings.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
     "-feature",
-    "-g:vars",
-    "-opt:l:method",
-    "-opt-warnings:_", // Enable all optimization warnings.
-    "-target:8",
+    "-java-output-version:17",
     "-unchecked",
-    "-Wdead-code",
-    //"-Werror", // Fail compilation if there are any errors. See above.
-    "-Wextra-implicit",
-    "-Wmacros:before",
-    "-Wnumeric-widen",
-    "-Woctal-literal",
-    "-Wself-implicit",
-    "-Wunused:_", // Enable all warnings about unused elements (imports, privates, etc.).
+    "-uniqid",
+    "-Werror", // Fail compilation if there are any errors.
+    "-Wnonunit-statement",
+    "-Wunused:all", // Enable all warnings about unused elements (imports, privates, etc.).
     "-Wvalue-discard",
-    "-Xcheckinit",
-    "-Xlint:_", // Enable all Xlint warnings.
-    "-Ymacro-annotations",
+    "-Xverify-signatures",
+    "-Yexplicit-nulls", // Don't allow reference types to be null.
+    "-Ysafe-init",
   ),
 
   // Fork the tests, so that they run in a separate process. This is a requirement for forked benchmarking with
