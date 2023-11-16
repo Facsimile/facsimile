@@ -112,7 +112,7 @@ Here, we refer to it as the top Y-axis dimension to avoid confusion.
 */
 
   private val topYDim = scene.readDouble(_ >= 0.0,
-  LibResource(Trapezoid.ReadDimKey, 3)) // scalastyle:ignore
+  LibResource(Trapezoid.ReadDimKey, 3))
 
 /**
 Trapezoid top X-axis dimension.
@@ -134,7 +134,7 @@ Height of the trapezoid measured along the Z-Axis.
 */
 
   private val height = scene.readDouble(_ >= 0.0,
-  LibResource(Trapezoid.ReadDimKey, 4)) // scalastyle:ignore
+  LibResource(Trapezoid.ReadDimKey, 4))
 
 /**
 Trapezoid top X-axis offset.

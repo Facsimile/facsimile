@@ -41,7 +41,6 @@ import org.facsim.types.test.EqualsBehaviors
 import org.facsim.util.test.CommonTestMethods
 import org.scalatest.FunSpec
 
-//scalastyle:off scaladoc
 /** Test behaviors for [[Physical]] subclasses.
  *
  *  @tparam Q Physical subclass to be tested.
@@ -79,4 +78,3 @@ with CommonTestMethods {
     }
   }
 }
-//scalastyle:on scaladoc

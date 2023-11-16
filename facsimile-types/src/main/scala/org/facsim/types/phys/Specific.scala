@@ -146,18 +146,17 @@ extends Physical {specific =>
    *
    *  @since 0.0
    */
-  //scalastyle:off disallow.space.before.token
+
   abstract class SpecificMeasure[F <: SpecificMeasure[F] : ClassTag] protected[phys](measure: Double)
-  //scalastyle:on disallow.space.before.token
+
   extends PhysicalMeasure[F](measure) {
 
     /** @inheritdoc */
     protected[phys] final override def family: Family = specific.family
 
     /** @inheritdoc */
-    //scalastyle:off token
+
     private[types] final override def createNew(newMeasure: Double): F = apply(newMeasure).asInstanceOf[F]
-    //scalastyle:on token
 
     /** Convert this measurement value to a string, expressed in the user's preferred units.
      *

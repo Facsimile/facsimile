@@ -74,7 +74,7 @@ class Resource(bundleName: String) {
    *  will be thrown.
    */
   private final val bundle = ResourceBundle.getBundle(bundleName)
-  assert(bundle ne null) // scalastyle:ignore null
+  assert(bundle ne null)
 
   /** Retrieve and format a locale-specific string resource.
    *
@@ -114,8 +114,6 @@ class Resource(bundleName: String) {
     requireNonNullFn(key, "key")
 
     // To convert a Scala vararg to a Java vararg, while boxing numbers requires this rather ugly code...
-    //
-    // Disable scalastyle complaints about casting - there's no real alternative to this, at the time of writing.
-    MessageFormat.format(bundle.getString(key), arguments.map(_.asInstanceOf[AnyRef]): _*) // scalastyle:ignore token
+    MessageFormat.format(bundle.getString(key), arguments.map(_.asInstanceOf[AnyRef]): _*)
   }
 }

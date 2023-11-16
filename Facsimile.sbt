@@ -42,10 +42,6 @@ import scala.util.Properties
 import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype.sonatypeSettings
 
-// Disable certain Scalastyle options, which IntelliJ IDEA insists on applying to SBT sources.
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
-
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
@@ -331,9 +327,8 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 
   // Employ the following custom release process.
   //
-  // This differs from the standard sbt-release process in that:
-  // a) We must perform static source checking (using Scalastyle) before setting the release version.
-  // b) We employ the sbt-sonatype plugin to publish the project, which also takes care of signing published artifacts.
+  // This differs from the standard sbt-release process in that we employ the sbt-sonatype plugin to publish the
+  // project, which also takes care of signing published artifacts.
   releaseProcess := Seq[ReleaseStep](
 
     // Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
@@ -350,15 +345,6 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 
     // Run the test suite, to verify that all tests pass. (This will also compile all code.)
     runTest,
-
-    // Run scalastyle on sources to ensure that sources are correctly formatted and contain no static errors.
-    releaseStepCommand("scalastyle"),
-
-    // Run scalastyle on test sources to ensure that sources are correctly formatted and contain no static errors.
-    // This is temporarily disabled because of errors in Scalastyle parsing some of the recent test sources. See also
-    // .travis.yml.
-    //
-    //releaseStepInputTask(Test / scalastyle),
 
     // Update the "Version.sbt" file so that it contains the release version number.
     setReleaseVersion,
@@ -673,5 +659,3 @@ lazy val facsimile = project.in(file("."))
   |environment. Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS, BSD and Unix on the Java
   |virtual machine.""".stripMargin.replaceAll("\n", " "),
 )
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc

@@ -40,8 +40,6 @@ import java.util.{GregorianCalendar, Locale, MissingResourceException}
 import org.facsim.util.Resource
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Test harness for the [[Resource]] class. */
 final class ResourceTest
 extends AnyFunSpec
@@ -64,7 +62,7 @@ with CommonTestMethods {
     describe("this(String)") {
       it("must throw NullPointerException when bundleName is null") {
         val e = intercept[NullPointerException] {
-          new Resource(null) //scalastyle:ignore null
+          new Resource(null)
         }
         assertRequireNonNullMsg(e, "bundleName")
       }
@@ -85,7 +83,7 @@ with CommonTestMethods {
       it("must throw NullPointerException when key is null") {
         new testResources {
           val e = intercept[NullPointerException] {
-            new Resource(testBundleName).apply(null) //scalastyle:ignore null
+            new Resource(testBundleName).apply(null)
           }
           assertRequireNonNullMsg(e, "key")
         }
@@ -227,7 +225,7 @@ with CommonTestMethods {
           // Sep 14, 2010 - months are zero-based numbers(!).
           //
           // Note that dates are formatted according to the "short" date format.
-          val date = new GregorianCalendar(2010, 8, 14).getTime //scalastyle:ignore magic.number
+          val date = new GregorianCalendar(2010, 8, 14).getTime
 
           // Check that we get the correct en_US response.
           withLocale(Locale.US) {
@@ -248,5 +246,4 @@ with CommonTestMethods {
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

@@ -559,7 +559,7 @@ object UniChar {
    *
    *  @since 0.2
    */
-  val FS: UniChar = 0x1C //scalastyle:ignore magic.number
+  val FS: UniChar = 0x1C
   assert(FS.isWhitespace)
 
   /** Group separator character.
@@ -568,7 +568,7 @@ object UniChar {
    *
    *  @since 0.2
    */
-  val GS: UniChar = 0x1D //scalastyle:ignore magic.number
+  val GS: UniChar = 0x1D
   assert(GS.isWhitespace)
 
   /** Horizontal tab character.
@@ -621,7 +621,7 @@ object UniChar {
    *
    *  @since 0.2
    */
-  val RS: UniChar = 0x1E //scalastyle:ignore magic.number
+  val RS: UniChar = 0x1E
   assert(RS.isWhitespace)
 
   /** Semicolon character.
@@ -651,7 +651,7 @@ object UniChar {
    *
    *  @since 0.2
    */
-  val US: UniChar = 0x1F //scalastyle:ignore magic.number
+  val US: UniChar = 0x1F
   assert(US.isWhitespace)
 
   /** Vertical tab character.
@@ -660,7 +660,7 @@ object UniChar {
    *
    *  @since 0.2
    */
-  val VT: UniChar = 0x0B //scalastyle:ignore magic.number
+  val VT: UniChar = 0x0B
   assert(VT.isWhitespace)
 
   /** Implicit conversion of integer codepoint values to `[[UniChar]]` characters.

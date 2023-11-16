@@ -46,7 +46,7 @@ private[application] trait JFXInitialization
 extends DelayedInit {
 
   /** Application initialization state. */
-  private var state: InitializationState = Uninitialized() //scalastyle ignore var.field
+  private var state: InitializationState = Uninitialized()
 
   /** Queue construction code for execution once the ''JavaFX'' application instance has been initialized.
    *

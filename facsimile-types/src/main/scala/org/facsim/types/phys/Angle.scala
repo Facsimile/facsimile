@@ -79,7 +79,7 @@ extends Specific {
    *
    *  @since 0.0
    */
-  lazy val π: Measure = newMeasure(Math.PI) //scalastyle:ignore field.name
+  lazy val π: Measure = newMeasure(Math.PI)
 
   /** A proposed mathematical constant, ''[[http://en.wikipedia.org/wiki/Turn_(geometry)#Tau_proposal τ]]'' (tau).
    *
@@ -87,7 +87,7 @@ extends Specific {
    *
    *  @see ''[[http://tauday.com/tau-manifesto The Tau Manifesto]]'' for further information.
    */
-  private val τValue = 2.0 * Math.PI //scalastyle:ignore field.name
+  private val τValue = 2.0 * Math.PI
 
   /** A proposed mathematical constant, ''[[http://en.wikipedia.org/wiki/Turn_(geometry)#Tau_proposal τ]]'' (tau), in
    *  the form of an angle value.
@@ -111,7 +111,7 @@ extends Specific {
    *
    *  @since 0.0
    */
-  lazy val τ: Measure = newMeasure(τValue) //scalastyle:ignore field.name
+  lazy val τ: Measure = newMeasure(τValue)
 
   /** Units for angles measured in ''[[http://en.wikipedia.org/wiki/Degree_(angle) degrees]]''.
    *

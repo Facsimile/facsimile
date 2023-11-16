@@ -44,10 +44,6 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
 
 /** Test harness for the [[Severity]] trait and sub-classes. */
 final class SeverityTest
@@ -286,7 +282,4 @@ with ScalaCheckPropertyChecks {
 }
 
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on magic.numbers
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+

@@ -249,11 +249,11 @@ final class JARManifest private[util](manifest: JManifest)
 extends Manifest {
 
   // Sanity checks. We're in charge of this, so we should never pass a null manifest reference.
-  assert(manifest ne null, "Manifest reference was null") //scalastyle:ignore null
+  assert(manifest ne null, "Manifest reference was null")
 
   /** Entries defined in the manifest. */
   private val entries = manifest.getMainAttributes
-  assert(entries ne null, "Manifest has no main attributes") //scalastyle:ignore null
+  assert(entries ne null, "Manifest has no main attributes")
 
   /** @inheritdoc
    */
@@ -266,7 +266,7 @@ extends Manifest {
     // Retrieve the specified attribute's value. If it is `null`, return the indicated failure. Otherwise wrap the
     // attribute value as a success.
     val value = entries.getValue(name)
-    if(value eq null) Failure(NoSuchAttributeException(name)) //scalastyle:ignore null
+    if(value eq null) Failure(NoSuchAttributeException(name))
     else util.Success(value)
   }
 }

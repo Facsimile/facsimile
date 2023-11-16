@@ -333,7 +333,7 @@ abstract class Physical {
      */
     final def abs: Measure = {
       if(value < 0.0) createNewMeasure(-value)
-      else this.asInstanceOf[Measure] //scalastyle:ignore token
+      else this.asInstanceOf[Measure]
     }
 
     /** Change the sign of a measurement value.
@@ -345,7 +345,7 @@ abstract class Physical {
      *
      *  @since 0.0
      */
-    final def unary_- : Try[Measure] = createNew(-value) //scalastyle:ignore disallow.space.before.token
+    final def unary_- : Try[Measure] = createNew(-value)
 
     /** @inheritdoc */
     // This method is overridden because physical measurements can be compared for equality if the other value is a
@@ -409,7 +409,6 @@ abstract class Physical {
     // same as Doubles), since we can implicitly convert either to the other.
     final override def hashCode: Int = value.hashCode ^ family.hashCode
   }
-  //scalastyle:on disallow.space.before.token
 
   /** Abstract base class for all physical quantity measurement units.
    *

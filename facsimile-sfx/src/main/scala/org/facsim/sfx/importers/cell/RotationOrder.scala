@@ -67,7 +67,7 @@ private[cell] object RotationOrder {
    *
    *  @throws scala.MatchError if `ro` is not a valid rotation order code.
    */
-  //scalastyle:off magic.number
+
   def apply(ro: Int): Seq[Point3D] = {
 
     // Match the code
@@ -78,5 +78,5 @@ private[cell] object RotationOrder {
     case 4 => Seq(Z_AXIS, X_AXIS, Y_AXIS)
     case 5 => Seq(Z_AXIS, Y_AXIS, X_AXIS)
   }
-  //scalastyle:on magic.number
+
 }

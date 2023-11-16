@@ -39,7 +39,6 @@ package org.facsim.util.test
 import org.facsim.util._
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off public.methods.have.type
 /** Miscellaneous functions for supporting ''Facsimile'' testing. */
 trait CommonTestMethods {this: AnyFunSpec =>
 
@@ -80,4 +79,3 @@ trait CommonTestMethods {this: AnyFunSpec =>
     assert(e.getMessage === LibResource(RequireFiniteKey, argName, argValue))
   }
 }
-//scalastyle:on public.methods.have.type

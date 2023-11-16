@@ -75,9 +75,9 @@ extends Specific {
    *
    *  @since 0.0
    */
-  //scalastyle:off disallow.space.before.token
+
   abstract class NonNegativeMeasure[F <: NonNegativeMeasure[F] : ClassTag] protected[phys](measure: Double)
-  //scalastyle:on disallow.space.before.token
+
   extends SpecificMeasure[F](measure) {
 
     // If the types is negative, then report an error.

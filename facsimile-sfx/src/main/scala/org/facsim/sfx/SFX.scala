@@ -44,7 +44,7 @@ private[sfx] object SFX {
    *  Much of the information reported by this singleton is served by the current state. The initial state is to be
    *  uninitialized.
    */
-  private var state: SFXState = SFXUninitialized //scalastyle:ignore var.field
+  private var state: SFXState = SFXUninitialized
 
   /** Update the state of the application.
    *

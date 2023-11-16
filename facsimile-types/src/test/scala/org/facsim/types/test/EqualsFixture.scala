@@ -36,8 +36,6 @@
 //======================================================================================================================
 package org.facsim.types.test
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Fixture trait for testing if an associated object implements the ''equals contract''.
  *
  *  @tparam V Type, implementing the [[Equivalent]] class, to be tested.
@@ -75,5 +73,4 @@ trait EqualsFixture[V <: Equivalent[V]] {
    */
   final def valueSample: List[V] = equalListSample.map(_.head)
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

@@ -213,7 +213,7 @@ package object types {
      *
      *  @since 0.0
      */
-    def ===(rhs: A)(implicit eqv: Equivalent[A]): Boolean = eqv.eqv(lhs, rhs) //scalastyle:ignore method.name
+    def ===(rhs: A)(implicit eqv: Equivalent[A]): Boolean = eqv.eqv(lhs, rhs)
 
     /** Non-equivalence operator.
      *
@@ -225,7 +225,7 @@ package object types {
      *
      *  @since 0.0
      */
-    def =!=(rhs: A)(implicit eqv: Equivalent[A]): Boolean = eqv.neqv(lhs, rhs) //scalastyle:ignore method.name
+    def =!=(rhs: A)(implicit eqv: Equivalent[A]): Boolean = eqv.neqv(lhs, rhs)
   }
 
   /** Operators for ranking and ordering values.
@@ -249,7 +249,7 @@ package object types {
      *
      *  @since 0.0
      */
-    def <(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) < 0 //scalastyle:ignore method.name
+    def <(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) < 0
 
     /** ''Less-than-or-equal-to'' operator.
      *
@@ -261,7 +261,7 @@ package object types {
      *
      *  @since 0.0
      */
-    def <=(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) <= 0 //scalastyle:ignore method.name
+    def <=(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) <= 0
 
     /** ''Greater-than'' operator.
      *
@@ -273,7 +273,7 @@ package object types {
      *
      *  @since 0.0
      */
-    def >(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) > 0 //scalastyle:ignore method.name
+    def >(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) > 0
 
     /** ''Greater-than-or-equal-to'' operator.
      *
@@ -285,7 +285,7 @@ package object types {
      *
      *  @since 0.0
      */
-    def >=(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) >= 0 //scalastyle:ignore method.name
+    def >=(rhs: A)(implicit order: Order[A]): Boolean = order.compare(lhs, rhs) >= 0
   }
 
   /** Operators for adding and subtracting values.

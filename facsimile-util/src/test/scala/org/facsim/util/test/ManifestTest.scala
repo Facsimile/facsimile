@@ -46,8 +46,6 @@ import org.facsim.util.{Manifest, NoSuchAttributeException, NullManifest, Versio
 import scala.util.{Failure, Success}
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Test harness for the [[Manifest]] class. */
 final class ManifestTest
 extends AnyFunSpec
@@ -113,7 +111,7 @@ with CommonTestMethods {
       it("must throw a NullPointerException if passed a null name") {
         new TestData {
           val e = intercept[NullPointerException] {
-            NullManifest.attribute(null) //scalastyle:ignore null
+            NullManifest.attribute(null)
           }
           assertRequireNonNullMsg(e, "name")
         }
@@ -145,7 +143,7 @@ with CommonTestMethods {
       // Check null name values.
       it("must throw a NullPointerException if passed a null name") {
         val e = intercept[NullPointerException] {
-          NullManifest.dateAttribute(null) //scalastyle:ignore null
+          NullManifest.dateAttribute(null)
         }
         assertRequireNonNullMsg(e, "name")
       }
@@ -185,7 +183,7 @@ with CommonTestMethods {
       // Check null name values.
       it("must throw a NullPointerException if passed a null name") {
         val e = intercept[NullPointerException] {
-          NullManifest.versionAttribute(null) //scalastyle:ignore null
+          NullManifest.versionAttribute(null)
         }
         assertRequireNonNullMsg(e, "name")
       }
@@ -416,7 +414,7 @@ with CommonTestMethods {
       // Verify that it handles a null argument/
       it("must throw a NullPointerException if passed a null value") {
         val e = intercept[NullPointerException] {
-          Manifest(null) //scalastyle:ignore null
+          Manifest(null)
         }
         assertRequireNonNullMsg(e, "elementType")
       }
@@ -459,5 +457,4 @@ with CommonTestMethods {
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

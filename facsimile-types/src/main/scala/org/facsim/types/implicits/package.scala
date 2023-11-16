@@ -84,7 +84,6 @@ package object implicits {
   implicit final class RichDouble(d: Double)
   extends AnyVal {
 
-
     def *[A: Physical#Measure](a: A): Try[A] = a * d
   }
 }

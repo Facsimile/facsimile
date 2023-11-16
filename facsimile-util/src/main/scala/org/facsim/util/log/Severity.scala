@@ -246,7 +246,7 @@ object Severity {
     .map(_.asClass)
     .filter(_.isModuleClass)
     .map(_.selfType.termSymbol.asModule)
-    .map(ms => currentMirror.reflectModule(ms).instance.asInstanceOf[Severity]) //scalastyle:ignore token
+    .map(ms => currentMirror.reflectModule(ms).instance.asInstanceOf[Severity])
   }
 
   /** Map of severity name to severity.

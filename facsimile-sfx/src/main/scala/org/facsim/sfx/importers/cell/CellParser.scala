@@ -491,7 +491,7 @@ extends BaseParser {
    *  Regular, non-''matrix form'' transformations should be processed using [[transformMatrix]] instead.
    */
   private[cell] val transformMatrix: () => Rule1[Seq[Transform]] = () => rule {
-    16.times(dblValue.named("transform matrix")).separatedBy(cws) ~> {x => //scalastyle:ignore magic.number
+    16.times(dblValue.named("transform matrix")).separatedBy(cws) ~> {x =>
 
       // Try creating the affine matrix. This might result in an exception if the matrix is not affine or if the last
       // row of the matrix is not [0, 0, 0, 1]. If an exception occurs, the rule should fail.

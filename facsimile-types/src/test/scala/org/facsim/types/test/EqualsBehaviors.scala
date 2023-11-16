@@ -39,8 +39,6 @@ package org.facsim.types.test
 import org.scalatest.FunSpec
 import scala.annotation.tailrec
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Test behaviors for [[Equals]] trait-implementing classes.
  *
  *  This trait can be used as part of the test suite for a class that must honor the ''equals contract'':
@@ -99,7 +97,7 @@ trait EqualsBehaviors[V <: Equivalent[V]] {this: FunSpec =>
       // thrown.
       it("must return false if passed null") {
         equalsFixture.valueSample.foreach {value =>
-          assert(!value.canEqual(null)) //scalastyle:ignore null
+          assert(!value.canEqual(null))
         }
       }
 
@@ -128,7 +126,7 @@ trait EqualsBehaviors[V <: Equivalent[V]] {this: FunSpec =>
       // Verify that the object never compares equal to null and does not result in a NullPointerException being thrown.
       it("must return false if compared to null") {
         equalsFixture.valueSample.foreach {value =>
-          assert(!value.equals(null)) //scalastyle:ignore null
+          assert(!value.equals(null))
         }
       }
 
@@ -181,5 +179,4 @@ trait EqualsBehaviors[V <: Equivalent[V]] {this: FunSpec =>
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

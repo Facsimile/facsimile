@@ -54,7 +54,7 @@ import java.text.ParseException
  *  @since 0.0
  */
 final case class VersionParseException(version: String, offset: Int)
-extends ParseException(null, offset) { //scalastyle:ignore null
+extends ParseException(null, offset) {
 
   // Sanity checks. Clearly, throwing exceptions while creating an exception is likely not desirable, so don't fail!
   requireNonNullFn(version, "version")

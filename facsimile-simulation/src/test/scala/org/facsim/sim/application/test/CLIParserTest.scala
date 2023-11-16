@@ -47,10 +47,6 @@ import scala.io.Source
 import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
 
 /** Test harness for the [[CLIParser]] class.
  *
@@ -193,7 +189,7 @@ with ScalaCheckPropertyChecks {
       // It must create a parser without any issues.
       it("must permit construction of a valid parser") {
         new TestData {
-          assert(parser !== null) //scalastyle:ignore null
+          assert(parser !== null)
         }
       }
     }
@@ -339,7 +335,4 @@ with ScalaCheckPropertyChecks {
 }
 
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on magic.numbers
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+

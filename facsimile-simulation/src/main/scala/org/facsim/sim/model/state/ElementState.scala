@@ -46,7 +46,6 @@ import scala.reflect.runtime.universe.TypeTag
 // we can re-enable it when Scalastyle is updated.
 //
 // #SCALASTYLE_BUG
-//scalastyle:off
 
 /** State of the associated element.
  *

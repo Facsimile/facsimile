@@ -95,7 +95,7 @@ stream.
 
     scene.getDefinition(defName).getOrElse {
       val instDef = scene.readNextCell(None, true)
-      assert(instDef.isInstanceOf[Definition]) // scalastyle:ignore
+      assert(instDef.isInstanceOf[Definition])
 
 /*
 If the definition's name doesn't match the name specified in the preceding

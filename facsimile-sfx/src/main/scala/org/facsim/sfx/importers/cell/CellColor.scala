@@ -192,10 +192,9 @@ extends Enumeration {
       JFXColor.LIGHTYELLOW, // Light yellow
     ),
   )
-  //scalastyle:on magic.number
 
   // Sanity checks.
-  assert(Color.length == 3) //scalastyle:ignore magic.number
+  assert(Color.length == 3)
   assert(Color.forall(_.length == maxId))
 
   /** Materials corresponding to each color definition.

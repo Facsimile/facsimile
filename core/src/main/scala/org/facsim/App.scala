@@ -55,14 +55,14 @@ extends DelayedInit {
   /**
    * Flag indicating whether this application has been initialized yet.
    */
-  private final var initialized = false //scalastyle:ignore var.field
+  private final var initialized = false
 
   /**
    * Command line arguments supplied.
    *
    * These cannot be queried until after the application has initialized.
    */
-  private final var arguments: Array[String] = _ //scalastyle:ignore var.field
+  private final var arguments: Array[String] = _
 
   /**
    * Buffered subclass construction code.

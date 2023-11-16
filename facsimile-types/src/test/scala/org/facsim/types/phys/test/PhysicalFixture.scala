@@ -39,7 +39,6 @@ package org.facsim.types.phys.test
 import org.facsim.types.phys.Physical
 import org.facsim.types.test.EqualsFixture
 
-//scalastyle:off scaladoc
 /** Test fixture for testing [[Physical]] subclasses.
  *
  *  @tparam Q The `Physical` subclass being tested.
@@ -77,4 +76,3 @@ trait PhysicalFixture[Q <: Physical] {
    */
   val equalsFixture: EqualsFixture[Q#Measure]
 }
-//scalastyle:on scaladoc

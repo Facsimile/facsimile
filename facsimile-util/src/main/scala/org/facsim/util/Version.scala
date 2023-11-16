@@ -67,7 +67,7 @@ extends Ordered[Version] {
   // Sanity checks. Alas, we cannot currently use macros in the compilation unit that they're defined in. :-(
   requireValidFn[Int](major, _ >= 0, "major")
   requireValidFn[Int](minor, _ >= 0, "minor")
-  requireNonNullFn(bugFix, "bugFix") //scalastyle:ignore multiple.string.literals
+  requireNonNullFn(bugFix, "bugFix")
   requireValidFn[Option[Int]](bugFix, bf => bf.forall(_ >= 0), "bugFix")
 
   /** Compare this version to another.
@@ -155,7 +155,7 @@ extends Ordered[Version] {
   override def toString: String = {
 
     // If we have a bugfix version, then it will appear prefixed by a period.
-    val bf = bugFix.fold("")(b => s".$b") //scalastyle:ignore
+    val bf = bugFix.fold("")(b => s".$b")
 
     // If this is a snapshot release, then it will end with the snapshot marker.
     val ss = if(isSnapshot) Version.Snapshot

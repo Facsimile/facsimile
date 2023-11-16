@@ -44,12 +44,8 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.collection.compat.immutable.ArraySeq
 
 // Disable Scalastyle checks that make no sense for test code.
-//scalastyle:off magic.numbers
-//scalastyle:off multiple.string.literals
-//scalastyle:off scaladoc
 
 // Disable Scalastyle for this entire file, as it reports spurious errors with an unknown cause.
-//scalastyle:off
 
 /** Test fixture for `[[UniChar]]`.
  */
@@ -1383,7 +1379,4 @@ with CommonTestMethods {
 }
 
 // Re-enable disabled Scalastyle checks, just in case.
-//scalastyle:on
-//scalastyle:on scaladoc
-//scalastyle:on multiple.string.literals
-//scalastyle:on magic.numbers
+

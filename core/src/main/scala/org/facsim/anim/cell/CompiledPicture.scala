@@ -36,7 +36,6 @@ package org.facsim.anim.cell
 import org.facsim.LibResource
 import scalafx.scene.Group
 
-//scalastyle:off
 /**
 Class representing ''[[http://www.automod.com/ AutoMod®]] cell compiled
 picture'' primitives.
@@ -62,7 +61,6 @@ during parsing of the file.
 http://facsim.org/Documentation/Resources/AutoModCellFile/CompiledOldFormat.html
 Compiled Pictures]] for further information.
 */
-//scalastyle:on
 
 private[cell] final class CompiledPicture(scene: CellScene,
 parent: Option[Set])

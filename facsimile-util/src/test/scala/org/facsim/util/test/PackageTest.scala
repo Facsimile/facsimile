@@ -39,9 +39,6 @@ package org.facsim.util.test
 import org.facsim.util.{requireFinite, requireNonNull, requireValid}
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
 /** Test suite for the [[org.facsim]] package object. */
 final class PackageTest
 extends AnyFunSpec
@@ -54,7 +51,7 @@ with CommonTestMethods {
     describe(".requireNonNull(AnyRef)") {
       it("must throw NullPointerException if passed null argValue") {
         val e = intercept[NullPointerException] {
-          val arg: String = null //scalastyle:ignore null
+          val arg: String = null
           requireNonNull(arg)
         }
         assertRequireNonNullMsg(e, "arg")
@@ -114,6 +111,4 @@ with CommonTestMethods {
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+

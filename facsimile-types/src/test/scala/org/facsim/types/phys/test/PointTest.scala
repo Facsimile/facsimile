@@ -40,8 +40,6 @@ import org.facsim.types.phys.{Angle, Length, Point}
 import org.facsim.util.test.CommonTestMethods
 import org.scalatest.FunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Test suite for the [[Point]] class and companion object. */
 class PointTest
 extends FunSpec
@@ -77,19 +75,19 @@ with CommonTestMethods {
       // Check that passing null values will cause a failure.
       it("must throw NullPointerException if passed null x co-ordinate") {
         val e = intercept[NullPointerException] {
-          Point(null, Length.Zero, Length.Zero) //scalastyle:ignore null
+          Point(null, Length.Zero, Length.Zero)
         }
         assertRequireNonNullMsg(e, "x")
       }
       it("must throw NullPointerException if passed null y co-ordinate") {
         val e = intercept[NullPointerException] {
-          Point(Length.Zero, null, Length.Zero) //scalastyle:ignore null
+          Point(Length.Zero, null, Length.Zero)
         }
         assertRequireNonNullMsg(e, "y")
       }
       it("must throw NullPointerException if passed null z co-ordinate") {
         val e = intercept[NullPointerException] {
-          Point(Length.Zero, Length.Zero, null) //scalastyle:ignore null
+          Point(Length.Zero, Length.Zero, null)
         }
         assertRequireNonNullMsg(e, "z")
       }
@@ -148,7 +146,7 @@ with CommonTestMethods {
     describe(".distanceTo(Point)") {
       it("must throw a NullPointerException if passed a null point") {
         val e = intercept[NullPointerException] {
-          Point.Origin.distanceTo(null) //scalastyle:ignore null
+          Point.Origin.distanceTo(null)
         }
         assertRequireNonNullMsg(e, "other")
       }
@@ -205,7 +203,7 @@ with CommonTestMethods {
     describe(".distanceToXY(Point)") {
       it("must throw a NullPointerException if passed a null point") {
         val e = intercept[NullPointerException] {
-          Point.Origin.distanceToXY(null) //scalastyle:ignore null
+          Point.Origin.distanceToXY(null)
         }
         assertRequireNonNullMsg(e, "other")
       }
@@ -238,7 +236,7 @@ with CommonTestMethods {
     describe(".angleToXY(Point)") {
       it("must throw a NullPointerException if passed a null point") {
         val e = intercept[NullPointerException] {
-          Point.Origin.angleToXY(null) //scalastyle:ignore null
+          Point.Origin.angleToXY(null)
         }
         assertRequireNonNullMsg(e, "other")
       }
@@ -281,5 +279,4 @@ with CommonTestMethods {
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

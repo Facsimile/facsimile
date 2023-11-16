@@ -42,11 +42,7 @@ import org.facsim.types.test.EqualsFixture
 import org.scalatest.FunSpec
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off indentation
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
+
 /** Test suite for the [[Angle]] object. */
 class AngleTest
 extends FunSpec
@@ -251,8 +247,4 @@ with SpecificBehaviors[Angle.type, Angle] {
   }
 }
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on scaladoc
-//scalastyle:on public.methods.have.type
-//scalastyle:on multiple.string.literals
-//scalastyle:on magic.numbers
-//scalastyle:off indentation
+

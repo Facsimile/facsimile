@@ -41,9 +41,6 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.util.Failure
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
 /** Test harness for the [[Version]] class and object. */
 final class VersionTest
 extends AnyFunSpec
@@ -143,7 +140,7 @@ with CommonTestMethods {
       // Test null bug fix numbers.
       it("must throw a NullPointerException when passed a null bug fix option") {
         val e = intercept[NullPointerException] {
-          Version(bugFix = null) //scalastyle:ignore null
+          Version(bugFix = null)
         }
         assertRequireNonNullMsg(e, "bugFix")
       }
@@ -188,7 +185,7 @@ with CommonTestMethods {
       // Test null version supplied.
       it("must throw a NullPointerException when passed a null Version") {
         val e = intercept[NullPointerException] {
-          Version().compare(null) //scalastyle:ignore null
+          Version().compare(null)
         }
         assertRequireNonNullMsg(e, "that")
       }
@@ -318,7 +315,7 @@ with CommonTestMethods {
       // Verify null string behavior.
       it("must throw a NullPointerException when passed a null string") {
         val e = intercept[NullPointerException] {
-          Version(null) //scalastyle:ignore null
+          Version(null)
         }
         assertRequireNonNullMsg(e, "version")
       }
@@ -449,6 +446,4 @@ with CommonTestMethods {
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+

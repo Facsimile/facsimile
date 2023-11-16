@@ -57,7 +57,7 @@ Add a list of faces to this mesh, resulting in a new mesh.
 @return New mesh instance containing the current list of faces plus the new
 list of faces.
 */
-  def +(newFaces: List[Face]) = { //scalastyle:ignore
+  def +(newFaces: List[Face]) = {
     assertNonNull(newFaces)
     new Mesh(faces ::: newFaces)
   }
@@ -70,7 +70,7 @@ Add another mesh to this mesh, resulting in a new mesh.
 @return New mesh instance containing the current list of faces plus the new
 mesh's list of faces.
 */
-  def +(newMesh: Mesh) = { //scalastyle:ignore
+  def +(newMesh: Mesh) = {
     assertNonNull(newMesh)
     new Mesh(faces ::: newMesh.faces)
   }
@@ -801,7 +801,7 @@ The top third of the texture map is used for this purpose.
 */
 
     val top = conicMesh(ct, rt, ct, divisions, TexturePoint.Origin,
-    TexturePoint(1.0f, oneThird), smoothGroup = 4) // scalastyle:ignore
+    TexturePoint(1.0f, oneThird), smoothGroup = 4)
 
 /*
 Add the meshes together and return.
@@ -871,7 +871,7 @@ The top third of the texture map is used for this purpose.
 */
 
     val top = conicMesh(ct, r, ct, divisions, TexturePoint.Origin,
-    TexturePoint(1.0f, oneThird), smoothGroup = 4) // scalastyle:ignore
+    TexturePoint(1.0f, oneThird), smoothGroup = 4)
 
 /*
 Add the meshes together and return.
@@ -1077,13 +1077,11 @@ Create and return the quadrilateral mesh.
     new Mesh(List(new Face(faces, 0)))
   }
 
-
 /**
 Construct a triangular frustum.
 
 A triangular frustum is a 3D shape, constructed from a triangular base and top,
 which lie on nonintersecting X-Y planes, joined by three quadrilateral sides.
-
 
 @param bc 3D point defining centre of the base on the X-Y plane.
 

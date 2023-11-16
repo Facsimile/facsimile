@@ -156,7 +156,7 @@ extends Parser {
    */
   protected[facsim] final def hexValue = rule {
     capture(oneOrMore(hexDigit)) ~> {s =>
-      val i = Try(Integer.parseInt(s, 16)) //scalastyle:ignore magic.number
+      val i = Try(Integer.parseInt(s, 16))
       test(i.isSuccess) ~ push(i.get)
     }
   }

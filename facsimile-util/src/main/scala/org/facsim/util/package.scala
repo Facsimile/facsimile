@@ -181,7 +181,7 @@ package object util {
 
     // Now retrieve the resource URL for this element path and wrap it in an Option
     Option(elementType.getResource(path))
-  } ensuring(_ ne null) //scalastyle:ignore null
+  } ensuring(_ ne null)
 
   /** Obtain the manifest associated with the specified element type.
    *
@@ -275,7 +275,7 @@ package object util {
    */
   @inline
   private[util] def requireNonNullFn(arg: AnyRef, name: => String): Unit = {
-    if(arg eq null) { //scalastyle:ignore null
+    if(arg eq null) {
       throw new NullPointerException(LibResource(RequireNonNullKey, name))
     }
   }
@@ -420,11 +420,11 @@ package object util {
     //
     // If the argument evaluates to be null, throw an AssertionError with some useful information.
     reify {
-      //scalastyle:off null
+
       if(arg.splice eq null) {
         throw new AssertionError(LibResource(AssertNonNullKey, cleanArgName(argString.splice)), null)
       }
-      //scalastyle:on null
+
     }
   }
 
@@ -451,7 +451,7 @@ package object util {
     //
     // If the argument evaluates to be null, throw a NullPointerException with some useful information.
     reify {
-      if(arg.splice eq null) { //scalastyle:ignore null
+      if(arg.splice eq null) {
         throw new NullPointerException(LibResource(RequireNonNullKey, cleanArgName(argString.splice)))
       }
     }

@@ -50,10 +50,6 @@ import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
 
 /** Test harness for the [[org.facsim.util.log.LogStream]] class. */
 final class LogStreamTest
@@ -137,7 +133,7 @@ with ScalaCheckPropertyChecks {
       it("must report a valid source") {
         forAll(validBufferSizes) {bufferSize =>
           val ds = new LogStream[String](bufferSize)
-          assert(ds.source !== null) //scalastyle:ignore null
+          assert(ds.source !== null)
         }
       }
     }
@@ -204,12 +200,6 @@ with ScalaCheckPropertyChecks {
 }
 
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on magic.numbers
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on magic.numbers
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+

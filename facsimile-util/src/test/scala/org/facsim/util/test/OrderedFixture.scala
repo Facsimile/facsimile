@@ -36,8 +36,6 @@
 //======================================================================================================================
 package org.facsim.util.test
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Fixture for testing elements implementing the [[scala.Ordered]] trait.
  *
  *  @todo Create this fixture.
@@ -45,5 +43,4 @@ package org.facsim.util.test
  *  @tparam O Ordered instance to be tested.
  */
 trait OrderedFixture[O <: Ordered[O]]
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

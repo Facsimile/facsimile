@@ -80,7 +80,7 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
    *  backpressure is implemented. It should be noted that when the future completes, the data has not necessarily been
    *  sent, just that the data has been queued for sending.
    */
-  private var lastSendFuture: Future[QueueOfferResult] = {  //scalastyle:ignore var.field
+  private var lastSendFuture: Future[QueueOfferResult] = {
     Future.successful(QueueOfferResult.Enqueued)
   }
   assert(lastSendFuture.isCompleted, "Initial last send future has not completed.")

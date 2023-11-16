@@ -57,7 +57,7 @@ sudo: false
 # These values should be synchronized with the values in the custom SBT build definition file, Facsimile.sbt.
 language: scala
 scala:
-  - 2.13.5
+  - 3.3.1
 
 # Cache the Coursier, Ivy & SBT directories at the end of the build.
 cache:
@@ -66,7 +66,7 @@ cache:
     - $HOME/.ivy2
     - $HOME/.sbt
 
-# We need Java 11 to build Facsimile.
+# We need Java 17 to build Facsimile.
 #
 # Facsimile's policy is to support the most recent, LTS Java release that is compatible with Scala and the project's
 # third-party librarys and plugins. When a new LTS release becomes available, Facsimile will aim to switch to it as soon
@@ -75,7 +75,7 @@ cache:
 # Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
 # here.
 jdk:
-  - openjdk11
+  - openjdk17
 
 # Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
 # in the current version of ScalaFX require the latest release). Also ensure Graphviz is installed, in order to create
@@ -87,20 +87,16 @@ addons:
 
 # Now perform the build.
 #
-# This firstly prints the java version used. Next, it executes SBT to perform scalastyle checking, coverage analysis and
-# then execute the test suite. Subsequent to that, since Facsimile is a multi-module project, we must generate a report
-# aggregated for all modules. Then notify Coveralls of the test coverage results. (Note that both of these latter tasks
-# must be performed as separate SBT commands.)
+# This firstly prints the java version used. Next, it executes SBT to perform coverage analysis and then execute the
+# test suite. Subsequent to that, since Facsimile is a multi-module project, we must generate a report aggregated for
+# all modules. Then notify Coveralls of the test coverage results. (Note that both of these latter tasks must be
+# performed as separate SBT commands.)
 #
 # Note: As of Scoverage 1.6.0, it is no longer necessary to execute the coverageReport task, and in fact speeds up the
 # build if it is omitted: coverageAggregate (which must still be run as a separate sbt pass), now operates on the raw
 # coverage reports.
-#
-# NOTE: Do not use Scalastyle on test sources. It currently fails for the UniCharTest.scala file, even when checking of
-# that file is disabled. This can be re-instated when addressed. See also the release procedure in Facsimile.sbt.
 script:
-#  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle doc &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test doc &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 
 # If this script was successful, run the coveralls SBT task.

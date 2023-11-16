@@ -53,7 +53,7 @@ object Generator {
    *  which then causes test failures. Refer to [[https://github.com/rickynils/scalacheck/issues/189 ScalaCheck issue
    *  #189]] for further information.
    */
-  val negInt = Gen.choose(Integer.MIN_VALUE, -1).suchThat(_ < 0) //scalastyle:ignore magic.number
+  val negInt = Gen.choose(Integer.MIN_VALUE, -1).suchThat(_ < 0)
 
   /** Non-negative integers.
    *
@@ -74,10 +74,10 @@ object Generator {
   val int = Gen.oneOf(negInt, nonNegInt)
 
   /** ISO-8859-1 characters. */
-  private val iso8859_1Char = Gen.choose(0.toChar, 255.toChar) //scalastyle:ignore field.name
+  private val iso8859_1Char = Gen.choose(0.toChar, 255.toChar)
 
   /** Strings that can be encoded using ISO-8859-1. */
-  val iso8859_1String = Gen.listOf(iso8859_1Char).map(_.mkString) //scalastyle:ignore field.name
+  val iso8859_1String = Gen.listOf(iso8859_1Char).map(_.mkString)
 
   /** Set of valid ''[[http://unicode.org/ Unicode]]'' characters.
    *

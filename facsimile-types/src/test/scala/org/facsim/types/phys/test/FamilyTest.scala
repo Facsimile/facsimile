@@ -40,16 +40,13 @@ import org.facsim.types.phys.Family
 import org.scalatest.FunSpec
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
+
 /** Test suite for the [[Family]] class and companion object. */
 class FamilyTest
 extends FunSpec {
 
   /** Test data. */
-  //scalastyle:off magic.number
+
   trait TestData {
     val angleFamily = Family()
     val unitlessFamily = Family()
@@ -61,7 +58,6 @@ extends FunSpec {
     val areaFamily = Family(lengthExponent = 2)
     val volumeFamily = Family(lengthExponent = 3)
   }
-  //scalastyle:on magic.number
 
   // Test fixture companion object description.
   describe(Family.getClass.getCanonicalName) {
@@ -171,7 +167,4 @@ extends FunSpec {
   }
 }
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on scaladoc
-//scalastyle:on public.methods.have.type
-//scalastyle:on multiple.string.literals
-//scalastyle:on magic.numbers
+

@@ -87,7 +87,7 @@ Flag indicating whether we have finished constructing the scene.
 @todo This is a little fugly, but it works, so hey... :-(
 */
 
-  private var sceneRead = false // scalastyle:ignore
+  private var sceneRead = false
 
 /**
 ''Cell'' definitions, indexed by name and initially empty.
@@ -221,7 +221,7 @@ Note that if the cell has no name, then this will result in an exception.
 */
 
     if(isDefinition) {
-      assert(cell.isInstanceOf[Definition]) // scalastyle:ignore
+      assert(cell.isInstanceOf[Definition])
       definitions +=(cell.name.get -> cell)
     }
 

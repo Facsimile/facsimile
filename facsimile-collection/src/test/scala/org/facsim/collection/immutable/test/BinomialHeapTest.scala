@@ -44,10 +44,6 @@ import scala.math.Ordering.Double
 import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
 
 /** Test harness for the [[org.facsim.collection.immutable.BinomialHeap]] class. */
 final class BinomialHeapTest
@@ -300,7 +296,7 @@ with ScalaCheckPropertyChecks {
         def updateState(hashCodes: Set[Int], count: Int, heap: BinomialHeap[Int]): (Set[Int], Int) = {
           (hashCodes + heap.hashCode, count + 1)
         }
-        var state = (Set.empty[Int], 0) //scalastyle:ignore var.field
+        var state = (Set.empty[Int], 0)
         forAll {li: List[Int] =>
           val h = BinomialHeap(li: _*)
           state = updateState(state._1, state._2, h)
@@ -359,7 +355,4 @@ with ScalaCheckPropertyChecks {
 }
 
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on magic.numbers
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc
+

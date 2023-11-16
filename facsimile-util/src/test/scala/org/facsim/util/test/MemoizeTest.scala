@@ -43,10 +43,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
-//scalastyle:off scaladoc
+
 /** Test harness for the [[Memoize]] classes. */
 final class MemoizeTest
 extends AnyFunSpec
@@ -61,7 +58,7 @@ with ScalaCheckPropertyChecks {
      *  side-effect, it should only be set by the call to the function, not when the function's cached value is
      *  recovered.
      */
-    private final var wasCalled = false //scalastyle:ignore var.field
+    private final var wasCalled = false
 
     /** Wrap a single-argument test function.
      *
@@ -323,7 +320,4 @@ with ScalaCheckPropertyChecks {
   }
 }
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on scaladoc
-//scalastyle:on public.methods.have.type
-//scalastyle:on multiple.string.literals
-//scalastyle:on magic.numbers
+

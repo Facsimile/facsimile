@@ -38,7 +38,6 @@ package org.facsim.types.phys.test
 
 import org.facsim.types.phys.{Family, Specific}
 
-//scalastyle:off scaladoc
 /** Test fixture trait for all [[Specific]] subclasses.
  *
  *  @tparam Q The `Specific` subclass being tested.
@@ -76,4 +75,3 @@ extends PhysicalFixture[Q] {
    */
   val validValues: List[Double]
 }
-//scalastyle:on scaladoc

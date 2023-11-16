@@ -214,7 +214,6 @@ extends Equals {
     else name
   }
 }
-//scalastyle:on equals.hash.code
 
 /** Physical quantity family companion object. */
 private[phys] object Family {
@@ -249,7 +248,7 @@ private[phys] object Family {
   /** Map associating families to associated types. Families that do not have entries in this map do not have associated
    *  types and exist as generic values only.
    */
-  private var typeMap = HashMap.empty[Family, Specific] // scalastyle:ignore var.field
+  private var typeMap = HashMap.empty[Family, Specific]
 
   /** Convert an exponent value to a string.
    *
@@ -262,7 +261,7 @@ private[phys] object Family {
     exp match {
       case 1 => ""
       case 2 => "²"
-      case 3 => "³" // scalastyle:ignore magic.number
+      case 3 => "³"
       case _ => s"^$exp"
     }
   }
