@@ -53,7 +53,7 @@ val ParboiledVersion = "2.5.1"
 val PrimaryScalaVersion = "3.3.1"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.2.10"
-val ScoptVersion = "4.0.1"
+val ScoptVersion = "4.1.0"
 val SquantsVersion = "1.8.3"
 
 // Regular expression for matching release versions.
