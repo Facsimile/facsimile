@@ -146,20 +146,6 @@ ThisBuild / scalaVersion := PrimaryScalaVersion
 // It appears that this needs to be set globally.
 ThisBuild / publishTo := sonatypePublishToBundle.value
 
-// Add external resolvers here (and also in project/Resolvers.sbt).
-//
-// This is currently necessary because SBT does not appear to allow certain resolvers (such as the "Artima Maven
-// Repository") to specify a project-wide resolver in just the "project/Resolves.sbt" file (or equivalent). Refer to the
-// following issues for further details.
-//
-//   https://github.com/sbt/sbt/issues/4103
-//   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
-//   https://github.com/sbt/sbt/issues/5070
-//   https://github.com/scalatest/scalatest/issues/1696
-//
-// Artima repository is required for SuperSafe compiler plugin.
-ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
-
 // Common Scala compilation options (for compiling sources and generating documentation).
 //
 // We'll enforce the new braceless style (using significant indentation), and updated language syntax.
