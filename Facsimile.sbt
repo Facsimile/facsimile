@@ -181,11 +181,9 @@ lazy val docProjectSettings = Seq(
 
   // ScalaDoc generation options.
   //
-  // The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes (Unidoc is currently
-  // unable to accommodate macros, so this is necessary).
-  //
-  // Note that diagram generation requires that GraphViz be installed on the build machine. However, at the time of
-  // writing, ScalaDoc's use of GraphViz is broken and does not work correctly.
+  // Note: Coverage output information configurations is provided automatically by the Scoverage SBT plugin.
+  // Note: API mappings to external documentation (such as the primary Java and Scala API documentation) configuration
+  // is managed by the API Mappings SBT plugin.
   Compile / doc / scalacOptions := commonScalaCSettings ++ Seq(
     "-author",
     "-groups",
@@ -400,6 +398,8 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
+  //
+  // Note: Coverage output information configurations is provided automatically by the Scoverage SBT plugin.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
     "-feature",
     "-java-output-version:17",
