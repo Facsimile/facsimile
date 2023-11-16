@@ -51,7 +51,6 @@ val AkkaVersion = "2.6.17"
 val CatsVersion = "2.10.0"
 val ParboiledVersion = "2.5.1"
 val PrimaryScalaVersion = "3.3.1"
-val ScalaMeterVersion = "0.21"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
 val ScalaTestVersion = "3.2.10"
 val ScoptVersion = "4.0.1"
@@ -386,8 +385,7 @@ lazy val sourceProjectSettings = Seq(
     "-Ysafe-init",
   ),
 
-  // Fork the tests, so that they run in a separate process. This is a requirement for forked benchmarking with
-  // ScalaMeter, and improves test reliability.
+  // Fork the tests, so that they run in a separate process. This improves test reliability.
   Test / fork := true,
 
   // As recommended by ScalaTest, disable buffered logs in Test, in order to use ScalaTest's built-in buffering. This
@@ -398,9 +396,7 @@ lazy val sourceProjectSettings = Seq(
   //
   // Output makes more sense using the ScalaTest log buffering algorithm (enabled by disabling logBuffered for testing,
   // above).
-  //
-  // Currently disabled because it interferes with ScalaMeter benchmarking.
-  Test / parallelExecution := false,
+  Test / parallelExecution := true,
 
   // Code test coverage settings.
   //
@@ -431,13 +427,7 @@ lazy val sourceProjectSettings = Seq(
     //
     // Note: This adds ScalaCheck as a test dependency, so it is no longer necessary to add it as a separate dependency.
     "org.scalatestplus" %% "scalatestplus-scalacheck" % ScalaTestPlusScalaCheckVersion % Test,
-
-    // ScalaMeter, micro-benchmarking library dependencies.
-    "com.storm-enroute" %% "scalameter" % ScalaMeterVersion % Test,
   ),
-
-  // Add ScalaMeter as a test framework.
-  testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework"),
 )
 
 // Settings for all projects that should not publish artifacts to the Sonatype OSS repository.
