@@ -49,7 +49,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // NOTE: When changing the primary Scala version, remember to update "./.travis.yml" to match.
 val AkkaVersion = "2.6.17"
 val CatsVersion = "2.10.0"
-val ParboiledVersion = "2.3.0"
+val ParboiledVersion = "2.5.1"
 val PrimaryScalaVersion = "3.3.1"
 val ScalaMeterVersion = "0.21"
 val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
@@ -489,7 +489,7 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
     "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
     "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test,
 
-    // Parboiled 2 is a parsing library, required for Facsimile's file parsing capabilities.
+    // Parboiled is a parsing library, required for Facsimile's file parsing capabilities.
     "org.parboiled" %% "parboiled" % ParboiledVersion,
   ),
 
