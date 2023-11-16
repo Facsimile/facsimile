@@ -51,7 +51,7 @@ val AkkaVersion = "2.6.17"
 val CatsVersion = "2.10.0"
 val ParboiledVersion = "2.5.1"
 val PrimaryScalaVersion = "3.3.1"
-val ScalaTestPlusScalaCheckVersion = "3.2.17.0"
+val ScalaCheckVersion = "1-17" // Formatted this way due to usage.
 val ScalaTestVersion = "3.2.17"
 val ScoptVersion = "4.1.0"
 val SquantsVersion = "1.8.3"
@@ -429,10 +429,13 @@ lazy val sourceProjectSettings = Seq(
     // ScalaTest is a library providing a framework for unit-testing
     "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
 
+    // Scalactic is used by ScalaTest to support other features, such as floating point equality with tolerances.
+    "org.scalactic" %% "scalactic" % ScalaTestVersion,
+
     // ScalaTest plus ScalaCheck, property-based testing library dependencies. This is used by ScalaTest.
     //
     // Note: This adds ScalaCheck as a test dependency, so it is no longer necessary to add it as a separate dependency.
-    "org.scalatestplus" %% "scalatestplus-scalacheck" % ScalaTestPlusScalaCheckVersion % Test,
+    "org.scalatestplus" %% s"scalacheck-$ScalaCheckVersion" % s"$ScalaTestVersion.0" % Test,
   ),
 )
 
@@ -464,9 +467,6 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
 
   // Utility library dependencies.
   libraryDependencies ++= Seq(
-
-    // The Scala reflection library is required for implementing macros.
-    "org.scala-lang" % "scala-reflect" % PrimaryScalaVersion,
 
     // Akka streams library & testkit (the latter scoped for testing only).
     //
