@@ -409,7 +409,13 @@ lazy val sourceProjectSettings = Seq(
   // for example). Also, make sure that "clean" is issued prior to any build operation.
   ScoverageKeys.coverageHighlighting := true,
   ScoverageKeys.coverageFailOnMinimum := true,
-  ScoverageKeys.coverageMinimum := 0,
+  ScoverageKeys.coverageFailOnMinimum := true,
+  ScoverageKeys.coverageMinimumStmtTotal := 75,
+  ScoverageKeys.coverageMinimumBranchTotal := 75,
+  ScoverageKeys.coverageMinimumStmtPerPackage := 75,
+  ScoverageKeys.coverageMinimumBranchPerPackage := 75,
+  ScoverageKeys.coverageMinimumStmtPerFile := 75,
+  ScoverageKeys.coverageMinimumBranchPerFile := 75,
 
   // Required libraries common to all source projects.
   //
