@@ -38,7 +38,7 @@ import scalafx.scene.Group
 import scalafx.scene.text.{Text => SFXText}
 
 /**
-Abstract class for all ''cell text'' primitives (except for ''cell text list''
+Abstract class for all _cell text_ primitives (except for _cell text list_
 primitives).
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Text.html
@@ -54,7 +54,7 @@ this cell is the scene's root cell.
 @param textType Type of text represented by this instance.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -83,8 +83,8 @@ Read the text from the stream.
 /**
 @inheritdoc
 
-@note We currently render ''World'' and ''Unrotate'' text types as World text,
-and do not render ''Screen'' text.
+@note We currently render _World_ and _Unrotate_ text types as World text,
+and do not render _Screen_ text.
 */
   private[cell] final override def toNode = {
 
@@ -156,7 +156,7 @@ Unrotate text is always displayed facing the viewer.
 /**
 World text type.
 
-World text is displayed ''in situ'' as part of the 3D scene.
+World text is displayed _in situ_ as part of the 3D scene.
 */
 
   private[cell] val World = Value

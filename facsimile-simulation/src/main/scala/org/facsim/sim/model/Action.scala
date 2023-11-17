@@ -39,7 +39,7 @@ package org.facsim.sim.model
 import org.facsim.sim.SimulationAction
 import scala.reflect.runtime.universe.TypeTag
 
-/** An ''action'' is a ''state transition'' that takes the state of the simulation and results in a new simulation
+/** An _action_ is a _state transition_ that takes the state of the simulation and results in a new simulation
  *  state.
  *
  *  Simulation state changes include:

@@ -44,10 +44,10 @@ import org.parboiled2._
 import scala.util.Try
 import shapeless.PolyDefns.~>
 
-/** Parser for ''AutoMod® cell''-format 3D scenegraph files.
+/** Parser for _AutoMod® cell_-format 3D scenegraph files.
  *
- *  A ''cell'' scenegraph is constructed from graphics primitives, termed ''cells''. The majority of ''cell'' types
- *  correspond to graphical elements, but certain types of ''cell'' can contain other ''cell'' elements, references to
+ *  A _cell_ scenegraph is constructed from graphics primitives, termed _cells_. The majority of _cell_ types
+ *  correspond to graphical elements, but certain types of _cell_ can contain other _cell_ elements, references to
  *  external graphics files, block definitions, block references, etc.
  *
  *  A cell definition has the following basic structure:
@@ -61,31 +61,31 @@ import shapeless.PolyDefns.~>
  *  cell type-specific data
  *  }}}
  *
- *  Most cell fields are delimited by ''white space'', with no distinction between ''spaces'', ''tabs'', ''line
- *  terminators'', etc. and with consecutive ''white space'' characters treated as a single delimiter. (The sole
- *  exception to this rule text elements, which are terminated by ''line terminators''.)
+ *  Most cell fields are delimited by _white space_, with no distinction between _spaces_, _tabs_, _line
+ *  terminators_, etc. and with consecutive _white space_ characters treated as a single delimiter. (The sole
+ *  exception to this rule text elements, which are terminated by _line terminators_.)
  *
- *  Many ''cell'' fields are numeric in nature, which makes them particularly hard for a human to comprehend.
+ *  Many _cell_ fields are numeric in nature, which makes them particularly hard for a human to comprehend.
  *
- *  Traditionally, ''cell'' files were 7-bit US ''ASCII'' encoded files. However, ''cell'' files can now contain text
- *  encoded in ''UTF-8'' form, and should be processed as such. There is no formal method for specifying file encoding
- *  within a ''cell'' scene. This parser assumes that the input has been decoded, and so represents natural _Java_
+ *  Traditionally, _cell_ files were 7-bit US _ASCII_ encoded files. However, _cell_ files can now contain text
+ *  encoded in _UTF-8_ form, and should be processed as such. There is no formal method for specifying file encoding
+ *  within a _cell_ scene. This parser assumes that the input has been decoded, and so represents natural _Java_
  *  strings; input should not be initialized from a raw byte array.
  *
- *  @constructor Construct a ''Parboiled2'' parser for an ''AutoMod® cell''-format 3D scene.
+ *  @constructor Construct a _Parboiled2_ parser for an _AutoMod® cell_-format 3D scene.
  *
  *  @param input Input to be parsed.
  *
- *  @param colorScheme Color scheme to be employed for the ''cell'' scene's colors.
+ *  @param colorScheme Color scheme to be employed for the _cell_ scene's colors.
  */
 private[cell] final class CellParser(input: ParserInput, colorScheme: CellColorScheme)
 extends BaseParser {
 
-  /** Rule to process a ''cell'' Boolean field.
+  /** Rule to process a _cell_ Boolean field.
    *
-   *  In ''cell'' scenes, a Boolean value is represented by integers 0 (denoting `false`) and 1 (denoting `true`).
+   *  In _cell_ scenes, a Boolean value is represented by integers 0 (denoting `false`) and 1 (denoting `true`).
    *
-   *  @return Rule to process a ''cell'' Boolean field into a Boolean value.
+   *  @return Rule to process a _cell_ Boolean field into a Boolean value.
    */
   private[cell] def boolValue: Rule1[Boolean] = rule {
     intValue.named("boolean") ~> {i =>
@@ -93,17 +93,17 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process ''cell type'' fields.
+  /** Rule to process _cell type_ fields.
    *
-   *  These are integer values that identify the type of ''cell'' element being dealt with. The corresponding cell type
-   *  is pushed onto the stack for use in subsequent processing (each ''cell'' type has a different set of parameter
-   *  values that need to be read from the ''cell'' definition).
+   *  These are integer values that identify the type of _cell_ element being dealt with. The corresponding cell type
+   *  is pushed onto the stack for use in subsequent processing (each _cell_ type has a different set of parameter
+   *  values that need to be read from the _cell_ definition).
    *
-   *  @note If ''AutoMod'' adds new ''cell'' types to the scene format, which they are perfectly entitled to do, then
+   *  @note If _AutoMod_ adds new _cell_ types to the scene format, which they are perfectly entitled to do, then
    *  this rule will fail. Any such failure should be reported to the _Facsimile_ development team so that we can update
    *  this parser to handle the new type.
    *
-   *  @return Rule converting a ''cell'' type code to a ''cell'' type instance.
+   *  @return Rule converting a _cell_ type code to a _cell_ type instance.
    */
   private[cell] def cellType: Rule1[CellType] = rule {
     intValue.named("cell type") ~> {ct =>
@@ -111,21 +111,21 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process ''cell flag'' fields.
+  /** Rule to process _cell flag_ fields.
    *
    *  Flag fields are converted into Flag field instances, and can be used for subsequent cell parsing.
    *
-   *  @return Rule to process a ''cell flag'' field into a CellFlags instance.
+   *  @return Rule to process a _cell flag_ field into a CellFlags instance.
    */
   private[cell] def cellFlags: Rule1[CellFlags] = rule {
     intValue.named("cell flags") ~> (new CellFlags(_))
   }
 
-  /** Rule to process a ''cell'' header record.
+  /** Rule to process a _cell_ header record.
    *
    *  The contents of this header identify how the remainder of the cell are to be processed.
    *
-   *  @return Rule to process a ''cell'' header record, pushing a [[CellHeader]] instance onto the stack.
+   *  @return Rule to process a _cell_ header record, pushing a [[CellHeader]] instance onto the stack.
    */
   private[cell] def cellHeader: Rule1[CellHeader] = rule {
     cellType ~ cws ~ cellFlags ~> {(ch, cf) =>
@@ -135,7 +135,7 @@ extends BaseParser {
 
   /** Rule to process a range pair.
    *
-   *  Range pairs are employed in a ''cell bounding box'' to specify the minimum and maximum values for the bounding box
+   *  Range pairs are employed in a _cell bounding box_ to specify the minimum and maximum values for the bounding box
    *  as measured along a particular axis. This rule verifies that the maximum value is greater than or equal to the
    *  minimum value, assuring consistency. This rule pushes nothing onto the stack.
    *
@@ -152,26 +152,26 @@ extends BaseParser {
    *  Bounding boxes are defined by three range pair values, for the X-, Y- and Z-axes, respectively, with each pair
    *  identifying the minimum and maximum position on that each axis of the bounding box.
    *
-   *  Bounding boxes are present in a ''cell'' element definition, only if the corresponding ''cell flag'' is set.
+   *  Bounding boxes are present in a _cell_ element definition, only if the corresponding _cell flag_ is set.
    *
-   *  @note Bounding boxes are redundant, since they can be generated by ''JavaFX'' (as well as by the ''cell'' scene
+   *  @note Bounding boxes are redundant, since they can be generated by _JavaFX_ (as well as by the _cell_ scene
    *  renderer) from the defined geometry information; consequently, there are discarded by this parser. However, the
-   *  fields must still be parsed and verified to ensure the validity of the ''cell'' scene. Despite this, we must
+   *  fields must still be parsed and verified to ensure the validity of the _cell_ scene. Despite this, we must
    *  still push a value onto the stack so that we can use the rule in a condition.
    */
   private[cell] val boundingBox: () => Rule1[Int] = () => rule {
     rangePair.named("X-axis") ~ cws ~ rangePair.named("Y-axis") ~ cws ~ rangePair.named("Z-axis") ~ push(0)
   }
 
-  /** Rule to conditionally parse a ''cell bounding box'' record.
+  /** Rule to conditionally parse a _cell bounding box_ record.
    *
-   *  A bounding box record is only present for the current ''cell'' element if the corresponding ''cell'' flag is set;
+   *  A bounding box record is only present for the current _cell_ element if the corresponding _cell_ flag is set;
    *  if the flag is clear, then no bounding box record will present. Either way, bounding box information is redundant
    *  and is discarded after processing; this rule pushes nothing to the stack.
    *
-   *  @param hdr Header for the current ''cell'' element.
+   *  @param hdr Header for the current _cell_ element.
    *
-   *  @return Rule parsing, but discarding, bounding box of the current ''cell''.
+   *  @return Rule parsing, but discarding, bounding box of the current _cell_.
    */
   private[cell] def boundingBoxOption(hdr: CellHeader): Rule0 = rule {
     conditional(hdr.flags.boundingBoxPresent, boundingBox) ~> {_ =>
@@ -179,15 +179,15 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process ''cell'' fields containing color definitions.
+  /** Rule to process _cell_ fields containing color definitions.
    *
-   *  Color fields are converted to equivalent ''JavaFX'' material instances.
+   *  Color fields are converted to equivalent _JavaFX_ material instances.
    *
    *  @note Colors are represented by integers in the range [0-15 and are treated as fully opaque. Whether that color is
-   *  employed, or the color is inherited from a parent, depends upon the ''inherited color'' field in the ''cell
-   *  flags'' field.
+   *  employed, or the color is inherited from a parent, depends upon the _inherited color_ field in the _cell
+   *  flags_ field.
    *
-   *  @return Rule to process a ''cell'' color field into an equivalent ''JavaFX'' material.
+   *  @return Rule to process a _cell_ color field into an equivalent _JavaFX_ material.
    */
   private[cell] def color: Rule1[Material] = rule {
     intValue.named("color") ~> {c =>
@@ -195,12 +195,12 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process ''cell'' line style fields that define how lines are drawn.
+  /** Rule to process _cell_ line style fields that define how lines are drawn.
    *
-   *  @note ''JavaFX'' currently does not support line styles in 3D scenes, and so this rule merely consumes the field,
+   *  @note _JavaFX_ currently does not support line styles in 3D scenes, and so this rule merely consumes the field,
    *  and checks it's validity. It pushes nothing onto the stack in return.
    *
-   *  @return Rule to process and verify a ''cell'' line style field; nothing is pushed to the stack.
+   *  @return Rule to process and verify a _cell_ line style field; nothing is pushed to the stack.
    */
   private[cell] def lineStyle: Rule0 = rule {
     intValue.named("line style") ~> {ls =>
@@ -208,12 +208,12 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process ''cell'' line width fields that define how thick lines are drawn.
+  /** Rule to process _cell_ line width fields that define how thick lines are drawn.
    *
-   *  @note ''JavaFX'' currently does not support line widths in 3D scenes, and so this rule merely consumes the field,
+   *  @note _JavaFX_ currently does not support line widths in 3D scenes, and so this rule merely consumes the field,
    *  and checks it's validity. It pushes nothing onto the stack in return.
    *
-   *  @return Rule to process and verify a ''cell'' line width field; nothing is pushed to the stack.
+   *  @return Rule to process and verify a _cell_ line width field; nothing is pushed to the stack.
    */
   private[cell] def lineWidth: Rule0 = rule {
     intValue.named("line width") ~> {lw =>
@@ -221,20 +221,20 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process display style fields that define how the associated ''cell'' primitive appears.
+  /** Rule to process display style fields that define how the associated _cell_ primitive appears.
    *
    *  Display styles may be wireframe, or solid with a specified transparency/opacity.
    *
-   *  @note ''JavaFX'' supports the display of 3D elements in wireframe mode, but currently has issues relating to
+   *  @note _JavaFX_ supports the display of 3D elements in wireframe mode, but currently has issues relating to
    *  opacity. In particular, there is a [[https://bugs.openjdk.java.net/browse/JDK-8090548 bug]] relating to how
-   *  elements with opacity are rendered. Furthermore, ''JavaFX'' seems to support two different mechanisms for
+   *  elements with opacity are rendered. Furthermore, _JavaFX_ seems to support two different mechanisms for
    *  specifying opacity: the `opacity` property that all [[javafx.scene.Node]] elements possess (which does not
    *  currently appear to work in 3D scenes) and the `alpha` channel property of [[javafx.scene.paint.Color]] (which
-   *  does appear to work in 3D scenes, but which isn't ideal). The ''Facsimile cell'' parser preserves opacity
-   *  information and uses it with the former method. It is hoped that this will be supported better by ''JavaFX'' in
+   *  does appear to work in 3D scenes, but which isn't ideal). The _Facsimile cell_ parser preserves opacity
+   *  information and uses it with the former method. It is hoped that this will be supported better by _JavaFX_ in
    *  the future.
    *
-   *  @return Rule converting a ''cell'' display style field into an opacity value, wrapped in [[scala.Some]] or
+   *  @return Rule converting a _cell_ display style field into an opacity value, wrapped in [[scala.Some]] or
    *  [[scala.None]] if the element is to be rendered in wireframe.
    */
   private[cell] def displayStyle: Rule1[Option[Double]] = rule {
@@ -243,15 +243,15 @@ extends BaseParser {
     }
   }
 
-  /** Set of valid first characters of a ''cell'' identifier.
+  /** Set of valid first characters of a _cell_ identifier.
    *
-   *  ''Cell identifier'' names must begin with an alphabetic character.
+   *  _Cell identifier_ names must begin with an alphabetic character.
    */
   private[cell] val cellIdStart = CharPredicate.Alpha
 
-  /** Set of valid subsequent characters (i.e. not the first) of a ''cell'' identifier.
+  /** Set of valid subsequent characters (i.e. not the first) of a _cell_ identifier.
    *
-   *  ''Cell identifiers'' can contain alphanumeric characters plus the underscore.
+   *  _Cell identifiers_ can contain alphanumeric characters plus the underscore.
    */
   private[cell] val cellIdPart = CharPredicate.AlphaNum ++ '_'
 
@@ -259,19 +259,19 @@ extends BaseParser {
    *
    *  @note Stricly, cell names are no longer than 22 characters in length, and contain only alphanumeric characters and
    *  the underscore (and the first character must be alphabetic). Identifiers do not need to be unique, except when
-   *  identifying ''instances'', ''definitions'', ''joints'' and ''terminal control frames''
+   *  identifying _instances_, _definitions_, _joints_ and _terminal control frames_
    *
-   *  @return Rule to convert a ''cell identifier'' record into an optional string.
+   *  @return Rule to convert a _cell identifier_ record into an optional string.
    */
   private[cell] def cellId: Rule1[Option[String]] = rule {
     capture(cellIdStart ~ zeroOrMore(cellIdPart)).named("cell identifier") ~> (Some(_))
   }
 
-  /** Function returning rule to process a ''cell'' attributes record.
+  /** Function returning rule to process a _cell_ attributes record.
    *
-   *  @note ''Edge'' colors are not supported by ''JavaFX'' and are therefore ignored. However, it should be noted that
-   *  they are also ignored in the ''OpenInventor''-based ''cell'' scene renderer in ''AutoMod'' (and, probably, in the
-   *  new ''Hoops''-based ''cell'' scene renderer too).
+   *  @note _Edge_ colors are not supported by _JavaFX_ and are therefore ignored. However, it should be noted that
+   *  they are also ignored in the _OpenInventor_-based _cell_ scene renderer in _AutoMod_ (and, probably, in the
+   *  new _Hoops_-based _cell_ scene renderer too).
    */
   private[cell] val attributes: () => Rule1[CellAttributes] = () => rule {
     color.named("face color") ~ cws ~ color.named("edge color") ~ cws ~ lineStyle ~ cws ~ lineWidth ~ cws ~
@@ -282,14 +282,14 @@ extends BaseParser {
     }
   }
 
-  /** Rule to conditionally process the attributes record of a ''cell'' element.
+  /** Rule to conditionally process the attributes record of a _cell_ element.
    *
-   *  If the ''cell'' flags indicate that the attributes record is present, it is processed and acted upon. Otherwise, a
+   *  If the _cell_ flags indicate that the attributes record is present, it is processed and acted upon. Otherwise, a
    *  default set of attributes will be provided.
    *
-   *  @param hdr Header defined for the current ''cell'' element.
+   *  @param hdr Header defined for the current _cell_ element.
    *
-   *  @return Rule determining attributes of the current ''cell'', using default values if none provided.
+   *  @return Rule determining attributes of the current _cell_, using default values if none provided.
    */
   private[cell] def attributesOption(hdr: CellHeader): Rule1[CellAttributes] = rule {
 
@@ -301,11 +301,11 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process a ''cell joint type'' field.
+  /** Rule to process a _cell joint type_ field.
    *
    *  A corresponding joint type value will be pushed to the stack.
    *
-   *  @return Rule to convert a ''cell'' joint type field into a JointType instance.
+   *  @return Rule to convert a _cell_ joint type field into a JointType instance.
    */
   private[cell] def jointType: Rule1[JointType] = rule {
     intValue.named("joint type") ~> {jt =>
@@ -313,13 +313,13 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process a ''cell'' joint speed field.
+  /** Rule to process a _cell_ joint speed field.
    *
-   *  ''Cell'' joint speeds are double fields, with a value greater than or equal to zero. The resulting speed, measured
+   *  _Cell_ joint speeds are double fields, with a value greater than or equal to zero. The resulting speed, measured
    *  in a joint delta per hundredth of a time unit, is pushed onto the stack. Note that a speed of zero is treated as
-   *  being ''infinite'' when calculating joint transition times.
+   *  being _infinite_ when calculating joint transition times.
    *
-   *  @note If the associated ''join type'' is translational, then the speed is a translational distance per time unit
+   *  @note If the associated _join type_ is translational, then the speed is a translational distance per time unit
    *  value; if rotational, then a degrees per time unit value; if not a joint, then this value is ignored.
    *
    *  @return Rule converting a joint speed value into a Double value.
@@ -330,7 +330,7 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process a ''cell'' joint's range (minimum, maximum and current position).
+  /** Rule to process a _cell_ joint's range (minimum, maximum and current position).
    *
    *  Each field is a double value that must satisfy the relationship: minimum <= current <= maximum. A joint range
    *  configuration containing this information is pushed to the stack.
@@ -346,23 +346,23 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process a ''cell terminal control frame'' (''TCF'') present flag.
+  /** Rule to process a _cell terminal control frame_ (_TCF_) present flag.
    *
-   *  If this flag is defined, then the current ''cell'' is a location for attaching elements to the scene dynamically.
-   *  For instance, a ''cell'' defining a ''vehicle'' might have one or more ''TCF''s identifying the location(s) at
+   *  If this flag is defined, then the current _cell_ is a location for attaching elements to the scene dynamically.
+   *  For instance, a _cell_ defining a _vehicle_ might have one or more _TCF_s identifying the location(s) at
    *  which part(s) are carried.
    *
-   *  @return Rule converting a ''TCF'' data present flag into a Boolean value that is pushed onto the stack.
+   *  @return Rule converting a _TCF_ data present flag into a Boolean value that is pushed onto the stack.
    */
   private[cell] def tcfPresentFlag: Rule1[Boolean] = rule {
     boolValue.named("TCD data present")
   }
 
-  /** Rule to process the ''joint termination'' field.
+  /** Rule to process the _joint termination_ field.
    *
    *  This is an integer field that always contains the value 0. Nothing is pushed to the stack by this rule.
    *
-   *  @return Rule that consumes a valid ''joint termination'' field, pushing nothing to the stack.
+   *  @return Rule that consumes a valid _joint termination_ field, pushing nothing to the stack.
    */
   private[cell] def jointTerminator: Rule0 = rule {
     intValue.named("joint terminator") ~> {jt =>
@@ -370,12 +370,12 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process ''cell'' translation transformation records.
+  /** Rule to process _cell_ translation transformation records.
    *
    *  Three consecutive double fields, with no value restrictions, represent respective translations along the local X-,
    *  Y- and Z-axes.
    *
-   *  @return Rule to convert a translation transformation record into an optional ''translation transformation''.
+   *  @return Rule to convert a translation transformation record into an optional _translation transformation_.
    */
   private[cell] def translations: Rule1[Option[Transform]] = rule {
     dblValue.named("X translate") ~ cws ~ dblValue.named("Y translate") ~ cws ~ dblValue.named("Z translate") ~>
@@ -390,7 +390,7 @@ extends BaseParser {
     }
   }
 
-  /** Rule to process ''cell'' rotation order fields that define the sequence in which axis rotations are applied.
+  /** Rule to process _cell_ rotation order fields that define the sequence in which axis rotations are applied.
    *
    *  @return Rule converting a rotation order field to sequence of axes.
    */
@@ -421,8 +421,8 @@ extends BaseParser {
    *
    *  Rotations of zero should be filtered out since they have no effect upon element position.
    *
-   *  @return Rule to convert a rotation transformation record into an sequence of optional ''rotation
-   *  transformations''.
+   *  @return Rule to convert a rotation transformation record into an sequence of optional _rotation
+   *  transformations_.
    */
   private[cell] def rotations: Rule1[Seq[Option[Transform]]] = rule {
     rotationOrder ~ cws ~ dblValue.named("rotation 1") ~ cws ~ dblValue.named("rotation 2") ~ cws ~
@@ -441,7 +441,7 @@ extends BaseParser {
    *  Three consecutive double fields, with no value restrictions, represent respective scalings along the local X-, Y-
    *  and Z-axes.
    *
-   *  @return Rule to convert a scaling transformation record into an optional ''scaling transformation''.
+   *  @return Rule to convert a scaling transformation record into an optional _scaling transformation_.
    */
   private[cell] def scalings: Rule1[Option[Transform]] = rule {
     dblValue.named("X scale") ~ cws ~ dblValue.named("Y scale") ~ cws ~ dblValue.named("Z scale") ~> {(xScl, yScl, zScl)
@@ -456,14 +456,14 @@ extends BaseParser {
     }
   }
 
-  /** Function returning rule to process a ''cell'' transformation record (regular, non-''matrix form'').
+  /** Function returning rule to process a _cell_ transformation record (regular, non-_matrix form_).
    *
    *  A non-matrix transformation record is comprised of a translation record, followed by a rotation record, followed
    *  by a scaling record. Each of these records returns optional transformations, which can then be merged into a
    *  single sequence of transformations. If no transformations are required (that is, if all of the transformations are
    *  [[scala.None]], this resulting sequence will be empty.
    *
-   *  @note A ''cell'' definition may have multiple transformation records. This function can be used to process all of
+   *  @note A _cell_ definition may have multiple transformation records. This function can be used to process all of
    *  them, in association with the relevant conditions, provided that transformations are not specified in matrix form.
    *  Transformations in matrix form should be processed using [[transformMatrix]] instead.
    */
@@ -478,17 +478,17 @@ extends BaseParser {
     }
   }
 
-  /** Function returning rule to process a ''cell'' transformation record (matrix form).
+  /** Function returning rule to process a _cell_ transformation record (matrix form).
    *
-   *  A ''matrix form'' transformation matrix comprises a 4 x 4 ''affine'' transformation made up of double values. (In
+   *  A _matrix form_ transformation matrix comprises a 4 x 4 _affine_ transformation made up of double values. (In
    *  practice, the matrix is made up of 16 values, organized into 4 rows of 4 values.)
    *
    *  This matrix is processed and converted into a single transformation that is returned in a sequence (for
    *  compatibility with the [[transformations]] function.
    *
-   *  @note A ''cell'' definition may have multiple transformation records. This function can be used to process all of
+   *  @note A _cell_ definition may have multiple transformation records. This function can be used to process all of
    *  them, in associated with the relevant conditions, provided that transformations are specified in matrix form.
-   *  Regular, non-''matrix form'' transformations should be processed using [[transformMatrix]] instead.
+   *  Regular, non-_matrix form_ transformations should be processed using [[transformMatrix]] instead.
    */
   private[cell] val transformMatrix: () => Rule1[Seq[Transform]] = () => rule {
     16.times(dblValue.named("transform matrix")).separatedBy(cws) ~> {x =>
@@ -502,33 +502,33 @@ extends BaseParser {
     }
   }
 
-  /** Conditional rule to process ''cell'' transformation records according to the ''cell'' flags.
+  /** Conditional rule to process _cell_ transformation records according to the _cell_ flags.
    *
-   *  Process a transformation record, depending upon whether it is in regular, non-''matrix form'', or (the much rarer)
-   *  ''affine matrix form''.
+   *  Process a transformation record, depending upon whether it is in regular, non-_matrix form_, or (the much rarer)
+   *  _affine matrix form_.
    *
-   *  @note This rule is used for processing joint, ''terminal control frame'' and ''cell'' transformation records.
+   *  @note This rule is used for processing joint, _terminal control frame_ and _cell_ transformation records.
    *
-   *  @param hdr Header for the current ''cell'' element, which determines which format is used for the transformation
+   *  @param hdr Header for the current _cell_ element, which determines which format is used for the transformation
    *  record.
    *
    *  @return Rule processing transformation records&mdash;in the format appropriate to the current
-   *  ''cell''&mdash;resulting in a sequence of equivalent ''JavaFX'' transformations.
+   *  _cell_&mdash;resulting in a sequence of equivalent _JavaFX_ transformations.
    */
   private[cell] def transformType(hdr: CellHeader): Rule1[Seq[Transform]] = rule {
     conditional(hdr.flags.transformationInMatrixForm, transformMatrix, transformations)
   }
 
-  /** Rule function to process ''cell'' joint information.
+  /** Rule function to process _cell_ joint information.
    *
-   *  ''Cell'' elements can possess dynamic ''joint'' information (in which the contents of the joint can be translated
-   *  or rotated about the joint's local Z-axis) as we as ''TCF'' information (supporting the dynamic addition of
-   *  elements to the ''cell'' element).
+   *  _Cell_ elements can possess dynamic _joint_ information (in which the contents of the joint can be translated
+   *  or rotated about the joint's local Z-axis) as we as _TCF_ information (supporting the dynamic addition of
+   *  elements to the _cell_ element).
    *
-   *  @param hdr Header for the current ''cell'' element, which determines whether joint data is present, and which
+   *  @param hdr Header for the current _cell_ element, which determines whether joint data is present, and which
    *  format is used for transformation data.
    *
-   *  @return Rule process a ''cell'' element's joint data, pushing the result onto the stack.
+   *  @return Rule process a _cell_ element's joint data, pushing the result onto the stack.
    */
   private[cell] def jointData(hdr: CellHeader): Rule1[JointData] = rule {
     jointType ~ cws ~ jointSpeed ~ cws ~ jointRange ~ cws ~ tcfPresentFlag ~ cws ~ transformType(hdr) ~ cws ~
@@ -551,16 +551,16 @@ extends BaseParser {
     }
   }
 
-  /** Conditional rule to process the primary transformation record of a ''cell'', if the corresponding flag is set.
+  /** Conditional rule to process the primary transformation record of a _cell_, if the corresponding flag is set.
    *
-   *  If the ''cell'' header indicates that a cell transformation record is present (in whatever form), then this rule
+   *  If the _cell_ header indicates that a cell transformation record is present (in whatever form), then this rule
    *  will process it and push the resulting transformation sequence to the stack. If no such records are present, an
    *  empty sequence will be pushed to the stack instead.
    *
-   *  @param hdr Header for the current ''cell'' element, which determines which format is used for the transformation
+   *  @param hdr Header for the current _cell_ element, which determines which format is used for the transformation
    *  record, and whether such records are present.
    *
-   *  @return Rule to convert a ''cell'' transformation record to a sequence of ''JavaFX'' transformations, if present;
+   *  @return Rule to convert a _cell_ transformation record to a sequence of _JavaFX_ transformations, if present;
    *  an empty sequence otherwise.
    */
   private[cell] def transformOption(hdr: CellHeader): Rule1[Seq[Transform]] = {
@@ -574,23 +574,23 @@ extends BaseParser {
     }
   }
 
-  /** A ''cell set'' primitive.
+  /** A _cell set_ primitive.
    *
    *  At the end of this primitive's definition is a count, followed by that number of child cells. The count must be 0
    *  or greater, and the number of child cells present specified must all be present.
    *
-   *  The cell type codes for this primitive are: 10000 (''root set''), 7000 (''main set'') and 700 (''regular
-   *  set'')&mdash;all of which are treated identically by this parser.
+   *  The cell type codes for this primitive are: 10000 (_root set_), 7000 (_main set_) and 700 (_regular
+   *  set_)&mdash;all of which are treated identically by this parser.
    */
   private[cell] def set = rule {
     intValue
   }
 
-  /** A single ''cell'' primitive definition.
+  /** A single _cell_ primitive definition.
    *
-   *  ''Sets'' may contain other cells.
+   *  _Sets_ may contain other cells.
    *
-   *  @return Rule to convert associated ''cell'' primitive into a ''JavaFX'' [[javafx.scene.Node]].
+   *  @return Rule to convert associated _cell_ primitive into a _JavaFX_ [[javafx.scene.Node]].
    */
   private[cell] def cell: Rule1[Node] = rule {
 
@@ -602,51 +602,51 @@ extends BaseParser {
     }
   }
 
-  /** Entire ''cell scene'' rule.
+  /** Entire _cell scene_ rule.
    *
-   *  @note A ''cell scene'' terminates with ''end-of-input''
+   *  @note A _cell scene_ terminates with _end-of-input_
    */
   private[cell] def cellScene = rule {
     cell ~ optional(ws) ~ EOI
   }
 }
 
-/** Support for parsing ''AutoMod® cell''-format 3D scenegraph files.
+/** Support for parsing _AutoMod® cell_-format 3D scenegraph files.
  *
- *  ''[[http://www.automod.com/ AutoMod®]]'' is a proprietary ''commercial off-the-shelf'' (''COTS'') simulation
- *  product. ''AutoMod®'' is a registered trademark of ''[[http://www.appliedmaterials.com Applied Materials, Inc.]]''.
+ *  _[[http://www.automod.com/ AutoMod®]]_ is a proprietary _commercial off-the-shelf_ (_COTS_) simulation
+ *  product. _AutoMod®_ is a registered trademark of _[[http://www.appliedmaterials.com Applied Materials, Inc.]]_.
  *
- *  Within ''AutoMod®'' models, 3D objects are represented using the proprietary ''cell format'', in which 3D scenes
- *  are described by a number of primitives, called ''cells''. The format is hierarchical, with a special type of
- *  ''cell'', termed a ''set'', able to hold zero or more other ''cell'' definitions.
+ *  Within _AutoMod®_ models, 3D objects are represented using the proprietary _cell format_, in which 3D scenes
+ *  are described by a number of primitives, called _cells_. The format is hierarchical, with a special type of
+ *  _cell_, termed a _set_, able to hold zero or more other _cell_ definitions.
  *
- *  ''Cell format'' provides support for:
+ *  _Cell format_ provides support for:
  *   - Rudimentary translational and rotational kinematic joint information.
- *   - Colors inherited from a parent ''cell''.
+ *   - Colors inherited from a parent _cell_.
  *   - Opacity,
  *   - Block definitions and insertions.
- *   - Embedded and externally referenced ''Virtual Reality Markup Language'' 97 (''VRML97'') scenes.
- *   - Embedded and extenerally referenced ''OpenInventor'' (''OIV'') scenes.
- *   - ''Compiled cells'' (optimized to render faster).
+ *   - Embedded and externally referenced _Virtual Reality Markup Language_ 97 (_VRML97_) scenes.
+ *   - Embedded and extenerally referenced _OpenInventor_ (_OIV_) scenes.
+ *   - _Compiled cells_ (optimized to render faster).
  *
- *  This parser is able to translate ''cell'' files into largely equivalent ''JavaFX'' scenes.
+ *  This parser is able to translate _cell_ files into largely equivalent _JavaFX_ scenes.
  *
- *  The following ''cell format'' features are currently unsupported:
- *   - ''Vector List cell'' primitives. (Due to lack of ''JavaFX'' support.)
- *   - ''Triad cell'' primitives. (Due to lack of ''JavaFX'' support.)
- *   - ''Compiled picture cell'' primitives. (Due to lack of information about the format of these primitives.)
- *   - ''Edge colors''. (Due to lack of ''JavaFX'' support.) ''Cell'' elements are represented solely by their defined
- *     ''face colors''.
+ *  The following _cell format_ features are currently unsupported:
+ *   - _Vector List cell_ primitives. (Due to lack of _JavaFX_ support.)
+ *   - _Triad cell_ primitives. (Due to lack of _JavaFX_ support.)
+ *   - _Compiled picture cell_ primitives. (Due to lack of information about the format of these primitives.)
+ *   - _Edge colors_. (Due to lack of _JavaFX_ support.) _Cell_ elements are represented solely by their defined
+ *     _face colors_.
  *
  *  @since 0.0
  */
 object CellParser {
 
-  /** Parse an input stream containing an ''AutoMod cell'' scene definition.
+  /** Parse an input stream containing an _AutoMod cell_ scene definition.
    *
-   *  @param is Input stream to be parsed as a ''cell format'' scene.
+   *  @param is Input stream to be parsed as a _cell format_ scene.
    *
-   *  @return ''JavaFX'' [[javafx.scene.Node]] wrapped in a [[scala.util.Success]] containing the equivalent ''JavaFX''
+   *  @return _JavaFX_ [[javafx.scene.Node]] wrapped in a [[scala.util.Success]] containing the equivalent _JavaFX_
    *  scene, if `is` was parsed successfully, or a failure exception wrapped in a [[scala.util.Failure]] otherwise. In
    *  the latter case, an exception will describe the cause of the failure and indicate where in the stream the parser
    *  failed.
@@ -660,11 +660,11 @@ object CellParser {
     new CellParser(is).cellScene.run()
   }
 
-  /** Parse a string containing an ''AutoMod cell'' scene definition.
+  /** Parse a string containing an _AutoMod cell_ scene definition.
    *
-   *  @param s String to be parsed as a ''cell format'' scene.
+   *  @param s String to be parsed as a _cell format_ scene.
    *
-   *  @return ''JavaFX'' [[javafx.scene.Node]] wrapped in a [[scala.util.Success]] containing the equivalent ''JavaFX''
+   *  @return _JavaFX_ [[javafx.scene.Node]] wrapped in a [[scala.util.Success]] containing the equivalent _JavaFX_
    *  scene, if `is` was parsed successfully, or a failure exception wrapped in a [[scala.util.Failure]] otherwise. In
    *  the latter case, an exception will describe the cause of the failure and indicate where in the stream the parser
    *  failed.

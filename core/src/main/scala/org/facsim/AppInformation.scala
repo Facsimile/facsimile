@@ -151,11 +151,11 @@ trait AppInformation {
   /**
    * Provide a set of icons for the executing application.
    *
-   * By default, the icons for the ''Facsimile'' project are provided. To customize the application icons, this function
+   * By default, the icons for the _Facsimile_ project are provided. To customize the application icons, this function
    * should be overridden and a custom icon set returned instead. If an empty set of icons are provided, then the
-   * application will use the default ''JavaFX'' application icon set.
+   * application will use the default _JavaFX_ application icon set.
    *
-   * For highest quality icon rendering, a number of different size icons (measured in ''pixels'') should be returned.
+   * For highest quality icon rendering, a number of different size icons (measured in _pixels_) should be returned.
    * Note that not all sizes are required for all platforms, but it is recommended that all of the following sizes are
    * provided:
    *
@@ -171,7 +171,7 @@ trait AppInformation {
    * The most appropriate size will be selected selected automatically. All icon sizes should contain the same image
    * (although some simplification may be required for smaller icon sizes).
    *
-   * @note This function will only be called if the application is running as a ''GUI'' application.
+   * @note This function will only be called if the application is running as a _GUI_ application.
    *
    * @return A list of images to be utilized as application icons.
    *

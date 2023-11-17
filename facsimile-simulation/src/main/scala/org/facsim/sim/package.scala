@@ -42,7 +42,7 @@ import org.facsim.sim.engine.SimulationState
 import org.facsim.sim.model.ModelState
 import scala.util.Try
 
-/** ''Facsimile Simulation Engine'' library root package.
+/** _Facsimile Simulation Engine_ library root package.
  *
  *  This library contains elements supporting the development of dynamic, discrete-event simulation models.
  *
@@ -80,8 +80,8 @@ package object sim {
   /** Type for simulation state transition actions, which return a status value.
    *
    *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
-   *  an updated simulation state and a `Unit` value wrapped in `[[scala.util.Success Success]]` if successful, or an
-   *  exception instance wrapped in `[[scala.util.Failure Failure]]` otherwise.
+   *  an updated simulation state and a `Unit` value wrapped in [[Success]] if successful, or an
+   *  exception instance wrapped in [[Failure]] otherwise.
    *
    *  @tparam M Actual type of the simulation's model state.
    *

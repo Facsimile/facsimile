@@ -39,16 +39,16 @@ package org.facsim.types.phys
 import org.facsim.types.LibResource
 import org.facsim.util.{requireNonNull, requireValid}
 
-/** ''[[http://en.wikipedia.org/wiki/Angle Plane angle]]'' physical quantity type.
+/** _[[http://en.wikipedia.org/wiki/Angle Plane angle]]_ physical quantity type.
  *
- *  All angles are stored internally in ''[[http://en.wikipedia.org/wiki/Radian radians]]'', which is the
- *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of plane angle types.
+ *  All angles are stored internally in _[[http://en.wikipedia.org/wiki/Radian radians]]_, which is the
+ *  _[[http://en.wikipedia.org/wiki/SI SI]]_ standard unit of plane angle types.
  *
- *  @see [[http://en.wikipedia.org/wiki/Angle Plane Angle]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Angle Plane Angle]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/Radian Radians]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Radian Radians]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
  *
  *  @since 0.0
  */
@@ -64,16 +64,16 @@ extends Specific {
   /** @inheritdoc */
   override val name: String = LibResource("phys.Angle.name")
 
-  /** The mathematical constant ''[[http://en.wikipedia.org/wiki/Pi π]]'' in the form of an angle value.
+  /** The mathematical constant _[[http://en.wikipedia.org/wiki/Pi π]]_ in the form of an angle value.
    *
-   *  ''π'' is defined as the ratio of the circumference of a circle to its diameter.
+   *  _π_ is defined as the ratio of the circumference of a circle to its diameter.
    *
-   *  @note The authors of ''Facsimile'' prefer the use of ''[[Angle.τ]]'' to ''π'', because the former is significantly
+   *  @note The authors of _Facsimile_ prefer the use of _[[Angle.τ]]_ to _π_, because the former is significantly
    *  easier to work with.
    *
-   *  @see [[http://tauday.com/tau-manifesto The Tau Manifesto]] for further information about ''τ''.
+   *  @see [[http://tauday.com/tau-manifesto The Tau Manifesto]] for further information about _τ_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Pi Pi]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Pi Pi]] on _Wikipedia_.
    *
    *  @see [[Angle.τ]].
    *
@@ -81,72 +81,72 @@ extends Specific {
    */
   lazy val π: Measure = newMeasure(Math.PI)
 
-  /** A proposed mathematical constant, ''[[http://en.wikipedia.org/wiki/Turn_(geometry)#Tau_proposal τ]]'' (tau).
+  /** A proposed mathematical constant, _[[http://en.wikipedia.org/wiki/Turn_(geometry)#Tau_proposal τ]]_ (tau).
    *
-   *  ''τ'' is defined as the ratio of the circumference of a circle to its radius.
+   *  _τ_ is defined as the ratio of the circumference of a circle to its radius.
    *
-   *  @see ''[[http://tauday.com/tau-manifesto The Tau Manifesto]]'' for further information.
+   *  @see _[[http://tauday.com/tau-manifesto The Tau Manifesto]]_ for further information.
    */
   private val τValue = 2.0 * Math.PI
 
-  /** A proposed mathematical constant, ''[[http://en.wikipedia.org/wiki/Turn_(geometry)#Tau_proposal τ]]'' (tau), in
+  /** A proposed mathematical constant, _[[http://en.wikipedia.org/wiki/Turn_(geometry)#Tau_proposal τ]]_ (tau), in
    *  the form of an angle value.
    *
-   *  ''τ'' is defined as the ratio of the circumference of a circle to its radius.
+   *  _τ_ is defined as the ratio of the circumference of a circle to its radius.
    *
-   *  This constant, whose value is 2''π'', is preferred throughout ''Facsimile'' for its simplicity and ease-of-use
-   *  compared to ''π''. A ''radian'' types of ''τ'' is one ''turn'' (or ''revolution''), so fractions of ''τ'' are
+   *  This constant, whose value is 2_π_, is preferred throughout _Facsimile_ for its simplicity and ease-of-use
+   *  compared to _π_. A _radian_ types of _τ_ is one _turn_ (or _revolution_), so fractions of _τ_ are
    *  also fractions of a circle:
-   *  - ''τ'' = 360°
-   *  - ^''τ''^/,,2,, = 180°
-   *  - ^''τ''^/,,3,, = 120°
-   *  - ^''τ''^/,,4,, = 90°
-   *  - ^''τ''^/,,6,, = 60°
-   *  - ^''τ''^/,,8,, = 45°
-   *  - ^''τ''^/,,12,, = 30°
-   *  - ^''τ''^/,,360,, = 1°
+   *  - _τ_ = 360°
+   *  - ^_τ_^/,,2,, = 180°
+   *  - ^_τ_^/,,3,, = 120°
+   *  - ^_τ_^/,,4,, = 90°
+   *  - ^_τ_^/,,6,, = 60°
+   *  - ^_τ_^/,,8,, = 45°
+   *  - ^_τ_^/,,12,, = 30°
+   *  - ^_τ_^/,,360,, = 1°
    *  - etc.
    *
-   *  @see ''[[http://tauday.com/tau-manifesto The Tau Manifesto]]'' for further information.
+   *  @see _[[http://tauday.com/tau-manifesto The Tau Manifesto]]_ for further information.
    *
    *  @since 0.0
    */
   lazy val τ: Measure = newMeasure(τValue)
 
-  /** Units for angles measured in ''[[http://en.wikipedia.org/wiki/Degree_(angle) degrees]]''.
+  /** Units for angles measured in _[[http://en.wikipedia.org/wiki/Degree_(angle) degrees]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Degree_(angle) Degrees]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Degree_(angle) Degrees]] on _Wikipedia_.
    *
    *  @since 0.0
    */
   val Degrees: Units = new Units(new LinearScaleConverter(τValue / 360.0), LibResource("phys.Angle.Degree.sym"))
 
-  /** Units for angles measured in ''[[http://en.wikipedia.org/wiki/Gradian gradians]]''.
+  /** Units for angles measured in _[[http://en.wikipedia.org/wiki/Gradian gradians]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Gradian Gradians]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Gradian Gradians]] on _Wikipedia_.
    *
    *  @since 0.0
    */
   val Gradians: Units = new Units(new LinearScaleConverter(τValue / 400.0), LibResource("phys.Angle.Gradian.sym"))
 
-  /** Units for angles measured in ''[[http://en.wikipedia.org/wiki/Radian radians]]''.
+  /** Units for angles measured in _[[http://en.wikipedia.org/wiki/Radian radians]]_.
    *
-   *  @note ''Radians'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for plane angle measurement,
-   *  and the units that are used to store such measurements internally in ''Facsimile''.
+   *  @note _Radians_ are the _[[http://en.wikipedia.org/wiki/SI SI]]_ standard units for plane angle measurement,
+   *  and the units that are used to store such measurements internally in _Facsimile_.
    *
-   *  In ''Facsimile'', a ''radian'' is defined in accordance with ''SI'' standards.
+   *  In _Facsimile_, a _radian_ is defined in accordance with _SI_ standards.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Radian Radians]] on ''Wikipedia''. @see [[http://en.wikipedia.org/wiki/SI
-   *  International System of Units]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Radian Radians]] on _Wikipedia_. @see [[http://en.wikipedia.org/wiki/SI
+   *  International System of Units]] on _Wikipedia_.
    *
    *  @since 0.0
    */
   val Radians: Units = new Units(SIConverter, LibResource("phys.Angle.Radian.sym"))
 
-  /** Units for angles measured in ''[[http://en.wikipedia.org/wiki/Turn_(geometry) turns]]'' (also known as ''cycles''
-   *  or ''revolutions'').
+  /** Units for angles measured in _[[http://en.wikipedia.org/wiki/Turn_(geometry) turns]]_ (also known as _cycles_
+   *  or _revolutions_).
    *
-   *  @see [[http://en.wikipedia.org/wiki/Turn_(geometry) Turns]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Turn_(geometry) Turns]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -154,7 +154,7 @@ extends Specific {
 
   /** Physical quantity family for plane angle measurements.
    *
-   *  Plane angles are ''unitless'' measurements, with radian types defined as the ratio one [[Length]] (the arc of
+   *  Plane angles are _unitless_ measurements, with radian types defined as the ratio one [[Length]] (the arc of
    *  the circumference subtended by the angle) to another (the radius), resulting in a unitless value.
    *
    *  @note Although angles can be expressed in variety of different units, angles are themselves unitless.
@@ -179,7 +179,7 @@ extends Specific {
    *
    *  @param sine Sine value, which must be in the range [-1, 1].
    *
-   *  @return Angle in the range [-^''τ''^/,,4,,, ^''τ''^/,,4,,] radians ([-90, 90] degrees).
+   *  @return Angle in the range [-^_τ_^/,,4,,, ^_τ_^/,,4,,] radians ([-90, 90] degrees).
    *
    *  @throws IllegalArgumentException if `sine` is outside of the range [-1, 1].
    *
@@ -194,7 +194,7 @@ extends Specific {
    *
    *  @param cosine Cosine value, which must be in the range [-1, 1].
    *
-   *  @return Angle in the range [0, ^''τ''^/,,2,,] radians ([0, 180] degrees).
+   *  @return Angle in the range [0, ^_τ_^/,,2,,] radians ([0, 180] degrees).
    *
    *  @throws IllegalArgumentException if `cosine` is outside of the range [-1, 1].
    *
@@ -212,7 +212,7 @@ extends Specific {
    *
    *  @param tangent Tangent value, which must be in the range [-∞, ∞].
    *
-   *  @return Angle in the range [-^''τ''^/,,4,,, ^''τ''^/,,4,,] radians ([-90, 90] degrees).
+   *  @return Angle in the range [-^_τ_^/,,4,,, ^_τ_^/,,4,,] radians ([-90, 90] degrees).
    *
    *  @throws IllegalArgumentException if `tangent` is `NaN`.
    *
@@ -223,16 +223,16 @@ extends Specific {
     apply(Math.atan(tangent))
   } ensuring(!_.value.isNaN)
 
-  /** Returns the angle ''θ'' from the conversion of rectangular coordinates (`x`, `y`) to polar coordinates (''r'',
-   * ''θ'').
+  /** Returns the angle _θ_ from the conversion of rectangular coordinates (`x`, `y`) to polar coordinates (_r_,
+   * _θ_).
    *
    *  @note This function should be preferred over the [[atan()]] function where applicable.
    *
-   *  @param y ''Ordinate'' (Y-axis value) of the rectangular coordinate.
+   *  @param y _Ordinate_ (Y-axis value) of the rectangular coordinate.
    *
-   *  @param x ''Abscissa'' (X-axis value) of the rectangular coordinate.
+   *  @param x _Abscissa_ (X-axis value) of the rectangular coordinate.
    *
-   *  @return Angle in the range [-^''τ''^/,,2,,, ^''τ''^/,,2,,] radians ([-180, 180] degrees).
+   *  @return Angle in the range [-^_τ_^/,,2,,, ^_τ_^/,,2,,] radians ([-180, 180] degrees).
    *
    *  @throws NullPointerException if `x` or `y` are `null`.
    *
@@ -244,13 +244,13 @@ extends Specific {
     apply(Math.atan2(y.value, x.value))
   } ensuring(!_.value.isNaN)
 
-  /** ''[[http://en.wikipedia.org/wiki/Angle Plane angle]]'' measurement class.
+  /** _[[http://en.wikipedia.org/wiki/Angle Plane angle]]_ measurement class.
    *
-   *  Instances of this class represent ''plane angle'' measurements.
+   *  Instances of this class represent _plane angle_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Angle plane angle]]'' measurement value.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Angle plane angle]]_ measurement value.
    *
-   *  @param measure ''Plane angle'' measurement expressed in ''[[Radians]]''. This value must be finite.
+   *  @param measure _Plane angle_ measurement expressed in _[[Radians]]_. This value must be finite.
    *
    *  @throws IllegalArgumentException if `types` is not finite.
    *
@@ -283,17 +283,17 @@ extends Specific {
      */
     def tan: Double = Math.tan(value)
 
-    /** Determine whether this angle is a normalized value in the range [0, ''τ'') ''radians'' ([0, 360) ''degrees'').
+    /** Determine whether this angle is a normalized value in the range [0, _τ_) _radians_ ([0, 360) _degrees_).
      *
-     *  @return `true` if this angle is in the range [0, ''τ'') ''radians'' ([0, 360) degrees); `false` otherwise.
+     *  @return `true` if this angle is in the range [0, _τ_) _radians_ ([0, 360) degrees); `false` otherwise.
      *
      *  @since 0.0
      */
     def isNormalized: Boolean = value >= 0.0 && value < τValue
 
-    /** Normalize the angle to a value in the range [0, ''τ'') ''radians'' ([0, 360) ''degrees'').
+    /** Normalize the angle to a value in the range [0, _τ_) _radians_ ([0, 360) _degrees_).
      *
-     *  @return Angle in the range [0, ''τ'') ''radians'' ([0, 360) ''degrees'').
+     *  @return Angle in the range [0, _τ_) _radians_ ([0, 360) _degrees_).
      *
      *  @since 0.0
      */
@@ -305,14 +305,14 @@ extends Specific {
     } ensuring(_.isNormalized)
   }
 
-  /** ''[[http://en.wikipedia.org/wiki/Angle Plane angle]]'' unit of measurement family class.
+  /** _[[http://en.wikipedia.org/wiki/Angle Plane angle]]_ unit of measurement family class.
    *
-   *  Instances of this class represent units for expressing ''plane angle'' measurements.
+   *  Instances of this class represent units for expressing _plane angle_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Angle plane angle]]'' unit of measurement.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Angle plane angle]]_ unit of measurement.
    *
-   *  @param converter Rules to be applied to convert a quantity measured in these units to the standard ''plane angle
-   *  [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''radians''.
+   *  @param converter Rules to be applied to convert a quantity measured in these units to the standard _plane angle
+   *  [[http://en.wikipedia.org/wiki/SI SI]]_ units, _radians_.
    *
    *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
    *

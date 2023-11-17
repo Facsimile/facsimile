@@ -86,8 +86,8 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *  @param actions Actions to be executed after the specified `delay`.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the actions: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an exception
-   *  instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
+   *  success of the actions: `Unit`, wrapped in a [[Success]], if successful; an exception
+   *  instance identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
    *
    *  @since 0.0
    */
@@ -123,7 +123,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *  @param terminationValue Value to be returned, together with the current state, if all of the elements in `ts`
    *  where processed.
    *
-   *  @param p A ''predicate'' function that is used to determine whether to stop processing subsequent transitions. The
+   *  @param p A _predicate_ function that is used to determine whether to stop processing subsequent transitions. The
    *  predicate can evaluate the state and return value of each transition. If the predicate succeeds, then execution of
    *  any remaining transitions terminates and the result of the last transition processed is returned; otherwise, if
    *  the predicate fails for the current result, then the following transition will be executed.
@@ -228,11 +228,11 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *   3. Change the state of the simulation to be executing.
    *
    *  @param warmupLength Duration, measured in simulation time from the start of the simulation run, allowing the
-   *  simulation to ''warm-up'' (that is, fully populating the simulation model and removing the effects of
-   *  ''initialization bias''), after which simulation statistics will be reset. If omitted, this value defaults to 1
+   *  simulation to _warm-up_ (that is, fully populating the simulation model and removing the effects of
+   *  _initialization bias_), after which simulation statistics will be reset. If omitted, this value defaults to 1
    *  week.
    *
-   *  @param snapLength Duration, measured in simulation time, of each simulation ''snap'' (simulation reporting
+   *  @param snapLength Duration, measured in simulation time, of each simulation _snap_ (simulation reporting
    *  period), with the first such snap starting after the warm-up period has completed. At the end of each snap, the
    *  statistics are reset and a report generated. If omitted, this defaults to one week.
    *
@@ -272,12 +272,12 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *  If the event queue is empty, then there are no more events and the simulation will have terminated; in this case,
    *  the simulation will change to Terminated and the current event will not be updated.
    *
-   *  @note The new simulation time (the time at which the new current event is scheduled to occur) '''must''' be
+   *  @note The new simulation time (the time at which the new current event is scheduled to occur) *must* be
    *  greater than or equal to the due time of the initial current event.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the update operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
-   *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
+   *  success of the update operation: `Unit`, wrapped in a [[Success]], if successful; an
+   *  exception instance identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
    */
   private def updateCurrentEvent: SimulationAction[M] = State {s =>
 
@@ -301,8 +301,8 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *  Execute the actions associated with the current event, updating the simulation state accordingly.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the dispatch operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
-   *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
+   *  success of the dispatch operation: `Unit`, wrapped in a [[Success]], if successful; an
+   *  exception instance identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
    */
   private def dispatchCurrentEvent: SimulationAction[M] = State {s =>
 
@@ -313,7 +313,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
     s.current.get.action.dispatch.run(s).value
   }
 
-  /** Perform an ''event iteration''.
+  /** Perform an _event iteration_.
    *
    *  An event iteration involves:
    *   1. Updating the current event to the event at the head of event queue, and removing that event from the event
@@ -322,8 +322,8 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *   1. Report the resulting simulation update.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the iteration operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
-   *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
+   *  success of the iteration operation: `Unit`, wrapped in a [[Success]], if successful; an
+   *  exception instance identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
    */
   private def iterate: SimulationAction[M] = for {
     r <- takeUntilFailure {
@@ -347,8 +347,8 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *   1. Report the resulting simulation update.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the iteration operation: `Unit`, wrapped in a `[[scala.util.Success Success]]`, if successful; an
-   *  exception instance identifying the cause of the failure, wrapped in a `[[scala.util.Failure Failure]]` otherwise.
+   *  success of the iteration operation: `Unit`, wrapped in a [[Success]], if successful; an
+   *  exception instance identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
    */
   private def remainingEvents: SimulationAction[M] = State {s =>
 
@@ -374,11 +374,11 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *  @param initialModelState Initial state of the simulation model at the start of the run.
    *
    *  @param warmUpPeriod Duration, measured in simulation time from the start of the simulation run, allowing the
-   *  simulation to ''warm-up'' (that is, fully populating the simulation model and removing the effects of
-   *  ''initialization bias''), after which simulation statistics will be reset. If omitted, this value defaults to 1
+   *  simulation to _warm-up_ (that is, fully populating the simulation model and removing the effects of
+   *  _initialization bias_), after which simulation statistics will be reset. If omitted, this value defaults to 1
    *  week.
    *
-   *  @param snapLength Duration, measured in simulation time, of each simulation ''snap'' (simulation reporting
+   *  @param snapLength Duration, measured in simulation time, of each simulation _snap_ (simulation reporting
    *  period), with the first such snap starting after the warm-up period has completed. At the end of each snap, the
    *  statistics are reset and a report generated. If omitted, this defaults to one week.
    *
@@ -388,7 +388,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
    *  @param initialization Actions necessary to initialize the simulation, such as scheduling initial events.
    *
    *  @return Final simulation state as the first element of a tuple that also includes the result of the last
-   *  transition, wrapped in a `[[scala.util.Try Try]]`.
+   *  transition, wrapped in a [[Try]].
    *
    *  @since 0.0
    */
@@ -416,7 +416,7 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
 /** Simulation companion object. */
 object Simulation {
 
-  /** Implicit conversion of simulation transitions (''actions'') to an `[[org.facsim.sim.model.Action Action]]`
+  /** Implicit conversion of simulation transitions (_actions_) to an `[[org.facsim.sim.model.Action Action]]`
    *  instance.
    *
    *  @tparam M Final type of the simulation's model state.

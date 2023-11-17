@@ -34,7 +34,7 @@
 //======================================================================================================================
 package org.facsim
 
-/** ''[[http://facsim.org/sfx Facsimile SFX]]'': A Lightweight ''Scala'' wrapper for ''JavaFX''.
+/** _[[http://facsim.org/sfx Facsimile SFX]]_: A Lightweight _Scala_ wrapper for _JavaFX_.
  *
  *  @since 0.0
  */

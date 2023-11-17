@@ -38,16 +38,16 @@ package org.facsim.types.phys
 
 import org.facsim.types.LibResource
 
-/** ''[[http://en.wikipedia.org/wiki/Length Length]]'' physical quantity type.
+/** _[[http://en.wikipedia.org/wiki/Length Length]]_ physical quantity type.
  *
- *  All lengths are stored internally in ''[[http://en.wikipedia.org/wiki/Metre meters]]'', which is the
- *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of types.
+ *  All lengths are stored internally in _[[http://en.wikipedia.org/wiki/Metre meters]]_, which is the
+ *  _[[http://en.wikipedia.org/wiki/SI SI]]_ standard unit of types.
  *
- *  @see [[http://en.wikipedia.org/wiki/Length Length]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Length Length]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/Metre Meters]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Metre Meters]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
  *
  *  @since 0.0
  */
@@ -66,9 +66,9 @@ extends Specific {
   /** Number of meters exactly equivalent to one millimeter. */
   private val MetersPerMM = 1.0 / 1000.0
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Millimetre millimeters]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Millimetre millimeters]]_.
    *
-   *  @see ''[[http://en.wikipedia.org/wiki/Millimetre Millimeters]]'' on ''Wikipedia''.
+   *  @see _[[http://en.wikipedia.org/wiki/Millimetre Millimeters]]_ on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -77,24 +77,24 @@ extends Specific {
   /** Number of meters exactly equivalent to one centimeter. */
   private val MetersPerCM = 1.0 / 100.0
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Centimetre centimeters]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Centimetre centimeters]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Centimetre Centimeters]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Centimetre Centimeters]] on _Wikipedia_.
    *
    *  @since 0.0
    */
   val Centimeters: Units = new Units(new LinearScaleConverter(MetersPerCM), LibResource("phys.Length.Centimeter.sym"))
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Metre meters]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Metre meters]]_.
    *
-   *  @note ''Meters'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for length measurement, and the
-   *  units that are used to store such measurements internally in ''Facsimile''.
+   *  @note _Meters_ are the _[[http://en.wikipedia.org/wiki/SI SI]]_ standard units for length measurement, and the
+   *  units that are used to store such measurements internally in _Facsimile_.
    *
-   *  In ''Facsimile'', a ''meter'' is defined in accordance with ''SI'' standards.
+   *  In _Facsimile_, a _meter_ is defined in accordance with _SI_ standards.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Metre Meters]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Metre Meters]] on _Wikipedia_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -103,9 +103,9 @@ extends Specific {
   /** Number of meters exactly equivalent to one kilometer. */
   private val MetersPerKM = 1000.0
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Kilometre kilometers]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Kilometre kilometers]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Kilometre Kilometers]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Kilometre Kilometers]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -114,15 +114,15 @@ extends Specific {
   /** Number of meters exactly equivalent to one inch.
    *
    *  @note This value is the internationally accepted rate for converting between meters and inches and is used
-   *  internally to convert between metric and Imperial/English length units. This value '''must not''' be modified!
+   *  internally to convert between metric and Imperial/English length units. This value *must not* be modified!
    *
-   *  @see [[http://en.wikipedia.org/wiki/Inch Inch]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Inch Inch]] on _Wikipedia_.
    */
   private val MetersPerInch = 0.0254
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Inch inches]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Inch inches]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Inch Inches]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Inch Inches]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -131,9 +131,9 @@ extends Specific {
   /** Number of meters exactly equivalent to one foot. */
   private val MetersPerFoot = MetersPerInch * 12.0
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Foot_(unit) feet]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Foot_(unit) feet]]_.
    *
-   * @see [[http://en.wikipedia.org/wiki/Foot_(unit) Feet]] on ''Wikipedia''.
+   * @see [[http://en.wikipedia.org/wiki/Foot_(unit) Feet]] on _Wikipedia_.
    *
    * @since 0.0
    */
@@ -142,9 +142,9 @@ extends Specific {
   /** Number of meters exactly equivalent to one yard. */
   private val MetersPerYard = MetersPerFoot * 3.0
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Yard yards]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Yard yards]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Yard Yards]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Yard Yards]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -153,9 +153,9 @@ extends Specific {
   /** Number of meters exactly equivalent to one mile. */
   private val MetersPerMile = MetersPerYard * 1760.0
 
-  /** Units for lengths measured in ''[[http://en.wikipedia.org/wiki/Mile miles]]''.
+  /** Units for lengths measured in _[[http://en.wikipedia.org/wiki/Mile miles]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Mile Miles]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Mile Miles]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -178,13 +178,13 @@ extends Specific {
    */
   private[phys] override def apply(measure: Double) = new Measure(measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Length Length]]'' measurement class.
+  /** _[[http://en.wikipedia.org/wiki/Length Length]]_ measurement class.
    *
-   *  Instances of this class represent ''length'' measurements.
+   *  Instances of this class represent _length_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Length length]]'' measurement value.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Length length]]_ measurement value.
    *
-   *  @param measure ''Length'' measurement expressed in ''[[Meters]]''. This value must be finite.
+   *  @param measure _Length_ measurement expressed in _[[Meters]]_. This value must be finite.
    *
    *  @throws IllegalArgumentException if `types` is not finite.
    *
@@ -193,14 +193,14 @@ extends Specific {
   final class LengthMeasure private[phys](measure: Double)
   extends SpecificMeasure[LengthMeasure](measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Length Length]]'' unit of measurement family class.
+  /** _[[http://en.wikipedia.org/wiki/Length Length]]_ unit of measurement family class.
    *
-   *  Instances of this class represent units for expressing ''length'' measurements.
+   *  Instances of this class represent units for expressing _length_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Length length]]'' unit of measurement.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Length length]]_ unit of measurement.
    *
    *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard
-   *  ''length [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''meters''.
+   *  _length [[http://en.wikipedia.org/wiki/SI SI]]_ units, _meters_.
    *
    *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
    *

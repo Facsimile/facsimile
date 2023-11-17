@@ -120,7 +120,7 @@ implement the [[scala.Equals]] trait.
 @return Pair containing a map, associating each unique value in `list` to a
 unique integer index value, and a vector, associating each unique index value
 to the associated list element. Index values should be consecutive in range [0,
-n-1], where ''n'' is the number of elements in the resulting map & vector.
+n-1], where _n_ is the number of elements in the resulting map & vector.
 */
   private def createMapVect[T <: Equals](list: List[T]) = {
 
@@ -256,10 +256,10 @@ private[anim] object Mesh {
 /**
 Construct a conic mesh.
 
-The circumference is relative to the local ''X-Y'' plane, with its center at
+The circumference is relative to the local _X-Y_ plane, with its center at
 `c`. The conic apex is either above, below, or at the same height as the
-center, measured along the local ''Z'' axis (possibly displaced along the local
-''X''- and/or ''Y''-axes).
+center, measured along the local _Z_ axis (possibly displaced along the local
+_X_- and/or _Y_-axes).
 
 This function is useful for assisting with the construction a number of
 different 3D shapes:
@@ -300,9 +300,9 @@ must be in the range (0, τ] radians.
 
 @param down If `true`, then the resulting faces should defined by listing their
 vertices in clockwise order, so that the resulting face normal points down the
-local ''Z''-axis, typically making them visible from below the plane of the
+local _Z_-axis, typically making them visible from below the plane of the
 circumference; if `false`, vertices are listed in counterclockwise order, so
-that the resulting face normal point up the local ''Z''-axis, typically making
+that the resulting face normal point up the local _Z_-axis, typically making
 them visible from above the plane of the circumference.
 */
   private def conicMesh(c: Point3D, r: Double, a: Point3D,
@@ -462,10 +462,10 @@ Create the mesh from the List of a faces.
 /**
 Construct a circular wall mesh.
 
-The base circumference is relative to the local ''X-Y'' plane, with its center
+The base circumference is relative to the local _X-Y_ plane, with its center
 at `cb`. The top circumference has its center at `ct` and is above `cb`,
-measured along the local ''Z'' axis (possibly displaced along the local ''X''-
-and/or ''Y''-axes).
+measured along the local _Z_ axis (possibly displaced along the local _X_-
+and/or _Y_-axes).
 
 This function is useful for assisting with the construction a number of
 different 3D shapes:
@@ -481,7 +481,7 @@ circular wall mesh.
 
 @param ct Center of the circle whose circumference forms the top of the
 circular wall mesh. This point must be above `cb` measured along the local
-''Z''-axis.
+_Z_-axis.
 
 @param rt Radius of the top. This value must be finite and > zero.
 

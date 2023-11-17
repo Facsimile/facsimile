@@ -46,15 +46,15 @@ This class simplifies the parsing of text streams by reading the next field
 type after optional verification.
 
 Furthermore, this reader harmonizes line termination sequences, so that all
-lines appear to terminate with a ''line feed'' character
+lines appear to terminate with a _line feed_ character
 ('\n')&mdash;regardless of the actual line termination sequence.  (Typically,
-''Windows'', ''DOS'' and ''OS/2'' text streams terminate lines with a
-''carriage return'' character followed by a ''line feed'' character ('\r\n');
-''Unix'' and ''Unix''-like systems, such as ''Linux'', ''Mac OS'' (versions X
-and higher) and the ''BSD'' variants, terminate with a single ''line feed''
+_Windows_, _DOS_ and _OS/2_ text streams terminate lines with a
+_carriage return_ character followed by a _line feed_ character ('\r\n');
+_Unix_ and _Unix_-like systems, such as _Linux_, _Mac OS_ (versions X
+and higher) and the _BSD_ variants, terminate with a single _line feed_
 character ('\n'); older Mac OS systems (9 and earlier) terminate with a single
-''carriage return'' character ('\r').  This reader, and its subclasses, allow
-all text streams to be treated as though they come from a ''Unix''-like system.
+_carriage return_ character ('\r').  This reader, and its subclasses, allow
+all text streams to be treated as though they come from a _Unix_-like system.
 
 @todo Implement support for comments (ignore remainder of line, whole of line).
 
@@ -129,7 +129,7 @@ has been read (rather than being peeked).
 
 @param column Column from which the next character will be read.  Ideally,
 column numbering counts whole Unicode characters, not simply bytes or partial
-characters (as can be the case in ''UTF-8'' and ''UTF-16'' formats).  By
+characters (as can be the case in _UTF-8_ and _UTF-16_ formats).  By
 convention, column numbering beings at 1 and is incremented each time a
 character is read.  The column number must be reset to 1 each time a line
 termination sequence has been read&mdash;the same point at which the line
@@ -144,7 +144,7 @@ has been read (rather than being peeked).
 /**
 Default auxiliary constructor for new state instances.
 
-The last character read is set to 0 (the ''null character''), which is OK for
+The last character read is set to 0 (the _null character_), which is OK for
 initialization purposes.  The peeked character is set to `None`.  Row and
 column numbers are initialized to 1.
 */
@@ -154,7 +154,7 @@ column numbers are initialized to 1.
 
 //.............................................................................
 /**
-''Copy'' constructor for copying existing state of a text reader.
+_Copy_ constructor for copying existing state of a text reader.
 
 The copied state is cached in case it needs to be restored later.  This
 operation is performed as part of the state caching operation.
@@ -350,8 +350,8 @@ Update the row and column number for the character we're returning.
 /**
 Read the next character from the stream.
 
-Line termination sequences will be consumed and reported as a single ''line
-feed'' character to simplify stream  processing on all platforms.
+Line termination sequences will be consumed and reported as a single _line
+feed_ character to simplify stream  processing on all platforms.
 
 @return The next character read from the stream or `EOF` if the end-of-file was
 encountered during the read.
@@ -457,22 +457,22 @@ returned.  If this function returns `false`, a
 [[org.facsim.io.FieldVerificationException!]] will be raised.
 
 @param convertField Function to convert the field's value from a string to the
-required type '''T'''.  If the field cannot be converted, a
+required type *T*.  If the field cannot be converted, a
 [[org.facsim.io.FieldConversionException!]] is thrown.
 
 @tparam T Data type that the field is to be converted to and returned as.
 
-@return Next field read from the stream, as a value of type '''T'''.
+@return Next field read from the stream, as a value of type *T*.
 
 @throws java.io.IOException if an attempt is made to read a character after an
 end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 
 @throws org.facsim.io.FieldConversionException if the field's string data could
-not be converted to '''T''' by the '''convertField''' function.
+not be converted to *T* by the *convertField* function.
 
 @throws org.facsim.io.FieldVerificationException if the field's value could not
-be verified by the '''verify''' function.
+be verified by the *verify* function.
 */
   private final def readField[T](delimiter: Delimiter,
   verify: TextReader.Verifier[T])(convertField:(String) => T): T = {
@@ -569,7 +569,7 @@ end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -596,7 +596,7 @@ end-of-file condition has been signaled by a previous read operation, or if any
 other I/O error occurs during a read operation.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -629,7 +629,7 @@ other I/O error occurs during a read operation.
 could not be converted into a byte value.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -659,7 +659,7 @@ other I/O error occurs during a read operation.
 could not be converted into a short integer value.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -689,7 +689,7 @@ other I/O error occurs during a read operation.
 could not be converted into an integer value.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -719,7 +719,7 @@ other I/O error occurs during a read operation.
 could not be converted into a long integer value.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -749,7 +749,7 @@ other I/O error occurs during a read operation.
 could not be converted into a float value.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -791,7 +791,7 @@ other I/O error occurs during a read operation.
 could not be converted into a double value.
 
 @throws org.facsim.io.FieldVerificationException if this field's data could not
-be verified by '''verify'''.
+be verified by *verify*.
 
 @since 0.0
 */
@@ -812,7 +812,7 @@ throw a NumberFormatException.
   }
 
 /**
-Determine if the ''end-of-file'' has been reached.
+Determine if the _end-of-file_ has been reached.
 
 @return `true` if the end-of-file marker has been read from the stream,
 `false` otherwise.
@@ -915,31 +915,31 @@ signifies end-of-file when reading a single character.
   val EOF = -1
 
 /**
-Magic number, storing Unicode value of the ''carriage return'' character.
+Magic number, storing Unicode value of the _carriage return_ character.
 */
 
   val CR = '\r'.toInt
 
 /**
-Magic number, storing Unicode value of the ''horizontal tab'' character.
+Magic number, storing Unicode value of the _horizontal tab_ character.
 */
 
   val HT = '\t'.toInt
 
 /**
-Magic number, storing Unicode value of the ''line feed'' character.
+Magic number, storing Unicode value of the _line feed_ character.
 */
 
   val LF = '\n'.toInt
 
 /**
-Magic number, storing Unicode value of the ''nul'' character.
+Magic number, storing Unicode value of the _nul_ character.
 */
 
   val NUL = 0
 
 /**
-Magic number, storing Unicode value of the ''space'' character.
+Magic number, storing Unicode value of the _space_ character.
 */
 
   val SPC = ' '.toInt

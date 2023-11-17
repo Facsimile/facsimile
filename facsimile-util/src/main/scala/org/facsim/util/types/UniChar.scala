@@ -41,50 +41,50 @@ import scala.collection.immutable.ArraySeq
 import scala.jdk.StreamConverters.IntStreamHasToScala
 import scala.language.implicitConversions
 
-/** Encapsulates a single, valid, non-''surrogate [[https://unicode.org/ Unicode]]'' character.
+/** Encapsulates a single, valid, non-_surrogate [[https://unicode.org/ Unicode]]_ character.
  *
- *  ''Java'' (and, hence, ''Scala'', ''Kotlin'' and other ''JVM'' languages) suffer from a broken `char` implementation
+ *  _Java_ (and, hence, _Scala_, _Kotlin_ and other _JVM_ languages) suffer from a broken `char` implementation
  *  (and hence also the `[[Character]]` and `[[Char]]` type implementations).
  *
- *  In the early days of ''Java'', a decision was made to support the then new ''Unicode'' standard. At that time, a
- *  single ''Unicode'' character required only 16 bits of storage capacity (two 8-bit bytes) to encode all of its
- *  characters. Consequently, ''Java'' defined a `char` to be 2 bytes in size, and each ''Unicode'' character mapped to
+ *  In the early days of _Java_, a decision was made to support the then new _Unicode_ standard. At that time, a
+ *  single _Unicode_ character required only 16 bits of storage capacity (two 8-bit bytes) to encode all of its
+ *  characters. Consequently, _Java_ defined a `char` to be 2 bytes in size, and each _Unicode_ character mapped to
  *  a single `char` value. Simple!
  *
- *  Alas, since then, as more and more characters have been added to the ''Unicode'' standard, some characters now
- *  require more than 16 bits in order to be encoded (the reference number for a character is termed a ''codepoint'').
- *  At the time of writing, the [[http://www.unicode.org/versions/Unicode13.0.0/ current ''Unicode'' standard (13.0.0)]]
+ *  Alas, since then, as more and more characters have been added to the _Unicode_ standard, some characters now
+ *  require more than 16 bits in order to be encoded (the reference number for a character is termed a _codepoint_).
+ *  At the time of writing, the [[http://www.unicode.org/versions/Unicode13.0.0/ current _Unicode_ standard (13.0.0)]]
  *  defines characters with codepoints in the range [0x000000, 0x10FFFF], requiring 21 bits of storage for any single
- *  character. Rather than break compatibility with earlier versions of ''Java'', it was decided to break the
- *  relationship that mapped a single ''Unicode'' character to a single ''Java'' `char` value. Now, some ''Unicode''
- *  characters must be represented by a ''surrogate pair'' of ''Java'' `char` values (this is also referred to as
- *  ''UTF-16 encoding''). Each pair consists of a ''high-surrogate'' (or ''leading surrogate'') character and a
- *  ''low-surrogate'' (or ''trailing surrogate'') characters; each surrogate character by itself is meaningless and
+ *  character. Rather than break compatibility with earlier versions of _Java_, it was decided to break the
+ *  relationship that mapped a single _Unicode_ character to a single _Java_ `char` value. Now, some _Unicode_
+ *  characters must be represented by a _surrogate pair_ of _Java_ `char` values (this is also referred to as
+ *  _UTF-16 encoding_). Each pair consists of a _high-surrogate_ (or _leading surrogate_) character and a
+ *  _low-surrogate_ (or _trailing surrogate_) characters; each surrogate character by itself is meaningless and
  *  the presence of surrogates that do not form a pair indicates an encoding error.
  *
  *  The presence of surrogate characters leads to a number of gnarly programming problems when processing `[[String]]`s
  *  as sequences of `char` values. In essence, the `char` type is broken and is no longer fit for purpose. To work
- *  around this, ''Facsimile'' has created a new character data type, called `UniChar`, to represent individual
- *  ''Unicode'' characters, replacing the `char` type (and the ''Java'' `Character` and ''Scala'' `Char` types).
- *  `UniChar` instances are based upon the ''codepoint'' value of each ''Unicode'' character, in the form of a 4-byte
+ *  around this, _Facsimile_ has created a new character data type, called `UniChar`, to represent individual
+ *  _Unicode_ characters, replacing the `char` type (and the _Java_ `Character` and _Scala_ `Char` types).
+ *  `UniChar` instances are based upon the _codepoint_ value of each _Unicode_ character, in the form of a 4-byte
  *  (32-bit) integer value.
  *
- *  As a consequence, every `UniChar` instance is a valid, non-surrogate ''Unicode'' character, simplifying string
+ *  As a consequence, every `UniChar` instance is a valid, non-surrogate _Unicode_ character, simplifying string
  *  parsing operations.
  *
  *  @note This class should be used to assist with per-character parsing operations. It is not intended for use as a
- *  means of storing character data, or for replacement of ''Java'' `[[String]]`s.
+ *  means of storing character data, or for replacement of _Java_ `[[String]]`s.
  *
- *  @constructor Create a new, single ''Unicode'' character from a ''Unicode'' `codepoint`. If `codepoint` does not
- *  represent a defined ''Unicode'' character, or if it is defined but represents a ''surrogate'' character, then an
+ *  @constructor Create a new, single _Unicode_ character from a _Unicode_ `codepoint`. If `codepoint` does not
+ *  represent a defined _Unicode_ character, or if it is defined but represents a _surrogate_ character, then an
  *  exception will be thrown.
  *
- *  @param codepoint ''Unicode'' codepoint value of the corresponding character. Invalid codepoints, and codepoints for
+ *  @param codepoint _Unicode_ codepoint value of the corresponding character. Invalid codepoints, and codepoints for
  *  surrogate characters, will be rejected by the associated factory methods.
  *
- *  @throws IllegalArgumentException if `codepoint` is not a defined, non-surrogate ''Unicode'' codepoint.
+ *  @throws IllegalArgumentException if `codepoint` is not a defined, non-surrogate _Unicode_ codepoint.
  *
- *  @see ''[[https://unicode.org/ Unicode standard.]]''
+ *  @see _[[https://unicode.org/ Unicode standard.]]_
  *
  *  @since 0.2
  */
@@ -118,36 +118,36 @@ final case class UniChar(codepoint: Int) {
     case x: Int => Some(x)
   }
 
-  /** Determine if this represents an alphabetic ''Unicode'' character.
+  /** Determine if this represents an alphabetic _Unicode_ character.
    *
-   *  A ''Unicode'' character is considered alphabetic if it belongs to an alphabet; this can be ''any'' alphabet, not
-   *  just the ''Latin'' alphabet.
+   *  A _Unicode_ character is considered alphabetic if it belongs to an alphabet; this can be _any_ alphabet, not
+   *  just the _Latin_ alphabet.
    *
-   *  @return `true` if `codepoint` identifies an alphabetic ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies an alphabetic _Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isAlphabetic: Boolean = Character.isAlphabetic(codepoint)
 
-  /** Determine if this ''Unicode'' character is in the ''basic multilingual plane'' (''BMP'').
+  /** Determine if this _Unicode_ character is in the _basic multilingual plane_ (_BMP_).
    *
-   *  A ''Unicode'' character is in the ''BMP'' if it can be represented by a single `[[Char]]` character. Note that
-   *  surrogate characters are not considered to be in the ''BMP''.
+   *  A _Unicode_ character is in the _BMP_ if it can be represented by a single `[[Char]]` character. Note that
+   *  surrogate characters are not considered to be in the _BMP_.
    *
-   *  @return `true` if `codepoint` identifies a ''BMP Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a _BMP Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isBMPCodePoint: Boolean = Character.isBmpCodePoint(codepoint)
 
-  /** Determine if this is a defined ''Unicode'' character.
+  /** Determine if this is a defined _Unicode_ character.
    *
-   *  Codepoints that do not have defined meanings in the ''Unicode'' standard are deemed undefined. Note that
+   *  Codepoints that do not have defined meanings in the _Unicode_ standard are deemed undefined. Note that
    *  surrogate characters are considered to be defined characters.
    *
-   *  @note Since all `UniChar` instances '''must''' have defined codepoints, this function will always return `true`.
+   *  @note Since all `UniChar` instances *must* have defined codepoints, this function will always return `true`.
    *
-   *  @return `true` if `codepoint` identifies a defined ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a defined _Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
@@ -155,9 +155,9 @@ final case class UniChar(codepoint: Int) {
     UniChar.isDefined(codepoint)
   } ensuring(r => r)
 
-  /** Determine if this represents a decimal digit ''Unicode'' character.
+  /** Determine if this represents a decimal digit _Unicode_ character.
    *
-   *  Decimal digits include ''Latin'', ''Arab-Indic'', ''Devanagari'', and ''fullwidth'' digits.
+   *  Decimal digits include _Latin_, _Arab-Indic_, _Devanagari_, and _fullwidth_ digits.
    *
    *  @return `true` if `codepoint` identifies a decimal digit character, or false otherwise.
    *
@@ -165,14 +165,14 @@ final case class UniChar(codepoint: Int) {
    */
   def isDigit: Boolean = Character.isDigit(codepoint)
 
-  /** Determine if this is a ''high-surrogate Unicode'' character.
+  /** Determine if this is a _high-surrogate Unicode_ character.
    *
-   *  A high-surrogate character, also called a ''leading surrogate'', is used in a pair with a following low-surrogate
-   *  character to encode ''supplemental'' characters that cannot be encoded in a single ''Java'' `[[Character]]`
-   *  instance. High-surrogate characters are invalid ''Unicode'' characters, because they represent nothing by
+   *  A high-surrogate character, also called a _leading surrogate_, is used in a pair with a following low-surrogate
+   *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ `[[Character]]`
+   *  instance. High-surrogate characters are invalid _Unicode_ characters, because they represent nothing by
    *  themselves.
    *
-   *  @note Since all `UniChar` instances '''cannot''' be surrogate codepoints, this function must always return
+   *  @note Since all `UniChar` instances *cannot* be surrogate codepoints, this function must always return
    *  `false`.
    *
    *  @return `true` if `codepoint` identifies a high-surrogate character, or `false` otherwise.
@@ -183,114 +183,114 @@ final case class UniChar(codepoint: Int) {
     UniChar.isHighSurrogate(codepoint)
   } ensuring(r => !r)
 
-  /** Determine if this should be regarded as ignorable in a ''Java'' or ''Unicode'' identifier.
+  /** Determine if this should be regarded as ignorable in a _Java_ or _Unicode_ identifier.
    *
    *  Ignorable identifier characters are either non-whitespace ISO control characters, or those characters classified
    *  as formatting characters.
    *
-   *  @return `true` if `codepoint` identifies a defined ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a defined _Unicode_ character, or false otherwise.
    *
-   *  @see [[isJavaIdentifierPart]] for the set of ''Unicode'' characters than can be used as part of a ''Java''
+   *  @see [[isJavaIdentifierPart]] for the set of _Unicode_ characters than can be used as part of a _Java_
    *  identifier, other than for the first character.
    *
-   *  @see [[isJavaIdentifierStart]] for the set of ''Unicode'' characters that can be used as the start of a ''Java''
+   *  @see [[isJavaIdentifierStart]] for the set of _Unicode_ characters that can be used as the start of a _Java_
    *  identifier.
    *
-   *  @see [[isUnicodeIdentifierPart]] for the set of ''Unicode'' characters than can be used as part of a ''Unicode''
+   *  @see [[isUnicodeIdentifierPart]] for the set of _Unicode_ characters than can be used as part of a _Unicode_
    *  identifier, other than for the first character.
    *
-   *  @see [[isUnicodeIdentifierStart]] for the set of ''Unicode'' characters that can be used as the start of a
-   *  ''Unicode'' identifier.
+   *  @see [[isUnicodeIdentifierStart]] for the set of _Unicode_ characters that can be used as the start of a
+   *  _Unicode_ identifier.
    *
    *  @since 0.2
    */
   def isIdentifierIgnorable: Boolean = Character.isIdentifierIgnorable(codepoint)
 
-  /** Determine if this is a ''Chinese, Japanese, Korean, or Vietnamese'' ideograph, as defined by the ''Unicode''
+  /** Determine if this is a _Chinese, Japanese, Korean, or Vietnamese_ ideograph, as defined by the _Unicode_
    *  standard.
    *
-   *  @return `true` if `codepoint` identifies an ideographic ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies an ideographic _Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isIdeographic: Boolean = Character.isIdeographic(codepoint)
 
-  /** Determine if this is an ''International Standards Organization'' (''ISO'') ''control'' character.
+  /** Determine if this is an _International Standards Organization_ (_ISO_) _control_ character.
    *
    *  ISO control characters come in two ranges:
-   *  - The ''C0'' range has codepoints in the range 'U+000000' through 'U+00001F'.
-   *  - The ''C1'' range has codepoints in the range 'U+00007F' through 'U+00009F'.
+   *  - The _C0_ range has codepoints in the range 'U+000000' through 'U+00001F'.
+   *  - The _C1_ range has codepoints in the range 'U+00007F' through 'U+00009F'.
    *
-   *  @return `true` if `codepoint` identifies an ISO control ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies an ISO control _Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isISOControl: Boolean = Character.isISOControl(codepoint)
 
-  /** Determine if this may be used as in a ''Java'' identifier, other than as the first character.
+  /** Determine if this may be used as in a _Java_ identifier, other than as the first character.
    *
    *  Identifier part characters include letters, digits, currency symbols, connecting punctuation characters, digits,
    *  numeric letters, combining marks, non-spacing marks and the set of identifier ignorable characters (see
    *  [[isIdentifierIgnorable]]).
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode'' character that can be used in a ''Java'' identifier (other
+   *  @return `true` if `codepoint` identifies a _Unicode_ character that can be used in a _Java_ identifier (other
    *  than as the first character), or false otherwise.
    *
-   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier ''Unicode'' characters.
+   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier _Unicode_ characters.
    *
-   *  @see [[isJavaIdentifierStart]] for the set of ''Unicode'' characters that can be used as the start of a ''Java''
+   *  @see [[isJavaIdentifierStart]] for the set of _Unicode_ characters that can be used as the start of a _Java_
    *  identifier.
    *
    *  @since 0.2
    */
   def isJavaIdentifierPart: Boolean = Character.isJavaIdentifierPart(codepoint)
 
-  /** Determine if this may be used as the first character in a ''Java'' identifier.
+  /** Determine if this may be used as the first character in a _Java_ identifier.
    *
    *  Identifier start characters include letters, letter numbers, currency symbols, and connecting punctuation
    *  characters only.
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode'' character that can be used at the start of a ''Java''
+   *  @return `true` if `codepoint` identifies a _Unicode_ character that can be used at the start of a _Java_
    *  identifier, or false otherwise.
    *
-   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier ''Unicode'' characters.
+   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier _Unicode_ characters.
    *
-   *  @see [[isJavaIdentifierPart]] for the set of ''Unicode'' characters than can be used as part of a ''Java''
+   *  @see [[isJavaIdentifierPart]] for the set of _Unicode_ characters than can be used as part of a _Java_
    *  identifier, other than for the first character.
    *
    *  @since 0.2
    */
   def isJavaIdentifierStart: Boolean = Character.isJavaIdentifierStart(codepoint)
 
-  /** Determine if this represents a ''Unicode'' letter character.
+  /** Determine if this represents a _Unicode_ letter character.
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode'' letter character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a _Unicode_ letter character, or false otherwise.
    *
    *  @since 0.2
    */
   def isLetter: Boolean = Character.isLetter(codepoint)
 
-  /** Determine if this represents a ''Unicode'' letter or decimal digit character.
+  /** Determine if this represents a _Unicode_ letter or decimal digit character.
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode'' letter or decimal digit character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a _Unicode_ letter or decimal digit character, or false otherwise.
    *
    *  @since 0.2
    */
   def isLetterOrDigit: Boolean = Character.isLetterOrDigit(codepoint)
 
-  /** Determine if this represents a lower case ''Unicode'' letter character.
+  /** Determine if this represents a lower case _Unicode_ letter character.
    *
-   *  @return `true` if `codepoint` identifies a lower case ''Unicode'' letter character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a lower case _Unicode_ letter character, or false otherwise.
    *
    *  @since 0.2
    */
   def isLowerCase: Boolean = Character.isLowerCase(codepoint)
 
-  /** Determine if this defines a ''low-surrogate'' character.
+  /** Determine if this defines a _low-surrogate_ character.
    *
-   *  A low-surrogate character, also called a ''trailing surrogate'', is used in a pair with a preceding
-   *  high-surrogate character to encode ''supplemental'' characters that cannot be encoded in a single ''Java''
-   *  `[[Character]]` instance. Low-surrogate characters are invalid ''Unicode'' characters, because they represent
+   *  A low-surrogate character, also called a _trailing surrogate_, is used in a pair with a preceding
+   *  high-surrogate character to encode _supplemental_ characters that cannot be encoded in a single _Java_
+   *  `[[Character]]` instance. Low-surrogate characters are invalid _Unicode_ characters, because they represent
    *  nothing by themselves.
    *
    *  @return `true` if `codepoint` identifies an identifier ignorable character, or `false` otherwise.
@@ -301,50 +301,50 @@ final case class UniChar(codepoint: Int) {
     UniChar.isLowSurrogate(codepoint)
   } ensuring(r => !r)
 
-  /** Determine if this is a ''mirrored Unicode'' character.
+  /** Determine if this is a _mirrored Unicode_ character.
    *
-   *  Mirrored characters, according to the ''Unicode'' specification, have their glyphs horizontally mirrored when
+   *  Mirrored characters, according to the _Unicode_ specification, have their glyphs horizontally mirrored when
    *  displayed in text that is right-to-left. For example, 'U+000028' is semantically defined to be an opening
    *  parenthesis. This will appear as '(' in text that is left-to-right but as ')' in text that is right-to-left.
    *
-   *  @return `true` if `codepoint` identifies a mirrored ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a mirrored _Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isMirrored: Boolean = Character.isMirrored(codepoint)
 
-  /** Determine if this is a ''Unicode space'' character.
+  /** Determine if this is a _Unicode space_ character.
    *
-   *  Space characters are categorized as such according to the ''Unicode'' specification; this includes various forms
+   *  Space characters are categorized as such according to the _Unicode_ specification; this includes various forms
    *  of space separators, line separators and paragraph separators.
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode space'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a _Unicode space_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isSpaceChar: Boolean = Character.isSpaceChar(codepoint)
 
-  /** Determine if this is a ''supplemental Unicode'' character.
+  /** Determine if this is a _supplemental Unicode_ character.
    *
-   *  Supplementary characters cannot be represented by a single ''Java'' `char` (`[[Character]]`, or `[[Char]]`) value,
-   *  and, instead, need must be encoded as a ''surrogate pair'', consisting of a high- (or leading-) surrogate
+   *  Supplementary characters cannot be represented by a single _Java_ `char` (`[[Character]]`, or `[[Char]]`) value,
+   *  and, instead, need must be encoded as a _surrogate pair_, consisting of a high- (or leading-) surrogate
    *  character, followed by a low- (or trailing-) surrogate character.
    *
    *  @note All supplemental characters can be represented by a single `UniChar` value.
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a _Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isSupplementary: Boolean = Character.isSupplementaryCodePoint(codepoint)
 
-  /** Determine if this is a ''surrogate Unicode'' character.
+  /** Determine if this is a _surrogate Unicode_ character.
    *
    *  A surrogate character, which may either be a high- or a low-surrogate, is used with another surrogate to encode
-   *  ''supplemental'' characters that cannot be encoded in a single ''Java'' `[[Character]]` instance. Surrogate
-   *  characters are invalid ''Unicode'' characters, because they represent nothing by themselves.
+   *  _supplemental_ characters that cannot be encoded in a single _Java_ `[[Character]]` instance. Surrogate
+   *  characters are invalid _Unicode_ characters, because they represent nothing by themselves.
    *
-   *  @note Since all `UniChar` instances '''cannot''' be surrogate codepoints, this function must always return
+   *  @note Since all `UniChar` instances *cannot* be surrogate codepoints, this function must always return
    *  `false`.
    *
    *  @return `true` if `codepoint` identifies a low- or a high-surrogate character, or `false` otherwise.
@@ -355,7 +355,7 @@ final case class UniChar(codepoint: Int) {
     UniChar.isSurrogate(codepoint)
   } ensuring(r => !r)
 
-  /** Determine if this represents a title case ''Unicode'' letter character.
+  /** Determine if this represents a title case _Unicode_ letter character.
    *
    *  @note The distinction between an upper case letter and a title case letter can be found in characters that
    *  resemble pairs of latin characters, such as 'ǉ' (in lower case). The upper case form has both letters in their
@@ -363,49 +363,49 @@ final case class UniChar(codepoint: Int) {
    *  and the second in lower case ('ǈ'). In all other situations, `isUpperCase` and `isTitleCase` will return the same
    *  result for the same character.
    *
-   *  @return `true` if `codepoint` identifies a title case ''Unicode'' letter character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a title case _Unicode_ letter character, or false otherwise.
    *
    *  @since 0.2
    */
   def isTitleCase: Boolean = Character.isTitleCase(codepoint)
 
-  /** Determine if this may be used as in a ''Unicode'' identifier, other than as the first character.
+  /** Determine if this may be used as in a _Unicode_ identifier, other than as the first character.
    *
    *  Identifier part characters include letters, digits, connecting punctuation characters, numeric letters,
    *  combining marks, non-spacing marks and the set of identifier ignorable characters (see
    *  [[isIdentifierIgnorable]]).
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode'' character that can be used in a ''Unicode'' identifier
+   *  @return `true` if `codepoint` identifies a _Unicode_ character that can be used in a _Unicode_ identifier
    *  (other than as the first character), or false otherwise.
    *
-   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier ''Unicode'' characters.
+   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier _Unicode_ characters.
    *
-   *  @see [[isUnicodeIdentifierStart]] for the set of ''Unicode'' characters that can be used as the start of a
-   *  ''Unicode'' identifier.
+   *  @see [[isUnicodeIdentifierStart]] for the set of _Unicode_ characters that can be used as the start of a
+   *  _Unicode_ identifier.
    *
    *  @since 0.2
    */
   def isUnicodeIdentifierPart: Boolean = Character.isUnicodeIdentifierPart(codepoint)
 
-  /** Determine if this is may be used as the first character in a ''Unicode'' identifier.
+  /** Determine if this is may be used as the first character in a _Unicode_ identifier.
    *
    *  Identifier start characters include letters, and letter numbers only.
    *
-   *  @return `true` if `codepoint` identifies a ''Unicode'' character that can be used at the start of a ''Unicode''
+   *  @return `true` if `codepoint` identifies a _Unicode_ character that can be used at the start of a _Unicode_
    *  identifier, or false otherwise.
    *
-   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier ''Unicode'' characters.
+   *  @see [[isIdentifierIgnorable]] for the set of ignorable identifier _Unicode_ characters.
    *
-   *  @see [[isUnicodeIdentifierPart]] for the set of ''Unicode'' characters than can be used as part of a ''Unicode''
+   *  @see [[isUnicodeIdentifierPart]] for the set of _Unicode_ characters than can be used as part of a _Unicode_
    *  identifier, other than for the first character.
    *
    *  @since 0.2
    */
   def isUnicodeIdentifierStart: Boolean = Character.isUnicodeIdentifierStart(codepoint)
 
-  /** Determine if this represents an upper case ''Unicode'' letter character.
+  /** Determine if this represents an upper case _Unicode_ letter character.
    *
-   *  @return `true` if `codepoint` identifies an upper case ''Unicode'' letter character, or false otherwise.
+   *  @return `true` if `codepoint` identifies an upper case _Unicode_ letter character, or false otherwise.
    *
    *  @see [[isTitleCase]] for more information on the distinction between upper and title case characters.
    *
@@ -413,15 +413,15 @@ final case class UniChar(codepoint: Int) {
    */
   def isUpperCase: Boolean = Character.isUpperCase(codepoint)
 
-  /** Determine if this is a valid (defined, non-surrogate) ''Unicode'' character.
+  /** Determine if this is a valid (defined, non-surrogate) _Unicode_ character.
    *
-   *  Codepoints that do not have defined meanings in the ''Unicode'' standard, or that identify ''surrogate''
+   *  Codepoints that do not have defined meanings in the _Unicode_ standard, or that identify _surrogate_
    *  characters, are deemed invalid.
    *
-   *  @note Since all `UniChar` instances '''must''' have valid (defined, non-surrogate) codepoints, this function will
+   *  @note Since all `UniChar` instances *must* have valid (defined, non-surrogate) codepoints, this function will
    *  always return `true`.
    *
-   *  @return `true` if `codepoint` identifies a defined ''Unicode'' character that is not also a ''surrogate''
+   *  @return `true` if `codepoint` identifies a defined _Unicode_ character that is not also a _surrogate_
    *  character, or false otherwise.
    *
    *  @since 0.2
@@ -432,7 +432,7 @@ final case class UniChar(codepoint: Int) {
 
   /** Determine if this is considered a whitespace character.
    *
-   *  @return `true` if this character is regarded as a ''whitespace'' character by ''Java''.
+   *  @return `true` if this character is regarded as a _whitespace_ character by _Java_.
    *
    *  @since 0.2
    */
@@ -456,11 +456,11 @@ final case class UniChar(codepoint: Int) {
     else this
   }
 
-  /** Convert the codepoint value to a ''Unicode'' character, represented as a string.
+  /** Convert the codepoint value to a _Unicode_ character, represented as a string.
    *
    *  @note The return value may be more than one `[[java.lang.Character]]` in length.
    *
-   *  @return String containing this ''Unicode'' character.
+   *  @return String containing this _Unicode_ character.
    *
    *  @since 0.2
    */
@@ -503,7 +503,7 @@ final case class UniChar(codepoint: Int) {
   }
 }
 
-/** ''Unicode'' character companion object.
+/** _Unicode_ character companion object.
  *
  *  @since 0.2
  */
@@ -530,8 +530,8 @@ object UniChar {
   /** Carriage return character.
    *
    *  @note This is considered a whitespace character by Java. It is used, followed by a `[[LF]]` character, as the
-   *  ''line termination sequence'' for ''Windows'', ''DOS'', and ''OS/2'' text files. In isolation, it is treated as
-   *  a line terminator in ''MacOS'' 9 and earlier text files.
+   *  _line termination sequence_ for _Windows_, _DOS_, and _OS/2_ text files. In isolation, it is treated as
+   *  a line terminator in _MacOS_ 9 and earlier text files.
    *
    *  @since 0.2
    */
@@ -583,8 +583,8 @@ object UniChar {
   /** Line feed character.
    *
    *  @note This is considered a whitespace character by Java. It is used, following a `[[CR]]` character, as the
-   *  ''line termination sequence'' for ''Windows'', ''DOS'', and ''OS/2'' text files. In isolation, it is treated as a
-   *  line terminator in all ''UNIX''-like operating system text files (''Linux'', ''BSD'', etc.).
+   *  _line termination sequence_ for _Windows_, _DOS_, and _OS/2_ text files. In isolation, it is treated as a
+   *  line terminator in all _UNIX_-like operating system text files (_Linux_, _BSD_, etc.).
    *
    *  @since 0.2
    */
@@ -643,7 +643,7 @@ object UniChar {
    *
    *  @since 0.2
    */
-  val SQ: UniChar = '\''
+  val SQ: UniChar = '\_
 
   /** Unit separator character.
    *
@@ -665,12 +665,12 @@ object UniChar {
 
   /** Implicit conversion of integer codepoint values to `[[UniChar]]` characters.
    *
-   *  @param codepoint ''Unicode'' codepoint value of the corresponding character. Invalid codepoints, and codepoints
+   *  @param codepoint _Unicode_ codepoint value of the corresponding character. Invalid codepoints, and codepoints
    *  for surrogate characters, will be rejected.
    *
    *  @return `[[UniChar]]` with specified codepoint value.
    *
-   *  @throws IllegalArgumentException if `codepoint` is not a defined, non-surrogate ''Unicode'' codepoint.
+   *  @throws IllegalArgumentException if `codepoint` is not a defined, non-surrogate _Unicode_ codepoint.
    *
    *  @since 0.2
    */
@@ -682,7 +682,7 @@ object UniChar {
    *
    *  @return `[[UniChar]]` equivalent of the specified `character`.
    *
-   *  @throws IllegalArgumentException if `character` is not a defined, non-surrogate ''Unicode'' character.
+   *  @throws IllegalArgumentException if `character` is not a defined, non-surrogate _Unicode_ character.
    *
    *  @since 0.2
    */
@@ -707,27 +707,27 @@ object UniChar {
     case x: Char => Some(UniChar(x.toInt))
   }
 
-  /** Determine if a codepoint represents a defined ''Unicode'' character.
+  /** Determine if a codepoint represents a defined _Unicode_ character.
    *
-   *  Codepoints that do not have defined meanings in the ''Unicode'' standard are deemed undefined. Note that
+   *  Codepoints that do not have defined meanings in the _Unicode_ standard are deemed undefined. Note that
    *  surrogate characters are considered to be defined characters.
    *
-   *  @param codepoint ''Unicode'' codepoint being checked.
+   *  @param codepoint _Unicode_ codepoint being checked.
    *
-   *  @return `true` if `codepoint` identifies a defined ''Unicode'' character, or false otherwise.
+   *  @return `true` if `codepoint` identifies a defined _Unicode_ character, or false otherwise.
    *
    *  @since 0.2
    */
   def isDefined(codepoint: Int): Boolean = Character.isDefined(codepoint)
 
-  /** Determine if a codepoint defines a ''high-surrogate'' character.
+  /** Determine if a codepoint defines a _high-surrogate_ character.
    *
-   *  A high-surrogate character, also called a ''leading surrogate'', is used in a pair with a following low-surrogate
-   *  character to encode ''supplemental'' characters that cannot be encoded in a single ''Java'' `[[Character]]`
-   *  instance. High-surrogate characters are invalid ''Unicode'' characters, because they represent nothing by
+   *  A high-surrogate character, also called a _leading surrogate_, is used in a pair with a following low-surrogate
+   *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ `[[Character]]`
+   *  instance. High-surrogate characters are invalid _Unicode_ characters, because they represent nothing by
    *  themselves.
    *
-   *  @param codepoint ''Unicode'' codepoint being checked.
+   *  @param codepoint _Unicode_ codepoint being checked.
    *
    *  @return `true` if `codepoint` identifies a high-surrogate character, or `false` otherwise.
    *
@@ -737,14 +737,14 @@ object UniChar {
     codepoint >= Character.MIN_HIGH_SURROGATE && codepoint <= Character.MAX_HIGH_SURROGATE
   }
 
-  /** Determine if a codepoint defines a ''low-surrogate'' character.
+  /** Determine if a codepoint defines a _low-surrogate_ character.
    *
-   *  A low-surrogate character, also called a ''trailing surrogate'', is used in a pair with a preceding
-   *  high-surrogate character to encode ''supplemental'' characters that cannot be encoded in a single ''Java''
-   *  `[[Character]]` instance. Low-surrogate characters are invalid ''Unicode'' characters, because they represent
+   *  A low-surrogate character, also called a _trailing surrogate_, is used in a pair with a preceding
+   *  high-surrogate character to encode _supplemental_ characters that cannot be encoded in a single _Java_
+   *  `[[Character]]` instance. Low-surrogate characters are invalid _Unicode_ characters, because they represent
    *  nothing by themselves.
    *
-   *  @param codepoint ''Unicode'' codepoint being checked.
+   *  @param codepoint _Unicode_ codepoint being checked.
    *
    *  @return `true` if `codepoint` identifies an identifier ignorable character, or `false` otherwise.
    *
@@ -754,13 +754,13 @@ object UniChar {
     codepoint >= Character.MIN_LOW_SURROGATE && codepoint <= Character.MAX_LOW_SURROGATE
   }
 
-  /** Determine if a codepoint defines a ''surrogate'' character.
+  /** Determine if a codepoint defines a _surrogate_ character.
    *
    *  A surrogate character, which may either be a high- or a low-surrogate, is used with another surrogate to encode
-   *  ''supplemental'' characters that cannot be encoded in a single ''Java'' `[[Character]]` instance. Surrogate
-   *  characters are invalid ''Unicode'' characters, because they represent nothing by themselves.
+   *  _supplemental_ characters that cannot be encoded in a single _Java_ `[[Character]]` instance. Surrogate
+   *  characters are invalid _Unicode_ characters, because they represent nothing by themselves.
    *
-   *  @param codepoint ''Unicode'' codepoint being checked.
+   *  @param codepoint _Unicode_ codepoint being checked.
    *
    *  @return `true` if `codepoint` identifies a low- or a high-surrogate character, or `false` otherwise.
    *
@@ -770,14 +770,14 @@ object UniChar {
     codepoint >= Character.MIN_SURROGATE && codepoint <= Character.MAX_SURROGATE
   }
 
-  /** Determine if a codepoint is a valid (defined, non-surrogate) ''Unicode'' character.
+  /** Determine if a codepoint is a valid (defined, non-surrogate) _Unicode_ character.
    *
-   *  Codepoints that do not have defined meanings in the ''Unicode'' standard, or that identify ''surrogate''
+   *  Codepoints that do not have defined meanings in the _Unicode_ standard, or that identify _surrogate_
    *  characters, are deemed invalid.
    *
-   *  @param codepoint ''Unicode'' codepoint being checked.
+   *  @param codepoint _Unicode_ codepoint being checked.
    *
-   *  @return `true` if `codepoint` identifies a defined ''Unicode'' character that is not also a ''surrogate''
+   *  @return `true` if `codepoint` identifies a defined _Unicode_ character that is not also a _surrogate_
    *  character, or false otherwise.
    *
    *  @since 0.2

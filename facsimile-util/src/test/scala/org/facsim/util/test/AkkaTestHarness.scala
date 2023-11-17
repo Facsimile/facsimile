@@ -41,9 +41,9 @@ import org.scalatest.BeforeAndAfterAll
 import scala.concurrent.ExecutionContext
 import org.scalatest.funspec.AnyFunSpec
 
-/** Test harness trait for ''Akka actors''.
+/** Test harness trait for _Akka actors_.
  *
- *  Creates an ''Akka'' actor system, executes the indicated test, then destroys the actor system.
+ *  Creates an _Akka_ actor system, executes the indicated test, then destroys the actor system.
  */
 trait AkkaTestHarness
 extends AnyFunSpec

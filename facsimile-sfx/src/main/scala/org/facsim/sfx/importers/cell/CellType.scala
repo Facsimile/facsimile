@@ -34,39 +34,39 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** Represent a specific ''cell'' type. */
+/** Represent a specific _cell_ type. */
 private[cell] sealed trait CellType
 
-/** ''Cell'' type companion. */
+/** _Cell_ type companion. */
 private[cell] object CellType {
 
-  /** Map of ''cell'' type code to ''cell'' type instance. */
+  /** Map of _cell_ type code to _cell_ type instance. */
   private val codeToInstance: Map[Int, CellType] = Map(
     700 -> Set,
     7000 -> Set,
     10000 -> Set,
   )
-  /** ''Cell'' type instance corresponding to the specified type code.
+  /** _Cell_ type instance corresponding to the specified type code.
    *
-   *  @param ct ''Cell'' type code.
+   *  @param ct _Cell_ type code.
    *
-   *  @return ''Cell'' type instance corresponding to the code.
+   *  @return _Cell_ type instance corresponding to the code.
    *
-   *  @throws scala.NoSuchElementException if `ct` is not a valid ''cell'' type code.
+   *  @throws scala.NoSuchElementException if `ct` is not a valid _cell_ type code.
    */
   def apply(ct: Int): CellType = codeToInstance(ct)
 
-  /** Verify the value of a ''cell'' type field.
+  /** Verify the value of a _cell_ type field.
    *
-   *  Valid ''cell'' type values are the keys of the [[codeToInstance]] map.
+   *  Valid _cell_ type values are the keys of the [[codeToInstance]] map.
    *
-   *  @param ct ''Cell'' type code to be verified.
+   *  @param ct _Cell_ type code to be verified.
    *
-   *  @return `true` if `ct` is a valid ''cell'' type code; `false` otherwise.
+   *  @return `true` if `ct` is a valid _cell_ type code; `false` otherwise.
    */
   def verify(ct: Int): Boolean = codeToInstance.contains(ct)
 }
 
-/** ''Set'' cell type. */
+/** _Set_ cell type. */
 private[cell] case object Set
 extends CellType

@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.types.algebra
 
-/** A typed ''semi-group'' for additive operations.
+/** A typed _semi-group_ for additive operations.
  *
  *  @tparam A Type of first value being added.
  *

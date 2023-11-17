@@ -36,28 +36,28 @@
 //======================================================================================================================
 package org.facsim.sim
 
-/** ''Facsimile Simulation Library'' model package.
+/** _Facsimile Simulation Library_ model package.
  *
  *  Package containing simulation modeling elements, their actions and location in 3D space.
  *
  *  =Note on Orientation=
  *
- *  In ''Facsimile'', the ''world'' axes are oriented as follows:
+ *  In _Facsimile_, the _world_ axes are oriented as follows:
  *
- *   - X-Axis: Positive X-axis points to the ''East'', negative to the ''West''.
- *   - Y-Axis: Positive Y-axis points to the ''North'', negative to the ''South''.
- *   - Z-Axis: Positive Z-axis points ''Up'', negative points ''Down''.
+ *   - X-Axis: Positive X-axis points to the _East_, negative to the _West_.
+ *   - Y-Axis: Positive Y-axis points to the _North_, negative to the _South_.
+ *   - Z-Axis: Positive Z-axis points _Up_, negative points _Down_.
  *
- *  This is the same ''right-handed orientation'' convention adopted by ''3D Studio'', ''AutoCAD'' and ''AutoMod''
+ *  This is the same _right-handed orientation_ convention adopted by _3D Studio_, _AutoCAD_ and _AutoMod_
  *  among others.
  *
- *  Note that ''JavaFX'' utilizes the following unusual axis orientation:
+ *  Note that _JavaFX_ utilizes the following unusual axis orientation:
  *
- *   - X-Axis: Positive X-axis points to the ''East'', negative to the ''West''.
- *   - Y-Axis: Positive Z-axis points ''Up'', negative points ''Down''.
- *   - Z-Axis: Positive Y-axis points to the ''South'', negative to the ''North''.
+ *   - X-Axis: Positive X-axis points to the _East_, negative to the _West_.
+ *   - Y-Axis: Positive Z-axis points _Up_, negative points _Down_.
+ *   - Z-Axis: Positive Y-axis points to the _South_, negative to the _North_.
  *
- *  Transformations must be applied to the 3D model in order to accurately render the same scene in ''JavaFX''.
+ *  Transformations must be applied to the 3D model in order to accurately render the same scene in _JavaFX_.
  *
  *  @since 0.0
  */

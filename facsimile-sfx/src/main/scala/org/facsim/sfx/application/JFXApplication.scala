@@ -37,11 +37,11 @@ package org.facsim.sfx.application
 import javafx.application.Application
 import javafx.stage.Stage
 
-/** ''JavaFX'' application class.
+/** _JavaFX_ application class.
  *
- *  @note Instances of this class should only be constructed by the ''JavaFX'' framework.
+ *  @note Instances of this class should only be constructed by the _JavaFX_ framework.
  *
- *  @constructor Initialize this ''JavaFX'' application.
+ *  @constructor Initialize this _JavaFX_ application.
  *
  *  @since 0.0
  */

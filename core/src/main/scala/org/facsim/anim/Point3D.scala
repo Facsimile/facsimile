@@ -40,15 +40,15 @@ import scalafx.scene.transform.Translate
 Defines a point in 3D animation space.
 
 The defined animation point may utilize world coordinates, or may be relative
-to a parent object (with local ''X''-, ''Y''- and ''Z''-axes).
+to a parent object (with local _X_-, _Y_- and _Z_-axes).
 
 @constructor Create new 3D animation point.
 
-@param x ''X''-axis coordinate. This value must be finite.
+@param x _X_-axis coordinate. This value must be finite.
 
-@param y ''Y''-axis coordinate. This value must be finite.
+@param y _Y_-axis coordinate. This value must be finite.
 
-@param z ''Z''-axis coordinate. This value must be finite.
+@param z _Z_-axis coordinate. This value must be finite.
 
 @throws IllegalArgumentException if `x`, `y` or `z` has a non-finite
 value.
@@ -67,8 +67,8 @@ Sanity checks.
 /**
 Convert this point into a List of coordinate values.
 
-@return List of coordinate values, with ''x'' coordinate first, ''y''
-coordinate second, and ''z'' coordinate third.
+@return List of coordinate values, with _x_ coordinate first, _y_
+coordinate second, and _z_ coordinate third.
 */
   private[anim] def toList = List(x, y, z)
 
@@ -76,13 +76,13 @@ coordinate second, and ''z'' coordinate third.
 Convert this point into a List of single-precision coordinate values.
 
 @return List of coordinate values as single-precision floating point values,
-with ''x'' coordinate first, ''y'' coordinate second, and ''z'' coordinate
+with _x_ coordinate first, _y_ coordinate second, and _z_ coordinate
 third.
 */
   private[anim] def toFloatList = List(x.toFloat, y.toFloat, z.toFloat)
 
 /**
-Convert this point to a ''ScalaFX'' translation.
+Convert this point to a _ScalaFX_ translation.
 
 @return Translation along local axes by coordinate values.
 */

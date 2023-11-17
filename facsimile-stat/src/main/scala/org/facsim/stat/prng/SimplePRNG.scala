@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.stat.prng
 
-/** Simple ''pseudo-random number'' (''PRN'') generator, using an algorithm that is identical to that of ''Java''.
+/** Simple _pseudo-random number_ (_PRN_) generator, using an algorithm that is identical to that of _Java_.
  *
  *  @since 0.0
  */

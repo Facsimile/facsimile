@@ -81,7 +81,7 @@ extends Order[T] {
 
   /** Calculate the absolute value of this value.
    *
-   *  @return The absolute value of the measurement, based upon it's ''SI'' units.
+   *  @return The absolute value of the measurement, based upon it's _SI_ units.
    *
    *  @throws IllegalArgumentException if the result is invalid for these units.
    *

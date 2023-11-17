@@ -40,33 +40,33 @@ import org.facsim.io.TextReader
 import scalafx.scene.Node
 
 /**
-''[[http://www.automod.com/ AutoMod®]] cell'' file loader object.
+_[[http://www.automod.com/ AutoMod®]] cell_ file loader object.
 
 This helper object is responsible for loading 3D scenes stored in
-''[[http://www.automod.com AutoMod®]] cell'' format and returning them as
-''[[http://scalafx.org/ ScalaFX]]'' 3D scenes.
+_[[http://www.automod.com AutoMod®]] cell_ format and returning them as
+_[[http://scalafx.org/ ScalaFX]]_ 3D scenes.
 
-The ''AutoMod®'' cell format defines a number of ''3D'' graphics primitives,
-including ''sets'', ''trapezoids'' (which include ''boxes''), ''cylinders'',
-''cones'', ''frustums'', ''polyhedra'', etc. as well as a ''compiled picture''
-format. Furthermore, cell files can also reference and/or embed ''VRML 1.0'',
-''VRML 97'' and ''OpenInventor'' graphics files (but note that ''Facsimile''
-actually permits ''cell'' files to embed and/or reference any 3D file format
-that is supported by ''ScalaFX''/''JavaFX'').
+The _AutoMod®_ cell format defines a number of _3D_ graphics primitives,
+including _sets_, _trapezoids_ (which include _boxes_), _cylinders_,
+_cones_, _frustums_, _polyhedra_, etc. as well as a _compiled picture_
+format. Furthermore, cell files can also reference and/or embed _VRML 1.0_,
+_VRML 97_ and _OpenInventor_ graphics files (but note that _Facsimile_
+actually permits _cell_ files to embed and/or reference any 3D file format
+that is supported by _ScalaFX_/_JavaFX_).
 
-This loader is designed to support all ''cell'' scenes to assist with migration
-from ''AutoMod®'' to ''Facsimile''.
+This loader is designed to support all _cell_ scenes to assist with migration
+from _AutoMod®_ to _Facsimile_.
 
-''Cell'' files have ''[[http://en.wikipedia.org/wiki/Windows-1252
-Windows-1252]]'' text encoding, and do not support the full
-''[[http://en.wikipedia.org/wiki/Unicode Unicode]]'' character set.
+_Cell_ files have _[[http://en.wikipedia.org/wiki/Windows-1252
+Windows-1252]]_ text encoding, and do not support the full
+_[[http://en.wikipedia.org/wiki/Unicode Unicode]]_ character set.
 
-®''AutoMod'' is a registered trademark of ''[[https://www.appliedmaterials.com/
-Applied Materials, Inc.]]''.
+®_AutoMod_ is a registered trademark of _[[https://www.appliedmaterials.com/
+Applied Materials, Inc.]]_.
 
 =Location of Referenced Files=
 
-3D files that are referenced, but not embedded, within ''cell'' files will be
+3D files that are referenced, but not embedded, within _cell_ files will be
 located as follows:
   - If the referenced file specifies an absolute location, then the loader
     function will attempt to find it at that specified location.
@@ -76,7 +76,7 @@ located as follows:
     - If a base URL was specified, it will attempt to find the referenced file
       relative to this base URL location.
     - Otherwise, it will search the referenced file relative to the location of
-      the ''cell'' file being processed.
+      the _cell_ file being processed.
 
 In all cases, once a search location has been established, the search will fail
 if the file could not be found at, or relative to, that search location.
@@ -84,20 +84,20 @@ if the file could not be found at, or relative to, that search location.
 Most of the time, these rules will do what you expect of them. In short, you
 should only specify a base URL for the loader function if, and only if, you
 have reason to expect files to be located relative to a specific URL that
-differs from the location of the ''cell'' file being processed; in all other
+differs from the location of the _cell_ file being processed; in all other
 cases, simply do not specify a base URL.
 
 @note At the time of writing, it appears that a standardized non-native scene
-loader mechanism for ''ScalaFX''/''JavaFX'' has yet to be defined.
-Consequently, until such a standard ''is'' defined, this loader should be
+loader mechanism for _ScalaFX_/_JavaFX_ has yet to be defined.
+Consequently, until such a standard _is_ defined, this loader should be
 regarded as experimental and subject to frequent and substantial revision.
 
-@see ''[[http://www.automod.com/ AutoMod®]]'' web-site.
+@see _[[http://www.automod.com/ AutoMod®]]_ web-site.
 
-@see ''[[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod®
-Cell File Format]]'' (''Facsimile'' web-site).
+@see _[[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod®
+Cell File Format]]_ (_Facsimile_ web-site).
 
-@see ''[[http://en.wikipedia.org/wiki/Windows-1252 Windows-1252]]'' character
+@see _[[http://en.wikipedia.org/wiki/Windows-1252 Windows-1252]]_ character
 encoding (Wikipedia).
 
 @since 0.0
@@ -106,8 +106,8 @@ encoding (Wikipedia).
 object CellLoader {
 
 /**
-Load the ''[[http://www.automod.com/ AutoMod®]] cell'' file from the specified
-URL and return it as a ''ScalaFX 3D Parent'' node.
+Load the _[[http://www.automod.com/ AutoMod®]] cell_ file from the specified
+URL and return it as a _ScalaFX 3D Parent_ node.
 
 @note If a base URL is specified, then any files referenced by the cell data
 will be searched for relative to that URL; otherwise, files should be present
@@ -118,17 +118,17 @@ at the same location as the named file. Refer to
 
 @param baseUrl Optional base URL identifying the location relative to which any
 referenced files should be located. If `None`, then referenced files should be
-located relative to the processed ''cell'' file's location.
+located relative to the processed _cell_ file's location.
 
-@param faceColor Face color (as a material) to be assigned to all ''cell''
+@param faceColor Face color (as a material) to be assigned to all _cell_
 elements in the scene that inherit their face color from the root node. This
 value cannot be `null`.
 
-@param edgeColor Edge color (as a material) to be assigned to all ''cell''
+@param edgeColor Edge color (as a material) to be assigned to all _cell_
 elements in the scene that inherit their edge color from the root node. This
 value cannot be `null`.
 
-@return ''ScalaFX'' [[scalafx.scene.Node!]] containing the ''cell's'' contents.
+@return _ScalaFX_ [[scalafx.scene.Node!]] containing the _cell's_ contents.
 
 @throws NullPointerException if `url`, `faceColor` or `edgeColor` are
 `null`.
@@ -141,7 +141,7 @@ could not be opened due to file access restrictions (such as the current user
 having insufficient privileges to read the file, etc.).
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

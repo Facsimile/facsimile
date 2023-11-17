@@ -36,27 +36,27 @@ package org.facsim.sfx.importers.cell
 
 import javafx.scene.transform.Transform
 
-/** ''Cell'' element's joint data.
+/** _Cell_ element's joint data.
  *
- *  Stores the current ''cell'' element's dynamic ''joint'' and/or ''terminal control frame'' (''TCF'') data.
+ *  Stores the current _cell_ element's dynamic _joint_ and/or _terminal control frame_ (_TCF_) data.
  *
  *  @note The `jointTransform`, which typically comprises solely rotational transformations, is used to align the
  *  joint's local Z-axis with the axis of motion. Translational joints translate the joint along this axis, while
  *  rotational joints rotate about this axis. Similarly, the `tcfTransform` is used to position and orient elements
  *  that are dynamically added to the element with this joint information.
  *
- *  @constructor Create a new ''cell'' joint data instance.
+ *  @constructor Create a new _cell_ joint data instance.
  *
  *  @param joint Type of joint represented.
  *
- *  @param speed Maximum speed (in translational distance units, or rotational units measured in ''degrees'', per time
+ *  @param speed Maximum speed (in translational distance units, or rotational units measured in _degrees_, per time
  *  unit) for motion along the joint.
  *
  *  @param range Range of joint motion, together with current (initial) displacement.
  *
  *  @param jointTransform Sequence of transformations to be applied to joint's motion.
  *
- *  @param tcfTransform Sequence of transformations to be applied to associated ''TCF'' (if any).
+ *  @param tcfTransform Sequence of transformations to be applied to associated _TCF_ (if any).
  */
 private[cell] final class JointData(joint: JointType, speed: Double, range: JointRange, jointTransform: Seq[Transform],
 tcfTransform: Seq[Transform])

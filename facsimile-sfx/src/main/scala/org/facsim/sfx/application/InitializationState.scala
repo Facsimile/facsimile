@@ -35,21 +35,21 @@
 //======================================================================================================================
 package org.facsim.sfx.application
 
-/** Base trait storing ''JavaFX'' application initialization state. */
+/** Base trait storing _JavaFX_ application initialization state. */
 private[application] sealed trait InitializationState
 
-/** Case class representing an initialized ''JavaFX'' application.
+/** Case class representing an initialized _JavaFX_ application.
  *
- *  @constructor Create a newly initialized ''JavaFX'' application initialization state.
+ *  @constructor Create a newly initialized _JavaFX_ application initialization state.
  *
- *  @param app Initialized ''JavaFX'' application instance.
+ *  @param app Initialized _JavaFX_ application instance.
  */
 private[application] case class Initialized(app: JFXApplication)
 extends InitializationState
 
-/** Case class representing an uninitialized ''JavaFX'' application state.
+/** Case class representing an uninitialized _JavaFX_ application state.
  *
- *  @constructor Create a new uninitialized ''JavaFX'' application state, with the specified set of constructors.
+ *  @constructor Create a new uninitialized _JavaFX_ application state, with the specified set of constructors.
  *
  *  @param ctors List of constructors to be executed, in reverse order. New constructor code blocks should be prepended
  *  to this list.
@@ -59,6 +59,6 @@ extends InitializationState {
 
   /** Execute the constructors, returning an initialized application state..
    *
-   *  @param app ''JavaFX'' a
+   *  @param app _JavaFX_ a
    */
 }

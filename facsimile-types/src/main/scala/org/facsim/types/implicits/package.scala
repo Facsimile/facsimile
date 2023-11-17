@@ -39,7 +39,7 @@ package org.facsim.types
 import org.facsim.types.phys.Physical
 import scala.util.Try
 
-/** ''[[http://facsim.org/ Facsimile]]'' physical quantity implicit conversions.
+/** _[[http://facsim.org/ Facsimile]]_ physical quantity implicit conversions.
  *
  *   @since 0.0
  */

@@ -45,8 +45,8 @@ JFXInitialization {
 
   /**
    * Main function.
-   * Initialize ''JavaFX'' and create the JavaFX application isntannce. Then execute buffered constructor code on the
-   * ''JavaFX event-dispatch thread''.
+   * Initialize _JavaFX_ and create the JavaFX application isntannce. Then execute buffered constructor code on the
+   * _JavaFX event-dispatch thread_.
    *
    * @note This main function will only become active as the application's starting point if this trait is extended as an
    * object.

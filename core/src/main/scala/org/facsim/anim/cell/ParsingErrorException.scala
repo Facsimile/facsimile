@@ -36,7 +36,7 @@ package org.facsim.anim.cell
 import org.facsim.assertNonNull
 
 /**
-Thrown if errors are encountered during parsing of a ''cell'' file.
+Thrown if errors are encountered during parsing of a _cell_ file.
 
 @constructor Create a new parsing error exception.
 

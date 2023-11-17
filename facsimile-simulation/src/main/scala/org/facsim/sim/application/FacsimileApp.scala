@@ -41,12 +41,12 @@ import org.facsim.sim.LibResource
 import org.facsim.util.{Manifest, NonPure, Version}
 import scala.annotation.unused
 
-/** Base class for a ''Facsimile'' application.
+/** Base class for a _Facsimile_ application.
  *
- *  ''Facsimile'' applications commence as command line/non-graphical programs. However, if required, a GUI interface
- *  for the model is created, which also provides a ''3D'' animation of the simulation.
+ *  _Facsimile_ applications commence as command line/non-graphical programs. However, if required, a GUI interface
+ *  for the model is created, which also provides a _3D_ animation of the simulation.
  *
- *  @note ''Facsimile'' applications perform one run of a specific simulation configuration; ''Facsimile'' is not a
+ *  @note _Facsimile_ applications perform one run of a specific simulation configuration; _Facsimile_ is not a
  *  simulation model editing environment, but a library for writing simulation models.
  *
  *  @since 0.2
@@ -57,10 +57,10 @@ extends App {
   // Helper
   import FacsimileApp.missingMsg
 
-  /** Manifest for the ultimate instance of this application, retrieved from containing ''JAR'' file.
+  /** Manifest for the ultimate instance of this application, retrieved from containing _JAR_ file.
    *
-   *  If this application's type was not loaded from a ''JAR'' file, or if the ''JAR'' file has no manifest, then this
-   *  value will be a ''null manifest'' with missing information.
+   *  If this application's type was not loaded from a _JAR_ file, or if the _JAR_ file has no manifest, then this
+   *  value will be a _null manifest_ with missing information.
    *
    *  @since 0.2
    */

@@ -39,7 +39,7 @@ import org.facsim.anim.Point3D
 import org.facsim.anim.TexturePoint
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell rectangle''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell rectangle_
 primitives.
 
 @see
@@ -54,7 +54,7 @@ Rectangles]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -72,8 +72,8 @@ Rectangle Y-axis dimension.
 
 Rectangle measured along the Y-Axis.
 
-@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''length'',
-although most people would refer to it as the ''depth'' or ''width''. Here, we
+@note _ACE_ (the _AutoMod Creation Editor_) terms this the _length_,
+although most people would refer to it as the _depth_ or _width_. Here, we
 refer to it as the Y-axis dimension to avoid confusion.
 */
 
@@ -85,8 +85,8 @@ Rectangle X-axis dimension.
 
 Rectangle measured along the X-Axis.
 
-@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''width'',
-although most people would refer to it as the ''length''. Here, we refer to it
+@note _ACE_ (the _AutoMod Creation Editor_) terms this the _width_,
+although most people would refer to it as the _length_. Here, we refer to it
 as the X-axis dimension to avoid confusion.
 */
 

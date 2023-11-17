@@ -44,7 +44,7 @@ import squants.time.Time
  *
  *  @constructor Create a new simulation model parameters instance.
  *
- *  @param config ''Lightbend Config'' configuration instance. It includes all configuration elements from constituent
+ *  @param config _Lightbend Config_ configuration instance. It includes all configuration elements from constituent
  *  libraries and applications, as well as custom configuration identified on the command line.
  *
  *  @since 0.2

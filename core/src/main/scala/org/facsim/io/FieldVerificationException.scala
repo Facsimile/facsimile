@@ -40,7 +40,7 @@ Exception indicating that a field read from a [[org.facsim.io.TextReader!]] has
 an invalid value.
 
 Field verification exceptions must be recoverable.  Furthermore, all functions
-throwing such exceptions must implement ''failure atomicity''.
+throwing such exceptions must implement _failure atomicity_.
 
 @constructor Construct new field verification exception.
 

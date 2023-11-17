@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-/** ''Facsimile Simulation Library'' model state package.
+/** _Facsimile Simulation Library_ model state package.
  *
- *  Package containing simulation modeling ''state'' elements.
+ *  Package containing simulation modeling _state_ elements.
  *
  *  State elements are transient, and are updated with varying degrees of frequency during a simulation run. They
  *  capture the changing state ofI reallyBut thingsWhatHarrthi

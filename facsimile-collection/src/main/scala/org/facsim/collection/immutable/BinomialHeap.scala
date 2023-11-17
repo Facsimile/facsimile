@@ -39,10 +39,10 @@ package org.facsim.collection.immutable
 import scala.annotation.tailrec
 import scala.reflect.runtime.universe._
 
-/** Immutable ''[[https://en.wikipedia.org/wiki/Binomial_heap binomial heap]]'' container.
+/** Immutable _[[https://en.wikipedia.org/wiki/Binomial_heap binomial heap]]_ container.
  *
- *  This is based upon the heap interface defined in the paper ''[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
- *  Optimal Purely Functional Priority Queues]]''.
+ *  This is based upon the heap interface defined in the paper _[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
+ *  Optimal Purely Functional Priority Queues]]_.
  *
  *  @constructor Construct a new immutable binomial heap container, with no elements.
  *
@@ -55,9 +55,9 @@ import scala.reflect.runtime.universe._
  *
  *  @param typeTag Actual type of `A`.
  *
- *  @see ''[[https://en.wikipedia.org/wiki/Binomial_heap Binomial heap on Wikipedia]]''.
+ *  @see _[[https://en.wikipedia.org/wiki/Binomial_heap Binomial heap on Wikipedia]]_.
  *
- *  @see ''[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf Optimal Purely Functional Priority Queues (PDF file)]]''.
+ *  @see _[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf Optimal Purely Functional Priority Queues (PDF file)]]_.
  *
  *  @since 0.0
  */
@@ -80,13 +80,13 @@ extends Heap[A, BinomialHeap[A]] {
 
   /** @inheritdoc
    *
-   *  @note Heap insertion has ''amortized'' ''O(1)'' time.
+   *  @note Heap insertion has _amortized_ _O(1)_ time.
    */
   override def +(a: A): BinomialHeap[A] = new BinomialHeap(insert(BinomialTreeNode(a, 0, Nil), rootTree))
 
   /** @inheritdoc
    *
-   *  @note Heap merges have ''O(''log'' n)'' time.
+   *  @note Heap merges have _O(_log_ n)_ time.
    *
    *  @todo Handle different element ordering in a better manner.
    */
@@ -97,13 +97,13 @@ extends Heap[A, BinomialHeap[A]] {
 
   /** @inheritdoc
    *
-   *  @note Identifying the heap minimum value takes ''Θ(''log'' n)'' time.
+   *  @note Identifying the heap minimum value takes _Θ(_log_ n)_ time.
    */
   override def minimum: Option[A] = findMin(rootTree)
 
   /** @inheritdoc
    *
-   *  @note Removal of the minimum element takes ''Θ(''log'' n)'' time.
+   *  @note Removal of the minimum element takes _Θ(_log_ n)_ time.
    */
   override def minimumRemove: (Option[A], BinomialHeap[A]) = cachedMinimumRemove
 

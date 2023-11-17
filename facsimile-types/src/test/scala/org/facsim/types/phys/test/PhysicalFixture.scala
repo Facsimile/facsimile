@@ -72,7 +72,7 @@ trait PhysicalFixture[Q <: Physical] {
   /** Retrieve a fixture for testing the equality of different measurements.
    *
    *  @return Equals test fixture for this physical quantity. The test fixture will be used to verify that this physical
-   *  quantity's measurement class correctly implements the ''equality contract''.
+   *  quantity's measurement class correctly implements the _equality contract_.
    */
   val equalsFixture: EqualsFixture[Q#Measure]
 }

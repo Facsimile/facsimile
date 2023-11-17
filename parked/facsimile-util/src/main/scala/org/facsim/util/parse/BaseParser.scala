@@ -40,7 +40,7 @@ import org.facsim.util.types.CharU._
 import org.parboiled2.{CharPredicate, Parser, Rule1}
 import scala.util.Try
 
-/** Enhanced ''[[http://parboiled2.org/ Parboiled2]]'' input parser.
+/** Enhanced _[[http://parboiled2.org/ Parboiled2]]_ input parser.
  *
  *  @constructor Construct a new abstract base parser class.
  */

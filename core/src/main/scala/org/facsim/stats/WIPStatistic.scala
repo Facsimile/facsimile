@@ -38,7 +38,7 @@ import org.facsim.engine.Simulation
 import org.facsim.types.Time
 
 /**
- * ''Work-in-progress'' - also known as ''work-in-process'' - (''WIP'') statistic.
+ * _Work-in-progress_ - also known as _work-in-process_ - (_WIP_) statistic.
  *
  * Statistic that tracks the number of jobs in a system, process, buffer, etc. As well as the current WIP, this element
  * tracks maximum, mean and minimum levels.
@@ -95,7 +95,7 @@ Minimum observed work-in-progress statistic.
    *
    * @param delta Change to be applied to the current value.
    *
-   * @throws IllegalArgumentException if the current work-in-progress count becomes negative after applying '''delta'''.
+   * @throws IllegalArgumentException if the current work-in-progress count becomes negative after applying *delta*.
    */
   final def update(delta: Int): Unit = {
 

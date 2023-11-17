@@ -34,11 +34,11 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** ''AutoMod cell'' scene line style definitions.
+/** _AutoMod cell_ scene line style definitions.
  *
- *  @note ''JavaFX'' (as of release 8.0) does not currently support linestyles in 3D scenes. That said, some versions of
- *  ''AutoMod''&mdash;while they support linestyles when rendering a scene&mdash;do not actually preserve linestyle
- *  information in ''cell'' files. In any case, all that the ''Facsimile cell'' parser can do is to verify the contents
+ *  @note _JavaFX_ (as of release 8.0) does not currently support linestyles in 3D scenes. That said, some versions of
+ *  _AutoMod_&mdash;while they support linestyles when rendering a scene&mdash;do not actually preserve linestyle
+ *  information in _cell_ files. In any case, all that the _Facsimile cell_ parser can do is to verify the contents
  *  of this field and nothing else.
  */
 private[cell] object LineStyle {

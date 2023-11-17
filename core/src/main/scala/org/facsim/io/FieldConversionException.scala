@@ -40,7 +40,7 @@ Exception indicating that a field read from a [[org.facsim.io.TextReader!]]
 could not be converted from a string to its required data type.
 
 Field conversion exceptions must be recoverable.  Furthermore, all functions
-throwing such exceptions must implement ''failure atomicity''.
+throwing such exceptions must implement _failure atomicity_.
 
 @constructor Construct new field conversion exception.
 

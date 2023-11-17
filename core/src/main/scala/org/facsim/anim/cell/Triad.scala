@@ -37,7 +37,7 @@ import org.facsim.LibResource
 import scalafx.scene.Group
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell triad''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell triad_
 primitives.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Triads.html
@@ -45,7 +45,7 @@ Triads]] for further information.
 
 @todo In a cell file, a triad is used as a debugging aid to demonstrate the
 alignment of a primitive's local X-, Y- and Z-axes. It may be a useful tool for
-users importing ''cell'' files into ''Facsimile''. However, for now, we do not
+users importing _cell_ files into _Facsimile_. However, for now, we do not
 implement triads&mdash;they are processed, but otherwise ignored.
 
 @constructor Construct a new triad primitive from the data stream.
@@ -56,7 +56,7 @@ implement triads&mdash;they are processed, but otherwise ignored.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

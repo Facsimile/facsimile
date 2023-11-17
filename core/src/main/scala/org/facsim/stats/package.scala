@@ -34,7 +34,7 @@
 package org.facsim
 
 /**
- * ''[[http://facsim.org/ Facsimile]]'' Simulation Library statistics support.
+ * _[[http://facsim.org/ Facsimile]]_ Simulation Library statistics support.
  *
  * Package supporting statistics collation.
  *

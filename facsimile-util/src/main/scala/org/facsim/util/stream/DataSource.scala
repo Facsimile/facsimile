@@ -44,9 +44,9 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 import scala.reflect.runtime.universe.TypeTag
 
-/** Create a new ''Akka Streams'' data source, to which data can be sent on demand.
+/** Create a new _Akka Streams_ data source, to which data can be sent on demand.
  *
- *  @note This class does not provide ''pure'' functions; return values from functions with the same arguments may
+ *  @note This class does not provide _pure_ functions; return values from functions with the same arguments may
  *  return different values depending upon their internal state. However, since the class is used for sending data to
  *  data stream consumers, should should not affect program behavior significantly.
  *
@@ -95,7 +95,7 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
    *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if data was sent successfully,
    *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the data was dropped due to a buffer failure, or
    *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was closed before the data could be
-   *  processed. If the queue was closed before the data was sent, the result is a `[[scala.util.Failure Failure]]`
+   *  processed. If the queue was closed before the data was sent, the result is a [[Failure]]
    *  wrapping an `[[akka.stream.StreamDetachedException StreamDetachedException]]`. If a failure closed the queue, it
    *  will respond with a `Failure` wrapping the exception that was passed to the `[[fail]]` method.
    *

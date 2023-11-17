@@ -34,16 +34,16 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell screen normal &
-fast text list'' primitives.
+Class representing _[[http://www.automod.com/ AutoMod®]] cell screen normal &
+fast text list_ primitives.
 
-''Screen'' text is mapped to the screen, or viewing window, whose co-ordinates
+_Screen_ text is mapped to the screen, or viewing window, whose co-ordinates
 range from [-100, 100] on the X-axis, and from [-100, 100] on the Y-axis.
 Z-axis dimension is ignored. Unit height is approximately 1.25% of the
 available screen height.
 
-@note In ''ScalaFX''/''JavaFX'', there is no difference between the ''cell''
-text styles of ''normal'' and ''fast'' (the former is a 3D font, the latter is
+@note In _ScalaFX_/_JavaFX_, there is no difference between the _cell_
+text styles of _normal_ and _fast_ (the former is a 3D font, the latter is
 a screen font). Consequently, we represent both with a screen text class.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
@@ -57,7 +57,7 @@ Text Lists]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

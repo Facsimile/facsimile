@@ -34,13 +34,13 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** ''AutoMod cell'' scene line width definitions.
+/** _AutoMod cell_ scene line width definitions.
  *
- *  Line widths specify the number of pixels used to draw lines in ''AutoMod cell'' scenes. Values other than 1 result
+ *  Line widths specify the number of pixels used to draw lines in _AutoMod cell_ scenes. Values other than 1 result
  *  in peculiar looking scenes and are typically avoided.
  *
- *  @note ''JavaFX'' (as of release 8.0) does not currently support explicit pixel line widths in 3D scenes. All that
- *  the ''Facsimile cell'' parser can do is to verify the contents of this field and nothing else.
+ *  @note _JavaFX_ (as of release 8.0) does not currently support explicit pixel line widths in 3D scenes. All that
+ *  the _Facsimile cell_ parser can do is to verify the contents of this field and nothing else.
  */
 private[cell] object LineWidth {
 

@@ -44,7 +44,7 @@ import org.facsim.util.NonPure
 import scala.concurrent.Future
 import scala.reflect.runtime.universe.TypeTag
 
-/** Create and manage a queued ''Akka'' source for issuing log messages.
+/** Create and manage a queued _Akka_ source for issuing log messages.
  *
  *  @note Because the created log stream is buffered, and because it utilizes back pressure to slow down the publisher
  *  (the process that is creating the log messages), applications may appear to hang once the buffer has filled&mdash;
@@ -81,7 +81,7 @@ final class LogStream[A: TypeTag](bufferSize: Int = LogStream.defaultBufferSize)
    *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if data was sent successfully,
    *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the data was dropped due to a buffer failure, or
    *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was closed before the data could be
-   *  processed. If the queue was closed before the data was sent, the result is a `[[scala.util.Failure Failure]]`
+   *  processed. If the queue was closed before the data was sent, the result is a [[Failure]]
    *  wrapping an `[[akka.stream.StreamDetachedException StreamDetachedException]]`. If a failure closed the queue, it
    *  will respond with a `Failure` wrapping the exception that signaled failure of the queue.
    *

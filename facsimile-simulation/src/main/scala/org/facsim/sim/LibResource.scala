@@ -38,7 +38,7 @@ package org.facsim.sim
 
 import org.facsim.util.Resource
 
-/** Helper object reporting ''Facsimile Simulation'' library resources.
+/** Helper object reporting _Facsimile Simulation_ library resources.
  *
  *  @since 0.0
  */

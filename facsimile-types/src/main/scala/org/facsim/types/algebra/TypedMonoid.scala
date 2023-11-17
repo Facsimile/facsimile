@@ -36,10 +36,10 @@
 //======================================================================================================================
 package org.facsim.types.algebra
 
-/** Trait for a ''[[https://en.wikipedia.org/wiki/Monoid monoid]]''.
+/** Trait for a _[[https://en.wikipedia.org/wiki/Monoid monoid]]_.
  *
- *  A ''monoid'' is a ''[[https://en.wikipedia.org/wiki/Semigroup semigroup]]'' with a two-sided ''identity''. A
- *  ''typed'' monoid identifies a neutral identity value and type, such that when combined with another value, the
+ *  A _monoid_ is a _[[https://en.wikipedia.org/wiki/Semigroup semigroup]]_ with a two-sided _identity_. A
+ *  _typed_ monoid identifies a neutral identity value and type, such that when combined with another value, the
  *  result is that value.
  *
  *  @tparam I Type of the [[org.facsim.types.algebra.TypedMonoid.Identity Identity]] value, such that when the identity
@@ -57,7 +57,7 @@ private[algebra] sealed trait TypedMonoid[I] {
   val Identity: I
 }
 
-/** A ''typed [[https://en.wikipedia.org/wiki/Monoid monoid]]'' whose identity type is the same as the first set of
+/** A _typed [[https://en.wikipedia.org/wiki/Monoid monoid]]_ whose identity type is the same as the first set of
  *  values.
  *
  *  @tparam A Type representing the first set of values that may be combined, which is also the type for the result of
@@ -73,7 +73,7 @@ trait TypedMonoidA[A, B]
 extends TypedSemigroup[A, B, A]
 with TypedMonoid[B]
 
-/** A ''typed [[https://en.wikipedia.org/wiki/Monoid monoid]]'' whose identity type is the same as the first set of
+/** A _typed [[https://en.wikipedia.org/wiki/Monoid monoid]]_ whose identity type is the same as the first set of
  *  values.
  *
  *  @tparam A Type representing the first set of values that may be combined. This is also the type of the identity

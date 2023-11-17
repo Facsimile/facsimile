@@ -34,7 +34,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 /**
-Trait for definition ''cells''.
+Trait for definition _cells_.
 */
 
 private[cell] trait Definition

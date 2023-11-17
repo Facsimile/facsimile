@@ -39,7 +39,7 @@ package org.facsim.util.test
 import org.facsim.util._
 import org.scalatest.funspec.AnyFunSpec
 
-/** Miscellaneous functions for supporting ''Facsimile'' testing. */
+/** Miscellaneous functions for supporting _Facsimile_ testing. */
 trait CommonTestMethods {this: AnyFunSpec =>
 
   /** Assert that a NullPointerException's message resulting from a [[requireNonNull(AnyRef)*]] failure matches the

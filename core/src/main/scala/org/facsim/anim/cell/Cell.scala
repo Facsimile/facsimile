@@ -39,7 +39,7 @@ import scalafx.scene.Node
 import scalafx.scene.paint.Color
 
 /**
-Abstract base class for all ''[[http://www.automod.com/ AutoMod]] cell''
+Abstract base class for all _[[http://www.automod.com/ AutoMod]] cell_
 primitives.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile AutoMod Cell
@@ -53,7 +53,7 @@ File Format]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -218,7 +218,7 @@ defined at some point in the chain of face/edge colors.
   else faceColor.get
 
 /**
-Color of this cell, as a ''ScalaFX'' color.
+Color of this cell, as a _ScalaFX_ color.
 
 If cell is drawn in wireframe, then the cell will be drawn with the edge color,
 otherwise, with face color.
@@ -229,7 +229,7 @@ defined at some point in the chain of face/edge colors.
   private[cell] final def cellColor = CellColor.toColor(color)
 
 /**
-Color of this cell, as a ''ScalaFX'' material.
+Color of this cell, as a _ScalaFX_ material.
 
 If cell is drawn in wireframe, then the cell will be drawn with the edge color,
 otherwise, with face color.
@@ -277,7 +277,7 @@ parent.
   }
 
 /**
-Function to convert this ''cell'' and its contents (if any) to a ''ScalaFX''
+Function to convert this _cell_ and its contents (if any) to a _ScalaFX_
 [[scalafx.scene.Node!]] instance.
 
 @return Cell as a [[scalafx.scene.Node!]].

@@ -45,7 +45,7 @@ import scala.reflect.runtime.universe.TypeTag
  *
  *  @constructor Create a new anonymous action.
  *
- *  @param actions Simulation state transitions (a.k.a. ''actions'') to be executed at some point in the future.
+ *  @param actions Simulation state transitions (a.k.a. _actions_) to be executed at some point in the future.
  *
  *  @since 0.0
  */

@@ -43,27 +43,27 @@ Delimiters are sets of one or more characters that delimit fields in a text
 data stream.
 
 In some data formats, a single delimiter character from the set is used to
-delimit fields.  Examples include ''comma-separated value'' (''CSV'') files
-that use comma (',') and ''line feed'' ('\n') characters as delimiters, and
-tab-delimited files that use ''horizontal tab'' ('\t') and ''line feed'' ('\n')
+delimit fields.  Examples include _comma-separated value_ (_CSV_) files
+that use comma (',') and _line feed_ ('\n') characters as delimiters, and
+tab-delimited files that use _horizontal tab_ ('\t') and _line feed_ ('\n')
 characters as delimiters.  Consecutive delimiters denote empty fields and are
 not merged.  Such delimiters must be constructed with the
-'''mergeConsecutive''' argument set to `false`.
+*mergeConsecutive* argument set to `false`.
 
 In other data formats, consecutive delimiters are merged together and treated
 as a single delimiter.  Examples include whitespace-delimited text files that
-use ''space'' (' '), ''horizontal tab'' ('\t') and ''line feed'' ('\n')
-characters as delimiters.  Such delimiters must set '''mergeConsecutive''' to
+use _space_ (' '), _horizontal tab_ ('\t') and _line feed_ ('\n')
+characters as delimiters.  Such delimiters must set *mergeConsecutive* to
 `true`.
 
 @constructor Construct a new delimiter instance.
 
 @param delimiters Set of characters to be treated as delimiters.  Note that the
-''line feed'' ('\n') character is not automatically added to the set and must
-be explicitly included if required.  Note also that the ''line feed'' character
+_line feed_ ('\n') character is not automatically added to the set and must
+be explicitly included if required.  Note also that the _line feed_ character
 matches all line termination sequences&mdash;refer to
-[[org.facsim.io.TextReader!]] for further information.  The ''null'' ('\0') and
-''carriage return'' ('\r') characters cannot be used as delimiters and will
+[[org.facsim.io.TextReader!]] for further information.  The _null_ ('\0') and
+_carriage return_ ('\r') characters cannot be used as delimiters and will
 result in an exception being thrown if included in the delimiter set.  If the
 set of delimiters is empty, then an associated reader will return the entire
 file as a single field.
@@ -73,9 +73,9 @@ treated as a single delimiter.  If `false`, consecutive delimiter characters
 will be treated as separate delimiters, and will consequently delimit empty
 fields.
 
-@throws NullPointerException if '''delimiters''' is `null`.
+@throws NullPointerException if *delimiters* is `null`.
 
-@throws java.lang.InvalidArgumentException if '''delimiters''' contains invalid
+@throws java.lang.InvalidArgumentException if *delimiters* contains invalid
 delimiter characters.
 
 @see [[org.facsim.io.TextReader!]] for further information.
@@ -105,7 +105,7 @@ and the function returns `false`.
 
 @param reader Reader being processed.
 
-@return `true` if a delimiter sequence was read from '''reader'''; `false`
+@return `true` if a delimiter sequence was read from *reader*; `false`
 otherwise.
 
 @throws java.io.IOException if an attempt is made to read a character after an

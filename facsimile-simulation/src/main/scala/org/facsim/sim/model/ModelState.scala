@@ -41,7 +41,7 @@ import scala.reflect.runtime.universe.TypeTag
 /** Base class for model states.
  *
  *  Model state encapsulates the state of a simulation model. It may contain any necessary state information, but each
- *  instance must be ''immutable''.
+ *  instance must be _immutable_.
  *
  *  @tparam M Final model state class, which must be derived from this class.
  *

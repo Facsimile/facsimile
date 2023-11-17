@@ -34,11 +34,11 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** ''Cell joint'' range configuration.
+/** _Cell joint_ range configuration.
  *
- *  @constructor Create new ''cell'' joint range instance.
+ *  @constructor Create new _cell_ joint range instance.
  *
- *  @param minimum Minimum permitted joint value. Must be less than or equal to ''current''.
+ *  @param minimum Minimum permitted joint value. Must be less than or equal to _current_.
  *
  *  @param current Current joint value. Must be greater than or equal to `minimum` and less than or equal to `maximum`.
  *

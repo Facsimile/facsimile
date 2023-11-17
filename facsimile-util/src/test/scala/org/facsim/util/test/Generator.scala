@@ -39,7 +39,7 @@ package org.facsim.util.test
 import org.facsim.util.types.UniChar
 import org.scalacheck.{Gen, Shrink}
 
-/** Custom ''ScalaCheck'' generators.
+/** Custom _ScalaCheck_ generators.
  *
  *  @since 0.0
  */
@@ -79,22 +79,22 @@ object Generator {
   /** Strings that can be encoded using ISO-8859-1. */
   val iso8859_1String = Gen.listOf(iso8859_1Char).map(_.mkString)
 
-  /** Set of valid ''[[http://unicode.org/ Unicode]]'' characters.
+  /** Set of valid _[[http://unicode.org/ Unicode]]_ characters.
    *
    *  Java will throw exceptions if attempts are map to create characters from invalid Unicode codepoints.
    */
   private lazy val unicodeVector = (Character.MIN_CODE_POINT to Character.MAX_CODE_POINT).filter(UniChar.isValid)
 
-  /** ''[[http://unicode.org/ Unicode]]'' characters. */
+  /** _[[http://unicode.org/ Unicode]]_ characters. */
   private lazy val unicodeChar = Gen.oneOf(unicodeVector)
 
-  /** Strings that can be encoded in ''[[http://unicode.org/ Unicode]]''. */
+  /** Strings that can be encoded in _[[http://unicode.org/ Unicode]]_. */
   lazy val unicodeString = Gen.listOf(unicodeChar).map(_.flatMap(i => Character.toChars(i)).mkString)
 
-  /** List of ''[[http://unicode.org/ Unicode]]'' strings, which may be empty. */
+  /** List of _[[http://unicode.org/ Unicode]]_ strings, which may be empty. */
   lazy val unicodeStringList = Gen.listOf(unicodeString)
 
-  /** List of ''[[http://unicode.org/ Unicode]]'' strings, non-empty.*/
+  /** List of _[[http://unicode.org/ Unicode]]_ strings, non-empty.*/
   lazy val unicodeStringListNonEmpty = Gen.nonEmptyListOf(unicodeString)
 
   /** Utility to prevent _ScalaCheck_ property shrinkage.

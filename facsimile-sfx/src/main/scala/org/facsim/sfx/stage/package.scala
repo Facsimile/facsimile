@@ -46,13 +46,13 @@ import javafx.stage.Window
 // should be moved to individual source files, as is the case with regular, non-implicit classes.
 package object stage {
 
-  /** Rich ''JavaFX'' window.
+  /** Rich _JavaFX_ window.
    *
    * @tparam W Actual [[javafx.stage.Window]] class being decorated.
    *
    * @see See [[javafx.stage.Window]] for further information.
    *
-   * @constructor Create ''Scala'' decorated [[javafx.stage.Window]] instance.
+   * @constructor Create _Scala_ decorated [[javafx.stage.Window]] instance.
    *
    * @param w [[javafx.stage.Window]] instance being decorated.
    *
@@ -61,7 +61,7 @@ package object stage {
   implicit final class RichWindow[W <: Window](val w: W)
   extends AnyVal {
 
-    /** ''Scala''-style [[javafx.event.EventDispatcher]] getter method.
+    /** _Scala_-style [[javafx.event.EventDispatcher]] getter method.
      *
      *  @return Event dispatcher currently registered with the associated window.
      *
@@ -69,7 +69,7 @@ package object stage {
      */
     def eventDispatcher: EventDispatcher = w.getEventDispatcher
 
-    /** ''Scala''-style [[javafx.event.EventDispatcher]] setter method.
+    /** _Scala_-style [[javafx.event.EventDispatcher]] setter method.
      *
      *  @param ed [[javafx.event.EventDispatcher]] to be registered with the associated window.
      *
@@ -77,7 +77,7 @@ package object stage {
      */
     def eventDispatcher_=(ed: EventDispatcher): Unit = w.setEventDispatcher(ed)
 
-    /** ''Scala''-style height getter method.
+    /** _Scala_-style height getter method.
      *
      *  @return Height of the associated window.
      *
@@ -85,7 +85,7 @@ package object stage {
      */
     def ht: Double = w.getHeight
 
-    /** ''Scala''-style height setter method.
+    /** _Scala_-style height setter method.
      *
      *  @param h New height for the associated window.
      *

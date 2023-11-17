@@ -38,16 +38,16 @@ package org.facsim.types.phys
 
 import org.facsim.types.LibResource
 
-/** ''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' physical quantity type.
+/** _[[http://en.wikipedia.org/wiki/Time_in_physics Time]]_ physical quantity type.
  *
- *  All time values are stored internally in ''[[http://en.wikipedia.org/wiki/Second seconds]]'', which is the
- *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of types.
+ *  All time values are stored internally in _[[http://en.wikipedia.org/wiki/Second seconds]]_, which is the
+ *  _[[http://en.wikipedia.org/wiki/SI SI]]_ standard unit of types.
  *
- *  @see [[http://en.wikipedia.org/wiki/Time_in_physics Time]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Time_in_physics Time]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Second Seconds]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
  *
  *  @since 0.0
  */
@@ -66,24 +66,24 @@ extends NonNegative {
   /** Number of seconds exactly equivalent to one millisecond. */
   private val SecondsPerMS = 1.0 / 1000.0
 
-  /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Millisecond milliseconds]]''.
+  /** Units for time measured in _[[http://en.wikipedia.org/wiki/Millisecond milliseconds]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Millisecond Milliseconds]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Millisecond Milliseconds]] on _Wikipedia_.
    *
    *  @since 0.0
    */
   val Milliseconds: Units = new Units(new LinearScaleConverter(SecondsPerMS), LibResource("phys.Time.Millisecond.sym"))
 
-  /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Second seconds]]''.
+  /** Units for time measured in _[[http://en.wikipedia.org/wiki/Second seconds]]_.
    *
-   *  @note ''Seconds'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for time measurement, and the
-   *  units that are used to store such measurements internally in ''Facsimile''.
+   *  @note _Seconds_ are the _[[http://en.wikipedia.org/wiki/SI SI]]_ standard units for time measurement, and the
+   *  units that are used to store such measurements internally in _Facsimile_.
    *
-   *  In ''Facsimile'', a ''second'' is defined in accordance with ''SI'' standards.
+   *  In _Facsimile_, a _second_ is defined in accordance with _SI_ standards.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Second Seconds]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Second Seconds]] on _Wikipedia_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -92,9 +92,9 @@ extends NonNegative {
   /** Number of seconds exactly equivalent to one minute. */
   private val SecondsPerMin = 60.0
 
-  /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Minute minutes]]''.
+  /** Units for time measured in _[[http://en.wikipedia.org/wiki/Minute minutes]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Minute Minutes]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Minute Minutes]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -103,9 +103,9 @@ extends NonNegative {
   /** Number of seconds exactly equivalent to one hour. */
   private val SecondsPerHour = SecondsPerMin * 60.0
 
-  /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Hour hours]]''.
+  /** Units for time measured in _[[http://en.wikipedia.org/wiki/Hour hours]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Hour Hours]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Hour Hours]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -114,9 +114,9 @@ extends NonNegative {
   /** Number of seconds exactly equivalent to one day. */
   private val SecondsPerDay = SecondsPerHour * 24.0
 
-  /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Day days]]''.
+  /** Units for time measured in _[[http://en.wikipedia.org/wiki/Day days]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Day Days]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Day Days]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -125,13 +125,13 @@ extends NonNegative {
   /** Number of seconds exactly equivalent to one week. */
   private val SecondsPerWeek = SecondsPerDay * 7.0
 
-  /** Units for time measured in ''[[http://en.wikipedia.org/wiki/Week weeks]]''.
+  /** Units for time measured in _[[http://en.wikipedia.org/wiki/Week weeks]]_.
    *
-   *  @note This is the largest unit of time currently supported by ''Facsimile''. Note that months, years, decades,
+   *  @note This is the largest unit of time currently supported by _Facsimile_. Note that months, years, decades,
    *  centuries, millenia, etc. vary in duration depending upon a number of factors: leap seconds, leap years, days per
-   *  month, etc. Consequently, there is no simple ''standard'' definition for higher units of time.
+   *  month, etc. Consequently, there is no simple _standard_ definition for higher units of time.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Week Weeks]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Week Weeks]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -154,13 +154,13 @@ extends NonNegative {
    */
   private[phys] override def apply(measure: Double) = new Measure(measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' measurement class.
+  /** _[[http://en.wikipedia.org/wiki/Time_in_physics Time]]_ measurement class.
    *
-   *  Instances of this class represent ''time'' measurements.
+   *  Instances of this class represent _time_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics time]]'' measurement value.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Time_in_physics time]]_ measurement value.
    *
-   *  @param measure ''Time'' measurement expressed in ''[[Seconds]]''. This value must be finite and greater than or
+   *  @param measure _Time_ measurement expressed in _[[Seconds]]_. This value must be finite and greater than or
    *  equal to zero.
    *
    *  @throws IllegalArgumentException if `types` is not finite or is negative.
@@ -170,14 +170,14 @@ extends NonNegative {
   final class TimeMeasure private[phys](measure: Double)
   extends NonNegativeMeasure[TimeMeasure](measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Time_in_physics Time]]'' unit of measurement family class.
+  /** _[[http://en.wikipedia.org/wiki/Time_in_physics Time]]_ unit of measurement family class.
    *
-   *  Instances of this class represent units for expressing ''time'' measurements.
+   *  Instances of this class represent units for expressing _time_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Time_in_physics time]]'' unit of measurement.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Time_in_physics time]]_ unit of measurement.
    *
-   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''time
-   *  [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''seconds''.
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard _time
+   *  [[http://en.wikipedia.org/wiki/SI SI]]_ units, _seconds_.
    *
    *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
    *

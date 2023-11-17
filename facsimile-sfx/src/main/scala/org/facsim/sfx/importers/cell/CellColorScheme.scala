@@ -34,12 +34,12 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** Color schemes supported by ''Facsimile'' when importing ''AutoMod cell'' scenes.
+/** Color schemes supported by _Facsimile_ when importing _AutoMod cell_ scenes.
  *
- *  ''Cell'' scenes define 16 named colors. However, the definitions of these colors depends upon the scheme utilized.
+ *  _Cell_ scenes define 16 named colors. However, the definitions of these colors depends upon the scheme utilized.
  *  The supported color schemes are defined by sub-classes of this trait.
  *
- *  @note colors defined in ''VRML'' scenes embedded within ''cell'' scenes are unaffected by the choice of ''cell''
+ *  @note colors defined in _VRML_ scenes embedded within _cell_ scenes are unaffected by the choice of _cell_
  *  color scheme.
  *
  *  @since 0.0
@@ -50,9 +50,9 @@ sealed trait CellColorScheme {
   private[cell] val id: Int
 }
 
-/** Old ''AutoMod'' color scheme.
+/** Old _AutoMod_ color scheme.
  *
- *  Color scheme in effect for ''AutoMod'' versions prior to release 8.0.
+ *  Color scheme in effect for _AutoMod_ versions prior to release 8.0.
  *
  *  @since 0.0
  */
@@ -61,9 +61,9 @@ extends CellColorScheme {
   private[cell] override val id = 0
 }
 
-/** New ''AutoMod'' color scheme.
+/** New _AutoMod_ color scheme.
  *
- *  Color scheme in effect for ''AutoMod'' versions since release 8.0.
+ *  Color scheme in effect for _AutoMod_ versions since release 8.0.
  *
  *  @since 0.0
  */
@@ -72,11 +72,11 @@ extends CellColorScheme {
   private[cell] override val id = 1
 }
 
-/** ''JavaFX'' color scheme.
+/** _JavaFX_ color scheme.
  *
- *  Color definitions in ''JavaFX'' with equivalent names to the ''AutoMod'' colors.
+ *  Color definitions in _JavaFX_ with equivalent names to the _AutoMod_ colors.
  *
- *  This color scheme is used by default in ''Facsimile'' and is recommended to ensure that models look more modern.
+ *  This color scheme is used by default in _Facsimile_ and is recommended to ensure that models look more modern.
  *
  *  @since 0.0
  */

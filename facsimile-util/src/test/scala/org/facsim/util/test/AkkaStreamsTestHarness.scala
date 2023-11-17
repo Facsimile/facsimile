@@ -40,9 +40,9 @@ import akka.stream.Materializer
 import org.facsim.util.stream.DataSource
 import org.scalacheck.Gen
 
-/** Test harness trait for ''Akka streams''.
+/** Test harness trait for _Akka streams_.
  *
- *  Creates an ''Akka'' actor system, and a stream materializer, executes the indicated test, then destroys the actor
+ *  Creates an _Akka_ actor system, and a stream materializer, executes the indicated test, then destroys the actor
  *  system.
  */
 trait AkkaStreamsTestHarness

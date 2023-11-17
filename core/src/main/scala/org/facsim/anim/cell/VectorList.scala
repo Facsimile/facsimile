@@ -38,7 +38,7 @@ import scala.annotation.tailrec
 import scalafx.scene.Group
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell vector list''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell vector list_
 primitives.
 
 @see
@@ -58,7 +58,7 @@ data read.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -100,7 +100,7 @@ Read vector list data from the stream.
 @return List of move/draw points. First point must be a move point.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

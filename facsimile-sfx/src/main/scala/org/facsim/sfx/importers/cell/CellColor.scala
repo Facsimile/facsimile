@@ -36,66 +36,66 @@ package org.facsim.sfx.importers.cell
 
 import javafx.scene.paint.{Color => JFXColor, Material => JFXMaterial, PhongMaterial}
 
-/** Enumeration for ''cell'' color codes.
+/** Enumeration for _cell_ color codes.
  *
- *  In ''AutoMod cell'' scenes, colors are identified by integer values that correspond to a specific color.
+ *  In _AutoMod cell_ scenes, colors are identified by integer values that correspond to a specific color.
  *
- *  @note ''JavaFX 3D'' mingles color with opacity (color ''alpha'' channels)&mdash;and, as diffuse colors with alpha
- *  channels&mdash;in materials. However, ''JavaFX nodes'' also have opacity settings independent of color or material
- *  (which do not appear to work in 3D as of ''JavaFX 8''). For simplicity, when dealing with ''cell'' scenes, we use
- *  opaque alpha channels in all colors, and must rely upon opacity being fixed in a future ''JavaFX'' release.
+ *  @note _JavaFX 3D_ mingles color with opacity (color _alpha_ channels)&mdash;and, as diffuse colors with alpha
+ *  channels&mdash;in materials. However, _JavaFX nodes_ also have opacity settings independent of color or material
+ *  (which do not appear to work in 3D as of _JavaFX 8_). For simplicity, when dealing with _cell_ scenes, we use
+ *  opaque alpha channels in all colors, and must rely upon opacity being fixed in a future _JavaFX_ release.
  */
 private[cell] object CellColor
 extends Enumeration {
 
   // DO NOT CHANGE THE ORDER OF THESE DEFINITIONS!
 
-  /** Black, having the ''cell'' color code 0. */
+  /** Black, having the _cell_ color code 0. */
   val Black = Value
 
-  /** Red, having the ''cell'' color code 1. */
+  /** Red, having the _cell_ color code 1. */
   val Red = Value
 
-  /** Green, having the ''cell'' color code 2. */
+  /** Green, having the _cell_ color code 2. */
   val Green = Value
 
-  /** Yellow, having the ''cell'' color code 3. */
+  /** Yellow, having the _cell_ color code 3. */
   val Yellow = Value
 
-  /** Blue, having the ''cell'' color code 4. */
+  /** Blue, having the _cell_ color code 4. */
   val Blue = Value
 
-  /** Magenta, having the ''cell'' color code 5. */
+  /** Magenta, having the _cell_ color code 5. */
   val Magenta = Value
 
-  /** Cyan, having the ''cell'' color code 6. */
+  /** Cyan, having the _cell_ color code 6. */
   val Cyan = Value
 
-  /** White, having the ''cell'' color code 7. */
+  /** White, having the _cell_ color code 7. */
   val White = Value
 
-  /** Light gray, having the ''cell'' color code 8. */
+  /** Light gray, having the _cell_ color code 8. */
   val LightGray = Value
 
-  /** Dark gray, having the ''cell'' color code 9. */
+  /** Dark gray, having the _cell_ color code 9. */
   val DarkGray = Value
 
-  /** Brown, having the ''cell'' color code 10. */
+  /** Brown, having the _cell_ color code 10. */
   val Brown = Value
 
-  /** Light blue, having the ''cell'' color code 11. */
+  /** Light blue, having the _cell_ color code 11. */
   val LightBlue = Value
 
-  /** Purple, having the ''cell'' color code 12. */
+  /** Purple, having the _cell_ color code 12. */
   val Purple = Value
 
-  /** Orange, having the ''cell'' color code 13. */
+  /** Orange, having the _cell_ color code 13. */
   val Orange = Value
 
-  /** Light green, having the ''cell'' color code 14. */
+  /** Light green, having the _cell_ color code 14. */
   val LightGreen = Value
 
-  /** Light yellow, having the ''cell'' color code 15. */
+  /** Light yellow, having the _cell_ color code 15. */
   val LightYellow = Value
 
   /** Default color, which is used if an explicit color is not specified. */
@@ -110,12 +110,12 @@ extends Enumeration {
   /** Color values corresponding to each color code, for each supported color scheme.
    *
    *  The supported color schemes are:
-   *   - Old ''AutoMod'' color scheme, in effect for versions prior to ''AutoMod'' release 8.0.
-   *   - New ''AutoMod'' color scheme, in effect for versions starting with ''AutoMod'' release 8.0.
-   *   - JavaFX color scheme, which employs the color definitions with equivalent names to the ''AutoMod'' colors. This
-   *     color scheme is used by default in ''Facsimile'' to ensure that models look more modern.
+   *   - Old _AutoMod_ color scheme, in effect for versions prior to _AutoMod_ release 8.0.
+   *   - New _AutoMod_ color scheme, in effect for versions starting with _AutoMod_ release 8.0.
+   *   - JavaFX color scheme, which employs the color definitions with equivalent names to the _AutoMod_ colors. This
+   *     color scheme is used by default in _Facsimile_ to ensure that models look more modern.
    *
-   *  @note colors defined in ''VRML'' scenes embedded within ''cell'' scenes are unaffected by the choice of ''cell''
+   *  @note colors defined in _VRML_ scenes embedded within _cell_ scenes are unaffected by the choice of _cell_
    *  color scheme.
    */
   private val Color = Vector(
@@ -208,13 +208,13 @@ extends Enumeration {
     }
   }
 
-  /** Retrieve ''JavaFX'' material for specified color code from specified scheme.
+  /** Retrieve _JavaFX_ material for specified color code from specified scheme.
    *
    *  @param color Code of color for which a material is to be retrieved.
    *
-   *  @param scheme ''Cell'' color scheme to be utilized.
+   *  @param scheme _Cell_ color scheme to be utilized.
    *
-   *  @return Corresponding ''JavaFX'' material.
+   *  @return Corresponding _JavaFX_ material.
    *
    *  @throws scala.IndexOutOfBoundsException if `color` is not a valid color code.
    */

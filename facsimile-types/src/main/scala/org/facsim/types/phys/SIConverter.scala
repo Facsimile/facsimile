@@ -36,10 +36,10 @@
 //======================================================================================================================
 package org.facsim.types.phys
 
-/** Converter to be used for ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+/** Converter to be used for _[[http://en.wikipedia.org/wiki/SI SI]]_ units.
  *
- * Converter to be used for ''SI'' units, which preserves the original values without modification. For example, this
- * converter should be used for converting ''seconds'' to ''seconds'', ''kilograms'' to ''kilograms'', etc.
+ * Converter to be used for _SI_ units, which preserves the original values without modification. For example, this
+ * converter should be used for converting _seconds_ to _seconds_, _kilograms_ to _kilograms_, etc.
  */
 private[phys] object SIConverter
 extends Converter {

@@ -41,12 +41,12 @@ import java.io.File
 import org.facsim.util.log.{Severity, WarningSeverity}
 import squants.time.{Seconds, Time}
 
-/** Configuration of the ''Facsimile'' application and simulation run.
+/** Configuration of the _Facsimile_ application and simulation run.
  *
- *  ''Facsimile'' has a number of standard command line options whose state is represented by the final instance of this
+ *  _Facsimile_ has a number of standard command line options whose state is represented by the final instance of this
  *  class.
  *
- *  Command line configuration indicates whether a ''GUI'' animation will be provided, the name of the ''HOCON''
+ *  Command line configuration indicates whether a _GUI_ animation will be provided, the name of the _HOCON_
  *  simulation configuration file to be used to configure this simulation run, etc.
  *
  *  @note For further details of the command line options available, run the simulation application with the single
@@ -54,8 +54,8 @@ import squants.time.{Seconds, Time}
  *
  *  @constructor Create a new Facsimile configuration instance.
  *
- *  @param configFile ''HOCON'' configuration file to be used to configure the simulation, wrapped in `[[scala.Some
- *  Some]]`, or `[[scala.None None]]` if the simulation is to solely use command line ''Java''-style configuration
+ *  @param configFile _HOCON_ configuration file to be used to configure the simulation, wrapped in `[[scala.Some
+ *  Some]]`, or `[[scala.None None]]` if the simulation is to solely use command line _Java_-style configuration
  *  properties and/or default configuration values.
  *
  *  @param logFile File into which log information should be written, wrapped in `[[scala.Some  Some]]`, or
@@ -77,7 +77,7 @@ import squants.time.{Seconds, Time}
  *  @param showUsage Flag indicating whether program usage information should be displayed at the start of the run. By
  *  default, no usage information will be displayed.
  *
- *  @param useGUI Flag indicating whether a ''graphical user interface'' (''GUI'') is to be utilized to control and view
+ *  @param useGUI Flag indicating whether a _graphical user interface_ (_GUI_) is to be utilized to control and view
  *  the simulation.
  */
 private[application] final case class FacsimileConfig(configFile: Option[File] = None, logFile: Option[File] = None,
@@ -150,7 +150,7 @@ showVersion: Boolean = false, showUsage: Boolean = false, useGUI: Boolean = true
 /** Facsimile configuration companion object. */
 private object FacsimileConfig {
 
-  /** Base name for all ''facsimile-simulation'' configuration settings. */
+  /** Base name for all _facsimile-simulation_ configuration settings. */
   private val BaseName = "facsimile.simulation."
 
   /** Name of the warm-up period duration parameter. */

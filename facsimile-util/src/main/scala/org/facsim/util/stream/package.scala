@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.util
 
-/** ''Facsimile Utility'' library stream package.
+/** _Facsimile Utility_ library stream package.
  *
- *  This library contains tools for streaming data using ''Akka Streams''.
+ *  This library contains tools for streaming data using _Akka Streams_.
  *
  *  @since 0.2
  */

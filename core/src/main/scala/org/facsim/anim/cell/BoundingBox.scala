@@ -70,10 +70,10 @@ so can report meaningful errors to the user.
 data present, and must be called in the correct sequence for reading from the
 cell file, otherwise exceptions will occur.
 
-@param scene Scene to which this ''cell'' definition belongs.
+@param scene Scene to which this _cell_ definition belongs.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

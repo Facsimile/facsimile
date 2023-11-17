@@ -34,9 +34,9 @@ Scala source file defining the org.facsim.anim package.
 package org.facsim
 
 /**
-''[[http://facsim.org/ Facsimile]]'' Simulation Library animation support.
+_[[http://facsim.org/ Facsimile]]_ Simulation Library animation support.
 
-Package supporting the 3D animation of ''Facsimile'' simulations.
+Package supporting the 3D animation of _Facsimile_ simulations.
 
 @since 0.0
 */

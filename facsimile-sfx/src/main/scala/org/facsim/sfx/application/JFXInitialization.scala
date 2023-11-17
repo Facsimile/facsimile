@@ -34,10 +34,10 @@
 //======================================================================================================================
 package org.facsim.sfx.application
 
-/** Base trait for initializing ''JavaFX''.
+/** Base trait for initializing _JavaFX_.
  *
- *  @note Construction code for derived classes and objects is executed on the ''JavaFX event-dispatch thread''. To
- *  achieve this, the execution of such code must be delayed until after the ''JavaFX'' `javafx.application.Application`
+ *  @note Construction code for derived classes and objects is executed on the _JavaFX event-dispatch thread_. To
+ *  achieve this, the execution of such code must be delayed until after the _JavaFX_ `javafx.application.Application`
  *  instance has been created and initialized. However, the construction code for traits that extend this trait will be
  *  executed upon construction, on the current thread, in the normal manner. This functionality is provided by the
  *  [[DelayedInit]] trait.
@@ -48,7 +48,7 @@ extends DelayedInit {
   /** Application initialization state. */
   private var state: InitializationState = Uninitialized()
 
-  /** Queue construction code for execution once the ''JavaFX'' application instance has been initialized.
+  /** Queue construction code for execution once the _JavaFX_ application instance has been initialized.
    *
    *  @note [[DelayedInit]] causes the compiler to wrap `class` and `object` constructor code in a call to this
    *  function.
@@ -67,9 +67,9 @@ extends DelayedInit {
 
   /** Perform the required initialization.
    *
-   *  This function will be called from the ''JavaFX'' application instance, during its construction.
+   *  This function will be called from the _JavaFX_ application instance, during its construction.
    *
-   *  @param app The newly created ''JavaFX'' application instance.
+   *  @param app The newly created _JavaFX_ application instance.
    */
   private final def init(app: JFXApplication) = synchronized {
     val preInitState = state

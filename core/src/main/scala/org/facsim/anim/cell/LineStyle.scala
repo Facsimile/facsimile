@@ -38,7 +38,7 @@ import org.facsim.LibResource
 /**
 Line style enumeration.
 
-Encodes ''[[http://www.automod.com/ AutoMod®]]'' line style codes and maps them
+Encodes _[[http://www.automod.com/ AutoMod®]]_ line style codes and maps them
 to the corresponding line styles.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/LineStyle.html
@@ -49,25 +49,25 @@ private[cell] object LineStyle
 extends Enumeration {
 
 /**
-Solid, having the ''cell'' line style 0.
+Solid, having the _cell_ line style 0.
 */
 
   private[cell] val Solid = Value
 
 /**
-Dashed, having the ''cell'' line style 1.
+Dashed, having the _cell_ line style 1.
 */
 
   private[cell] val Dashed = Value
 
 /**
-Dotted, having the ''cell'' line style 2.
+Dotted, having the _cell_ line style 2.
 */
 
   private[cell] val Dotted = Value
 
 /**
-Halftone, having the ''cell'' line style 3.
+Halftone, having the _cell_ line style 3.
 */
 
   private[cell] val Halftone = Value
@@ -101,14 +101,14 @@ Verify a line style code.
  (lineStyleCode >= minValue && lineStyleCode <= maxValue)
 
 /**
-Read line style from ''cell'' data stream.
+Read line style from _cell_ data stream.
 
 @param scene Scene from which the line style is to be read.
 
 @return Line style read, if valid.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

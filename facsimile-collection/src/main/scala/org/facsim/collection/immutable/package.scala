@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.collection
 
-/** ''Facsimile Collection'' immutable package.
+/** _Facsimile Collection_ immutable package.
  *
- *  Collections contained within this package are ''immutable''; operations that modify a collection result in a new
+ *  Collections contained within this package are _immutable_; operations that modify a collection result in a new
  *  collection, containing the modification, being returned.
  *
  *  @since 0.0

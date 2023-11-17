@@ -34,13 +34,13 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** ''Cell'' header information.
+/** _Cell_ header information.
  *
- *  Stores the ''cell'' type and flags from a cell header.
+ *  Stores the _cell_ type and flags from a cell header.
  *
- *  @constructor Create new ''cell'' header instance.
+ *  @constructor Create new _cell_ header instance.
  *
- *  @param cellType Type instance for associated ''cell'' element.
+ *  @param cellType Type instance for associated _cell_ element.
  *
  *  @param flags Flags associated with this cell.
  */

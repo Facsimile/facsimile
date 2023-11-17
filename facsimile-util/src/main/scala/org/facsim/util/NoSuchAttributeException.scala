@@ -38,21 +38,16 @@ package org.facsim.util
 
 import java.util.jar.Attributes.Name
 
-/** Signaled if the ''manifest'' attribute `name` cannot be identified.
+/** Signaled if the _manifest_ attribute `name` cannot be identified.
  *
- *  @constructor Create a new ''no such attribute'' exception.
+ *  @constructor Create a new _no such attribute_ exception.
  *
- *  @param name Attribute that couldn't be found. This value cannot be `null`.
- *
- *  @throws scala.NullPointerException if `name` is null.
+ *  @param name Attribute that couldn't be found.
  *
  *  @since 0.0
  */
 final case class NoSuchAttributeException(name: Name)
-extends NoSuchElementException {
-
-  // Sanity checks. Clearly, throwing exceptions while creating an exception is likely not desirable, so don't fail!
-  requireNonNullFn(name, "name")
+extends NoSuchElementException:
 
   /** Report cause of this exception.
    *
@@ -61,4 +56,3 @@ extends NoSuchElementException {
    *  @since 0.0
    */
   override def getMessage: String = LibResource("NoSuchAttribute", name.toString)
-}

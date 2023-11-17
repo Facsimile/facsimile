@@ -38,7 +38,7 @@ import org.facsim.anim.{Mesh, Point3D}
 import org.facsim.types.Angle
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell arc & circle''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell arc & circle_
 primitives.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Arcs.html Arcs
@@ -52,7 +52,7 @@ primitives.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

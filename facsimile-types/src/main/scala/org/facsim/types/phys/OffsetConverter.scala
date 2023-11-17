@@ -41,14 +41,14 @@ import org.facsim.util.{requireFinite, requireValid}
 /** Offset converter.
  *
  *  Converts physical quantity measurement units of an associated, but unspecified, unit to and from the corresponding
- *  standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the unit family. Values are ''imported'' (converted to
- *  ''SI'' unit values) by subtracting the specified constant `offset` value; they are ''exported'' (converted from
- *  ''SI'' unit values) by adding the same constant `offset`.
+ *  standard _[[http://en.wikipedia.org/wiki/SI SI]]_ units for the unit family. Values are _imported_ (converted to
+ *  _SI_ unit values) by subtracting the specified constant `offset` value; they are _exported_ (converted from
+ *  _SI_ unit values) by adding the same constant `offset`.
  *
  *  @constructor Create new offset converter from the specified `offset`.
  *
- *  @param offset Constant value that, when subtracted from specific measurements in the corresponding non-''SI'' units,
- *  converts those measurements to ''SI'' units. `offset` must be finite and cannot be zero (in which case,
+ *  @param offset Constant value that, when subtracted from specific measurements in the corresponding non-_SI_ units,
+ *  converts those measurements to _SI_ units. `offset` must be finite and cannot be zero (in which case,
  *  [[SIConverter]] is a better option).
  *
  *  @throws IllegalArgumentException if `offset` is `NaN`, infinite, or zero.

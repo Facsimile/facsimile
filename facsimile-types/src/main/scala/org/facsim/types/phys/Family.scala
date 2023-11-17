@@ -40,9 +40,9 @@ import org.facsim.util.{assertNonNull, requireNonNull}
 import scala.collection.immutable.HashMap
 
 /** Class representing a physical quantity family defined in terms of exponents of the
- *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' base units.
+ *  _[[http://en.wikipedia.org/wiki/SI SI]]_ base units.
  *
- *  An instance having only zero base types exponents has no units; i.e. it is ''unitless''.
+ *  An instance having only zero base types exponents has no units; i.e. it is _unitless_.
  *
  *  @constructor Construct a new physical quantity family. This constructor is private and should be called only from
  *  the `apply()` function&mdash;the rationale being that we have the possibility to re-use existing instances rather
@@ -97,7 +97,7 @@ extends Equals {
     Family(exponents.zip(divisor.exponents).map(p => p._1 - p._2))
   }
 
-  /** Determine whether this family is ''unitless''.
+  /** Determine whether this family is _unitless_.
    *
    *  @return `true` if this physical quantity family is unitless, or `false` otherwise.
    *
@@ -270,7 +270,7 @@ private[phys] object Family {
    *
    *  Registration should be performed once for each concrete [[Specific]] class instance.
    *
-   *  @param family Family value to be registered as associated with the '''specific''' class.
+   *  @param family Family value to be registered as associated with the *specific* class.
    *
    *  @param specific Class of the associated specific physical quantity type.
    */

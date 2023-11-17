@@ -51,10 +51,10 @@ final class ManifestTest
 extends AnyFunSpec
 with CommonTestMethods {
 
-  /** ''Java'' specification vendor.
+  /** _Java_ specification vendor.
    *
-   *  This should be configured to match the value returned as the "specification-vendor" attribute of the ''Java
-   *  run-time'' library.
+   *  This should be configured to match the value returned as the "specification-vendor" attribute of the _Java
+   *  run-time_ library.
    */
   val JavaSpecVendor = "Oracle Corporation"
 
@@ -64,19 +64,19 @@ with CommonTestMethods {
   /** Manifest test data. */
   trait TestData {
 
-    /** ''Java'' runtime library manifest. Should exist ;-). */
+    /** _Java_ runtime library manifest. Should exist ;-). */
     lazy val javaManifest = Manifest(classOf[String])
 
-    /** A manifest, having some invalid attributes, loaded from a ''JAR'' file. */
+    /** A manifest, having some invalid attributes, loaded from a _JAR_ file. */
     lazy val invalidManifest = Manifest(classOf[Invalid])
 
     /** A null manifest for a JAR file that has no manifest defined. */
     lazy val missingManifest = Manifest(classOf[Missing])
 
-    /** A null manifest for a class that has no associated ''JAR'' file. */
+    /** A null manifest for a class that has no associated _JAR_ file. */
     lazy val noJarManifest = Manifest(classOf[NonJARFileClass])
 
-    /** A manifest, having defined, valid attributes, loaded from a ''JAR'' file. */
+    /** A manifest, having defined, valid attributes, loaded from a _JAR_ file. */
     lazy val dummyManifest = Manifest(classOf[Dummy])
 
     /** Non-existent attribute name. */

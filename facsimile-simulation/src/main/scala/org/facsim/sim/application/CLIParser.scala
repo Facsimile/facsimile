@@ -47,7 +47,7 @@ import scopt.OptionParser
  *  Command line arguments are parsed even if the application is being run with an animation. Indeed, the command line
  *  must be parsed to determine whether an animation is to be utilized.
  *
- *  @constructor Create a new ''command line interface'' (''CLI'') parser.
+ *  @constructor Create a new _command line interface_ (_CLI_) parser.
  *
  *  @param appName Name of the application.
  *

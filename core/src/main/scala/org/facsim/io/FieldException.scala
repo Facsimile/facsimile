@@ -37,7 +37,7 @@ package org.facsim.io
 Base exception class signaling an error in a field operation.
 
 Field exceptions must be recoverable.  Furthermore, all functions throwing such
-exceptions must implement ''failure atomicity''.
+exceptions must implement _failure atomicity_.
 
 @constructor Construct new field exception.
 

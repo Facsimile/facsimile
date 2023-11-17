@@ -36,10 +36,10 @@
 //======================================================================================================================
 package org.facsim.collection.immutable
 
-/** Trait defining an ''immutable [[https://en.wikipedia.org/wiki/Heap_(data_structure) heap]].''
+/** Trait defining an _immutable [[https://en.wikipedia.org/wiki/Heap_(data_structure) heap]]._
  *
- *  This is based upon the heap interface defined in the paper ''[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
- *  Optimal Purely Functional Priority Queues]]''.
+ *  This is based upon the heap interface defined in the paper _[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
+ *  Optimal Purely Functional Priority Queues]]_.
  *
  *  @tparam A Type of element to be stored in the heap. There must be an implicit ordering available for this element
  *  type.

@@ -41,7 +41,7 @@ import scala.annotation.tailrec
 import scala.collection.immutable.VectorBuilder
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell polyhedron''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell polyhedron_
 primitives.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Polyhedra.html
@@ -55,7 +55,7 @@ Polyhedra]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -110,7 +110,7 @@ Read polyhedron point data from the stream.
 @return List of points.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -175,7 +175,7 @@ in the range [0, points.size - 1].
 @return List of faces belonging to the polyhedron.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

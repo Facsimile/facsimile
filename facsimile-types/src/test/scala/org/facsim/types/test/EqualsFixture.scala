@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.types.test
 
-/** Fixture trait for testing if an associated object implements the ''equals contract''.
+/** Fixture trait for testing if an associated object implements the _equals contract_.
  *
  *  @tparam V Type, implementing the [[Equivalent]] class, to be tested.
  */

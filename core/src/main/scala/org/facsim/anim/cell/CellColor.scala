@@ -40,8 +40,8 @@ import scalafx.scene.paint.PhongMaterial
 /**
 Cell color name enumeration.
 
-Encodes ''[[http://www.automod.com/ AutoMod®]]'' color codes and maps them to
-the corresponding ''ScalaFX'' colors and materials.
+Encodes _[[http://www.automod.com/ AutoMod®]]_ color codes and maps them to
+the corresponding _ScalaFX_ colors and materials.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Colors.html
 Face & Edge Colors]]
@@ -51,7 +51,7 @@ private[cell] object CellColor
 extends Enumeration {
 
 /**
-Vector associating each ''cell'' color with the corresponding ''ScalaFX''
+Vector associating each _cell_ color with the corresponding _ScalaFX_
 color.
 */
 
@@ -75,9 +75,9 @@ color.
   )
 
 /**
-Vector of materials that employ cell colors as ''diffuse'' colors.
+Vector of materials that employ cell colors as _diffuse_ colors.
 
-In each case the ''specular'' color is set to white.
+In each case the _specular_ color is set to white.
 
 @note Use of this vector allows us to keep the number of materials used within
 cell files small.
@@ -93,97 +93,97 @@ cell files small.
   }
 
 /**
-Black, having the ''cell'' color code 0.
+Black, having the _cell_ color code 0.
 */
 
   val Black = Value
 
 /**
-Red, having the ''cell'' color code 1.
+Red, having the _cell_ color code 1.
 */
 
   val Red = Value
 
 /**
-Green, having the ''cell'' color code 2.
+Green, having the _cell_ color code 2.
 */
 
   val Green = Value
 
 /**
-Yellow, having the ''cell'' color code 3.
+Yellow, having the _cell_ color code 3.
 */
 
   val Yellow = Value
 
 /**
-Blue, having the ''cell'' color code 4.
+Blue, having the _cell_ color code 4.
 */
 
   val Blue = Value
 
 /**
-Magenta, having the ''cell'' color code 5.
+Magenta, having the _cell_ color code 5.
 */
 
   val Magenta = Value
 
 /**
-Cyan, having the ''cell'' color code 6.
+Cyan, having the _cell_ color code 6.
 */
 
   val Cyan = Value
 
 /**
-White, having the ''cell'' color code 7.
+White, having the _cell_ color code 7.
 */
 
   val White = Value
 
 /**
-Light gray, having the ''cell'' color code 8.
+Light gray, having the _cell_ color code 8.
 */
 
   val LightGray = Value
 
 /**
-Dark gray, having the ''cell'' color code 9.
+Dark gray, having the _cell_ color code 9.
 */
 
   val DarkGray = Value
 
 /**
-Brown, having the ''cell'' color code 10.
+Brown, having the _cell_ color code 10.
 */
 
   val Brown = Value
 
 /**
-Light blue, having the ''cell'' color code 11.
+Light blue, having the _cell_ color code 11.
 */
 
   val LightBlue = Value
 
 /**
-Purple, having the ''cell'' color code 12.
+Purple, having the _cell_ color code 12.
 */
 
   val Purple = Value
 
 /**
-Orange, having the ''cell'' color code 13.
+Orange, having the _cell_ color code 13.
 */
 
   val Orange = Value
 
 /**
-Light green, having the ''cell'' color code 14.
+Light green, having the _cell_ color code 14.
 */
 
   val LightGreen = Value
 
 /**
-Light yellow, having the ''cell'' color code 15.
+Light yellow, having the _cell_ color code 15.
 */
 
   val LightYellow = Value
@@ -209,14 +209,14 @@ Maximum color code value.
   private[cell] val maxValue = maxId - 1
 
 /**
-Conversion of ''cell'' color to ''ScalaFX'' color.
+Conversion of _cell_ color to _ScalaFX_ color.
 
 @note This could be made an implicit function, but that might encourage the use
-of ''cell'' colors in regular code, when ideally we want to bury them.
+of _cell_ colors in regular code, when ideally we want to bury them.
 
-@param color ''Cell'' color value to be converted.
+@param color _Cell_ color value to be converted.
 
-@return Corresponding ''ScalaFX'' color.
+@return Corresponding _ScalaFX_ color.
 */
   private[cell] def toColor(color: CellColor.Value) = {
     assertNonNull(color)
@@ -224,14 +224,14 @@ of ''cell'' colors in regular code, when ideally we want to bury them.
   }
 
 /**
-Conversion of ''cell'' color to ''ScalaFX'' material.
+Conversion of _cell_ color to _ScalaFX_ material.
 
 @note This could be made an implicit function, but that might encourage the use
-of ''cell'' colors in regular code, when ideally we want to bury them.
+of _cell_ colors in regular code, when ideally we want to bury them.
 
-@param color ''Cell'' color value to be converted.
+@param color _Cell_ color value to be converted.
 
-@return Corresponding ''ScalaFX'' material.
+@return Corresponding _ScalaFX_ material.
 */
   private[cell] def toMaterial(color: CellColor.Value) = {
     assertNonNull(color)
@@ -249,7 +249,7 @@ Verify a color code.
   colorCode <= maxValue)
 
 /**
-Read color from ''cell'' data stream.
+Read color from _cell_ data stream.
 
 @param scene Scene from which the color is to be read.
 
@@ -258,7 +258,7 @@ Read color from ''cell'' data stream.
 @return Cell color read, if valid.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

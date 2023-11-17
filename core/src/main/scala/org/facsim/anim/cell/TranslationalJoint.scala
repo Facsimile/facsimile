@@ -34,9 +34,9 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 /**
-Class representing a ''translational joint''.
+Class representing a _translational joint_.
 
-A ''translational joint'' allows children of the associated ''cell'' primitive
+A _translational joint_ allows children of the associated _cell_ primitive
 be translated along the joint's local Z-axis under kinematic control.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
@@ -49,7 +49,7 @@ Joints]] for further information.
 @param flags Cell flags dictating how the joint data is formatted.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

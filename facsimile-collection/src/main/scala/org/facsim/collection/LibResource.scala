@@ -38,7 +38,7 @@ package org.facsim.collection
 
 import org.facsim.util.Resource
 
-/** Helper object reporting ''Facsimile Collection'' library resources.
+/** Helper object reporting _Facsimile Collection_ library resources.
  *
  *  @since 0.0
  */

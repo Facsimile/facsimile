@@ -54,16 +54,16 @@ import scala.language.implicitConversions
  *  measurement's family is not identical to the specific measurement it is being converted to, an exception will
  *  result.
  *
- *  For example, we could obtain a generic measurement that has ''velocity'' characteristics by dividing a ''length'' by
- *  a ''time''. If we then attempt to convert this generic value to a ''velocity'', it will succeed; however, if we
- *  attempt to convert it to a ''temperature'', an exception will result.
+ *  For example, we could obtain a generic measurement that has _velocity_ characteristics by dividing a _length_ by
+ *  a _time_. If we then attempt to convert this generic value to a _velocity_, it will succeed; however, if we
+ *  attempt to convert it to a _temperature_, an exception will result.
  *
  *  @since 0.0
  */
 object Generic
 extends Physical {
 
-  /** There is only set of units for this type, which will be the ''SI'' units by definition.
+  /** There is only set of units for this type, which will be the _SI_ units by definition.
    *
    *  @since 0.0
    */
@@ -80,14 +80,14 @@ extends Physical {
 
   /** Implicit conversion from a generic measurement value to a Double value.
    *
-   *  In order for this conversion to succeed, the family associated with the generic measurement must be ''unitless''
+   *  In order for this conversion to succeed, the family associated with the generic measurement must be _unitless_
    *  (i.e., all base measurement exponents must be zero).
    *
-   *  @param measure Generic measurement value to be converted, which must be ''unitless''.
+   *  @param measure Generic measurement value to be converted, which must be _unitless_.
    *
    *  @return The unitless value of `types` as a Double.
    *
-   *  @throws GenericConversionException if `types` is not ''unitless''.
+   *  @throws GenericConversionException if `types` is not _unitless_.
    *
    *  @since 0.0
    */
@@ -101,7 +101,7 @@ extends Physical {
    *  @todo There are currently no checks to ensure that `types` is within a valid range for the associated family.
    *  This needs to be added for consistency.
    *
-   *  @param measure Generic measurement expressed in ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+   *  @param measure Generic measurement expressed in _[[http://en.wikipedia.org/wiki/SI SI]]_ units.
    *
    *  @param family Physical quantity family to which `types` belongs.
    *
@@ -109,30 +109,30 @@ extends Physical {
    */
   private[phys] def apply(measure: Double, family: Family) = new GenericMeasure(measure, family)
 
-  /** Generic ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]'' measurement class.
+  /** Generic _Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]_ measurement class.
    *
    *  Instances of this class represent the results of measurement calculations that result, or potentially result, in a
    *  measurement from a different physical quantity family.
    *
-   *  However, generic measurements may also be ''unitless'', in which case they are equivalent to ordinary
+   *  However, generic measurements may also be _unitless_, in which case they are equivalent to ordinary
    *  [[scala.Double]] values.
    *
    *  Generic measurements can be converted to an equivalent specific measurement&mdash;one that belongs to the same
    *  physical quantity family&mdash;when a specific equivalent exists. For example, if a [[Length]] is divided by a
-   *  [[Time]], then the result is a ''generic velocity'', which can be converted to a [[Velocity]]. However a ''time''
-   *  multiplied by a ''time'', results in a generic ''time-squared''  measurement has no equivalent specific class and
+   *  [[Time]], then the result is a _generic velocity_, which can be converted to a [[Velocity]]. However a _time_
+   *  multiplied by a _time_, results in a generic _time-squared_  measurement has no equivalent specific class and
    *  can be expressed only in generic form.
    *
-   *  Attempts to convert ''generic'' measurements to measurements of a different physical quantity family will result
+   *  Attempts to convert _generic_ measurements to measurements of a different physical quantity family will result
    *  in an exception being thrown.
    *
-   *  Generic measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]]'' units
+   *  Generic measurements are stored internally in the corresponding _[[http://en.wikipedia.org/wiki/SI SI]]_ units
    *  for the associated physical quantity family.
    *
-   *  @constructor Create new ''generic'' measurement for the associated
-   *  ''[[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]'' family.
+   *  @constructor Create new _generic_ measurement for the associated
+   *  _[[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]_ family.
    *
-   *  @param measure Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
+   *  @param measure Value of the measurement expressed in the associated _[[http://en.wikipedia.org/wiki/SI SI]]_
    *  units. This value must be finite, and may have additional restrictions, depending upon the `family` to which it
    *  belongs.
    *
@@ -164,8 +164,8 @@ extends Physical {
 
   /** Generic unit class for all generic physical quantity measurement units.
    *
-   *  The sole generic unit instance represents the ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the associated
-   *  physical quantity family, if any&mdash;''unitless'' generic values do not have units, by definition.
+   *  The sole generic unit instance represents the _[[http://en.wikipedia.org/wiki/SI SI]]_ units for the associated
+   *  physical quantity family, if any&mdash;_unitless_ generic values do not have units, by definition.
    *
    *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/]].
    *

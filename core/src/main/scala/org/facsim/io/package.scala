@@ -34,10 +34,10 @@ Scala source file defining the org.facsim.io package.
 package org.facsim
 
 /**
-''[[http://facsim.org/ Facsimile]]'' Simulation Library input & output
-(''I/O'') support.
+_[[http://facsim.org/ Facsimile]]_ Simulation Library input & output
+(_I/O_) support.
 
-Package supporting ''input / output'' facilities.
+Package supporting _input / output_ facilities.
 
 @since 0.0
 */

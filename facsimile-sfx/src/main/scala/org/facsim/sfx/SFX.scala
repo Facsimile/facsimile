@@ -36,10 +36,10 @@ package org.facsim.sfx
 
 import javafx.application.Application
 
-/** Central repository for all ''JavaFX'' global information. */
+/** Central repository for all _JavaFX_ global information. */
 private[sfx] object SFX {
 
-  /** State of this ''SFX'' application.
+  /** State of this _SFX_ application.
    *
    *  Much of the information reported by this singleton is served by the current state. The initial state is to be
    *  uninitialized.
@@ -54,11 +54,11 @@ private[sfx] object SFX {
     state = newState
   }
 
-  /** Report the ''JavaFX'' application instance.
+  /** Report the _JavaFX_ application instance.
    *
-   *  An exception will result if the ''JavaFX'' application has not yet been initialized.
+   *  An exception will result if the _JavaFX_ application has not yet been initialized.
    *
-   *  @return Sole ''JavaFX'' application instance, wrapped in [[scala.Some]]; or [[scala.None]] if ''JavaFX'' has yet
+   *  @return Sole _JavaFX_ application instance, wrapped in [[scala.Some]]; or [[scala.None]] if _JavaFX_ has yet
    *  to be initialized, or if the application has been terminated.
    */
   def app: Option[Application] = synchronized(state.jfxApp)

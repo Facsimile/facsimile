@@ -36,8 +36,8 @@ package org.facsim.anim.cell
 import org.facsim.assertNonNull
 
 /**
-Thrown if a file supplied to an ''AutoMod® cell'' file loader is not a valid
-''cell'' file.
+Thrown if a file supplied to an _AutoMod® cell_ file loader is not a valid
+_cell_ file.
 
 @constructor Create a new parsing error exception.
 

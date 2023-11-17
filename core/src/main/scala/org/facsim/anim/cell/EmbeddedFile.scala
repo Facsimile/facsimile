@@ -37,7 +37,7 @@ import org.facsim.LibResource
 import scalafx.scene.Group
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell embedded file''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell embedded file_
 primitives.
 
 @see [[
@@ -52,7 +52,7 @@ Embedded Files]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

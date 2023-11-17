@@ -37,7 +37,7 @@ package org.facsim.io
 Base exception class signaling an error in a data operation.
 
 Data exceptions must be recoverable.  Furthermore, all functions throwing such
-exceptions must implement ''failure atomicity''.
+exceptions must implement _failure atomicity_.
 
 @constructor Construct new data exception.
 

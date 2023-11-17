@@ -36,20 +36,20 @@ package org.facsim.sfx
 
 import javafx.application.Application
 
-/** Trait encapsulating the state of a ''JavaFX'' application.
+/** Trait encapsulating the state of a _JavaFX_ application.
  *
  *  This provides an interface for the specific application states defined in this file.
  */
 private[sfx] sealed trait SFXState {
 
-  /** The ''JavaFX'' application instance.
+  /** The _JavaFX_ application instance.
    *
-   *  This value is `None` unless there is an active ''JavaFX'' application instance.
+   *  This value is `None` unless there is an active _JavaFX_ application instance.
    */
   val jfxApp: Option[Application]
 }
 
-/** Common base trait for non-running ''JavaFX'' applications. */
+/** Common base trait for non-running _JavaFX_ applications. */
 private[sfx] sealed trait SFXNonRunning
 extends SFXState {
 
@@ -59,18 +59,18 @@ extends SFXState {
 
 /** Uninitialized application state.
  *
- *  State for ''SFX'' applications that have yet to initialize ''JavaFX''.
+ *  State for _SFX_ applications that have yet to initialize _JavaFX_.
  */
 private[sfx] case object SFXUninitialized
 extends SFXNonRunning
 
 /** Running application state.
  *
- *  State for an ''SFX'' application that is currently running.
+ *  State for an _SFX_ application that is currently running.
  *
- *  @constructor Create new ''SFX'' running application.
+ *  @constructor Create new _SFX_ running application.
  *
- *  @param app ''JavaFX'' sole application instance.
+ *  @param app _JavaFX_ sole application instance.
  */
 private[sfx] final case class SFXRunning(app: Application)
 extends SFXState {
@@ -81,7 +81,7 @@ extends SFXState {
 
 /** Terminated application state.
  *
- *  State for a ''JFX'' application that has been terminated, and which is no longer active.
+ *  State for a _JFX_ application that has been terminated, and which is no longer active.
  */
 private[sfx] case object SFXTerminated
 extends SFXNonRunning

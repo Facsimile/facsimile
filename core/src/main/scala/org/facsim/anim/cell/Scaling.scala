@@ -49,14 +49,14 @@ Read string resource key.
   private val ReadKey = "anim.cell.Scaling.read"
 
 /**
-Read scale data from ''cell'' data stream.
+Read scale data from _cell_ data stream.
 
 @param scene Scene from which the scale data is to be read.
 
 @return A scaling transformation to be applied to the associated node.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

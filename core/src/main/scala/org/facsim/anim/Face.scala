@@ -40,17 +40,17 @@ import scala.annotation.tailrec
 Class representing a 3D face.
 
 A single face is constructed from a list of three or more vertices, which
-should be coplanar; faces with more than three vertices are rendered as (''n''
-- 2) ''triangular'' faces (faces represented by just three vertices), where
-''n'' is the number of vertices.
+should be coplanar; faces with more than three vertices are rendered as (_n_
+- 2) _triangular_ faces (faces represented by just three vertices), where
+_n_ is the number of vertices.
 
 Each triangular face takes the first vertex in the list and a pair of
 consecutive vertices. For example, if a list of 5 vertices are provided,
-labeled as ''A'', ''B'', ''C'', ''D'' and ''E'', then this face will be
+labeled as _A_, _B_, _C_, _D_ and _E_, then this face will be
 rendered as three faces formed from these vertices as follows:
-  - ''A'', ''B'', ''C''
-  - ''A'', ''C'', ''D''
-  - ''A'', ''D'', ''E''
+  - _A_, _B_, _C_
+  - _A_, _C_, _D_
+  - _A_, _D_, _E_
 
 These sets of triangular face vertices should be non-self-intersecting.
 
@@ -61,7 +61,7 @@ can be modified by selecting a different ScalaFX cull face option when
 rendering each face.) All triangular faces making up this face should be
 coplanar and should share the same face normal.
 
-@constructor Construct an explicit texture-mapped face from a list of ''rich''
+@constructor Construct an explicit texture-mapped face from a list of _rich_
 points.
 
 @param vertices List of coplanar points defining the vertices of the face. At
@@ -184,14 +184,14 @@ The order of values returned is:
 
 `p0`, `t0`, `p1`, `t1`, `p2`, `t2`
 
-where `p`''x'' is the ''x''th 3D animation point index and `t`''x'' is the
-''x''th texture map point index.
+where `p`_x_ is the _x_th 3D animation point index and `t`_x_ is the
+_x_th texture map point index.
 
 @param pointIdxMap Map associating each 3D point with its index value. This map
-'''must''' contain all of the vertices making up this face.
+*must* contain all of the vertices making up this face.
 
 @param texturePointIdxMap Map associating each texture point with its index
-value. This map '''must''' contain all of the texture belonging to this face.
+value. This map *must* contain all of the texture belonging to this face.
 
 @return list of zipped 3D animation point and texture map point indices.
 */

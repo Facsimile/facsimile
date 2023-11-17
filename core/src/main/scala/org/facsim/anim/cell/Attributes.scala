@@ -38,17 +38,17 @@ import org.facsim.{assertNonNull, LibResource}
 /**
 Class representing attributes belonging to a cell.
 
-@constructor Create new ''cell'' attributes for an associated ''cell'' element
+@constructor Create new _cell_ attributes for an associated _cell_ element
 according to the cell's flags and data stream content.
 
-@param scene ''Cell'' scene to which the ''cell'' owning these attributes
+@param scene _Cell_ scene to which the _cell_ owning these attributes
 belongs.
 
-@param flags ''Cell'' flags associated with the ''cell'' owning these
+@param flags _Cell_ flags associated with the _cell_ owning these
 attributes.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -131,11 +131,11 @@ If attributes are present, read the name; otherwise, this cell has no name.
 Function to determine the required color.
 
 The rules are not straightforward:
-  - If attributes are present, then the color must be read from the ''cell''
-    data stream, even if color is inherited from its parent ''cell''.
+  - If attributes are present, then the color must be read from the _cell_
+    data stream, even if color is inherited from its parent _cell_.
   - If color is inherited, then the resulting color will be None.
   - If color is not inherited and attributes are present, then the color will
-    be as indicated in the ''cell'' data stream.
+    be as indicated in the _cell_ data stream.
   - If color is not inherited and attributes are not present, then the default
     color will be reported.
 
@@ -145,7 +145,7 @@ which is passed as an argument to an exception description message.
 @return Color if not inherited, `None` otherwise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -160,7 +160,7 @@ Sanity checks.
 
 /*
 If attributes are present, then we must read them from the file - even if we're
-inheriting the color from the parent ''cell''.
+inheriting the color from the parent _cell_.
 */
 
     if(attributesPresent) {

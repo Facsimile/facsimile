@@ -41,13 +41,13 @@ import scala.annotation.tailrec
 
 /** Test behaviors for [[Equals]] trait-implementing classes.
  *
- *  This trait can be used as part of the test suite for a class that must honor the ''equals contract'':
+ *  This trait can be used as part of the test suite for a class that must honor the _equals contract_:
  *
- *  - ''Reflexive'': `x == x` should be true for various non-`null` `x` of the associated type.
- *  - ''Symmetric'': `x == y` and `y == x` should both give the same, expected answer for various non-`null` `x` & `y`.
- *  - ''Transitive'': `x == y`, `y == z` and `x == z` should all give the same, expected answer for various non-`null`
+ *  - _Reflexive_: `x == x` should be true for various non-`null` `x` of the associated type.
+ *  - _Symmetric_: `x == y` and `y == x` should both give the same, expected answer for various non-`null` `x` & `y`.
+ *  - _Transitive_: `x == y`, `y == z` and `x == z` should all give the same, expected answer for various non-`null`
  *    `x`, `y` & `z`.
- *  - ''Consistent'': `x == y` must always hold `true`, or always hold `false`, if `x` & `y` are not modified
+ *  - _Consistent_: `x == y` must always hold `true`, or always hold `false`, if `x` & `y` are not modified
  *    (guaranteed if `x` & `y` are immutable).
  *  - `x != y` if `x` and `y` are not comparable objects, regardless of contents, for various non-`null` `x` & `y`.
  *  - `x != null` for various non-`null` `x`. Should not see [[NullPointerException]] thrown.

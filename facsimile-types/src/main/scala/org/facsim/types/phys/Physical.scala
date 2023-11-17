@@ -41,7 +41,7 @@ import org.facsim.util.requireFinite
 import scala.util.Try
 import spire.algebra.Order
 
-/** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
+/** Abstract base class for all _Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]_
  *  elements.
  *
  *  Physical quantity types include specific types (such as `[[org.facsim.types.phys.Angle Angle]]`,
@@ -49,7 +49,7 @@ import spire.algebra.Order
  *  `[[org.facsim.types.phys.Generic Generic]]` convenience type for the result of multiplication and division between
  *  the specific types. Each of these types has measurement values and units in which those measurements are expressed.
  *
- *  @see [[http://en.wikipedia.org/wiki/Physical_quantity Physical quantity]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Physical_quantity Physical quantity]] on _Wikipedia_.
  *
  *  @since 0.0
  */
@@ -78,9 +78,9 @@ abstract class Physical {
   // each sub-class.
   type Units <: PhysicalUnits
 
-  /** ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for this physical quantity.
+  /** _[[http://en.wikipedia.org/wiki/SI SI]]_ standard units for this physical quantity.
    *
-   *  @see [[[[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *  @see [[[[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -88,8 +88,8 @@ abstract class Physical {
   // of this element.
   val siUnits: Units
 
-  /** User's preferred units for this physical quantity, or the associated ''[[http://en.wikipedia.org/wiki/SI SI]]
-   *  units'' if no preference has been specified.
+  /** User's preferred units for this physical quantity, or the associated _[[http://en.wikipedia.org/wiki/SI SI]]
+   *  units_ if no preference has been specified.
    *
    *  @todo The SI units for this physical quantity are currently reported. It is intended that&mdash;in
    *  future&mdash;this returns the user's preferred units, if specified, or the SI units otherwise; the mechanism for
@@ -103,41 +103,41 @@ abstract class Physical {
   // function will retrieve and validate an application user-configuration property.
   final def preferredUnits: Units = siUnits
 
-  /** Factory method to create a measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI
-   *  SI]] units''.
+  /** Factory method to create a measurement expressed in this physical quantity's _[[http://en.wikipedia.org/wiki/SI
+   *  SI]] units_.
    *
    *  @note This function is not public because it introduces the potential for unit confusion. Measurements can only be
    *  manipulated by users as `[[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]]` subclass instances,
    *  not as raw values. Allowing access to raw values encourages by-passing of the unit protection logic provided by
    *  these measurement classes.
    *
-   *  @param value Value of the measurement expressed in ''SI'' units.
+   *  @param value Value of the measurement expressed in _SI_ units.
    *
-   *  @return A measurement with the specified `value` in ''SI'' units, wrapped in a `[[scala.util.Success Success]]` if
-   *  successful, or a `[[scala.util.Failure Failure]]` wrapping a failure exception in the event that `value` is
+   *  @return A measurement with the specified `value` in _SI_ units, wrapped in a [[Success]] if
+   *  successful, or a [[Failure]] wrapping a failure exception in the event that `value` is
    *  invalid.
    */
   protected[phys] final def apply(value: Double): Try[Measure] = Try(newMeasure(value))
 
-  /** Factory method to create a measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI
-   *  SI]] units''.
+  /** Factory method to create a measurement expressed in this physical quantity's _[[http://en.wikipedia.org/wiki/SI
+   *  SI]] units_.
    *
    *  @note This function is not public for two reasons: firstly, because it is a partial function that is defined only
-   *  if `value` is a valid ''SI'' unit measurements; secondly, because it introduces the potential for unit confusion.
+   *  if `value` is a valid _SI_ unit measurements; secondly, because it introduces the potential for unit confusion.
    *  Measurements can only be manipulated by users as `[[org.facsim.types.phys.Physical.PhysicalMeasure
    *  PhysicalMeasure]]` subclass instances, not as raw values. Allowing access to raw values encourages by-passing of
    *  the unit protection logic provided by these measurement classes.
    *
-   *  @param value Value of the measurement expressed in ''SI'' units.
+   *  @param value Value of the measurement expressed in _SI_ units.
    *
-   *  @return A measurement with the specified `value` in ''SI'' units, provided that the measurement is valid.
+   *  @return A measurement with the specified `value` in _SI_ units, provided that the measurement is valid.
    *
    *  @throws scala.IllegalArgumentException if creation of the types value fails due to the value being out of range.
    */
   protected[phys] def newMeasure(value: Double): Measure
 
-  /** Value representing a ''zero'' measurement in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI SI]]
-   *  units''.
+  /** Value representing a _zero_ measurement in this physical quantity's _[[http://en.wikipedia.org/wiki/SI SI]]
+   *  units_.
    *
    *  @since 0.0
    */
@@ -158,8 +158,8 @@ abstract class Physical {
      *
      *  @param y
      *
-     *  @return 0 if `x` and `y` compare as equal, a negative value is `x` compares as ''less than'' `y` or a positive
-     *  value if `x` compares as ''greater than'' `y`.
+     *  @return 0 if `x` and `y` compare as equal, a negative value is `x` compares as _less than_ `y` or a positive
+     *  value if `x` compares as _greater than_ `y`.
      *
      *  @since 0.0
      */
@@ -181,8 +181,8 @@ abstract class Physical {
        *
        *  @param b Second value being added.
        *
-       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
-       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       *  @return Result of the addition, wrapped in a [[Success]] if successful, or a
+       *  [[Failure]] if unsuccessful.
        */
       override def combine(a: Measure, b: Measure): Try[Measure] = apply(a.value + b.value)
     }
@@ -201,10 +201,10 @@ abstract class Physical {
        *
        *  @param a First value being added.
        *
-       *  @param bt Second value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *  @param bt Second value being added, wrapped in a [[Try]].
        *
-       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
-       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       *  @return Result of the addition, wrapped in a [[Success]] if successful, or a
+       *  [[Failure]] if unsuccessful.
        */
       override def combine(a: Measure, bt: Try[Measure]): Try[Measure] = bt.flatMap(b => apply(a.value + b.value))
     }
@@ -221,12 +221,12 @@ abstract class Physical {
 
       /** Add two physical measurement quantities belonging to the same family together.
        *
-       *  @param at First value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *  @param at First value being added, wrapped in a [[Try]].
        *
        *  @param b Second value being added.
        *
-       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
-       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       *  @return Result of the addition, wrapped in a [[Success]] if successful, or a
+       *  [[Failure]] if unsuccessful.
        */
       override def combine(at: Try[Measure], b: Measure): Try[Measure] = at.flatMap(a => apply(a.value + b.value))
     }
@@ -243,12 +243,12 @@ abstract class Physical {
 
       /** Add two physical measurement quantities belonging to the same family together.
        *
-       *  @param at First value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *  @param at First value being added, wrapped in a [[Try]].
        *
-       *  @param bt Second value being added, wrapped in a `[[scala.util.Try Try]]`.
+       *  @param bt Second value being added, wrapped in a [[Try]].
        *
-       *  @return Result of the addition, wrapped in a `[[scala.util.Success Success]]` if successful, or a
-       *  `[[scala.util.Failure Failure]]` if unsuccessful.
+       *  @return Result of the addition, wrapped in a [[Success]] if successful, or a
+       *  [[Failure]] if unsuccessful.
        */
       override def combine(at: Try[Measure], bt: Try[Measure]): Try[Measure] = at.flatMap {a =>
         bt.flatMap {b =>
@@ -258,18 +258,18 @@ abstract class Physical {
     }
   }
 
-  /** Abstract base class for all ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]''
+  /** Abstract base class for all _Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]_
    *  measurement classes.
    *
-   *  Measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]] units'' for this
+   *  Measurements are stored internally in the corresponding _[[http://en.wikipedia.org/wiki/SI SI]] units_ for this
    *  physical quantity family.
    *
-   *  @constructor Create new measurement for the associated ''[[http://en.wikipedia.org/wiki/Physical_quantity physical
-   *  quantity]]''.
+   *  @constructor Create new measurement for the associated _[[http://en.wikipedia.org/wiki/Physical_quantity physical
+   *  quantity]]_.
    *
-   *  @param value Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
+   *  @param value Value of the measurement expressed in the associated _[[http://en.wikipedia.org/wiki/SI SI]]_
    *  units. This value must be finite, but sub-classes may impose additional restrictions. It is a core design goal of
-   *  the ''Facsimile Measurement Library'' that these raw values must be unavailable to end user code.
+   *  the _Facsimile Measurement Library_ that these raw values must be unavailable to end user code.
    *
    *  @throws scala.IllegalArgumentException if `value` is not finite or is invalid for these units.
    *
@@ -283,21 +283,21 @@ abstract class Physical {
 
     /** Create new measurement in the same physical quantity family as this measurement.
      *
-     *  @param newValue New measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI SI]]''
+     *  @param newValue New measurement expressed in this physical quantity's _[[http://en.wikipedia.org/wiki/SI SI]]_
      *  units.
      *
-     *  @return Measurement with the specified `value` in ''SI'' units, wrapped in a `[[scala.util.Success Success]]` if
-     *  successful, or a `[[scala.util.Failure Failure]]` wrapping a failure exception in the event that `value` is
+     *  @return Measurement with the specified `value` in _SI_ units, wrapped in a [[Success]] if
+     *  successful, or a [[Failure]] wrapping a failure exception in the event that `value` is
      *  invalid.
      */
     private[types] final def createNew(newValue: Double): Try[Measure] = apply(newValue)
 
     /** Create new measurement in the same physical quantity family as this measurement.
      *
-     *  @param newValue New measurement expressed in this physical quantity's ''[[http://en.wikipedia.org/wiki/SI SI]]''
+     *  @param newValue New measurement expressed in this physical quantity's _[[http://en.wikipedia.org/wiki/SI SI]]_
      *  units.
      *
-     *  @return Measurement with the specified `value` in ''SI'' units.
+     *  @return Measurement with the specified `value` in _SI_ units.
      *
      *  @throws scala.IllegalArgumentException if creation of the types value fails due to the value being out of range.
      */
@@ -322,12 +322,12 @@ abstract class Physical {
 
     /** Calculate the absolute value of the measurement.
      *
-     *  @note The absolute value is based upon the measurement in ''SI'' units. For measurement unit families that do
+     *  @note The absolute value is based upon the measurement in _SI_ units. For measurement unit families that do
      *  not have a common origin (such as `[[org.facsim.types.Temperature Temperature]]`), this can result in
      *  unintuitive results. For example, the absolute value of -5°C is -5°C, not 5°C, due to the fact that -5°C is
      *  268.15K, whose absolute value is unchanged.
      *
-     *  @return The absolute value of the measurement, based upon it's ''SI'' units.
+     *  @return The absolute value of the measurement, based upon it's _SI_ units.
      *
      *  @since 0.0
      */
@@ -412,29 +412,29 @@ abstract class Physical {
 
   /** Abstract base class for all physical quantity measurement units.
    *
-   *  Each concrete subclass represents a single ''physical quantity unit family''. For example, time units are
+   *  Each concrete subclass represents a single _physical quantity unit family_. For example, time units are
    *  represented by the `[[org.facsim.types.phys.Time.TimeUnits TimeUnits]]` subclass of `PhysicalUnits`.
    *
-   *  Each unit family supports one or more ''units of types''. For example, time quantities may be measured in
-   *  ''seconds'', ''minutes'', ''hours'', etc. These units are represented by instances of the concrete `PhysicalUnits`
+   *  Each unit family supports one or more _units of types_. For example, time quantities may be measured in
+   *  _seconds_, _minutes_, _hours_, etc. These units are represented by instances of the concrete `PhysicalUnits`
    *  subclass. For each unit family, there is a standard unit of types defined by the
-   *  ''[[http://en.wikipedia.org/wiki/SI International System of Units]]''&mdash;commonly abbreviated to ''SI Units''.
+   *  _[[http://en.wikipedia.org/wiki/SI International System of Units]]_&mdash;commonly abbreviated to _SI Units_.
    *
-   *  These standard units are used by ''Facsimile'' internally to store measurement quantities (as immutable instances
+   *  These standard units are used by _Facsimile_ internally to store measurement quantities (as immutable instances
    *  of `[[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]]` subclasses, with each subclass
-   *  corresponding to each measurement type.) For example, the ''SI'' standard unit of types for ''time'' is the
-   *  ''second''; consequently, ''Facsimile'' stores and calculates all time quantities, internally, in ''seconds''.
-   *  Adoption of the ''SI'' standard units simplifies the implementation of physics calculations within ''Facsimile''
+   *  corresponding to each measurement type.) For example, the _SI_ standard unit of types for _time_ is the
+   *  _second_; consequently, _Facsimile_ stores and calculates all time quantities, internally, in _seconds_.
+   *  Adoption of the _SI_ standard units simplifies the implementation of physics calculations within _Facsimile_
    *  and provides a clearly-defined basis for developing simulation models of the real-world. (Many other simulation
-   *  modeling tools suffer from ''unit of types confusion'', both internally and externally, creating a wide variety of
+   *  modeling tools suffer from _unit of types confusion_, both internally and externally, creating a wide variety of
    *  problems.)
    *
-   *  However, it is unreasonable to expect that ''Facsimile'' users would be comfortable entering and reviewing data
-   *  solely in these units. For instance, the ''SI'' standard unit of types for ''angles'' is the
-   *  ''radian''&mdash;and there are few people who don't find the ''degree'' a far more intuitive alternative.
-   *  Similarly, users in the United States&mdash;or their customers&mdash;might prefer ''feet'' & ''inches'',
-   *  ''pounds'', ''Fahrenheit'', etc. to their metric equivalents. Consequently, ''Facsimile'' allows users to work
-   *  with whichever units they prefer. ''Facsimile'' converts values to the standard ''SI'' units on input and converts
+   *  However, it is unreasonable to expect that _Facsimile_ users would be comfortable entering and reviewing data
+   *  solely in these units. For instance, the _SI_ standard unit of types for _angles_ is the
+   *  _radian_&mdash;and there are few people who don't find the _degree_ a far more intuitive alternative.
+   *  Similarly, users in the United States&mdash;or their customers&mdash;might prefer _feet_ & _inches_,
+   *  _pounds_, _Fahrenheit_, etc. to their metric equivalents. Consequently, _Facsimile_ allows users to work
+   *  with whichever units they prefer. _Facsimile_ converts values to the standard _SI_ units on input and converts
    *  them to the required units on output.
    *
    *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/]].

@@ -34,7 +34,7 @@
 //======================================================================================================================
 package org.facsim.sfx
 
-/** Utilities for the ''JavaFX'' [[javafx.beans]] package.
+/** Utilities for the _JavaFX_ [[javafx.beans]] package.
  *
  *  @since 0.0
  */

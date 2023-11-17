@@ -38,7 +38,7 @@ import org.facsim.{assertNonNull, LibResource}
 /**
 Joint type enumeration.
 
-Encodes ''[[http://www.automod.com/ AutoMod®]]'' joint type codes and maps them
+Encodes _[[http://www.automod.com/ AutoMod®]]_ joint type codes and maps them
 to the corresponding joint types.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/JointType.html
@@ -51,8 +51,8 @@ extends Enumeration {
 /**
 TCFOnly, having the joint type 0.
 
-@note A ''terminal control frame'' (''TCF'') is not a joint proper joint, but a
-location to which ''AutoMod'' will attach loads and/or vehicles.
+@note A _terminal control frame_ (_TCF_) is not a joint proper joint, but a
+location to which _AutoMod_ will attach loads and/or vehicles.
 */
 
   private[cell] val TCFOnly = Value
@@ -92,14 +92,14 @@ Verify a joint type code.
   && jointTypeCode <= maxValue)
 
 /**
-Read joint type from ''cell'' data stream.
+Read joint type from _cell_ data stream.
 
 @param scene Scene from which the joint type is to be read.
 
 @return Joint type read, if valid.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -131,16 +131,16 @@ Convert to a joint type and return.
   }
 
 /**
-Read joint ''cell'' data stream.
+Read joint _cell_ data stream.
 
 @param scene Scene from which the joint type is to be read.
 
-@param flags The current ''cell's'' flags.
+@param flags The current _cell's_ flags.
 
 @return Joint read, if valid.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

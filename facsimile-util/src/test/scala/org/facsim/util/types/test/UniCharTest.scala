@@ -58,19 +58,19 @@ with CommonTestMethods {
    */
   trait TestData {
 
-    /** Set of defined and undefined ''Unicode'' codepoints, inside the valid range.
+    /** Set of defined and undefined _Unicode_ codepoints, inside the valid range.
      */
     lazy val (definedCodepoints, undefinedCodepoints) = {
       (Character.MIN_CODE_POINT to Character.MAX_CODE_POINT).partition(Character.isDefined)
     }
 
-    /** Set of valid and surrogate ''Unicode'' codepoints.
+    /** Set of valid and surrogate _Unicode_ codepoints.
      */
     lazy val (validCodepoints, surrogateCodepoints) = {
       definedCodepoints.partition(cp => cp < Character.MIN_SURROGATE || cp > Character.MAX_SURROGATE)
     }
 
-    /** Generator for invalid, out-of-range ''Unicode'' codepoints.
+    /** Generator for invalid, out-of-range _Unicode_ codepoints.
      *
      *  These are codepoints that have values outside of the defined codepoint range.
      */
@@ -79,29 +79,29 @@ with CommonTestMethods {
       Gen.choose(Character.MAX_CODE_POINT + 1, Int.MaxValue)
     )
 
-    /** Generator for defined ''Unicode'' codepoints.
+    /** Generator for defined _Unicode_ codepoints.
      *
      *  These are codepoints that are defined, but which may be surrogates.
      */
     lazy val genDefinedCodepoints: Gen[Int] = Gen.oneOf(definedCodepoints)
 
-    /** Generator for undefined in-range ''Unicode'' codepoints.
+    /** Generator for undefined in-range _Unicode_ codepoints.
      *
      *  These are codepoints that have values within the defined codepoint range, but are undefined.
      */
     lazy val genUndefinedInRangeCodepoints: Gen[Int] = Gen.oneOf(undefinedCodepoints)
 
-    /** Generator for valid ''Unicode'' codepoints.
+    /** Generator for valid _Unicode_ codepoints.
      *
      *  These are codepoints that are both defined and non-surrogates.
      */
     lazy val genValidCodepoints: Gen[Int] = Gen.oneOf(validCodepoints)
 
-    /** Generator for surrogate ''Unicode'' codepoints.
+    /** Generator for surrogate _Unicode_ codepoints.
      */
     lazy val genSurrogateCodepoints: Gen[Int] = Gen.oneOf(surrogateCodepoints)
 
-    /** Set of high- and low-surrogate ''Unicode'' codepoints.
+    /** Set of high- and low-surrogate _Unicode_ codepoints.
      */
     lazy val (genHighSurrogateCodepoints, genLowSurrogateCodepoints) = {
       createGenerators(surrogateCodepoints, {cp =>

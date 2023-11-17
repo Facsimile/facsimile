@@ -37,16 +37,16 @@ import org.facsim.LibResource
 import org.facsim.anim.{Mesh, Point3D}
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell tetrahedron''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell tetrahedron_
 primitives.
 
-@note The use by ''AutoMod'' of the term ''tetrahedron'' is a slight misnomer.
+@note The use by _AutoMod_ of the term _tetrahedron_ is a slight misnomer.
 These shapes are more correctly described as
-''[[http://en.wikipedia.org/wiki/Frustum triangular frusta]]''. A
-''tetrahedon'' is a degenerate case in which the base side length, or top side
-length - but not both - is zero. However, the term ''tetrahedron'' is used
-throughout this file since it will be familiar to users of ''AutoMod'' & ''cell
-files''.
+_[[http://en.wikipedia.org/wiki/Frustum triangular frusta]]_. A
+_tetrahedon_ is a degenerate case in which the base side length, or top side
+length - but not both - is zero. However, the term _tetrahedron_ is used
+throughout this file since it will be familiar to users of _AutoMod_ & _cell
+files_.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Tetrahedron.html
@@ -60,7 +60,7 @@ Tetrahedra]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

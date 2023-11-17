@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.util
 
-/** ''Facsimile Utility'' library logging root package.
+/** _Facsimile Utility_ library logging root package.
  *
  *  This library contains tools for streaming log messages.
  *
