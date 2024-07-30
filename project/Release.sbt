@@ -36,4 +36,4 @@
 // This plugin assists with the version numbering of Facsimile releases, and replaces the more cumbersome sbt-git
 // plugin.
 //======================================================================================================================
-addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
+addSbtPlugin("com.github.sbt" % "sbt-release" % "1.4.0")
