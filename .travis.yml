@@ -38,8 +38,8 @@
 #   https://www.scala-sbt.org/1.x/docs/Travis-CI-with-sbt.html
 #=======================================================================================================================
 
-# Use Bionic Ubuntu (18.04 LTS) for builds.
-dist: bionic
+# Use Jammy Ubuntu (22.04 LTS) for builds.
+dist: jammy
 
 # Set up XVFB (X Windows virtual frame buffer) so that we can run JavaFX/ScalaFX code in headless mode.
 #
@@ -69,21 +69,13 @@ cache:
 # We need Java 17 to build Facsimile.
 #
 # Facsimile's policy is to support the most recent, LTS Java release that is compatible with Scala and the project's
-# third-party librarys and plugins. When a new LTS release becomes available, Facsimile will aim to switch to it as soon
-# as it becomes supported.
+# third-party libraries and plugins. When a new LTS release becomes available, Facsimile will aim to switch to it as
+# soon as it becomes supported.
 #
-# Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
-# here.
+# Note: We'll also try with Java 21, the current LTS release.
 jdk:
   - openjdk17
-
-# Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
-# in the current version of ScalaFX require the latest release). Also ensure Graphviz is installed, in order to create
-# documentation without errors.
-addons:
-  apt:
-    packages:
-      - graphviz
+  - openjdk21
 
 # Now perform the build.
 #
