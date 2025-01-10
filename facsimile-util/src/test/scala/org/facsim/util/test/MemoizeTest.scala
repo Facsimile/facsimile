@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2023, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -224,12 +224,12 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
           forAll { (il: List[Int]) =>
             callFn(il)(i => getHash(i))
           }
-          
+
           // Now for strings.
           forAll { (sl: List[String]) =>
             callFn(sl)(s => getHash(s))
           }
-          
+
     // Test double argument function memoization.
     describe(".apply((A1, A2) => R"):
 

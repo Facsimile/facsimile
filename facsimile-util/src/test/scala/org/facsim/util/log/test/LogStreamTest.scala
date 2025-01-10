@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2023, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -84,7 +84,7 @@ extends PekkoStreamsTestHarness, ScalaCheckPropertyChecks:
 
     // Verify the constructor fails for invalid buffer sizes.
     describe(".ctor(Int)(ActorMaterializer)"):
-      
+
       // Test invalid construction.
       it("must throw an IllegalArgumentException if called with an invalid buffer size"):
         forAll(invalidBufferSizes): bufferSize =>

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2023, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -41,7 +41,7 @@ import org.scalatest.funspec.AnyFunSpec
 
 /** Miscellaneous functions for supporting _Facsimile_ testing. */
 trait CommonTestMethods:
-  
+
   // CommonTextMethods must be mixed in with AnyFunSpec.
   this: AnyFunSpec =>
 
@@ -54,7 +54,7 @@ trait CommonTestMethods:
      */
     final def assertRequireNonNullMsg(e: NullPointerException, argName: String) =
       assert(e.getMessage === LibResource(RequireNonNullKey, argName))
-  
+
     /** Assert that an IllegalArgumentException's message resulting from a [[requireValid(Any,Boolean)]] failure matches
      *  the expected value.
      *
@@ -66,7 +66,7 @@ trait CommonTestMethods:
      */
     final def assertRequireValidMsg(e: IllegalArgumentException, argName: String, argValue: Any) =
       assert(e.getMessage === LibResource(RequireValidKey, argName, argValue))
-  
+
     /** Assert that an IllegalArgumentException's message resulting from a [[requireFinite(Double)]] failure matches the
      *  expected value.
      *

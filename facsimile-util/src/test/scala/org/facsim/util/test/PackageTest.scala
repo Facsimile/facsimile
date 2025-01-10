@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2023, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -43,10 +43,10 @@ import org.scalatest.funspec.AnyFunSpec
  */
 final class PackageTest
 extends AnyFunSpec, CommonTestMethods:
-  
+
   // Test fixture description.
   describe("org.facsim.util package"):
-    
+
     // requireNonNull macro tests.
     describe(".requireNonNull(AnyRef)"):
       it("must throw NullPointerException if passed null argValue"):

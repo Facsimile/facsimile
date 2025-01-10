@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2023, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -41,22 +41,22 @@ import org.facsim.util.LibResource
 /** Message severity enumeration.
  *
  *  Message severities are ordered by their ordinal values.
- *  
+ *
  *  @param name Name of the message severity, localized. This is not the same as the literal message severity value.
- *  
+ *
  *  @param abbrName Abbreviated name of the message severity.
- *                  
+ *
  *  @since 0.2
  */
 enum Severity(val name: String, val abbrName: String)
 extends Ordered[Severity]:
-  
+
   /** Rank of the severity of this message severity.
-   * 
+   *
    *  Lower values have lower severities.
    */
   def severity: Int = ordinal
-  
+
   /** Compare this message severity instance to another instance.
    *
    *  @param that Message severity instance being compared to.
@@ -83,7 +83,7 @@ extends Ordered[Severity]:
    */
   case InformationSeverity
   extends Severity(LibResource("log.InformationSeverityName"), LibResource("log.InformationSeverityAbbrName"))
-  
+
   /** Warning log message classification.
    *
    *  Warning log messages are typically used to document potential problems, unrecommended usage, etc..
@@ -101,7 +101,7 @@ extends Ordered[Severity]:
    */
   case ImportantSeverity
   extends Severity(LibResource("log.ImportantSeverityName"), LibResource("log.ImportantSeverityAbbrName"))
-  
+
   /** Error log message classification.
    *
    *  Error log messages are typically used to document errors that are non-fatal and recoverable. Such errors should
@@ -127,7 +127,7 @@ extends Ordered[Severity]:
  *  @since 0.2
  */
 object Severity:
-  
+
   /** Set of all severity object classes.
    *
    *  @return Set of all severity objects.
