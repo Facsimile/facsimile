@@ -39,7 +39,7 @@ package org.facsim.sim.model
 import org.facsim.sim.{LibResource, SimulationAction}
 import scala.reflect.runtime.universe.TypeTag
 
-/** Anonymous action for wrapping bare actions as `[[org.facsim.Action Action]]` instances.
+/** Anonymous action for wrapping bare actions as [[org.facsim.Action Action]] instances.
  *
  *  @tparam M Final type of the simulation's model state.
  *

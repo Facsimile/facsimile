@@ -53,6 +53,15 @@ sealed trait Manifest:
 
   /** Try to retrieve specified manifest attribute as a string.
    *
+   *  Retrieve an attribute of the following form from the manifest:
+   *
+   *  `{name}: _value_`
+   *
+   *  where `{name}` is the name of the attribute and `_value_` is a string storing its value.
+   *
+   *  @note Attributes requiring specifically formatted strings can be further processed into more refined types, which
+   *  both validates the formatting of the value and extracts meaning from it.
+   *
    *  @param name Name of attribute to be retrieved.
    *
    *  @return Attribute's value as a string wrapped in a [[Success]] if it is defined; or a [[Failure]] otherwise. The
@@ -87,11 +96,13 @@ sealed trait Manifest:
 
     // If the attribute value can be parsed, then return the result.
     try
-      Success(ZonedDateTime.parse(dt))
+      Success(ZonedDateTime.parse(dt).nn)
 
-      // Otherwise, if this is the parse exception, report that as a failure. Any other exceptions thrown above will be
-      // passed on and not returned.
+    // Handle exceptions arising. Any exceptions thrown above that are not handled here will be passed on and not
+    // returned.
     catch
+
+      // If this is the parse exception, report that as a failure.
       case pe: DateTimeParseException => Failure(pe)
 
   /** Try to retrieve specified manifest attribute as a version.
@@ -120,7 +131,8 @@ sealed trait Manifest:
    *
    *  `Inception-Timestamp: _timeformat_`
    *
-   *  where _timeformat_ is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]].
+   *  where `_timeformat_` is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]] and
+   *  identifies when the project was commenced.
    *
    *  @return Project inception date & time wrapped in a [[Success]], or a [[Failure]] containing the reason that the
    *  inception date & time could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
@@ -137,7 +149,8 @@ sealed trait Manifest:
    *
    *  `Build-Timestamp: _timeformat_`
    *
-   *  where _timeformat_ is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]].
+   *  where `_timeformat_` is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]] and
+   *  identifies when the archive was created.
    *
    *  @return Project build date & time wrapped in a [[Success]], or a [[Failure]] containing the reason that the build
    *  date & time could not be retrieved. Possible failures arw [[NoSuchAttributeException]] and
@@ -154,7 +167,7 @@ sealed trait Manifest:
    *
    *  @since 0.0
    */
-  final def title: Try[String] = attribute(Name.IMPLEMENTATION_TITLE)
+  final def title: Try[String] = attribute(Name.IMPLEMENTATION_TITLE.nn)
 
   /** Try to retrieve name of vendor publishing this application or library.
    *
@@ -165,7 +178,7 @@ sealed trait Manifest:
    *
    *  @since 0.0
    */
-  final def vendor: Try[String] = attribute(Name.IMPLEMENTATION_VENDOR)
+  final def vendor: Try[String] = attribute(Name.IMPLEMENTATION_VENDOR.nn)
 
   /** Try to retrieve the implementation version of this release of this application or library.
    *
@@ -174,7 +187,7 @@ sealed trait Manifest:
    *
    *  @since 0.0
    */
-  final def version: Try[Version] = versionAttribute(Name.IMPLEMENTATION_VERSION)
+  final def version: Try[Version] = versionAttribute(Name.IMPLEMENTATION_VERSION.nn)
 
   /** Try to retrieve the specification title of this application or library.
    *
@@ -183,7 +196,7 @@ sealed trait Manifest:
    *
    *  @since 0.0
    */
-  final def specTitle: Try[String] = attribute(Name.SPECIFICATION_TITLE)
+  final def specTitle: Try[String] = attribute(Name.SPECIFICATION_TITLE.nn)
 
   /** Try to retrieve name of vendor specifying this application or library.
    *
@@ -194,7 +207,7 @@ sealed trait Manifest:
    *
    *  @since 0.0
    */
-  final def specVendor: Try[String] = attribute(Name.SPECIFICATION_VENDOR)
+  final def specVendor: Try[String] = attribute(Name.SPECIFICATION_VENDOR.nn)
 
   /** Try to retrieve the specification version of this release of this application or library.
    *
@@ -203,7 +216,7 @@ sealed trait Manifest:
    *
    *  @since 0.0
    */
-  final def specVersion: Try[Version] = versionAttribute(Name.SPECIFICATION_VERSION)
+  final def specVersion: Try[Version] = versionAttribute(Name.SPECIFICATION_VERSION.nn)
 
 /** Provide _manifest_ information for a library or application, packaged as a _Java archive_ (_JAR_) file.
  *
@@ -235,9 +248,9 @@ extends Manifest:
 
     // Retrieve the specified attribute's value. If it is `null`, return the indicated failure. Otherwise wrap the
     // attribute value as a success.
-    val value = entries.getValue(name)
-    if value eq null then Failure(NoSuchAttributeException(name))
-    else util.Success(value)
+    val x = entries.getValue(name)
+    if x == null then Failure(NoSuchAttributeException(name))
+    else Success(x)
 
 /** Provide _manifest_ information for the _Java runtime environment_ (_JRE_).
  *
@@ -257,16 +270,16 @@ extends Manifest:
    */
   private val sysProp = new SystemProperties
 
-  /** Map of attribute names to corresponding system properties, wrapped in `[[Success]]`.
+  /** Map of attribute names to corresponding system properties, wrapped in [[Success]].
    */
   private val nameMap: Map[Name, Try[String]] = Map(
     Manifest.BuildTimestamp -> Success(sysProp("java.version.date")),
-    Name.IMPLEMENTATION_TITLE -> Success(sysProp("java.runtime.name")),
-    Name.IMPLEMENTATION_VENDOR -> Success(sysProp("java.vendor")),
-    Name.IMPLEMENTATION_VERSION -> Success(sysProp("java.version")),
-    Name.SPECIFICATION_TITLE -> Success(sysProp("java.specification.name")),
-    Name.SPECIFICATION_VENDOR -> Success(sysProp("java.specification.vendor")),
-    Name.SPECIFICATION_VERSION -> Success(sysProp("java.specification.version"))
+    Name.IMPLEMENTATION_TITLE.nn -> Success(sysProp("java.runtime.name")),
+    Name.IMPLEMENTATION_VENDOR.nn -> Success(sysProp("java.vendor")),
+    Name.IMPLEMENTATION_VERSION.nn -> Success(sysProp("java.version")),
+    Name.SPECIFICATION_TITLE.nn -> Success(sysProp("java.specification.name")),
+    Name.SPECIFICATION_VENDOR.nn -> Success(sysProp("java.specification.vendor")),
+    Name.SPECIFICATION_VERSION.nn -> Success(sysProp("java.specification.version"))
   )
 
   // Retrieve named attributes by looking at corresponding system properties instead; if there is no corresponding
@@ -319,7 +332,7 @@ object Manifest:
    *
    *  @since 0.0
    */
-  def apply(elementType: Class[_]): Manifest =
+  def apply(elementType: Class[?]): Manifest =
 
     // Retrieve and return the manifest associated with the specified type.
     manifestOf(elementType)

@@ -43,7 +43,7 @@ import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 
-/** Test harness for the `[[org.facsim.sim.engine.Simulation Simulation]]` class. */
+/** Test harness for the [[org.facsim.sim.engine.Simulation Simulation]] class. */
 final class SimulationTest
 extends AnyFunSpec
 with ScalaCheckPropertyChecks {

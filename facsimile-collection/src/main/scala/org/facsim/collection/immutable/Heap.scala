@@ -98,11 +98,11 @@ extends Equals {
 
   /** Find the minimum value stored in the heap, and remove it, resulting in a new heap.
    *
-   *  @note This is a more efficient operation than calling `[[minimum]]` then `[[removeMinimum]]`, if both operations
+   *  @note This is a more efficient operation than calling [[minimum]] then [[removeMinimum]], if both operations
    *  are required simultaneously.
    *
    *  @return Tuple whose first member is the minimum value of the heap, as determined by that element's ordering,
-   *  wrapped in `[[scala.Some Some]]`; or `[[scala.None None]]` if this heap is empty. The second tuple member is a new
+   *  wrapped in [[scala.Some Some]]; or [[scala.None None]] if this heap is empty. The second tuple member is a new
    *  heap with the minimum value removed (if the first member is defined), or the original empty heap otherwise.
    *
    *  @since 0.0
@@ -111,7 +111,7 @@ extends Equals {
 
   /** Remove the minimum value from the heap, resulting in a new heap.
    *
-   *  @return New heap with its minimum value removed, wrapped in `[[scala.Some Some]]`; or `[[scala.None None]]` if
+   *  @return New heap with its minimum value removed, wrapped in [[scala.Some Some]]; or [[scala.None None]] if
    *  this heap is empty.
    *
    *  @since 0..0

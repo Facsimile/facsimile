@@ -36,15 +36,14 @@
 //======================================================================================================================
 package org.facsim.util.log
 
-import akka.stream.{Materializer, QueueOfferResult}
-import akka.stream.scaladsl.Source
-import akka.{Done, NotUsed}
+import org.apache.pekko.{Done, NotUsed}
+import org.apache.pekko.stream.{Materializer, QueueOfferResult}
+import org.apache.pekko.stream.scaladsl.Source
 import org.facsim.util.stream.DataSource
 import org.facsim.util.NonPure
 import scala.concurrent.Future
-import scala.reflect.runtime.universe.TypeTag
 
-/** Create and manage a queued _Akka_ source for issuing log messages.
+/** Create and manage a queued _Pekko_ source for issuing log messages.
  *
  *  @note Because the created log stream is buffered, and because it utilizes back pressure to slow down the publisher
  *  (the process that is creating the log messages), applications may appear to hang once the buffer has filled&mdash;
@@ -56,19 +55,18 @@ import scala.reflect.runtime.universe.TypeTag
  *
  *  @param bufferSize Number of unprocessed log messages that can be stored in the buffer before back pressure is
  *  exerted. This value must be greater than zero and less than or equal to
- *  `[[org.facsim.util.stream.DataSource.MaxBufferSize MaxBufferSize]]`, or an `[[scala.IllegalArgumentException
- *  IllegalArgumentException]]` will be thrown.
+ *  [[DataSource.MaxBufferSize]], or an [[IllegalArgumentException]] will be thrown.
  *
  *  @param materializer Stream materializer to be utilized when creating the stream.
  *
- *  @throws IllegalArgumentException if `bufferSize` is less than 1 or greater than `[[DataSource.MaxBufferSize
- *  MaxBufferSize]]`.
+ *  @throws IllegalArgumentException if `bufferSize` is less than 1 or greater than [[DataSource.MaxBufferSize]].
  *
  *  @since 0.2
  */
-final class LogStream[A: TypeTag](bufferSize: Int = LogStream.defaultBufferSize)(implicit materializer: Materializer) {
+final class LogStream[A](bufferSize: Int = LogStream.DefaultBufferSize)(using materializer: Materializer):
 
-  /** Data source to be used for logging. */
+  /** Data source to be used for logging.
+   */
   private val ds = new DataSource[LogMessage[A]](bufferSize)
 
   /** Send a message instance to the stream.
@@ -78,12 +76,11 @@ final class LogStream[A: TypeTag](bufferSize: Int = LogStream.defaultBufferSize)
    *  @param message Message to be sent to the stream.
    *
    *  @return Future containing the result of the message logging operation. If successful, the result can be
-   *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if data was sent successfully,
-   *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the data was dropped due to a buffer failure, or
-   *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was closed before the data could be
-   *  processed. If the queue was closed before the data was sent, the result is a [[Failure]]
-   *  wrapping an `[[akka.stream.StreamDetachedException StreamDetachedException]]`. If a failure closed the queue, it
-   *  will respond with a `Failure` wrapping the exception that signaled failure of the queue.
+   *  [[QueueOfferResult.Enqueued]] if data was sent successfully, [[QueueOfferResult.Dropped]] if the data was dropped
+   *  due to a buffer failure, or [[QueueOfferResult.QueueClosed]] if the queue was closed before the data could be
+   *  processed. If the queue was closed before the data was sent, the result is a [[Failure]] wrapping an
+   *  [[StreamDetachedException]]. If a failure closed the queue, it will respond with a `Failure` wrapping the
+   *  exception that signaled failure of the queue.
    *
    *  @since 0.2
    */
@@ -106,17 +103,13 @@ final class LogStream[A: TypeTag](bufferSize: Int = LogStream.defaultBufferSize)
    */
   @NonPure
   def close(): Future[Done] = ds.complete()
-}
 
 /** Message stream companion object.
  *
  *  @since 0.2
  */
-object LogStream {
+object LogStream:
 
   /** Default log message buffer size.
-   *
-   *  @since 0.2
    */
-  val defaultBufferSize: Int = 100
-}
+  private val DefaultBufferSize: Int = 100

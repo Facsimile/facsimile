@@ -38,7 +38,7 @@ package org.facsim.util
 
 import scala.annotation.StaticAnnotation
 
-/** Attribute indicating that a decorated function is _non-pure_, and that is has _side-effects_.
+/** Attribute indicating that a decorated function is _non-pure_, and that it has _side-effects_.
  *
  *  Non-pure functions are only acceptable for logging purposes, and in other situations where any _shared mutable
  *  state_ is of no interest to the calling function.

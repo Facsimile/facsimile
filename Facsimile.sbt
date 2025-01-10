@@ -47,12 +47,12 @@ import xerial.sbt.Sonatype.sonatypeSettings
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
 //
 // IMPORTANT: When changing the primary Scala version, remember to update "./.travis.yml" to match.
-val AkkaVersion = "2.6.17"
 val CatsVersion = "2.10.0"
 val ParboiledVersion = "2.5.1"
+val PekkoVersion = "1.1.2"
 val PrimaryScalaVersion = "3.3.4"
-val ScalaCheckVersion = "1-17" // Formatted this way due to usage.
-val ScalaTestVersion = "3.2.17"
+val ScalaCheckVersion = "1-18" // Formatted this way due to usage.
+val ScalaTestVersion = "3.2.19"
 val ScoptVersion = "4.1.0"
 val SquantsVersion = "1.8.3"
 
@@ -377,9 +377,9 @@ lazy val sourceProjectSettings = Seq(
     "-unchecked",
     "-uniqid",
     "-Werror", // Fail compilation if there are any errors.
-    "-Wnonunit-statement",
+    //"-Wnonunit-statement",
     "-Wunused:all", // Enable all warnings about unused elements (imports, privates, etc.).
-    "-Wvalue-discard",
+    //"-Wvalue-discard", Disabled: too many false positives.
     "-Xverify-signatures",
     "-Yexplicit-nulls", // Don't allow reference types to be null.
     "-Ysafe-init",
@@ -468,24 +468,19 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
   // Utility library dependencies.
   libraryDependencies ++= Seq(
 
-    // Akka streams library & testkit (the latter scoped for testing only).
+
+    // Pekko streams library & testkit (the latter scoped for testing only).
     //
     // This is used for creating streams of data.
     //
-    // Akka streams additionally includes the following library dependencies:
-    //
-    // "com.typesafe" %% "config"
-    // "com.typesafe" %% "ssl-config-core"
-    // "com.typesafe.akka" %% "akka-core"
-    // "com.typesafe.akka" %% "akka-actor"
-    // "com.typesafe.akka" %% "akka-protobuf"
-    // "org.reactivestreams" %% "reactive-streams"
-    // "org.scala-lang.modules" %% "scala-java8-compat"
-    // "org.scala-lang.modules" %% "scala-parser-combinators"
-    "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
-    "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test,
+    // Pekko is a fork of Akka, which switched to a restrictive, proprietary license, thereby making it unsuitable for
+    // use by the Facsimile project.
+    "org.apache.pekko" %% "pekko-stream" % PekkoVersion,
+    "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test,
 
     // Parboiled is a parsing library, required for Facsimile's file parsing capabilities.
+    //
+    // Parboiled used to have a dependency upon the Shapeless library, but that has now been internalized.
     "org.parboiled" %% "parboiled" % ParboiledVersion,
   ),
 

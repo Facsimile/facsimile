@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2023, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -30,38 +30,17 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+package org.facsim.util.types
 
-//======================================================================================================================
-// Scala source file belonging to the org.facsim.util.test package.
-//======================================================================================================================
-package org.facsim.util.test
+import org.facsim.util.types.UniChars.UniChar
+import org.facsim.util.LibResource
 
-import akka.stream.Materializer
-import org.facsim.util.stream.DataSource
-import org.scalacheck.Gen
-
-/** Test harness trait for _Akka streams_.
- *
- *  Creates an _Akka_ actor system, and a stream materializer, executes the indicated test, then destroys the actor
- *  system.
+/** Thrown if an attempt to process an invalid code point exception is encountered.
+ * 
+ * @param uc UniCode character having an invalid
  */
-trait AkkaStreamsTestHarness
-extends AkkaTestHarness {
+final case class InvalidCodepointException(uc: UniChar)
+extends RuntimeException:
 
-  /** Generator for invalid buffer size numbers. */
-  // TEMPORARY NOTE:
-  //
-  // Scalastyle/Scalariform cannot parse lists that terminate with a comma, so avoid doing that for now.
-  //
-  // #SCALASTYLE_BUG
-  protected final val invalidBufferSizes = Gen.oneOf(
-    Generator.nonPosInt,
-    Gen.choose(DataSource.MaxBufferSize + 1, Int.MaxValue)
-  )
-
-  /** Generator for valid buffer size numbers. */
-  protected final val validBufferSizes = Gen.choose(1, DataSource.MaxBufferSize)
-
-  /** Implicit actor materializer for default stream materialization. */
-  protected implicit final val materializer: Materializer = Materializer.matFromSystem
-}
+  // Override to report the exception's cause.
+  override def getLocalizedMessage: String = LibResource("types.InvalidCodepoint", uc.codepoint)

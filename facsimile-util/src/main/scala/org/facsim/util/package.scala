@@ -41,17 +41,12 @@ package org.facsim.util
 import java.io.File
 import java.net.{URI, URL}
 import java.time.ZonedDateTime
-import java.util.jar.JarFile
 import java.util.{Date, GregorianCalendar}
+import java.util.jar.JarFile
 import scala.annotation.elidable
-import scala.language.experimental.macros
 import scala.language.implicitConversions
-import scala.reflect.macros.blackbox.Context
+import scala.quoted.{Expr, Quotes, Type}
 import scala.util.matching.Regex
-
-/** Regular expression to match class argument name.
- */
-private val ClassArgRE = """^\w+\.this\.(\w+)$""".r
 
 /** Regular expression for identifying periods in package path names.
  */
@@ -73,7 +68,7 @@ private val PeriodRegEx = """(\.)""".r
  *  @note Such URLs are reported for types packaged as _JAR_ files; this may not be the case for types packages in other
  *  formats.
  */
-private val JarUriRegEx = """^jar\:(.+)\!.+$""".r
+private val JarUriRegEx = """^jar:(.+)!.+$""".r
 
 /** Regular expression for extracting a _Java module name_ from a _URL_.
  *
@@ -90,19 +85,19 @@ private val JarUriRegEx = """^jar\:(.+)\!.+$""".r
  *  @note Such URLs are reported for types packaged as _JIMAGE_ files; this may not be the case for types packaged in
  *  other formats.
  */
-private val JrtModuleNameRegEx = """^jrt\:/(java\.[a-z_]+)/.+$""".r
+private val JrtModuleNameRegEx = """^jrt:/(java\.[a-z_]+)/.+$""".r
 
 /** File separator.
  */
-private[facsim] val FS: String = File.separator
+private[facsim] val FS: String = File.separator.nn
 
 /** _JAR_ file class file separator.
  */
 private[facsim] val JFS: String = "/"
 
-/** Path separator
+/** Path separator.
  */
-private[facsim] val PS: String = File.pathSeparator
+private[facsim] val PS: String = File.pathSeparator.nn
 
 /** Line separator.
  */
@@ -116,15 +111,23 @@ private[facsim] val SQ: String = "'"
  */
 private[facsim] val DQ: String = "\""
 
-/** Comparison return value implying less than.
+/** Comparison return value signaling _less than_.
+ *
+ *  @note This value should not be compared with the results of comparison functions in general, since _less than_
+ *  comparison results can be signaled by any negative value; instead, this value should only be used as a return value
+ *  indicating a _less than_ comparison result.
  */
 private[facsim] val CompareLessThan = -1
 
-/** Comparison return value implying equality.
+/** Comparison return value signaling equality.
  */
 private[facsim] val CompareEqualTo = 0
 
-/** Comparison return value implying greater than.
+/** Comparison return value signaling greater than.
+ *
+ *  @note This value should not be compared with the results of comparison functions in general, since _greater than_
+ *  comparison results can be signaled by any positive value; instead, this value should only be used as a return value
+ *  indicating a _greater than_ comparison result.
  */
 private[facsim] val CompareGreaterThan = 1
 
@@ -144,32 +147,27 @@ private[facsim] val RequireValidKey = "requireValid"
  */
 private[facsim] val RequireFiniteKey = "requireFinite"
 
-/** Implicit conversion of a `[[java.time.ZonedDateTime ZonedDateTime]]` to a `[[java.util.Date Date]]`.
+/** Implicit conversion of a [[ZonedDateTime]] to a [[Date]].
  *
- *  Conversion between pre-_Java 1.8_ `java.util` time classes (such as `Date`, `[[java.util.GregorianCalendar
- *  GregorianCalendar]]`, etc.) and the new post-_Java 1.8_ `java.time` time classes (`[[java.time.Instant Instant]]`,
- *  `ZonedDateTime`, etc) is cumbersome at best. The former could be dispensed with completely if it wasn't for the fact
- *  that `[[java.text.MessageFormat MessageFormat]]` currently supports only the `Date` class. This function makes
- *  working with the new time classes, and text message formatting, a little more straightforward.
- *
- *  @param date Date, expressed as a `ZonedDateTime` to be converted.
- *
- *  @return `date` expressed as a `Date`.
- *
- *  @throws scala.NullPointerException if `date` is null.
+ *  Conversion between pre-_Java 1.8_ `java.util` time classes (such as `Date`, [[GregorianCalendar]], etc.) and the new
+ *  post-_Java 1.8_ `java.time` time classes ([[Instant]], `ZonedDateTime`, etc) is cumbersome at best. The former could
+ *  be dispensed with completely if it wasn't for the fact that [[MessageFormat]] currently supports only the `Date`
+ *  class. This function makes working with the new time classes, and text message formatting, a little more
+ *  straightforward.
  *
  *  @throws scala.IllegalArgumentException if `date` is too large to represent as a `GregorianCalendar` value.
  */
-private[facsim] given def toDate(date: ZonedDateTime): Date = GregorianCalendar.from(date).getTime
+private[facsim] given toDate: Conversion[ZonedDateTime, Date] =
+  (date: ZonedDateTime) => GregorianCalendar.from(date).nn.getTime.nn
 
 /** Obtain the resource _URL_ associated with a class's type information.
  *
  *  @param elementType Element type instance for which a resource _URL_ will be sought.
  *
- *  @return Resource _URL_ associated with `elementType` wrapped in `[[scala.Some Some]]`, or `[[scala.None None]]` if
- *  the element type's resource URL could not be identified.
+ *  @return Resource _URL_ associated with `elementType` wrapped in [[Some]], or [[None]] if the element type's resource
+ *  _URL_ could not be identified.
  */
-private[util] def resourceUrl(elementType: Class[_]): Option[URL] =
+private[util] def resourceUrl(elementType: Class[?]): Option[URL] =
 
   // (BTW, this is a rather convoluted process. If you know of a better (i.e. simpler or quicker) approach, feel free to
   // implement it...)
@@ -178,16 +176,15 @@ private[util] def resourceUrl(elementType: Class[_]): Option[URL] =
   // replace all periods with slashes and add a ".class" extension.
   //
   // NOTE: DO NOT use the system-dependent separator character, as only slashes (not backslashes, as on Windows) are
-  // acceptaed. We quote the replacement string (the slash) just in case it contains characters that require quoting.
-  //
-  // Note: The Class[T].getSimpleName method crashes for some Scala elements. This is a known bug. Refer to
-  // [[https://issues.scala-lang.org/browse/SI-2034 Scala Issue SI-2034]] for further details.
-  val name = elementType.getName
-  val path = JFS + PeriodRegEx.replaceAllIn(name, Regex.quoteReplacement(JFS)) + ".class"
+  // accepted. We quote the replacement string (the slash) just in case it contains characters that require quoting.
+  val name = elementType.getName.nn
+  val correctedName = PeriodRegEx.replaceAllIn(name, Regex.quoteReplacement(JFS))
+  val path = s"$JFS$correctedName.class"
 
-  // Now retrieve the resource URL for this element path and wrap it in an Option
-  Option(elementType.getResource(path))
-.ensuring(_ ne null)
+  // Now retrieve the resource URL for this element path and wrap it in an Option.
+  val pathRsc = elementType.getResource(path)
+  if pathRsc == null then None
+  else Some(pathRsc.nn)
 
 /** Obtain the manifest associated with the specified element type.
  *
@@ -195,7 +192,7 @@ private[util] def resourceUrl(elementType: Class[_]): Option[URL] =
  *
  *  @return Manifest associated with `elementType`.
  */
-private[util] def manifestOf(elementType: Class[_]): Manifest =
+private[util] def manifestOf(elementType: Class[?]): Manifest =
 
   // If a URL could not be identified, return the null manifest. Otherwise, process the resulting URL.
   resourceUrl(elementType).fold[Manifest](NullManifest): url =>
@@ -218,7 +215,7 @@ private[util] def manifestOf(elementType: Class[_]): Manifest =
 
         // If the JAR file has no manifest, then use the null manifest, otherwise construct a new JARManifest from the
         // JAR manifest.
-        jManifest.fold[Manifest](NullManifest)(new JARManifest(_))
+        jManifest.fold[Manifest](NullManifest)(m => new JARManifest(m.nn))
 
       // If the URL identifies a class belonging to a module in a Java image file (JIMAGE), then the URL will be of the
       // (String) form:
@@ -237,58 +234,34 @@ private[util] def manifestOf(elementType: Class[_]): Manifest =
       // If there's no match on the URL, report a null manifest instead.
       case _ => NullManifest
 
-/** Assertion that a value is not null.
+/** Assertion that a possibly `null` expression is not actually `null`.
  *
- *  Code using this assertion is only generated if the `-Xelide-below` Scala compiler option is at least ASSERTION.
+ *  Code using this assertion is only generated if the `-Xelide-below` _Scala_ compiler option is at least `ASSERTION`.
  *
- *  @note Assertions should only be used to verify internal state; they must *never* be used to verify external state
- *  (use the require methods to verify external state instead).
+ *  @note Assertions should only be used to verify internal state; they must _never_ be used to verify external state
+ *  (use the [[require()]] methods to verify external state instead), since assertions will not execute in production
+ *  code.
  *
- *  @param arg Nullable argument whose value is to be compared to `null`.
+ *  @tparam T Type of expression if not `null`.
  *
- *  @throws java.lang.AssertionError if `arg` is `null`
+ *  @param expr Nullable expression whose value is to be compared to `null`.
+ *
+ *  @throws java.lang.AssertionError if `expr` is `null`.
  *
  *  @since 0.0
  */
 @elidable(elidable.ASSERTION)
-def assertNonNull(arg: AnyRef | Null): Unit = macro assertNonNullImpl
-
-/** Require that argument value is non-`null`.
- *
- *  Throw a `[[scala.NullPointerException NullPointerException]]` if supplied argument value is `null`.
- *
- *  Normally, a `NullPointerException` will be thrown by the _Java_ virtual machine (_JVM_) if an attempt is made to
- *  dereference a `null` pointer. However, if a function takes an object reference argument and that argument is not
- *  dereferenced until after the function has returned, then the function must verify that the reference is non-`null`
- *  as one of its preconditions; this function makes such precondition verification simpler.
- *
- *  Furthermore, even if the _JVM_ can be relied upon to throw this exception, performing this verification explicitly
- *  is regarded as good practice. One reason is that exceptions thrown by the _JVM_ provide limited explanation to the
- *  user as to their cause; this function provides an explanation automatically.
- *
- *  @note This is a non-macro version of `[[org.facsim.util.requireNonNull(AnyRef)* requireNonNull(AnRef)]]` for use
- *  within the _facsimile-util_ project.
- *
- *  @param arg Nullable argument whose value is to be compared to `null`.
- *
- *  @param name Name of the argument whose value is being tested.
- *
- *  @throws scala.NullPointerException if `arg` is `null`.
- */
-@inline
-private[util] def requireNonNullFn(arg: AnyRef | Null, name: => String): Unit =
-  if arg eq null then throw new NullPointerException(LibResource(RequireNonNullKey, name))
+inline def assertNonNull[T](inline expr: T | Null): Unit = ${assertNonNullImpl('expr)}
 
 /** Require that argument value is valid.
  *
- *  Throw a `[[scala.IllegalArgumentException IllegalArgumentException]]` if supplied parameter value is invalid.
+ *  Throw an [[IllegalArgumentException]] if supplied parameter value is invalid.
  *
- *  @note This function supersedes the `[[scala.Predef Predef]]` `require` methods.
+ *  @note This function supersedes the [[require()]] methods.
  *
  *  @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
  *
- *  @note This is a non-macro version of `[[org.facsim.util.requireValid(Any,Boolean)* requireValid(Any,Boolean)]]` for
- *  use within the _facsimile-util_ project.
+ *  @note This is a non-macro version of [[requireValid()]] for use within the _facsimile-util_ project.
  *
  *  @tparam T Type of argument value.
  *
@@ -299,15 +272,14 @@ private[util] def requireNonNullFn(arg: AnyRef | Null, name: => String): Unit =
  *
  *  @param name Name of the argument being tested.
  *
- *  @throws scala.IllegalArgumentException if `isValid` is `false`.
+ *  @throws IllegalArgumentException if `isValid` is `false`.
  */
-@inline
 private[util] def requireValidFn[T](arg: T, isValid: T => Boolean, name: => String): Unit =
   if !isValid(arg) then throw new IllegalArgumentException(LibResource(RequireValidKey, name, arg))
 
 /** Require that argument value is non-`null`.
  *
- *  Throw a `[[scala.NullPointerException NullPointerException]]` if supplied argument value is `null`.
+ *  Throw a [[NullPointerException]] if supplied argument value is `null`.
  *
  *  Normally, a `NullPointerException` will be thrown by the _Java_ virtual machine (_JVM_) if an attempt is made to
  *  dereference a `null` pointer. However, if a function takes an object reference argument and that argument is not
@@ -318,141 +290,91 @@ private[util] def requireValidFn[T](arg: T, isValid: T => Boolean, name: => Stri
  *  is regarded as good practice. One reason is that exceptions thrown by the _JVM_ provide limited explanation to the
  *  user as to their cause; this function provides an explanation automatically.
  *
+ *  @tparam T Type for non-null argument values.
+ *
  *  @param arg Nullable argument whose value is to be compared to `null`.
  *
- *  @throws scala.NullPointerException if `arg` is `null`.
+ *  @throws NullPointerException if `arg` is `null`.
  *
  *  @since 0.0
  */
-def requireNonNull(arg: AnyRef | Null): Unit = macro requireNonNullImpl
+inline def requireNonNull[T](inline arg: T | Null): Unit = ${requireNonNullImpl('arg)}
 
 /** Require that argument value is valid.
  *
- *  Throw a `[[scala.IllegalArgumentException IllegalArgumentException]]` if supplied parameter value is invalid.
+ *  Throw an [[IllegalArgumentException]] if supplied parameter value is invalid.
  *
- *  @note This function supersedes the `[[scala.Predef Predef]]` `require` methods.
+ *  @note This function supersedes the [[require()]] methods.
  *
- *  @note Tests for non-`null` argument values should be verified by the `[[org.facsim.util.requireNonNull(AnyRef)*
- *  requireNonNull(AnyRef)]]` function.
+ *  @note Tests for non-`null` argument values should be verified by the [[requireNonNull()]] function.
+ *
+ *  @tparam T Type of value represented by the argument.
  *
  *  @param arg Argument being verified.
  *
  *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
  *  merely returns; if `false` an `IllegalArgumentException` is raised.
  *
- *  @throws scala.IllegalArgumentException if `isValid` is `false`.
+ *  @throws IllegalArgumentException if `isValid` is `false`.
  *
  *  @since 0.0
  */
-def requireValid(arg: Any, isValid: Boolean): Unit = macro requireValidImpl
+inline def requireValid[T](inline arg: T, inline isValid: Boolean): Unit = ${requireValidImpl('arg, 'isValid)}
 
 /** Require a finite double value.
  *
- *  Double arguments that equate to `NaN` (_not a number_) or _infinity_ will result in a
- *  `[[scala.IllegalArgumentException IllegalArgumentException]]` being thrown.
+ *  Double arguments that equate to `NaN` (_not a number_) or _infinity_ will result in an [[IllegalArgumentException]]
+ *  being thrown.
  *
  *  @param arg Argument whose value is being validated.
  *
- *  @throws scala.IllegalArgumentException if `arg` does not have a finite value.
+ *  @throws IllegalArgumentException if `arg` does not have a finite value.
  *
  *  @since 0.0
  */
-def requireFinite(arg: Double): Unit = macro requireFiniteImpl
+inline def requireFinite(inline arg: Double): Unit = ${requireFiniteImpl('arg)}
 
-/** Clean argument names.
+/** Implementation of the [[assertNonNull())]] macro.
  *
- *  Class argument names are prefixed by "{ClassName}.this." (where "{ClassName}" is the name of the class to which the
- *  argument belongs), which creates confusion when identifying failing arguments, and testing that failed argument
- *  messages match expected messages. This function removes class argument prefixes so that the raw argument name is
- *  returned.
- *
- *  @param arg A class or method argument to be cleaned.
- *
- *  @return Cleaned argument name, matching the value expected by the user.
- *
- *  @since 0.0
- */
-def cleanArgName(arg: String): String = arg match
-
-  // If this is a class argument, remove the prefix and return the actual name of the argument.
-  case ClassArgRE(classArg) => classArg
-
-  // Otherwise, just return the value supplied.
-  case basicArg: String => basicArg
-
-/** Convert an expression into a string expression.
- *
- *  @param c AST context for the conversion.
- *
- *  @param arg Expression to be converted.
- *
- *  @return String expression capturing contents of original expression.
- */
-private def exprAsString(c: Context)(arg: c.Expr[Any]): c.Expr[String] =
-  import c.universe._
-  c.Expr[String](Literal(Constant(show(arg.tree))))
-
-/** IndentationCheckerProvides implementation of the `[[org.facsim.util.assertNonNull(AnyRef)* assertNonNull(AnyRef)]]`
- *  macro.
- *
- *  @param c Abstract syntax tree (AST) context for this macro definition.
- *
- *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then an
- *  `[[java.lang.AssertionError AssertionError]]` is thrown by the macro implementation, together with the name of the
- *  failed argument.
+ *  @param expr Possibly `null` expression to be asserted as non-`null`; if this value is `null`, then an
+ *  [[AssertionError]] is thrown by the macro implementation, together with failed expression.
  *
  *  @return Implementation of this instance of the `assertNonNull` macro.
  *
  *  @since 0.0
  */
-def assertNonNullImpl(c: Context)(arg: c.Expr[AnyRef | Null]): c.Expr[Unit] =
+private def assertNonNullImpl[T: Type](expr: Expr[T | Null])(using Quotes): Expr[Unit] = '{
 
-  // Convert the argument into a string that represents the expression that was passed to the requireNonNull macro -
-  // we'll output that as part of the exception.
-  import c.universe._
-  val argString = exprAsString(c)(arg)
+  // Text whether the expression is null. If it is, then throw an assertion exception with the failed expression
+  // as a string.
+  if $expr == null then
+    val exprAsString = ${Expr(expr.show)}
+    throw new AssertionError(LibResource(AssertNonNullKey, exprAsString), null)
+}
 
-  // Generate the AST to be substituted for the macro reference.
-  //
-  // If the argument evaluates to be null, throw an AssertionError with some useful information.
-  reify:
-
-    if arg.splice eq null then
-      throw new AssertionError(LibResource(AssertNonNullKey, cleanArgName(argString.splice)), null)
-
-/** Provides implementation of the `[[org.facsim.util.requireNonNull(AnyRef)* requireNonNull(AnyRef)]]` macro.
+/** Implementation of the [[requireNonNull()]] macro.
  *
- *  @param c Abstract syntax tree (AST) context for this macro definition.
+ *  @tparam T Type of non-null values of the argument.
  *
  *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
- *  `[[scala.NullPointerException NullPointerException]]` is thrown by the macro implementation, together with the name
- *  of the failed argument.
+ *  [[NullPointerException]] is thrown by the macro implementation, together with the name of the failed argument.
  *
  *  @return Implementation of this instance of the `requireNonNull` macro.
  *
  *  @since 0.0
  */
-def requireNonNullImpl(c: Context)(arg: c.Expr[AnyRef | Null]): c.Expr[Unit] = {
+def requireNonNullImpl[T: Type](arg: Expr[T | Null])(using Quotes): Expr[Unit] = '{
 
-  // Convert the argument into a string that represents the expression that was passed to the requireNonNull macro -
-  // we'll output that as part of the exception.
-  import c.universe._
-  val argString = exprAsString(c)(arg)
+  // If the argument is null, then throw the NullPointerException.
+  if $arg == null then
+    val argAsString = ${Expr(arg.show)}
+    throw new NullPointerException(LibResource(RequireNonNullKey, argAsString))
+}
 
-  // Generate the AST to be substituted for the macro reference.
-  //
-  // If the argument evaluates to be null, throw a NullPointerException with some useful information.
-  reify:
-    if arg.splice eq null then
-      throw new NullPointerException(LibResource(RequireNonNullKey, cleanArgName(argString.splice)))
-
-/** Provides implementation of the `[[org.facsim.util.requireValid(Any,Boolean)* requireValid(Any,Boolean)]]` macro.
+/** Provides implementation of the [[requireValid()]] macro.
  *
- *  @param c Abstract syntax tree (AST) context for this macro definition.
- *
- *  @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then a
- *  `[[scala.IllegalArgumentException IllegalArgumentException]]` is thrown by the macro implementation, together with
- *  the name of the failed argument.
+ *  @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then an
+ *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
  *
  *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
  *  merely returns; if `false` an `IllegalArgumentException` is raised.
@@ -461,40 +383,29 @@ def requireNonNullImpl(c: Context)(arg: c.Expr[AnyRef | Null]): c.Expr[Unit] = {
  *
  *  @since 0.0
  */
-def requireValidImpl(c: Context)(arg: c.Expr[Any], isValid: c.Expr[Boolean]): c.Expr[Unit] =
+def requireValidImpl[T: Type](arg: Expr[T], isValid: Expr[Boolean])(using Quotes): Expr[Unit] = '{
 
-  // Convert the arguments to strings.
-  import c.universe._
-  val argString = exprAsString(c)(arg)
+  // Evaluate the argument to determine if it is valid. If it is not, then throw the exception.
+  if !${isValid} then
+    val argValue = $arg
+    val argAsString = ${Expr(arg.show)}
+    throw new IllegalArgumentException(LibResource(RequireValidKey, argAsString, argValue.toString))
+}
 
-  // Generate the AST to be substituted for the macro reference.
-  //
-  // If the argument is deemed invalid, then throw an IllegalArgumentException with some useful information.
-  reify:
-    if(!isValid.splice) throw new IllegalArgumentException(LibResource(RequireValidKey,
-    cleanArgName(argString.splice), arg.splice))
-
-/** Provides implementation of the `[[org.facsim.util.requireFinite(Double)* requireFinite(Double)]]` macro.
+/** Provides implementation of the [[requireFinite()]] macro.
  *
- *  @param c Abstract syntax tree (AST) context for this macro definition.
- *
- *  @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then a
- *  `[[scala.IllegalArgumentException IllegalArgumentException]]` is thrown by the macro implementation, together with
- *  the name of the failed argument.
+ *  @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then an
+ *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
  *
  *  @return Implementation of this instance of the `requireFinite` macro.
  *
  *  @since 0.0
  */
-def requireFiniteImpl(c: Context)(arg: c.Expr[Double]): c.Expr[Unit] =
+def requireFiniteImpl(arg: Expr[Double])(using Quotes): Expr[Unit] = '{
 
-  // Convert the argument to a string.
-  import c.universe._
-  val argString = exprAsString(c)(arg)
-
-  // Generate the AST to be substituted for the macro reference.
-  //
   // Determine whether the value is finite; if not, then throw an exception.
-  reify:
-    if arg.splice.isNaN || arg.splice.isInfinite then
-      throw new IllegalArgumentException(LibResource(RequireFiniteKey, cleanArgName(argString.splice), arg.splice))
+  val argResult = $arg
+  if argResult.isNaN || argResult.isInfinite then
+    val argAsString = ${Expr(arg.show)}
+    throw new IllegalArgumentException(LibResource(RequireFiniteKey, argAsString, argResult))
+}

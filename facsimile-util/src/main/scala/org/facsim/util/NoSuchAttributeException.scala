@@ -55,4 +55,4 @@ extends NoSuchElementException:
    *
    *  @since 0.0
    */
-  override def getMessage: String = LibResource("NoSuchAttribute", name.toString)
+  override def getLocalizedMessage: String = LibResource("NoSuchAttribute", name.toString)

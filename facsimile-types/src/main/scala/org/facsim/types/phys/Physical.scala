@@ -44,9 +44,9 @@ import spire.algebra.Order
 /** Abstract base class for all _Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical quantity]]_
  *  elements.
  *
- *  Physical quantity types include specific types (such as `[[org.facsim.types.phys.Angle Angle]]`,
- *  `[[org.facsim.types.phys.Length Length]]`, `[[org.facsim.types.phys.Time Time]]`, etc.), as well as a
- *  `[[org.facsim.types.phys.Generic Generic]]` convenience type for the result of multiplication and division between
+ *  Physical quantity types include specific types (such as [[org.facsim.types.phys.Angle Angle]],
+ *  [[org.facsim.types.phys.Length Length]], [[org.facsim.types.phys.Time Time]], etc.), as well as a
+ *  [[org.facsim.types.phys.Generic Generic]] convenience type for the result of multiplication and division between
  *  the specific types. Each of these types has measurement values and units in which those measurements are expressed.
  *
  *  @see [[http://en.wikipedia.org/wiki/Physical_quantity Physical quantity]] on _Wikipedia_.
@@ -107,7 +107,7 @@ abstract class Physical {
    *  SI]] units_.
    *
    *  @note This function is not public because it introduces the potential for unit confusion. Measurements can only be
-   *  manipulated by users as `[[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]]` subclass instances,
+   *  manipulated by users as [[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]] subclass instances,
    *  not as raw values. Allowing access to raw values encourages by-passing of the unit protection logic provided by
    *  these measurement classes.
    *
@@ -124,8 +124,8 @@ abstract class Physical {
    *
    *  @note This function is not public for two reasons: firstly, because it is a partial function that is defined only
    *  if `value` is a valid _SI_ unit measurements; secondly, because it introduces the potential for unit confusion.
-   *  Measurements can only be manipulated by users as `[[org.facsim.types.phys.Physical.PhysicalMeasure
-   *  PhysicalMeasure]]` subclass instances, not as raw values. Allowing access to raw values encourages by-passing of
+   *  Measurements can only be manipulated by users as [[org.facsim.types.phys.Physical.PhysicalMeasure
+   *  PhysicalMeasure]] subclass instances, not as raw values. Allowing access to raw values encourages by-passing of
    *  the unit protection logic provided by these measurement classes.
    *
    *  @param value Value of the measurement expressed in _SI_ units.
@@ -323,7 +323,7 @@ abstract class Physical {
     /** Calculate the absolute value of the measurement.
      *
      *  @note The absolute value is based upon the measurement in _SI_ units. For measurement unit families that do
-     *  not have a common origin (such as `[[org.facsim.types.Temperature Temperature]]`), this can result in
+     *  not have a common origin (such as [[org.facsim.types.Temperature Temperature]]), this can result in
      *  unintuitive results. For example, the absolute value of -5°C is -5°C, not 5°C, due to the fact that -5°C is
      *  268.15K, whose absolute value is unchanged.
      *
@@ -413,7 +413,7 @@ abstract class Physical {
   /** Abstract base class for all physical quantity measurement units.
    *
    *  Each concrete subclass represents a single _physical quantity unit family_. For example, time units are
-   *  represented by the `[[org.facsim.types.phys.Time.TimeUnits TimeUnits]]` subclass of `PhysicalUnits`.
+   *  represented by the [[org.facsim.types.phys.Time.TimeUnits TimeUnits]] subclass of `PhysicalUnits`.
    *
    *  Each unit family supports one or more _units of types_. For example, time quantities may be measured in
    *  _seconds_, _minutes_, _hours_, etc. These units are represented by instances of the concrete `PhysicalUnits`
@@ -421,7 +421,7 @@ abstract class Physical {
    *  _[[http://en.wikipedia.org/wiki/SI International System of Units]]_&mdash;commonly abbreviated to _SI Units_.
    *
    *  These standard units are used by _Facsimile_ internally to store measurement quantities (as immutable instances
-   *  of `[[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]]` subclasses, with each subclass
+   *  of [[org.facsim.types.phys.Physical.PhysicalMeasure PhysicalMeasure]] subclasses, with each subclass
    *  corresponding to each measurement type.) For example, the _SI_ standard unit of types for _time_ is the
    *  _second_; consequently, _Facsimile_ stores and calculates all time quantities, internally, in _seconds_.
    *  Adoption of the _SI_ standard units simplifies the implementation of physics calculations within _Facsimile_

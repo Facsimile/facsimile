@@ -36,26 +36,26 @@
 //======================================================================================================================
 package org.facsim.util.stream.test
 
-import akka.stream.scaladsl.{Flow, Keep, Sink}
-import akka.stream.QueueOfferResult.{Enqueued, QueueClosed}
-import akka.stream.StreamDetachedException
+import org.apache.pekko.stream.QueueOfferResult.{Enqueued, QueueClosed}
+import org.apache.pekko.stream.StreamDetachedException
+import org.apache.pekko.stream.scaladsl.{Flow, Keep, Sink}
 import org.facsim.util.stream.DataSource
-import org.facsim.util.test.{AkkaStreamsTestHarness, Generator}
-import org.facsim.util.test.implicits._
+import org.facsim.util.test.{PekkoStreamsTestHarness, Generator}
 import org.facsim.util.LibResource
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.util.{Failure, Success}
 
 // Disable test-problematic Scalastyle checkers.
 
-/** Test harness for the [[org.facsim.util.stream.DataSource]] class. */
+/** Test harness for the [[DataSource]] class.
+ */
 final class DataSourceTest
-extends AkkaStreamsTestHarness
-with ScalaCheckPropertyChecks {
+extends PekkoStreamsTestHarness, ScalaCheckPropertyChecks:
 
-  /** Timeout for awaiting the result of a future. */
+  /** Timeout for awaiting the result of a future.
+   */
   val futureTimeout: FiniteDuration = 5.seconds
 
   /** Expected illegal argument exception message.
@@ -64,10 +64,9 @@ with ScalaCheckPropertyChecks {
    *
    *  @return Expected error message for the invalid buffer size.
    */
-  def expectedBufferSizeExceptionMessage(bufferSize: Int): String = {
+  def expectedBufferSizeExceptionMessage(bufferSize: Int): String =
     val errorMsg = LibResource("stream.DataSourceInvalidBufferSize", bufferSize, DataSource.MaxBufferSize)
     s"requirement failed: $errorMsg"
-  }
 
   /** Create a flow for directing a source of strings into a sequence of strings.
    *
@@ -79,63 +78,52 @@ with ScalaCheckPropertyChecks {
   def seqSink(): Sink[String, Future[Seq[String]]] = Flow[String].toMat(Sink.seq)(Keep.right)
 
   // Test the DataSource class.
-  describe("org.facsim.util.stream.DataSource[A]]") {
+  describe("org.facsim.util.stream.DataSource[A]]"):
 
     // Verify the constructor fails for invalid buffer sizes.
-    describe(".ctor(Int)(ActorMaterializer)") {
+    describe(".ctor(Int)(ActorMaterializer)"):
 
       // Test invalid construction.
-      it("must throw an IllegalArgumentException if called with an invalid buffer size") {
-        forAll(invalidBufferSizes) {bufferSize =>
-          try {
+      it("must throw an IllegalArgumentException if called with an invalid buffer size"):
+        forAll(invalidBufferSizes): bufferSize =>
+          try
 
             // Attempt to create the data source with this buffer size: we should get an exception.
             new DataSource[String](bufferSize)
 
             // If we get this far, we didn't get an exception, so the test failed.
             fail("Data source with invalid buffer size did not throw an exception")
-          }
-          catch {
+          catch
 
             // Check the exception caught.
-            case e: Throwable => {
+            case e: Throwable =>
 
               // Verify that this is an IllegalArgumentException.
               assert(e.getClass === classOf[IllegalArgumentException])
 
               // Verify that the message is the one expected.
               assert(e.getMessage === expectedBufferSizeExceptionMessage(bufferSize))
-            }
-          }
-        }
-      }
 
       // Test valid construction.
-      it("must create a valid data source if supplied a valid buffer size") {
-        forAll(validBufferSizes) {bufferSize =>
+      it("must create a valid data source if supplied a valid buffer size")
+        forAll(validBufferSizes): bufferSize =>
           new DataSource[String](bufferSize)
-        }
-      }
-    }
 
     // Test that a source is produced OK.
-    describe(".source") {
+    describe(".source"):
 
       // Source must be available for sending upon creation.
-      it("must report a valid source") {
-        forAll(validBufferSizes) {bufferSize =>
+      it("must report a valid source"):
+        forAll(validBufferSizes): bufferSize =>
           val ds = new DataSource[String](bufferSize)
           assert(ds.source !== null)
-        }
-      }
-    }
 
     // Test that sent data is received OK.
-    describe(".send(A)") {
+    describe(".send(A)"):
 
       // Verify that we can send data, and have it show up in a sink.
-      it("must send data to an uncompleted stream") {
-        forAll(validBufferSizes, Generator.unicodeStringListNonEmpty) {(bufferSize, data) =>
+      it("must send data to an uncompleted stream"):
+        forAll(validBufferSizes, Generator.unicodeStringListNonEmpty): (bufferSize, data) =>
 
           // Create the data source.
           val ds = new DataSource[String](bufferSize)
@@ -147,9 +135,8 @@ with ScalaCheckPropertyChecks {
           val dataFutures = data.map(s => ds.send(s))
 
           // Verify that all of the data is sent.
-          dataFutures.foreach {df =>
+          dataFutures.foreach: df =>
             assert(Await.result(df, futureTimeout) === Enqueued)
-          }
 
           // Complete the stream.
           val streamCompleted = ds.complete()
@@ -157,12 +144,10 @@ with ScalaCheckPropertyChecks {
 
           // Verify that the result is the original sequence of data.
           assert(Await.result(futureData, futureTimeout) === data)
-        }
-      }
 
       // Verify that data is rejected after the stream has been completed successfully.
-      it("must fail to send data to a completed stream") {
-        forAll(validBufferSizes, Generator.unicodeString) {(bufferSize, data) =>
+      it("must fail to send data to a completed stream"):
+        forAll(validBufferSizes, Generator.unicodeString): (bufferSize, data) =>
 
           // Create the data source.
           val ds = new DataSource[String](bufferSize)
@@ -178,19 +163,16 @@ with ScalaCheckPropertyChecks {
           // StreamDetachedException.
           val df = ds.send(data)
           Await.ready(df, futureTimeout)
-          df.value.get match {
+          df.value.get match
             case Success(r) => assert(r === QueueClosed)
             case Failure(e) => assert(e.getClass === classOf[StreamDetachedException])
-          }
 
           // Verify that we didn't receive any data.
           assert(Await.result(futureData, futureTimeout) === Nil)
-        }
-      }
 
       // Verify that data is rejected after the stream has been completed unsuccessfully.
-      it("must fail to send data to a failed stream") {
-        forAll(validBufferSizes, Generator.unicodeString) {(bufferSize, data) =>
+      it("must fail to send data to a failed stream"):
+        forAll(validBufferSizes, Generator.unicodeString): (bufferSize, data) =>
 
           // Create the data source.
           val ds = new DataSource[String](bufferSize)
@@ -207,19 +189,10 @@ with ScalaCheckPropertyChecks {
           // exception used to close the queue, or a StreamDetachedException.
           val df = ds.send(data)
           Await.ready(df, futureTimeout)
-          df.value.get match {
+          df.value.get match
             case Success(r) => assert(r === QueueClosed)
-            case Failure(e) => if(e != failureException) assert(e.getClass === classOf[StreamDetachedException])
-          }
+            case Failure(e) => if e != failureException then assert(e.getClass === classOf[StreamDetachedException])
 
           // Verify that the source completes with the exception passed as the failure.Util
           Await.ready(futureData, futureTimeout)
           assert(futureData.value.get === Failure(failureException))
-        }
-      }
-    }
-  }
-}
-
-// Re-enable test-problematic Scalastyle checkers.
-

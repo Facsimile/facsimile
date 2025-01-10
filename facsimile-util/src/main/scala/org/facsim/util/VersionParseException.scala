@@ -42,7 +42,7 @@ import java.text.ParseException
  *
  *  @constructor Create a new _version parse_ exception.
  *
- *  @param version Version string that could not be parsed. This value cannot be `null`.
+ *  @param version Version string that could not be parsed.
  *
  *  @param offset Position within version at which the parser failed. This value must be within the range [0,
  *  version.length].
@@ -63,4 +63,4 @@ extends ParseException(null, offset):
    *
    *  @since 0.0
    */
-  override def getMessage: String = LibResource("VersionParse", version, getErrorOffset)
+  override def getLocalizedMessage: String = LibResource("VersionParse", version, getErrorOffset)

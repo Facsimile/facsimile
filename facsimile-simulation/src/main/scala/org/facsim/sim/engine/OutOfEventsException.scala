@@ -41,7 +41,7 @@ import org.facsim.sim.LibResource
 /** Simulation has run out of events.
  *
  *  @note If this condition arises during simulation model execution, then the simulation's run state should change to
- *  `[[org.facsim.engine.Terminated Terminated]]`
+ *  [[org.facsim.engine.Terminated Terminated]]
  *
  *  @since 0.0
  */

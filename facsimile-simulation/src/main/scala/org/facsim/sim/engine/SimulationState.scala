@@ -53,7 +53,7 @@ import squants.time.Seconds
  *
  *  @param nextEventId Identifier of the next simulation event to be created.
  *
- *  @param current Event currently being dispatched, wrapped in `[[scala.Some Some]]`; if `[[scala.None None]]`, then
+ *  @param current Event currently being dispatched, wrapped in [[scala.Some Some]]; if [[scala.None None]], then
  *  the simulation has typically not yet started running.
  *
  *  @param events Set of simulation events scheduled to occur at a future simulation time.
@@ -76,8 +76,8 @@ private[engine] val events: PriorityQueue[Event[M]], private[engine] val runStat
    *
    *  @param newNextEventId New identifier of the next simulation event to be created.
    *
-   *  @param newCurrent New event to become the current event being dispatched, wrapped in `[[scala.Some Some]]`; if
-   *  `[[scala.None None]]`, then the simulation has typically not yet started running.
+   *  @param newCurrent New event to become the current event being dispatched, wrapped in [[scala.Some Some]]; if
+   *  [[scala.None None]], then the simulation has typically not yet started running.
    *
    *  @param newEvents New set of simulation events scheduled to occur at a future simulation time.
    *

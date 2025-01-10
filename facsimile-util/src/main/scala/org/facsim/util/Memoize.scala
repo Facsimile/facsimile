@@ -85,8 +85,7 @@ object Memoize:
    *  @since 0.0
    */
   final class Memoize1[A, R] private[Memoize](f: A => R)
-  extends Memoize[A, R](f)
-  with (A => R):
+  extends Memoize[A, R](f), (A => R):
 
     /** Evaluate _memoized_ function.
      *
@@ -113,8 +112,7 @@ object Memoize:
    *  @since 0.0
    */
   final class Memoize2[A1, A2, R] private[Memoize](f: (A1, A2) => R)
-  extends Memoize[(A1, A2), R](f.tupled)
-  with ((A1, A2) => R):
+  extends Memoize[(A1, A2), R](f.tupled), ((A1, A2) => R):
 
     /** Evaluate _memoized_ function.
      *
@@ -145,8 +143,7 @@ object Memoize:
    *  @since 0.0
    */
   final class Memoize3[A1, A2, A3, R] private[Memoize](f: (A1, A2, A3) => R)
-  extends Memoize[(A1, A2, A3), R](f.tupled)
-  with ((A1, A2, A3) => R):
+  extends Memoize[(A1, A2, A3), R](f.tupled), ((A1, A2, A3) => R):
 
     /** Evaluate _memoized_ function.
      *

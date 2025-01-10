@@ -44,13 +44,14 @@ import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 
-/** Test harness for the [[Memoize]] classes. */
+/** Test harness for the [[Memoize]] classes.
+ */
 final class MemoizeTest
-extends AnyFunSpec
-with ScalaCheckPropertyChecks {
+extends AnyFunSpec, ScalaCheckPropertyChecks:
 
-  /** Test data. */
-  trait TestData {
+  /** Test data.
+   */
+  trait TestData:
 
     /** Called flag.
      *
@@ -72,12 +73,11 @@ with ScalaCheckPropertyChecks {
      *
      *  @param a Argument value to be passed to the function.
      *
-     *  @return Resutl of `f(a)`
+     *  @return Result of `f(a)`
      */
-    final def wrapFn[A, R](f: A => R)(a: A): R = {
+    final def wrapFn[A, R](f: A => R)(a: A): R =
       wasCalled = true
       f(a)
-    }
 
     /** Single-argument test function. Calculate hash of argument type.
      *
@@ -132,7 +132,7 @@ with ScalaCheckPropertyChecks {
      *  @param f Single-argument function to be memoized and tested. Memoized results should match the un-memoized
      *  results.
      */
-    final def callFn[A, R](la: List[A])(f: A => R): Unit = {
+    final def callFn[A, R](la: List[A])(f: A => R): Unit =
 
       // Ensure we have a unique list.
       val ula = la.toSet.toList
@@ -145,7 +145,7 @@ with ScalaCheckPropertyChecks {
       val mf = Memoize(wf)
 
       // For each value in the list of arguments, perform the following tests.
-      ula.foreach {a =>
+      ula.foreach: a =>
 
         // Get the result of calling the function with the argument. All other versions of this function must always
         // return this same value.
@@ -167,16 +167,13 @@ with ScalaCheckPropertyChecks {
         wasCalled = false
         assert(mf(a) === result, s"Memoized version of function $f returned incorrect value on 2nd call")
         assert(!wasCalled, s"Memoized version of function $f set called flag on 2nd call")
-      }
 
       // Just to be ultra-cautious, in case we're only caching the last parameter value seen, call the memoized version
       // once more, after all arguments have been previously cached.
-      ula.foreach {a =>
+      ula.foreach: a =>
         wasCalled = false
         assert(mf(a) === f(a), s"Memoized version of function $f returned incorrect value on 3rd call")
         assert(!wasCalled, s"Memoized version of function $f set called flag on 3rd call")
-      }
-    }
 
     /** Call the double-argument function. Verify that it is called the first time, but not subsequently.
      *
@@ -191,9 +188,8 @@ with ScalaCheckPropertyChecks {
      *  @param f Double-argument function to be memoized and tested. Memoized results should match the un-memoized
      *  results.
      */
-    final def callFn[A1, A2, R](al: List[(A1, A2)])(f: (A1, A2) => R): Unit = callFn[(A1, A2), R](al) {t =>
+    final def callFn[A1, A2, R](al: List[(A1, A2)])(f: (A1, A2) => R): Unit = callFn[(A1, A2), R](al): t =>
       f(t._1, t._2)
-    }
 
     /** Call the triple-argument function. Verify that it is called the first time, but not subsequently.
      *
@@ -210,114 +206,95 @@ with ScalaCheckPropertyChecks {
      *  @param f Triple-argument function to be memoized and tested. Memoized results should match the un-memoized
      *  results.
      */
-    final def callFn[A1, A2, A3, R](al: List[(A1, A2, A3)])(f: (A1, A2, A3) => R): Unit = {
-      callFn[(A1, A2, A3), R](al) {t =>
+    final def callFn[A1, A2, A3, R](al: List[(A1, A2, A3)])(f: (A1, A2, A3) => R): Unit =
+      callFn[(A1, A2, A3), R](al): t =>
         f(t._1, t._2, t._3)
-      }
-    }
-  }
 
   // Tell user which class we're testing.
-  describe(Memoize.getClass.getCanonicalName) {
+  describe(Memoize.getClass.getCanonicalName.nn):
 
     // Test single-argument function memoization.
-    describe(".apply(A => R)") {
+    describe(".apply(A => R)"):
 
       // It must memoize single-argument functions correctly.
-      it("must memoize single-argument functions correctly") {
-        new TestData {
+      it("must memoize single-argument functions correctly"):
+        new TestData:
 
           // Try the integer hashing function first.
-          forAll {il: List[Int] =>
-            callFn(il)(getHash[Int])
+          forAll { (il: List[Int]) =>
+            callFn(il)(i => getHash(i))
           }
-
+          
           // Now for strings.
-          forAll {sl: List[String] =>
-            callFn(sl)(getHash[String])
+          forAll { (sl: List[String]) =>
+            callFn(sl)(s => getHash(s))
           }
-        }
-      }
-    }
-
+          
     // Test double argument function memoization.
-    describe(".apply((A1, A2) => R") {
+    describe(".apply((A1, A2) => R"):
 
       // It must memoize double-argument functions correctly.
-      it("must memoize double-argument functions correctly") {
-        new TestData {
+      it("must memoize double-argument functions correctly"):
+        new TestData:
 
           // Generator to create tuples of integers and strings.
-          val genISTuple = for {
+          val genISTuple = for
             i <- arbitrary[Int]
             s <- arbitrary[String]
-          } yield(i, s)
+          yield(i, s)
 
           // Generator to create a list of such tuples.
           val genISTupleList = Gen.nonEmptyListOf(genISTuple)
 
           // Try the integer & string hashing function first.
-          forAll(genISTupleList) {istl =>
+          forAll(genISTupleList): istl =>
             callFn(istl)(getHash[Int, String])
-          }
 
           // Generator to create tuples of strings and integers.
-          val genSITuple = for {
+          val genSITuple = for
             s <- arbitrary[String]
             i <- arbitrary[Int]
-          } yield (s, i)
+          yield (s, i)
 
           // Generator to create a list of such tuples.
           val genSITupleList = Gen.nonEmptyListOf(genSITuple)
 
           // Now for strings with integers.
-          forAll(genSITupleList) {sitl =>
+          forAll(genSITupleList): sitl =>
             callFn(sitl)(getHash[String, Int])
-          }
-        }
-      }
-    }
 
     // Test triple argument function memoization.
-    describe(".apply((A1, A2, A3) => R") {
+    describe(".apply((A1, A2, A3) => R"):
 
       // It must memoize triple-argument functions correctly.
-      it("must memoize triple-argument functions correctly") {
-        new TestData {
+      it("must memoize triple-argument functions correctly"):
+        new TestData:
 
           // Generator to create tuples of integers, strings and doubles.
-          val genISDTuple = for {
+          val genISDTuple = for
             i <- arbitrary[Int]
             s <- arbitrary[String]
             d <- arbitrary[Double]
-          } yield (i, s, d)
+          yield (i, s, d)
 
           // Generator to create a list of such tuples.
           val genISDTupleList = Gen.nonEmptyListOf(genISDTuple)
 
           // Try the integer, string & double hashing function first.
-          forAll(genISDTupleList) {isdl =>
+          forAll(genISDTupleList): isdl =>
             callFn(isdl)(getHash[Int, String, Double])
-          }
 
           // Generator to create tuples of strings, integers and doubles.
-          val genSIDTuple = for {
+          val genSIDTuple = for
             s <- arbitrary[String]
             i <- arbitrary[Int]
             d <- arbitrary[Double]
-          } yield (s, i, d)
+          yield (s, i, d)
 
           // Generator to create a list of such tuples.
           val genSIDTupleList = Gen.nonEmptyListOf(genSIDTuple)
 
           // Try the integer, string & double hashing function first.
-          forAll(genSIDTupleList) {sidl =>
+          forAll(genSIDTupleList): sidl =>
             callFn(sidl)(getHash[String, Int, Double])
-          }
-        }
-      }
-    }
-  }
-}
-// Re-enable test-problematic Scalastyle checkers.
 

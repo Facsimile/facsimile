@@ -43,4 +43,3 @@ package org.facsim.util.test
  *  @tparam O Ordered instance to be tested.
  */
 trait OrderedFixture[O <: Ordered[O]]
-

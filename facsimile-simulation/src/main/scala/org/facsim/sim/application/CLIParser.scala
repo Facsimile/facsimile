@@ -193,8 +193,8 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
    *
    *  @param args Command line arguments provided.
    *
-   *  @return Resulting application configuration wrapped in `[[scala.Some Some]]` if successfully parsed, or
-   *  `[[scala.None None]]` if the command line could not be parsed.
+   *  @return Resulting application configuration wrapped in [[scala.Some Some]] if successfully parsed, or
+   *  [[scala.None None]] if the command line could not be parsed.
    */
   private[application] def parse(args: Seq[String]): Option[FacsimileConfig] = parser.parse(args, FacsimileConfig())
 

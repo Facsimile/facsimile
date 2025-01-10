@@ -416,12 +416,12 @@ final class Simulation[M <: ModelState[M]: TypeTag] {
 /** Simulation companion object. */
 object Simulation {
 
-  /** Implicit conversion of simulation transitions (_actions_) to an `[[org.facsim.sim.model.Action Action]]`
+  /** Implicit conversion of simulation transitions (_actions_) to an [[org.facsim.sim.model.Action Action]]
    *  instance.
    *
    *  @tparam M Final type of the simulation's model state.
    *
-   *  @param actions Raw actions to be converted into an `[[org.facsim.sim.model.AnonymousAction AnonymousAction]]`
+   *  @param actions Raw actions to be converted into an [[org.facsim.sim.model.AnonymousAction AnonymousAction]]
    *  instance.
    *
    *  @return `actions` wrapped as an action suitable for dispatching by an event.

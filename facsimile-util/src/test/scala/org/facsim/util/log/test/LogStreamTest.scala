@@ -36,27 +36,27 @@
 //======================================================================================================================
 package org.facsim.util.log.test
 
-import akka.stream.scaladsl.{Flow, Keep, Sink}
-import akka.stream.QueueOfferResult.{Enqueued, QueueClosed}
-import akka.stream.StreamDetachedException
-import org.facsim.util.log._
-import org.facsim.util.test.AkkaStreamsTestHarness
-import org.facsim.util.test.implicits._
+import org.apache.pekko.stream.scaladsl.{Flow, Keep, Sink}
+import org.apache.pekko.stream.QueueOfferResult.{Enqueued, QueueClosed}
+import org.apache.pekko.stream.StreamDetachedException
+import org.facsim.util.log.*
+import org.facsim.util.test.PekkoStreamsTestHarness
 import org.facsim.util.LibResource
 import org.facsim.util.stream.DataSource
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.util.{Failure, Success}
 
 // Disable test-problematic Scalastyle checkers.
 
-/** Test harness for the [[org.facsim.util.log.LogStream]] class. */
+/** Test harness for the [[LogStream]] class.
+ */
 final class LogStreamTest
-extends AkkaStreamsTestHarness
-with ScalaCheckPropertyChecks {
+extends PekkoStreamsTestHarness, ScalaCheckPropertyChecks:
 
-  /** Timeout for awaiting the result of a future. */
+  /** Timeout for awaiting the result of a future.
+   */
   val futureTimeout: FiniteDuration = 5.seconds
 
   /** Expected illegal argument exception message.
@@ -65,10 +65,9 @@ with ScalaCheckPropertyChecks {
    *
    *  @return Expected error message for the invalid buffer size.
    */
-  def expectedBufferSizeExceptionMessage(bufferSize: Int): String = {
+  def expectedBufferSizeExceptionMessage(bufferSize: Int): String =
     val errorMsg = LibResource("stream.DataSourceInvalidBufferSize", bufferSize, DataSource.MaxBufferSize)
     s"requirement failed: $errorMsg"
-  }
 
   /** Create a flow for directing a source of log messages into a sequence of log messages.
    *
@@ -77,73 +76,60 @@ with ScalaCheckPropertyChecks {
    *
    *  @return Sink, into which a source of log messages will be consumed and stored as a sequence.
    */
-  def seqSink(): Sink[LogMessage[String], Future[Seq[LogMessage[String]]]] = {
+  def seqSink(): Sink[LogMessage[String], Future[Seq[LogMessage[String]]]] =
     Flow[LogMessage[String]].toMat(Sink.seq)(Keep.right)
-  }
 
   // Test the LogStream class.
-  describe("org.facsim.util.log.LogStream[A]]") {
+  describe("org.facsim.util.log.LogStream[A]]"):
 
     // Verify the constructor fails for invalid buffer sizes.
-    describe(".ctor(Int)(ActorMaterializer)") {
-
+    describe(".ctor(Int)(ActorMaterializer)"):
+      
       // Test invalid construction.
-      it("must throw an IllegalArgumentException if called with an invalid buffer size") {
-        forAll(invalidBufferSizes) {bufferSize =>
-          try {
+      it("must throw an IllegalArgumentException if called with an invalid buffer size"):
+        forAll(invalidBufferSizes): bufferSize =>
+          try
 
             // Attempt to create the log stream with this buffer size: we should get an exception.
             new LogStream[String](bufferSize)
 
             // If we get this far, we didn't get an exception, so the test failed.
             fail("Log stream with invalid buffer size did not throw an exception")
-          }
-          catch {
+          catch
 
             // Check the exception caught.
-            case e: Throwable => {
+            case e: Throwable =>
 
               // Verify that this is an IllegalArgumentException.
               assert(e.getClass === classOf[IllegalArgumentException])
 
               // Verify that the message is the one expected.
               assert(e.getMessage === expectedBufferSizeExceptionMessage(bufferSize))
-            }
-          }
-        }
-      }
 
       // Test default construction.
-      it("must create a valid log stream if using the default buffer size") {
+      it("must create a valid log stream if using the default buffer size"):
         new LogStream[String]()
-      }
 
       // Test valid construction.
-      it("must create a valid log stream if supplied a valid buffer size") {
-        forAll(validBufferSizes) {bufferSize =>
+      it("must create a valid log stream if supplied a valid buffer size"):
+        forAll(validBufferSizes): bufferSize =>
           new LogStream[String](bufferSize)
-        }
-      }
-    }
 
     // Test that a source is produced OK.
-    describe(".source") {
+    describe(".source"):
 
       // Source must be available for sending upon creation.
-      it("must report a valid source") {
-        forAll(validBufferSizes) {bufferSize =>
+      it("must report a valid source"):
+        forAll(validBufferSizes): bufferSize =>
           val ds = new LogStream[String](bufferSize)
           assert(ds.source !== null)
-        }
-      }
-    }
 
     // Test that logged messages are sent OK.
-    describe(".log(LogMessage[A])") {
+    describe(".log(LogMessage[A])"):
 
       // Verify that we can send data, and have it show up in a sink.
-      it("must send data to an uncompleted stream") {
-        forAll(validBufferSizes, logListNonEmpty) {(bufferSize, msgs) =>
+      it("must send data to an uncompleted stream"):
+        forAll(validBufferSizes, logListNonEmpty): (bufferSize, msgs) =>
 
           // Create the log stream.
           val ds = new LogStream[String](bufferSize)
@@ -155,9 +141,8 @@ with ScalaCheckPropertyChecks {
           val dataFutures = msgs.map(s => ds.log(s))
 
           // Verify that all of the log messages are sent.
-          dataFutures.foreach {df =>
+          dataFutures.foreach: df =>
             assert(Await.result(df, futureTimeout) === Enqueued)
-          }
 
           // Close the log.
           val streamCompleted = ds.close()
@@ -165,12 +150,10 @@ with ScalaCheckPropertyChecks {
 
           // Verify that the result is the original sequence of log messages.
           assert(Await.result(futureData, futureTimeout) === msgs)
-        }
-      }
 
       // Verify that data is rejected after the stream has been completed successfully.
-      it("must fail to send data to a completed stream") {
-        forAll(validBufferSizes, logs) {(bufferSize, msg) =>
+      it("must fail to send data to a completed stream"):
+        forAll(validBufferSizes, logs): (bufferSize, msg) =>
 
           // Create the log stream.
           val ds = new LogStream[String](bufferSize)
@@ -186,20 +169,9 @@ with ScalaCheckPropertyChecks {
           // StreamDetachedException.
           val df = ds.log(msg)
           Await.ready(df, futureTimeout)
-          df.value.get match {
+          df.value.get match
             case Success(r) => assert(r === QueueClosed)
             case Failure(e) => assert(e.getClass === classOf[StreamDetachedException])
-          }
 
           // Verify that we didn't receive any data.
           assert(Await.result(futureData, futureTimeout) === Nil)
-        }
-      }
-    }
-  }
-}
-
-// Re-enable test-problematic Scalastyle checkers.
-
-// Re-enable test-problematic Scalastyle checkers.
-

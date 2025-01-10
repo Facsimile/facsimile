@@ -48,9 +48,9 @@ package org.facsim.types
  *  be expressed. For instance, _time_ can be measured in _seconds_, _minutes_, or _hours_, etc. In
  *  _Facsimile_, such a set of units is termed a _unit family_.
  *
- *  Each unit family is encapsulated as a subclass of the `[[Physical]]` abstract base class. For example, time units
- *  are encapsulated by the `[Time.TimeUnits]] Unit` subclass, mass units by the `[[Mass.MassUnits]] Unit` subclass,
- *  length units by the `[[Length.LengthUnits]] Unit` subclass, etc.
+ *  Each unit family is encapsulated as a subclass of the [[Physical]] abstract base class. For example, time units
+ *  are encapsulated by the `[Time.TimeUnits]] Unit` subclass, mass units by the [[Mass.MassUnits]] Unit` subclass,
+ *  length units by the [[Length.LengthUnits]] Unit` subclass, etc.
  *
  *  =Physical Quantity Units=
  *
@@ -59,7 +59,7 @@ package org.facsim.types
  *  the same family takes place automatically, eliminating a whole class of conversion errors.
  *
  *  Individual physical quantity units are represented by instances of the corresponding unit family class. For example,
- *  _seconds_, _minutes_ and _hours_ are represented by instances of the `[[Time.TimeUnits]]` class.
+ *  _seconds_, _minutes_ and _hours_ are represented by instances of the [[Time.TimeUnits]] class.
  *
  *  =Physical Quantity Measurements=
  *
@@ -68,7 +68,7 @@ package org.facsim.types
  *  Since all measurements are stored internally in SI units, no matter which units are employed by the user, there are
  *  never conversion issues when merging models that use different units.
  *
- *  @todo Expand on Facsimile's use of types for each measurement quantity. Instead of using a `[[Double]]`, like other
+ *  @todo Expand on Facsimile's use of types for each measurement quantity. Instead of using a [[Double]], like other
  *  simulation systems, Facsimile uses different types for each measurement quantity. Consequently, it's not possible to
  *  confuse a distance with a time, or a linear velocity with an angular velocity, or a mass with a temperature. By
  *  employing an appropriate set of operators, mechanics formulae can be accommodated by Facsimile in a very natural

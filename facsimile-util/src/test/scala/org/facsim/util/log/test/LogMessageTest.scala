@@ -36,44 +36,33 @@
 //======================================================================================================================
 package org.facsim.util.log.test
 
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.funspec.AnyFunSpec
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 // Disable test-problematic Scalastyle checkers.
 
-/** Test harness for the [[org.facsim.util.log.LogMessage]] class. */
+/** Test harness for the [[org.facsim.util.log.LogMessage]] class.
+ */
 final class LogMessageTest
-extends AnyFunSpec
-with ScalaCheckPropertyChecks {
+extends AnyFunSpec, ScalaCheckPropertyChecks:
 
   // Class under test.
-  describe("org.facsim.util.log.LogMessage[A]") {
+  describe("org.facsim.util.log.LogMessage[A]"):
 
     // Test construction.
-    describe(".ctor(A, String, Scope, Severity)") {
+    describe(".ctor(A, String, Scope, Severity)"):
 
       // Test construction succeeds OK.
-      it("must construct valid log messages") {
-        forAll(logs) {l =>
+      it("must construct valid log messages"):
+        forAll(logs): l =>
 
           // Dummy operation, just to ensure it works.
           l.toString
-        }
-      }
-    }
 
     // Test that the resulting string matches expectations
-    describe(".toString") {
+    describe(".toString"):
 
       // It must format log messages correctly.
-      it("must format correctly-formatted log messages") {
-        forAll(logs) {l =>
+      it("must format correctly-formatted log messages"):
+        forAll(logs): l =>
           assert(l.toString === s"${l.prefix}: ${l.scope}: ${l.severity.abbrName}: ${l.msg}")
-        }
-      }
-    }
-  }
-}
-
-// Re-enable test-problematic Scalastyle checkers.
-

@@ -55,7 +55,7 @@ import scala.util.{Failure, Success, Try}
  *  may share the same version number, so comparing version numbers is an unreliable method for comparing pre-release
  *  snapshots of the same release.
  *
- *  @throws scala.IllegalArgumentException if any argument has an invalid value.
+ *  @throws IllegalArgumentException if any argument has an invalid value.
  *
  *  @since 0.0
  */
@@ -137,7 +137,7 @@ extends Ordered[Version]:
    *
    *  @since 0.0
    */
-  override def toString: String = {
+  override def toString: String =
 
     // If we have a bugfix version, then it will appear prefixed by a period.
     val bf = bugFix.fold("")(b => s".$b")
@@ -160,7 +160,7 @@ object Version:
 
   /** Regular expression for parsing version strings.
    */
-  private val VersionRegex = ("""(\d+)\.(\d+)(\.\d+)?""" + s"($Snapshot)?").r
+  private val VersionRegex = s"(\\d+)\\.(\\d+)(\\.\\d+)?($Snapshot)?".r
 
   /** Regular expression for parsing Java version strings.
    *
@@ -169,8 +169,8 @@ object Version:
    *  unsupported.
    *
    *  @note This facility was added to support parsing of version numbers in _Java_ manifests. It should be noted that
-   *  resulting `[[org.facsim.util.Version Version]]` instances that are converted back to strings will not match the
-   *  original string passed to the parsing function.
+   *  resulting [[Version]] instances that are converted back to strings will not match the original string passed to
+   *  the parsing function.
    */
   private val JavaVersionRegex = """(\d+)\.(\d+)\.0_(\d+)""".r
 
@@ -178,11 +178,11 @@ object Version:
    *
    *  @param version Version string to be parsed. This must be of the form _`M.m[.b][-SNAPSHOT]`_, where `M` is the
    *  major version number, `m` is the minor version number, and `b` is an optional bug-fix number. If the string ends
-   *  with _`-SNAPSHOT``_, then a pre-release _snapshot_ is indicated. Alternatively, _Java_ version numbers of the form
+   *  with _`-SNAPSHOT`_, then a pre-release _snapshot_ is indicated. Alternatively, _Java_ version numbers of the form
    *  _`M.m.0_b`_ are accepted.  No other version string formats are currently supported.
    *
-   *  @return A `[[org.facsim.util.Version Version]]` instance equivalent to the information contained in `version`
-   *  wrapped in a [[Success]] if successful, or a [[Failure]] containing a [[VersionParseException]].
+   *  @return A [[Version]] instance equivalent to the information contained in `version` wrapped in a [[Success]] if
+   *  successful, or a [[Failure]] containing a [[VersionParseException]].
    *
    *  @since 0.0
    */

@@ -32,14 +32,35 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util.log package.
+// Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
-package org.facsim.util
+package org.facsim.util.test
 
-/** _Facsimile Utility_ library logging root package.
+import org.apache.pekko.actor.ActorSystem
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funspec.AnyFunSpec
+import scala.concurrent.ExecutionContext
+
+/** Test harness trait for _Pekko actors_.
  *
- *  This library contains tools for streaming log messages.
- *
- *  @since 0.2
+ *  Creates an _Pekko_ actor system, executes the indicated test, then destroys the actor system.
  */
-package object log
+trait PekkoTestHarness
+extends AnyFunSpec, BeforeAndAfterAll:
+
+  /** Implicit actor system which can be used for the tests in this harness.
+   */
+  protected final given system: ActorSystem =
+
+    val instanceName = this.getClass.getCanonicalName.nn.replace('.', '_')
+    ActorSystem(s"PekkoTestHarness_$instanceName")
+
+  /** Provide an execution context for any futures used.
+   */
+  protected final given executionContext: ExecutionContext = system.dispatcher
+
+  /** When all tests have been completed, terminate the actor system.
+   */
+  override def afterAll(): Unit =
+    system.terminate()
+    super.afterAll()

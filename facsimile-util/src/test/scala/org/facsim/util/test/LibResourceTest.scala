@@ -45,26 +45,18 @@ import org.scalatest.funspec.AnyFunSpec
  *  included here.
  */
 final class LibResourceTest
-extends AnyFunSpec
-with CommonTestMethods {
+extends AnyFunSpec, CommonTestMethods:
 
   // Name the class we're testing.
-  describe(LibResource.getClass.getCanonicalName) {
+  describe(LibResource.getClass.getCanonicalName.nn):
 
     // Test string resource formatting.
-    describe("apply(String, Any*)") {
+    describe("apply(String, Any*)"):
 
       // Test that facsimile-util messages can be retrieved.
-      it("must retrieve all facsimile-util resources") {
-        assert(LibResource(AssertNonNullKey, "test") === "Assertion failed: argument \"test\" cannot be null.")
+      it("must retrieve all facsimile-util resources"):
+        assert(LibResource(AssertNonNullKey, "test") === "Assertion failed: expression 'test' was evaluated as null.")
         assert(LibResource(RequireFiniteKey, "test", Double.NegativeInfinity) ===
-        "Argument \"test\" must be finite, but has value \"-∞\".")
-        assert(LibResource(RequireNonNullKey, "test") === "Argument \"test\" cannot be null.")
-
-        assert(LibResource(RequireValidKey, "test", -1) === "Argument \"test\" has illegal value: \"-1\".")
-
-      }
-    }
-  }
-}
-
+        "Argument 'test' must be finite, but has value -∞.")
+        assert(LibResource(RequireNonNullKey, "test") === "Argument 'test' cannot be null.")
+        assert(LibResource(RequireValidKey, "test", -1) === "Argument 'test' has illegal value: '-1'.")

@@ -190,7 +190,7 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @param t Tree for which a minimum value is sought.
    *
-   *  @return Minimum element in the tree, wrapped in `[[scala.Some Some]]`; `[[scala.None None]]` if `t` is empty.
+   *  @return Minimum element in the tree, wrapped in [[scala.Some Some]]; [[scala.None None]] if `t` is empty.
    */
   // TODO: Make this function stack safe.
   private def findMin(t: BinomialTree[A]): Option[A] = t match {
@@ -217,8 +217,8 @@ extends Heap[A, BinomialHeap[A]] {
    *
    *  @param t Tree for which a minimum value is sought.
    *
-   *  @return Tuple whose first member is the minimum element, wrapped in `[[scala.Some Some]]`, or `[[scala.None
-   *  None]]` if `t` is empty; the second member of the tuple is the new true with the minimum removed (if the first
+   *  @return Tuple whose first member is the minimum element, wrapped in [[scala.Some Some]], or [[scala.None
+   *  None]] if `t` is empty; the second member of the tuple is the new true with the minimum removed (if the first
    *  element is defined), or the original empty tree otherwise.
    */
   // TODO: Make this function stack-safe.

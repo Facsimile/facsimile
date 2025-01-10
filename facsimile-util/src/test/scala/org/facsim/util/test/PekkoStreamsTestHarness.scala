@@ -32,14 +32,33 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util.stream package.
+// Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
-package org.facsim.util
+package org.facsim.util.test
 
-/** _Facsimile Utility_ library stream package.
+import org.apache.pekko.stream.Materializer
+import org.facsim.util.stream.DataSource
+import org.scalacheck.Gen
+
+/** Test harness trait for _Pekko streams_.
  *
- *  This library contains tools for streaming data using _Akka Streams_.
- *
- *  @since 0.2
+ *  Creates an _Pekko_ actor system, and a stream materializer, executes the indicated test, then destroys the actor
+ *  system.
  */
-package object stream
+trait PekkoStreamsTestHarness
+extends PekkoTestHarness:
+
+  /** Generator for invalid buffer size numbers.
+   */
+  protected final val invalidBufferSizes = Gen.oneOf(
+    Generator.nonPosInt,
+    Gen.choose(DataSource.MaxBufferSize + 1, Int.MaxValue),
+  )
+
+  /** Generator for valid buffer size numbers.
+   */
+  protected final val validBufferSizes = Gen.choose(1, DataSource.MaxBufferSize)
+
+  /** Implicit actor materializer for default stream materialization.
+   */
+  protected final given materializer: Materializer = Materializer.matFromSystem

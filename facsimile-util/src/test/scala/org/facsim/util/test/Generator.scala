@@ -36,14 +36,14 @@
 //======================================================================================================================
 package org.facsim.util.test
 
-import org.facsim.util.types.UniChar
+import org.facsim.util.types.UniChars.UniChar
 import org.scalacheck.{Gen, Shrink}
 
 /** Custom _ScalaCheck_ generators.
  *
  *  @since 0.0
  */
-object Generator {
+object Generator:
 
   /** Negative integers.
    *
@@ -67,16 +67,19 @@ object Generator {
    */
   val nonPosInt = Gen.choose(Integer.MIN_VALUE, 0)
 
-  /** Generate any integer value. */
+  /** Generate any integer value.
+   */
   // A range of [Integer.MinValue, Integer.MaxValue] exceeds the capacity of a signed 32-bit integer value (31 bits for
   // the value, 1 for the sign), so we get around this by having two generators and selecting one or the other at
   // random).
   val int = Gen.oneOf(negInt, nonNegInt)
 
-  /** ISO-8859-1 characters. */
+  /** ISO-8859-1 characters.
+   */
   private val iso8859_1Char = Gen.choose(0.toChar, 255.toChar)
 
-  /** Strings that can be encoded using ISO-8859-1. */
+  /** Strings that can be encoded using ISO-8859-1.
+   */
   val iso8859_1String = Gen.listOf(iso8859_1Char).map(_.mkString)
 
   /** Set of valid _[[http://unicode.org/ Unicode]]_ characters.
@@ -85,24 +88,28 @@ object Generator {
    */
   private lazy val unicodeVector = (Character.MIN_CODE_POINT to Character.MAX_CODE_POINT).filter(UniChar.isValid)
 
-  /** _[[http://unicode.org/ Unicode]]_ characters. */
+  /** _[[http://unicode.org/ Unicode]]_ characters.
+   */
   private lazy val unicodeChar = Gen.oneOf(unicodeVector)
 
-  /** Strings that can be encoded in _[[http://unicode.org/ Unicode]]_. */
-  lazy val unicodeString = Gen.listOf(unicodeChar).map(_.flatMap(i => Character.toChars(i)).mkString)
+  /** Strings that can be encoded in _[[http://unicode.org/ Unicode]]_.
+   */
+  lazy val unicodeString = Gen.listOf(unicodeChar).map(_.flatMap(i => Character.toChars(i).nn).mkString)
 
-  /** List of _[[http://unicode.org/ Unicode]]_ strings, which may be empty. */
+  /** List of _[[http://unicode.org/ Unicode]]_ strings, which may be empty.
+   */
   lazy val unicodeStringList = Gen.listOf(unicodeString)
 
-  /** List of _[[http://unicode.org/ Unicode]]_ strings, non-empty.*/
+  /** List of _[[http://unicode.org/ Unicode]]_ strings, non-empty.
+   */
   lazy val unicodeStringListNonEmpty = Gen.nonEmptyListOf(unicodeString)
 
   /** Utility to prevent _ScalaCheck_ property shrinkage.
    *
    *  @note Shrinkage, whereby _ScalaCheck_ attempts to find the simplest case of value that causes a problem, is a
    *  brilliant concept. Unfortunately, there's a [[https://github.com/rickynils/scalacheck/issues/129 bug]] in which
-   *  shrinked values violate defined constraints, so that the shrinked value fails for a completely different reason to
-   *  the original failing value. To work around this, we use this function that effectively disable shrinking of
+   *  shrunken values violate defined constraints, so that the shrunken value fails for a completely different reason to
+   *  the original failing value. To work around this, we use this function that effectively disables shrinking of
    *  failed values; the idea for this can be found [[https://github.com/scalatest/scalatest/issues/584 here]].
    *
    *  @tparam A Type of value for which shrinking is being disabled.
@@ -110,4 +117,3 @@ object Generator {
    *  @return No shrink value, which should typically be an implicit value, for the specified type, `A`.
    */
   def noShrink[A]: Shrink[A] = Shrink.shrinkAny[A]
-}

@@ -66,7 +66,7 @@ package object sim {
 
   /** Type for simulation state transition results.
    *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
+   *  This type is a function that takes a [[org.facsim.engine.SimulationState SimulationState]] argument, returning
    *  an updated simulation state and a result.
    *
    *  @tparam M Actual type of the simulation's model state.
@@ -79,7 +79,7 @@ package object sim {
 
   /** Type for simulation state transition actions, which return a status value.
    *
-   *  This type is a function that takes a `[[org.facsim.engine.SimulationState SimulationState]]` argument, returning
+   *  This type is a function that takes a [[org.facsim.engine.SimulationState SimulationState]] argument, returning
    *  an updated simulation state and a `Unit` value wrapped in [[Success]] if successful, or an
    *  exception instance wrapped in [[Failure]] otherwise.
    *
