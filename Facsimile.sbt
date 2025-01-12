@@ -48,6 +48,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 //
 // IMPORTANT: When changing the primary Scala version, remember to update "./.travis.yml" to match.
 val CatsVersion = "2.10.0"
+val IzumiReflectVersion = "2.3.10"
 val ParboiledVersion = "2.5.1"
 val PekkoVersion = "1.1.2"
 val PrimaryScalaVersion = "3.3.4"
@@ -467,8 +468,7 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
 
   // Utility library dependencies.
   libraryDependencies ++= Seq(
-
-
+    
     // Pekko streams library & testkit (the latter scoped for testing only).
     //
     // This is used for creating streams of data.
@@ -506,7 +506,14 @@ lazy val facsimileCollection = project.in(file(FacsimileCollectionName))
   name := "Facsimile Collection Library",
   normalizedName := FacsimileCollectionName,
   description := """The Facsimile Collection library provides custom, immutable collections that are required by other
-                   |Facsimile libraries as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
+  |Facsimile libraries as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
+
+  // Required libraries.
+  libraryDependencies ++= Seq(
+    
+    // The izumi-reflect library provides run-time access to generic type.
+    "dev.zio" %% "izumi-reflect" % IzumiReflectVersion
+  ),
 )
 
 // Temporarily commented out - not ready for launch, right now.

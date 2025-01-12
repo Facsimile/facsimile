@@ -45,13 +45,14 @@ import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 
-/** Test harness for the [[org.facsim.collection.immutable.BinomialHeap]] class. */
+/** Test harness for the [[BinomialHeap]] class.
+ */
 final class BinomialHeapTest
-extends AnyFunSpec
-with ScalaCheckPropertyChecks {
+extends AnyFunSpec, ScalaCheckPropertyChecks:
 
-  /** Implicit ordering for Double values. */
-  private implicit val doubleOrdering: Ordering[Double] = Double.TotalOrdering
+  /** Implicit ordering for Double values.
+   */
+  private given doubleOrdering: Ordering[Double] = Double.TotalOrdering
 
   /** Check that an empty heap responds as such.
    *
@@ -59,7 +60,7 @@ with ScalaCheckPropertyChecks {
    *
    *  @param h An empty heap which is to be verified.
    */
-  private def verifyEmptyHeap[A](h: BinomialHeap[A]): Unit = {
+  private def verifyEmptyHeap[A](h: BinomialHeap[A]): Unit =
 
     // Verify that the heap gives the correct replies for an empty heap.
     assert(h.isEmpty === true)
@@ -71,8 +72,9 @@ with ScalaCheckPropertyChecks {
     val (em2, eh2) = h.minimumRemove
     assert(em2 === None)
     assert(eh2.isEmpty)
-    () // Return unit to avoid "discarded non-unit value" compiler warning
-  }
+
+    // Return unit to avoid "discarded non-unit value" compiler warning
+    ()
 
   /** Check that a heap with a single member responds as such.
    *
@@ -80,7 +82,7 @@ with ScalaCheckPropertyChecks {
    *
    *  @param a Value of the sole member of the heap.
    */
-  private def verifyOneMemberHeap[A](h: BinomialHeap[A], a: A): Unit = {
+  private def verifyOneMemberHeap[A](h: BinomialHeap[A], a: A): Unit =
 
     // Verify that the heap is not empty.
     assert(h.isEmpty === false)
@@ -99,7 +101,6 @@ with ScalaCheckPropertyChecks {
     val (min, eh) = omh
     assert(min === Some(a))
     verifyEmptyHeap(eh)
-  }
 
   /** Check that a heap with any number of members correctly sorts those members.
    *
@@ -113,20 +114,19 @@ with ScalaCheckPropertyChecks {
    *
    *  @param ordering Ordering used for sorting values of type `A`.
    */
-  private def verifyMultiMemberHeap[A](h: BinomialHeap[A], la: List[A])(implicit ordering: Ordering[A]): Unit = {
+  private def verifyMultiMemberHeap[A](h: BinomialHeap[A], la: List[A])(using ordering: Ordering[A]): Unit =
 
     // Helper function to check each value in turn.
     @tailrec
-    def nextMinimum(rh: BinomialHeap[A], rla: List[A]): Unit = {
+    def nextMinimum(rh: BinomialHeap[A], rla: List[A]): Unit =
 
       // If the heap is empty, then the list must be too. Verify that the heap is empty.
-      if(rh.isEmpty) {
+      if rh.isEmpty then
         assert(rla.isEmpty === true)
         verifyEmptyHeap(rh)
-      }
 
       // Otherwise, it must have a minimum value. Check that this is the expected minimum value.
-      else {
+      else
 
         // Firstly, check that we have a matching value in the sorted list.
         assert(rla.nonEmpty === true)
@@ -145,188 +145,145 @@ with ScalaCheckPropertyChecks {
 
         // Perform the next iteration.
         nextMinimum(nextH, rla.tail)
-      }
-    }
 
     // Start the ball rolling, by sorting the expected contents.
     nextMinimum(h, la.sorted)
-  }
 
   // Look at the companion element.
-  describe(BinomialHeap.getClass.getCanonicalName) {
+  describe(BinomialHeap.getClass.getCanonicalName.nn):
 
     // Create empty heap.
-    describe(".empty[A]") {
+    describe(".empty[A]"):
 
       // Verify that an empty tree is empty.
-      it("must create an empty heap") {
+      it("must create an empty heap"):
         verifyEmptyHeap(BinomialHeap.empty[Int])
-      }
-    }
 
     // Test the apply method..
-    describe(".apply[A](A*)") {
+    describe(".apply[A](A*)"):
 
       // Verify that it can handle empty argument lists.
-      it("can create an empty heap") {
+      it("can create an empty heap"):
         verifyEmptyHeap(BinomialHeap[Int]())
-      }
 
       // Verify that it can handle a single argument.
-      it("can create a heap with one member") {
-        forAll {i: Int =>
+      it("can create a heap with one member"):
+        forAll: (i: Int) =>
           verifyOneMemberHeap(BinomialHeap(i), i)
-        }
-      }
 
       // Verify that it can handle arbitrary numbers of elements.
-      it("can create a heap with any number of members") {
-        forAll {li: List[Int] =>
+      it("can create a heap with any number of members"):
+        forAll: (li: List[Int]) =>
           verifyMultiMemberHeap(BinomialHeap(li: _*), li)
-        }
-      }
-    }
-  }
 
   // Now for the class methods.
-  describe(classOf[BinomialHeap[_]].getCanonicalName) {
+  describe(classOf[BinomialHeap[_]].getCanonicalName.nn):
 
     // Test the canEqual method.
-    describe(".canEqual(Any)") {
+    describe(".canEqual(Any)"):
 
       // Verify that it reports false for different types of object, including heaps of different types.
-      it("must reject objects of a different type") {
-        forAll {li: List[Int] =>
+      it("must reject objects of a different type"):
+        forAll: (li: List[Int]) =>
           val h = BinomialHeap(li: _*)
           assert(h.canEqual(li) === false, "Fails on List[Int] comparison")
-          forAll {i: Int =>
+          forAll: (i: Int) =>
             assert(h.canEqual(i) === false, "Fails on Int comparison")
-          }
-          forAll {d: Double =>
+          forAll: (d: Double) =>
             assert(h.canEqual(d) === false, "Fails on Double comparison")
-          }
-          forAll {s: String =>
+          forAll: (s: String) =>
             assert(h.canEqual(s) === false, "Fails on String comparison")
-          }
-          forAll {ld: List[Double] =>
+          forAll: (ld: List[Double]) =>
             val hd = BinomialHeap(ld: _*)
             assert(h.canEqual(hd) === false, "Fails on BinomialHeap[Double] comparison")
-          }
-        }
-      }
 
       // Verify that it reports true for heaps of the same type.
-      it("must accept heaps of the same type") {
-        forAll {(l1: List[Int], l2: List[Int]) =>
+      it("must accept heaps of the same type"):
+        forAll: (l1: List[Int], l2: List[Int]) =>
           val h1 = BinomialHeap(l1: _*)
           val h2 = BinomialHeap(l2: _*)
           assert(h1.canEqual(h2))
-        }
-      }
 
       // Verify that it accepts itself.
-      it("must accept itself") {
-        forAll {li: List[Int] =>
+      it("must accept itself"):
+        forAll: (li: List[Int]) =>
           val h = BinomialHeap(li: _*)
           assert(h.canEqual(h) === true)
-        }
-      }
-    }
 
     // Test the equals method.
-    describe(".equals(Any)") {
+    describe(".equals(Any)"):
 
       // Verify that it reports false for different types of object, including heaps of different types.
-      it("must reject objects of a different type") {
-        forAll {li: List[Int] =>
+      it("must reject objects of a different type"):
+        forAll: (li: List[Int]) =>
           val h = BinomialHeap(li: _*)
           assert(h.equals(li) === false, "Fails on List[Int] comparison")
-          forAll {i: Int =>
+          forAll: (i: Int) =>
             assert(h.equals(i) === false, "Fails on Int comparison")
-          }
-          forAll {d: Double =>
+          forAll: (d: Double) =>
             assert(h.equals(d) === false, "Fails on Double comparison")
-          }
-          forAll {s: String =>
+          forAll: (s: String) =>
             assert(h.equals(s) === false, "Fails on String comparison")
-          }
-          forAll {ld: List[Double] =>
+          forAll: (ld: List[Double]) =>
             val hd = BinomialHeap(ld: _*)
             assert(h.equals(hd) === false, "Fails on BinomialHeap[Double] comparison")
-          }
-        }
-      }
 
       // Verify that it reports the correct result for heaps of the same type.
-      it("must compare heaps of the same type correctly") {
-        forAll {(l1: List[Int], l2: List[Int]) =>
+      it("must compare heaps of the same type correctly"):
+        forAll: (l1: List[Int], l2: List[Int]) =>
           val l1s = l1.sorted
           val l2s = l2.sorted
           val h1 = BinomialHeap(l1: _*)
           val h2 = BinomialHeap(l2: _*)
           assert(h1.equals(h2) === l1s.equals(l2s))
-        }
-      }
 
       // Verify that it compares equal to itself.
-      it("must equal itself") {
-        forAll {li: List[Int] =>
+      it("must equal itself"):
+        forAll: (li: List[Int]) =>
           val h = BinomialHeap(li: _*)
           assert(h.equals(h) === true)
-        }
-      }
-    }
 
     // Test the hashcode method.
-    describe(".hashCode") {
+    describe(".hashCode"):
 
       // Verify that it reports the same value for heaps that should compare equal.
-      it("must return the same value for heaps that compare equal") {
-        forAll {li: List[Int] =>
+      it("must return the same value for heaps that compare equal"):
+        forAll: (li: List[Int]) =>
           val h1 = BinomialHeap(li: _*)
           val h2 = BinomialHeap(li.reverse: _*)
           assert(h1 === h2)
           assert(h1.hashCode === h2.hashCode)
-        }
-      }
 
       // Verify that it reports reasonably unique values for each heap. This may fail due to pure chance, but it's
       // highly unlikely if the hash function is any good.
-      it("must return reasonably unique values") {
-        def updateState(hashCodes: Set[Int], count: Int, heap: BinomialHeap[Int]): (Set[Int], Int) = {
+      it("must return reasonably unique values"):
+        def updateState(hashCodes: Set[Int], count: Int, heap: BinomialHeap[Int]): (Set[Int], Int) =
           (hashCodes + heap.hashCode, count + 1)
-        }
         var state = (Set.empty[Int], 0)
-        forAll {li: List[Int] =>
+        forAll: (li: List[Int]) =>
           val h = BinomialHeap(li: _*)
           state = updateState(state._1, state._2, h)
-        }
         assert(state._1.size / state._2.toDouble >= 0.9)
-      }
-    }
 
     // Test the member addition operator.
-    describe(".+(A)") {
+    describe(".+(A)"):
 
       // It must add new member to a heap, resulting in a new heap.
-      it("must accept a new member, resulting in a new heap") {
-        forAll {(e: Int, li: List[Int]) =>
+      it("must accept a new member, resulting in a new heap"):
+        forAll: (e: Int, li: List[Int]) =>
           val h = BinomialHeap(li: _*)
           val newH = h + e
           assert(h !== newH)
           verifyMultiMemberHeap(newH, (e :: li).sorted)
-        }
-      }
-    }
 
     // Test the heap merge operator.
-    describe(".++(BinomialHeap[A])") {
+    describe(".++(BinomialHeap[A])"):
 
       // One of the heaps is empty.
-      it("must handle empty heaps correctly") {
+      it("must handle empty heaps correctly"):
 
         // Use positive numbers, as there is no generator for just numbers, right now.
-        forAll(Gen.nonEmptyListOf(Gen.posNum[Int])) {li =>
+        forAll(Gen.nonEmptyListOf(Gen.posNum[Int])): li =>
           val h = BinomialHeap(li: _*)
           val eh = BinomialHeap.empty[Int]
           val newH1 = h ++ eh
@@ -335,24 +292,15 @@ with ScalaCheckPropertyChecks {
           assert(newH2 === h)
           val newH3 = eh ++ eh
           assert(newH3 === eh)
-        }
-      }
 
       // It must create a new heap out of the initial two heaps.
-      it("must create a new heap from the initial two heaps") {
+      it("must create a new heap from the initial two heaps"):
 
         // Use positive numbers, as there is no generator for just numbers, right now.
-        forAll(Gen.nonEmptyListOf(Gen.posNum[Int]), Gen.nonEmptyListOf(Gen.posNum[Int])) {(l1, l2) =>
+        forAll(Gen.nonEmptyListOf(Gen.posNum[Int]), Gen.nonEmptyListOf(Gen.posNum[Int])): (l1, l2) =>
           val h1 = BinomialHeap(l1: _*)
           val h2 = BinomialHeap(l2: _*)
           val newH = h1 ++ h2
           val newL = l1 ::: l2
           verifyMultiMemberHeap(newH, newL.sorted)
-        }
-      }
-    }
-  }
-}
-
-// Re-enable test-problematic Scalastyle checkers.
 
