@@ -173,7 +173,7 @@ lazy val docProjectSettings = Seq(
   Compile / doc / scalacOptions := commonScalaCSettings ++ Seq(
     "-author",
     "-groups",
-    "-project", s"{name.value} API Documentation",
+    "-project", s"${name.value} API Documentation",
     "-project-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
     //"-project-logo", "Path to logo file - TO DO",
     "-project-url", "https://facsim.org/",
