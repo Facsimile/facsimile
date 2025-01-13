@@ -146,6 +146,10 @@ ThisBuild / scalaVersion := PrimaryScalaVersion
 // It appears that this needs to be set globally.
 ThisBuild / publishTo := sonatypePublishToBundle.value
 
+// Allow the generated ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
+// "apiURL" property in their library's Maven POM configuration.
+ThisBuild / autoAPIMappings := true
+
 // Common Scala compilation options (for compiling sources and generating documentation).
 //
 // We'll enforce the new braceless style (using significant indentation), and updated language syntax.
@@ -175,10 +179,6 @@ lazy val docProjectSettings = Seq(
     "-project-url", "https://facsim.org/",
     "-project-version", baseVersion(version.value),
   ),
-
-  // Allow the generated ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
-  // "apiURL" property in their library's Maven POM configuration.
-  autoAPIMappings := true,
 )
 
 // Published project settings.
@@ -468,7 +468,7 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
 
   // Utility library dependencies.
   libraryDependencies ++= Seq(
-    
+
     // Pekko streams library & testkit (the latter scoped for testing only).
     //
     // This is used for creating streams of data.
@@ -510,7 +510,7 @@ lazy val facsimileCollection = project.in(file(FacsimileCollectionName))
 
   // Required libraries.
   libraryDependencies ++= Seq(
-    
+
     // The izumi-reflect library provides run-time access to generic type.
     "dev.zio" %% "izumi-reflect" % IzumiReflectVersion
   ),
