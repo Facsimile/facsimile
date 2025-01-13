@@ -46,8 +46,8 @@ import scala.concurrent.Future
 /** Create and manage a queued _Pekko_ source for issuing log messages.
  *
  *  @note Because the created log stream is buffered, and because it utilizes back pressure to slow down the publisher
- *  (the process that is creating the log messages), applications may appear to hang once the buffer has filled&mdash;
- *  unless the stream is connected to a buffer and run.
+ *  (the process that is creating the log messages), applications may appear to hang once the buffer has
+ *  filled&mdash;unless the stream is connected to a buffer and run.
  *
  *  @tparam A Type of message prefix to be used with messages sent to this stream.
  *
@@ -55,11 +55,12 @@ import scala.concurrent.Future
  *
  *  @param bufferSize Number of unprocessed log messages that can be stored in the buffer before back pressure is
  *  exerted. This value must be greater than zero and less than or equal to
- *  [[DataSource.MaxBufferSize]], or an [[IllegalArgumentException]] will be thrown.
+ *  [[org.facsim.util.stream.DataSource.MaxBufferSize]], [[java.lang.IllegalArgumentException]] will be thrown.
  *
  *  @param materializer Stream materializer to be utilized when creating the stream.
  *
- *  @throws IllegalArgumentException if `bufferSize` is less than 1 or greater than [[DataSource.MaxBufferSize]].
+ *  @throws java.lang.IllegalArgumentException if `bufferSize` is less than 1 or greater than
+ *  [[org.facsim.util.stream.DataSource.MaxBufferSize]].
  *
  *  @since 0.2
  */
@@ -76,11 +77,12 @@ final class LogStream[A](bufferSize: Int = LogStream.DefaultBufferSize)(using ma
    *  @param message Message to be sent to the stream.
    *
    *  @return Future containing the result of the message logging operation. If successful, the result can be
-   *  [[QueueOfferResult.Enqueued]] if data was sent successfully, [[QueueOfferResult.Dropped]] if the data was dropped
-   *  due to a buffer failure, or [[QueueOfferResult.QueueClosed]] if the queue was closed before the data could be
-   *  processed. If the queue was closed before the data was sent, the result is a [[Failure]] wrapping an
-   *  [[StreamDetachedException]]. If a failure closed the queue, it will respond with a `Failure` wrapping the
-   *  exception that signaled failure of the queue.
+   *  [[org.apache.pekko.stream.QueueOfferResult.Enqueued]] if data was sent successfully,
+   *  [[org.apache.pekko.stream.QueueOfferResult.Dropped]] if the data was dropped due to a buffer failure, or
+   *  [[org.apache.pekko.stream.QueueOfferResult.QueueClosed]] if the queue was closed before the data could be
+   *  processed. If the queue was closed before the data was sent, the result is a [[scala.util.Failure]] wrapping an
+   *  [[org.apache.pekko.stream.StreamDetachedException]]. If a failure closed the queue, it will respond with a
+   *  `Failure` wrapping the exception that signaled failure of the queue.
    *
    *  @since 0.2
    */

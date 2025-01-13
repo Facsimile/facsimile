@@ -37,7 +37,7 @@ import org.facsim.util.LibResource
 
 /** Thrown if an attempt to process an invalid code point exception is encountered.
  * 
- * @param uc UniCode character having an invalid
+ *  @param uc UniCode character having an invalid
  */
 final case class InvalidCodepointException(uc: UniChar)
 extends RuntimeException:

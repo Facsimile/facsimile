@@ -46,7 +46,7 @@ object UniChars:
   /** Encapsulates a single, valid, non-_surrogate [[https://unicode.org/ Unicode]]_ character.
    *
    *  _Java_ (and, hence, _Scala_, _Kotlin_ and other _JVM_ languages) suffer from a broken `char` implementation (and
-   *  hence also the [[Character]] and [[Char]] type implementations).
+   *  hence also the [[java.lang.Character]] and [[scala.Char]] type implementations).
    *
    *  In the early days of _Java_, a decision was made to support the then new _Unicode_ standard. At that time, a
    *  single _Unicode_ character required only 16 bits of storage capacity (two 8-bit bytes) to encode all of its
@@ -64,12 +64,12 @@ object UniChars:
    *  _trailing surrogate_) character; each surrogate character by itself is meaningless and the presence of surrogates
    *  that do not form a pair indicates an encoding error.
    *
-   *  The presence of surrogate characters leads to a number of gnarly programming problems when processing [[String]]s
-   *  as sequences of `char` values. In essence, the `char` type is broken and is no longer fit for purpose. To work
-   *  around this, _Facsimile_ has created a new character data type, called [[UniChar]], to represent individual
-   *  _Unicode_ characters, replacing the `char` type (and the _Java_ `Character` and _Scala_ `Char` types). [[UniChar]]
-   *  instances are based upon the _codepoint_ value of each _Unicode_ character, in the form of a 4-byte (32-bit)
-   *  integer value.
+   *  The presence of surrogate characters leads to a number of gnarly programming problems when processing
+   *  [[java.lang.String]]s as sequences of `char` values. In essence, the `char` type is broken and is no longer fit
+   *  for purpose. To work around this, _Facsimile_ has created a new character data type, called [[UniChar]], to
+   *  represent individual _Unicode_ characters, replacing the `char` type (and the _Java_ `Character` and _Scala_
+   *  `Char` types). [[UniChar]] instances are based upon the _codepoint_ value of each _Unicode_ character, in the form
+   *  of a 4-byte (32-bit) integer value.
    *
    *  As a consequence, every [[UniChar]] instance is a valid, non-surrogate _Unicode_ character, simplifying string
    *  parsing operations.
@@ -255,10 +255,10 @@ object UniChars:
      *  @param radix Radix for which a digit is required.
      *
      *  @return [[UniChar]] character representing the specified digit `value` in the indicated `radix`, wrapped in
-     *  [[Some]]; or [[None]] if either `radix` is outside the range [`Character.MIN_RADIX`, `Character.MAX_RADIX`] or
-     *  if `value` is not a valid digit value for `radix`.
+     *  [[scala.Some]]; or [[scala.None]] if either `radix` is outside the range [`Character.MIN_RADIX`,
+     *  `Character.MAX_RADIX`] or if `value` is not a valid digit value for `radix`.
      *
-     *  @see [[Int.digit()]] for recovering the digit value from a character.
+     *  @see [[digit()]] for recovering the digit value from a character.
      *
      *  @since 0.2
      */
@@ -283,7 +283,8 @@ object UniChars:
     /** Determine if a codepoint defines a _high-surrogate_ character.
      *
      *  A high-surrogate character, also called a _leading surrogate_, is used in a pair with a following low-surrogate
-     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[Character]] instance.
+     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[java.lang.Character]]
+     *  instance.
      *
      *  @note High-surrogate characters are invalid _Unicode_ characters, because they represent nothing by themselves.
      *
@@ -299,7 +300,8 @@ object UniChars:
     /** Determine if a codepoint defines a _low-surrogate_ character.
      *
      *  A low-surrogate character, also called a _trailing surrogate_, is used in a pair with a preceding high-surrogate
-     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[Character]] instance.
+     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[java.lang.Character]]
+     *  instance.
      *
      *  @note Low-surrogate characters are invalid _Unicode_ characters, because they represent nothing by themselves.
      *
@@ -315,8 +317,8 @@ object UniChars:
     /** Determine if a codepoint defines a _surrogate_ character.
      *
      *  A surrogate character, which may either be a high- or a low-surrogate, is used with another surrogate to encode
-     *  _supplemental_ characters that cannot be encoded in a single _Java_ [[Character]] instance. Surrogate characters
-     *  are invalid _Unicode_ characters, because they represent nothing by themselves.
+     *  _supplemental_ characters that cannot be encoded in a single _Java_ [[java.lang.Character]] instance. Surrogate
+     *  characters are invalid _Unicode_ characters, because they represent nothing by themselves.
      *
      *  @param codepoint _Unicode_ codepoint being checked.
      *
@@ -353,7 +355,7 @@ object UniChars:
      */
     given charToUniChar: Conversion[Char, UniChar] = (ch: Char) => ch.toInt
 
-    /** Implicit conversion of a sequence of [[UniChar]] characters to a [[String]].
+    /** Implicit conversion of a sequence of [[UniChar]] characters to a [[java.lang.String]].
      *
      *  @throws InvalidCodepointException if any character in the sequence is a surrogate or outside of the valid range.
      *
@@ -361,10 +363,10 @@ object UniChars:
      */
     given seqUniCharToString: Conversion[Seq[UniChar], String] = (ucs: Seq[UniChar]) => ucs.map(_.asString).mkString
 
-    /** Implicit conversion of a [[String]] to a [[Seq]] of [[UniChar]] instances.
+    /** Implicit conversion of a [[java.lang.String]] to a [[scala.collection.immutable.Seq]] of [[UniChar]] instances.
      *
-     *  An `IndexedSeq` is used because it provides efficient storage, lookup and retrieval of individual characters
-     *  through an index value.
+     *  @note An [[scala.collection.immutable.IndexedSeq]] is used to store the result because it provides efficient
+     *  storage, lookup and retrieval of individual characters through an index value.
      *
      *  @since 0.2
      */
@@ -389,8 +391,8 @@ object UniChars:
      *
      *  @param radix Radix for which this digit is to be processed.
      *
-     *  @return Numeric value of the digit, wrapped in [[Some]], or [[None]] if either the digit is a not a valid
-     *  digit in the specified `radix`, or if `radix` is outside the range [`Character.MIN_RADIX`,
+     *  @return Numeric value of the digit, wrapped in [[scala.Some]], or [[scala.None]] if either the digit is a not a
+     *  valid digit in the specified `radix`, or if `radix` is outside the range [`Character.MIN_RADIX`,
      *  `Character.MAX_RADIX`].
      *
      *  @see [[UniChar.forDigit()]] for identifying the character representing a digit value.
@@ -414,7 +416,7 @@ object UniChars:
 
     /** Determine if this _Unicode_ character is in the _basic multilingual plane_ (_BMP_).
      *
-     *  A _Unicode_ character is in the _BMP_ if it can be represented by a single [[Char]] character. Note that
+     *  A _Unicode_ character is in the _BMP_ if it can be represented by a single [[scala.Char]] character. Note that
      *  surrogate characters are not considered to be in the _BMP_.
      *
      *  @return `true` if `codepoint` identifies a _BMP Unicode_ character, or `false` otherwise.
@@ -447,8 +449,9 @@ object UniChars:
     /** Determine if this is a _high-surrogate Unicode_ character.
      *
      *  A high-surrogate character, also called a _leading surrogate_, is used in a pair with a following low-surrogate
-     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[Character]] instance.
-     *  High-surrogate characters are invalid _Unicode_ characters, because they represent nothing by themselves.
+     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[java.lang.Character]]
+     *  instance. High-surrogate characters are invalid _Unicode_ characters, because they represent nothing by
+     *  themselves.
      *
      *  @return `true` if `codepoint` identifies a high-surrogate character, or `false` otherwise.
      *
@@ -562,8 +565,9 @@ object UniChars:
     /** Determine if this defines a _low-surrogate_ character.
      *
      *  A low-surrogate character, also called a _trailing surrogate_, is used in a pair with a preceding high-surrogate
-     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[Character]] instance.
-     *  Low-surrogate characters are invalid _Unicode_ characters, because they represent nothing by themselves.
+     *  character to encode _supplemental_ characters that cannot be encoded in a single _Java_ [[java.lang.Character]]
+     *  instance. Low-surrogate characters are invalid _Unicode_ characters, because they represent nothing by
+     *  themselves.
      *
      *  @return `true` if `codepoint` identifies a low-surrogate _Unicode_ character, or `false` otherwise.
      *
@@ -596,9 +600,9 @@ object UniChars:
 
     /** Determine if this is a _supplementary Unicode_ character.
      *
-     *  Supplementary characters cannot be represented by a single _Java_ `char` ([[Character]], or [[Char]]) value,
-     *  and, instead, need must be encoded as a _surrogate pair_, consisting of a high- (or leading-) surrogate
-     *  character, followed by a low- (or trailing-) surrogate character.
+     *  Supplementary characters cannot be represented by a single _Java_ `char` ([[java.lang.Character]], or
+     *  [[scala.Char]]) value, and, instead, need must be encoded as a _surrogate pair_, consisting of a high- (or
+     *  leading-) surrogate character, followed by a low- (or trailing-) surrogate character.
      *
      *  @note All supplemental characters can be represented by a single [[UniChar]] value.
      *
@@ -611,8 +615,8 @@ object UniChars:
     /** Determine if this is a _surrogate Unicode_ character.
      *
      *  A surrogate character, which may either be a high- or a low-surrogate, is used with another surrogate to encode
-     *  a _supplementary_ character that cannot be encoded in a single _Java_ [[Character]] instance. Surrogate
-     *  characters are invalid _Unicode_ characters, because they represent nothing by themselves.
+     *  a _supplementary_ character that cannot be encoded in a single _Java_ [[java.lang.Character]] instance.
+     *  Surrogate characters are invalid _Unicode_ characters, because they represent nothing by themselves.
      *
      *  @return `true` if `codepoint` identifies a low- or a high-surrogate character, or `false` otherwise.
      *
@@ -712,9 +716,9 @@ object UniChars:
      */
     def toLowerCase: UniChar = Character.toLowerCase(uc)
 
-    /** Convert the codepoint value to a _Unicode_ character, represented as a [[String]].
+    /** Convert the codepoint value to a _Unicode_ character, represented as a [[java.lang.String]].
      *
-     *  @note The return value may be more than one [[Character]] in length.
+     *  @note The return value may be more than one [[java.lang.Character]] in length.
      *
      *  @return String containing this _Unicode_ character.
      *

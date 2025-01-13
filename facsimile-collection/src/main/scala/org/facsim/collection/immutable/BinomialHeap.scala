@@ -41,8 +41,8 @@ import scala.annotation.{tailrec, targetName}
 
 /** Immutable _[[https://en.wikipedia.org/wiki/Binomial_heap binomial heap]]_ container.
  *
- *  This is based upon the heap interface defined in the paper _[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
- *  Optimal Purely Functional Priority Queues]]_.
+ *  This is based upon the heap interface defined in the paper _Optimal Purely Functional Priority Queues_ (available
+ *  via the link: `http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf`).
  *
  *  @constructor Construct a new immutable binomial heap container, with no elements.
  *
@@ -56,8 +56,6 @@ import scala.annotation.{tailrec, targetName}
  *  @param tag Tag providing information at run-time about `A`.
  *
  *  @see _[[https://en.wikipedia.org/wiki/Binomial_heap Binomial heap on Wikipedia]]_.
- *
- *  @see _[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf Optimal Purely Functional Priority Queues (PDF file)]]_.
  *
  *  @since 0.0
  */
@@ -80,14 +78,14 @@ derives CanEqual:
 
   /** @inheritdoc
    *
-   *  @note Heap insertion has _amortized_ _O(1)_ time.
+   *  @note Heap insertion has _amortized O(1)_ time.
    */
   @targetName("add")
   override def +(a: A): BinomialHeap[A] = new BinomialHeap(insert(BinomialTreeNode(a, 0, Nil), rootTree))
 
   /** @inheritdoc
    *
-   *  @note Heap merges have _O(_log_ n)_ time.
+   *  @note Heap merges have _O(log n)_ time.
    *
    *  @todo Handle different element ordering in a better manner.
    */
@@ -98,13 +96,13 @@ derives CanEqual:
 
   /** @inheritdoc
    *
-   *  @note Identifying the heap minimum value takes _Θ(_log_ n)_ time.
+   *  @note Identifying the heap minimum value takes _O(log n)_ time.
    */
   override def minimum: Option[A] = findMin(rootTree)
 
   /** @inheritdoc
    *
-   *  @note Removal of the minimum element takes _Θ(_log_ n)_ time.
+   *  @note Removal of the minimum element takes _O(log n)_ time.
    */
   override def minimumRemove: (Option[A], BinomialHeap[A]) = cachedMinimumRemove
 
@@ -186,7 +184,7 @@ derives CanEqual:
    *
    *  @param t Tree for which a minimum value is sought.
    *
-   *  @return Minimum element in the tree, wrapped in [[Some]]; [[None]] if `t` is empty.
+   *  @return Minimum element in the tree, wrapped in [[scala.Some]]; [[scala.None]] if `t` is empty.
    */
   // TODO: Make this function stack safe.
   private def findMin(t: BinomialTree[A]): Option[A] = t match
@@ -212,9 +210,9 @@ derives CanEqual:
    *
    *  @param t Tree for which a minimum value is sought.
    *
-   *  @return Tuple whose first member is the minimum element, wrapped in [[Some]], or [[None]] if `t` is empty; the
-   *  second member of the tuple is the new true with the minimum removed (if the first element is defined), or the
-   *  original empty tree otherwise.
+   *  @return Tuple whose first member is the minimum element, wrapped in [[scala.Some]], or [[scala.None]] if `t` is
+   *  empty; the second member of the tuple is the new true with the minimum removed (if the first element is defined),
+   *  or the original empty tree otherwise.
    */
   // TODO: Make this function stack-safe.
   private def minRemove(t: BinomialTree[A]): (Option[A], BinomialTree[A]) = t match

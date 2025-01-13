@@ -87,8 +87,8 @@ final class Simulation[M <: ModelState[M]: Tag]:
    *  @param actions Actions to be executed after the specified `delay`.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the actions: `Unit`, wrapped in a [[Success]], if successful; an exception instance identifying the
-   *  cause of the failure, wrapped in a [[Failure]] otherwise.
+   *  success of the actions: `Unit`, wrapped in a [[scala.util.Success]], if successful; an exception instance
+   *  identifying the cause of the failure, wrapped in a [[scala.util.Failure]] otherwise.
    *
    *  @since 0.0
    */
@@ -267,8 +267,8 @@ final class Simulation[M <: ModelState[M]: Tag]:
    *  greater than or equal to the due time of the initial current event.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the update operation: `Unit`, wrapped in a [[Success]], if successful; an
-   *  exception instance identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
+   *  success of the update operation: `Unit`, wrapped in a [[scala.util.Success]], if successful; an exception instance
+   *  identifying the cause of the failure, wrapped in a [[scala.util.Failure]] otherwise.
    */
   private def updateCurrentEvent: SimulationAction[M] = State: s =>
 
@@ -290,8 +290,8 @@ final class Simulation[M <: ModelState[M]: Tag]:
    *  Execute the actions associated with the current event, updating the simulation state accordingly.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the dispatch operation: `Unit`, wrapped in a [[Success]], if successful; an
-   *  exception instance identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
+   *  success of the dispatch operation: `Unit`, wrapped in a [[scala.util.Success]], if successful; an exception
+   *  instance identifying the cause of the failure, wrapped in a [[scala.util.Failure]] otherwise.
    */
   private def dispatchCurrentEvent: SimulationAction[M] = State: s =>
 
@@ -310,8 +310,8 @@ final class Simulation[M <: ModelState[M]: Tag]:
    *   1. Report the resulting simulation update.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the iteration operation: `Unit`, wrapped in a [[Success]], if successful; an exception instance
-   *  identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
+   *  success of the iteration operation: `Unit`, wrapped in a [[scala.util.Success]], if successful; an exception
+   *  instance identifying the cause of the failure, wrapped in a [[scala.util.Failure]] otherwise.
    */
   private def iterate: SimulationAction[M] =
     for
@@ -335,8 +335,8 @@ final class Simulation[M <: ModelState[M]: Tag]:
    *   1. Report the resulting simulation update.
    *
    *  @return Simulation state transition containing the updated simulation state, together with a value indicating the
-   *  success of the iteration operation: `Unit`, wrapped in a [[Success]], if successful; an exception instance
-   *  identifying the cause of the failure, wrapped in a [[Failure]] otherwise.
+   *  success of the iteration operation: `Unit`, wrapped in a [[scala.util.Success]], if successful; an exception
+   *  instance identifying the cause of the failure, wrapped in a [[scala.util.Failure]] otherwise.
    */
   private def remainingEvents: SimulationAction[M] = State: s =>
 
@@ -375,7 +375,7 @@ final class Simulation[M <: ModelState[M]: Tag]:
    *  @param initialization Actions necessary to initialize the simulation, such as scheduling initial events.
    *
    *  @return Final simulation state as the first element of a tuple that also includes the result of the last
-   *  transition, wrapped in a [[Try]].
+   *  transition, wrapped in a [[scala.util.Try]].
    *
    *  @since 0.0
    */
@@ -402,11 +402,9 @@ final class Simulation[M <: ModelState[M]: Tag]:
  */
 object Simulation:
 
-  /** Implicit conversion of simulation transitions (_actions_) to an [[Action]] instance.
+  /** Implicit conversion of simulation transitions (_actions_) to an [[org.facsim.sim.model.Action]] instance.
    *
    *  @tparam M Final type of the simulation's model state.
-   *
-   *  @param actions Raw actions to be converted into an [[AnonymousAction]] instance.
    *
    *  @return `actions` wrapped as an action suitable for dispatching by an event.
    */

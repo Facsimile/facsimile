@@ -47,7 +47,7 @@ import java.text.ParseException
  *  @param offset Position within version at which the parser failed. This value must be within the range [0,
  *  version.length].
  *
- *  @throws scala.IllegalArgumentException if `offset` does not identify a position within `name`.
+ *  @throws java.lang.IllegalArgumentException if `offset` does not identify a position within `name`.
  *
  *  @since 0.0
  */

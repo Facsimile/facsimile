@@ -86,7 +86,7 @@ extends Ordered[Severity]:
 
   /** Warning log message classification.
    *
-   *  Warning log messages are typically used to document potential problems, unrecommended usage, etc..
+   *  Warning log messages are typically used to document potential problems, unrecommended usage, etc.
    *
    *  @since 0.2
    */
@@ -155,7 +155,7 @@ object Severity:
    *
    *  @param name Name of the severity to be retrieved.
    *
-   *  @return Severity matching `name` wrapped-up in a [[Some]], or [[None]] if no match was found.
+   *  @return Severity matching `name` wrapped-up in a [[scala.Some]], or [[scala.None]] if no match was found.
    *
    *  @since 0.2
    */

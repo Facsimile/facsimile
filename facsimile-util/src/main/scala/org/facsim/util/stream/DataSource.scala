@@ -54,11 +54,12 @@ import scala.concurrent.Future
  *
  *  @param bufferSize Number of unprocessed data elements that can be stored in the buffer before back pressure is
  *  exerted. This value must be greater than zero and less than [[DataSource.MaxBufferSize]], or an
- *  [[IllegalArgumentException]] will be thrown.
+ *  [[java.lang.IllegalArgumentException]] will be thrown.
  *
  *  @param materializer Stream materializer to be utilized when creating the stream.
  *
- *  @throws IllegalArgumentException if `bufferSize` is less than 1 or greater than [[DataSource.MaxBufferSize]].
+ *  @throws java.lang.IllegalArgumentException if `bufferSize` is less than 1 or greater than
+ *  [[DataSource.MaxBufferSize]].
  *
  *  @since 0.2
  */
@@ -79,11 +80,12 @@ final class DataSource[A](bufferSize: Int)(using materializer: Materializer):
    *  @param data Data to be sent to the stream.
    *
    *  @return Future containing the result of the data queuing operation. If successful, the result can be
-   *  [[QueueOfferResult.Enqueued]] if data was sent successfully, [[QueueOfferResult.Dropped]] if the data was dropped
-   *  due to a buffer failure, or [[QueueOfferResult.QueueClosed]] if the queue was closed before the data could be
-   *  processed. If the queue was closed before the data was sent, the result is a [[Failure]] wrapping a
-   *  [[StreamDetachedException]]. If a failure closed the queue, it will respond with a `Failure` wrapping the
-   *  exception that was passed to the [[fail]] method.
+   *  [[org.apache.pekko.stream.QueueOfferResult.Enqueued]] if data was sent successfully,
+   *  [[org.apache.pekko.stream.QueueOfferResult.Dropped]] if the data was dropped due to a buffer failure, or
+   *  [[org.apache.pekko.stream.QueueOfferResult.QueueClosed]] if the queue was closed before the data could be
+   *  processed. If the queue was closed before the data was sent, the result is a [[scala.util.Failure]] wrapping a
+   *  [[org.apache.pekko.stream.StreamDetachedException]]. If a failure closed the queue, it will respond with a
+   *  `Failure` wrapping the exception that was passed to the [[fail]] method.
    *
    *  @since 0.2
    */

@@ -41,9 +41,9 @@ import java.util.ResourceBundle
 
 /** Provides access to a locale-specific resource bundle belonging to a library or application.
  *
- *  Further information on how locale-specific resources are identified is at [[ResourceBundle]].
+ *  Further information on how locale-specific resources are identified is at [[java.util.ResourceBundle]].
  *
- *  The user's current preferred locale is identified through a call to [[Locale.getDefault()]].
+ *  The user's current preferred locale is identified through a call to [[java.util.Locale]].getDefault().
  *
  *  @todo Add code to retrieve package files, including images, etc.
  *
@@ -51,7 +51,7 @@ import java.util.ResourceBundle
  *
  *  @param bundleName Identifies the base name of the resource bundle to be loaded.
  *
- *  @throws MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
+ *  @throws java.util.MissingResourceException if a resource bundle with base name `bundleName` cannot be found.
  *
  *  @since 0.0
  */
@@ -63,7 +63,7 @@ class Resource(bundleName: String):
    *  default locale is available, then it will be loaded - otherwise, the "en_US" (United States English) resource
    *  bundle will be loaded.
    *
-   *  If the resource bundle cannot be found, then [[MissingResourceException]] will be thrown.
+   *  If the resource bundle cannot be found, then [[java.util.MissingResourceException]] will be thrown.
    */
   private final val bundle = ResourceBundle.getBundle(bundleName).nn
 
@@ -76,9 +76,9 @@ class Resource(bundleName: String):
    *  @note It is normal _Facsimile_ policy to avoid throwing exceptions, and to make functions as pure as possible.
    *  However, this function is frequently employed in a very-specific scenario, when it is expected to provide
    *  essential, locale-specific user information. In other words, it should _never_ fail in practical use. As a
-   *  consequence, requiring the caller to process a [[Try]] is problematic and cumbersome. Instead, this function will
-   *  just throw exceptions, which indicate a fundamental failing of the caller to configure their application or
-   *  library correctly.
+   *  consequence, requiring the caller to process a [[scala.util.Try]] is problematic and cumbersome. Instead, this
+   *  function will just throw exceptions, which indicate a fundamental failing of the caller to configure their
+   *  application or library correctly.
    *
    *  @param key Key used to identify the string resource to be retrieved.
    *
@@ -88,12 +88,12 @@ class Resource(bundleName: String):
    *
    *  @return Locale-specific, formatted version of the requested string resource.
    *
-   *  @throws MissingResourceException if there is no string resource indexed by `key`.
+   *  @throws java.util.MissingResourceException if there is no string resource indexed by `key`.
    *
-   *  @throws ClassCastException if the resource indexed by `key` is not a string.
+   *  @throws java.lang.ClassCastException if the resource indexed by `key` is not a string.
    *
-   *  @throws IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are of the
-   *  wrong type for the corresponding format elements in the retrieved string.
+   *  @throws java.lang.IllegalArgumentException if the retrieved string is invalid or if the `arguments` supplied are
+   *  of the wrong type for the corresponding format elements in the retrieved string.
    *
    *  @since 0.0
    */

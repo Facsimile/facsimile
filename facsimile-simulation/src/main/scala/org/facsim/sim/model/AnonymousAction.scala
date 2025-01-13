@@ -39,14 +39,14 @@ package org.facsim.sim.model
 import izumi.reflect.Tag
 import org.facsim.sim.{LibResource, SimulationAction}
 
-/** Anonymous action for wrapping bare actions as [[org.facsim.Action Action]] instances.
+/** Anonymous action for wrapping bare actions as [[org.facsim.sim.model.Action]] instances.
  *
  *  @tparam M Final type of the simulation's model state.
  *
  *  @constructor Create a new anonymous action.
  *
  *  @param actions Simulation state transitions (a.k.a. _actions_) to be executed at some point in the future.
- * 
+ *
  *  @since 0.0
  */
 final class AnonymousAction[M <: ModelState[M]: Tag] private[sim](override protected val actions: SimulationAction[M])

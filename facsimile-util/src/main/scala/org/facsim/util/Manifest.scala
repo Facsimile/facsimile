@@ -64,9 +64,9 @@ sealed trait Manifest:
    *
    *  @param name Name of attribute to be retrieved.
    *
-   *  @return Attribute's value as a string wrapped in a [[Success]] if it is defined; or a [[Failure]] otherwise. The
-   *  only possible failure is a [[NoSuchAttributeException]], indicating that there is no attribute with the indicated
-   *  `name`.
+   *  @return Attribute's value as a string wrapped in a [[scala.util.Success]] if it is defined; or a
+   *  [[scala.util.Failure]] otherwise. The only possible failure is a [[NoSuchAttributeException]], indicating that
+   *  there is no attribute with the indicated `name`.
    *
    *  @since 0.0
    */
@@ -79,16 +79,16 @@ sealed trait Manifest:
    *  `{name}: _timeformat_`
    *
    *  where `{name}` is the name of the attribute and `_timeformat_` is a string that can be successfully parsed by
-   *  [[ZonedDateTime.parse(CharSequence)]].
+   *  [[java.time.ZonedDateTime.parse()]].
    *
    *  @note If this function is used to retrieve a date string attribute value that cannot be parsed as a
-   *  [[ZonedDateTime]], then a [[Failure]] will result.
+   *  [[java.time.ZonedDateTime]], then a [[scala.util.Failure]] will result.
    *
    *  @param name Name of the date attribute to be retrieved.
    *
-   *  @return Date & time for this attribute wrapped in a [[Success]], or a [[Failure]] containing the reason that the
-   *  date & time could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
-   *  [[DateTimeParseException]].
+   *  @return Date & time for this attribute wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing
+   *  the reason that the date & time could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
+   *  [[java.time.format.DateTimeParseException]].
    *
    *  @since 0.0
    */
@@ -112,13 +112,13 @@ sealed trait Manifest:
    *  `{name}: _version_`
    *
    *  where `{name}` is the name of the attribute and `_version_` is a string that can be successfully parsed by
-   *  [[Version.apply(String)]].
+   *  [[Version.apply()]].
    *
    *  @param name Name of the version attribute to be retrieved.
    *
-   *  @return Version represented by this attribute wrapped in [[Success]], or [[Failure]] containing the reason that
-   *  the version could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
-   *  [[VersionParseException]].
+   *  @return Version represented by this attribute wrapped in [[scala.util.Success]], or [[scala.util.Failure]]
+   *  containing the reason that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]]
+   *  and [[VersionParseException]].
    *
    *  @since 0.0
    */
@@ -131,12 +131,12 @@ sealed trait Manifest:
    *
    *  `Inception-Timestamp: _timeformat_`
    *
-   *  where `_timeformat_` is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]] and
+   *  where `_timeformat_` is a string that can be successfully parsed by [[java.time.ZonedDateTime.parse()]] and
    *  identifies when the project was commenced.
    *
-   *  @return Project inception date & time wrapped in a [[Success]], or a [[Failure]] containing the reason that the
-   *  inception date & time could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
-   *  [[DateTimeParseException]].
+   *  @return Project inception date & time wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing
+   *  the reason that the inception date & time could not be retrieved. Possible failures are
+   *  [[NoSuchAttributeException]] and [[java.time.format.DateTimeParseException]].
    *
    *  @since 0.0
    */
@@ -149,12 +149,12 @@ sealed trait Manifest:
    *
    *  `Build-Timestamp: _timeformat_`
    *
-   *  where `_timeformat_` is a string that can be successfully parsed by [[ZonedDateTime.parse(CharSequence)]] and
+   *  where `_timeformat_` is a string that can be successfully parsed by [[java.time.ZonedDateTime.parse()]] and
    *  identifies when the archive was created.
    *
-   *  @return Project build date & time wrapped in a [[Success]], or a [[Failure]] containing the reason that the build
-   *  date & time could not be retrieved. Possible failures arw [[NoSuchAttributeException]] and
-   *  [[DateTimeParseException]].
+   *  @return Project build date & time wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
+   *  reason that the build date & time could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
+   *  [[java.time.format.DateTimeParseException]].
    *
    *  @since 0.0
    */
@@ -162,8 +162,9 @@ sealed trait Manifest:
 
   /** Try to retrieve the title of this application or library.
    *
-   *  @return Implementation title wrapped in a [[Success]], or a [[Failure]] containing the reason that the
-   *  implementation title could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
+   *  @return Implementation title wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
+   *  reason that the implementation title could not be retrieved. The only possible failure is
+   *  [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
@@ -173,8 +174,8 @@ sealed trait Manifest:
    *
    *  If defined, this may be an individual or an organization, depending upon circumstances.
    *
-   *  @return Implementation vendor name wrapped in a [[Success]], or a [[Failure]] containing the reason that the
-   *  vendor name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
+   *  @return Implementation vendor name wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
+   *  reason that the vendor name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
@@ -182,8 +183,9 @@ sealed trait Manifest:
 
   /** Try to retrieve the implementation version of this release of this application or library.
    *
-   *  @return Implementation version wrapped in [[Success]], or [[Failure]] containing the reason that the version could
-   *  not be retrieved. Possible failures are [[NoSuchAttributeException]] and [[VersionParseException]].
+   *  @return Implementation version wrapped in [[scala.util.Success]], or [[scala.util.Failure]] containing the reason
+   *  that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
+   *  [[VersionParseException]].
    *
    *  @since 0.0
    */
@@ -191,8 +193,8 @@ sealed trait Manifest:
 
   /** Try to retrieve the specification title of this application or library.
    *
-   *  @return Specification title wrapped in a [[Success]], or a [[Failure]] containing the reason that the
-   *  specification title could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
+   *  @return Specification title wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the reason
+   *  that the specification title could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
@@ -202,8 +204,8 @@ sealed trait Manifest:
    *
    *  If defined, this may be an individual or an organization, depending upon circumstances.
    *
-   *  @return Specification vendor name wrapped in a [[Success]], or a [[Failure]] containing the reason that the vendor
-   *  name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
+   *  @return Specification vendor name wrapped in a [[scala.util.Success]], or a [[scala.util.Failure]] containing the
+   *  reason that the vendor name could not be retrieved. The only possible failure is [[NoSuchAttributeException]].
    *
    *  @since 0.0
    */
@@ -211,8 +213,9 @@ sealed trait Manifest:
 
   /** Try to retrieve the specification version of this release of this application or library.
    *
-   *  @return Specification version wrapped in [[Success]], or [[Failure]] containing the reason that the version could
-   *  not be retrieved. Possible failures are [[NoSuchAttributeException]] and [[VersionParseException]].
+   *  @return Specification version wrapped in [[scala.util.Success]], or [[scala.util.Failure]] containing the reason
+   *  that the version could not be retrieved. Possible failures are [[NoSuchAttributeException]] and
+   *  [[VersionParseException]].
    *
    *  @since 0.0
    */
@@ -270,7 +273,7 @@ extends Manifest:
    */
   private val sysProp = new SystemProperties
 
-  /** Map of attribute names to corresponding system properties, wrapped in [[Success]].
+  /** Map of attribute names to corresponding system properties, wrapped in [[scala.util.Success]].
    */
   private val nameMap: Map[Name, Try[String]] = Map(
     Manifest.BuildTimestamp -> Success(sysProp("java.version.date")),

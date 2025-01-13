@@ -57,6 +57,9 @@ val ScalaTestVersion = "3.2.19"
 val ScoptVersion = "4.1.0"
 val SquantsVersion = "1.8.3"
 
+// URL Prefix for standard Javadoc documentation.
+val JavaDocPrefix = s"https://docs.oracle.com/en/java/javase/${Properties.javaSpecVersion}/docs/api"
+
 // Regular expression for matching release versions.
 val ReleaseVersion = """(\d+)\.(\d+)\.(\d+)""".r
 
@@ -97,10 +100,10 @@ def baseVersion(ver: String): String = ver match {
   case _ => s"Invalid(\'$ver\')"
 }
 
-// Git URL.
-val gitURL = "https://github.com/Facsimile/facsimile"
-
-// Git SCM record
+// Git URLs.
+val gitRepo = "Facsimile/facsimile"
+val gitURL = s"https://github.com/$gitRepo"
+val gitSrcTemplate = s"github://$gitRepo"
 val gitSCM = s"scm:git:$gitURL.git"
 
 // Dependency criteria for both compile and test.
@@ -156,8 +159,6 @@ ThisBuild / autoAPIMappings := true
 lazy val commonScalaCSettings = Seq(
   "-deprecation",
   "-encoding", "UTF-8",
-  "-indent",
-  "-new-syntax",
 )
 
 // Doc project settings.
@@ -170,14 +171,24 @@ lazy val docProjectSettings = Seq(
   // Note: Coverage output information configurations is provided automatically by the Scoverage SBT plugin.
   // Note: API mappings to external documentation (such as the primary Java and Scala API documentation) configuration
   // is managed by the API Mappings SBT plugin.
+  //
+  // For the Javadoc references, we have to specify which Java module the corresponding namespace belongs to.
   Compile / doc / scalacOptions := commonScalaCSettings ++ Seq(
     "-author",
+    "-comment-syntax:markdown",
+    "-external-mappings:" +
+      "scala.*::scaladoc3::https://scala-lang.org/api/3.3_LTS/," +
+      s"java.lang.*::javadoc::$JavaDocPrefix/java.base/," +
+      s"java.text.*::javadoc::$JavaDocPrefix/java.base/," +
+      s"java.time.*::javadoc::$JavaDocPrefix/java.baae/," +
+      s"java.util.*::javadoc::$JavaDocPrefix/java.base/",
     "-groups",
     "-project", s"${name.value} API Documentation",
     "-project-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
-    //"-project-logo", "Path to logo file - TO DO",
-    "-project-url", "https://facsim.org/",
+    "-project-logo", "FacsimileIcon.png",
     "-project-version", baseVersion(version.value),
+    "-snippet-compiler:compile",
+    s"-social-links:github::$gitURL",
   ),
 )
 
@@ -374,7 +385,10 @@ lazy val sourceProjectSettings = Seq(
   // Note: Coverage output information configurations is provided automatically by the Scoverage SBT plugin.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
     "-feature",
+    "-indent",
     "-java-output-version:17",
+    "-new-syntax",
+    "-project-url", s"$gitURL",
     "-unchecked",
     "-uniqid",
     "-Werror", // Fail compilation if there are any errors.
@@ -466,6 +480,13 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
   description := """The Facsimile Utility library provides a number of utilities required by other Facsimile libraries
   |as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
 
+  // Provide source links in the documentation files.
+  //
+  // This must match a specific pattern in order to be utilized by Scaladoc.
+  Compile / doc / scalacOptions ++= Seq(
+    s"-source-links:${normalizedName.value}=$gitSrcTemplate/v${version.value}#${normalizedName.value}/",
+  ),
+
   // Utility library dependencies.
   libraryDependencies ++= Seq(
 
@@ -507,6 +528,11 @@ lazy val facsimileCollection = project.in(file(FacsimileCollectionName))
   normalizedName := FacsimileCollectionName,
   description := """The Facsimile Collection library provides custom, immutable collections that are required by other
   |Facsimile libraries as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
+
+  // Provide source links in the documentation files.
+  Compile / doc / scalacOptions ++= Seq(
+    s"-source-links:${normalizedName.value}=$gitSrcTemplate/v${version.value}#${normalizedName.value}/",
+  ),
 
   // Required libraries.
   libraryDependencies ++= Seq(
@@ -605,6 +631,11 @@ lazy val facsimileSimulation = project.in(file(FacsimileSimulationName))
   normalizedName := FacsimileSimulationName,
   description := """The Facsimile Simulation library is a purely functional, discrete-event simulation engine. It is the
   |beating heart at the center of all Facsimile simulation models.""".stripMargin.replaceAll("\n", " "),
+
+  // Provide source links in the documentation files.
+  Compile / doc / scalacOptions ++= Seq(
+    s"-source-links:${normalizedName.value}=$gitSrcTemplate/v${version.value}#${normalizedName.value}/",
+  ),
 
   // Facsimile Engine dependencies.
   libraryDependencies ++= Seq(

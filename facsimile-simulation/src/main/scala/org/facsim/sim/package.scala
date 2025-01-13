@@ -58,8 +58,7 @@ type PriorityQueue[A] = BinomialHeap[A]
 
 /** Type for simulation state transition results.
  *
- *  This type is a function that takes a [[SimulationState]] argument, returning an updated simulation state and a
- *  result.
+ *  Represents a transition in the value of a [[org.facsim.sim.engine.SimulationState]].
  *
  *  @tparam M Actual type of the simulation's model state.
  *
@@ -71,8 +70,9 @@ type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
 
 /** Type for simulation state transition actions, which return a status value.
  *
- *  This type is a function that takes a [[SimulationState]] argument, returning an updated simulation state and a
- *  `Unit` value wrapped in [[Success]] if successful, or an exception instance wrapped in [[Failure]] otherwise.
+ *  Represents a set of actions that should be applied to the current [[org.facsim.sim.engine.SimulationState]],
+ *  resulting in a new simulation state wrapped in [[scala.util.Success]] if successful, or an exception instance
+ *  wrapped in [[scala.util.Failure]] otherwise.
  *
  *  @tparam M Actual type of the simulation's model state.
  *

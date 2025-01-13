@@ -97,8 +97,8 @@ extends App:
 
   /** Report the version of this application.
    *
-   *  @return Report the application version, obtained from the manifest, wrapped in [[Some]], or [[None]] if version
-   *  information is missing from the manifest, or is formatted incorrectly.
+   *  @return Report the application version, obtained from the manifest, wrapped in [[scala.Some]], or [[scala.None]]
+   *  if version information is missing from the manifest, or is formatted incorrectly.
    *
    *  @since 0.2
    */
@@ -106,8 +106,8 @@ extends App:
 
   /** Report the version of this application.
    *
-   *  @return Report the application version, obtained from the manifest, wrapped in [[Some]], or [[None]] if version
-   *  information is missing from the manifest, or is formatted incorrectly.
+   *  @return Report the application version, obtained from the manifest, wrapped in [[scala.Some]], or [[scala.None]]
+   *  if version information is missing from the manifest, or is formatted incorrectly.
    *
    *  @since 0.2
    */

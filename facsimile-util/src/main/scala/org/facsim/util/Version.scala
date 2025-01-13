@@ -55,7 +55,7 @@ import scala.util.{Failure, Success, Try}
  *  may share the same version number, so comparing version numbers is an unreliable method for comparing pre-release
  *  snapshots of the same release.
  *
- *  @throws IllegalArgumentException if any argument has an invalid value.
+ *  @throws java.lang.IllegalArgumentException if any argument has an invalid value.
  *
  *  @since 0.0
  */
@@ -181,8 +181,8 @@ object Version:
    *  with _`-SNAPSHOT`_, then a pre-release _snapshot_ is indicated. Alternatively, _Java_ version numbers of the form
    *  _`M.m.0_b`_ are accepted.  No other version string formats are currently supported.
    *
-   *  @return A [[Version]] instance equivalent to the information contained in `version` wrapped in a [[Success]] if
-   *  successful, or a [[Failure]] containing a [[VersionParseException]].
+   *  @return A [[Version]] instance equivalent to the information contained in `version` wrapped in a
+   *  [[scala.util.Success]] if successful, or a [[scala.util.Failure]] containing a [[VersionParseException]].
    *
    *  @since 0.0
    */

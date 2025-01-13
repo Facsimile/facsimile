@@ -58,7 +58,7 @@ private val PeriodRegEx = """(\.)""".r
  *
  *  `jar:file:/_path/to/jar/file.jar_!/_some/package/classname_.class`.
  *
- *  For example, in _Java_ 8, the URL for the [[String]] class might look like this (on an _Ubuntu_ system):
+ *  For example, in _Java_ 8, the URL for the [[java.lang.String]] class might look like this (on an _Ubuntu_ system):
  *
  *  `jar:file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/lang/String.class`
  *
@@ -76,7 +76,7 @@ private val JarUriRegEx = """^jar:(.+)!.+$""".r
  *
  *  `jrt:/_module-name_/_some/package/classname_.class`.
  *
- *  For example, in _Java_ 11, the URL for the [[String]] class might look like this:
+ *  For example, in _Java_ 11, the URL for the [[java.lang.String]] class might look like this:
  *
  *  `jrt:/java.base/java/lang/String.class`
  *
@@ -147,15 +147,15 @@ private[facsim] val RequireValidKey = "requireValid"
  */
 private[facsim] val RequireFiniteKey = "requireFinite"
 
-/** Implicit conversion of a [[ZonedDateTime]] to a [[Date]].
+/** Implicit conversion of a [[java.time.ZonedDateTime]] to a [[java.util.Date]].
  *
- *  Conversion between pre-_Java 1.8_ `java.util` time classes (such as `Date`, [[GregorianCalendar]], etc.) and the new
- *  post-_Java 1.8_ `java.time` time classes ([[Instant]], `ZonedDateTime`, etc) is cumbersome at best. The former could
- *  be dispensed with completely if it wasn't for the fact that [[MessageFormat]] currently supports only the `Date`
- *  class. This function makes working with the new time classes, and text message formatting, a little more
- *  straightforward.
+ *  Conversion between pre-_Java 1.8_ `java.util` time classes (such as `Date`, [[java.util.GregorianCalendar]], etc.)
+ *  and the new post-_Java 1.8_ `java.time` time classes ([[java.time.Instant]], `ZonedDateTime`, etc) is cumbersome at
+ *  best. The former could be dispensed with completely if it wasn't for the fact that [[java.text.MessageFormat]]
+ *  currently supports only the `Date` class. This function makes working with the new time classes, and text message
+ *  formatting, a little more straightforward.
  *
- *  @throws scala.IllegalArgumentException if `date` is too large to represent as a `GregorianCalendar` value.
+ *  @throws java.lang.IllegalArgumentException if `date` is too large to represent as a `GregorianCalendar` value.
  */
 private[facsim] given toDate: Conversion[ZonedDateTime, Date] =
   (date: ZonedDateTime) => GregorianCalendar.from(date).nn.getTime.nn
@@ -164,8 +164,8 @@ private[facsim] given toDate: Conversion[ZonedDateTime, Date] =
  *
  *  @param elementType Element type instance for which a resource _URL_ will be sought.
  *
- *  @return Resource _URL_ associated with `elementType` wrapped in [[Some]], or [[None]] if the element type's resource
- *  _URL_ could not be identified.
+ *  @return Resource _URL_ associated with `elementType` wrapped in [[scala.Some]], or [[scala.None]] if the element
+ *  type's resource _URL_ could not be identified.
  */
 private[util] def resourceUrl(elementType: Class[?]): Option[URL] =
 
@@ -239,8 +239,8 @@ private[util] def manifestOf(elementType: Class[?]): Manifest =
  *  Code using this assertion is only generated if the `-Xelide-below` _Scala_ compiler option is at least `ASSERTION`.
  *
  *  @note Assertions should only be used to verify internal state; they must _never_ be used to verify external state
- *  (use the [[require()]] methods to verify external state instead), since assertions will not execute in production
- *  code.
+ *  (use the [[scala.Predef.require()]] methods to verify external state instead), since assertions will not execute in
+ *  production code.
  *
  *  @tparam T Type of expression if not `null`.
  *
@@ -255,9 +255,9 @@ inline def assertNonNull[T](inline expr: T | Null): Unit = ${assertNonNullImpl('
 
 /** Require that argument value is valid.
  *
- *  Throw an [[IllegalArgumentException]] if supplied parameter value is invalid.
+ *  Throw an [[java.lang.IllegalArgumentException]] if supplied parameter value is invalid.
  *
- *  @note This function supersedes the [[require()]] methods.
+ *  @note This function supersedes the [[scala.Predef.require()]] methods.
  *
  *  @note Tests for non-`null` argument values should be verified by the `requireNonNull` function.
  *
@@ -272,14 +272,14 @@ inline def assertNonNull[T](inline expr: T | Null): Unit = ${assertNonNullImpl('
  *
  *  @param name Name of the argument being tested.
  *
- *  @throws IllegalArgumentException if `isValid` is `false`.
+ *  @throws java.lang.IllegalArgumentException if `isValid` is `false`.
  */
 private[util] def requireValidFn[T](arg: T, isValid: T => Boolean, name: => String): Unit =
   if !isValid(arg) then throw new IllegalArgumentException(LibResource(RequireValidKey, name, arg))
 
 /** Require that argument value is non-`null`.
  *
- *  Throw a [[NullPointerException]] if supplied argument value is `null`.
+ *  Throw a [[java.lang.NullPointerException]] if supplied argument value is `null`.
  *
  *  Normally, a `NullPointerException` will be thrown by the _Java_ virtual machine (_JVM_) if an attempt is made to
  *  dereference a `null` pointer. However, if a function takes an object reference argument and that argument is not
@@ -302,9 +302,9 @@ inline def requireNonNull[T](inline arg: T | Null): Unit = ${requireNonNullImpl(
 
 /** Require that argument value is valid.
  *
- *  Throw an [[IllegalArgumentException]] if supplied parameter value is invalid.
+ *  Throw an [[java.lang.IllegalArgumentException]] if supplied parameter value is invalid.
  *
- *  @note This function supersedes the [[require()]] methods.
+ *  @note This function supersedes the [[scala.Predef.require()]] methods.
  *
  *  @note Tests for non-`null` argument values should be verified by the [[requireNonNull()]] function.
  *
@@ -315,7 +315,7 @@ inline def requireNonNull[T](inline arg: T | Null): Unit = ${requireNonNullImpl(
  *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
  *  merely returns; if `false` an `IllegalArgumentException` is raised.
  *
- *  @throws IllegalArgumentException if `isValid` is `false`.
+ *  @throws java.lang.IllegalArgumentException if `isValid` is `false`.
  *
  *  @since 0.0
  */
@@ -323,12 +323,12 @@ inline def requireValid[T](inline arg: T, inline isValid: Boolean): Unit = ${req
 
 /** Require a finite double value.
  *
- *  Double arguments that equate to `NaN` (_not a number_) or _infinity_ will result in an [[IllegalArgumentException]]
- *  being thrown.
+ *  Double arguments that equate to `NaN` (_not a number_) or _infinity_ will result in an
+ *  [[java.lang.IllegalArgumentException]] being thrown.
  *
  *  @param arg Argument whose value is being validated.
  *
- *  @throws IllegalArgumentException if `arg` does not have a finite value.
+ *  @throws java.lang.IllegalArgumentException if `arg` does not have a finite value.
  *
  *  @since 0.0
  */
@@ -337,7 +337,7 @@ inline def requireFinite(inline arg: Double): Unit = ${requireFiniteImpl('arg)}
 /** Implementation of the [[assertNonNull())]] macro.
  *
  *  @param expr Possibly `null` expression to be asserted as non-`null`; if this value is `null`, then an
- *  [[AssertionError]] is thrown by the macro implementation, together with failed expression.
+ *  [[java.lang.AssertionError]] is thrown by the macro implementation, together with failed expression.
  *
  *  @return Implementation of this instance of the `assertNonNull` macro.
  *
@@ -357,7 +357,8 @@ private def assertNonNullImpl[T: Type](expr: Expr[T | Null])(using Quotes): Expr
  *  @tparam T Type of non-null values of the argument.
  *
  *  @param arg Argument whose value is to be tested. If this argument evaluates to `null`, then a
- *  [[NullPointerException]] is thrown by the macro implementation, together with the name of the failed argument.
+ *  [[java.lang.NullPointerException]] is thrown by the macro implementation, together with the name of the failed
+ *  argument.
  *
  *  @return Implementation of this instance of the `requireNonNull` macro.
  *
@@ -374,7 +375,8 @@ def requireNonNullImpl[T: Type](arg: Expr[T | Null])(using Quotes): Expr[Unit] =
 /** Provides implementation of the [[requireValid()]] macro.
  *
  *  @param arg Argument whose value is to be tested. If `isValid` is evaluated to `false`, then an
- *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
+ *  [[java.lang.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
+ *  argument.
  *
  *  @param isValid Flag representing the result of a condition determining the validity of `arg`. If `true`, function
  *  merely returns; if `false` an `IllegalArgumentException` is raised.
@@ -395,7 +397,8 @@ def requireValidImpl[T: Type](arg: Expr[T], isValid: Expr[Boolean])(using Quotes
 /** Provides implementation of the [[requireFinite()]] macro.
  *
  *  @param arg Argument whose value is to be tested. If evaluated as `NaN`, `+∞` or `-∞`, then an
- *  [[IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed argument.
+ *  [[java.lang.IllegalArgumentException]] is thrown by the macro implementation, together with the name of the failed
+ *  argument.
  *
  *  @return Implementation of this instance of the `requireFinite` macro.
  *

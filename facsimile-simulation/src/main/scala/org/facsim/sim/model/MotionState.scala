@@ -175,8 +175,8 @@ extends MotionState:
    *
    *  @param currentTime Current simulation time.
    *
-   *  @return Angle traveled from original position, about local Z-axis. Positive values are counter-clockwise,
-   *  negative values are clockwise.
+   *  @return Angle traveled from original position, about local Z-axis. Positive values are counter-clockwise, negative
+   *  values are clockwise.
    *
    *  @since 0.0
    */

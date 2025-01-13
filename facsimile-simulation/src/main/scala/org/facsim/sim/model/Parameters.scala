@@ -64,7 +64,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a string.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def stringParam(path: String): String = config.getString(path).nn
 
@@ -81,7 +81,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a list of strings.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def stringListParam(path: String): List[String] = config.getStringList(path).nn.asScala.toList
 
@@ -98,7 +98,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as an integer.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def intParam(path: String): Int = config.getInt(path)
 
@@ -115,7 +115,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a list of integers.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def intListParam(path: String): List[Int] = config.getIntList(path).nn.asScala.map(_.intValue()).toList
 
@@ -129,7 +129,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a Boolean.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def boolParam(path: String): Boolean = config.getBoolean(path)
 
@@ -143,7 +143,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a list of Booleans.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def boolListParam(path: String): List[Boolean] = config.getBooleanList(path).nn.asScala.map(_.booleanValue()).toList
 
@@ -163,7 +163,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a double precision value.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def doubleParam(path: String): Double = config.getDouble(path)
 
@@ -183,7 +183,7 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a list of double precision values.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    */
   def doubleListParam(path: String): List[Double] = config.getDoubleList(path).nn.asScala.map(_.doubleValue()).toList
 
@@ -200,9 +200,9 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a time value.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    *
-   *  @throws QuantityParseException if a value cannot be parsed as a time value.
+   *  @throws squants.QuantityParseException if a value cannot be parsed as a time value.
    */
   def timeParam(path: String): Time =
 
@@ -225,9 +225,9 @@ final class Parameters private[sim](config: Config):
    *
    *  @return Value of the associated parameter as a list of time values.
    *
-   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
    *
-   *  @throws QuantityParseException if a value cannot be parsed as a time value.
+   *  @throws squants.QuantityParseException if a value cannot be parsed as a time value.
    */
   def timeListParam(path: String): List[Time] =
 

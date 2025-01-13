@@ -40,8 +40,8 @@ import scala.annotation.targetName
 
 /** Trait defining an _immutable [[https://en.wikipedia.org/wiki/Heap_(data_structure) heap]]._
  *
- *  This is based upon the heap interface defined in the paper _[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
- *  Optimal Purely Functional Priority Queues]]_.
+ *  This is based upon the heap interface defined in the paper _Optimal Purely Functional Priority Queues_ (available
+ *  voa the link `http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf`).
  *
  *  @tparam A Type of element to be stored in the heap. There must be an implicit ordering available for this element
  *  type.
@@ -73,7 +73,7 @@ extends Equals:
    *
    *  @param a Element to be added to the heap.
    *
-   *  @return New heap containing all of the original elements, plus `a`.
+   *  @return New heap containing all the original elements, plus `a`.
    *
    *  @since 0.0
    */
@@ -84,7 +84,7 @@ extends Equals:
    *
    *  @param h Heap to be merged with this heap.
    *
-   *  @return New heap containing all of the elements in the original heap, plus all the elements in `h`.
+   *  @return New heap containing all the elements in the original heap, plus all the elements in `h`.
    *
    *  @since 0.0
    */
@@ -93,8 +93,8 @@ extends Equals:
 
   /** Find the minimum value stored in the heap.
    *
-   *  @return Minimum value stored in the heap, as determined by that element's ordering, wrapped in [[Some]]; or
-   *  [[None]] if this heap is empty.
+   *  @return Minimum value stored in the heap, as determined by that element's ordering, wrapped in [[scala.Some]]; or
+   *  [[scala.None]] if this heap is empty.
    *
    *  @since 0.0
    */
@@ -106,8 +106,8 @@ extends Equals:
    *  required simultaneously.
    *
    *  @return Tuple whose first member is the minimum value of the heap, as determined by that element's ordering,
-   *  wrapped in [[Some]]; or [[None]] if this heap is empty. The second tuple member is a new heap with the minimum
-   *  value removed (if the first member is defined), or the original empty heap otherwise.
+   *  wrapped in [[scala.Some]]; or [[scala.None]] if this heap is empty. The second tuple member is a new heap with the
+   *  minimum value removed (if the first member is defined), or the original empty heap otherwise.
    *
    *  @since 0.0
    */
@@ -115,7 +115,8 @@ extends Equals:
 
   /** Remove the minimum value from the heap, resulting in a new heap.
    *
-   *  @return New heap with its minimum value removed, wrapped in [[Some]]; or [[None]] if this heap is empty.
+   *  @return New heap with its minimum value removed, wrapped in [[scala.Some]]; or [[scala.None]] if this heap is
+   *  empty.
    *
    *  @since 0.0
    */
