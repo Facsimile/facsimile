@@ -36,16 +36,16 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
+import izumi.reflect.Tag
 import org.facsim.sim.{LibResource, SimulationAction}
-import org.facsim.sim.engine.{Completed, Simulation}
-import scala.reflect.runtime.universe.TypeTag
+import org.facsim.sim.engine.{Simulation, RunState}
 import squants.Time
 
 /** Standard simulation actions to perform a reset of the simulation's statistics.
  *
- *  @constructor Create a new end warmup action.
- *
  *  @tparam M Final type of the simulation's model state.
+ *
+ *  @constructor Create a new end warmup action.
  *
  *  @param snapLength Length of subsequent simulation snaps.
  *
@@ -53,12 +53,13 @@ import squants.Time
  *
  *  @param simulation Reference to the executing simulation.
  */
-private[sim] final class EndSnapAction[M <: ModelState[M]: TypeTag](snapLength: Time, snapsRemaining: Int)
-(implicit simulation: Simulation[M])
-extends Action[M] {
+private[sim] final class EndSnapAction[M <: ModelState[M]: Tag](snapLength: Time, snapsRemaining: Int)
+(using simulation: Simulation[M])
+extends Action[M]:
 
-  /** @inheritdoc */
-  override protected val actions: SimulationAction[M] = {
+  /** @inheritdoc
+   */
+  override protected val actions: SimulationAction[M] =
 
     // Sanity check.
     assert(snapsRemaining >= 0)
@@ -68,19 +69,21 @@ extends Action[M] {
     // TODO
 
     // If this is the last snap, then change the simulation state to completed.
-    if(snapsRemaining == 0) for {
-      r <- simulation.updateRunState(Completed)
-    } yield r
+    if snapsRemaining == 0 then
+      for
+        r <- simulation.updateRunState(RunState.Completed)
+      yield r
 
     // Otherwise, schedule the end of the next snap.
-    else for {
-      r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, snapsRemaining - 1))
-    } yield r
-  }
+    else
+      for
+        r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, snapsRemaining - 1))
+      yield r
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val name: String = LibResource("model.EndSnapActionName")
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val description: String = LibResource("model.EndSnapActionDesc")
-}

@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.sim.engine
 
+import izumi.reflect.Tag
 import org.facsim.sim.PriorityQueue
 import org.facsim.sim.model.ModelState
-import scala.reflect.runtime.universe.TypeTag
 import squants.Time
 import squants.time.Seconds
 
@@ -59,15 +59,14 @@ import squants.time.Seconds
  *  @param events Set of simulation events scheduled to occur at a future simulation time.
  *
  *  @param runState Current state of the simulation run.
- *
+ *  
  *  @param sim Simulation to which this simulation state applies, typically passed implicitly.
  *
  *  @since 0.0
  */
-final class SimulationState[M <: ModelState[M]: TypeTag] private[engine](private[engine] val modelState: M,
+final class SimulationState[M <: ModelState[M]: Tag] private[engine](private[engine] val modelState: M,
 private[engine] val nextEventId: Long, private[engine] val current: Option[Event[M]],
-private[engine] val events: PriorityQueue[Event[M]], private[engine] val runState: RunState)
-(implicit sim: Simulation[M]) {
+private[engine] val events: PriorityQueue[Event[M]], private[engine] val runState: RunState)(using sim: Simulation[M]):
 
   /** Copy the existing state to a new state with the indicated new values.
    *
@@ -76,8 +75,8 @@ private[engine] val events: PriorityQueue[Event[M]], private[engine] val runStat
    *
    *  @param newNextEventId New identifier of the next simulation event to be created.
    *
-   *  @param newCurrent New event to become the current event being dispatched, wrapped in [[scala.Some Some]]; if
-   *  [[scala.None None]], then the simulation has typically not yet started running.
+   *  @param newCurrent New event to become the current event being dispatched, wrapped in [[Some]]; if [[None]], then
+   *  the simulation has typically not yet started running.
    *
    *  @param newEvents New set of simulation events scheduled to occur at a future simulation time.
    *
@@ -87,9 +86,8 @@ private[engine] val events: PriorityQueue[Event[M]], private[engine] val runStat
    */
   private[engine] def update(newModelState: M = modelState, newNextEventId: Long = nextEventId,
   newCurrent: Option[Event[M]] = current, newEvents: PriorityQueue[Event[M]] = events,
-  newRunState: RunState = runState): SimulationState[M] = {
+  newRunState: RunState = runState): SimulationState[M] =
     new SimulationState(newModelState, newNextEventId, newCurrent, newEvents, newRunState)
-  }
 
   /** Report the current simulation time.
    *
@@ -116,4 +114,3 @@ private[engine] val events: PriorityQueue[Event[M]], private[engine] val runStat
    *  @since 0.0
    */
   def simulation: Simulation[M] = sim
-}

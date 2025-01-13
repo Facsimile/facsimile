@@ -38,82 +38,58 @@ package org.facsim.sim.engine
 
 import org.facsim.sim.LibResource
 
-/** Base trait for all simulation run states.
+/** Enumeration describing simulation run states.
  *
+ *  @param name Name of this run-state.
+ *    
+ *  @param iteratable Flag indicating whether this state supports event iteration.
+ *
+ *  @param schedulable Flag indicating whether this state supports event scheduling. If `true`, the simulation's current
+ *  run state allows event scheduling (updating of the simulation state to include a newly scheduled event); if `false`,
+ *  event iteration is not supported. 
+ *  
  *  @since 0.0
  */
-sealed trait RunState {
-
-  /** Name of this run-state.
+enum RunState(val name: String, iteratable: Boolean, schedulable: Boolean):
+  
+  /** Flag indicating whether this state supports event iteration.
+   * 
+   *  @return `true`, if the simulation's current run state allows event iteration (updating of the simulation state to
+   *  update the current event); `false`, if the event iteration is not supported.
+   */
+  private[engine] val canIterate: Boolean = iteratable
+  
+  /** Flag indicating whether this state supports event scheduling.
+   * 
+   *  @return `true`, if the simulation's current run state allows event scheduling (updating of the simulation state to
+   *  include a newly scheduled event); `false`, if the event iteration is not supported.
+   */
+  private[engine] val canSchedule: Boolean = schedulable
+  
+  /** State of the simulation prior to being run for the first time.
    *
    *  @since 0.0
    */
-  val name: String
+  case Initializing
+  extends RunState(LibResource("engine.RunState.Initializing"), false, true)
 
-  /** Flag indicating whether this state supports event iteration.
+  /** State of the simulation while it is executing.
    *
-   *  @return If `true`, the simulation's current run state allows event iteration (updating of the simulation state to
-   *  update the current event); if `false`, event iteration is not supported.
+   *  @since 0.0
    */
-  private[engine] val canIterate: Boolean = false
+  case Executing
+  extends RunState(LibResource("engine.RunState.Executing"), true, true)
 
-  /** Flag indicating whether this state supports event scheduling.
+  /** State indicating that the simulation has terminated due to having exhausted its events.
    *
-   *  @return If `true`, the simulation's current run state allows event scheduling (updating of the simulation state to
-   *  include a newly scheuled event); if `false`, event iteration is not supported.
+   *  @since 0.0
    */
-  private[engine] val canSchedule: Boolean = false
-}
+  case Terminated
+  extends RunState(LibResource("engine.RunState.Terminated"), false, false)
 
-/** State of the simulation prior to being run for the first time.
- *
- *  @since 0.0
- */
-case object Initializing
-extends RunState {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("engine.RunState.Initializing")
-
-  /** @inheritdoc */
-  private[engine] override val canSchedule: Boolean = true
-}
-
-/** State of the simulation while it is executing.
- *
- *  @since 0.0
- */
-case object Executing
-extends RunState {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("engine.RunState.Executing")
-
-  /** @inheritdoc */
-  private[engine] override val canIterate: Boolean = true
-
-  /** @inheritdoc */
-  private[engine] override val canSchedule: Boolean = true
-}
-
-/** State indicating that the simulation has terminated due to having exhausted its events.
- *
- *  @since 0.0
- */
-case object Terminated
-extends RunState {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("engine.RunState.Terminated")
-}
-
-/** State of the simulation when it has finished execution and cannot be run further.
- *
- *  @since 0.0
- */
-case object Completed
-extends RunState {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("engine.RunState.Completed")
-}
+  /** State of the simulation when it has finished execution and cannot be run further.
+   *
+   *  @since 0.0
+   */
+  case Completed
+  extends RunState(LibResource("engine.RunState.Completed"), false, false)

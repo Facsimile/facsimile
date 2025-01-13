@@ -55,10 +55,10 @@ import scopt.OptionParser
  *
  *  @param appVersionString Application's version string.
  */
-private[application] final class CLIParser(appName: String, appCopyright: Seq[String], appVersionString: String) {
+private[application] final class CLIParser(appName: String, appCopyright: Seq[String], appVersionString: String):
 
   /** Command line parser for this application. */
-  private final val parser = new OptionParser[FacsimileConfig](appName) {
+  private final val parser = new OptionParser[FacsimileConfig](appName):
 
     // Version header information.
     val versionHeader = LibResource("application.CLIParser.VersionHeader", appVersionString)
@@ -81,13 +81,12 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     opt[File]('c', "config-file")
     .valueName("<file>")
     .text(LibResource("application.CLIParser.ConfigFileText"))
-    .optional
+    .optional()
     .maxOccurs(1)
-    .action {(f, c) =>
+    .action: (f, c) =>
 
       // Update the configuration.
       c.copy(configFile = Some(f))
-    }
 
     // Option to run the simulation in "headless" mode, without a GUI interface.
     //
@@ -98,11 +97,10 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     // undesirable to use this option when debugging a model.
     opt[Unit]('H', "headless")
     .text(LibResource("application.CLIParser.HeadlessText"))
-    .optional
+    .optional()
     .maxOccurs(1)
-    .action {(_, c) =>
+    .action: (_, c) =>
       c.copy(useGUI = false)
-    }
 
     // Option to provide command line help about the application and immediately exit.
     //
@@ -111,11 +109,10 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     // testing challenging.)
     opt[Unit]('h', "help")
     .text(LibResource("application.CLIParser.HelpText"))
-    .optional
+    .optional()
     .maxOccurs(1)
-    .action {(_, c) =>
+    .action: (_, c) =>
       c.copy(runModel = false, showUsage = true)
-    }
 
     // Option defining the output file for writing simulation log messages.
     //
@@ -128,33 +125,29 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     opt[File]('l', "log-file")
     .valueName(CLIParser.FileValueName)
     .text(LibResource("application.CLIParser.LogFileText"))
-    .optional
+    .optional()
     .maxOccurs(1)
-    .action {(f, c) =>
+    .action: (f, c) =>
 
       // Update the configuration.
       c.copy(logFile = Some(f))
-    }
 
     // Option to specify the log level, or verbosity, for use when writing log messages to the log-file, and to the
     // standard output, if no animation is present.
     opt[String]('v', "log-level")
     .valueName(LibResource("application.CLIParser.LogLevelValueName"))
     .text(LibResource("application.CLIParser.LogLevelText", Severity.severityList.mkString(SQ, ", ", SQ),
-      FacsimileConfig().logLevel.name))
-    .optional
+    FacsimileConfig().logLevel.name))
+    .optional()
     .maxOccurs(1)
-    .validate {sl =>
+    .validate: sl =>
 
       // Validate that the log level is valid. This is case sensitive.
-      Severity.withName(sl) match {
+      Severity.withName(sl) match
         case Some(_) => success
         case None => failure(LibResource("application.CLIParser.LogLevelFailure", sl))
-      }
-    }
-    .action {(sl, c) =>
+    .action: (sl, c) =>
       c.copy(logLevel = Severity.withName(sl).get)
-    }
 
     // Option defining the report output file for this simulation run.
     //
@@ -167,13 +160,12 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     opt[File]('r', "report-file")
     .valueName(CLIParser.FileValueName)
     .text(LibResource("application.CLIParser.ReportFileText"))
-    .optional
+    .optional()
     .maxOccurs(1)
-    .action {(f, c) =>
+    .action: (f, c) =>
 
       // Update the configuration.
       c.copy(reportFile = Some(f))
-    }
 
     // Option to provide application version information and immediately exit.
     //
@@ -182,19 +174,17 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
     // testing challenging.)
     opt[Unit]('V', "version")
     .text(LibResource("application.CLIParser.VersionText"))
-    .optional
+    .optional()
     .maxOccurs(1)
-    .action {(_, c) =>
+    .action: (_, c) =>
       c.copy(runModel = false, showVersion = true)
-    }
-  }
 
   /** Parse the command line arguments provided.
    *
    *  @param args Command line arguments provided.
    *
-   *  @return Resulting application configuration wrapped in [[scala.Some Some]] if successfully parsed, or
-   *  [[scala.None None]] if the command line could not be parsed.
+   *  @return Resulting application configuration wrapped in [[Some]] if successfully parsed, or [[None]] if the command
+   *  line could not be parsed.
    */
   private[application] def parse(args: Seq[String]): Option[FacsimileConfig] = parser.parse(args, FacsimileConfig())
 
@@ -213,11 +203,9 @@ private[application] final class CLIParser(appName: String, appCopyright: Seq[St
    *  @return String containing the application's usage information.
    */
   private[application] def version: String = parser.header
-}
 
 /** Command line interpreter parser companion object. */
-private object CLIParser {
+private object CLIParser:
 
   /** Value description to output for a command line file parameter or option. */
   private val FileValueName = LibResource("application.CLIParser.FileValueName")
-}

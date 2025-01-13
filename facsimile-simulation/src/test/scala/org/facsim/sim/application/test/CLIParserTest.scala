@@ -54,25 +54,29 @@ import org.scalatest.funspec.AnyFunSpec
  *  will be necessary to expand upon these tests.
  */
 final class CLIParserTest
-extends AnyFunSpec
-with ScalaCheckPropertyChecks {
+extends AnyFunSpec, ScalaCheckPropertyChecks:
 
-  /** Test data. */
-  trait TestData {
+  /** Test data.
+   */
+  trait TestData:
 
-    /** Test application name. */
+    /** Test application name.
+     */
     private lazy val appName = "TestApp"
 
-    /** Test copyright sequence. */
+    /** Test copyright sequence.
+     */
     private lazy val appCopyright = Seq(
       "Some copyright string 1",
       "Some copyright string 2"
     )
 
-    /** Test version number. */
+    /** Test version number.
+     */
     private lazy val appVersion = "1.0.0"
 
-    /** Test parser, using test data. */
+    /** Test parser, using test data.
+     */
     lazy val parser: CLIParser = new CLIParser(appName, appCopyright, appVersion)
 
     /** Undefined short option.
@@ -81,10 +85,12 @@ with ScalaCheckPropertyChecks {
      */
     lazy val undefinedShortOpt: String = "-X"
 
-    /** Undefined long option. */
+    /** Undefined long option.
+     */
     lazy val undefinedLongOpt: String = "--undefined-long-opt"
 
-    /** Invalid argument. */
+    /** Invalid argument.
+     */
     lazy val invalidArg: String = "invalid-argument"
 
     /** A file name.
@@ -93,65 +99,83 @@ with ScalaCheckPropertyChecks {
      */
     lazy val fileName: String = "testfilename.txt"
 
-    /** Expected resulting file definition. */
+    /** Expected resulting file definition.
+     */
     lazy val file: File = new File(fileName)
 
-    /** Configuration file short option. */
+    /** Configuration file short option.
+     */
     lazy val configFileShortOpt: String = "-c"
 
-    /** Configuration file long option. */
+    /** Configuration file long option.
+     */
     lazy val configFileLongOpt: String = "--config-file"
 
-    /** Help short option. */
+    /** Help short option.
+     */
     lazy val helpShortOpt: String = "-h"
 
-    /** Help long option. */
+    /** Help long option.
+     */
     lazy val helpLongOpt: String = "--help"
 
-    /** Headless short option. */
+    /** Headless short option.
+     */
     lazy val headlessShortOpt = "-H"
 
-    /** Headless long option */
+    /** Headless long option
+     */
     lazy val headlessLongOpt = "--headless"
 
-    /** Log file short option. */
+    /** Log file short option.
+     */
     lazy val logFileShortOpt: String = "-l"
 
-    /** Log file long option. */
+    /** Log file long option.
+     */
     lazy val logFileLongOpt: String = "--log-file"
 
-    /** Log level short option. */
+    /** Log level short option.
+     */
     lazy val logLevelShortOpt: String = "-v"
 
-    /** Log level long option. */
+    /** Log level long option.
+     */
     lazy val logLevelLongOpt: String = "--log-level"
 
-    /** Log level options, with matching level. */
+    /** Log level options, with matching level.
+     */
     lazy val logLevels: Seq[(String, Severity)] = Seq(
-      ("debug", DebugSeverity),
-      ("information", InformationSeverity),
-      ("warning", WarningSeverity),
-      ("important", ImportantSeverity),
-      ("error", ErrorSeverity),
-      ("fatal", FatalSeverity)
+      ("debug", Severity.DebugSeverity),
+      ("information", Severity.InformationSeverity),
+      ("warning", Severity.WarningSeverity),
+      ("important", Severity.ImportantSeverity),
+      ("error", Severity.ErrorSeverity),
+      ("fatal", Severity.FatalSeverity)
     )
 
-    /** Invalid log level. */
+    /** Invalid log level.
+     */
     lazy val invalidLogLevel: String = "invalid"
 
-    /** Report file short option. */
+    /** Report file short option.
+     */
     lazy val reportFileShortOpt: String = "-r"
 
-    /** Report file long option. */
+    /** Report file long option.
+     */
     lazy val reportFileLongOpt: String = "--report-file"
 
-    /** Version header information. */
+    /** Version header information.
+     */
     lazy val versionHeader = s"$appName$LS${appCopyright.mkString(LS)}${LS}Version: $appVersion"
 
-    /** Version short option. */
+    /** Version short option.
+     */
     lazy val versionShortOpt: String = "-V"
 
-    /** Version long option. */
+    /** Version long option. 
+     */
     lazy val versionLongOpt: String = "--version"
 
     /** Test a particular file option.
@@ -164,175 +188,130 @@ with ScalaCheckPropertyChecks {
      *
      * @param expected Expected resulting configuration.
      */
-    protected[test] def testOption(name: String, short: String, long: String, expected: FacsimileConfig): Unit = {
-      it(s"must reject invalid $name file specifications") {
-        new TestData {
+    protected[test] def testOption(name: String, short: String, long: String, expected: FacsimileConfig): Unit =
+      it(s"must reject invalid $name file specifications"):
+        new TestData:
           assert(parser.parse(Seq(short)) === None)
           assert(parser.parse(Seq(long)) === None)
-        }
-      }
-      it(s"must accept valid $name file specifications") {
-        new TestData {
+      it(s"must accept valid $name file specifications"):
+        new TestData:
           assert(parser.parse(Seq(short, fileName)) === Some(expected))
           assert(parser.parse(Seq(long, fileName)) === Some(expected))
-        }
-      }
-    }
-  }
 
   // Tell the user which object we're testing.
-  describe(classOf[CLIParser].getCanonicalName) {
+  describe(classOf[CLIParser].getCanonicalName.nn):
 
     // Test the constructor.
-    describe(".this(String, Seq[String], String)") {
+    describe(".this(String, Seq[String], String)"):
 
       // It must create a parser without any issues.
-      it("must permit construction of a valid parser") {
-        new TestData {
+      it("must permit construction of a valid parser"):
+        new TestData:
           assert(parser !== null)
-        }
-      }
-    }
 
     // Test the parse method.
-    describe(".parse(Seq[String])") {
+    describe(".parse(Seq[String])"):
 
       // Verify that it returns a default, but valid, configuration if supplied no arguments.
-      it("must report a valid, default configuration when given no arguments") {
-        new TestData {
+      it("must report a valid, default configuration when given no arguments"):
+        new TestData:
           val result = parser.parse(Nil)
           assert(result === Some(FacsimileConfig()))
 
           // Verify the default configuration
-          result.foreach {c =>
+          result.foreach: c =>
             assert(c.configFile === None)
             assert(c.logFile === None)
-            assert(c.logLevel === WarningSeverity)
+            assert(c.logLevel === Severity.WarningSeverity)
             assert(c.reportFile === None)
             assert(c.runModel === true)
             assert(c.showUsage === false)
             assert(c.showVersion === false)
             assert(c.useGUI === true)
-          }
-        }
-      }
 
       // Verify that it rejects undefined options.
-      it("must reject undefined options") {
-        new TestData {
+      it("must reject undefined options"):
+        new TestData:
           assert(parser.parse(Seq(undefinedShortOpt)) === None)
           assert(parser.parse(Seq(undefinedLongOpt)) === None)
-        }
-      }
 
       // Verify that it rejects invalid arguments.
-      it("must reject invalid arguments") {
-        new TestData {
+      it("must reject invalid arguments"):
+        new TestData:
           assert(parser.parse(Seq(invalidArg)) === None)
-        }
-      }
 
       // Verify that it accepts configuration file options.
-      new TestData {
+      new TestData:
         testOption("config", configFileShortOpt, configFileLongOpt, FacsimileConfig(configFile = Some(file)))
-      }
 
       // Verify that it accepts headless mode option.
-      it("must accept headless mode options") {
-        new TestData {
+      it("must accept headless mode options"):
+        new TestData:
           val expectedCfg = FacsimileConfig(useGUI = false)
           assert(parser.parse(Seq(headlessShortOpt)) === Some(expectedCfg))
           assert(parser.parse(Seq(headlessLongOpt)) === Some(expectedCfg))
-        }
-      }
 
       // Verify that it accepts the help option correctly.
-      it("must accept help options and exit immediately") {
-        new TestData {
+      it("must accept help options and exit immediately"):
+        new TestData:
           val expectedCfg = FacsimileConfig(runModel = false, showUsage = true)
           assert(parser.parse(Seq(helpShortOpt)) === Some(expectedCfg))
           assert(parser.parse(Seq(helpLongOpt)) === Some(expectedCfg))
-        }
-      }
 
       // Verify that it accepts log file options.
-      new TestData {
+      new TestData:
         testOption("log", logFileShortOpt, logFileLongOpt, FacsimileConfig(logFile = Some(file)))
-      }
 
       // Verify that accepts log level options.
-      it("must reject invalid log level options") {
-        new TestData {
+      it("must reject invalid log level options"):
+        new TestData:
           assert(parser.parse(Seq(logLevelShortOpt)) === None)
           assert(parser.parse(Seq(logLevelLongOpt)) === None)
           assert(parser.parse(Seq(logLevelShortOpt, invalidLogLevel)) === None)
           assert(parser.parse(Seq(logLevelLongOpt, invalidLogLevel)) === None)
-        }
-      }
-      it("must accept valid log level options") {
-        new TestData {
-          logLevels.foreach {
-            case(n, ll) => {
+      it("must accept valid log level options"):
+        new TestData:
+          logLevels.foreach:
+            case(n, ll) =>
               val expectedCfg = FacsimileConfig(logLevel = ll)
               assert(parser.parse(Seq(logLevelShortOpt, n)) === Some(expectedCfg))
-            }
-          }
-        }
-      }
 
       // Verify that it accepts report file options.
-      new TestData {
+      new TestData:
         testOption("report", reportFileShortOpt, reportFileLongOpt, FacsimileConfig(reportFile = Some(file)))
-      }
 
       // Verify that it accepts the version option correctly.
-      it("must accept version options and exit immediately") {
-        new TestData {
+      it("must accept version options and exit immediately"):
+        new TestData:
           val expectedCfg = FacsimileConfig(runModel = false, showVersion = true)
           assert(parser.parse(Seq(versionShortOpt)) === Some(expectedCfg))
           assert(parser.parse(Seq(versionLongOpt)) === Some(expectedCfg))
-        }
-      }
-    }
 
     // Test the usage function.
-    describe(".usage") {
+    describe(".usage"):
 
       // Verify the returned result.
-      it("must contain the correct usage information") {
+      it("must contain the correct usage information"):
 
         // All we can do is to compare the reported value with a cached version of the output.
         //
         // NOTE: Any changes to the parser definition may result in this test failing. After manually inspecting the
         // differences, if the changes are valid, update the target file with the cached usage.
-        new TestData {
-          withLocale(Locale.US) {
-            val cachedFile = getClass.getResource("/CachedUsage.txt").getFile
+        new TestData:
+          withLocale(Locale.US.nn):
+            val cachedFile = getClass.getResource("/CachedUsage.txt").nn.getFile.nn
             val cachedSource = Source.fromFile(cachedFile)
-            try {
+            try
               val cachedUsage = s"$versionHeader$LS${cachedSource.mkString}"
               assert(parser.usage === cachedUsage)
-            }
-            finally {
+            finally
               cachedSource.close()
-            }
-          }
-        }
-      }
-    }
 
     // Test the version function.
-    describe(".version") {
-      it("must contain the correct version information") {
-        new TestData {
-          withLocale(Locale.US) {
+    describe(".version"):
+      it("must contain the correct version information"):
+        new TestData:
+          withLocale(Locale.US.nn):
             assert(parser.version === versionHeader)
-          }
-        }
-      }
-    }
-  }
-}
 
-// Re-enable test-problematic Scalastyle checkers.
 

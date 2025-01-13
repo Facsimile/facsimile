@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-import scala.reflect.runtime.universe.TypeTag
+import izumi.reflect.Tag
 
 /** Base class for model states.
  *
@@ -44,7 +44,9 @@ import scala.reflect.runtime.universe.TypeTag
  *  instance must be _immutable_.
  *
  *  @tparam M Final model state class, which must be derived from this class.
+ *            
+ *  @constructor Construct a new model state.
  *
  *  @since 0.0
  */
-abstract class ModelState[M <: ModelState[M]: TypeTag]
+abstract class ModelState[M <: ModelState[M]: Tag]

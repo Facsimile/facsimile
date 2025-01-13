@@ -36,18 +36,39 @@
 //======================================================================================================================
 package org.facsim.sim.model.structure
 
+import izumi.reflect.Tag
 import org.facsim.sim.model.state.ElementState
-import scala.reflect.runtime.universe.TypeTag
 
 /** Base class for all simulation model elements.
  *
- *  @tparam E Final type of the element sub-class.
+ *  =Note on Orientation=
+ *
+ *  In _Facsimile_, the _world_ axes are oriented as follows:
+ *
+ *   - X-Axis: Positive X-axis points to the _East_, negative to the _West_.
+ *   - Y-Axis: Positive Y-axis points to the _North_, negative to the _South_.
+ *   - Z-Axis: Positive Z-axis points _Up_, negative points _Down_.
+ *
+ *  This is the same _right-handed orientation_ convention adopted by _3D Studio_, _AutoCAD_ and _AutoMod_
+ *  among others.
+ *
+ *  Note that _JavaFX_ utilizes the following unusual axis orientation:
+ *
+ *   - X-Axis: Positive X-axis points to the _East_, negative to the _West_.
+ *   - Y-Axis: Positive Z-axis points _Up_, negative points _Down_.
+ *   - Z-Axis: Positive Y-axis points to the _South_, negative to the _North_.
+ *
+ *  Transformations must be applied to the 3D model in order to accurately render the same scene in _JavaFX_.
+ *  
+ *  @constructor Construct a new element.
+ *              
+ *  @tparam E Final type of the element subclass.
  *
  *  @tparam S Type of element storing the state of this element.
- *
+ *  
  *  @since 0.2
  */
-abstract class Element[E <: Element[E, S]: TypeTag, S <: ElementState[E, S]: TypeTag] {
+abstract class Element[E <: Element[E, S]: Tag, S <: ElementState[E, S]: Tag]:
 
   /** Name of this element.
    *
@@ -56,4 +77,3 @@ abstract class Element[E <: Element[E, S]: TypeTag, S <: ElementState[E, S]: Typ
    *  @since 0.0
    */
   val name: String
-}

@@ -36,8 +36,8 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
+import izumi.reflect.Tag
 import org.facsim.sim.{LibResource, SimulationAction}
-import scala.reflect.runtime.universe.TypeTag
 
 /** Anonymous action for wrapping bare actions as [[org.facsim.Action Action]] instances.
  *
@@ -46,16 +46,16 @@ import scala.reflect.runtime.universe.TypeTag
  *  @constructor Create a new anonymous action.
  *
  *  @param actions Simulation state transitions (a.k.a. _actions_) to be executed at some point in the future.
- *
+ * 
  *  @since 0.0
  */
-final class AnonymousAction[M <: ModelState[M]: TypeTag] private[sim]
-(override protected val actions: SimulationAction[M])
-extends Action[M] {
+final class AnonymousAction[M <: ModelState[M]: Tag] private[sim](override protected val actions: SimulationAction[M])
+extends Action[M]:
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val name: String = LibResource("model.AnonymousActionName")
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val description: String = LibResource("model.AnonymousActionDesc")
-}

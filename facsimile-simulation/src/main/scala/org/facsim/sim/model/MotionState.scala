@@ -45,7 +45,7 @@ import squants.time.Seconds
  *
  *  @since 0.0
  */
-sealed trait MotionState {
+sealed trait MotionState:
 
   /** Time this state was entered.
    *
@@ -64,7 +64,6 @@ sealed trait MotionState {
    *  @since 0.0
    */
   protected final def elapsedTime(currentTime: Time): Time = (currentTime - startTime) ensuring(_ >= Seconds(0.0))
-}
 
 /** Simulation element translational motion state base trait.
  *
@@ -73,7 +72,7 @@ sealed trait MotionState {
  *  @since 0.0
  */
 sealed trait TranslationalMotionState
-extends MotionState {
+extends MotionState:
 
   /** Translation from last position at specified time.
    *
@@ -84,7 +83,6 @@ extends MotionState {
    *  @since 0.0
    */
   def distance(currentTime: Time): Length
-}
 
 /** Simulation element stationary translation state.
  *
@@ -97,11 +95,11 @@ extends MotionState {
  *  @since 0.0
  */
 final case class TranslationalStationaryState(override val startTime: Time)
-extends TranslationalMotionState {
+extends TranslationalMotionState:
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override def distance(currentTime: Time): Length = Meters(0.0)
-}
 
 /** Simulation element accelerating translation state.
  *
@@ -123,19 +121,18 @@ extends TranslationalMotionState {
  */
 final case class TranslationalAccelerationState(override val startTime: Time, initialVelocity: Velocity,
 acceleration: Acceleration)
-extends TranslationalMotionState {
+extends TranslationalMotionState:
 
   // Sanity check.
   assert(acceleration != MetersPerSecondSquared(0.0))
 
-  /** @inheritdoc */
-  override def distance(currentTime: Time): Length = {
+  /** @inheritdoc
+   */
+  override def distance(currentTime: Time): Length =
 
     // Distance traveled:
     val t = elapsedTime(currentTime)
     (initialVelocity * t) + (acceleration * t * t / 2.0)
-  }
-}
 
 /** Simulation element cruising translation state.
  *
@@ -152,19 +149,18 @@ extends TranslationalMotionState {
  *  @since 0.0
  */
 final case class TranslationalCruiseState(override val startTime: Time, initialVelocity: Velocity)
-extends TranslationalMotionState {
+extends TranslationalMotionState:
 
   // Sanity check.
   assert(initialVelocity != MetersPerSecond(0.0))
 
-  /** @inheritdoc */
-  override def distance(currentTime: Time): Length = {
+  /** @inheritdoc
+   */
+  override def distance(currentTime: Time): Length =
 
     // Determine time spent in this state.
     val t = elapsedTime(currentTime)
     initialVelocity * t
-  }
-}
 
 /** Simulation element rotational motion state base trait.
  *
@@ -173,7 +169,7 @@ extends TranslationalMotionState {
  *  @since 0.0
  */
 sealed trait RotationalMotionState
-extends MotionState {
+extends MotionState:
 
   /** Rotation from last position at specified time.
    *
@@ -185,7 +181,6 @@ extends MotionState {
    *  @since 0.0
    */
   def theta(currentTime: Time): Angle
-}
 
 /** Simulation element stationary rotational state.
  *
@@ -198,11 +193,11 @@ extends MotionState {
  *  @since 0.0
  */
 final case class RotationalStationaryState(override val startTime: Time)
-extends RotationalMotionState {
+extends RotationalMotionState:
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override def theta(currentTime: Time): Angle = Radians(0.0)
-}
 
 /** Simulation element accelerating rotational state.
  *
@@ -224,25 +219,24 @@ extends RotationalMotionState {
  */
 final case class RotationalAccelerationState(override val startTime: Time, initialVelocity: AngularVelocity,
 acceleration: AngularAcceleration)
-extends RotationalMotionState {
+extends RotationalMotionState:
 
   // Sanity check.
   assert(acceleration != RadiansPerSecondSquared(0.0))
 
-  /** @inheritdoc */
-  override def theta(currentTime: Time): Angle = {
+  /** @inheritdoc
+   */
+  override def theta(currentTime: Time): Angle =
 
     // Angle traveled:
     val t = elapsedTime(currentTime)
     (initialVelocity * t) + (acceleration * t * t / 2.0)
-  }
-}
 
 /** Simulation element cruising rotational state.
  *
  *  Elements having this state are moving at a constant, non-zero angular velocity. If the velocity is positive, then
- *  the element is moving counter-clockwise, about positive local Z-axis; if negative, then the element is
- *  traveling clockwise.
+ *  the element is moving counter-clockwise, about positive local Z-axis; if negative, then the element is traveling 
+ *  clockwise.
  *
  *  @constructor Create a new rotational cruising motion state.
  *
@@ -253,16 +247,15 @@ extends RotationalMotionState {
  *  @since 0.0
  */
 final case class RotationalCruiseState(override val startTime: Time, initialVelocity: AngularVelocity)
-extends RotationalMotionState {
+extends RotationalMotionState:
 
   // Sanity check.
   assert(initialVelocity != RadiansPerSecond(0.0))
 
-  /** @inheritdoc */
-  override def theta(currentTime: Time): Angle = {
+  /** @inheritdoc
+   */
+  override def theta(currentTime: Time): Angle =
 
     // Determine time spent in this state.
     val t = elapsedTime(currentTime)
     initialVelocity * t
-  }
-}

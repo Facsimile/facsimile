@@ -43,22 +43,20 @@ import org.scalatest.funspec.AnyFunSpec
 
 // Disable test-problematic Scalastyle checkers.
 
-/** Test harness for the [[org.facsim.sim.engine.Simulation Simulation]] class. */
+/** Test harness for the [[Simulation]] class.
+ */
 final class SimulationTest
-extends AnyFunSpec
-with ScalaCheckPropertyChecks {
+extends AnyFunSpec, ScalaCheckPropertyChecks:
 
-  /** Simulation model test state class. */
+  /** Simulation model test state class.
+   */
   final class TestModelState
   extends ModelState[TestModelState]
 
-  /** Test data. */
+  /** Test data.
+   */
   trait TestData
 
   // Start with the companion object.
-  describe(classOf[Simulation[_]].getCanonicalName) {
-  }
-}
-
-// Re-enable test-problematic Scalastyle checkers.
+  describe(classOf[Simulation[?]].getCanonicalName.nn)
 

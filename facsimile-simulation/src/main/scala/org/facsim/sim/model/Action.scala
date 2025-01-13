@@ -36,8 +36,8 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
+import izumi.reflect.Tag
 import org.facsim.sim.SimulationAction
-import scala.reflect.runtime.universe.TypeTag
 
 /** An _action_ is a _state transition_ that takes the state of the simulation and results in a new simulation
  *  state.
@@ -54,7 +54,7 @@ import scala.reflect.runtime.universe.TypeTag
  *
  *  @since 0.0
  */
-abstract class Action[M <: ModelState[M]: TypeTag] {
+abstract class Action[M <: ModelState[M]: Tag]:
 
   /** Actions to be performed by this instance.
    *
@@ -66,9 +66,10 @@ abstract class Action[M <: ModelState[M]: TypeTag] {
    *
    *  @return Simulation state after dispatching (executing) these actions.
    */
-  final def dispatch: SimulationAction[M] = for {
-    r <- actions
-  } yield r
+  final def dispatch: SimulationAction[M] =
+    for
+      r <- actions
+    yield r
 
   /** Name of this event.
    *
@@ -86,4 +87,3 @@ abstract class Action[M <: ModelState[M]: TypeTag] {
    *  @since 0.0
    */
   val description: String
-}

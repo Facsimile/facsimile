@@ -34,7 +34,7 @@
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.sim package.
 //======================================================================================================================
-package org.facsim
+package org.facsim.sim
 
 import cats.data.State
 import org.facsim.collection.immutable.BinomialHeap
@@ -42,50 +42,40 @@ import org.facsim.sim.engine.SimulationState
 import org.facsim.sim.model.ModelState
 import scala.util.Try
 
-/** _Facsimile Simulation Engine_ library root package.
- *
- *  This library contains elements supporting the development of dynamic, discrete-event simulation models.
+/** Type representing an event priority.
  *
  *  @since 0.0
  */
-package object sim {
+type Priority = Int
 
-  /** Type representing an event priority.
-   *
-   *  @since 0.0
-   */
-  type Priority = Int
+/** Type representing used to represent an immutable priority queue in the simulation.
+ *
+ *  @tparam A Type of element stored in the priority queue. There must be an implicit ordering available for events.
+ *
+ *  @since 0.0
+ */
+type PriorityQueue[A] = BinomialHeap[A]
 
-  /** Type representing used to represent an immutable priority queue in the simulation.
-   *
-   *  @tparam A Type of element stored in the priority queue. There must be an implicit ordering available for events.
-   *
-   *  @since 0.0
-   */
-  type PriorityQueue[A] = BinomialHeap[A]
+/** Type for simulation state transition results.
+ *
+ *  This type is a function that takes a [[SimulationState]] argument, returning an updated simulation state and a
+ *  result.
+ *
+ *  @tparam M Actual type of the simulation's model state.
+ *
+ *  @tparam A Result of the state transition operation.
+ *
+ *  @since 0.0
+ */
+type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
 
-  /** Type for simulation state transition results.
-   *
-   *  This type is a function that takes a [[org.facsim.engine.SimulationState SimulationState]] argument, returning
-   *  an updated simulation state and a result.
-   *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @tparam A Result of the state transition operation.
-   *
-   *  @since 0.0
-   */
-  type SimulationTransition[M <: ModelState[M], A] = State[SimulationState[M], A]
-
-  /** Type for simulation state transition actions, which return a status value.
-   *
-   *  This type is a function that takes a [[org.facsim.engine.SimulationState SimulationState]] argument, returning
-   *  an updated simulation state and a `Unit` value wrapped in [[Success]] if successful, or an
-   *  exception instance wrapped in [[Failure]] otherwise.
-   *
-   *  @tparam M Actual type of the simulation's model state.
-   *
-   *  @since 0.0
-   */
-  type SimulationAction[M <: ModelState[M]] = SimulationTransition[M, Try[Unit]]
-}
+/** Type for simulation state transition actions, which return a status value.
+ *
+ *  This type is a function that takes a [[SimulationState]] argument, returning an updated simulation state and a
+ *  `Unit` value wrapped in [[Success]] if successful, or an exception instance wrapped in [[Failure]] otherwise.
+ *
+ *  @tparam M Actual type of the simulation's model state.
+ *
+ *  @since 0.0
+ */
+type SimulationAction[M <: ModelState[M]] = SimulationTransition[M, Try[Unit]]

@@ -57,7 +57,7 @@ final case class Point(x: Length, y: Length, z: Length)
  *
  *  @since 0.0
  */
-object Point {
+object Point:
 
   /** Origin.
    *
@@ -65,5 +65,4 @@ object Point {
    *
    *  @since 0.0
    */
-  val Origin = Point(Meters(0.0), Meters(0.0), Meters(0.0))
-}
+  val Origin: Point = Point(Meters(0.0), Meters(0.0), Meters(0.0))

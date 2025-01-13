@@ -49,7 +49,7 @@ import squants.time.Time
  *
  *  @since 0.2
  */
-final class Parameters private[sim](config: Config) {
+final class Parameters private[sim](config: Config):
 
   /** Retrieve a parameter value as a string.
    *
@@ -64,9 +64,9 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as a string.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
-  def stringParam(path: String): String = config.getString(path)
+  def stringParam(path: String): String = config.getString(path).nn
 
   /** Retrieve a parameter value as a list of strings.
    *
@@ -81,9 +81,9 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as a list of strings.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
-  def stringListParam(path: String): List[String] = config.getStringList(path).asScala.toList
+  def stringListParam(path: String): List[String] = config.getStringList(path).nn.asScala.toList
 
   /** Retrieve a parameter value as an integer.
    *
@@ -98,7 +98,7 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as an integer.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
   def intParam(path: String): Int = config.getInt(path)
 
@@ -107,17 +107,17 @@ final class Parameters private[sim](config: Config) {
    *  In normal usage, this function must complete without an exception; exceptions will only be thrown if the parameter
    *  configuration is invalid.
    *
-   *  There is no guarantee that the returned values are valid; for example, the returned values may be outside of a
-   *  valid range, etc. It is the responsibility of the caller to ensure the validity of the returned values.
+   *  There is no guarantee that the returned values are valid; for example, the returned values may be outside a valid
+   *  range, etc. It is the responsibility of the caller to ensure the validity of the returned values.
    *
    *  @param path Configuration path of the associated parameter. If the path does not identify a parameter value, or if
    *  the path does not identify a list of integers, then an exception will be thrown.
    *
    *  @return Value of the associated parameter as a list of integers.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
-  def intListParam(path: String): List[Int] = config.getIntList(path).asScala.map(_.intValue()).toList
+  def intListParam(path: String): List[Int] = config.getIntList(path).nn.asScala.map(_.intValue()).toList
 
   /** Retrieve a parameter value as a Boolean.
    *
@@ -129,7 +129,7 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as a Boolean.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
   def boolParam(path: String): Boolean = config.getBoolean(path)
 
@@ -143,16 +143,16 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as a list of Booleans.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
-  def boolListParam(path: String): List[Boolean] = config.getBooleanList(path).asScala.map(_.booleanValue()).toList
+  def boolListParam(path: String): List[Boolean] = config.getBooleanList(path).nn.asScala.map(_.booleanValue()).toList
 
   /** Retrieve a parameter value as a list of double precision values.
    *
    *  In normal usage, this function must complete without an exception; exceptions will only be thrown if the parameter
    *  configuration is invalid.
    *
-   *  There is no guarantee that the returned value will be valid; for example, the returned value may be outside of a
+   *  There is no guarantee that the returned value will be valid; for example, the returned value may be outside a
    *  valid range, etc. It is the responsibility of the caller to ensure the validity of the returned value.
    *
    *  @note Consider using an alternative type, such as a `Time`, etc., which may reflect the usage of the parameter
@@ -163,7 +163,7 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as a double precision value.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
   def doubleParam(path: String): Double = config.getDouble(path)
 
@@ -172,8 +172,8 @@ final class Parameters private[sim](config: Config) {
    *  In normal usage, this function must complete without an exception; exceptions will only be thrown if the parameter
    *  configuration is invalid.
    *
-   *  There is no guarantee that the returned values are valid; for example, the returned values may be outside of a
-   *  valid range, etc. It is the responsibility of the caller to ensure the validity of the returned values.
+   *  There is no guarantee that the returned values are valid; for example, the returned values may be outside a valid
+   *  range, etc. It is the responsibility of the caller to ensure the validity of the returned values.
    *
    *  @note Consider using an alternative type, such as a `Time`, etc., which may reflect the usage of the parameter
    *  better. Plain double precision values should only be used for unitless types, such as scale factors, ratios, etc.
@@ -183,16 +183,16 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as a list of double precision values.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    */
-  def doubleListParam(path: String): List[Double] = config.getDoubleList(path).asScala.map(_.doubleValue()).toList
+  def doubleListParam(path: String): List[Double] = config.getDoubleList(path).nn.asScala.map(_.doubleValue()).toList
 
   /** Retrieve a parameter value as a list of time values.
    *
    *  In normal usage, this function must complete without an exception; exceptions will only be thrown if the parameter
    *  configuration is invalid.
    *
-   *  There is no guarantee that the returned value will be valid; for example, the returned value may be outside of a
+   *  There is no guarantee that the returned value will be valid; for example, the returned value may be outside a
    *  valid range, etc. It is the responsibility of the caller to ensure the validity of the returned value.
    *
    *  @param path Configuration path of the associated parameter. If the path does not identify a parameter value, or if
@@ -200,42 +200,39 @@ final class Parameters private[sim](config: Config) {
    *
    *  @return Value of the associated parameter as a time value.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    *
-   *  @throws squants.QuantityParseException if a value cannot be parsed as a time value.
+   *  @throws QuantityParseException if a value cannot be parsed as a time value.
    */
-  def timeParam(path: String): Time = {
+  def timeParam(path: String): Time =
 
     // Get the value as a string first.
     val strVal = stringParam(path)
 
     // Now parse the value as a time.
     Time.parseString(strVal).get
-  }
 
   /** Retrieve a parameter value as a list of time values.
    *
    *  In normal usage, this function must complete without an exception; exceptions will only be thrown if the parameter
    *  configuration is invalid.
    *
-   *  There is no guarantee that the returned values are valid; for example, the returned values may be outside of a
-   *  valid range, etc. It is the responsibility of the caller to ensure the validity of the returned values.
+   *  There is no guarantee that the returned values are valid; for example, the returned values may be outside a valid
+   *  range, etc. It is the responsibility of the caller to ensure the validity of the returned values.
    *
    *  @param path Configuration path of the associated parameter. If the path does not identify a parameter value, or if
    *  the path does not identify a list of time values, then an exception will be thrown.
    *
    *  @return Value of the associated parameter as a list of time values.
    *
-   *  @throws com.typesafe.config.ConfigException if an exception occurs while retrieving the parameter value.
+   *  @throws ConfigException if an exception occurs while retrieving the parameter value.
    *
-   *  @throws squants.QuantityParseException if a value cannot be parsed as a time value.
+   *  @throws QuantityParseException if a value cannot be parsed as a time value.
    */
-  def timeListParam(path: String): List[Time] = {
+  def timeListParam(path: String): List[Time] =
 
     // Get the list of values as strings first.
     val strVals = stringListParam(path)
 
     // Now parse the value as a time.
     strVals.map(s => Time.parseString(s).get)
-  }
-}
