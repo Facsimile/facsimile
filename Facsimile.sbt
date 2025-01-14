@@ -40,7 +40,7 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
 import scala.util.Properties
 import scoverage.ScoverageKeys
-import xerial.sbt.Sonatype.sonatypeSettings
+import xerial.sbt.Sonatype.{sonatypeCentralHost, sonatypeSettings}
 
 // Library dependency version information.
 //
@@ -144,9 +144,10 @@ ThisBuild / homepage := Some(url("http://facsim.org/"))
 // any sources, it it still necessary to provide the version of Scala that is in use.
 ThisBuild / scalaVersion := PrimaryScalaVersion
 
-// Publish artifacts to the Sonatype OSS repository.
+// Publish artifacts to the Sonatype Central Release repository.
 //
 // It appears that this needs to be set globally.
+ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 ThisBuild / publishTo := sonatypePublishToBundle.value
 
 // Allow the generated ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
@@ -325,7 +326,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   // Employ the following custom release process.
   //
   // This differs from the standard sbt-release process in that we employ the sbt-sonatype plugin to publish the
-  // project, which also takes care of signing published artifacts.
+  // project.
   releaseProcess := Seq[ReleaseStep](
 
     // Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
@@ -350,14 +351,25 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     commitReleaseVersion,
     tagRelease,
 
-    // Sign, publish and release artifacts to the Sonatype OSS repository.
+    // Sign, publish and release artifacts to the Sonatype Central release repository.
     //
-    // This requires publishTo to be defined correctly (see above).
+    // This requires publishTo defined and the sonatypeCredentialHost property must be set to sonatypeCentralHost (see
+    // above).
+    //
+    // IMPORTANT: The following criteria are required to push to this artifact repository:
+    // 1. SNAPSHOT releases cannot be published, only full releases.
+    // 2. Sonatype Central (https://central.sonatype.com/) user tag used to authenticate user performing upload
+    //    (populated in $HOME/.sbt/1.0/Credentials.sbt).
+    // 3. Namespace (i.e. artifact organization, "org.facsim" in this case) must be identified and authorized as part of
+    //    the user's Sonatype account. (Authorization is done through a Sonatype Central JIRA ticket.)
+    // 4. Artifacts must be signed, in this case, by GPG key authentication@facsim.org (see above).
+    // 5. Artifact POM file includes specification of Maven formatting, license definition, organization URL, SCM
+    //    definition, and developer list. Many of these features can be entered into the pomExtra property.
     //
     // NOTE: If cross-publishing, use 'releaseStepCommandAndRemaining("+publishSigned")' in place of
     // 'releaseStepCommand("publishSigned")'.
-    releaseStepCommand("publish"),
-    releaseStepCommand("sonatypeBundleRelease"),
+    releaseStepCommand("publishSigned"),
+    releaseStepCommand("sonatypeCentralRelease"),
 
     // Update the "Version.sbt" file so that it contains the new development version number.
     setNextVersion,
