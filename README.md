@@ -15,7 +15,6 @@ Current status of official master _Facsimile_ branch:
 [![Build Status](https://travis-ci.org/Facsimile/facsimile.svg?branch=master)](https://travis-ci.org/Facsimile/facsimile)
 [![Coverage Status](https://coveralls.io/repos/github/Facsimile/facsimile/badge.svg?branch=master)](https://coveralls.io/github/Facsimile/facsimile?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/07018e3a4450402c918f98804ebdfd0b)](https://www.codacy.com/app/MichaelJAllen/Facsimile?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Facsimile/facsimile&amp;utm_campaign=Badge_Grade)
-[![Join the chat at https://gitter.im/Facsimile](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Facsimile?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Scala Steward badge](https://img.shields.io/badge/Scala_Steward-helping-brightgreen.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=)](https://scala-steward.org)
 
 ## Using _Facsimile_
@@ -23,7 +22,7 @@ Current status of official master _Facsimile_ branch:
 ### Status
 
 __Note__: _Facsimile_ is not currently usable as a simulation library; it is currently anticipated that this will be
-addressed by the 0.3 release.
+addressed by a future release.
 
 In the meantime, please feel free to use the library (and its sub-components), and provide feedback in the form of bug
 reports and enhancement requests.
@@ -38,10 +37,10 @@ __Note__: Installers for _Facsimile_ that allow it to be utilized for simulation
  check back for developments.
 
 _Facsimile_ utilizes the most recent _Java LTS_ (_long-term support_) release that is supported by its dependencies. The
-current _Facsimile_ version depends upon _Java 11 LTS_, and it is recommended that you utilize only this version of
+current _Facsimile_ version depends upon _Java 17 LTS_, and it is recommended that you utilize only this version of
 _Java_ for _Facsimile_.
 
-Any _Java 11 LTS_ release, including those by _Oracle_, _OpenJDK_, _Azul Systems_, _AdoptOpenJDK_, etc. should work just
+Any _Java 17 LTS_ release, including those by _Oracle_, _OpenJDK_, _Azul Systems_, _AdoptOpenJDK_, etc. should work just
 fine. It is strongly recommended that your organization reviews the licensing of your chosen _Java_ supplier to ensure
 that you are in compliance with its terms.
 
@@ -70,10 +69,10 @@ version := "1.0.0-SNAPSHOT"
 // Version of the Scala compiler and libraries to be used to build your project.
 //
 // This should match the supported version of _Scala_ for the specified release.
-scalaVersion := "2.13.2"
+scalaVersion := "3.3.4"
 
 // Version of Facsimile required to build your project.
-libraryDependencies += "org.facsim" %% "facsimile-simulation" % "0.2.1"
+libraryDependencies += "org.facsim" %% "facsimile-simulation" % "0.3.0"
 ```
 
 Use of _[JetBrains' IntelliJ IDEA](https://www.jetbrains.com/idea/)_ is highly recommended for developing both
