@@ -40,8 +40,10 @@
 
 # List ignored files alphabetically.
 
+.bsp/
 .cache
 .classpath
+.DS_Store
 .externalToolBuilders/
 .idea/.name
 .idea/copyright/HCI.xml
@@ -54,7 +56,7 @@
 .idea/workspace.xml
 .idea_modules/
 .project
-.scala_dependencies
+.scaly_dependencies
 .settings/
 .worksheet/
 bin
