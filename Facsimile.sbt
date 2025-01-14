@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -42,24 +42,23 @@ import scala.util.Properties
 import scoverage.ScoverageKeys
 import xerial.sbt.Sonatype.sonatypeSettings
 
-// Disable certain Scalastyle options, which IntelliJ IDEA insists on applying to SBT sources.
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
-
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
 //
-// NOTE: When changing the primary Scala version, remember to update "./.travis.yml" to match.
-val AkkaVersion = "2.6.5"
-val CatsVersion = "2.1.0"
-val ParboiledVersion = "2.2.0"
-val PrimaryScalaVersion = "2.13.2"
-val ScalaMeterVersion = "0.19"
-val ScalaTestPlusScalaCheckVersion = "3.1.0.0-RC2"
-val ScalaTestVersion = "3.1.2"
-val ScoptVersion = "4.0.0-RC2"
-val SquantsVersion = "1.6.0"
+// IMPORTANT: When changing the primary Scala version, remember to update "./.travis.yml" to match.
+val CatsVersion = "2.10.0"
+val IzumiReflectVersion = "2.3.10"
+val ParboiledVersion = "2.5.1"
+val PekkoVersion = "1.1.2"
+val PrimaryScalaVersion = "3.3.4"
+val ScalaCheckVersion = "1-18" // Formatted this way due to usage.
+val ScalaTestVersion = "3.2.19"
+val ScoptVersion = "4.1.0"
+val SquantsVersion = "1.8.3"
+
+// URL Prefix for standard Javadoc documentation.
+val JavaDocPrefix = s"https://docs.oracle.com/en/java/javase/${Properties.javaSpecVersion}/docs/api"
 
 // Regular expression for matching release versions.
 val ReleaseVersion = """(\d+)\.(\d+)\.(\d+)""".r
@@ -101,10 +100,10 @@ def baseVersion(ver: String): String = ver match {
   case _ => s"Invalid(\'$ver\')"
 }
 
-// Git URL.
-val gitURL = "https://github.com/Facsimile/facsimile"
-
-// Git SCM record
+// Git URLs.
+val gitRepo = "Facsimile/facsimile"
+val gitURL = s"https://github.com/$gitRepo"
+val gitSrcTemplate = s"github://$gitRepo"
 val gitSCM = s"scm:git:$gitURL.git"
 
 // Dependency criteria for both compile and test.
@@ -150,22 +149,15 @@ ThisBuild / scalaVersion := PrimaryScalaVersion
 // It appears that this needs to be set globally.
 ThisBuild / publishTo := sonatypePublishToBundle.value
 
-// Add external resolvers here (and also in project/Resolvers.sbt).
-//
-// This is currently necessary because SBT does not appear to allow certain resolvers (such as the "Artima Maven
-// Repository") to specify a project-wide resolver in just the "project/Resolves.sbt" file (or equivalent). Refer to the
-// following issues for further details.
-//
-//   https://github.com/sbt/sbt/issues/4103
-//   https://github.com/sbt/sbt/issues/4103#issuecomment-509162557
-//   https://github.com/sbt/sbt/issues/5070
-//   https://github.com/scalatest/scalatest/issues/1696
-//
-// Artima repository is required for SuperSafe compiler plugin.
-ThisBuild / resolvers += "Artima Maven Repository" at "https://repo.artima.com/releases"
+// Allow the generated ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
+// "apiURL" property in their library's Maven POM configuration.
+ThisBuild / autoAPIMappings := true
 
 // Common Scala compilation options (for compiling sources and generating documentation).
+//
+// We'll enforce the new braceless style (using significant indentation), and updated language syntax.
 lazy val commonScalaCSettings = Seq(
+  "-deprecation",
   "-encoding", "UTF-8",
 )
 
@@ -176,28 +168,28 @@ lazy val docProjectSettings = Seq(
 
   // ScalaDoc generation options.
   //
-  // The -Ymacro-no-expand prevents macro definitions from being expanded in macro sub-classes (Unidoc is currently
-  // unable to accommodate macros, so this is necessary).
+  // Note: Coverage output information configurations is provided automatically by the Scoverage SBT plugin.
+  // Note: API mappings to external documentation (such as the primary Java and Scala API documentation) configuration
+  // is managed by the API Mappings SBT plugin.
   //
-  // Note that diagram generation requires that GraphViz be installed on the build machine. However, at the time of
-  // writing, ScalaDoc's use of GraphViz is broken and does not work correctly.
+  // For the Javadoc references, we have to specify which Java module the corresponding namespace belongs to.
   Compile / doc / scalacOptions := commonScalaCSettings ++ Seq(
     "-author",
-    "-diagrams",
-    //"-diagrams-debug", //<-- Uncomment option to debug diagramming errors. Make sure graphviz is installed.
-    "-doc-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
-    "-doc-format:html",
-    "-doc-title", s"{name.value} API Documentation",
-    "-doc-version", baseVersion(version.value),
+    "-comment-syntax:markdown",
+    "-external-mappings:" +
+      "scala.*::scaladoc3::https://scala-lang.org/api/3.3_LTS/," +
+      s"java.lang.*::javadoc::$JavaDocPrefix/java.base/," +
+      s"java.text.*::javadoc::$JavaDocPrefix/java.base/," +
+      s"java.time.*::javadoc::$JavaDocPrefix/java.baae/," +
+      s"java.util.*::javadoc::$JavaDocPrefix/java.base/",
     "-groups",
-    //"-implicits",
-    //"-no-prefixes",
-    "-Ymacro-expand:none",
+    "-project", s"${name.value} API Documentation",
+    "-project-footer", s"Copyright © $copyrightRange, ${organizationName.value}. All rights reserved.",
+    "-project-logo", "FacsimileIcon.png",
+    "-project-version", baseVersion(version.value),
+    "-snippet-compiler:compile",
+    s"-social-links:github::$gitURL",
   ),
-
-  // Allow the generated ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
-  // "apiURL" property in their library's Maven POM configuration.
-  autoAPIMappings := true,
 )
 
 // Published project settings.
@@ -332,9 +324,8 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 
   // Employ the following custom release process.
   //
-  // This differs from the standard sbt-release process in that:
-  // a) We must perform static source checking (using Scalastyle) before setting the release version.
-  // b) We employ the sbt-sonatype plugin to publish the project, which also takes care of signing published artifacts.
+  // This differs from the standard sbt-release process in that we employ the sbt-sonatype plugin to publish the
+  // project, which also takes care of signing published artifacts.
   releaseProcess := Seq[ReleaseStep](
 
     // Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
@@ -351,15 +342,6 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
 
     // Run the test suite, to verify that all tests pass. (This will also compile all code.)
     runTest,
-
-    // Run scalastyle on sources to ensure that sources are correctly formatted and contain no static errors.
-    releaseStepCommand("scalastyle"),
-
-    // Run scalastyle on test sources to ensure that sources are correctly formatted and contain no static errors.
-    // This is temporarily disabled because of errors in Scalastyle parsing some of the recent test sources. See also
-    // .travis.yml.
-    //
-    //releaseStepInputTask(Test / scalastyle),
 
     // Update the "Version.sbt" file so that it contains the release version number.
     setReleaseVersion,
@@ -400,42 +382,25 @@ lazy val sourceProjectSettings = Seq(
 
   // Scala compiler options.
   //
-  // -Woctal-literal gives false positives in Scala 2.13.2 for any use of 0 as an integer literal. This issue will be
-  // fixed in Scala 2.13.3. See https://github.com/scala/bug/issues/11950 for further details. The resulting warnings
-  // currently prevents -Werror from being utilized.
-  //
-  // Artima SuperSafe issues a generic warning for "errors" that are not reported by the free, Community Edition. The 8
-  // errors reported in facsimile-collection\src\test\scala\org\facsim\collection\immutable\test\BinomialHeapTest.scala
-  // are false positives, and can be ignored. However, the resulting warning currently prevents -Werror from being
-  // utilized. This issue was reported to Artima: See https://github.com/scalatest/scalatest/issues/1737 for futher
-  // details.
-  //
-  // Scaladoc generation is currently a little buggy, and produces an lot of incorrect warnings. For this reason,
-  // -Werror can only specified when compiling code, rather than when generating documentation. When these issues are
-  // resolved, -Werror should be added to commonScalaCSettings.
+  // Note: Coverage output information configurations is provided automatically by the Scoverage SBT plugin.
   Compile / scalacOptions := commonScalaCSettings ++ Seq(
     "-feature",
-    "-g:vars",
-    "-opt:l:method",
-    "-opt-warnings:_", // Enable all optimization warnings.
-    "-target:8",
+    "-indent",
+    "-java-output-version:17",
+    "-new-syntax",
+    "-project-url", s"$gitURL",
     "-unchecked",
-    "-Wdead-code",
-    //"-Werror", // Fail compilation if there are any errors. See above.
-    "-Wextra-implicit",
-    "-Wmacros:before",
-    "-Wnumeric-widen",
-    "-Woctal-literal",
-    "-Wself-implicit",
-    "-Wunused:_", // Enable all warnings about unused elements (imports, privates, etc.).
-    "-Wvalue-discard",
-    "-Xcheckinit",
-    "-Xlint:_", // Enable all Xlint warnings.
-    "-Ymacro-annotations",
+    "-uniqid",
+    "-Werror", // Fail compilation if there are any errors.
+    //"-Wnonunit-statement",
+    "-Wunused:all", // Enable all warnings about unused elements (imports, privates, etc.).
+    //"-Wvalue-discard", Disabled: too many false positives.
+    "-Xverify-signatures",
+    "-Yexplicit-nulls", // Don't allow reference types to be null.
+    "-Ysafe-init",
   ),
 
-  // Fork the tests, so that they run in a separate process. This is a requirement for forked benchmarking with
-  // ScalaMeter, and improves test reliability.
+  // Fork the tests, so that they run in a separate process. This improves test reliability.
   Test / fork := true,
 
   // As recommended by ScalaTest, disable buffered logs in Test, in order to use ScalaTest's built-in buffering. This
@@ -446,9 +411,7 @@ lazy val sourceProjectSettings = Seq(
   //
   // Output makes more sense using the ScalaTest log buffering algorithm (enabled by disabling logBuffered for testing,
   // above).
-  //
-  // Currently disabled because it interferes with ScalaMeter benchmarking.
-  Test / parallelExecution := false,
+  Test / parallelExecution := true,
 
   // Code test coverage settings.
   //
@@ -461,7 +424,13 @@ lazy val sourceProjectSettings = Seq(
   // for example). Also, make sure that "clean" is issued prior to any build operation.
   ScoverageKeys.coverageHighlighting := true,
   ScoverageKeys.coverageFailOnMinimum := true,
-  ScoverageKeys.coverageMinimum := 0,
+  ScoverageKeys.coverageFailOnMinimum := true,
+  ScoverageKeys.coverageMinimumStmtTotal := 75,
+  ScoverageKeys.coverageMinimumBranchTotal := 75,
+  ScoverageKeys.coverageMinimumStmtPerPackage := 75,
+  ScoverageKeys.coverageMinimumBranchPerPackage := 75,
+  ScoverageKeys.coverageMinimumStmtPerFile := 75,
+  ScoverageKeys.coverageMinimumBranchPerFile := 75,
 
   // Required libraries common to all source projects.
   //
@@ -475,17 +444,14 @@ lazy val sourceProjectSettings = Seq(
     // ScalaTest is a library providing a framework for unit-testing
     "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
 
+    // Scalactic is used by ScalaTest to support other features, such as floating point equality with tolerances.
+    "org.scalactic" %% "scalactic" % ScalaTestVersion,
+
     // ScalaTest plus ScalaCheck, property-based testing library dependencies. This is used by ScalaTest.
     //
     // Note: This adds ScalaCheck as a test dependency, so it is no longer necessary to add it as a separate dependency.
-    "org.scalatestplus" %% "scalatestplus-scalacheck" % ScalaTestPlusScalaCheckVersion % Test,
-
-    // ScalaMeter, micro-benchmarking library dependencies.
-    "com.storm-enroute" %% "scalameter" % ScalaMeterVersion % Test,
+    "org.scalatestplus" %% s"scalacheck-$ScalaCheckVersion" % s"$ScalaTestVersion.0" % Test,
   ),
-
-  // Add ScalaMeter as a test framework.
-  testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework"),
 )
 
 // Settings for all projects that should not publish artifacts to the Sonatype OSS repository.
@@ -514,30 +480,28 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
   description := """The Facsimile Utility library provides a number of utilities required by other Facsimile libraries
   |as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
 
+  // Provide source links in the documentation files.
+  //
+  // This must match a specific pattern in order to be utilized by Scaladoc.
+  Compile / doc / scalacOptions ++= Seq(
+    s"-source-links:${normalizedName.value}=$gitSrcTemplate/v${version.value}#${normalizedName.value}/",
+  ),
+
   // Utility library dependencies.
   libraryDependencies ++= Seq(
 
-    // The Scala reflection library is required for implementing macros.
-    "org.scala-lang" % "scala-reflect" % PrimaryScalaVersion,
-
-    // Akka streams library & testkit (the latter scoped for testing only).
+    // Pekko streams library & testkit (the latter scoped for testing only).
     //
     // This is used for creating streams of data.
     //
-    // Akka streams additionally includes the following library dependencies:
-    //
-    // "com.typesafe" %% "config"
-    // "com.typesafe" %% "ssl-config-core"
-    // "com.typesafe.akka" %% "akka-core"
-    // "com.typesafe.akka" %% "akka-actor"
-    // "com.typesafe.akka" %% "akka-protobuf"
-    // "org.reactivestreams" %% "reactive-streams"
-    // "org.scala-lang.modules" %% "scala-java8-compat"
-    // "org.scala-lang.modules" %% "scala-parser-combinators"
-    "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
-    "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test,
+    // Pekko is a fork of Akka, which switched to a restrictive, proprietary license, thereby making it unsuitable for
+    // use by the Facsimile project.
+    "org.apache.pekko" %% "pekko-stream" % PekkoVersion,
+    "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test,
 
-    // Parboiled 2 is a parsing library, required for Facsimile's file parsing capabilities.
+    // Parboiled is a parsing library, required for Facsimile's file parsing capabilities.
+    //
+    // Parboiled used to have a dependency upon the Shapeless library, but that has now been internalized.
     "org.parboiled" %% "parboiled" % ParboiledVersion,
   ),
 
@@ -563,7 +527,19 @@ lazy val facsimileCollection = project.in(file(FacsimileCollectionName))
   name := "Facsimile Collection Library",
   normalizedName := FacsimileCollectionName,
   description := """The Facsimile Collection library provides custom, immutable collections that are required by other
-                   |Facsimile libraries as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
+  |Facsimile libraries as well as third-party libraries.""".stripMargin.replaceAll("\n", " "),
+
+  // Provide source links in the documentation files.
+  Compile / doc / scalacOptions ++= Seq(
+    s"-source-links:${normalizedName.value}=$gitSrcTemplate/v${version.value}#${normalizedName.value}/",
+  ),
+
+  // Required libraries.
+  libraryDependencies ++= Seq(
+
+    // The izumi-reflect library provides run-time access to generic type.
+    "dev.zio" %% "izumi-reflect" % IzumiReflectVersion
+  ),
 )
 
 // Temporarily commented out - not ready for launch, right now.
@@ -656,6 +632,11 @@ lazy val facsimileSimulation = project.in(file(FacsimileSimulationName))
   description := """The Facsimile Simulation library is a purely functional, discrete-event simulation engine. It is the
   |beating heart at the center of all Facsimile simulation models.""".stripMargin.replaceAll("\n", " "),
 
+  // Provide source links in the documentation files.
+  Compile / doc / scalacOptions ++= Seq(
+    s"-source-links:${normalizedName.value}=$gitSrcTemplate/v${version.value}#${normalizedName.value}/",
+  ),
+
   // Facsimile Engine dependencies.
   libraryDependencies ++= Seq(
 
@@ -693,5 +674,3 @@ lazy val facsimile = project.in(file("."))
   |environment. Facsimile simulations run on Microsoft Windows as well as on Linux, Mac OS, BSD and Unix on the Java
   |virtual machine.""".stripMargin.replaceAll("\n", " "),
 )
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc

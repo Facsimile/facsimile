@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -52,10 +52,10 @@ Face & Edge Colors]]
 /**
 Edge color.
 
-@note In ''VR Graphics'' mode (available since ''[[http://www.automod.com/
-AutoMod®]]'' version 10.0), edge color in ''cell'' files is ignored, with face
-color being used instead. ''Facsimile'' honors edge color as far as possible,
-using it to render cell's if the cell employs ''wireframe'' rendering.
+@note In _VR Graphics_ mode (available since _[[http://www.automod.com/
+AutoMod®]]_ version 10.0), edge color in _cell_ files is ignored, with face
+color being used instead. _Facsimile_ honors edge color as far as possible,
+using it to render cell's if the cell employs _wireframe_ rendering.
 
 @return Edge color of the cell or `None` if an edge color is not defined.
 

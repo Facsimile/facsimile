@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,30 +36,30 @@
 //======================================================================================================================
 package org.facsim.types
 
-/** ''[[http://facsim.org/ Facsimile]]'' physical quantity measurement elements.
+/** _[[http://facsim.org/ Facsimile]]_ physical quantity measurement elements.
  *
- *  The `org.facsim.types` types contains elements for expressing measurements of a variety of ''physical
- *  quantities'', such as ''time'', ''mass'', ''length'', ''angle'', ''thermodynamic temperature'', etc., in whatever
+ *  The `org.facsim.types` types contains elements for expressing measurements of a variety of _physical
+ *  quantities_, such as _time_, _mass_, _length_, _angle_, _thermodynamic temperature_, etc., in whatever
  *  units the user believes to be the most appropriate.
  *
  *  =Physical Quantity Unit Families=
  *
  *  For each physical quantity, there are typically a set of units in which measurements of that physical quantity can
- *  be expressed. For instance, ''time'' can be measured in ''seconds'', ''minutes'', or ''hours'', etc. In
- *  ''Facsimile'', such a set of units is termed a ''unit family''.
+ *  be expressed. For instance, _time_ can be measured in _seconds_, _minutes_, or _hours_, etc. In
+ *  _Facsimile_, such a set of units is termed a _unit family_.
  *
- *  Each unit family is encapsulated as a subclass of the `[[Physical]]` abstract base class. For example, time units
- *  are encapsulated by the `[Time.TimeUnits]] Unit` subclass, mass units by the `[[Mass.MassUnits]] Unit` subclass,
- *  length units by the `[[Length.LengthUnits]] Unit` subclass, etc.
+ *  Each unit family is encapsulated as a subclass of the [[Physical]] abstract base class. For example, time units
+ *  are encapsulated by the `[Time.TimeUnits]] Unit` subclass, mass units by the [[Mass.MassUnits]] Unit` subclass,
+ *  length units by the [[Length.LengthUnits]] Unit` subclass, etc.
  *
  *  =Physical Quantity Units=
  *
- *  ''Facsimile'' allows users to work with whichever units make the most sense for a particular application, while
+ *  _Facsimile_ allows users to work with whichever units make the most sense for a particular application, while
  *  interoperating seamlessly with code written using different units; conversion of values between different units in
  *  the same family takes place automatically, eliminating a whole class of conversion errors.
  *
  *  Individual physical quantity units are represented by instances of the corresponding unit family class. For example,
- *  ''seconds'', ''minutes'' and ''hours'' are represented by instances of the `[[Time.TimeUnits]]` class.
+ *  _seconds_, _minutes_ and _hours_ are represented by instances of the [[Time.TimeUnits]] class.
  *
  *  =Physical Quantity Measurements=
  *
@@ -68,7 +68,7 @@ package org.facsim.types
  *  Since all measurements are stored internally in SI units, no matter which units are employed by the user, there are
  *  never conversion issues when merging models that use different units.
  *
- *  @todo Expand on Facsimile's use of types for each measurement quantity. Instead of using a `[[Double]]`, like other
+ *  @todo Expand on Facsimile's use of types for each measurement quantity. Instead of using a [[Double]], like other
  *  simulation systems, Facsimile uses different types for each measurement quantity. Consequently, it's not possible to
  *  confuse a distance with a time, or a linear velocity with an angular velocity, or a mass with a temperature. By
  *  employing an appropriate set of operators, mechanics formulae can be accommodated by Facsimile in a very natural

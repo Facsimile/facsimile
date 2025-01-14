@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -38,15 +38,15 @@ import org.facsim.{assertNonNull, LibResource}
 /**
 Abstract joint class.
 
-''[[http://www.automod.com/ AutoMod®]] cell'' file format includes support for
+_[[http://www.automod.com/ AutoMod®]] cell_ file format includes support for
 two different types of kinematic joint:
-  - Rotational, in which a ''cell'' and its contents can be rotated about an
+  - Rotational, in which a _cell_ and its contents can be rotated about an
     axis.
-  - Translational, in which a ''cell'' and its contents can be translated along
+  - Translational, in which a _cell_ and its contents can be translated along
     an axis.
 
-In addition, ''AutoMod's cell'' files support the concept of a ''terminal
-control frame'' (''TCF'')&mdash;a ''cell'' marking a location at which another
+In addition, _AutoMod's cell_ files support the concept of a _terminal
+control frame_ (_TCF_)&mdash;a _cell_ marking a location at which another
 object can be attached.
 
 Typically, joints and TCFs are implemented in separate sets, but$mdash;for some
@@ -56,7 +56,7 @@ possible for:
   - Joints to be defined with an accompanying TCF.
   - TCFs to be defined without an accompanying joint.
 
-The latter case requires a ''null'' joint to be defined&mdash;it possesses TCF
+The latter case requires a _null_ joint to be defined&mdash;it possesses TCF
 data only.
 
 This class is the base class for all types of Joint.
@@ -65,10 +65,10 @@ This class is the base class for all types of Joint.
 
 @param scene Scene to which this joint belongs.
 
-@param flags The current ''cell's'' flags.
+@param flags The current _cell's_ flags.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

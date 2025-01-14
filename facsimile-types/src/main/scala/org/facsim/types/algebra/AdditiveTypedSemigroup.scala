@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.types.algebra
 
-/** A typed ''semi-group'' for additive operations.
+/** A typed _semi-group_ for additive operations.
  *
  *  @tparam A Type of first value being added.
  *

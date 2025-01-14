@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,13 +37,13 @@ package org.facsim.sfx.importers.cell
 import javafx.scene.paint.Material
 import scala.collection.mutable.Map
 
-/** Stores ''AutoMod cell'' attribute information for the current ''cell'' element.
+/** Stores _AutoMod cell_ attribute information for the current _cell_ element.
  *
- *  @note A number of cell ''attributres'' are unsupported by ''JavaFX'' release 8, the version currently used by
- *  ''Facsimile''. These are edge color, line style and line width. To add them should they become supported by a future
+ *  @note A number of cell _attributres_ are unsupported by _JavaFX_ release 8, the version currently used by
+ *  _Facsimile_. These are edge color, line style and line width. To add them should they become supported by a future
  *  release, it will be necessary to modify this class and its interface. Hence, do not expose this class to user code.
  *
- *  @constructor Create a new ''cell'' attribute record.
+ *  @constructor Create a new _cell_ attribute record.
  *
  *  @param material Material to be applied to the element.
  *
@@ -54,7 +54,7 @@ import scala.collection.mutable.Map
  */
 private[cell] final case class CellAttributes(material: Material, opacity: Option[Double], id: Option[String])
 
-/** ''Cell'' attribute companion. */
+/** _Cell_ attribute companion. */
 private[cell] object CellAttributes {
 
   /** Cached default attributes. */

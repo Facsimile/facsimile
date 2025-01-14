@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -34,33 +34,23 @@
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
-package org.facsim.util
+package org.facsim.util.test
 
 import java.util.Locale
 
-/** Common test utility package.
+/** Run with specified locale.
  *
- *  @since 0.2
+ *  @tparam A Type of value returned by `test`.
+ *
+ *  @param loc Locale to use for the tests.
+ *
+ *  @param test Tests to be run using the locale.
  */
-package object test {
-
-  /** Run with specified locale.
-   *
-   *  @tparam A Type of value returned by `test`.
-   *
-   *  @param loc Locale to use for the tests.
-   *
-   *  @param test Tests to be run using the locale.
-   */
-  def withLocale[A](loc: Locale)(test: => A): Unit = {
-    val defLoc = Locale.getDefault
-    try {
-      Locale.setDefault(loc)
-      test
-      ()
-    }
-    finally {
-      Locale.setDefault(defLoc)
-    }
-  }
-}
+def withLocale[A](loc: Locale)(test: => A): Unit =
+  val defLoc = Locale.getDefault
+  try
+    Locale.setDefault(loc)
+    test
+    ()
+  finally
+    Locale.setDefault(defLoc)

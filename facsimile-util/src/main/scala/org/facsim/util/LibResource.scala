@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.util
 
-/** Helper object reporting ''Facsimile Util'' library resources.
+/** Helper object reporting _Facsimile Util_ library resources.
  *
- *  @note This element must have global library visibility, otherwise the require'''XXX''' macros cannot access it to
+ *  @note This element must have global library visibility, otherwise the require*XXX* macros cannot access it to
  *  output exception messages.
  *
  *  @since 0.0

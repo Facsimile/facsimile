@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,7 @@ import org.facsim.LibResource
 import scalafx.scene.Group
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell file reference''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell file reference_
 primitives.
 
 @see
@@ -51,7 +51,7 @@ File References]] for further information.
 @param parent This value should be None for a Definition.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

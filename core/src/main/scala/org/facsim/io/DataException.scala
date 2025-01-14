@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,7 +37,7 @@ package org.facsim.io
 Base exception class signaling an error in a data operation.
 
 Data exceptions must be recoverable.  Furthermore, all functions throwing such
-exceptions must implement ''failure atomicity''.
+exceptions must implement _failure atomicity_.
 
 @constructor Construct new data exception.
 

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,7 @@
 //======================================================================================================================
 package org.facsim.stat.prng
 
-/** Simple ''pseudo-random number'' (''PRN'') generator, using an algorithm that is identical to that of ''Java''.
+/** Simple _pseudo-random number_ (_PRN_) generator, using an algorithm that is identical to that of _Java_.
  *
  *  @since 0.0
  */

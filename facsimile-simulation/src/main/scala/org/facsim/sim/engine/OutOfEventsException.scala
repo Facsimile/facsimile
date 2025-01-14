@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -41,7 +41,7 @@ import org.facsim.sim.LibResource
 /** Simulation has run out of events.
  *
  *  @note If this condition arises during simulation model execution, then the simulation's run state should change to
- *  `[[org.facsim.engine.Terminated Terminated]]`
+ *  [[RunState.Terminated]]
  *
  *  @since 0.0
  */

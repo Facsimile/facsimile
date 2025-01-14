@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -12,8 +12,9 @@
 // warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 // details.
 //
-// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
-// see http://www.gnu.org/licenses/lgpl.
+// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
+//
+//   http://www.gnu.org/licenses/lgpl.
 //
 // The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
 // project home page at:
@@ -29,10 +30,17 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
+package org.facsim.util.types
 
-//======================================================================================================================
-// SBT SuperSafe plugin, which ensures correctness for Scalactic expressions.
-//
-// This plugin requires a custom repository resolver to be defined.
-//======================================================================================================================
-addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.10")
+import org.facsim.util.types.UniChars.UniChar
+import org.facsim.util.LibResource
+
+/** Thrown if an attempt to process an invalid code point exception is encountered.
+ * 
+ *  @param uc UniCode character having an invalid
+ */
+final case class InvalidCodepointException(uc: UniChar)
+extends RuntimeException:
+
+  // Override to report the exception's cause.
+  override def getLocalizedMessage: String = LibResource("types.InvalidCodepoint", uc.codepoint)

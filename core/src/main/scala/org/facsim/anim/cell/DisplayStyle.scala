@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -38,7 +38,7 @@ import org.facsim.{assertNonNull, LibResource}
 /**
 Display style enumeration.
 
-Encodes ''[[http://www.automod.com/ AutoMod®]]'' display style codes and maps
+Encodes _[[http://www.automod.com/ AutoMod®]]_ display style codes and maps
 them to the corresponding display styles.
 
 @see
@@ -74,103 +74,103 @@ Vector mapping the display style ID to an opacity value.
     )
 
 /**
-Wireframe, having the ''cell'' display style 0.
+Wireframe, having the _cell_ display style 0.
 */
 
   private[cell] val Wireframe = Value
 
 /**
-Solid, having the ''cell'' display style 1.
+Solid, having the _cell_ display style 1.
 */
 
   private[cell] val Solid = Value
 
 /**
-Transparent 1, having the ''cell'' display style 2. Almost solid.
+Transparent 1, having the _cell_ display style 2. Almost solid.
 */
 
   private[cell] val Transparent1 = Value
 
 /**
-Transparent 2, having the ''cell'' display style 3.
+Transparent 2, having the _cell_ display style 3.
 */
 
   private[cell] val Transparent2 = Value
 
 /**
-Transparent 3, having the ''cell'' display style 4.
+Transparent 3, having the _cell_ display style 4.
 */
 
   private[cell] val Transparent3 = Value
 
 /**
-Transparent 4, having the ''cell'' display style 5.
+Transparent 4, having the _cell_ display style 5.
 */
 
   private[cell] val Transparent4 = Value
 
 /**
-Transparent 5, having the ''cell'' display style 6.
+Transparent 5, having the _cell_ display style 6.
 */
 
   private[cell] val Transparent5 = Value
 
 /**
-Transparent 6, having the ''cell'' display style 7.
+Transparent 6, having the _cell_ display style 7.
 */
 
   private[cell] val Transparent6 = Value
 
 /**
-Transparent 7, having the ''cell'' display style 8.
+Transparent 7, having the _cell_ display style 8.
 */
 
   private[cell] val Transparent7 = Value
 
 /**
-Transparent 8, having the ''cell'' display style 9.
+Transparent 8, having the _cell_ display style 9.
 */
 
   private[cell] val Transparent8 = Value
 
 /**
-Transparent 9, having the ''cell'' display style 10.
+Transparent 9, having the _cell_ display style 10.
 */
 
   private[cell] val Transparent9 = Value
 
 /**
-Transparent 10, having the ''cell'' display style 11.
+Transparent 10, having the _cell_ display style 11.
 */
 
   private[cell] val Transparent10 = Value
 
 /**
-Transparent 11, having the ''cell'' display style 12.
+Transparent 11, having the _cell_ display style 12.
 */
 
   private[cell] val Transparent11 = Value
 
 /**
-Transparent 12, having the ''cell'' display style 13.
+Transparent 12, having the _cell_ display style 13.
 */
 
   private[cell] val Transparent12 = Value
 
 /**
-Transparent 13, having the ''cell'' display style 14.
+Transparent 13, having the _cell_ display style 14.
 */
 
   private[cell] val Transparent13 = Value
 
 /**
-Transparent 14, having the ''cell'' display style 15.
+Transparent 14, having the _cell_ display style 15.
 */
 
   private[cell] val Transparent14 = Value
 
 /**
-Transparent 15, having the ''cell'' display style 16. Almost invisible.
+Transparent 15, having the _cell_ display style 16. Almost invisible.
 */
 
   private[cell] val Transparent15 = Value
@@ -204,14 +204,14 @@ Verify a display style code.
   displayStyleCode >= minValue && displayStyleCode <= maxValue
 
 /**
-Read display style from ''cell'' data stream.
+Read display style from _cell_ data stream.
 
 @param scene Scene from which the display style is to be read.
 
 @return Display style read, if valid.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

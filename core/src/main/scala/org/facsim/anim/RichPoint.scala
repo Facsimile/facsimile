@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -36,11 +36,11 @@ package org.facsim.anim
 /**
 Rich animation point.
 
-A ''rich'' animation point is formed from pairing a point in 3D animation space
+A _rich_ animation point is formed from pairing a point in 3D animation space
 with a texture map coordinate. This allows faces defined from rich points to
 automate texture mapping of images.
 
-@constructor Construct a ''rich'' point from a 3D animation space point and an
+@constructor Construct a _rich_ point from a 3D animation space point and an
 associated texture point.
 
 @param point Point in 3D in animation space.

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,11 +37,12 @@
 package org.facsim.util.log
 
 import org.facsim.util.LibResource
+import org.facsim.util.log.Severity.ErrorSeverity
 
 /** A message, categorized by severity, designed for use with data streams.
  *
  *  Messages are suitable for use with execution logs, etc. The prefix, scope and severity can all be utilized for
- *  filtering messag
+ *  filtering messages.
  *
  *  @tparam A Type for use as the message `prefix`, such as a timestamp. This type must implement a useful "toString"
  *  message, formatted appropriately.
@@ -58,7 +59,7 @@ import org.facsim.util.LibResource
  *
  *  @since 0.2
  */
-final case class LogMessage[A](prefix: A, msg: String, scope: Scope, severity: Severity = ErrorSeverity) {
+final case class LogMessage[A](prefix: A, msg: String, scope: Scope, severity: Severity = ErrorSeverity):
 
   /** Convert the message to a string.
    *
@@ -66,7 +67,5 @@ final case class LogMessage[A](prefix: A, msg: String, scope: Scope, severity: S
    *
    * @since 0.2
    */
-  override def toString: String = {
+  override def toString: String =
     LibResource("log.LogMessageToString", prefix.toString, msg, scope.name, severity.abbrName)
-  }
-}

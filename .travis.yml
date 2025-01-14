@@ -1,6 +1,6 @@
 #=======================================================================================================================
 # Facsimile: A Discrete-Event Simulation Library
-# Copyright © 2004-2020, Michael J Allen.
+# Copyright © 2004-2025, Michael J Allen.
 #
 # This file is part of Facsimile.
 #
@@ -38,8 +38,8 @@
 #   https://www.scala-sbt.org/1.x/docs/Travis-CI-with-sbt.html
 #=======================================================================================================================
 
-# Use Bionic Ubuntu (18.04 LTS) for builds.
-dist: bionic
+# Use Jammy Ubuntu (22.04 LTS) for builds.
+dist: jammy
 
 # Set up XVFB (X Windows virtual frame buffer) so that we can run JavaFX/ScalaFX code in headless mode.
 #
@@ -57,7 +57,7 @@ sudo: false
 # These values should be synchronized with the values in the custom SBT build definition file, Facsimile.sbt.
 language: scala
 scala:
-  - 2.13.2
+  - 3.3.4
 
 # Cache the Coursier, Ivy & SBT directories at the end of the build.
 cache:
@@ -66,41 +66,29 @@ cache:
     - $HOME/.ivy2
     - $HOME/.sbt
 
-# We need Java 11 to build Facsimile.
+# We need Java 17 to build Facsimile.
 #
 # Facsimile's policy is to support the most recent, LTS Java release that is compatible with Scala and the project's
-# third-party librarys and plugins. When a new LTS release becomes available, Facsimile will aim to switch to it as soon
-# as it becomes supported.
+# third-party libraries and plugins. When a new LTS release becomes available, Facsimile will aim to switch to it as
+# soon as it becomes supported.
 #
-# Note: This is currently the only version of Java supported. If other versions become compatible, they will be included
-# here.
+# Note: We'll also try with Java 21, the current LTS release.
 jdk:
-  - openjdk11
-
-# Require the latest version of this JDK (since JavaFX, in particular, is sensitive to different builds - some features
-# in the current version of ScalaFX require the latest release). Also ensure Graphviz is installed, in order to create
-# documentation without errors.
-addons:
-  apt:
-    packages:
-      - graphviz
+  - openjdk17
+  - openjdk21
 
 # Now perform the build.
 #
-# This firstly prints the java version used. Next, it executes SBT to perform scalastyle checking, coverage analysis and
-# then execute the test suite. Subsequent to that, since Facsimile is a multi-module project, we must generate a report
-# aggregated for all modules. Then notify Coveralls of the test coverage results. (Note that both of these latter tasks
-# must be performed as separate SBT commands.)
+# This firstly prints the java version used. Next, it executes SBT to perform coverage analysis and then execute the
+# test suite. Subsequent to that, since Facsimile is a multi-module project, we must generate a report aggregated for
+# all modules. Then notify Coveralls of the test coverage results. (Note that both of these latter tasks must be
+# performed as separate SBT commands.)
 #
 # Note: As of Scoverage 1.6.0, it is no longer necessary to execute the coverageReport task, and in fact speeds up the
 # build if it is omitted: coverageAggregate (which must still be run as a separate sbt pass), now operates on the raw
 # coverage reports.
-#
-# NOTE: Do not use Scalastyle on test sources. It currently fails for the UniCharTest.scala file, even when checking of
-# that file is disabled. This can be re-instated when addressed. See also the release procedure in Facsimile.sbt.
 script:
-#  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle test:scalastyle doc &&
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalastyle doc &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test doc &&
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 
 # If this script was successful, run the coveralls SBT task.

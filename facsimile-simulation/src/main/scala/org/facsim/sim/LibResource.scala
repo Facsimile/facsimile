@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,7 +38,7 @@ package org.facsim.sim
 
 import org.facsim.util.Resource
 
-/** Helper object reporting ''Facsimile Simulation'' library resources.
+/** Helper object reporting _Facsimile Simulation_ library resources.
  *
  *  @since 0.0
  */

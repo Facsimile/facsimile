@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -40,9 +40,9 @@ import org.facsim.util.{assertNonNull, requireNonNull}
 import scala.collection.immutable.HashMap
 
 /** Class representing a physical quantity family defined in terms of exponents of the
- *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' base units.
+ *  _[[http://en.wikipedia.org/wiki/SI SI]]_ base units.
  *
- *  An instance having only zero base types exponents has no units; i.e. it is ''unitless''.
+ *  An instance having only zero base types exponents has no units; i.e. it is _unitless_.
  *
  *  @constructor Construct a new physical quantity family. This constructor is private and should be called only from
  *  the `apply()` function&mdash;the rationale being that we have the possibility to re-use existing instances rather
@@ -97,7 +97,7 @@ extends Equals {
     Family(exponents.zip(divisor.exponents).map(p => p._1 - p._2))
   }
 
-  /** Determine whether this family is ''unitless''.
+  /** Determine whether this family is _unitless_.
    *
    *  @return `true` if this physical quantity family is unitless, or `false` otherwise.
    *
@@ -214,7 +214,6 @@ extends Equals {
     else name
   }
 }
-//scalastyle:on equals.hash.code
 
 /** Physical quantity family companion object. */
 private[phys] object Family {
@@ -249,7 +248,7 @@ private[phys] object Family {
   /** Map associating families to associated types. Families that do not have entries in this map do not have associated
    *  types and exist as generic values only.
    */
-  private var typeMap = HashMap.empty[Family, Specific] // scalastyle:ignore var.field
+  private var typeMap = HashMap.empty[Family, Specific]
 
   /** Convert an exponent value to a string.
    *
@@ -262,7 +261,7 @@ private[phys] object Family {
     exp match {
       case 1 => ""
       case 2 => "²"
-      case 3 => "³" // scalastyle:ignore magic.number
+      case 3 => "³"
       case _ => s"^$exp"
     }
   }
@@ -271,7 +270,7 @@ private[phys] object Family {
    *
    *  Registration should be performed once for each concrete [[Specific]] class instance.
    *
-   *  @param family Family value to be registered as associated with the '''specific''' class.
+   *  @param family Family value to be registered as associated with the *specific* class.
    *
    *  @param specific Class of the associated specific physical quantity type.
    */

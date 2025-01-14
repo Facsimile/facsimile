@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -40,7 +40,7 @@ import scalafx.scene.transform.Rotate
 /**
 Cell rotation order enumeration.
 
-Encodes ''[[http://www.automod.com/ AutoMod®]]'' axis rotation order and maps
+Encodes _[[http://www.automod.com/ AutoMod®]]_ axis rotation order and maps
 them to the appropriate rotations.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Rotation.html
@@ -112,16 +112,16 @@ Maximum rotation order code value.
   private[cell] val maxValue = maxId - 1
 
 /**
-Conversion of ''cell'' axis rotation order to a sequence of ''ScalaFX'' axis
+Conversion of _cell_ axis rotation order to a sequence of _ScalaFX_ axis
 values.
 
 @note This could be made an implicit function, but that might encourage the use
-of ''cell'' axis rotation order values in regular code, when ideally we want to
+of _cell_ axis rotation order values in regular code, when ideally we want to
 bury them.
 
-@param rotationOrder ''Cell'' axis rotation value to be converted.
+@param rotationOrder _Cell_ axis rotation value to be converted.
 
-@return Corresponding ''ScalaFX'' axis rotation sequence.
+@return Corresponding _ScalaFX_ axis rotation sequence.
 */
   def toAxisSequence(rotationOrder: RotationOrder.Value) = {
     assertNonNull(rotationOrder)
@@ -140,14 +140,14 @@ otherwise.
   rotationOrderCode >= minValue && rotationOrderCode <= maxValue
 
 /**
-Read axis rotation order code from ''cell'' data stream.
+Read axis rotation order code from _cell_ data stream.
 
 @param scene Scene from which the rotation order is to be read.
 
 @return Sequence of ScalaFX axis rotations, in specified order.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

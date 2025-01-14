@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -49,14 +49,14 @@ Read dimension string resource key.
   val ReadKey = "anim.cell.Translation.read"
 
 /**
-Read translation data from ''cell'' data stream.
+Read translation data from _cell_ data stream.
 
 @param scene Scene from which the translation data is to be read.
 
 @return A translation transformation to be applied to the associated node.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

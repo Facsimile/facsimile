@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -34,23 +34,14 @@
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.collection.immutable package.
 //======================================================================================================================
-package org.facsim.collection
+package org.facsim.collection.immutable
 
-/** ''Facsimile Collection'' immutable package.
+/** Type used for BinomialTrees.
  *
- *  Collections contained within this package are ''immutable''; operations that modify a collection result in a new
- *  collection, containing the modification, being returned.
- *
- *  @since 0.0
+ *  @tparam A Type of element stored in the binomial tree.
  */
-package object immutable {
+private[immutable] type BinomialTree[A] = List[BinomialTreeNode[A]]
 
-  /** Type used for BinomialTrees.
-   *
-   *  @tparam A Type of element stored in the binomial tree.
-   */
-  private[immutable] type BinomialTree[A] = List[BinomialTreeNode[A]]
+/** Type used for ranking nodes in a binomial tree. */
+private[immutable] type BinomialTreeRank = Int
 
-  /** Type used for ranking nodes in a binomial tree. */
-  private[immutable] type BinomialTreeRank = Int
-}

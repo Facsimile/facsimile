@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -38,17 +38,17 @@ import org.facsim.anim.Mesh
 import org.facsim.anim.Point3D
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell trapezoid and
-box'' primitives.
+Class representing _[[http://www.automod.com/ AutoMod®]] cell trapezoid and
+box_ primitives.
 
-@note The use by ''AutoMod'' of the term ''trapezoid'' is a misnomer. These
+@note The use by _AutoMod_ of the term _trapezoid_ is a misnomer. These
 shapes are more correctly and generally described as
-''[[http://en.wikipedia.org/wiki/Frustum rectangular frusta]]''. More specific
-shapes that can be represented by this cell include ''boxes'', ''cubes'',
-''cuboids'' and ''square frusta''. A ''[[http://en.wikipedia.org/wiki/Trapezoid
-trapezoid]]'' is the name for a 2D quadrilateral with two parallel sides.
-However, the term ''trapezoid'' is used throughout this file since it will be
-familiar to users of ''AutoMod'' & ''cell files''.
+_[[http://en.wikipedia.org/wiki/Frustum rectangular frusta]]_. More specific
+shapes that can be represented by this cell include _boxes_, _cubes_,
+_cuboids_ and _square frusta_. A _[[http://en.wikipedia.org/wiki/Trapezoid
+trapezoid]]_ is the name for a 2D quadrilateral with two parallel sides.
+However, the term _trapezoid_ is used throughout this file since it will be
+familiar to users of _AutoMod_ & _cell files_.
 
 @see
 [[http://facsim.org/Documentation/Resources/AutoModCellFile/Trapezoids.html
@@ -62,7 +62,7 @@ Trapezoids & Boxes]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -80,8 +80,8 @@ Trapezoid base Y-axis dimension.
 
 Base of the trapezoid measured along the Y-Axis.
 
-@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''base length'',
-although most people would refer to it as the ''base depth'' or ''base width''.
+@note _ACE_ (the _AutoMod Creation Editor_) terms this the _base length_,
+although most people would refer to it as the _base depth_ or _base width_.
 Here, we refer to it as the base Y-axis dimension to avoid confusion.
 */
 
@@ -93,8 +93,8 @@ Trapezoid base X-axis dimension.
 
 Base of the trapezoid measured along the X-Axis.
 
-@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''base width'',
-although most people would refer to it as the ''base length''. Here, we refer
+@note _ACE_ (the _AutoMod Creation Editor_) terms this the _base width_,
+although most people would refer to it as the _base length_. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
@@ -106,21 +106,21 @@ Trapezoid top Y-axis dimension.
 
 Top of the trapezoid measured along the Y-Axis.
 
-@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''top length'',
-although most people would refer to it as the ''top depth'' or ''top width''.
+@note _ACE_ (the _AutoMod Creation Editor_) terms this the _top length_,
+although most people would refer to it as the _top depth_ or _top width_.
 Here, we refer to it as the top Y-axis dimension to avoid confusion.
 */
 
   private val topYDim = scene.readDouble(_ >= 0.0,
-  LibResource(Trapezoid.ReadDimKey, 3)) // scalastyle:ignore
+  LibResource(Trapezoid.ReadDimKey, 3))
 
 /**
 Trapezoid top X-axis dimension.
 
 Top of the trapezoid measured along the X-Axis.
 
-@note ''ACE'' (the ''AutoMod Creation Editor'') terms this the ''top width'',
-although most people would refer to it as the ''top length''. Here, we refer
+@note _ACE_ (the _AutoMod Creation Editor_) terms this the _top width_,
+although most people would refer to it as the _top length_. Here, we refer
 to it as the base X-axis dimension to avoid confusion.
 */
 
@@ -134,7 +134,7 @@ Height of the trapezoid measured along the Z-Axis.
 */
 
   private val height = scene.readDouble(_ >= 0.0,
-  LibResource(Trapezoid.ReadDimKey, 4)) // scalastyle:ignore
+  LibResource(Trapezoid.ReadDimKey, 4))
 
 /**
 Trapezoid top X-axis offset.

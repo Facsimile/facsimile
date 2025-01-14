@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -47,7 +47,7 @@ object SFXBeansPropertyImplicits {
    *
    *  @tparam A Type of property.
    *
-   *  @param p ''JavaFX'' property being wrapped. This value cannot be `null`.
+   *  @param p _JavaFX_ property being wrapped. This value cannot be `null`.
    *
    *  @see [[javafx.beans.property.Property]] for further more information.
    *
@@ -117,23 +117,23 @@ object SFXBeansPropertyImplicits {
    *
    *  @tparam A Type of read-only property.
    *
-   *  @param rop ''JavaFX'' read-only property being wrapped.
+   *  @param rop _JavaFX_ read-only property being wrapped.
    *
    *  @since 0.0
    */
   implicit final class RichReadOnlyProperty[A](private val rop: ReadOnlyProperty[A])
   extends AnyVal {
 
-    /** Obtain optional ''bean'' instance that contains this property.
+    /** Obtain optional _bean_ instance that contains this property.
      *
-     *  @return ''Bean'' that contains this property, wrapped in [[scala.Some]], or [[scala.None]] if the property does
+     *  @return _Bean_ that contains this property, wrapped in [[scala.Some]], or [[scala.None]] if the property does
      *  not belong to a bean.
      */
     def bean: Option[AnyRef] = Option(rop.getBean)
 
     /** Obtain the optional name of this property.
      *
-     *  @note In ''JavaFX'', properties with no names use empty strings; by using [[scala.Option]], we're applying a
+     *  @note In _JavaFX_, properties with no names use empty strings; by using [[scala.Option]], we're applying a
      *  more functional approach that treats missing names differently.
      *
      *  @return Name of this property, wrapped in [[scala.Some]], or [[scala.None]] if the property has no name.

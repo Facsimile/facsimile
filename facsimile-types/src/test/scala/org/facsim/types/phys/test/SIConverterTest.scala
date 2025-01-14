@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -40,10 +40,7 @@ import org.facsim.types.phys.SIConverter
 import org.scalatest.FunSpec
 
 // Disable test-problematic Scalastyle checkers.
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-//scalastyle:off magic.numbers
+
 /** Test suite for the [[SIConverter]] object. */
 class SIConverterTest
 extends FunSpec {
@@ -93,7 +90,4 @@ extends FunSpec {
   }
 }
 // Re-enable test-problematic Scalastyle checkers.
-//scalastyle:on scaladoc
-//scalastyle:on public.methods.have.type
-//scalastyle:on multiple.string.literals
-//scalastyle:on magic.numbers
+

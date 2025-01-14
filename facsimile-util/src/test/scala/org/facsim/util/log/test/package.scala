@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -34,47 +34,39 @@
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test.implicits package.
 //======================================================================================================================
-package org.facsim.util.log
+package org.facsim.util.log.test
 
+import org.facsim.util.log.{LogMessage, Scope, Severity}
 import org.facsim.util.test.Generator.unicodeString
 import org.scalacheck.Gen
 
-/** Elements for assisting with testing of the log package.
- *
- *  @since 0.2
+/** Generator for log message severities.
  */
-package object test {
+val severities = Gen.oneOf(
+  Severity.DebugSeverity,
+  Severity.InformationSeverity,
+  Severity.WarningSeverity,
+  Severity.ImportantSeverity,
+  Severity.ErrorSeverity,
+  Severity.FatalSeverity,
+)
 
-  /** Generator for log message severities. */
-  // TEMPORARY NOTE:
-  //
-  // Scalastyle/Scalariform cannot parse lists that terminate with a comma, so avoid doing that for now.
-  //
-  // #SCALASTYLE_BUG
-  val severities = Gen.oneOf(
-    DebugSeverity,
-    InformationSeverity,
-    WarningSeverity,
-    ImportantSeverity,
-    ErrorSeverity,
-    FatalSeverity
-  )
+/** Custom scope for generated messages.
+ */
+object LogTestScope
+extends Scope:
 
-  /** Custom scope for generated messages. */
-  object LogTestScope
-  extends Scope {
+  // Override the name property
+  override val name: String = "log stream test"
 
-    /** @inheritdoc */
-    override val name: String = "log stream test"
-  }
+/** Generator for synthetic log messages, with string prefixes.
+ */
+val logs = for
+  prefix <- unicodeString
+  msg <- unicodeString
+  severity <- severities
+yield LogMessage(prefix, msg, LogTestScope, severity)
 
-  /** Generator for synthetic log messages, with string prefixes. */
-  val logs = for {
-    prefix <- unicodeString
-    msg <- unicodeString
-    severity <- severities
-  } yield LogMessage(prefix, msg, LogTestScope, severity)
-
-  /** Generator for non-empty lists of log messages. */
-  val logListNonEmpty = Gen.nonEmptyListOf(logs)
-}
+/** Generator for non-empty lists of log messages.
+ */
+val logListNonEmpty = Gen.nonEmptyListOf(logs)

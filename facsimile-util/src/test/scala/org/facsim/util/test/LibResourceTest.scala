@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,35 +39,24 @@ package org.facsim.util.test
 import org.facsim.util.{AssertNonNullKey, LibResource, RequireFiniteKey, RequireNonNullKey, RequireValidKey}
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Test harness for the [[LibResource]] object.
  *
  *  Most behavior can be assumed to be tested by the [[ResourceTest]] test harness. Only specific remaining tests are
  *  included here.
  */
 final class LibResourceTest
-extends AnyFunSpec
-with CommonTestMethods {
+extends AnyFunSpec, CommonTestMethods:
 
   // Name the class we're testing.
-  describe(LibResource.getClass.getCanonicalName) {
+  describe(LibResource.getClass.getCanonicalName.nn):
 
     // Test string resource formatting.
-    describe("apply(String, Any*)") {
+    describe("apply(String, Any*)"):
 
       // Test that facsimile-util messages can be retrieved.
-      it("must retrieve all facsimile-util resources") {
-        assert(LibResource(AssertNonNullKey, "test") === "Assertion failed: argument \"test\" cannot be null.")
+      it("must retrieve all facsimile-util resources"):
+        assert(LibResource(AssertNonNullKey, "test") === "Assertion failed: expression 'test' was evaluated as null.")
         assert(LibResource(RequireFiniteKey, "test", Double.NegativeInfinity) ===
-        "Argument \"test\" must be finite, but has value \"-∞\".")
-        assert(LibResource(RequireNonNullKey, "test") === "Argument \"test\" cannot be null.")
-        //scalastyle:off magic.number
-        assert(LibResource(RequireValidKey, "test", -1) === "Argument \"test\" has illegal value: \"-1\".")
-        //scalastyle:on magic.number
-      }
-    }
-  }
-}
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+        "Argument 'test' must be finite, but has value -∞.")
+        assert(LibResource(RequireNonNullKey, "test") === "Argument 'test' cannot be null.")
+        assert(LibResource(RequireValidKey, "test", -1) === "Argument 'test' has illegal value: '-1'.")

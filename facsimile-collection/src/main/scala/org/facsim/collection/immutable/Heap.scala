@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,10 +36,12 @@
 //======================================================================================================================
 package org.facsim.collection.immutable
 
-/** Trait defining an ''immutable [[https://en.wikipedia.org/wiki/Heap_(data_structure) heap]].''
+import scala.annotation.targetName
+
+/** Trait defining an _immutable [[https://en.wikipedia.org/wiki/Heap_(data_structure) heap]]._
  *
- *  This is based upon the heap interface defined in the paper ''[[http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
- *  Optimal Purely Functional Priority Queues]]''.
+ *  This is based upon the heap interface defined in the paper _Optimal Purely Functional Priority Queues_ (available
+ *  voa the link `http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf`).
  *
  *  @tparam A Type of element to be stored in the heap. There must be an implicit ordering available for this element
  *  type.
@@ -49,7 +51,7 @@ package org.facsim.collection.immutable
  *  @since 0.0
  */
 trait Heap[A, H <: Heap[A, H]]
-extends Equals {
+extends Equals:
 
   /** Determine whether this heap is empty, and has no elements.
    *
@@ -71,20 +73,22 @@ extends Equals {
    *
    *  @param a Element to be added to the heap.
    *
-   *  @return New heap containing all of the original elements, plus `a`.
+   *  @return New heap containing all the original elements, plus `a`.
    *
    *  @since 0.0
    */
+  @targetName("add")
   def +(a: A): H
 
   /** Merge another heap with this heap, resulting a new heap.
    *
    *  @param h Heap to be merged with this heap.
    *
-   *  @return New heap containing all of the elements in the original heap, plus all of the elements in `h`.
+   *  @return New heap containing all the elements in the original heap, plus all the elements in `h`.
    *
    *  @since 0.0
    */
+  @targetName("add")
   def ++(h: H): H
 
   /** Find the minimum value stored in the heap.
@@ -98,12 +102,12 @@ extends Equals {
 
   /** Find the minimum value stored in the heap, and remove it, resulting in a new heap.
    *
-   *  @note This is a more efficient operation than calling `[[minimum]]` then `[[removeMinimum]]`, if both operations
-   *  are required simultaneously.
+   *  @note This is a more efficient operation than calling [[minimum]] then [[removeMinimum]], if both operations are
+   *  required simultaneously.
    *
    *  @return Tuple whose first member is the minimum value of the heap, as determined by that element's ordering,
-   *  wrapped in `[[scala.Some Some]]`; or `[[scala.None None]]` if this heap is empty. The second tuple member is a new
-   *  heap with the minimum value removed (if the first member is defined), or the original empty heap otherwise.
+   *  wrapped in [[scala.Some]]; or [[scala.None]] if this heap is empty. The second tuple member is a new heap with the
+   *  minimum value removed (if the first member is defined), or the original empty heap otherwise.
    *
    *  @since 0.0
    */
@@ -111,12 +115,10 @@ extends Equals {
 
   /** Remove the minimum value from the heap, resulting in a new heap.
    *
-   *  @return New heap with its minimum value removed, wrapped in `[[scala.Some Some]]`; or `[[scala.None None]]` if
-   *  this heap is empty.
+   *  @return New heap with its minimum value removed, wrapped in [[scala.Some]]; or [[scala.None]] if this heap is
+   *  empty.
    *
-   *  @since 0..0
+   *  @since 0.0
    */
-  final def removeMinimum: Option[H] = minimumRemove match {
+  final def removeMinimum: Option[H] = minimumRemove match
     case(mo, h) => mo.map(_ => h)
-  }
-}

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,26 +36,26 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
+import izumi.reflect.Tag
 import org.facsim.sim.{LibResource, SimulationAction}
-import scala.reflect.runtime.universe.TypeTag
 
-/** Anonymous action for wrapping bare actions as `[[org.facsim.Action Action]]` instances.
+/** Anonymous action for wrapping bare actions as [[org.facsim.sim.model.Action]] instances.
  *
  *  @tparam M Final type of the simulation's model state.
  *
  *  @constructor Create a new anonymous action.
  *
- *  @param actions Simulation state transitions (a.k.a. ''actions'') to be executed at some point in the future.
+ *  @param actions Simulation state transitions (a.k.a. _actions_) to be executed at some point in the future.
  *
  *  @since 0.0
  */
-final class AnonymousAction[M <: ModelState[M]: TypeTag] private[sim]
-(override protected val actions: SimulationAction[M])
-extends Action[M] {
+final class AnonymousAction[M <: ModelState[M]: Tag] private[sim](override protected val actions: SimulationAction[M])
+extends Action[M]:
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val name: String = LibResource("model.AnonymousActionName")
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val description: String = LibResource("model.AnonymousActionDesc")
-}

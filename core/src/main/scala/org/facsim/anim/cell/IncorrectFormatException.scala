@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -36,8 +36,8 @@ package org.facsim.anim.cell
 import org.facsim.assertNonNull
 
 /**
-Thrown if a file supplied to an ''AutoMod® cell'' file loader is not a valid
-''cell'' file.
+Thrown if a file supplied to an _AutoMod® cell_ file loader is not a valid
+_cell_ file.
 
 @constructor Create a new parsing error exception.
 

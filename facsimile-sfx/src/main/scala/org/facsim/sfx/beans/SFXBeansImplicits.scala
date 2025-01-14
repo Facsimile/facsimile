@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -47,7 +47,7 @@ object SFXBeansImplicits {
 
   /** Rich wrapper for [[javafx.beans.Observable]] interface instances.
    *
-   *  @param o ''JavaFX'' observable being wrapped.
+   *  @param o _JavaFX_ observable being wrapped.
    *
    *  @see [[javafx.beans.Observable]] for further information.
    *
@@ -56,11 +56,11 @@ object SFXBeansImplicits {
   final implicit class RichObservable(private val o: Observable)
   extends AnyVal {
 
-    /** Install an ''invalidation listener''.
+    /** Install an _invalidation listener_.
      *
      *  Registers the specified function to be called when the associated observable is invalidated.
      *
-     *  @param il ''Invalidation listener'' function to be notified when this observable is invalidated. The first
+     *  @param il _Invalidation listener_ function to be notified when this observable is invalidated. The first
      *  argument to this function will be instance of the observable that has been invalidated.
      *
      *  @return Subscription to the registered listener, allowing the listener to be removed by canceling the

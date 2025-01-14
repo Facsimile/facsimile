@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,33 +37,25 @@
 package org.facsim.util.log
 
 import org.facsim.util.LibResource
-import scala.reflect.runtime.currentMirror
-import scala.reflect.runtime.universe._
 
-/** Base trait for all log message severity classifications.
+/** Message severity enumeration.
+ *
+ *  Message severities are ordered by their ordinal values.
+ *
+ *  @param name Name of the message severity, localized. This is not the same as the literal message severity value.
+ *
+ *  @param abbrName Abbreviated name of the message severity.
  *
  *  @since 0.2
  */
-sealed trait Severity
-extends Ordered[Severity] {
+enum Severity(val name: String, val abbrName: String)
+extends Ordered[Severity]:
 
-  /** Name of this severity type.
+  /** Rank of the severity of this message severity.
    *
-   *  @since 0.2
+   *  Lower values have lower severities.
    */
-  val name: String
-
-  /** Abbreviated name of this severity type, typically used in log messages.
-   *
-   *  @since 0.2
-   */
-  val abbrName: String
-
-  /** Rank of this severity.
-   *
-   *  The higher this value, the higher the severity of the associated message.
-   */
-  protected val severity: Int
+  def severity: Int = ordinal
 
   /** Compare this message severity instance to another instance.
    *
@@ -73,189 +65,82 @@ extends Ordered[Severity] {
    *  equal; a value greater than zero if this severity is greater than the `that` severity.
    */
   final override def compare(that: Severity): Int = severity.compareTo(that.severity)
-}
 
-/** Debug log message classification.
- *
- *  Debug log messages, of which there may be many, can be utilized for detailed debug logging.
- *
- *  @since 0.2
- */
-case object DebugSeverity
-extends Severity {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("log.DebugSeverityName")
-
-  /** @inheritdoc */
-  override val abbrName: String = LibResource("log.DebugSeverityAbbrName")
-
-  /** @inheritdoc
+  /** Debug log message classification.
    *
-   *  @note Debug log messages have the lowest severity.
-   */
-  protected override val severity: Int = 0
-}
-
-/** Informational log message classification.
- *
- *  Informational log messages, typically used to document program state changes and operations.
- *
- *  @since 0.2
- */
-case object InformationSeverity
-extends Severity {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("log.InformationSeverityName")
-
-  /** @inheritdoc */
-  override val abbrName: String = LibResource("log.InformationSeverityAbbrName")
-
-  /** @inheritdoc
+   *  Debug log messages, of which there may be many, can be utilized for detailed debug logging.
    *
-   *  @note Information log messages have higher severity than [[DebugSeverity]] messages, but a lower severity than all
-   *  others.
+   *  @since 0.2
    */
-  override val severity: Int = 1
-}
+  case DebugSeverity
+  extends Severity(LibResource("log.DebugSeverityName"), LibResource("log.DebugSeverityAbbrName"))
 
-/** Warning log message classification.
- *
- *  Warning log messages are typically used to document potential problems, unrecommended usage, etc..
- *
- *  @since 0.2
- */
-case object WarningSeverity
-extends Severity {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("log.WarningSeverityName")
-
-  /** @inheritdoc */
-  override val abbrName: String = LibResource("log.WarningSeverityAbbrName")
-
-  /** @inheritdoc
+  /** Informational log message classification.
    *
-   *  @note Warning log messages have higher severity than [[DebugSeverity]] and [[InformationSeverity]] messages, but a
-   *  lower severity than all others.
-   */
-  protected override val severity: Int = 2
-}
-
-/** Important log message classification.
- *
- *  Important log messages are typically used to document significant program state changes and operations.
- *
- *  @since 0.2
- */
-case object ImportantSeverity
-extends Severity {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("log.ImportantSeverityName")
-
-  /** @inheritdoc */
-  override val abbrName: String = LibResource("log.ImportantSeverityAbbrName")
-
-  /** @inheritdoc
+   *  Informational log messages, typically used to document program state changes and operations.
    *
-   *  @note Important log messages have higher severity than all other messages, with the exception of errors.
+   *  @since 0.2
    */
-  protected override val severity: Int = 3
-}
+  case InformationSeverity
+  extends Severity(LibResource("log.InformationSeverityName"), LibResource("log.InformationSeverityAbbrName"))
 
-/** Error log message classification.
- *
- *  Error log messages are typically used to document errors that are non-fatal and recoverable. Such errors should not,
- *  byvthemselves, prevent the application from continuing execution
- *
- *  @since 0.2
- */
-case object ErrorSeverity
-extends Severity {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("log.ErrorSeverityName")
-
-  /** @inheritdoc */
-  override val abbrName: String = LibResource("log.ErrorSeverityAbbrName")
-
-  /** @inheritdoc
+  /** Warning log message classification.
    *
-   *  @note Error log messages have higher severity than all other messages, with the exception of [[FatalSeverity]]
-   *  messages.
-   */
-  protected override val severity: Int = 4
-}
-
-/** Fatal error log message classification.
- *
- *  Fatal error log messages are typically used to document errors that are fatal and unrecoverable. They indicate that
- *  the application is about to exit and/or crash.
- *
- *  @since 0.2
- */
-case object FatalSeverity
-extends Severity {
-
-  /** @inheritdoc */
-  override val name: String = LibResource("log.FatalSeverityName")
-
-  /** @inheritdoc */
-  override val abbrName: String = LibResource("log.FatalSeverityAbbrName")
-
-  /** @inheritdoc
+   *  Warning log messages are typically used to document potential problems, unrecommended usage, etc.
    *
-   *  @note Fatal error messages have higher severity than all other messages.
+   *  @since 0.2
    */
-  protected override val severity: Int = 5
-}
+  case WarningSeverity
+  extends Severity(LibResource("log.WarningSeverityName"), LibResource("log.WarningSeverityAbbrName"))
+
+  /** Important log message classification.
+   *
+   *  Important log messages are typically used to document significant program state changes and operations.
+   *
+   *  @since 0.2
+   */
+  case ImportantSeverity
+  extends Severity(LibResource("log.ImportantSeverityName"), LibResource("log.ImportantSeverityAbbrName"))
+
+  /** Error log message classification.
+   *
+   *  Error log messages are typically used to document errors that are non-fatal and recoverable. Such errors should
+   *  not, by themselves, prevent the application from continuing execution.
+   *
+   *  @since 0.2
+   */
+  case ErrorSeverity
+  extends Severity(LibResource("log.ErrorSeverityName"), LibResource("log.ErrorSeverityAbbrName"))
+
+  /** Fatal error log message classification.
+   *
+   *  Fatal error log messages are typically used to document errors that are fatal and unrecoverable. They indicate
+   *  that the application is about to exit and/or crash.
+   *
+   *  @since 0.2
+   */
+  case FatalSeverity
+  extends Severity(LibResource("log.FatalSeverityName"), LibResource("log.FatalSeverityAbbrName"))
 
 /** Severity companion object.
  *
  *  @since 0.2
  */
-object Severity {
+object Severity:
 
   /** Set of all severity object classes.
    *
    *  @return Set of all severity objects.
    */
-  private val severities: Set[Severity] = {
+  private val severities: Set[Severity] = values.toSet
 
-    // Get the symbol of the Severity trait. Since we cannot lookup direct known subclasses of a trait, we must then
-    // convert it to a class.
-    val cls = symbolOf[Severity].asClass
-
-    // Now lookup all known sub-class instances. This gives us a set of Symbol instances for the above defined
-    // subclasses of Severity. First, we must convert them to ClassSymbols. For safety, we then filter out any that are
-    // not Scala "object" types (termed modules in the reflection library: a ModuleClassSymbol stores the type of the
-    // Object as a subclass of ClassSymbol.)
-    //
-    // Next, we need to get the self type of the module class instance and convert this to a ModuleSymbol, which we
-    // obtain via the type's "termSymbol" method.
-    //
-    // Finally, we turn the resulting ModuleSymbols back into the actual case object value instances.
-    //
-    // Phew!
-    //
-    // For more on ClassSymbols, ModuleClassSymbols, ModuleSymbols, Symbols, TermSymbols and TypeSymbols, refer to:
-    //   https://docs.scala-lang.org/overviews/reflection/symbols-trees-types.html
-    cls.knownDirectSubclasses
-    .map(_.asClass)
-    .filter(_.isModuleClass)
-    .map(_.selfType.termSymbol.asModule)
-    .map(ms => currentMirror.reflectModule(ms).instance.asInstanceOf[Severity]) //scalastyle:ignore token
-  }
-
-  /** Map of severity name to severity.
+  /** Map of severity localized name to severity.
    *
-   *  This is used to look up each severity by name.
+   *  This is used to look up each severity by localized name.
    */
   private val severityDictionary = severities.map(s => (s.name, s)).toMap
 
-  /** Retrieve a list of severities, ordered by rank.
+  /** Retrieve a sequence of severities, ordered by rank.
    *
    *  @return List of severities, ordered from lowest rank to highest rank.
    *
@@ -270,9 +155,8 @@ object Severity {
    *
    *  @param name Name of the severity to be retrieved.
    *
-   *  @return Severity matching `name` wrapped-up in a `[[scala.Some Some]]`l or `[[scala.None None]]`.
+   *  @return Severity matching `name` wrapped-up in a [[scala.Some]], or [[scala.None]] if no match was found.
    *
    *  @since 0.2
    */
   def withName(name: String): Option[Severity] = severityDictionary.get(name)
-}

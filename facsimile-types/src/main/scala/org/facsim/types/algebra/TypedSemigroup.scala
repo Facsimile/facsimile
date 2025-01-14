@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.types.algebra
 
-/** Trait for a ''typed [[https://en.wikipedia.org/wiki/Semigroup semigroup]]''.
+/** Trait for a _typed [[https://en.wikipedia.org/wiki/Semigroup semigroup]]_.
  *
- *  @note A ''typed'' semigroup has two potentially different types involved in the combination operation, with the
+ *  @note A _typed_ semigroup has two potentially different types involved in the combination operation, with the
  *  resulting type potentially being different to the input types.
  *
  *  @tparam A Type representing the first set of values that may be combined.

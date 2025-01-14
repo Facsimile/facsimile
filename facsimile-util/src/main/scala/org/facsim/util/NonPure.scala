@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,10 +38,10 @@ package org.facsim.util
 
 import scala.annotation.StaticAnnotation
 
-/** Attribute indicating that a decorated function is ''non-pure'', and that is has ''side-effects''.
+/** Attribute indicating that a decorated function is _non-pure_, and that it has _side-effects_.
  *
- *  Non-pure functions are only acceptable for logging purposes, and in other situations where any ''shared mutable
- *  state'' is of no interest to the calling function.
+ *  Non-pure functions are only acceptable for logging purposes, and in other situations where any _shared mutable
+ *  state_ is of no interest to the calling function.
  *
  *  @since 0.2
  */

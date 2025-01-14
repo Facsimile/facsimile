@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,7 +37,7 @@ package org.facsim.sfx.importers.cell
 import javafx.geometry.Point3D
 import javafx.scene.transform.Rotate.{X_AXIS, Y_AXIS, Z_AXIS}
 
-/** ''AutoMod cell'' rotation order definitions.
+/** _AutoMod cell_ rotation order definitions.
  *
  *  Each rotation order code identifies a sequence of axes, in a unique order, to which three axis rotations will be
  *  applied.
@@ -62,12 +62,12 @@ private[cell] object RotationOrder {
    *
    *  @param ro Rotation order code to be processed.
    *
-   *  @return A sequence of ''3D'' axes denoting the order in which a set of rotations is to be applied to the current
-   *  ''cell'' element.
+   *  @return A sequence of _3D_ axes denoting the order in which a set of rotations is to be applied to the current
+   *  _cell_ element.
    *
    *  @throws scala.MatchError if `ro` is not a valid rotation order code.
    */
-  //scalastyle:off magic.number
+
   def apply(ro: Int): Seq[Point3D] = {
 
     // Match the code
@@ -78,5 +78,5 @@ private[cell] object RotationOrder {
     case 4 => Seq(Z_AXIS, X_AXIS, Y_AXIS)
     case 5 => Seq(Z_AXIS, Y_AXIS, X_AXIS)
   }
-  //scalastyle:on magic.number
+
 }

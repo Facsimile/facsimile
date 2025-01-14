@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -34,23 +34,19 @@
 //======================================================================================================================
 // Scala source file belonging to the org.facsim.util.test.implicits package.
 //======================================================================================================================
-package org.facsim.util.test
+package org.facsim.util.test.implicits
 
 import org.facsim.util.test.Generator.noShrink
 import org.scalacheck.Shrink
 
-/** Implicit elements for assisting with testing.
- *
- *  @since 0.2
+/** Disable shrinking of strings.
  */
-package object implicits {
+given stringNoShrink: Shrink[String] = noShrink[String]
 
-  /** Disable shrinking of strings */
-  implicit val stringNoShrink: Shrink[String] = noShrink[String]
+/** Disable shrinking of lists of strings.
+ */
+given stringListNoShrink: Shrink[List[String]] = noShrink[List[String]]
 
-  /** Disable shrinking of lists of strings */
-  implicit val stringListNoShrink: Shrink[List[String]] = noShrink[List[String]]
-
-  /** Disable shrinking of integer values. */
-  implicit val intNoShrink: Shrink[Int] = noShrink[Int]
-}
+/** Disable shrinking of integer values.
+ */
+given intNoShrink: Shrink[Int] = noShrink[Int]

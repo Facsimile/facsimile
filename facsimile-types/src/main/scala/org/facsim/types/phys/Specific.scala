@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -110,34 +110,34 @@ extends Physical {specific =>
     apply(units.importValue(value))
   }
 
-  /** Factory method to create a new measurement value in ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+  /** Factory method to create a new measurement value in _[[http://en.wikipedia.org/wiki/SI SI]]_ units.
    *
    *  @note This function is not public because it introduces the potential for unit confusion. Measurements can only be
    *  manipulated by users as [[Physical.PhysicalMeasure]] subclass instances, not as raw values. Allowing access to raw
    *  values encourages by-passing of the unit protection logic provided by these measurement classes.
    *
-   *  @param measure Measurement's value in ''SI'' units. This value must be finite and must lie within the defined
+   *  @param measure Measurement's value in _SI_ units. This value must be finite and must lie within the defined
    *  range for the associated physical quantity.
    *
    *  @return Corresponding measurement value.
    *
-   *  @throws IllegalArgumentException if `types` in ''SI'' units is not finite or is outside of the defined range for
+   *  @throws IllegalArgumentException if `types` in _SI_ units is not finite or is outside of the defined range for
    *  the associate physical quantity.
    */
   private[phys] def apply(measure: Double): Measure
 
-  /** Abstract base class for all specific ''Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical
-   *  quantity]]'' measurement classes.
+  /** Abstract base class for all specific _Facsimile [[http://en.wikipedia.org/wiki/Physical_quantity physical
+   *  quantity]]_ measurement classes.
    *
-   *  Measurements are stored internally in the corresponding ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for this
+   *  Measurements are stored internally in the corresponding _[[http://en.wikipedia.org/wiki/SI SI]]_ units for this
    *  physical quantity family.
    *
    *  @tparam F Final measurement type.
    *
-   *  @constructor Create new measurement for this ''[[http://en.wikipedia.org/wiki/Physical_quantity physical
-   *  quantity]]''.
+   *  @constructor Create new measurement for this _[[http://en.wikipedia.org/wiki/Physical_quantity physical
+   *  quantity]]_.
    *
-   *  @param measure Value of the measurement expressed in the associated ''[[http://en.wikipedia.org/wiki/SI SI]]''
+   *  @param measure Value of the measurement expressed in the associated _[[http://en.wikipedia.org/wiki/SI SI]]_
    *  units. This value must be finite, but subclasses may impose additional restrictions.
    *
    *  @throws IllegalArgumentException if `types` is not finite or is invalid for these units.
@@ -146,18 +146,17 @@ extends Physical {specific =>
    *
    *  @since 0.0
    */
-  //scalastyle:off disallow.space.before.token
+
   abstract class SpecificMeasure[F <: SpecificMeasure[F] : ClassTag] protected[phys](measure: Double)
-  //scalastyle:on disallow.space.before.token
+
   extends PhysicalMeasure[F](measure) {
 
     /** @inheritdoc */
     protected[phys] final override def family: Family = specific.family
 
     /** @inheritdoc */
-    //scalastyle:off token
+
     private[types] final override def createNew(newMeasure: Double): F = apply(newMeasure).asInstanceOf[F]
-    //scalastyle:on token
 
     /** Convert this measurement value to a string, expressed in the user's preferred units.
      *
@@ -177,7 +176,7 @@ extends Physical {specific =>
    *
    *  @constructor Create new instance of a specific physical quantity unit.
    *
-   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''SI''
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard _SI_
    *  units for this unit family.
    *
    *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
@@ -201,7 +200,7 @@ extends Physical {specific =>
 
     /** Format a value in these units for output.
      *
-     *  @param value Measurement value, expressed in ''SI'' units, to be output.
+     *  @param value Measurement value, expressed in _SI_ units, to be output.
      *
      *  @return Formatted string, containing the value and the units (if any).
      */

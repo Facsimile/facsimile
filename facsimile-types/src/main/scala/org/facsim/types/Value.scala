@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -47,10 +47,9 @@ import scala.reflect.ClassTag
  *
  *  @since 0.0
  */
-//scalastyle:off disallow.space.before.token
+
 abstract class Value[T <: Value[T] : ClassTag](private[facsim] final val value: Double)
 extends Order[T] {
-//scalastyle:on disallow.space.before.token
 
   /** Compare this value to another value.
    *
@@ -82,7 +81,7 @@ extends Order[T] {
 
   /** Calculate the absolute value of this value.
    *
-   *  @return The absolute value of the measurement, based upon it's ''SI'' units.
+   *  @return The absolute value of the measurement, based upon it's _SI_ units.
    *
    *  @throws IllegalArgumentException if the result is invalid for these units.
    *
@@ -90,7 +89,7 @@ extends Order[T] {
    */
   final def abs: T = {
     if(value < 0.0) createNew(-value)
-    else this.asInstanceOf[T] //scalastyle:ignore token
+    else this.asInstanceOf[T]
   }
 
   /** Change the sign of a measurement value.
@@ -104,5 +103,5 @@ extends Order[T] {
    *
    *  @since 0.0
    */
-  final def unary_- : T = createNew(-value) //scalastyle:ignore disallow.space.before.token
+  final def unary_- : T = createNew(-value)
 }

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -49,7 +49,7 @@ object SFXBeansValueImplicits {
    *
    *  @tparam A Type of value being observed.
    *
-   *  @param ov ''JavaFX'' observable value being wrapped.
+   *  @param ov _JavaFX_ observable value being wrapped.
    *
    *  @see [[javafx.beans.value.ObservableValue]] for further information.
    *
@@ -68,11 +68,11 @@ object SFXBeansValueImplicits {
      */
     def apply(): A = ov.getValue
 
-    /** Install a ''change listener''.
+    /** Install a _change listener_.
      *
      *  Registers the specified function to be called when the associated observable value is changed.
      *
-     *  @param cl ''Change listener'' function to be called when this observable value is changed. The first argument
+     *  @param cl _Change listener_ function to be called when this observable value is changed. The first argument
      *  supplied to this function will identify the observable value that has been changed, the second argument will be
      *  that observable value's previous value, and the third argument will be the new value. Note that this function
      *  should not attempt to change the value of the associated observable.
@@ -116,7 +116,7 @@ object SFXBeansValueImplicits {
    *
    *  @tparam A Type of value that can be written into an instance.
    *
-   *  @param wv ''JavaFX'' writable value being wrapped.
+   *  @param wv _JavaFX_ writable value being wrapped.
    *
    *  @see [[javafx.beans.value.WritableValue]] for further information.
    *

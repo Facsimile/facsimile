@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,8 +39,6 @@ package org.facsim.types.phys.test
 import org.facsim.types.phys.Specific
 import org.scalatest.FunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Test behaviors for [[Specific]] subclasses.
  *
  *  @tparam Q The `Specific` subclass being tested.
@@ -62,7 +60,7 @@ extends PhysicalBehaviors[Q] {
     describe(".Zero") {
       it("must equal to the value of 0.0 in SI units") {
         assert(fixture.instance.Zero === fixture.instance(0.0,
-        fixture.expectedSIUnits.asInstanceOf[fixture.instance.Units])) //scalastyle:ignore token
+        fixture.expectedSIUnits.asInstanceOf[fixture.instance.Units]))
       }
     }
 
@@ -102,11 +100,10 @@ extends PhysicalBehaviors[Q] {
       it("must not throw an exception when passed a valid value") {
         fixture.validValues.foreach {
           value =>
-          assert(fixture.instance.apply(value) ne null) //scalastyle:ignore null
+          assert(fixture.instance.apply(value) ne null)
         }
       }
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

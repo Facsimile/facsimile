@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,9 +36,7 @@
 //======================================================================================================================
 package org.facsim.types.test
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
-/** Fixture trait for testing if an associated object implements the ''equals contract''.
+/** Fixture trait for testing if an associated object implements the _equals contract_.
  *
  *  @tparam V Type, implementing the [[Equivalent]] class, to be tested.
  */
@@ -75,5 +73,4 @@ trait EqualsFixture[V <: Equivalent[V]] {
    */
   final def valueSample: List[V] = equalListSample.map(_.head)
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

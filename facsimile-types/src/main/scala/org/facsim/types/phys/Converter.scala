@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -42,36 +42,36 @@ package org.facsim.types.phys
  *  belonging to the same family.
  *
  *  More specifically, each converter instance has the capability to convert a physical quantity measurement value from
- *  a specific unit of types to the standard ''[[http://en.wikipedia.org/wiki/SI SI]]'' units for the associated unit
+ *  a specific unit of types to the standard _[[http://en.wikipedia.org/wiki/SI SI]]_ units for the associated unit
  *  family.
  *
- *  For example, a converter instance would be used to convert ''time''s expressed in ''hours'' to or from times
- *  expressed in ''seconds''&mdash;the standard ''SI'' unit of time measurement.
+ *  For example, a converter instance would be used to convert _time_s expressed in _hours_ to or from times
+ *  expressed in _seconds_&mdash;the standard _SI_ unit of time measurement.
  *
- *  The process of converting a value to ''SI'' units is termed ''importing''; the process of converting an ''SI'' value
- *  to the associated unit is termed ''exporting''.
+ *  The process of converting a value to _SI_ units is termed _importing_; the process of converting an _SI_ value
+ *  to the associated unit is termed _exporting_.
  *
  *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on [[http://en.wikipedia.org/ Wikipedia]].
  */
 private[phys] trait Converter {
 
-  /** Convert value to ''SI'' units.
+  /** Convert value to _SI_ units.
    *
-   *  Convert a physical quantity's `value`, expressed in the associated units to the corresponding value in the ''SI''
+   *  Convert a physical quantity's `value`, expressed in the associated units to the corresponding value in the _SI_
    *  units for this unit family.
    *
-   *  @param value Value, expressed in associated units, to be converted to ''SI'' units.
+   *  @param value Value, expressed in associated units, to be converted to _SI_ units.
    *
-   *  @return `value` as expressed in ''SI'' units.
+   *  @return `value` as expressed in _SI_ units.
    */
   private[phys] def importValue(value: Double): Double
 
-  /** Convert value from ''SI'' units.
+  /** Convert value from _SI_ units.
    *
-   *  Convert a physical quantity's `value`, expressed in the standard ''SI'' units for this unit family, to the
+   *  Convert a physical quantity's `value`, expressed in the standard _SI_ units for this unit family, to the
    *  corresponding value in the associated units.
    *
-   *  @param value Value, expressed in ''SI'' units, to be converted to associated units.
+   *  @param value Value, expressed in _SI_ units, to be converted to associated units.
    *
    *  @return `value` as expressed in associated units.
    */

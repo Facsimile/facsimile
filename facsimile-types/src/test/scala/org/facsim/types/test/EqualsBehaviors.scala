@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,17 +39,15 @@ package org.facsim.types.test
 import org.scalatest.FunSpec
 import scala.annotation.tailrec
 
-//scalastyle:off scaladoc
-//scalastyle:off multiple.string.literals
 /** Test behaviors for [[Equals]] trait-implementing classes.
  *
- *  This trait can be used as part of the test suite for a class that must honor the ''equals contract'':
+ *  This trait can be used as part of the test suite for a class that must honor the _equals contract_:
  *
- *  - ''Reflexive'': `x == x` should be true for various non-`null` `x` of the associated type.
- *  - ''Symmetric'': `x == y` and `y == x` should both give the same, expected answer for various non-`null` `x` & `y`.
- *  - ''Transitive'': `x == y`, `y == z` and `x == z` should all give the same, expected answer for various non-`null`
+ *  - _Reflexive_: `x == x` should be true for various non-`null` `x` of the associated type.
+ *  - _Symmetric_: `x == y` and `y == x` should both give the same, expected answer for various non-`null` `x` & `y`.
+ *  - _Transitive_: `x == y`, `y == z` and `x == z` should all give the same, expected answer for various non-`null`
  *    `x`, `y` & `z`.
- *  - ''Consistent'': `x == y` must always hold `true`, or always hold `false`, if `x` & `y` are not modified
+ *  - _Consistent_: `x == y` must always hold `true`, or always hold `false`, if `x` & `y` are not modified
  *    (guaranteed if `x` & `y` are immutable).
  *  - `x != y` if `x` and `y` are not comparable objects, regardless of contents, for various non-`null` `x` & `y`.
  *  - `x != null` for various non-`null` `x`. Should not see [[NullPointerException]] thrown.
@@ -99,7 +97,7 @@ trait EqualsBehaviors[V <: Equivalent[V]] {this: FunSpec =>
       // thrown.
       it("must return false if passed null") {
         equalsFixture.valueSample.foreach {value =>
-          assert(!value.canEqual(null)) //scalastyle:ignore null
+          assert(!value.canEqual(null))
         }
       }
 
@@ -128,7 +126,7 @@ trait EqualsBehaviors[V <: Equivalent[V]] {this: FunSpec =>
       // Verify that the object never compares equal to null and does not result in a NullPointerException being thrown.
       it("must return false if compared to null") {
         equalsFixture.valueSample.foreach {value =>
-          assert(!value.equals(null)) //scalastyle:ignore null
+          assert(!value.equals(null))
         }
       }
 
@@ -181,5 +179,4 @@ trait EqualsBehaviors[V <: Equivalent[V]] {this: FunSpec =>
     }
   }
 }
-//scalastyle:on multiple.string.literals
-//scalastyle:on scaladoc
+

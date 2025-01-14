@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -36,7 +36,7 @@ package org.facsim.anim.cell
 import org.facsim.{assertNonNull, requireValid, LibResource}
 
 /**
-Class encapsulating ''cell'' line width pixel values.
+Class encapsulating _cell_ line width pixel values.
 
 @note This would be a value class, except that it is not possible to access
 anything referenced via `this`&mdash;even an implied one. So, consequently,
@@ -92,14 +92,14 @@ Verify that an integer line width value is valid.
   lineWidth <= maxValue
 
 /**
-Read line width from ''cell'' data stream.
+Read line width from _cell_ data stream.
 
 @param scene Scene from which the line width is to be read.
 
 @return Line width read, if valid.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

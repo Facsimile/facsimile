@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -34,7 +34,7 @@
 //======================================================================================================================
 package org.facsim.sfx
 
-/** Utilities for the ''JavaFX'' [[javafx.beans]] package.
+/** Utilities for the _JavaFX_ [[javafx.beans]] package.
  *
  *  @since 0.0
  */

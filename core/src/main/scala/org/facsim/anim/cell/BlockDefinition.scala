@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-202020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -34,8 +34,8 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell block
-definition'' primitives.
+Class representing _[[http://www.automod.com/ AutoMod®]] cell block
+definition_ primitives.
 
 @see [[
 http://facsim.org/Documentation/Resources/AutoModCellFile/BlockDefinitions.html
@@ -48,7 +48,7 @@ Block Definitions]] for further information.
 @param parent This value should be None for a Definition.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

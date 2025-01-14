@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -50,7 +50,7 @@ information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -93,7 +93,7 @@ Add the child cells (if any) to the group as nodes.
 /**
 Retrieve the set's children.
 
-@return A list of this set's child ''cells''.
+@return A list of this set's child _cells_.
 */
   protected[cell] def getChildren: List[Cell]
 }

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -49,25 +49,22 @@ import scala.util.{Failure, Success, Try}
  *
  *  @param minor Minor version number. This value cannot be negative.
  *
- *  @param bugFix Optional bug-fix number. This value cannot be `null`, nor can its wrapped value be negative.
+ *  @param bugFix Optional bug-fix number. This value, if defined, cannot be negative.
  *
- *  @param isSnapshot If `true`, indicates that this is a pre-release ''snapshot''. Note that multiple snapshot versions
+ *  @param isSnapshot If `true`, indicates that this is a pre-release _snapshot_. Note that multiple snapshot versions
  *  may share the same version number, so comparing version numbers is an unreliable method for comparing pre-release
  *  snapshots of the same release.
  *
- *  @throws scala.NullPointerException if `bugFix` is `null`.
- *
- *  @throws scala.IllegalArgumentException if any argument has an invalid value.
+ *  @throws java.lang.IllegalArgumentException if any argument has an invalid value.
  *
  *  @since 0.0
  */
 final case class Version(major: Int = 1, minor: Int = 0, bugFix: Option[Int] = None, isSnapshot: Boolean = false)
-extends Ordered[Version] {
+extends Ordered[Version]:
 
   // Sanity checks. Alas, we cannot currently use macros in the compilation unit that they're defined in. :-(
   requireValidFn[Int](major, _ >= 0, "major")
   requireValidFn[Int](minor, _ >= 0, "minor")
-  requireNonNullFn(bugFix, "bugFix") //scalastyle:ignore multiple.string.literals
   requireValidFn[Option[Int]](bugFix, bf => bf.forall(_ >= 0), "bugFix")
 
   /** Compare this version to another.
@@ -81,48 +78,39 @@ extends Ordered[Version] {
    *  @return < 0 if this is earlier/less than `that` version; 0 if this is the same as/equal to `that` version; > 0 if
    *  this is later/greater than `that` version.
    *
-   *  @throws scala.NullPointerException if `that` is `null`.
-   *
    *  @since 0.0
    */
-  override def compare(that: Version): Int = {
-
-    // Sanity checks.
-    requireNonNullFn(that, "that")
+  override def compare(that: Version): Int =
 
     // Helper function to compare bug fix numbers.
-    def compareBugFix = {
+    def compareBugFix =
 
       // We can only make a decision based upon the bug fix numbers if they're different.
-      if(bugFix != that.bugFix) {
+      if bugFix != that.bugFix then
 
-        // The fold parentheses looks at the case where this bugFix is None. Since the other cannot be None (we
-        // already know that they're not equal), it must be defined, so this version is earlier: return -1.
+        // The fold parentheses looks at the case where this bugFix is None. Since the other cannot be None (we already
+        // know that they're not equal), it must be defined, so this version is earlier: return -1.
         //
         // The braces looks at the case where this bugFix has a value. If the other is None, return 1 (we're greater
         // than the other value), otherwise, compare their bug fix numbers and return the result (which cannot be 0
         // since the two bug fix numbers are different)
-        bugFix.fold(CompareLessThan) {thisBf =>
+        bugFix.fold(CompareLessThan): thisBf =>
           that.bugFix.fold(CompareGreaterThan)(thatBf => thisBf.compare(thatBf))
-        }
-      }
 
       // Otherwise, the two bug fix numbers are the same, so we need to look at the snapshot flag.
-      else {
+      else
 
         // If the snapshots are the same too, then return the equality value.
-        if(isSnapshot == that.isSnapshot) CompareEqualTo
+        if isSnapshot == that.isSnapshot then CompareEqualTo
 
         // If this is a snapshot, then this must be less than the other (which cannot be).
-        else if(isSnapshot) CompareLessThan
+        else if isSnapshot then CompareLessThan
 
         // Otherwise, that must be a snapshot, so we're greater.
         else 1
-      }
-    }
 
     // Helper function to compare minor versions.
-    def compareMinor = minor.compare(that.minor) match {
+    def compareMinor = minor.compare(that.minor) match
 
       // If the minor versions different, return that result.
       case d: Int if d != 0 => d
@@ -130,21 +118,18 @@ extends Ordered[Version] {
       // Otherwise, we need to compare bug fix releases. This is more interesting, because no bug fix at all is
       // regarded as being less than any other bug fix (except for None).
       case _ => compareBugFix
-    }
 
     // Helper function to compare major versions.
-    def compareMajor = major.compare(that.major) match {
+    def compareMajor = major.compare(that.major) match
 
       // If the major versions are different, then return that result.
       case d: Int if d != 0 => d
 
       // Otherwise, we need to compare the minor version. If that's different, return that result.
       case _ => compareMinor
-    }
 
     // Kick the ball off.
     compareMajor
-  }
 
   /** Convert the version to a string.
    *
@@ -152,31 +137,30 @@ extends Ordered[Version] {
    *
    *  @since 0.0
    */
-  override def toString: String = {
+  override def toString: String =
 
     // If we have a bugfix version, then it will appear prefixed by a period.
-    val bf = bugFix.fold("")(b => s".$b") //scalastyle:ignore
+    val bf = bugFix.fold("")(b => s".$b")
 
     // If this is a snapshot release, then it will end with the snapshot marker.
-    val ss = if(isSnapshot) Version.Snapshot
-    else ""
+    val ss = if isSnapshot then Version.Snapshot else ""
 
     // Build and return the result.
     s"$major.$minor$bf$ss"
-  }
-}
 
 /** Version companion object.
  *
  *  @since 0.0
  */
-object Version {
+object Version:
 
-  /** Snapshot marker. */
+  /** Snapshot marker.
+   */
   private val Snapshot = "-SNAPSHOT"
 
-  /** Regular expression for parsing version strings. */
-  private val VersionRegex = ("""(\d+)\.(\d+)(\.\d+)?""" + s"($Snapshot)?").r
+  /** Regular expression for parsing version strings.
+   */
+  private val VersionRegex = s"(\\d+)\\.(\\d+)(\\.\\d+)?($Snapshot)?".r
 
   /** Regular expression for parsing Java version strings.
    *
@@ -184,42 +168,35 @@ object Version {
    *  we'll utilize the number following the underscore as the version number. Snapshots for this version type are
    *  unsupported.
    *
-   *  @note This facility was added to support parsing of version numbers in ''Java'' manifests. It should be noted that
-   *  resulting `[[org.facsim.util.Version Version]]` instances that are converted back to strings will not match the
-   *  original string passed to the parsing function.
+   *  @note This facility was added to support parsing of version numbers in _Java_ manifests. It should be noted that
+   *  resulting [[Version]] instances that are converted back to strings will not match the original string passed to
+   *  the parsing function.
    */
   private val JavaVersionRegex = """(\d+)\.(\d+)\.0_(\d+)""".r
 
   /** Convert a string into a version instance.
    *
-   *  @param version Version string to be parsed. This must be of the form ''`M.m[.b][-SNAPSHOT]`'', where `M` is
-   *  the major version number, `m` is the minor version number, and `b` is an optional bug-fix number. If the string
-   *  ends with ''`-SNAPSHOT``'', then a pre-release ''snapshot'' is indicated. Alternatively, ''Java'' version numbers
-   *  of the form ''`M.m.0_b`'' are accepted.  No other version string formats are currently supported.
+   *  @param version Version string to be parsed. This must be of the form _`M.m[.b][-SNAPSHOT]`_, where `M` is the
+   *  major version number, `m` is the minor version number, and `b` is an optional bug-fix number. If the string ends
+   *  with _`-SNAPSHOT`_, then a pre-release _snapshot_ is indicated. Alternatively, _Java_ version numbers of the form
+   *  _`M.m.0_b`_ are accepted.  No other version string formats are currently supported.
    *
-   *  @return A `[[org.facsim.util.Version Version]]` instance equivalent to the information contained in `version`
-   *  wrapped in a `[[scala.util.Success Success]]` if successful, or a `[[scala.util.Failure Failure]]` containing a
-   *  `[[org.facsim.util.VersionParseException VersionParseException]]`.
-   *
-   *  @throws scala.NullPointerException if `version` is `null`.
+   *  @return A [[Version]] instance equivalent to the information contained in `version` wrapped in a
+   *  [[scala.util.Success]] if successful, or a [[scala.util.Failure]] containing a [[VersionParseException]].
    *
    *  @since 0.0
    */
   // TODO: Use parboiled2 to parse version numbers so that we can report failures better and faster.
-  def apply(version: String): Try[Version] = {
-
-    // Sanity check.
-    requireNonNullFn(version, "version")
+  def apply(version: String): Try[Version] =
 
     // Parse the version string.
-    version match {
+    version match
 
       // Does this match supported versions, indicated by the version regular expression?
       //
       // If so, the bug fix number needs to remove the leading period before converting to an integer.
-      case VersionRegex(maj, min, bug, snap) => {
+      case VersionRegex(maj, min, bug, snap) =>
         Success(Version(maj.toInt, min.toInt, Option(bug).map(_.tail.toInt), Option(snap).isDefined))
-      }
 
       // Does this match supported Java versions, indicated by the Java version regular expression?
       //
@@ -229,6 +206,3 @@ object Version {
 
       // If there was no match, then throw the appropriate exception.
       case _ => Failure(VersionParseException(version, 0))
-    }
-  }
-}

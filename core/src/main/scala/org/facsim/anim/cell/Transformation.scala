@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -37,16 +37,16 @@ import org.facsim.LibResource
 import scalafx.scene.transform.Transform
 
 /**
-''[[http://www.automod.com/ AutoMod®]] cell'' transformation.
+_[[http://www.automod.com/ AutoMod®]] cell_ transformation.
 
-In ''AutoMod'', a ''transformation'' is called ''geometry data''. It
+In _AutoMod_, a _transformation_ is called _geometry data_. It
 encompasses a translation along each local axis, a rotation about each local
 axis (applied in a specified sequence) and a scaling along each local axis.
 
-@constructor Create a new transformation (also known as a ''cell geometry''
-instance from the ''cell'' data stream.
+@constructor Create a new transformation (also known as a _cell geometry_
+instance from the _cell_ data stream.
 
-@param scene ''Cell'' scene from which the transformation is to be read.
+@param scene _Cell_ scene from which the transformation is to be read.
 
 @param inMatrixForm Flag indicating the format of the transformation data:
 `true` indicates that the transformation is specified as a 4x4 affine matrix;

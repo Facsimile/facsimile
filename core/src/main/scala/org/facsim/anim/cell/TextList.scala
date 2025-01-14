@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -38,7 +38,7 @@ import scala.annotation.tailrec
 import scalafx.scene.Group
 
 /**
-Abstract class for all ''cell text list'' primitives (except for ''cell text''
+Abstract class for all _cell text list_ primitives (except for _cell text_
 primitives).
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/TextLists.html
@@ -54,7 +54,7 @@ this cell is the scene's root cell.
 @param textType Type of text represented by this instance.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -84,8 +84,8 @@ Each text list is prefixed by a set of translation co-ordinates.
 /**
 @inheritdoc
 
-@note We currently render ''World'' and ''Unrotate'' text types as World text,
-and do not render ''Screen'' text.
+@note We currently render _World_ and _Unrotate_ text types as World text,
+and do not render _Screen_ text.
 */
   private[cell] final override def toNode = {
     val thisTextList = this
@@ -140,7 +140,7 @@ Read text list data from the stream.
 @return Text list read.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

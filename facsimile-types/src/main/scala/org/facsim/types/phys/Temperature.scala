@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,16 +38,16 @@ package org.facsim.types.phys
 
 import org.facsim.types.LibResource
 
-/** ''[[http://en.wikipedia.org/wiki/Temperature Temperature]]'' physical quantity type.
+/** _[[http://en.wikipedia.org/wiki/Temperature Temperature]]_ physical quantity type.
  *
- *  All temperature values are stored internally in ''[[http://en.wikipedia.org/wiki/Kelvin degrees Kelvin]]'', which is
- *  the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of types.
+ *  All temperature values are stored internally in _[[http://en.wikipedia.org/wiki/Kelvin degrees Kelvin]]_, which is
+ *  the _[[http://en.wikipedia.org/wiki/SI SI]]_ standard unit of types.
  *
- *  @see [[http://en.wikipedia.org/wiki/Temperature Temperature]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Temperature Temperature]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/Kelvin Degrees Kelvin]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Kelvin Degrees Kelvin]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
  *
  *  @since 0.0
  */
@@ -63,15 +63,15 @@ extends NonNegative {
   /** @inheritdoc */
   override val name: String = LibResource("phys.Temperature.name")
 
-  /** ''Absolute zero'' (0K) in °C.
+  /** _Absolute zero_ (0K) in °C.
    *
-   *  @note This is the internationally agreed value of ''absolute zero'' (zero in degrees Kelvin) on the Celsius scale.
+   *  @note This is the internationally agreed value of _absolute zero_ (zero in degrees Kelvin) on the Celsius scale.
    */
   private val AbsoluteZeroCelsius = -273.15
 
-  /** Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Celsius degrees Celsius]]''.
+  /** Units for temperatures measured in _[[http://en.wikipedia.org/wiki/Celsius degrees Celsius]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Celsius Degrees Celsius]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Celsius Degrees Celsius]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -84,28 +84,28 @@ extends NonNegative {
    */
   private val KelvinPerFahrenheitDegree = 5.0 / 9.0
 
-  /** ''Absolute zero'' (0K) in °F. */
+  /** _Absolute zero_ (0K) in °F. */
   private val AbsoluteZeroFahrenheit = AbsoluteZeroCelsius / KelvinPerFahrenheitDegree + 32.0
 
-  /** Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Fahrenheit degrees Fahrenheit]]''.
+  /** Units for temperatures measured in _[[http://en.wikipedia.org/wiki/Fahrenheit degrees Fahrenheit]]_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Fahrenheit Degrees Fahrenheit]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Fahrenheit Degrees Fahrenheit]] on _Wikipedia_.
    *
    *  @since 0.0
    */
   val Fahrenheit: Units = new Units(new LinearConverter(KelvinPerFahrenheitDegree, AbsoluteZeroFahrenheit),
   LibResource("phys.Temperature.Fahrenheit.sym"))
 
-  /** Units for temperatures measured in ''[[http://en.wikipedia.org/wiki/Kelvin degrees Kelvin]]''.
+  /** Units for temperatures measured in _[[http://en.wikipedia.org/wiki/Kelvin degrees Kelvin]]_.
    *
-   *  @note ''Degrees Kelvin'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for temperature
-   *  measurement, and the units that are used to store such measurements internally in ''Facsimile''.
+   *  @note _Degrees Kelvin_ are the _[[http://en.wikipedia.org/wiki/SI SI]]_ standard units for temperature
+   *  measurement, and the units that are used to store such measurements internally in _Facsimile_.
    *
-   *  In ''Facsimile'', a ''degree Kelvin'' is defined in accordance with ''SI'' standards.
+   *  In _Facsimile_, a _degree Kelvin_ is defined in accordance with _SI_ standards.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Kelvin Degrees Kelvin]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Kelvin Degrees Kelvin]] on _Wikipedia_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -128,13 +128,13 @@ extends NonNegative {
    */
   private[phys] override def apply(measure: Double) =  new Measure(measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Temperature Temperature]]'' measurement class.
+  /** _[[http://en.wikipedia.org/wiki/Temperature Temperature]]_ measurement class.
    *
-   *  Instances of this class represent ''temperature'' measurements.
+   *  Instances of this class represent _temperature_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Temperature temperature]]'' measurement value.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Temperature temperature]]_ measurement value.
    *
-   *  @param measure ''Temperature'' measurement expressed in ''[[Kelvin]]''. This value must be finite and greater than
+   *  @param measure _Temperature_ measurement expressed in _[[Kelvin]]_. This value must be finite and greater than
    *  For equal to zero.
    *
    *  @throws IllegalArgumentException if `types` is not finite or is negative.
@@ -144,14 +144,14 @@ extends NonNegative {
   final class TemperatureMeasure private[phys](measure: Double)
   extends NonNegativeMeasure[TemperatureMeasure](measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Temperature Temperature]]'' unit of measurement family class.
+  /** _[[http://en.wikipedia.org/wiki/Temperature Temperature]]_ unit of measurement family class.
    *
-   *  Instances of this class represent units for expressing ''temperature'' measurements.
+   *  Instances of this class represent units for expressing _temperature_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Temperature temperature]]'' unit of measurement.
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Temperature temperature]]_ unit of measurement.
    *
    *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard
-   *  ''temperature [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''degrees Kelvin''.
+   *  _temperature [[http://en.wikipedia.org/wiki/SI SI]]_ units, _degrees Kelvin_.
    *
    *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
    *

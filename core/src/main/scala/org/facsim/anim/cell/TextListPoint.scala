@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -49,7 +49,7 @@ Refer to [[org.facsim.anim.cell.VectorList!]] for further information.
 @param textType Type of text represented by this instance.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -75,9 +75,9 @@ Read the text from the stream.
 /**
 Convert this text list point to a text node.
 
-@param textList Text list ''cell'' to which this point belongs.
+@param textList Text list _cell_ to which this point belongs.
 
-@return A ''ScalaFX'' text node to be added to the ''cell'' scene.
+@return A _ScalaFX_ text node to be added to the _cell_ scene.
 */
   private[cell] def toTextNode(textList: TextList) = {
 

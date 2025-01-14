@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -40,7 +40,7 @@ import org.facsim.util.requireValid
 import scala.reflect.ClassTag
 
 /** Abstract base class for all physical quantity types that cannot have negative measurement values in the associated
- *  ''[[http://en.wikipedia.org/wiki/SI SI]]'' units.
+ *  _[[http://en.wikipedia.org/wiki/SI SI]]_ units.
  *
  *  Subclasses are forbidden from having negative measurement values, which is appropriate for a number of unit
  *  families, including [[Time]], [[Temperature]], [[Mass]], etc.
@@ -68,16 +68,16 @@ extends Specific {
    *
    *  @constructor Construct new non-negative measurement value.
    *
-   *  @param measure Value of the measurement type in the associated ''SI'' units. This value must be finite and
+   *  @param measure Value of the measurement type in the associated _SI_ units. This value must be finite and
    *  non-negative. Sub-classes may impose additional restrictions.
    *
    *  @throws IllegalArgumentException If the result is not finite or is negative.
    *
    *  @since 0.0
    */
-  //scalastyle:off disallow.space.before.token
+
   abstract class NonNegativeMeasure[F <: NonNegativeMeasure[F] : ClassTag] protected[phys](measure: Double)
-  //scalastyle:on disallow.space.before.token
+
   extends SpecificMeasure[F](measure) {
 
     // If the types is negative, then report an error.
@@ -89,7 +89,7 @@ extends Specific {
    *
    *  @constructor Construct new non-negative measurement units.
    *
-   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard ''SI''
+   *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard _SI_
    *  units for this unit family.
    *
    *  @param symbol Symbol to be used when outputting measurement values expressed in these units.

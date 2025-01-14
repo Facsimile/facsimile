@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -34,10 +34,10 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 /**
-Class representing a ''null joint''.
+Class representing a _null joint_.
 
-A ''null joint'' is neither translational nor rotational and merely contains
-''terminal control frame'' (''TCF'') data.
+A _null joint_ is neither translational nor rotational and merely contains
+_terminal control frame_ (_TCF_) data.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Joints.html
 Joints]] for further information.
@@ -49,7 +49,7 @@ Joints]] for further information.
 @param flags Cell flags dictating how the joint data is formatted.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

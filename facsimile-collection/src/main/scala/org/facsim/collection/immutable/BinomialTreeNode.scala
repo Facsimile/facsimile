@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,7 +38,7 @@ package org.facsim.collection.immutable
 
 /** Case class used to store elements as a node in the tree.
  *
- *  @tparam A Type of element stored in a `[[org.facsim.collection.immutable.BinomialTree BinomialTree]]`.
+ *  @tparam A Type of element stored in a [[BinomialTree]].
  *
  *  @constructor Create a new binomial tree node.
  *

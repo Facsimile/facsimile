@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,69 +39,53 @@ package org.facsim.util.test
 import org.facsim.util.{requireFinite, requireNonNull, requireValid}
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off scaladoc
-//scalastyle:off public.methods.have.type
-//scalastyle:off multiple.string.literals
-/** Test suite for the [[org.facsim]] package object. */
+/** Test suite for the [[org.facsim.util]] package object.
+ */
 final class PackageTest
-extends AnyFunSpec
-with CommonTestMethods {
+extends AnyFunSpec, CommonTestMethods:
 
   // Test fixture description.
-  describe("org.facsim.util package") {
+  describe("org.facsim.util package"):
 
     // requireNonNull macro tests.
-    describe(".requireNonNull(AnyRef)") {
-      it("must throw NullPointerException if passed null argValue") {
-        val e = intercept[NullPointerException] {
-          val arg: String = null //scalastyle:ignore null
+    describe(".requireNonNull(AnyRef)"):
+      it("must throw NullPointerException if passed null argValue"):
+        val e = intercept[NullPointerException]:
+          val arg: String | Null = null
           requireNonNull(arg)
-        }
         assertRequireNonNullMsg(e, "arg")
-      }
-      it("must do nothing if passed a non-null reference") {
+      it("must do nothing if passed a non-null reference"):
         val arg = "Not null"
         requireNonNull(arg)
-      }
-    }
 
     // requireValid tests.
-    describe(".requireValid(Any, Boolean)") {
-      it("must throw IllegalArgumentException if condition is false") {
+    describe(".requireValid(Any, Boolean)"):
+      it("must throw IllegalArgumentException if condition is false"):
         val arg = "Some bad value"
-        val e = intercept[IllegalArgumentException] {
+        val e = intercept[IllegalArgumentException]:
           requireValid(arg, false)
-        }
         assertRequireValidMsg(e, "arg", arg)
-      }
-      it("must do nothing if passed a valid argument") {
+      it("must do nothing if passed a valid argument"):
         val arg = "Some good value"
         requireValid(arg, true)
-      }
-    }
 
     // requireFinite tests.
-    describe(".requireFinite(Double)") {
-      def doFailure(value: Double) = {
-        val e = intercept[IllegalArgumentException] {
+    describe(".requireFinite(Double)"):
+      def doFailure(value: Double) =
+        val e = intercept[IllegalArgumentException]:
           requireFinite(value)
-        }
         assertRequireFiniteMsg(e, "value", value)
-      }
-      it("must throw IllegalArgumentException if value is NaN") {
+      it("must throw IllegalArgumentException if value is NaN"):
         doFailure(Double.NaN)
-      }
-      it("must throw IllegalArgumentException if value is infinite") {
+      it("must throw IllegalArgumentException if value is infinite"):
         doFailure(Double.NegativeInfinity)
         doFailure(Double.PositiveInfinity)
-      }
-      it("must accept values at the boundaries") {
+      it("must accept values at the boundaries"):
         val argMin = Double.MinValue
         requireFinite(argMin)
         val argMax = Double.MaxValue
         requireFinite(argMax)
-      }
-      it("must accept some miscellaneous finite values") {
+      it("must accept some miscellaneous finite values"):
         val argZero = 0.0
         requireFinite(argZero)
         val argOne = 1.0
@@ -110,10 +94,3 @@ with CommonTestMethods {
         requireFinite(argMinusOne)
         val argMinPositive = Double.MinPositiveValue
         requireFinite(argMinPositive)
-      }
-    }
-  }
-}
-//scalastyle:on multiple.string.literals
-//scalastyle:on public.methods.have.type
-//scalastyle:on scaladoc

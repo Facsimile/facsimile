@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,54 +36,42 @@
 //======================================================================================================================
 package org.facsim.util.stream
 
-import akka.stream.{Materializer, OverflowStrategy, QueueOfferResult}
-import akka.stream.scaladsl.Source
-import akka.{Done, NotUsed}
+import org.apache.pekko.{Done, NotUsed}
+import org.apache.pekko.stream.{Materializer, OverflowStrategy, QueueOfferResult}
+import org.apache.pekko.stream.scaladsl.Source
 import org.facsim.util.{LibResource, NonPure}
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration.Duration
-import scala.reflect.runtime.universe.TypeTag
+import scala.concurrent.Future
 
-/** Create a new ''Akka Streams'' data source, to which data can be sent on demand.
+/** Create a new _Pekko Streams_ data source, to which data can be sent on demand.
  *
- *  @note This class does not provide ''pure'' functions; return values from functions with the same arguments may
- *  return different values depending upon their internal state. However, since the class is used for sending data to
- *  data stream consumers, should should not affect program behavior significantly.
+ *  @note This class does not provide _pure_ functions; return values from functions with the same arguments may return
+ *  different values depending upon their internal state. However, since the class is used for sending data to data
+ *  stream consumers, this should not affect program behavior significantly.
  *
  *  @tparam A Type of data to be sent to this stream.
  *
  *  @constructor Create a new data stream.
  *
  *  @param bufferSize Number of unprocessed data elements that can be stored in the buffer before back pressure is
- *  exerted. This value must be greater than zero and than `[[DataSource.MaxBufferSize MaxBufferSize]]`, or an
- *  `[[scala.IllegalArgumentException IllegalArgumentException]]` will be thrown.
+ *  exerted. This value must be greater than zero and less than [[DataSource.MaxBufferSize]], or an
+ *  [[java.lang.IllegalArgumentException]] will be thrown.
  *
  *  @param materializer Stream materializer to be utilized when creating the stream.
  *
- *  @throws IllegalArgumentException if `bufferSize` is less than 1 or greater than `[[DataSource.MaxBufferSize
- *  MaxBufferSize]]`.
+ *  @throws java.lang.IllegalArgumentException if `bufferSize` is less than 1 or greater than
+ *  [[DataSource.MaxBufferSize]].
  *
  *  @since 0.2
  */
-final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Materializer) {
+final class DataSource[A](bufferSize: Int)(using materializer: Materializer):
 
   // Sanity check.
   require(bufferSize > 0 && bufferSize <= DataSource.MaxBufferSize,
   LibResource("stream.DataSourceInvalidBufferSize", bufferSize, DataSource.MaxBufferSize))
 
-  /** Queue stream and source requested. */
-  private val streamSource = Source.queue[A](bufferSize, OverflowStrategy.backpressure).preMaterialize()
-
-  /** Future resulting from the previous send operation.
-   *
-   *  @note Each send operation's future must complete before attempting to send further data. In essence, this is how
-   *  backpressure is implemented. It should be noted that when the future completes, the data has not necessarily been
-   *  sent, just that the data has been queued for sending.
+  /** Queue stream and source requested.
    */
-  private var lastSendFuture: Future[QueueOfferResult] = {  //scalastyle:ignore var.field
-    Future.successful(QueueOfferResult.Enqueued)
-  }
-  assert(lastSendFuture.isCompleted, "Initial last send future has not completed.")
+  private val streamSource = Source.queue[A](bufferSize, OverflowStrategy.backpressure).preMaterialize()
 
   /** Send data to the stream.
    *
@@ -92,31 +80,19 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
    *  @param data Data to be sent to the stream.
    *
    *  @return Future containing the result of the data queuing operation. If successful, the result can be
-   *  `[[akka.stream.QueueOfferResult.Enqueued Enqueued]]` if data was sent successfully,
-   *  `[[akka.stream.QueueOfferResult.Dropped Dropped]]` if the data was dropped due to a buffer failure, or
-   *  `[[akka.stream.QueueOfferResult.QueueClosed QueueClosed]]` if the queue was closed before the data could be
-   *  processed. If the queue was closed before the data was sent, the result is a `[[scala.util.Failure Failure]]`
-   *  wrapping an `[[akka.stream.StreamDetachedException StreamDetachedException]]`. If a failure closed the queue, it
-   *  will respond with a `Failure` wrapping the exception that was passed to the `[[fail]]` method.
+   *  [[org.apache.pekko.stream.QueueOfferResult.Enqueued]] if data was sent successfully,
+   *  [[org.apache.pekko.stream.QueueOfferResult.Dropped]] if the data was dropped due to a buffer failure, or
+   *  [[org.apache.pekko.stream.QueueOfferResult.QueueClosed]] if the queue was closed before the data could be
+   *  processed. If the queue was closed before the data was sent, the result is a [[scala.util.Failure]] wrapping a
+   *  [[org.apache.pekko.stream.StreamDetachedException]]. If a failure closed the queue, it will respond with a
+   *  `Failure` wrapping the exception that was passed to the [[fail]] method.
    *
    *  @since 0.2
    */
-  @NonPure
-  def send(data: A): Future[QueueOfferResult] = synchronized {
+  def send(data: A): Future[QueueOfferResult] =
 
-    // If the previous future did not complete, then wait for it to do so. If the future has already completed, then no
-    // time should elapse.
-    //
-    // Note: This can lock the current thread, should nothing be consuming the messages
-    Await.result(lastSendFuture, Duration.Inf)
-    assert(lastSendFuture.isCompleted, "Last data future did not complete.")
-
-    // Send the data, receiving a new future in the process.
-    lastSendFuture = streamSource._1.offer(data)
-
-    // Return the future for the sent data.
-    lastSendFuture
-  }
+    // Send the data, returning the associated future in the process.
+    streamSource._1.offer(data)
 
   /** Report the source to which flows and sinks can be attached.
    *
@@ -135,7 +111,7 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
    *  @since 0.2
    */
   @NonPure
-  def complete(): Future[Done] = {
+  def complete(): Future[Done] =
 
     // Stream concerned.
     val logStream = streamSource._1
@@ -145,7 +121,6 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
 
     // Report a future that can be used to determine when the stream has completed.
     logStream.watchCompletion()
-  }
 
   /** Signal a failure, which also results in completion of the data stream.
    *
@@ -156,7 +131,7 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
    *  @since 0.2
    */
   @NonPure
-  def fail(e: Throwable): Future[Done] = {
+  def fail(e: Throwable): Future[Done] =
 
     // Stream concerned.
     val logStream = streamSource._1
@@ -166,18 +141,15 @@ final class DataSource[A: TypeTag](bufferSize: Int)(implicit materializer: Mater
 
     // Report a future that can be used to determine when the stream has completed.
     logStream.watchCompletion()
-  }
-}
 
 /** Data source companion object.
  *
  *  @since 0.2
  */
-object DataSource {
+object DataSource:
 
   /** Maximum number of unprocessed data items that can be buffered before back-pressure is exerted.
    *
    *  @since 0.2
    */
   val MaxBufferSize: Int = 4096
-}

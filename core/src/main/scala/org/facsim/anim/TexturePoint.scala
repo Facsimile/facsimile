@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -49,12 +49,12 @@ of a 3D face.
 @param u Horizontal texture map coordinate. This value must be in the range [0,
 1], with 0 representing the extreme left edge of the texture map, and 1 the
 extreme right edge. Horizontal texture map coordinates are conventionally
-denoted by ''u''.
+denoted by _u_.
 
 @param v Vertical texture map coordinate. This value must be in the range [0,
 1], with 0 representing the extreme top edge of the texture map, and 1 the
 extreme bottom edge. Vertical texture map coordinates are conventionally
-denoted by ''v''.
+denoted by _v_.
 
 @throws IllegalArgumentException if either `u` or `v` is outside of
 the range [0, 1].
@@ -73,7 +73,7 @@ Sanity checks. Both co-ordinates must be in the range [0, 1].
 Convert the coordinates to a list of floating point values.
 
 @return List of the two texture coordinates, with the horizontal coordinate,
-''u'', first and the vertical, ''v'', second.
+_u_, first and the vertical, _v_, second.
 */
   def toList = List(u, v)
 }

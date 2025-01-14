@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -48,7 +48,7 @@ object SFXCollectionsImplicits {
    *
    *  @tparam A Type of array being observed.
    *
-   *  @param oa ''JavaFX'' observable array being wrapped.
+   *  @param oa _JavaFX_ observable array being wrapped.
    *
    *  @see [[javafx.collections.ObservableArray]] for further information.
    *
@@ -57,11 +57,11 @@ object SFXCollectionsImplicits {
   implicit final class RichObservableArray[A <: ObservableArray[A]](private val oa: ObservableArray[A])
   extends AnyVal {
 
-    /** Install an array ''change listener''.
+    /** Install an array _change listener_.
      *
      *  Registers the specified function to be called when the associated observable array is changed.
      *
-     *  @param cl ''Change listener'' function to be called when this observable array is changed. The first argument
+     *  @param cl _Change listener_ function to be called when this observable array is changed. The first argument
      *  supplied to this function will identify the observable array that has been changed, the second argument will be
      *  a flag indicating whether the size of the array was changed, the third argument is the index of the first cell
      *  to be changed, and the fourth argument is the index of the last element to be changed. Note that this function
@@ -106,7 +106,7 @@ object SFXCollectionsImplicits {
    *
    *  @tparam A Type of value in list being observed.
    *
-   *  @param ol ''JavaFX'' observable list being wrapped.
+   *  @param ol _JavaFX_ observable list being wrapped.
    *
    *  @see [[javafx.collections.ObservableList]] for further information.
    *
@@ -115,11 +115,11 @@ object SFXCollectionsImplicits {
   implicit final class RichObservableList[A](private val ol: ObservableList[A])
   extends AnyVal {
 
-    /** Install a list ''change listener''.
+    /** Install a list _change listener_.
      *
      *  Registers the specified function to be called when the associated observable list is changed.
      *
-     *  @param cl ''Change listener'' function to be called when this observable list is changed. The argument supplied
+     *  @param cl _Change listener_ function to be called when this observable list is changed. The argument supplied
      *  to this function will identify the change record detailing the changes made to the observable list. Note that
      *  this function should not attempt to change the associated observable. There are also many other restrictions on
      *  the execution and behaviour of this function and you are strongly recommended to review the documentation at
@@ -166,7 +166,7 @@ object SFXCollectionsImplicits {
    *
    *  @tparam V Type for referenced values stored in the map being observed.
    *
-   *  @param om ''JavaFX'' observable map being wrapped.
+   *  @param om _JavaFX_ observable map being wrapped.
    *
    *  @see [[javafx.collections.ObservableMap]] for further information.
    *
@@ -175,11 +175,11 @@ object SFXCollectionsImplicits {
   implicit final class RichObservableMap[K, V](private val om: ObservableMap[K, V])
   extends AnyVal {
 
-    /** Install a map ''change listener''.
+    /** Install a map _change listener_.
      *
      *  Registers the specified function to be called when the associated observable map is changed.
      *
-     *  @param cl ''Change listener'' function to be called when this observable map is changed. The argument supplied
+     *  @param cl _Change listener_ function to be called when this observable map is changed. The argument supplied
      *  to this function will identify the change record detailing the changes made to the observable map. Note that
      *  this function should not attempt to change the associated observable. There are also many other restrictions on
      *  the execution and behaviour of this function and you are strongly recommended to review the documentation at

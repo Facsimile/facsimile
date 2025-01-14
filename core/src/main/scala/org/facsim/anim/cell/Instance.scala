@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -36,7 +36,7 @@ package org.facsim.anim.cell
 import org.facsim.LibResource
 
 /**
-Class representing ''[[http://www.automod.com/ AutoMod®]] cell instance''
+Class representing _[[http://www.automod.com/ AutoMod®]] cell instance_
 primitives.
 
 @see [[http://facsim.org/Documentation/Resources/AutoModCellFile/Instances.html
@@ -50,7 +50,7 @@ Instances]] for further information.
 this cell is the scene's root cell.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -95,7 +95,7 @@ stream.
 
     scene.getDefinition(defName).getOrElse {
       val instDef = scene.readNextCell(None, true)
-      assert(instDef.isInstanceOf[Definition]) // scalastyle:ignore
+      assert(instDef.isInstanceOf[Definition])
 
 /*
 If the definition's name doesn't match the name specified in the preceding

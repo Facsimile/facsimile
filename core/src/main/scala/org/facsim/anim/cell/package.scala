@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -34,10 +34,10 @@ Scala source file defining the org.facsim.anim.cell package.
 package org.facsim.anim
 
 /**
-''[[http://facsim.org/ Facsimile]]'' Simulation Library ''cell'' scene support.
+_[[http://facsim.org/ Facsimile]]_ Simulation Library _cell_ scene support.
 
-Package supporting the import of ''[[http://www.automod.com/ AutoMod®]] cell''
-scenes into ''Facsimile''.
+Package supporting the import of _[[http://www.automod.com/ AutoMod®]] cell_
+scenes into _Facsimile_.
 
 @since 0.0
 */

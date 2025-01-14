@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,16 +36,16 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
+import izumi.reflect.Tag
 import org.facsim.sim.{LibResource, SimulationAction}
 import org.facsim.sim.engine.Simulation
-import scala.reflect.runtime.universe.TypeTag
 import squants.Time
 
 /** Standard simulation actions to perform a reset of the simulation's statistics.
  *
- *  @constructor Create a new end warmup action.
- *
  *  @tparam M Final type of the simulation's model state.
+ *
+ *  @constructor Create a new end warmup action.
  *
  *  @param snapLength Length of subsequent simulation snaps.
  *
@@ -53,25 +53,26 @@ import squants.Time
  *
  *  @param simulation Reference to the executing simulation.
  */
-private[sim] final class EndWarmUpAction[M <: ModelState[M]: TypeTag](snapLength: Time, numSnaps: Int)
-(implicit simulation: Simulation[M])
-extends Action[M] {
+private[sim] final class EndWarmUpAction[M <: ModelState[M]: Tag](snapLength: Time, numSnaps: Int)
+(using simulation: Simulation[M])
+extends Action[M]:
 
-  /** @inheritdoc */
-  override protected val actions: SimulationAction[M] = {
+  /** @inheritdoc
+   */
+  override protected val actions: SimulationAction[M] =
 
     // Report to all subscribers that the simulation has warmed up. Statistics should be reset accordingly.
     // TODO
 
     // Schedule the first end snap event.
-    for {
+    for
       r <- simulation.at(snapLength, Int.MaxValue)(new EndSnapAction[M](snapLength, numSnaps - 1))
-    } yield r
-  }
+    yield r
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val name: String = LibResource("model.EndWarmUpActionName")
 
-  /** @inheritdoc */
+  /** @inheritdoc
+   */
   override val description: String = LibResource("model.EndWarmUpActionDesc")
-}

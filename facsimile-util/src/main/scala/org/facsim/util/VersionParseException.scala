@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,26 +38,23 @@ package org.facsim.util
 
 import java.text.ParseException
 
-/** Signaled if a string containing a ''version'' number could not be parsed.
+/** Signaled if a string containing a _version_ number could not be parsed.
  *
- *  @constructor Create a new ''version parse'' exception.
+ *  @constructor Create a new _version parse_ exception.
  *
- *  @param version Version string that could not be parsed. This value cannot be `null`.
+ *  @param version Version string that could not be parsed.
  *
  *  @param offset Position within version at which the parser failed. This value must be within the range [0,
  *  version.length].
  *
- *  @throws scala.NullPointerException if `name` is null.
- *
- *  @throws scala.IllegalArgumentException if `offset` does not identify a position within `name`.
+ *  @throws java.lang.IllegalArgumentException if `offset` does not identify a position within `name`.
  *
  *  @since 0.0
  */
 final case class VersionParseException(version: String, offset: Int)
-extends ParseException(null, offset) { //scalastyle:ignore null
+extends ParseException(null, offset):
 
   // Sanity checks. Clearly, throwing exceptions while creating an exception is likely not desirable, so don't fail!
-  requireNonNullFn(version, "version")
   requireValidFn[Int](offset, o => o >= 0 && o <= version.length, "offset")
 
   /** Report cause of this exception.
@@ -66,5 +63,4 @@ extends ParseException(null, offset) { //scalastyle:ignore null
    *
    *  @since 0.0
    */
-  override def getMessage: String = LibResource("VersionParse", version, getErrorOffset)
-}
+  override def getLocalizedMessage: String = LibResource("VersionParse", version, getErrorOffset)

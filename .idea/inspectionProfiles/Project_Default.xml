@@ -6,11 +6,11 @@
     <inspection_tool class="MapGetOrElse" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MutatorLikeMethodIsParameterless" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="NameBooleanParameters" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="NoTailRecursionAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RedundantBlock" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RedundantDefaultArgument" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ReferenceMustBePrefixed" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ScalaBundledInsRunner" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ScalaWeakerAccess" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SideEffectsInMonadicTransformation" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnitMethodDefinedLikeProcedure" enabled="true" level="WARNING" enabled_by_default="true" />
   </profile>

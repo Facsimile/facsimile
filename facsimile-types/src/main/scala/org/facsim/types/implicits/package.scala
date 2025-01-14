@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,7 +39,7 @@ package org.facsim.types
 import org.facsim.types.phys.Physical
 import scala.util.Try
 
-/** ''[[http://facsim.org/ Facsimile]]'' physical quantity implicit conversions.
+/** _[[http://facsim.org/ Facsimile]]_ physical quantity implicit conversions.
  *
  *   @since 0.0
  */
@@ -83,7 +83,6 @@ package object implicits {
 
   implicit final class RichDouble(d: Double)
   extends AnyVal {
-
 
     def *[A: Physical#Measure](a: A): Try[A] = a * d
   }

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -43,7 +43,7 @@ package org.facsim.util.log
  *
  *  @since 0.2
  */
-trait Scope {
+trait Scope:
 
   /** Name of this log scope.
    *
@@ -53,7 +53,6 @@ trait Scope {
 
   /** When converting to a string, use the scope's name.
    *
-   * @return This severity as a string.
+   *  @return This severity as a string.
    */
   final override def toString: String = name
-}

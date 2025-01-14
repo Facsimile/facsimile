@@ -1,6 +1,6 @@
 /*
  * Facsimile: A Discrete-Event Simulation Library
- * Copyright © 2004-2020, Michael J Allen.
+ * Copyright © 2004-2025, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -38,16 +38,16 @@ import org.facsim.requireValid
 /**
  * Histogram class.
  *
- * Records the frequency of observed value ranges by in ''bins''. Values that are lower than anticipated are stored in
- * an ''underflow'' bin; those that are higher than anticipated are stored in an ''overflow'' bin.
+ * Records the frequency of observed value ranges by in _bins_. Values that are lower than anticipated are stored in
+ * an _underflow_ bin; those that are higher than anticipated are stored in an _overflow_ bin.
  *
  * @constructor Create a new Histogram class instance.
  *
- * @param minimumValue Minimum expected value. Observed values lower than this will be placed into an ''underflow'' bin.
+ * @param minimumValue Minimum expected value. Observed values lower than this will be placed into an _underflow_ bin.
  *
- * @param bins Number of regular bins in the histogram. Two additional bins, an ''underflow'' bin&mdash;storing values
- * less than '''minimumValue'''&mdash;and an ''overflow'' bin&mdash;storing values greater than '''minimumValue''' +
- * ('''bins''' * '''binWidth'''&mdash;will be included in addition to these bins. This argument must be a positive
+ * @param bins Number of regular bins in the histogram. Two additional bins, an _underflow_ bin&mdash;storing values
+ * less than *minimumValue*&mdash;and an _overflow_ bin&mdash;storing values greater than *minimumValue* +
+ * (*bins* * *binWidth*&mdash;will be included in addition to these bins. This argument must be a positive
  * integer or an exception will be thrown.
  *
  * @param binWidth Width of each regular bin in the histogram. This value must be greater than zero, or an exception
@@ -55,7 +55,7 @@ import org.facsim.requireValid
  *
  * @tparam D Underlying data type to be stored by this class, which must be a type of number.
  *
- * @throws IllegalArgumentException if '''bins''' is zero or negative, or if '''binWidth''' is zero or negative.
+ * @throws IllegalArgumentException if *bins* is zero or negative, or if *binWidth* is zero or negative.
  *
  * @since 0.0
  */
@@ -71,8 +71,8 @@ extends SummaryStatistics[D, Histogram[D]] {
   /**
    * Frequency of values observed in each bin.
    *
-   * @note Bin 0 is the ''underflow'' bin, which records the frequency of observed values less than the specified
-   * minimum value. Similarly, bin (bins + 1) is the ''overflow'' bin, which records the frequency of observed values
+   * @note Bin 0 is the _underflow_ bin, which records the frequency of observed values less than the specified
+   * minimum value. Similarly, bin (bins + 1) is the _overflow_ bin, which records the frequency of observed values
    * that exceed (minimumValue + bins * binWidth).
    */
   private val frequency = new Array[Int](bins + 2)
@@ -89,9 +89,9 @@ extends SummaryStatistics[D, Histogram[D]] {
    * ([[org.facsim.stats.Histogram!.length]] - 1) is the overflow bin. If an invalid bin number is passed, then an
    * exception will be thrown.
    *
-   * @return Frequency of observations recorded for specified '''bin''' so far.
+   * @return Frequency of observations recorded for specified *bin* so far.
    *
-   * @throws java.lang.ArrayIndexOutOfBoundsException if '''bin''' is outside of the range: [0,
+   * @throws java.lang.ArrayIndexOutOfBoundsException if *bin* is outside of the range: [0,
    * [[org.facsim.stats.Histogram!.length]]).
    *
    * @since 0.0

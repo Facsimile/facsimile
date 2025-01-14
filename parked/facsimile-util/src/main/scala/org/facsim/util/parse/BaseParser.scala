@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -40,7 +40,7 @@ import org.facsim.util.types.CharU._
 import org.parboiled2.{CharPredicate, Parser, Rule1}
 import scala.util.Try
 
-/** Enhanced ''[[http://parboiled2.org/ Parboiled2]]'' input parser.
+/** Enhanced _[[http://parboiled2.org/ Parboiled2]]_ input parser.
  *
  *  @constructor Construct a new abstract base parser class.
  */
@@ -156,7 +156,7 @@ extends Parser {
    */
   protected[facsim] final def hexValue = rule {
     capture(oneOrMore(hexDigit)) ~> {s =>
-      val i = Try(Integer.parseInt(s, 16)) //scalastyle:ignore magic.number
+      val i = Try(Integer.parseInt(s, 16))
       test(i.isSuccess) ~ push(i.get)
     }
   }

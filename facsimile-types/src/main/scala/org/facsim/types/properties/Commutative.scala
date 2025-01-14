@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,7 +39,7 @@ package org.facsim.types.properties
 /** Marker trait for operators exhibiting the _[[https://en.wikipedia.org/wiki/Commutative_property commutative]]_
  *  property.
  *
- *  Instances of this trait support ''commutative'' operations. That is, given some operation `op`, `op(a, b)` must
+ *  Instances of this trait support _commutative_ operations. That is, given some operation `op`, `op(a, b)` must
  *  equal `op(b, a)` for all `a` and `b`.
  *
  *  @note This trait is primarily used for _testing_ that subclass operator implementations are indeed commutative; it

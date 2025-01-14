@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,7 +39,6 @@ package org.facsim.types.phys.test
 import org.facsim.types.phys.Physical
 import org.facsim.types.test.EqualsFixture
 
-//scalastyle:off scaladoc
 /** Test fixture for testing [[Physical]] subclasses.
  *
  *  @tparam Q The `Physical` subclass being tested.
@@ -73,8 +72,7 @@ trait PhysicalFixture[Q <: Physical] {
   /** Retrieve a fixture for testing the equality of different measurements.
    *
    *  @return Equals test fixture for this physical quantity. The test fixture will be used to verify that this physical
-   *  quantity's measurement class correctly implements the ''equality contract''.
+   *  quantity's measurement class correctly implements the _equality contract_.
    */
   val equalsFixture: EqualsFixture[Q#Measure]
 }
-//scalastyle:on scaladoc

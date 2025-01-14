@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -34,49 +34,49 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** ''AutoMod cell'' element flags.
+/** _AutoMod cell_ element flags.
  *
- *  Flags indicating the configuration of the associated ''cell'' element. Certain of these flags determine which
- *  ''cell'' records are present in the definition.
+ *  Flags indicating the configuration of the associated _cell_ element. Certain of these flags determine which
+ *  _cell_ records are present in the definition.
  *
  *  @note Only those flags that affect the parsing of
- *  @param flags Bit-field containing ''cell'' configuration flags.
+ *  @param flags Bit-field containing _cell_ configuration flags.
  */
 private[cell] final class CellFlags(flags: Int) {
 
-  /** Is the ''cell attributes'' record present.
+  /** Is the _cell attributes_ record present.
    *
-   *  @return `true` if the associated ''cell'' definition includes an ''attributes'' record.
+   *  @return `true` if the associated _cell_ definition includes an _attributes_ record.
    */
   def attributesPresent: Boolean = (flags & 0x1) != 0
 
-  /** Is the ''cell joint data'' record present.
+  /** Is the _cell joint data_ record present.
    *
-   *  @return `true` if the associated ''cell'' definition includes a ''joint data'' record.
+   *  @return `true` if the associated _cell_ definition includes a _joint data_ record.
    */
   def jointDataPresent: Boolean = (flags & 0x2) != 0
 
-  /** Is the ''cell transformation'' record present.
+  /** Is the _cell transformation_ record present.
    *
-   *  @return `true` if the associated ''cell'' definition includes a ''transformation'' record.
+   *  @return `true` if the associated _cell_ definition includes a _transformation_ record.
    */
   def transformationPresent: Boolean = (flags & 0x4) != 0
 
-  /** Is the ''cell transformation'' record in matrix form.
+  /** Is the _cell transformation_ record in matrix form.
    *
-   *  @return `true` if the associated ''cell'' definition's ''transformation'' record is in matrix form.
+   *  @return `true` if the associated _cell_ definition's _transformation_ record is in matrix form.
    */
   def transformationInMatrixForm: Boolean = (flags & 0x8) != 0
 
-  /** Does the associated ''cell'' inherit its color from its parent element.
+  /** Does the associated _cell_ inherit its color from its parent element.
    *
-   *  @return `true` if the associated ''cell'' definition inherits its color from its parent.
+   *  @return `true` if the associated _cell_ definition inherits its color from its parent.
    */
   def inheritColor: Boolean = (flags & 0x10) != 0
 
-  /** Is the ''cell bounding box'' record present.
+  /** Is the _cell bounding box_ record present.
    *
-   * @return `true` if the associated ''cell'' definition includes a ''bounding box'' record.
+   * @return `true` if the associated _cell_ definition includes a _bounding box_ record.
    */
   def boundingBoxPresent: Boolean = (flags & 0x40) != 0
 }

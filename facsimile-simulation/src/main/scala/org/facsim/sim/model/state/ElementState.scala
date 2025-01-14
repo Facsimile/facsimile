@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,27 +36,19 @@
 //======================================================================================================================
 package org.facsim.sim.model.state
 
+import izumi.reflect.Tag
 import org.facsim.sim.model.structure.Element
 import org.facsim.sim.model.{Point, Rotation}
-import scala.reflect.runtime.universe.TypeTag
-
-// TEMPORARY NOTE:
-//
-// Scalastyle/Scalariform parses an error on this file ("next on empty iterator"), so disable Scalastyle for this file;
-// we can re-enable it when Scalastyle is updated.
-//
-// #SCALASTYLE_BUG
-//scalastyle:off
 
 /** State of the associated element.
  *
  *  @tparam E Type of element whose state is being stored.
  *
- *  @tparam S Final type of the element state sub-class.
-
+ *  @tparam S Final type of the element state subclass.
+ *              
  *  @since 0.0
  */
-abstract class ElementState[E <: Element[E, S]: TypeTag, S <: ElementState[E, S]: TypeTag] {
+abstract class ElementState[E <: Element[E, S]: Tag, S <: ElementState[E, S]: Tag]:
 
   /** Child elements, mapped by name.
    *
@@ -82,4 +74,3 @@ abstract class ElementState[E <: Element[E, S]: TypeTag, S <: ElementState[E, S]
    *  @since 0.0
    */
   val alignment: Seq[Rotation]
-}

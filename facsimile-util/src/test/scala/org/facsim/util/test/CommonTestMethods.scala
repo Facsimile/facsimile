@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,48 +36,45 @@
 //======================================================================================================================
 package org.facsim.util.test
 
-import org.facsim.util._
+import org.facsim.util.*
 import org.scalatest.funspec.AnyFunSpec
 
-//scalastyle:off public.methods.have.type
-/** Miscellaneous functions for supporting ''Facsimile'' testing. */
-trait CommonTestMethods {this: AnyFunSpec =>
+/** Miscellaneous functions for supporting _Facsimile_ testing. */
+trait CommonTestMethods:
 
-  /** Assert that a NullPointerException's message resulting from a [[requireNonNull(AnyRef)*]] failure matches the
-   *  expected value.
-   *
-   *  @param e Exception thrown.
-   *
-   *  @param argName Name of the argument that was found to be `null`.
-   */
-  final def assertRequireNonNullMsg(e: NullPointerException, argName: String) = {
-    assert(e.getMessage === LibResource(RequireNonNullKey, argName))
-  }
+  // CommonTextMethods must be mixed in with AnyFunSpec.
+  this: AnyFunSpec =>
 
-  /** Assert that an IllegalArgumentException's message resulting from a [[requireValid(Any,Boolean)*]] failure matches
-   *  the expected value.
-   *
-   *  @param e Exception thrown.
-   *
-   *  @param argName Name of the argument that was found to be invalid.
-   *
-   *  @param argValue Invalid argument value.
-   */
-  final def assertRequireValidMsg(e: IllegalArgumentException, argName: String, argValue: Any) = {
-    assert(e.getMessage === LibResource(RequireValidKey, argName, argValue))
-  }
+    /** Assert that a NullPointerException's message resulting from a [[requireNonNull(AnyRef)]] failure matches the
+     *  expected value.
+     *
+     *  @param e Exception thrown.
+     *
+     *  @param argName Name of the argument that was found to be `null`.
+     */
+    final def assertRequireNonNullMsg(e: NullPointerException, argName: String) =
+      assert(e.getMessage === LibResource(RequireNonNullKey, argName))
 
-  /** Assert that an IllegalArgumentException's message resulting from a [[requireFinite(Double)*]] failure matches the
-   *  expected value.
-   *
-   *  @param e Exception thrown.
-   *
-   *  @param argName Name of the argument that was found to be not finite.
-   *
-   *  @param argValue Invalid argument value.
-   */
-  final def assertRequireFiniteMsg(e: IllegalArgumentException, argName: String, argValue: Double) = {
-    assert(e.getMessage === LibResource(RequireFiniteKey, argName, argValue))
-  }
-}
-//scalastyle:on public.methods.have.type
+    /** Assert that an IllegalArgumentException's message resulting from a [[requireValid(Any,Boolean)]] failure matches
+     *  the expected value.
+     *
+     *  @param e Exception thrown.
+     *
+     *  @param argName Name of the argument that was found to be invalid.
+     *
+     *  @param argValue Invalid argument value.
+     */
+    final def assertRequireValidMsg(e: IllegalArgumentException, argName: String, argValue: Any) =
+      assert(e.getMessage === LibResource(RequireValidKey, argName, argValue))
+
+    /** Assert that an IllegalArgumentException's message resulting from a [[requireFinite(Double)]] failure matches the
+     *  expected value.
+     *
+     *  @param e Exception thrown.
+     *
+     *  @param argName Name of the argument that was found to be not finite.
+     *
+     *  @param argValue Invalid argument value.
+     */
+    final def assertRequireFiniteMsg(e: IllegalArgumentException, argName: String, argValue: Double) =
+      assert(e.getMessage === LibResource(RequireFiniteKey, argName, argValue))

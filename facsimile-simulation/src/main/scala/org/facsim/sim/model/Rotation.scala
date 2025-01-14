@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -42,7 +42,7 @@ import squants.space.Angle
  *
  *  @since 0.0
  */
-sealed trait Rotation {
+sealed trait Rotation:
 
   /** Rotation about the associated axis.
    *
@@ -51,7 +51,6 @@ sealed trait Rotation {
    *  @since 0.0
    */
   val angle: Angle
-}
 
 /** Local X-axis rotation.
  *
@@ -59,8 +58,8 @@ sealed trait Rotation {
  *
  *  @constructor Create a new rotation about the local X-axis.
  *
- *  @param angle Rotation about the local X-axis, positive values represent counter-clockwise rotation, negative
- *  values represent clockwise rotation.
+ *  @param angle Rotation about the local X-axis, positive values represent counter-clockwise rotation, negative values
+ *  represent clockwise rotation.
  *
  *  @since 0.0
  */
@@ -73,8 +72,8 @@ extends Rotation
  *
  *  @constructor Create a new rotation about the local Y-axis.
  *
- *  @param angle Rotation about the local Y-axis, positive values represent counter-clockwise rotation, negative
- *  values represent clockwise rotation.
+ *  @param angle Rotation about the local Y-axis, positive values represent counter-clockwise rotation, negative values
+ *  represent clockwise rotation.
  *
  *  @since 0.0
  */
@@ -87,8 +86,8 @@ extends Rotation
  *
  *  @constructor Create a new rotation about the local Z-axis.
  *
- *  @param angle Rotation about the local Z-axis, positive values represent counter-clockwise rotation, negative
- *  values represent clockwise rotation.
+ *  @param angle Rotation about the local Z-axis, positive values represent counter-clockwise rotation, negative values
+ *  represent clockwise rotation.
  *
  *  @since 0.0
  */

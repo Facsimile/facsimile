@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -37,11 +37,11 @@ package org.facsim.sfx.application
 import javafx.application.Application
 import javafx.stage.Stage
 
-/** ''JavaFX'' application class.
+/** _JavaFX_ application class.
  *
- *  @note Instances of this class should only be constructed by the ''JavaFX'' framework.
+ *  @note Instances of this class should only be constructed by the _JavaFX_ framework.
  *
- *  @constructor Initialize this ''JavaFX'' application.
+ *  @constructor Initialize this _JavaFX_ application.
  *
  *  @since 0.0
  */

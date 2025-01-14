@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,16 +38,16 @@ package org.facsim.types.phys
 
 import org.facsim.types.LibResource
 
-/** ''[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]'' physical quantity type.
+/** _[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]_ physical quantity type.
  *
- *  All luminous intensity values are stored internally in ''[[http://en.wikipedia.org/wiki/Candela candelas]]'', which
- *  is the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard unit of types.
+ *  All luminous intensity values are stored internally in _[[http://en.wikipedia.org/wiki/Candela candelas]]_, which
+ *  is the _[[http://en.wikipedia.org/wiki/SI SI]]_ standard unit of types.
  *
- *  @see [[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/Candela Candelas]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/Candela Candelas]] on _Wikipedia_.
  *
- *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+ *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
  *
  *  @since 0.0
  */
@@ -63,16 +63,16 @@ extends NonNegative {
   /** @inheritdoc */
   override val name: String = LibResource("phys.LuminousIntensity.name")
 
-  /** Units for luminous intensity measured in ''[[http://en.wikipedia.org/wiki/Candela candelas]]''.
+  /** Units for luminous intensity measured in _[[http://en.wikipedia.org/wiki/Candela candelas]]_.
    *
-   *  @note ''Candelas'' are the ''[[http://en.wikipedia.org/wiki/SI SI]]'' standard units for luminous intensity
-   *  measurement, and the units that are used to store such measurements internally in ''Facsimile''.
+   *  @note _Candelas_ are the _[[http://en.wikipedia.org/wiki/SI SI]]_ standard units for luminous intensity
+   *  measurement, and the units that are used to store such measurements internally in _Facsimile_.
    *
-   *  In ''Facsimile'', a ''candela'' is defined in accordance with ''SI'' standards.
+   *  In _Facsimile_, a _candela_ is defined in accordance with _SI_ standards.
    *
-   *  @see [[http://en.wikipedia.org/wiki/Candela Candelas]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/Candela Candelas]] on _Wikipedia_.
    *
-   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on ''Wikipedia''.
+   *  @see [[http://en.wikipedia.org/wiki/SI International System of Units]] on _Wikipedia_.
    *
    *  @since 0.0
    */
@@ -95,14 +95,14 @@ extends NonNegative {
    */
   private[phys] override def apply(measure: Double) = new Measure(measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]'' measurement class.
+  /** _[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]_ measurement class.
    *
-   *  Instances of this class represent ''luminous intensity'' measurements.
+   *  Instances of this class represent _luminous intensity_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Luminous_intensity luminous intensity]]'' measurement
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Luminous_intensity luminous intensity]]_ measurement
    *  value.
    *
-   *  @param measure ''Luminous intensity'' measurement expressed in ''[[Candelas]]''. This value must be finite and
+   *  @param measure _Luminous intensity_ measurement expressed in _[[Candelas]]_. This value must be finite and
    *  greater than or equal to zero.
    *
    *  @throws IllegalArgumentException if `types` is not finite or is negative.
@@ -112,15 +112,15 @@ extends NonNegative {
   final class LuminousIntensityMeasure private[phys](measure: Double)
   extends NonNegativeMeasure[LuminousIntensityMeasure](measure)
 
-  /** ''[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]'' unit of measurement family class.
+  /** _[[http://en.wikipedia.org/wiki/Luminous_intensity Luminous intensity]]_ unit of measurement family class.
    *
-   *  Instances of this class represent units for expressing ''luminous intensity'' measurements.
+   *  Instances of this class represent units for expressing _luminous intensity_ measurements.
    *
-   *  @constructor Create new ''[[http://en.wikipedia.org/wiki/Luminous_intensity luminous intensity]]'' unit of
+   *  @constructor Create new _[[http://en.wikipedia.org/wiki/Luminous_intensity luminous intensity]]_ unit of
    *  measurement.
    *
    *  @param converter Rules to be applied to convert a quantity measured in these units to and from the standard
-   *  ''luminous intensity [[http://en.wikipedia.org/wiki/SI SI]]'' units, ''candelas''.
+   *  _luminous intensity [[http://en.wikipedia.org/wiki/SI SI]]_ units, _candelas_.
    *
    *  @param symbol Symbol to be used when outputting measurement values expressed in these units.
    *

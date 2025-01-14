@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.sim.engine
 
+import izumi.reflect.Tag
 import org.facsim.sim.model.{Action, ModelState}
 import org.facsim.util.CompareEqualTo
-import scala.reflect.runtime.universe.TypeTag
 import squants.Time
 
 /** Event scheduling the dispatch of specified actions at a specified simulation time.
@@ -62,48 +62,44 @@ import squants.Time
  *
  *  @param action Action to be performed by this event when it is dispatched.
  */
-private[engine] final case class Event[M <: ModelState[M]: TypeTag](id: Long, dueAt: Time, priority: Int = 0,
+private[engine] final case class Event[M <: ModelState[M]: Tag](id: Long, dueAt: Time, priority: Int = 0,
 action: Action[M])
-extends Ordered[Event[M]] {
+extends Ordered[Event[M]]:
 
   /** Compare this event to another event.
    *
-   *  When comparing two events that have yet to occur, the event that compares as ''less than'' the other event must
+   *  When comparing two events that have yet to occur, the event that compares as _less than_ the other event must
    *  always be dispatched first.
    *
-   *  @note It is possible for an event that is occurring, or that has already occurred, to compare as ''greater than''
-   *  an event that has yet to occur, but only if the latter was scheduled ''after'' the former was dispatched. Even so,
+   *  @note It is possible for an event that is occurring, or that has already occurred, to compare as _greater than_ an
+   *  event that has yet to occur, but only if the latter was scheduled _after_ the former was dispatched. Even so,
    *  since time cannot run backwards, the latter cannot be due at an earlier time than the former.
    *
    *  @param that Event that this event is being compared to.
    *
    *  @return An integer value indicating the result of the comparison. If this value is less than zero, then this event
-   *  compares as ''less than'' `that` event; if this value is greater than zero, then this event compares as ''greater
-   *  than'' `that` event. Two events should ''never'' compare as equal (unless they are the same instance), since the
+   *  compares as _less than_ `that` event; if this value is greater than zero, then this event compares as _greater
+   *  than_ `that` event. Two events should _never_ compare as equal (unless they are the same instance), since the
    *  event's [[id]] must be unique.
    */
-  override def compare(that: Event[M]): Int = {
+  override def compare(that: Event[M]): Int =
 
     // Compare the two events based upon their due times. If the value is non-zero, then return that result; otherwise,
     // the events are co-incident (occurring at the same simulation time) and we must look at the two events'
     // priorities.
     val dueAtOrder = dueAt.compare(that.dueAt)
-    if(dueAtOrder != CompareEqualTo) dueAtOrder
-    else {
+    if dueAtOrder != CompareEqualTo then dueAtOrder
+    else
 
       // Compare the two events based upon their priorities. Because priorities are higher the lower the value, we can
       // simply numerically compare the two. If the value is non-zero, then return that result; otherwise, the events
       // are co-incident AND have the same priority and we must look at the two events' identifiers to determine their
       // ordering.
       val priorityOrder = priority.compare(that.priority)
-      if(priorityOrder != CompareEqualTo) priorityOrder
-      else {
+      if priorityOrder != CompareEqualTo then priorityOrder
+      else
 
         // Compare the two events based upon their identifiers. These should not compare equal unless that event is this
         // event.
         assert(id != that.id || (this ne that), s"This event '$this' cannot equal event '$that'")
         id.compare(that.id)
-      }
-    }
-  }
-}

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -45,8 +45,8 @@ JFXInitialization {
 
   /**
    * Main function.
-   * Initialize ''JavaFX'' and create the JavaFX application isntannce. Then execute buffered constructor code on the
-   * ''JavaFX event-dispatch thread''.
+   * Initialize _JavaFX_ and create the JavaFX application isntannce. Then execute buffered constructor code on the
+   * _JavaFX event-dispatch thread_.
    *
    * @note This main function will only become active as the application's starting point if this trait is extended as an
    * object.

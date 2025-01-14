@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -40,13 +40,13 @@ import org.facsim.util.requireNonNull
 
 /** Represents a point in world space.
  *
- *  @constructor Create a new point in ''3D world space''.
+ *  @constructor Create a new point in _3D world space_.
  *
- *  @param x World ''X'' co-ordinate of this point, measured from the origin along the world ''X''-axis.
+ *  @param x World _X_ co-ordinate of this point, measured from the origin along the world _X_-axis.
  *
- *  @param y World ''Y'' co-ordinate of this point, measured from the origin along the world ''Y''-axis.
+ *  @param y World _Y_ co-ordinate of this point, measured from the origin along the world _Y_-axis.
  *
- *  @param z World ''Z'' co-ordinate of this point, measured from the origin along the world ''Z''-axis.
+ *  @param z World _Z_ co-ordinate of this point, measured from the origin along the world _Z_-axis.
  *
  *  @throws NullPointerException if `x`, `y` or `z` is `null`.
  *
@@ -82,13 +82,13 @@ final case class Point(x: Length, y: Length, z: Length) {
     )
   }
 
-  /** Calculate distance from this point to `other` point measured on the ''X-Y'' plane.
+  /** Calculate distance from this point to `other` point measured on the _X-Y_ plane.
    *
    *  @note The calculated distance will always be a positive value.
    *
-   *  @param other Point to which an ''X-Y'' plane distance measurement is required.
+   *  @param other Point to which an _X-Y_ plane distance measurement is required.
    *
-   *  @return ''X-Y'' plane distance from this point to `other` point.
+   *  @return _X-Y_ plane distance from this point to `other` point.
    *
    *  @throws NullPointerException if `other` is null.
    *
@@ -104,18 +104,18 @@ final case class Point(x: Length, y: Length, z: Length) {
     )
   }
 
-  /** Calculate angle from this point, on ''X-Y'' to `other` point.
+  /** Calculate angle from this point, on _X-Y_ to `other` point.
    *
-   *  The angle is measured on the world ''X-Y'' plane, and is relative to the world ''X''-axis. This angle can be
+   *  The angle is measured on the world _X-Y_ plane, and is relative to the world _X_-axis. This angle can be
    *  viewed as the direction of travel required to reach `other` from this point.
    *
    *  @note If this point and `other` are identical, or if `other` lies directly above or below this point, then this
    *  function will return an angle value of zero.
    *
-   *  @param other Point to which an ''X-Y'' plane angle is required.
+   *  @param other Point to which an _X-Y_ plane angle is required.
    *
-   *  @return ''X-Y'' plane angle from this point to `other` point, in the range [0, ''τ'') ''radians'' ([0, 360)
-   *  ''degrees'').
+   *  @return _X-Y_ plane angle from this point to `other` point, in the range [0, _τ_) _radians_ ([0, 360)
+   *  _degrees_).
    *
    *  @throws NullPointerException if `other` is null.
    *

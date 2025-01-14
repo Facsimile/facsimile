@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -12,8 +12,9 @@
 // warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 // details.
 //
-// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
-// see http://www.gnu.org/licenses/lgpl.
+// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
+//
+//   http://www.gnu.org/licenses/lgpl.
 //
 // The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
 // project home page at:
@@ -31,6 +32,35 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// SBT file to include Scalastyle plugin.
+// Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
-addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
+package org.facsim.util.test
+
+import org.apache.pekko.actor.ActorSystem
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funspec.AnyFunSpec
+import scala.concurrent.ExecutionContext
+
+/** Test harness trait for _Pekko actors_.
+ *
+ *  Creates an _Pekko_ actor system, executes the indicated test, then destroys the actor system.
+ */
+trait PekkoTestHarness
+extends AnyFunSpec, BeforeAndAfterAll:
+
+  /** Implicit actor system which can be used for the tests in this harness.
+   */
+  protected final given system: ActorSystem =
+
+    val instanceName = this.getClass.getCanonicalName.nn.replace('.', '_')
+    ActorSystem(s"PekkoTestHarness_$instanceName")
+
+  /** Provide an execution context for any futures used.
+   */
+  protected final given executionContext: ExecutionContext = system.dispatcher
+
+  /** When all tests have been completed, terminate the actor system.
+   */
+  override def afterAll(): Unit =
+    system.terminate()
+    super.afterAll()

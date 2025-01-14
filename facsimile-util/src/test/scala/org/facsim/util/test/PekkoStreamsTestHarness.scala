@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -32,14 +32,33 @@
 //======================================================================================================================
 
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.util.log package.
+// Scala source file belonging to the org.facsim.util.test package.
 //======================================================================================================================
-package org.facsim.util
+package org.facsim.util.test
 
-/** ''Facsimile Utility'' library logging root package.
+import org.apache.pekko.stream.Materializer
+import org.facsim.util.stream.DataSource
+import org.scalacheck.Gen
+
+/** Test harness trait for _Pekko streams_.
  *
- *  This library contains tools for streaming log messages.
- *
- *  @since 0.2
+ *  Creates an _Pekko_ actor system, and a stream materializer, executes the indicated test, then destroys the actor
+ *  system.
  */
-package object log
+trait PekkoStreamsTestHarness
+extends PekkoTestHarness:
+
+  /** Generator for invalid buffer size numbers.
+   */
+  protected final val invalidBufferSizes = Gen.oneOf(
+    Generator.nonPosInt,
+    Gen.choose(DataSource.MaxBufferSize + 1, Int.MaxValue),
+  )
+
+  /** Generator for valid buffer size numbers.
+   */
+  protected final val validBufferSizes = Gen.choose(1, DataSource.MaxBufferSize)
+
+  /** Implicit actor materializer for default stream materialization.
+   */
+  protected final given materializer: Materializer = Materializer.matFromSystem

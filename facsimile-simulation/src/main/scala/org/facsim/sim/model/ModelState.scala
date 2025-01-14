@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,15 +36,17 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-import scala.reflect.runtime.universe.TypeTag
+import izumi.reflect.Tag
 
 /** Base class for model states.
  *
  *  Model state encapsulates the state of a simulation model. It may contain any necessary state information, but each
- *  instance must be ''immutable''.
+ *  instance must be _immutable_.
  *
  *  @tparam M Final model state class, which must be derived from this class.
+ *            
+ *  @constructor Construct a new model state.
  *
  *  @since 0.0
  */
-abstract class ModelState[M <: ModelState[M]: TypeTag]
+abstract class ModelState[M <: ModelState[M]: Tag]

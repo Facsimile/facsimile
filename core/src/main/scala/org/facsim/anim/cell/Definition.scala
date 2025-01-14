@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -34,7 +34,7 @@ Scala source file from the org.facsim.anim.cell package.
 package org.facsim.anim.cell
 
 /**
-Trait for definition ''cells''.
+Trait for definition _cells_.
 */
 
 private[cell] trait Definition

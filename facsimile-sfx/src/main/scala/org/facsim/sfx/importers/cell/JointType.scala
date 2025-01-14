@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -34,17 +34,17 @@
 //======================================================================================================================
 package org.facsim.sfx.importers.cell
 
-/** ''Cell'' joint type. */
+/** _Cell_ joint type. */
 private[cell] sealed trait JointType
 
-/** ''AutoMod cell'' scene display style definitions.
+/** _AutoMod cell_ scene display style definitions.
  *
- *  A display style code of 0 indicates that the associated ''cell'' primitive should be drawn as in wireframe mode. All
+ *  A display style code of 0 indicates that the associated _cell_ primitive should be drawn as in wireframe mode. All
  *  other display style codes are solid modes with varying levels of transparency: the value 1 indicates fully opaque,
  *  with 16 being almost invisible.
  *
- * @note ''JavaFX'' Supports wireframe and solid drawing modes, as well as transparency (albeit largely buggy and not
- *  working  as of ''JavaFX'' 8).
+ * @note _JavaFX_ Supports wireframe and solid drawing modes, as well as transparency (albeit largely buggy and not
+ *  working  as of _JavaFX_ 8).
  */
 private[cell] object JointType {
 
@@ -78,7 +78,7 @@ private[cell] object JointType {
 
 /** Type indicating this isn't a joint.
  *
- *  @note This type is typically used for ''terminal control frame'' (''TCF'') definitions. However, each ''TCF'' can
+ *  @note This type is typically used for _terminal control frame_ (_TCF_) definitions. However, each _TCF_ can
  *  also be a joint as well.
  */
 private[cell] case object NotAJoint

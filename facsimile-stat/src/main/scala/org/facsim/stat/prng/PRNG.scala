@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,9 +36,9 @@
 //======================================================================================================================
 package org.facsim.stat.prng
 
-/** ''Pseudo-random number'' generator trait.
+/** _Pseudo-random number_ generator trait.
  *
- *  ''Pseudo-random'' numbers (''PRN''s) are streams of numbers that appear to have random properties, but are, in fact,
+ *  _Pseudo-random_ numbers (_PRN_s) are streams of numbers that appear to have random properties, but are, in fact,
  *  completely deterministic. In order for simulation results to be repeatable, the sequence of generated numbers must
  *  be repeatable.
  *
@@ -58,17 +58,17 @@ trait PRNG[G <: PRNG[G]] {
   def nextInt: (Int, G)
 }
 
-/** ''Pseudo-random number'' companion object.
+/** _Pseudo-random number_ companion object.
  *
  *  @since 0.0
  */
 object PRNG {
 
-  /** ''State transition'' (a.k.a. ''state action'') for converting the state of a PRNG instance to a new instance.
+  /** _State transition_ (a.k.a. _state action_) for converting the state of a PRNG instance to a new instance.
    *
    *  This signature, for a function that takes a [[PRNG]] instance and uses it to generate a random value of some type
    *  `A`, returning that value and an updated generator instance as a tuple, forms the basis for a number of
-   *  ''combinator'' methods that are defined below.
+   *  _combinator_ methods that are defined below.
    *
    *  @tparam G Type of the generator, which must be derived from [[PRNG]].
    *
@@ -78,13 +78,13 @@ object PRNG {
    */
   type Rand[G <: PRNG[G], A] = G => (A, G)
 
-  /** Next ''pseudo-random'' non-negative integer in the range [0, Int.MaxValue].
+  /** Next _pseudo-random_ non-negative integer in the range [0, Int.MaxValue].
    *
    *  @tparam G Final type of the generator, which must be a subclass of [[PRNG]][G].
    *
    *  @param g Generator instance to be employed to sample the non-negative integer.
    *
-   *  @return ''pseudo-random'' integer in the range [0, Int.MaxValue], together with the next instance of the
+   *  @return _pseudo-random_ integer in the range [0, Int.MaxValue], together with the next instance of the
    *  generator.
    *
    *  @since 0.0
@@ -94,13 +94,13 @@ object PRNG {
     (i & 0x7FFFFFFF, nextG)
   } ensuring (_._1 >= 0)
 
-  /** Next ''pseudo-random'' probability value, in the range [0, 1).
+  /** Next _pseudo-random_ probability value, in the range [0, 1).
    *
    *  @tparam G Final type of the generator, which must be a subclass of [[PRNG]][G].
    *
    *  @param g Generator instance to be employed to sample the probability value.
    *
-   *  @return ''pseudo-random'' probability value, together with the next instance of the generator.
+   *  @return _pseudo-random_ probability value, together with the next instance of the generator.
    *
    *  @since 0.0
    */
@@ -116,7 +116,7 @@ object PRNG {
    *
    *  @param g Generator instance to be employed to sample the integer and probability value.
    *
-   *  @return Tuple of an integer and ''pseudo-random'' probability value, together with the next instance of the
+   *  @return Tuple of an integer and _pseudo-random_ probability value, together with the next instance of the
    *  generator.
    *
    *  @since 0.0
@@ -133,7 +133,7 @@ object PRNG {
    *
    *  @param g Generator instance to be employed to sample the integer and probability value.
    *
-   *  @return Tuple of a ''pseudo-random'' probability value and an integer, together with the next instance of the
+   *  @return Tuple of a _pseudo-random_ probability value and an integer, together with the next instance of the
    *  generator.
    *
    *  @since 0.0

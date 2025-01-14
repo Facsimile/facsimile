@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -40,7 +40,7 @@ Exception indicating that a field read from a [[org.facsim.io.TextReader!]]
 could not be converted from a string to its required data type.
 
 Field conversion exceptions must be recoverable.  Furthermore, all functions
-throwing such exceptions must implement ''failure atomicity''.
+throwing such exceptions must implement _failure atomicity_.
 
 @constructor Construct new field conversion exception.
 

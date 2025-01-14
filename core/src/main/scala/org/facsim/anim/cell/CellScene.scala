@@ -1,6 +1,6 @@
 /*
 Facsimile: A Discrete-Event Simulation Library
-Copyright © 2004-2020, Michael J Allen.
+Copyright © 2004-2025, Michael J Allen.
 
 This file is part of Facsimile.
 
@@ -42,28 +42,28 @@ TextReader}
 import scala.collection.mutable.{Map => MutableMap}
 
 /**
-''Java3D'' scene retrieved from an ''[[http://www.automod.com/ AutoMod®]]
-cell'' file.
+_Java3D_ scene retrieved from an _[[http://www.automod.com/ AutoMod®]]
+cell_ file.
 
 @constructor Create a new scene with the indicated reader and default
 information.
 
-@param reader Text reader that assists with processing the ''cell'' file's
+@param reader Text reader that assists with processing the _cell_ file's
 contents.
 
 @param baseUrl Location at which, or relative to which, files referenced within
-''cell'' files that have non-absolute paths, will be searched.
+_cell_ files that have non-absolute paths, will be searched.
 
-@param faceColor Face color to be assigned to all ''cell'' elements in this
+@param faceColor Face color to be assigned to all _cell_ elements in this
 scene that inherit their face color from the root node. This value cannot be
 `null`.
 
-@param edgeColor Edge color to be assigned to all ''cell'' elements in this
+@param edgeColor Edge color to be assigned to all _cell_ elements in this
 scene that inherit their edge color from the root node. This value cannot be
 `null`.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -87,10 +87,10 @@ Flag indicating whether we have finished constructing the scene.
 @todo This is a little fugly, but it works, so hey... :-(
 */
 
-  private var sceneRead = false // scalastyle:ignore
+  private var sceneRead = false
 
 /**
-''Cell'' definitions, indexed by name and initially empty.
+_Cell_ definitions, indexed by name and initially empty.
 */
 
   private val definitions = MutableMap[String, Cell]()
@@ -98,7 +98,7 @@ Flag indicating whether we have finished constructing the scene.
 /**
 Process the cell data.
 
-Note: There is a single ''root'' cell element that is either a leaf primitive
+Note: There is a single _root_ cell element that is either a leaf primitive
 or a set primitive that contains all remaining cells making up the scene.
 Consequently, the root cell contains the entire scene itself.
 */
@@ -133,9 +133,9 @@ Report the default edge color for this scene.
   private[cell] def defaultEdgeColor = Some(edgeColor)
 
 /**
-Return the scene read as a ''ScalaFX'' 3D scene graph.
+Return the scene read as a _ScalaFX_ 3D scene graph.
 
-@return Cell's contents as a ''ScalaFX'' 3D scene graph.
+@return Cell's contents as a _ScalaFX_ 3D scene graph.
 */
   private[cell] def toNode = {
     assert(sceneRead)
@@ -221,7 +221,7 @@ Note that if the cell has no name, then this will result in an exception.
 */
 
     if(isDefinition) {
-      assert(cell.isInstanceOf[Definition]) // scalastyle:ignore
+      assert(cell.isInstanceOf[Definition])
       definitions +=(cell.name.get -> cell)
     }
 
@@ -246,7 +246,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -299,7 +299,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -346,7 +346,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -392,7 +392,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -439,7 +439,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -485,7 +485,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -532,7 +532,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -578,7 +578,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -625,7 +625,7 @@ to the user in the event that an exception occurs.
 @return Value read, if no exceptions arise.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.
@@ -706,7 +706,7 @@ only appear at the root of a definition&mdash;they are then included in the
 scene via reference (by an instance cell element).
 
 Because of the different places in which these two different types of cell are
-defined, it makes sense to utilize two different ''cell code to cell class''
+defined, it makes sense to utilize two different _cell code to cell class_
 maps, one for regular cell elements and the other for definition cell elements.
 
 This function starts with a map of cell codes to cell classes, and then
@@ -722,7 +722,7 @@ AutoMod Cell Type Codes]]
   private[this] def partitionClassMap = {
 
 /*
-Map associating cell type code with corresponding ''regular'' cell class.
+Map associating cell type code with corresponding _regular_ cell class.
 
 All classes contained in his map must be concrete classes and must provide a
 constructor taking CellScene reference and an Option [Set] arguments.
@@ -877,7 +877,7 @@ may not be a valid cell file.
 [[org.facsim.io.FieldVerificationException]]s are more troublesome. Mapping all
 such exceptions to `IncorrectFormatException`s may be too severe, while mapping
 them to `ParsingErrorException`s may be too lenient. Still, a standard mapping
-is required, so ''Facsimile'' treats such exceptions as the latter type.
+is required, so _Facsimile_ treats such exceptions as the latter type.
 
 Similarly, IOExceptions are also treated as `ParsingErrorException`s.
 
@@ -892,7 +892,7 @@ string to explain what might have just happened.
 @return This function does not return and always throws an exception.
 
 @throws org.facsim.anim.cell.IncorrectFormatException if the file supplied is
-not an ''AutoMod® cell'' file.
+not an _AutoMod® cell_ file.
 
 @throws org.facsim.anim.cell.ParsingErrorException if errors are encountered
 during parsing of the file.

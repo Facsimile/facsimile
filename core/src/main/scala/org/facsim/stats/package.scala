@@ -1,6 +1,6 @@
 /*
  * Facsimile: A Discrete-Event Simulation Library
- * Copyright © 2004-2020, Michael J Allen.
+ * Copyright © 2004-2025, Michael J Allen.
  *
  * This file is part of Facsimile.
  *
@@ -34,7 +34,7 @@
 package org.facsim
 
 /**
- * ''[[http://facsim.org/ Facsimile]]'' Simulation Library statistics support.
+ * _[[http://facsim.org/ Facsimile]]_ Simulation Library statistics support.
  *
  * Package supporting statistics collation.
  *

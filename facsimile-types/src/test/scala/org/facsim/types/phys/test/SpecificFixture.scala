@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2020, Michael J Allen.
+// Copyright © 2004-2025, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -38,7 +38,6 @@ package org.facsim.types.phys.test
 
 import org.facsim.types.phys.{Family, Specific}
 
-//scalastyle:off scaladoc
 /** Test fixture trait for all [[Specific]] subclasses.
  *
  *  @tparam Q The `Specific` subclass being tested.
@@ -76,4 +75,3 @@ extends PhysicalFixture[Q] {
    */
   val validValues: List[Double]
 }
-//scalastyle:on scaladoc
