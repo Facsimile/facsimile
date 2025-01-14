@@ -11,7 +11,7 @@ _[GNU General Public License](http://www.gnu.org/licenses/lgpl-3.0-standalone.ht
 
 Current status of official master _Facsimile_ branch:
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_2.12)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_3)
 [![Build Status](https://travis-ci.org/Facsimile/facsimile.svg?branch=master)](https://travis-ci.org/Facsimile/facsimile)
 [![Coverage Status](https://coveralls.io/repos/github/Facsimile/facsimile/badge.svg?branch=master)](https://coveralls.io/github/Facsimile/facsimile?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/07018e3a4450402c918f98804ebdfd0b)](https://www.codacy.com/app/MichaelJAllen/Facsimile?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Facsimile/facsimile&amp;utm_campaign=Badge_Grade)
