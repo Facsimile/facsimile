@@ -45,8 +45,6 @@ import xerial.sbt.Sonatype.{sonatypeCentralHost, sonatypeSettings}
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
-//
-// IMPORTANT: When changing the primary Scala version, remember to update "./.travis.yml" to match.
 val CatsVersion = "2.10.0"
 val IzumiReflectVersion = "2.3.10"
 val ParboiledVersion = "2.5.1"
@@ -143,6 +141,13 @@ ThisBuild / homepage := Some(url("http://facsim.org/"))
 // use the Scala version to decorate the project's artifact/normalized name. Hence, even if a project does not contain
 // any sources, it it still necessary to provide the version of Scala that is in use.
 ThisBuild / scalaVersion := PrimaryScalaVersion
+
+// Support automated builds in GitHub, following commits, PRs, etc.
+//
+// Specify the user of Java 17 in the latest Ubuntu release.
+ThisBuild / githubWorkflowJavaVersions := Seq(
+  JavaSpec.temurin("17"),
+)
 
 // Publish artifacts to the Sonatype Central Release repository.
 //
