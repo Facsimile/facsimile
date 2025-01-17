@@ -47,7 +47,6 @@ import xerial.sbt.Sonatype.{sonatypeCentralHost, sonatypeSettings}
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
 val CatsVersion = "2.10.0"
 val IzumiReflectVersion = "2.3.10"
-val ParboiledVersion = "2.5.1"
 val PekkoVersion = "1.0.2"
 val PrimaryScalaVersion = "3.3.4"
 val ScalaCheckVersion = "1-18" // Formatted this way due to usage.
@@ -515,11 +514,6 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
     // use by the Facsimile project.
     "org.apache.pekko" %% "pekko-stream" % PekkoVersion,
     "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test,
-
-    // Parboiled is a parsing library, required for Facsimile's file parsing capabilities.
-    //
-    // Parboiled used to have a dependency upon the Shapeless library, but that has now been internalized.
-    "org.parboiled" %% "parboiled" % ParboiledVersion,
   ),
 
   // Help the test code find the test JAR files that we use to verify JAR file manifests.
