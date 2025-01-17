@@ -45,7 +45,7 @@ import xerial.sbt.Sonatype.{sonatypeCentralHost, sonatypeSettings}
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
-val CatsVersion = "2.10.0"
+val CatsVersion = "2.12.0"
 val IzumiReflectVersion = "2.3.10"
 val PekkoVersion = "1.0.2"
 val PrimaryScalaVersion = "3.3.4"
