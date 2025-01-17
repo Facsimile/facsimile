@@ -10,7 +10,6 @@ Facsimile is open-source/free software and is distributed under version 3 of the
 _[GNU General Public License](http://www.gnu.org/licenses/lgpl-3.0-standalone.html)_ (GPLv3).
 
 Current status of official master _Facsimile_ branch:
-
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_3/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_3)
 [![Coverage Status](https://coveralls.io/repos/github/Facsimile/facsimile/badge.svg?branch=master)](https://coveralls.io/github/Facsimile/facsimile?branch=master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ba518cbf7a13430b9f3854933b5e94e9)](https://app.codacy.com/gh/Facsimile/facsimile/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
