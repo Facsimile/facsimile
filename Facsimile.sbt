@@ -113,7 +113,7 @@ val dependsOnCompileTest = "compile;test->test"
 
 // Common project settings.
 //
-// These settings are common to all SBT root- and sub-projects.
+// These settings are common to all SBT root- and subprojects.
 //
 // Note that we implement release versioning for artifacts through the Release plugin. The current version is stored in
 // the "version.sbt" file.
@@ -121,7 +121,7 @@ val dependsOnCompileTest = "compile;test->test"
 // Owning organization.
 //
 // This is the Maven/SBT/Ivy group ID and should match the root package name of the Scala sources. It should also be the
-// reverse of the web-site name (less any "www" prefix). Thus "http://facsim.org/" yields an organization ID/root
+// reverse of the web-site name (less any "www" prefix). Thus, "http://facsim.org/" yields an organization ID/root
 // package name of "org.facsim"
 ThisBuild / organization := "org.facsim"
 
@@ -138,7 +138,7 @@ ThisBuild / homepage := Some(url("http://facsim.org/"))
 //
 // NOTE: While it might appear that these Scala version options should be placed in "sourceProjectSettings", SBT will
 // use the Scala version to decorate the project's artifact/normalized name. Hence, even if a project does not contain
-// any sources, it it still necessary to provide the version of Scala that is in use.
+// any sources, it is still necessary to provide the version of Scala that is in use.
 ThisBuild / scalaVersion := PrimaryScalaVersion
 
 // Support automated builds in GitHub, following commits, PRs, etc.
@@ -185,7 +185,7 @@ lazy val docProjectSettings = Seq(
       "scala.*::scaladoc3::https://scala-lang.org/api/3.3_LTS/," +
       s"java.lang.*::javadoc::$JavaDocPrefix/java.base/," +
       s"java.text.*::javadoc::$JavaDocPrefix/java.base/," +
-      s"java.time.*::javadoc::$JavaDocPrefix/java.baae/," +
+      s"java.time.*::javadoc::$JavaDocPrefix/java.base/," +
       s"java.util.*::javadoc::$JavaDocPrefix/java.base/",
     "-groups",
     "-project", s"${name.value} API Documentation",
@@ -209,9 +209,9 @@ lazy val docProjectSettings = Seq(
 // 1. Test artifacts should NOT be published. This is disabled by the line "Test / publishArtifact := false" below.
 // 2. Third-party artifacts referenced by Facsimile must be available in the Maven Central Repository.
 // 3. Maven metadata that is not defined by SBT properties must be defined in the "pomExtra" setting as XML.
-// 4. Artifacts must be signed via GPG for verification and authenticity purposes. This is also essential for artifcats
+// 4. Artifacts must be signed via GPG for verification and authenticity purposes. This is also essential for artifacts
 //    to be published to the Sonatype OSS Nexus repository; in this case, the software must be signed using the key for
-//    "authentication@facsim.org". If your version of Facsimile is signed by a different key, then you do not have the
+//    "authentication@facsim.org". (If your version of Facsimile is signed by a different key, then you do not have the
 //    official version.)
 //
 // The sbt-gpg plugin uses GPG (GNU Privacy Guard) to sign artifacts, and this must be installed on the current machine.
