@@ -40,7 +40,8 @@ import org.apache.pekko.{Done, NotUsed}
 import org.apache.pekko.stream.{Materializer, OverflowStrategy, QueueOfferResult}
 import org.apache.pekko.stream.scaladsl.Source
 import org.facsim.util.{LibResource, NonPure}
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.Duration
 
 /** Create a new _Pekko Streams_ data source, to which data can be sent on demand.
  *
@@ -69,6 +70,10 @@ final class DataSource[A](bufferSize: Int)(using materializer: Materializer):
   require(bufferSize > 0 && bufferSize <= DataSource.MaxBufferSize,
   LibResource("stream.DataSourceInvalidBufferSize", bufferSize, DataSource.MaxBufferSize))
 
+  /** Last created future.
+   */
+  private var lastFuture: Option[Future[QueueOfferResult]] = None
+
   /** Queue stream and source requested.
    */
   private val streamSource = Source.queue[A](bufferSize, OverflowStrategy.backpressure).preMaterialize()
@@ -89,10 +94,16 @@ final class DataSource[A](bufferSize: Int)(using materializer: Materializer):
    *
    *  @since 0.2
    */
-  def send(data: A): Future[QueueOfferResult] =
+  def send(data: A): Future[QueueOfferResult] = synchronized:
+
+    // If we have a last signal, then wait for it to complete before submitting the next.
+    lastFuture.foreach(lf => Await.ready(lf, Duration.Inf))
 
     // Send the data, returning the associated future in the process.
-    streamSource._1.offer(data)
+    lastFuture = Some(streamSource._1.offer(data))
+    
+    // Return the future to the caller.
+    lastFuture.get
 
   /** Report the source to which flows and sinks can be attached.
    *

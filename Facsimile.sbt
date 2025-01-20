@@ -40,16 +40,13 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Version
 import scala.util.Properties
 import scoverage.ScoverageKeys
-import xerial.sbt.Sonatype.sonatypeSettings
+import xerial.sbt.Sonatype.{sonatypeCentralHost, sonatypeSettings}
 
 // Library dependency version information.
 //
 // Keep all compiler and library version numbers here, in alphabetical order, for easy maintenance.
-//
-// IMPORTANT: When changing the primary Scala version, remember to update "./.travis.yml" to match.
-val CatsVersion = "2.10.0"
+val CatsVersion = "2.12.0"
 val IzumiReflectVersion = "2.3.10"
-val ParboiledVersion = "2.5.1"
 val PekkoVersion = "1.0.2"
 val PrimaryScalaVersion = "3.3.4"
 val ScalaCheckVersion = "1-18" // Formatted this way due to usage.
@@ -116,7 +113,7 @@ val dependsOnCompileTest = "compile;test->test"
 
 // Common project settings.
 //
-// These settings are common to all SBT root- and sub-projects.
+// These settings are common to all SBT root- and subprojects.
 //
 // Note that we implement release versioning for artifacts through the Release plugin. The current version is stored in
 // the "version.sbt" file.
@@ -124,7 +121,7 @@ val dependsOnCompileTest = "compile;test->test"
 // Owning organization.
 //
 // This is the Maven/SBT/Ivy group ID and should match the root package name of the Scala sources. It should also be the
-// reverse of the web-site name (less any "www" prefix). Thus "http://facsim.org/" yields an organization ID/root
+// reverse of the web-site name (less any "www" prefix). Thus, "http://facsim.org/" yields an organization ID/root
 // package name of "org.facsim"
 ThisBuild / organization := "org.facsim"
 
@@ -141,12 +138,20 @@ ThisBuild / homepage := Some(url("http://facsim.org/"))
 //
 // NOTE: While it might appear that these Scala version options should be placed in "sourceProjectSettings", SBT will
 // use the Scala version to decorate the project's artifact/normalized name. Hence, even if a project does not contain
-// any sources, it it still necessary to provide the version of Scala that is in use.
+// any sources, it is still necessary to provide the version of Scala that is in use.
 ThisBuild / scalaVersion := PrimaryScalaVersion
 
-// Publish artifacts to the Sonatype OSS repository.
+// Support automated builds in GitHub, following commits, PRs, etc.
+//
+// Specify the user of Java 17 in the latest Ubuntu release.
+ThisBuild / githubWorkflowJavaVersions := Seq(
+  JavaSpec.temurin("17"),
+)
+
+// Publish artifacts to the Sonatype Central Release repository.
 //
 // It appears that this needs to be set globally.
+ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 ThisBuild / publishTo := sonatypePublishToBundle.value
 
 // Allow the generated ScalaDoc to link to the ScalaDoc documentation of dependent libraries that have included an
@@ -180,7 +185,7 @@ lazy val docProjectSettings = Seq(
       "scala.*::scaladoc3::https://scala-lang.org/api/3.3_LTS/," +
       s"java.lang.*::javadoc::$JavaDocPrefix/java.base/," +
       s"java.text.*::javadoc::$JavaDocPrefix/java.base/," +
-      s"java.time.*::javadoc::$JavaDocPrefix/java.baae/," +
+      s"java.time.*::javadoc::$JavaDocPrefix/java.base/," +
       s"java.util.*::javadoc::$JavaDocPrefix/java.base/",
     "-groups",
     "-project", s"${name.value} API Documentation",
@@ -204,9 +209,9 @@ lazy val docProjectSettings = Seq(
 // 1. Test artifacts should NOT be published. This is disabled by the line "Test / publishArtifact := false" below.
 // 2. Third-party artifacts referenced by Facsimile must be available in the Maven Central Repository.
 // 3. Maven metadata that is not defined by SBT properties must be defined in the "pomExtra" setting as XML.
-// 4. Artifacts must be signed via GPG for verification and authenticity purposes. This is also essential for artifcats
+// 4. Artifacts must be signed via GPG for verification and authenticity purposes. This is also essential for artifacts
 //    to be published to the Sonatype OSS Nexus repository; in this case, the software must be signed using the key for
-//    "authentication@facsim.org". If your version of Facsimile is signed by a different key, then you do not have the
+//    "authentication@facsim.org". (If your version of Facsimile is signed by a different key, then you do not have the
 //    official version.)
 //
 // The sbt-gpg plugin uses GPG (GNU Privacy Guard) to sign artifacts, and this must be installed on the current machine.
@@ -325,7 +330,7 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
   // Employ the following custom release process.
   //
   // This differs from the standard sbt-release process in that we employ the sbt-sonatype plugin to publish the
-  // project, which also takes care of signing published artifacts.
+  // project.
   releaseProcess := Seq[ReleaseStep](
 
     // Firstly, verify that none of this project's dependencies are SNAPSHOT releases.
@@ -350,14 +355,25 @@ lazy val publishedProjectSettings = sonatypeSettings ++ Seq(
     commitReleaseVersion,
     tagRelease,
 
-    // Sign, publish and release artifacts to the Sonatype OSS repository.
+    // Sign, publish and release artifacts to the Sonatype Central release repository.
     //
-    // This requires publishTo to be defined correctly (see above).
+    // This requires publishTo defined and the sonatypeCredentialHost property must be set to sonatypeCentralHost (see
+    // above).
+    //
+    // IMPORTANT: The following criteria are required to push to this artifact repository:
+    // 1. SNAPSHOT releases cannot be published, only full releases.
+    // 2. Sonatype Central (https://central.sonatype.com/) user tag used to authenticate user performing upload
+    //    (populated in $HOME/.sbt/1.0/Credentials.sbt).
+    // 3. Namespace (i.e. artifact organization, "org.facsim" in this case) must be identified and authorized as part of
+    //    the user's Sonatype account. (Authorization is done through a Sonatype Central JIRA ticket.)
+    // 4. Artifacts must be signed, in this case, by GPG key authentication@facsim.org (see above).
+    // 5. Artifact POM file includes specification of Maven formatting, license definition, organization URL, SCM
+    //    definition, and developer list. Many of these features can be entered into the pomExtra property.
     //
     // NOTE: If cross-publishing, use 'releaseStepCommandAndRemaining("+publishSigned")' in place of
     // 'releaseStepCommand("publishSigned")'.
-    releaseStepCommand("publish"),
-    releaseStepCommand("sonatypeBundleRelease"),
+    releaseStepCommand("publishSigned"),
+    releaseStepCommand("sonatypeCentralRelease"),
 
     // Update the "Version.sbt" file so that it contains the new development version number.
     setNextVersion,
@@ -498,11 +514,6 @@ lazy val facsimileUtil = project.in(file(FacsimileUtilName))
     // use by the Facsimile project.
     "org.apache.pekko" %% "pekko-stream" % PekkoVersion,
     "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test,
-
-    // Parboiled is a parsing library, required for Facsimile's file parsing capabilities.
-    //
-    // Parboiled used to have a dependency upon the Shapeless library, but that has now been internalized.
-    "org.parboiled" %% "parboiled" % ParboiledVersion,
   ),
 
   // Help the test code find the test JAR files that we use to verify JAR file manifests.
