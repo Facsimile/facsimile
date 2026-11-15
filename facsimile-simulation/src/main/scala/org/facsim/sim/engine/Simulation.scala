@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -49,7 +49,7 @@ import squants.time.Days
 /** Simulation model class.
  *
  *  @tparam M Final type of the simulation's model state.
- *  
+ *
  *  @since 0.0
  */
 final class Simulation[M <: ModelState[M]: Tag]:
@@ -126,13 +126,13 @@ final class Simulation[M <: ModelState[M]: Tag]:
    *  predicate can evaluate the state and return value of each transition. If the predicate succeeds, then execution of
    *  any remaining transitions terminates and the result of the last transition processed is returned; otherwise, if
    *  the predicate fails for the current result, then the following transition will be executed.
-   *  
+   *
    *  @return Result (including state) of the last transition executed, or the current state plus the last value if all
    *  transitions were processed.
    *
    *  @since 0.0
    */
-  def takeUntil[A: Tag](ts: Seq[SimulationTransition[M, A]], terminationValue: A)
+  def takeUntil[A](ts: Seq[SimulationTransition[M, A]], terminationValue: A)
   (p: ((SimulationState[M], A)) => Boolean): SimulationTransition[M, A] =
 
     // Transition type.
@@ -151,13 +151,13 @@ final class Simulation[M <: ModelState[M]: Tag]:
         // otherwise repeat for the tail.
         case x +: xst =>
           for
-  
+
             // Perform the head transition, and retrieve the resulting value.
             rx <- x
-  
+
             // Retrieve the resulting state.
             s <- State.get
-  
+
             // If the predicate succeeds for the state and result, then return it. Otherwise, return the result of the
             // next iteration.
             r <- if p((s, rx)) then State.pure[SimulationState[M], A](rx) else nextIteration(xst)
@@ -200,7 +200,7 @@ final class Simulation[M <: ModelState[M]: Tag]:
    */
   def updateModelState(newState: M): SimulationAction[M] = State: s =>
     (s.update(newModelState = newState), Success(()))
- 
+
   /** Initial simulation state.
    *
    *  @param initialModelState Initial simulation model state.
@@ -242,14 +242,14 @@ final class Simulation[M <: ModelState[M]: Tag]:
       // updated simulation state.
       r <- takeUntilFailure:
         List[SimulationAction[M]](
-  
+
           // Schedule the end of the warm-up period. This should have the lowest possible priority, so that all
           // simultaneous events are completed before the reset occurs.
           at(warmupLength, Int.MaxValue)(new EndWarmUpAction[M](snapLength, numSnaps)),
-  
+
           // Perform custom initialization actions.
           initialization.dispatch,
-  
+
           // Update the simulation state to be executing.
           updateRunState(RunState.Executing)
         )
@@ -317,10 +317,10 @@ final class Simulation[M <: ModelState[M]: Tag]:
     for
       r <- takeUntilFailure:
         List(
-  
+
           // Update the current event.
           updateCurrentEvent,
-  
+
           // Dispatch the current event.
           dispatchCurrentEvent
         )
@@ -408,5 +408,5 @@ object Simulation:
    *
    *  @return `actions` wrapped as an action suitable for dispatching by an event.
    */
-  given createAnonymousAction[M <: ModelState[M]: Tag]: Conversion[SimulationAction[M], AnonymousAction[M]] =
+  given createAnonymousAction[M <: ModelState[M]]: Conversion[SimulationAction[M], AnonymousAction[M]] =
     (actions: SimulationAction[M]) => new AnonymousAction[M](actions)

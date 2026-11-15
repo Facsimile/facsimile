@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -174,10 +174,10 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
       // Verify that it can handle arbitrary numbers of elements.
       it("can create a heap with any number of members"):
         forAll: (li: List[Int]) =>
-          verifyMultiMemberHeap(BinomialHeap(li: _*), li)
+          verifyMultiMemberHeap(BinomialHeap(li*), li)
 
   // Now for the class methods.
-  describe(classOf[BinomialHeap[_]].getCanonicalName.nn):
+  describe(classOf[BinomialHeap[?]].getCanonicalName.nn):
 
     // Test the canEqual method.
     describe(".canEqual(Any)"):
@@ -185,7 +185,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
       // Verify that it reports false for different types of object, including heaps of different types.
       it("must reject objects of a different type"):
         forAll: (li: List[Int]) =>
-          val h = BinomialHeap(li: _*)
+          val h = BinomialHeap(li*)
           assert(h.canEqual(li) === false, "Fails on List[Int] comparison")
           forAll: (i: Int) =>
             assert(h.canEqual(i) === false, "Fails on Int comparison")
@@ -194,20 +194,20 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
           forAll: (s: String) =>
             assert(h.canEqual(s) === false, "Fails on String comparison")
           forAll: (ld: List[Double]) =>
-            val hd = BinomialHeap(ld: _*)
+            val hd = BinomialHeap(ld*)
             assert(h.canEqual(hd) === false, "Fails on BinomialHeap[Double] comparison")
 
       // Verify that it reports true for heaps of the same type.
       it("must accept heaps of the same type"):
         forAll: (l1: List[Int], l2: List[Int]) =>
-          val h1 = BinomialHeap(l1: _*)
-          val h2 = BinomialHeap(l2: _*)
+          val h1 = BinomialHeap(l1*)
+          val h2 = BinomialHeap(l2*)
           assert(h1.canEqual(h2))
 
       // Verify that it accepts itself.
       it("must accept itself"):
         forAll: (li: List[Int]) =>
-          val h = BinomialHeap(li: _*)
+          val h = BinomialHeap(li*)
           assert(h.canEqual(h) === true)
 
     // Test the equals method.
@@ -216,7 +216,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
       // Verify that it reports false for different types of object, including heaps of different types.
       it("must reject objects of a different type"):
         forAll: (li: List[Int]) =>
-          val h = BinomialHeap(li: _*)
+          val h = BinomialHeap(li*)
           assert(h.equals(li) === false, "Fails on List[Int] comparison")
           forAll: (i: Int) =>
             assert(h.equals(i) === false, "Fails on Int comparison")
@@ -225,7 +225,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
           forAll: (s: String) =>
             assert(h.equals(s) === false, "Fails on String comparison")
           forAll: (ld: List[Double]) =>
-            val hd = BinomialHeap(ld: _*)
+            val hd = BinomialHeap(ld*)
             assert(h.equals(hd) === false, "Fails on BinomialHeap[Double] comparison")
 
       // Verify that it reports the correct result for heaps of the same type.
@@ -233,14 +233,14 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
         forAll: (l1: List[Int], l2: List[Int]) =>
           val l1s = l1.sorted
           val l2s = l2.sorted
-          val h1 = BinomialHeap(l1: _*)
-          val h2 = BinomialHeap(l2: _*)
+          val h1 = BinomialHeap(l1*)
+          val h2 = BinomialHeap(l2*)
           assert(h1.equals(h2) === l1s.equals(l2s))
 
       // Verify that it compares equal to itself.
       it("must equal itself"):
         forAll: (li: List[Int]) =>
-          val h = BinomialHeap(li: _*)
+          val h = BinomialHeap(li*)
           assert(h.equals(h) === true)
 
     // Test the hashcode method.
@@ -249,8 +249,8 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
       // Verify that it reports the same value for heaps that should compare equal.
       it("must return the same value for heaps that compare equal"):
         forAll: (li: List[Int]) =>
-          val h1 = BinomialHeap(li: _*)
-          val h2 = BinomialHeap(li.reverse: _*)
+          val h1 = BinomialHeap(li*)
+          val h2 = BinomialHeap(li.reverse*)
           assert(h1 === h2)
           assert(h1.hashCode === h2.hashCode)
 
@@ -261,7 +261,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
           (hashCodes + heap.hashCode, count + 1)
         var state = (Set.empty[Int], 0)
         forAll: (li: List[Int]) =>
-          val h = BinomialHeap(li: _*)
+          val h = BinomialHeap(li*)
           state = updateState(state._1, state._2, h)
         assert(state._1.size / state._2.toDouble >= 0.9)
 
@@ -271,7 +271,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
       // It must add new member to a heap, resulting in a new heap.
       it("must accept a new member, resulting in a new heap"):
         forAll: (e: Int, li: List[Int]) =>
-          val h = BinomialHeap(li: _*)
+          val h = BinomialHeap(li*)
           val newH = h + e
           assert(h !== newH)
           verifyMultiMemberHeap(newH, (e :: li).sorted)
@@ -284,7 +284,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
 
         // Use positive numbers, as there is no generator for just numbers, right now.
         forAll(Gen.nonEmptyListOf(Gen.posNum[Int])): li =>
-          val h = BinomialHeap(li: _*)
+          val h = BinomialHeap(li*)
           val eh = BinomialHeap.empty[Int]
           val newH1 = h ++ eh
           assert(newH1 === h)
@@ -298,9 +298,8 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
 
         // Use positive numbers, as there is no generator for just numbers, right now.
         forAll(Gen.nonEmptyListOf(Gen.posNum[Int]), Gen.nonEmptyListOf(Gen.posNum[Int])): (l1, l2) =>
-          val h1 = BinomialHeap(l1: _*)
-          val h2 = BinomialHeap(l2: _*)
+          val h1 = BinomialHeap(l1*)
+          val h2 = BinomialHeap(l2*)
           val newH = h1 ++ h2
           val newL = l1 ::: l2
           verifyMultiMemberHeap(newH, newL.sorted)
-

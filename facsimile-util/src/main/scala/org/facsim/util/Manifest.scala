@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -276,13 +276,13 @@ extends Manifest:
   /** Map of attribute names to corresponding system properties, wrapped in [[scala.util.Success]].
    */
   private val nameMap: Map[Name, Try[String]] = Map(
-    Manifest.BuildTimestamp -> Success(sysProp("java.version.date")),
-    Name.IMPLEMENTATION_TITLE.nn -> Success(sysProp("java.runtime.name")),
-    Name.IMPLEMENTATION_VENDOR.nn -> Success(sysProp("java.vendor")),
-    Name.IMPLEMENTATION_VERSION.nn -> Success(sysProp("java.version")),
-    Name.SPECIFICATION_TITLE.nn -> Success(sysProp("java.specification.name")),
-    Name.SPECIFICATION_VENDOR.nn -> Success(sysProp("java.specification.vendor")),
-    Name.SPECIFICATION_VERSION.nn -> Success(sysProp("java.specification.version"))
+    Manifest.BuildTimestamp -> Success(sysProp("java.version.date").nn),
+    Name.IMPLEMENTATION_TITLE.nn -> Success(sysProp("java.runtime.name").nn),
+    Name.IMPLEMENTATION_VENDOR.nn -> Success(sysProp("java.vendor").nn),
+    Name.IMPLEMENTATION_VERSION.nn -> Success(sysProp("java.version").nn),
+    Name.SPECIFICATION_TITLE.nn -> Success(sysProp("java.specification.name").nn),
+    Name.SPECIFICATION_VENDOR.nn -> Success(sysProp("java.specification.vendor").nn),
+    Name.SPECIFICATION_VERSION.nn -> Success(sysProp("java.specification.version").nn)
   )
 
   // Retrieve named attributes by looking at corresponding system properties instead; if there is no corresponding

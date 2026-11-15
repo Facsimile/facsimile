@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -139,7 +139,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
 
       // Create a wrapped function that both calls the original function while setting the wasCalled flag in the
       // process. (This is the function that we'll actually memoize.)
-      val wf = wrapFn(f) _
+      val wf = wrapFn(f)
 
       // Create a memoized version of the wrapped function.
       val mf = Memoize(wf)
@@ -297,4 +297,3 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
           // Try the integer, string & double hashing function first.
           forAll(genSIDTupleList): sidl =>
             callFn(sidl)(getHash[String, Int, Double])
-

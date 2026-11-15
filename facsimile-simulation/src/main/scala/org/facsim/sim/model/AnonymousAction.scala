@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,6 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-import izumi.reflect.Tag
 import org.facsim.sim.{LibResource, SimulationAction}
 
 /** Anonymous action for wrapping bare actions as [[org.facsim.sim.model.Action]] instances.
@@ -49,7 +48,7 @@ import org.facsim.sim.{LibResource, SimulationAction}
  *
  *  @since 0.0
  */
-final class AnonymousAction[M <: ModelState[M]: Tag] private[sim](override protected val actions: SimulationAction[M])
+final class AnonymousAction[M <: ModelState[M]] private[sim](override protected val actions: SimulationAction[M])
 extends Action[M]:
 
   /** @inheritdoc

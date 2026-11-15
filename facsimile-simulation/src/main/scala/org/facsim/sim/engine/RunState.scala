@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -41,31 +41,31 @@ import org.facsim.sim.LibResource
 /** Enumeration describing simulation run states.
  *
  *  @param name Name of this run-state.
- *    
+ *
  *  @param iteratable Flag indicating whether this state supports event iteration.
  *
  *  @param schedulable Flag indicating whether this state supports event scheduling. If `true`, the simulation's current
  *  run state allows event scheduling (updating of the simulation state to include a newly scheduled event); if `false`,
- *  event iteration is not supported. 
- *  
+ *  event iteration is not supported.
+ *
  *  @since 0.0
  */
 enum RunState(val name: String, iteratable: Boolean, schedulable: Boolean):
-  
+
   /** Flag indicating whether this state supports event iteration.
-   * 
+   *
    *  @return `true`, if the simulation's current run state allows event iteration (updating of the simulation state to
    *  update the current event); `false`, if the event iteration is not supported.
    */
   private[engine] val canIterate: Boolean = iteratable
-  
+
   /** Flag indicating whether this state supports event scheduling.
-   * 
+   *
    *  @return `true`, if the simulation's current run state allows event scheduling (updating of the simulation state to
    *  include a newly scheduled event); `false`, if the event iteration is not supported.
    */
   private[engine] val canSchedule: Boolean = schedulable
-  
+
   /** State of the simulation prior to being run for the first time.
    *
    *  @since 0.0

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -39,9 +39,8 @@ package org.facsim.sim.application
 import java.util.jar.Attributes.Name
 import org.facsim.sim.LibResource
 import org.facsim.util.{Manifest, NonPure, Version}
-import scala.annotation.unused
 
-/** Base class for a _Facsimile_ application.
+/** Base trait for a _Facsimile_ application.
  *
  *  _Facsimile_ applications commence as command line/non-graphical programs. However, if required, a GUI interface for
  *  the model is created, which also provides a _3D_ animation of the simulation.
@@ -51,10 +50,9 @@ import scala.annotation.unused
  *
  *  @since 0.2
  */
-abstract class FacsimileApp
-extends App:
+trait FacsimileApp:
 
-  // Helper
+  // Import object elements.
   import FacsimileApp.missingMsg
 
   /** Manifest for the ultimate instance of this application, retrieved from containing _JAR_ file.
@@ -68,14 +66,25 @@ extends App:
 
   /** Parser for processing command line arguments supplied to this program.
    */
-  private val parser = new CLIParser(appName, appCopyright, appVersionString)
+  private final val parser = new CLIParser(appName, appCopyright, appVersionString)
 
-  // Parse the command line, running the program only if successful.
-  //
-  // NOTE: If parsing fails, failure messages will be sent to the standard error output before the parse method returns.
-  // Facsimile must not use the default "help" or "version" options, which will terminate the application without the
-  // parse method returning.
-  parser.parse(args.to(IndexedSeq)).foreach(runApp)
+  /** Main program.
+   *
+   *  @note This method is automatically invoked by the Scala runtime, when an `object` subclass is  defined, and should
+   *  not be called directly.
+   *
+   *  @param args Command line arguments supplied to this program.
+   *
+   *  @since 0.4
+   */
+  final def main(args: Array[String]): Unit =
+
+    // Parse the command line, running the program only if successful.
+    //
+    // NOTE: If parsing fails, failure messages will be sent to the standard error output before the parse method returns.
+    // Facsimile must not use the default "help" or "version" options, which will terminate the application without the
+    // parse method returning.
+    parser.parse(args.to(IndexedSeq)).foreach(runApp)
 
   /** Report the name of this application.
    *
@@ -151,7 +160,7 @@ extends App:
     // If necessary, output the application usage information to the standard output.
     if config.showUsage then println(parser.usage)
 
-    // If necessary, proceed to the next phase of model execution, determining if there are any further
+    // If necessary, proceed to the next phase by executing the model.
     if config.runModel then
       try
         runModel(config)
@@ -165,8 +174,10 @@ extends App:
   /** Run the simulation model.
    *
    *  @param config Configuration for this simulation run.
+   *
+   *  @since 0.4
    */
-  private def runModel(@unused config: FacsimileConfig): Unit = () // Temporary: config is marked unused to avoid error
+  protected def runModel(config: FacsimileConfig): Unit
 
 /** Facsimile application companion object.
  */

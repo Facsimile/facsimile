@@ -1,6 +1,6 @@
 #=======================================================================================================================
 # Facsimile: A Discrete-Event Simulation Library
-# Copyright © 2004-2025, Michael J Allen.
+# Copyright © 2004-2026, Michael J Allen.
 #
 # This file is part of Facsimile.
 #
@@ -40,9 +40,4 @@
 # Prevent Codacy from examining files that are not currently part of the released product.
 ---
 exclude_paths:
-  - 'core/**'
-  - 'facsimile-sfx/**'
-  - 'facsimile-stat/**'
-  - 'facsimile-types/**'
-  - 'macro/**'
-  - 'parked/**'
+  - 'docs/**'

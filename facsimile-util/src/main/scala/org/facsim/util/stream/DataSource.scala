@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -101,7 +101,7 @@ final class DataSource[A](bufferSize: Int)(using materializer: Materializer):
 
     // Send the data, returning the associated future in the process.
     lastFuture = Some(streamSource._1.offer(data))
-    
+
     // Return the future to the caller.
     lastFuture.get
 

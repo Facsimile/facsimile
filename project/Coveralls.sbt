@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -12,8 +12,9 @@
 // warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 // details.
 //
-// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
-// see http://www.gnu.org/licenses/lgpl.
+// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
+//
+//   http://www.gnu.org/licenses/lgpl.
 //
 // The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
 // project home page at:
@@ -33,4 +34,6 @@
 //======================================================================================================================
 // SBT file to include support for the coveralls.io site.
 //======================================================================================================================
-addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.3.14")
+// At the time of writing (9/24/2026), the sbt-coveralls plugin is not compatible with SBT 2.0, so it is removed for
+// now. See also the note in the project's main ./README.md file.
+//addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.3.15")

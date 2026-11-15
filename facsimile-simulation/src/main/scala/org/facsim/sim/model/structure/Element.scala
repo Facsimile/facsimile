@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,6 @@
 //======================================================================================================================
 package org.facsim.sim.model.structure
 
-import izumi.reflect.Tag
 import org.facsim.sim.model.state.ElementState
 
 /** Base class for all simulation model elements.
@@ -59,16 +58,16 @@ import org.facsim.sim.model.state.ElementState
  *   - Z-Axis: Positive Y-axis points to the _South_, negative to the _North_.
  *
  *  Transformations must be applied to the 3D model in order to accurately render the same scene in _JavaFX_.
- *  
+ *
  *  @constructor Construct a new element.
- *              
+ *
  *  @tparam E Final type of the element subclass.
  *
  *  @tparam S Type of element storing the state of this element.
- *  
+ *
  *  @since 0.2
  */
-abstract class Element[E <: Element[E, S]: Tag, S <: ElementState[E, S]: Tag]:
+abstract class Element[E <: Element[E, S], S <: ElementState[E, S]]:
 
   /** Name of this element.
    *

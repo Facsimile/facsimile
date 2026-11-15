@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,6 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-import izumi.reflect.Tag
 import org.facsim.sim.{LibResource, SimulationAction}
 import org.facsim.sim.engine.Simulation
 import squants.Time
@@ -53,7 +52,7 @@ import squants.Time
  *
  *  @param simulation Reference to the executing simulation.
  */
-private[sim] final class EndWarmUpAction[M <: ModelState[M]: Tag](snapLength: Time, numSnaps: Int)
+private[sim] final class EndWarmUpAction[M <: ModelState[M]](snapLength: Time, numSnaps: Int)
 (using simulation: Simulation[M])
 extends Action[M]:
 

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,6 @@
 //======================================================================================================================
 package org.facsim.sim.engine
 
-import izumi.reflect.Tag
 import org.facsim.sim.PriorityQueue
 import org.facsim.sim.model.ModelState
 import squants.Time
@@ -59,12 +58,12 @@ import squants.time.Seconds
  *  @param events Set of simulation events scheduled to occur at a future simulation time.
  *
  *  @param runState Current state of the simulation run.
- *  
+ *
  *  @param sim Simulation to which this simulation state applies, typically passed implicitly.
  *
  *  @since 0.0
  */
-final class SimulationState[M <: ModelState[M]: Tag] private[engine](private[engine] val modelState: M,
+final class SimulationState[M <: ModelState[M]] private[engine](private[engine] val modelState: M,
 private[engine] val nextEventId: Long, private[engine] val current: Option[Event[M]],
 private[engine] val events: PriorityQueue[Event[M]], private[engine] val runState: RunState)(using sim: Simulation[M]):
 

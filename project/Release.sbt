@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -12,8 +12,9 @@
 // warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 // details.
 //
-// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not,
-// see http://www.gnu.org/licenses/lgpl.
+// You should have received a copy of the GNU Lesser General Public License along with Facsimile. If not, see:
+//
+//   http://www.gnu.org/licenses/lgpl.
 //
 // The developers welcome all comments, suggestions and offers of assistance. For further information, please visit the
 // project home page at:
@@ -36,4 +37,4 @@
 // This plugin assists with the version numbering of Facsimile releases, and replaces the more cumbersome sbt-git
 // plugin.
 //======================================================================================================================
-addSbtPlugin("com.github.sbt" % "sbt-release" % "1.4.0")
+addSbtPlugin("com.github.sbt" % "sbt-release" % "1.5.0")

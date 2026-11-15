@@ -1,17 +1,26 @@
-# Facsimile Simulation Library
+# _Facsimile_ Project
 
-The _Facsimile_ project's goal is to develop and maintain a high-quality, 3D, discrete-event simulation library that can
-be used for industrial simulation projects in an engineering, logistics and/or manufacturing environment.
+The _Facsimile_ project's goal is to develop and maintain a high-quality set of libraries supporting the development of
+industrial _[discrete-event](https://en.wikipedia.org/wiki/Discrete-event_simulation)_, _physics-based emulation_, and
+live-streamed _[process digital twin](https://en.wikipedia.org/wiki/Digital_twin)_ simulations in an engineering,
+logistics and/or manufacturing environment.
 
-Facsimile simulations run on the _Java Virtual Machine_ under _Microsoft Windows_, _Linux_, _Mac OS X_, _BSD_ and
-_Unix_.
+All libraries are developed using a hybrid _functional programming_ (_FP_)/_object-oriented programming_ (_OOP_)
+paradigm, and are developed in the _[Scala](https://scala-land.org)_ programming language. The resulting libraries run
+on the _Java Virtual Machine_ (_JVM_) under _Microsoft Windows_, _Linux_, _macOS_, _BSD_, and _Unix_.
 
-Facsimile is open-source/free software and is distributed under version 3 of the
-_[GNU General Public License](http://www.gnu.org/licenses/lgpl-3.0-standalone.html)_ (GPLv3).
+_Facsimile_ is open-source/free software and is distributed under version 3 of the
+_[GNU General Public License](http://www.gnu.org/licenses/lgpl-3.0-standalone.html)_ (_GPLv3_).
 
 Current status of official master _Facsimile_ branch:
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_3/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.facsim/facsimile-simulation_3)
+_*Note*: The test coverage badge, which is provided by [Coveralls](https://coveralls.io/), is not currently being
+updated because the
+[sbt-coveralls SBT](https://github.com/scoverage/sbt-coverallshttps://github.com/scoverage/sbt-coveralls) plugin has
+been temporarily disabled; this is due to the plugin not supporting SBT 2. We will re-enable it when SBT 2 support is
+available._
+
+[![Maven Central](https://maven-badges.sml.io/sonatype-central/org.facsim/facsimile-simulation_3/badge.svg)](https://maven-badges.sml.io/sonatype-central/org.facsim/facsimile-simulation_3)
 [![Coverage Status](https://coveralls.io/repos/github/Facsimile/facsimile/badge.svg?branch=master)](https://coveralls.io/github/Facsimile/facsimile?branch=master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ba518cbf7a13430b9f3854933b5e94e9)](https://app.codacy.com/gh/Facsimile/facsimile/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Scala Steward badge](https://img.shields.io/badge/Scala_Steward-helping-brightgreen.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=)](https://scala-steward.org)
@@ -36,10 +45,13 @@ __Note__: Installers for _Facsimile_ that allow it to be utilized for simulation
  check back for developments.
 
 _Facsimile_ utilizes the most recent _Java LTS_ (_long-term support_) release that is supported by its dependencies. The
-current _Facsimile_ version depends upon _Java 17 LTS_, and it is recommended that you utilize only this version of
-_Java_ for _Facsimile_.
+current _Facsimile_ version depends upon _Java 25 LTS_, and it is recommended that you utilize only this version of
+_Java_ for _Facsimile_ for the time being.
 
-Any _Java 17 LTS_ release, including those by _Oracle_, _OpenJDK_, _Azul Systems_, _AdoptOpenJDK_, etc. should work just
+Once a stable _Facsimile_ release has been announced, we'll support the oldest freely and widely supported _Java LTS_
+release, or _Java 25 LTS_, whichever is newer.
+
+Any _Java 25 LTS_ release, including those by _Oracle_, _OpenJDK_, _Azul Systems_, _Eclipse_, etc. should work just
 fine. It is strongly recommended that your organization reviews the licensing of your chosen _Java_ supplier to ensure
 that you are in compliance with its terms.
 

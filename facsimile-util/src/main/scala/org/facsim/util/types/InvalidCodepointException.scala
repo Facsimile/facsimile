@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,7 @@ import org.facsim.util.types.UniChars.UniChar
 import org.facsim.util.LibResource
 
 /** Thrown if an attempt to process an invalid code point exception is encountered.
- * 
+ *
  *  @param uc UniCode character having an invalid
  */
 final case class InvalidCodepointException(uc: UniChar)

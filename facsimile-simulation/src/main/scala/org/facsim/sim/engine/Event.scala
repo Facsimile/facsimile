@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,6 @@
 //======================================================================================================================
 package org.facsim.sim.engine
 
-import izumi.reflect.Tag
 import org.facsim.sim.model.{Action, ModelState}
 import org.facsim.util.CompareEqualTo
 import squants.Time
@@ -62,8 +61,7 @@ import squants.Time
  *
  *  @param action Action to be performed by this event when it is dispatched.
  */
-private[engine] final case class Event[M <: ModelState[M]: Tag](id: Long, dueAt: Time, priority: Int = 0,
-action: Action[M])
+private[engine] final case class Event[M <: ModelState[M]](id: Long, dueAt: Time, priority: Int = 0, action: Action[M])
 extends Ordered[Event[M]]:
 
   /** Compare this event to another event.

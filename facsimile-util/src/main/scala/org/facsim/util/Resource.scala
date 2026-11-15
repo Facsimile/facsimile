@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -100,4 +100,4 @@ class Resource(bundleName: String):
   final def apply(key: String, arguments: Any*): String =
 
     // To convert a Scala vararg to a Java vararg, while boxing numbers requires this rather ugly code...
-    MessageFormat.format(bundle.getString(key), arguments.map(_.asInstanceOf[AnyRef]): _*).nn
+    MessageFormat.format(bundle.getString(key), arguments.map(_.asInstanceOf[AnyRef])*).nn

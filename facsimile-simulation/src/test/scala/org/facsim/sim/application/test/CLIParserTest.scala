@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -174,7 +174,7 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
      */
     lazy val versionShortOpt: String = "-V"
 
-    /** Version long option. 
+    /** Version long option.
      */
     lazy val versionLongOpt: String = "--version"
 
@@ -299,12 +299,15 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
         // differences, if the changes are valid, update the target file with the cached usage.
         new TestData:
           withLocale(Locale.US.nn):
-            val cachedFile = getClass.getResource("/CachedUsage.txt").nn.getFile.nn
-            val cachedSource = Source.fromFile(cachedFile)
+            val cachedFile =
+              getClass.getResource("/CachedUsage.txt").nn.openConnection().nn.getInputStream().nn
+            //println(s"DEBUG: File is $cachedFile")
+            val cachedSource = Source.fromInputStream(cachedFile)
             try
               val cachedUsage = s"$versionHeader$LS${cachedSource.mkString}"
               assert(parser.usage === cachedUsage)
             finally
+              cachedFile.close()
               cachedSource.close()
 
     // Test the version function.
@@ -313,5 +316,3 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
         new TestData:
           withLocale(Locale.US.nn):
             assert(parser.version === versionHeader)
-
-

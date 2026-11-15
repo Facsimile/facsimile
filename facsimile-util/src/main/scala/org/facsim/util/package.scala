@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -43,7 +43,6 @@ import java.net.{URI, URL}
 import java.time.ZonedDateTime
 import java.util.{Date, GregorianCalendar}
 import java.util.jar.JarFile
-import scala.annotation.elidable
 import scala.language.implicitConversions
 import scala.quoted.{Expr, Quotes, Type}
 import scala.util.matching.Regex
@@ -101,7 +100,7 @@ private[facsim] val PS: String = File.pathSeparator.nn
 
 /** Line separator.
  */
-private[facsim] val LS: String = sys.props("line.separator")
+private[facsim] val LS: String = sys.props("line.separator").nn
 
 /** Single quote character.
  */
@@ -236,7 +235,8 @@ private[util] def manifestOf(elementType: Class[?]): Manifest =
 
 /** Assertion that a possibly `null` expression is not actually `null`.
  *
- *  Code using this assertion is only generated if the `-Xelide-below` _Scala_ compiler option is at least `ASSERTION`.
+ *  @todo Code using this assertion should only be generated if we're debugging; it used to be possible to achieve this
+ *  using the @elidable annotation, but we must now use "inline if" instead.
  *
  *  @note Assertions should only be used to verify internal state; they must _never_ be used to verify external state
  *  (use the [[scala.Predef.require()]] methods to verify external state instead), since assertions will not execute in
@@ -250,7 +250,7 @@ private[util] def manifestOf(elementType: Class[?]): Manifest =
  *
  *  @since 0.0
  */
-@elidable(elidable.ASSERTION)
+//@elidable(elidable.ASSERTION)
 inline def assertNonNull[T](inline expr: T | Null): Unit = ${assertNonNullImpl('expr)}
 
 /** Require that argument value is valid.

@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -30,12 +30,10 @@
 //
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
-// Scala source file belonging to the org.facsim.sfx.beans.value package.
-//======================================================================================================================
-package org.facsim.sfx.beans
 
-/** Utilities relating to the _JavaFX_ [[javafx.beans.value]] package.
- *
- *  @since 0.0
- */
-package object value
+//======================================================================================================================
+// SBT file to include Git plugin.
+//
+// This plugin supports versioning using git, as well as providing information about head commits, etc.
+//======================================================================================================================
+addSbtPlugin("com.github.sbt" % "sbt-git" % "2.2.0")

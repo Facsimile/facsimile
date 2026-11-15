@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -59,4 +59,3 @@ extends AnyFunSpec, ScalaCheckPropertyChecks:
 
   // Start with the companion object.
   describe(classOf[Simulation[?]].getCanonicalName.nn)
-

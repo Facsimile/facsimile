@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -31,30 +31,7 @@
 //   http://facsim.org/Documentation/CodingStandards/
 //======================================================================================================================
 
-// Scala source file belonging to the org.facsim.sfx.stage package.
 //======================================================================================================================
-package org.facsim.sfx.stage
-
-import javafx.stage.Window
-
-/** Your comment here
- *
- * @since 0.0
- */
-trait SFXWindow {
-
-  // Must be mixed in with a JavaFX Window to function correctly.
-  w: Window =>
-
-  /** Retrieve window height.
-   *
-   *  @return Height of the window.
-   */
-  final def height: Double = w.getHeight
-
-  /** Set window height.
-   *
-   *  @param value New height for the window.
-   */
-  final def height_=(value: Double): Unit = w.setHeight(value)
-}
+// SBT file to include GPG plugin.
+//======================================================================================================================
+addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.3.1")

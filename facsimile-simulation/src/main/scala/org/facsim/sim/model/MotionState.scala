@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -235,7 +235,7 @@ extends RotationalMotionState:
 /** Simulation element cruising rotational state.
  *
  *  Elements having this state are moving at a constant, non-zero angular velocity. If the velocity is positive, then
- *  the element is moving counter-clockwise, about positive local Z-axis; if negative, then the element is traveling 
+ *  the element is moving counter-clockwise, about positive local Z-axis; if negative, then the element is traveling
  *  clockwise.
  *
  *  @constructor Create a new rotational cruising motion state.

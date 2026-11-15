@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -36,7 +36,6 @@
 //======================================================================================================================
 package org.facsim.sim.model
 
-import izumi.reflect.Tag
 import org.facsim.sim.SimulationAction
 
 /** An _action_ is a _state transition_ that takes the state of the simulation and results in a new simulation
@@ -54,7 +53,7 @@ import org.facsim.sim.SimulationAction
  *
  *  @since 0.0
  */
-abstract class Action[M <: ModelState[M]: Tag]:
+abstract class Action[M <: ModelState[M]]:
 
   /** Actions to be performed by this instance.
    *

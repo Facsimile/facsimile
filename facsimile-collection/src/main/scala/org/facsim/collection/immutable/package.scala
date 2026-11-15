@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -44,4 +44,3 @@ private[immutable] type BinomialTree[A] = List[BinomialTreeNode[A]]
 
 /** Type used for ranking nodes in a binomial tree. */
 private[immutable] type BinomialTreeRank = Int
-

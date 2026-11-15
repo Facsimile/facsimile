@@ -1,6 +1,6 @@
 //======================================================================================================================
 // Facsimile: A Discrete-Event Simulation Library
-// Copyright © 2004-2025, Michael J Allen.
+// Copyright © 2004-2026, Michael J Allen.
 //
 // This file is part of Facsimile.
 //
@@ -196,13 +196,13 @@ object Version:
       //
       // If so, the bug fix number needs to remove the leading period before converting to an integer.
       case VersionRegex(maj, min, bug, snap) =>
-        Success(Version(maj.toInt, min.toInt, Option(bug).map(_.tail.toInt), Option(snap).isDefined))
+        Success(Version(maj.nn.toInt, min.nn.toInt, Option(bug).map(_.tail.toInt), Option(snap).isDefined))
 
       // Does this match supported Java versions, indicated by the Java version regular expression?
       //
       // We should only get matches on Java versions of the form 1.8.0_121 (i.e. having a ".0_" prefix to the bug fix
       // number.
-      case JavaVersionRegex(maj, min, bug) => Success(Version(maj.toInt, min.toInt, Option(bug.toInt)))
+      case JavaVersionRegex(maj, min, bug) => Success(Version(maj.nn.toInt, min.nn.toInt, Option(bug).map(_.toInt)))
 
       // If there was no match, then throw the appropriate exception.
       case _ => Failure(VersionParseException(version, 0))
